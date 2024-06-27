@@ -230,6 +230,11 @@ const initialState = {
   ListOfDefaultRejectionCommentsData: null,
   PendingApprovalCountData: 0,
   GetMinuteReviewStatsForOrganizerByMeetingIdData: null,
+  GetAllOrganizationUsersForReviewData: null,
+  GetMinutesForReviewerByMeetingIdData: null,
+  GetMinuteReviewPendingApprovalsStatsByReviewerIdData: null,
+  GetMinuteReviewPendingApprovalsByReviewerIdData: null,
+  currentMeetingMinutesToReview: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -280,6 +285,13 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         deleteMeetingCommentModal: action.response,
+      };
+    }
+
+    case actions.CURRENT_MEETING_MINUTE_REVIEW: {
+      return {
+        ...state,
+        currentMeetingMinutesToReviewData: action.response,
       };
     }
 
@@ -348,6 +360,98 @@ const MinutesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetMinuteReviewStatsForOrganizerByMeetingIdData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALLORGANIZATIONUSERSFORREVIEW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_ALLORGANIZATIONUSERSFORREVIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetAllOrganizationUsersForReviewData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ALLORGANIZATIONUSERSFORREVIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetAllOrganizationUsersForReviewData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MINUTESFORREVIEWERBYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_MINUTESFORREVIEWERBYMEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinutesForReviewerByMeetingIdData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_MINUTESFORREVIEWERBYMEETINGID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinutesForReviewerByMeetingIdData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MINUTEREVIEWPENDINGAPPROVALSSTATSBYREVIEWERID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_MINUTEREVIEWPENDINGAPPROVALSSTATSBYREVIEWERID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewPendingApprovalsStatsByReviewerIdData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_MINUTEREVIEWPENDINGAPPROVALSSTATSBYREVIEWERID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewPendingApprovalsStatsByReviewerIdData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewPendingApprovalsByReviewerIdData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewPendingApprovalsByReviewerIdData: null,
         ResponseMessage: action.message,
       };
     }

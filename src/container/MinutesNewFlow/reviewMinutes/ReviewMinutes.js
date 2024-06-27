@@ -12,11 +12,17 @@ import {
   rejectCommentModal,
   editCommentModal,
   deleteCommentModal,
+  currentMeetingMinutesToReview,
 } from "../../../store/actions/Minutes_action";
 import DefaultAvatar from "./../Images/avatar.png";
 import RejectCommentModal from "./rejectCommentModal/RejectCommentModal";
 import EditCommentModal from "./editCommentModal/EditCommentModal";
 import DeleteCommentModal from "./deleteCommentModal/DeleteCommentModal";
+import { GetMinutesForReviewerByMeetingId } from "../../../store/actions/Minutes_action";
+import {
+  convertDateToGMTMinute,
+  convertToGMTMinuteTime,
+} from "../../../commen/functions/time_formatter";
 
 // Functional component for pending approvals section
 const ReviewMinutes = () => {
@@ -31,7 +37,41 @@ const ReviewMinutes = () => {
 
   const [reviewWrapperScroll, setReviewWrapperScroll] = useState(false);
 
+  const [minutesAgenda, setMinutesAgenda] = useState([]);
+  const [minutesAgendaHierarchy, setMinutesAgendaHierarchy] = useState([]);
+  const [minutesGeneral, setMinutesGeneral] = useState([]);
+  const [minutesToReview, setMinutesToReview] = useState(0);
+
   const divRef = useRef(null);
+
+  const countActorBundleStatusID2 = (data) => {
+    let count = 0;
+    // Traverse generalMinutes
+    if (data.generalMinutes) {
+      data.generalMinutes.forEach((minute) => {
+        if (minute.actorBundleStatusID === 2) {
+          count++;
+        }
+      });
+    }
+    // Traverse agendaMinutes
+    if (data.agendaMinutes) {
+      data.agendaMinutes.forEach((minute) => {
+        if (minute.actorBundleStatusID === 2) {
+          count++;
+        }
+        // Check version history in agendaMinutes
+        if (minute.agendaMinutesVersionHistory) {
+          minute.agendaMinutesVersionHistory.forEach((history) => {
+            if (history.actorBundleStatusID === 2) {
+              count++;
+            }
+          });
+        }
+      });
+    }
+    return count;
+  };
 
   useEffect(() => {
     const div = divRef.current;
@@ -45,13 +85,46 @@ const ReviewMinutes = () => {
     }
   }, []); // This effect runs once after the component mounts
 
+  useEffect(() => {
+    let Data = {
+      MeetingID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
+    };
+    dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+    // return () => {
+    //   dispatch(currentMeetingMinutesToReview(null));
+    // };
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (
+        MinutesReducer.GetMinutesForReviewerByMeetingIdData !== null &&
+        MinutesReducer.GetMinutesForReviewerByMeetingIdData !== undefined &&
+        MinutesReducer.GetMinutesForReviewerByMeetingIdData.length !== 0
+      ) {
+        let reducerData = MinutesReducer.GetMinutesForReviewerByMeetingIdData;
+        setMinutesAgenda(reducerData.agendaMinutes);
+        setMinutesAgendaHierarchy(reducerData.agendaHierarchyList);
+        setMinutesGeneral(reducerData.generalMinutes);
+        setMinutesToReview(countActorBundleStatusID2(reducerData));
+      } else {
+        setMinutesAgenda([]);
+        setMinutesAgendaHierarchy([]);
+        setMinutesGeneral([]);
+        setMinutesToReview([]);
+      }
+    } catch {}
+  }, [MinutesReducer.GetMinutesForReviewerByMeetingIdData]);
+
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
+
   return (
     <section className={styles["pendingApprovalContainer"]}>
       {/* Container for pending approval section */}
       <Row className="my-3 d-flex align-items-center">
         <Col sm={12} md={12} lg={12}>
           <span className={styles["pendingApprovalHeading"]}>
-            {t("IT Department Meeting")}
+            {MinutesReducer.currentMeetingMinutesToReviewData.title}
           </span>
         </Col>
       </Row>
@@ -71,7 +144,7 @@ const ReviewMinutes = () => {
               className="justify-content-end d-flex align-items-center"
             >
               <span className={styles["No-of-reviews"]}>
-                Remaining minutes to review: 03
+                {t("Remaining-minutes-to-review") + minutesToReview}
               </span>
               <Button text={t("Accept All")} className={styles["Accept-all"]} />
             </Col>
@@ -86,406 +159,47 @@ const ReviewMinutes = () => {
           >
             {/* CONTENT */}
 
-            <Row className="mx-50">
-              <Col lg={12} md={12} sm={12}>
-                <p className={styles["Parent-title-heading"]}>2.1 CEO Speech</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={12} md={12} sm={12} className="position-relative">
-                <div className={styles["version-control-wrapper-with-more"]}>
-                  <span className={styles["with-text"]}>V1.0</span>
-                </div>
-                <div className={styles["uploaded-details-accepted"]}>
-                  <Row className={styles["inherit-height"]}>
-                    <Col lg={8} md={8} sm={12}>
-                      <p className={styles["minutes-text"]}>
-                        Task updates: Design phase completed, moving to
-                        development, discussed resource reallocation to address
-                        delays and decided unknown unknown printer took a galley
-                        of type a printer took a galley of type a to hold daily
-                        check-ins for quicker progress Design phase completed,
-                        moving to development, discussed resource reallocation
-                        to address delays and decided unknown unknown printer
-                        took a galley of type a printer took a galley of type a
-                        to hold daily check-ins for quicker progress Design
-                        phase completed, moving to development, discussed
-                        resource reallocation to address delays and decided
-                        unknown unknown printer took a galley of type a printer
-                        took a galley of type a to update.
-                      </p>
-                    </Col>
-                    <Col lg={4} md={4} sm={12} className="position-relative">
-                      <Row className="m-0">
-                        <Col lg={6} md={6} sm={12} className="p-0">
-                          <span className={styles["bar-line"]}></span>
-                          <p className={styles["uploadedbyuser"]}>
-                            Uploaded By
-                          </p>
-                          <div className={styles["gap-ti"]}>
-                            <img
-                              src={DefaultAvatar}
-                              className={styles["Image"]}
-                              alt=""
-                              draggable={false}
-                            />
-                            <p className={styles["agendaCreater"]}>
-                              Alex Rodriguez
-                            </p>
-                          </div>
-                        </Col>
-                        <Col
-                          lg={6}
-                          md={6}
-                          sm={12}
-                          className="d-grid justify-content-end p-0"
-                        >
-                          <Button
-                            text={t("Accepted")}
-                            className={styles["Accepted-comment"]}
-                          />
-                          <Button
-                            text={t("Reject")}
-                            className={styles["Reject-comment"]}
-                            onClick={() => dispatch(rejectCommentModal(true))}
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <p className={styles["time-uploader"]}>4:00pm,</p>
-                          <p className={styles["date-uploader"]}>
-                            18th May, 2024
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={12} md={12} sm={12} className="position-relative">
-                <div className={styles["version-control-wrapper"]}>
-                  <span></span>
-                </div>
-                <div className={styles["uploaded-details-rejected"]}>
-                  <Row className={styles["inherit-height"]}>
-                    <Col lg={8} md={8} sm={12}>
-                      <p className={styles["minutes-text"]}>
-                        Task updates: Design phase completed, moving to
-                        development, discussed resource reallocation to address
-                        delays and decided unknown unknown printer took a galley
-                        of type a printer took a galley of type a to hold daily
-                        check-ins for quicker progress Design phase completed,
-                        moving to development, discussed resource reallocation
-                        to address delays and decided unknown unknown printer
-                        took a galley of type a printer took a galley of type a
-                        to hold daily check-ins for quicker progress Design
-                        phase completed, moving to development, discussed
-                        resource reallocation to address delays and decided
-                        unknown unknown printer took a galley of type a printer
-                        took a galley of type a to update.
-                      </p>
-                    </Col>
-                    <Col lg={4} md={4} sm={12} className="position-relative">
-                      <Row className="m-0">
-                        <Col lg={6} md={6} sm={12} className="p-0">
-                          <span className={styles["bar-line"]}></span>
-                          <p className={styles["uploadedbyuser"]}>
-                            Uploaded By
-                          </p>
-                          <div className={styles["gap-ti"]}>
-                            <img
-                              src={DefaultAvatar}
-                              className={styles["Image"]}
-                              alt=""
-                              draggable={false}
-                            />
-                            <p className={styles["agendaCreater"]}>
-                              Alex Rodriguez
-                            </p>
-                          </div>
-                        </Col>
-                        <Col
-                          lg={6}
-                          md={6}
-                          sm={12}
-                          className="d-grid justify-content-end p-0"
-                        >
-                          <Button
-                            text={t("Accepted")}
-                            className={styles["Reject-comment"]}
-                          />
-                          <Button
-                            text={t("Rejected")}
-                            className={styles["Rejected-comment"]}
-                            onClick={() => dispatch(rejectCommentModal(true))}
-                          />
-                          <Button
-                            text={t("Hide-comment")}
-                            className={styles["Reject-comment"]}
-                            onClick={() => dispatch(rejectCommentModal(true))}
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <p className={styles["time-uploader"]}>4:00pm,</p>
-                          <p className={styles["date-uploader"]}>
-                            18th May, 2024
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col lg={12} md={12} sm={12} className="position-relative">
-                <div className={styles["version-control-wrapper"]}>
-                  <span></span>
-                </div>
-                <div className={styles["uploaded-details"]}>
-                  <Row className={styles["inherit-height"]}>
-                    <Col lg={8} md={8} sm={12}>
-                      <p className={styles["minutes-text"]}>
-                        Task updates: Design phase completed, moving to
-                        development, discussed resource reallocation
-                      </p>
-                    </Col>
-                    <Col lg={4} md={4} sm={12} className="position-relative">
-                      <Row className="m-0">
-                        <Col lg={6} md={6} sm={12} className="p-0">
-                          <span className={styles["bar-line"]}></span>
-                          <p className={styles["uploadedbyuser"]}>
-                            Uploaded By
-                          </p>
-                          <div className={styles["gap-ti"]}>
-                            <img
-                              src={DefaultAvatar}
-                              className={styles["Image"]}
-                              alt=""
-                              draggable={false}
-                            />
-                            <p className={styles["agendaCreater"]}>
-                              Alex Rodriguez
-                            </p>
-                          </div>
-                        </Col>
-                        <Col
-                          lg={6}
-                          md={6}
-                          sm={12}
-                          className="d-grid justify-content-end p-0"
-                        >
-                          <Button
-                            onClick={() => dispatch(editCommentModal(true))}
-                            text={t("Edit")}
-                            className={styles["Reject-comment"]}
-                          />
-                          <Button
-                            onClick={() => dispatch(deleteCommentModal(true))}
-                            text={t("Delete")}
-                            className={styles["Reject-comment"]}
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <p className={styles["time-uploader"]}>4:00pm,</p>
-                          <p className={styles["date-uploader"]}>
-                            18th May, 2024
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col lg={12} md={12} sm={12} className="position-relative">
-                <div className={styles["version-control-wrapper-with-more"]}>
-                  <span className={styles["with-text"]}>V1.0</span>
-                </div>
-                <div className={styles["uploaded-details-rejected"]}>
-                  <Row className={styles["inherit-height"]}>
-                    <Col lg={8} md={8} sm={12}>
-                      <p className={styles["minutes-text"]}>
-                        Task updates: Design phase completed, moving to
-                        development, discussed resource reallocation to address
-                        delays and decided unknown unknown printer took a galley
-                        of type a printer took a galley of type a to hold daily
-                        check-ins for quicker progress Design phase completed,
-                        moving to development, discussed resource reallocation
-                        to address delays and decided unknown unknown printer
-                        took a galley of type a printer took a galley of type a
-                        to hold daily check-ins for quicker progress Design
-                        phase completed, moving to development, discussed
-                        resource reallocation to address delays and decided
-                        unknown unknown printer took a galley of type a printer
-                        took a galley of type a to update.
-                      </p>
-                    </Col>
-                    <Col lg={4} md={4} sm={12} className="position-relative">
-                      <Row className="m-0">
-                        <Col lg={6} md={6} sm={12} className="p-0">
-                          <span className={styles["bar-line"]}></span>
-                          <p className={styles["uploadedbyuser"]}>
-                            Uploaded By
-                          </p>
-                          <div className={styles["gap-ti"]}>
-                            <img
-                              src={DefaultAvatar}
-                              className={styles["Image"]}
-                              alt=""
-                              draggable={false}
-                            />
-                            <p className={styles["agendaCreater"]}>
-                              Alex Rodriguez
-                            </p>
-                          </div>
-                        </Col>
-                        <Col
-                          lg={6}
-                          md={6}
-                          sm={12}
-                          className="d-grid justify-content-end p-0"
-                        >
-                          <Button
-                            text={t("Accepted")}
-                            className={styles["Reject-comment"]}
-                          />
-                          <Button
-                            text={t("Rejected")}
-                            className={styles["Rejected-comment"]}
-                            onClick={() => dispatch(rejectCommentModal(true))}
-                          />
-                          <Button
-                            text={t("Hide-comment")}
-                            className={styles["Reject-comment"]}
-                            onClick={() => dispatch(rejectCommentModal(true))}
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <p className={styles["time-uploader"]}>4:00pm,</p>
-                          <p className={styles["date-uploader"]}>
-                            18th May, 2024
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col lg={12} md={12} sm={12} className="position-relative">
-                <div className={styles["version-control-wrapper-last"]}>
-                  <span></span>
-                </div>
-                <div className={styles["uploaded-details"]}>
-                  <Row className={styles["inherit-height"]}>
-                    <Col lg={8} md={8} sm={12}>
-                      <p className={styles["minutes-text"]}>
-                        Task updates: Design phase completed, moving to
-                        development, discussed resource reallocation
-                      </p>
-                    </Col>
-                    <Col lg={4} md={4} sm={12} className="position-relative">
-                      <Row className="m-0">
-                        <Col lg={6} md={6} sm={12} className="p-0">
-                          <span className={styles["bar-line"]}></span>
-                          <p className={styles["uploadedbyuser"]}>
-                            Uploaded By
-                          </p>
-                          <div className={styles["gap-ti"]}>
-                            <img
-                              src={DefaultAvatar}
-                              className={styles["Image"]}
-                              alt=""
-                              draggable={false}
-                            />
-                            <p className={styles["agendaCreater"]}>
-                              Alex Rodriguez
-                            </p>
-                          </div>
-                        </Col>
-                        <Col
-                          lg={6}
-                          md={6}
-                          sm={12}
-                          className="d-grid justify-content-end p-0"
-                        >
-                          <Button
-                            text={t("Edit")}
-                            className={styles["Reject-comment"]}
-                          />
-                          <Button
-                            text={t("Delete")}
-                            className={styles["Reject-comment"]}
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <p className={styles["time-uploader"]}>4:00pm,</p>
-                          <p className={styles["date-uploader"]}>
-                            18th May, 2024
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <div className={styles["gap-subcomments"]}>
-                  {/* First */}
+            {minutesAgenda.map((data, index) => {
+              console.log("minutesAgenda", data);
+              return (
+                <>
                   <Row className="mx-50">
                     <Col lg={12} md={12} sm={12}>
                       <p className={styles["Parent-title-heading"]}>
-                        2.1 CEO Speech
+                        {data.agendaTitle}
                       </p>
                     </Col>
                   </Row>
                   <Row>
                     <Col lg={12} md={12} sm={12} className="position-relative">
+                      {data.agendaMinutesVersionHistory.length === 0 ? null : (
+                        <div
+                          className={
+                            styles["version-control-wrapper-with-more"]
+                          }
+                        >
+                          <span className={styles["with-text"]}>
+                            {data.versionNumber}.0
+                          </span>
+                        </div>
+                      )}
                       <div
-                        className={styles["version-control-wrapper-with-more"]}
+                        className={
+                          data.actorBundleStatusID === 3
+                            ? styles["uploaded-details-accepted"]
+                            : data.actorBundleStatusID === 4
+                            ? styles["uploaded-details-rejected"]
+                            : styles["uploaded-details"]
+                        }
                       >
-                        <span className={styles["with-text"]}>V1.0</span>
-                      </div>
-                      <div className={styles["uploaded-details-rejected"]}>
                         <Row className={styles["inherit-height"]}>
                           <Col lg={8} md={8} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: data.minutesDetails,
+                              }}
+                              className={styles["minutes-text"]}
+                            ></p>
                           </Col>
                           <Col
                             lg={4}
@@ -497,17 +211,17 @@ const ReviewMinutes = () => {
                               <Col lg={6} md={6} sm={12} className="p-0">
                                 <span className={styles["bar-line"]}></span>
                                 <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
+                                  {t("Uploaded-by")}
                                 </p>
                                 <div className={styles["gap-ti"]}>
                                   <img
-                                    src={DefaultAvatar}
+                                    src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                                     className={styles["Image"]}
                                     alt=""
                                     draggable={false}
                                   />
                                   <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
+                                    {data.userName}
                                   </p>
                                 </div>
                               </Col>
@@ -517,350 +231,65 @@ const ReviewMinutes = () => {
                                 sm={12}
                                 className="d-grid justify-content-end p-0"
                               >
-                                <Button
-                                  text={t("Accepted")}
-                                  className={styles["Reject-comment"]}
-                                />
-                                <Button
-                                  text={t("Rejected")}
-                                  className={styles["Rejected-comment"]}
-                                  onClick={() =>
-                                    dispatch(rejectCommentModal(true))
-                                  }
-                                />
-                                <Button
-                                  text={t("Hide-comment")}
-                                  className={styles["Reject-comment"]}
-                                  onClick={() =>
-                                    dispatch(rejectCommentModal(true))
-                                  }
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div
-                        className={styles["version-control-wrapper-with-more"]}
-                      >
-                        <span className={styles["with-text"]}>V1.0</span>
-                      </div>
-                      <div className={styles["uploaded-details-accepted"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={8} md={8} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
-                          </Col>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
+                                {data.actorBundleStatusID === 3 ? (
+                                  <Button
+                                    text={t("Accepted")}
+                                    className={styles["Accepted-comment"]}
+                                    disableBtn={true}
                                   />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              >
-                                <Button
-                                  text={t("Accepted")}
-                                  className={styles["Accepted-comment"]}
-                                />
-                                <Button
-                                  text={t("Reject")}
-                                  className={styles["Reject-comment"]}
-                                  onClick={() =>
-                                    dispatch(rejectCommentModal(true))
-                                  }
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div className={styles["version-control-wrapper"]}>
-                        <span></span>
-                      </div>
-                      <div className={styles["uploaded-details"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={8} md={8} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation
-                            </p>
-                          </Col>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
+                                ) : data.actorBundleStatusID === 2 ? (
+                                  <Button
+                                    text={t("Accept")}
+                                    className={styles["Accept-comment"]}
                                   />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              >
-                                <Button
-                                  text={t("Edit")}
-                                  className={styles["Reject-comment"]}
-                                />
-                                <Button
-                                  text={t("Delete")}
-                                  className={styles["Reject-comment"]}
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                    </Col>
-                  </Row>
+                                ) : data.actorBundleStatusID === 4 ? (
+                                  <Button
+                                    text={t("Accept")}
+                                    className={styles["Reject-comment"]}
+                                  />
+                                ) : null}
 
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div
-                        className={styles["version-control-wrapper-with-more"]}
-                      >
-                        <span className={styles["with-text"]}>V1.0</span>
-                      </div>
-                      <div className={styles["uploaded-details-rejected"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={8} md={8} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
-                          </Col>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
+                                {data.actorBundleStatusID === 3 ? (
+                                  <Button
+                                    text={t("Reject")}
+                                    className={styles["Reject-comment"]}
+                                    disableBtn={true}
                                   />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              >
-                                <Button
-                                  text={t("Accepted")}
-                                  className={styles["Reject-comment"]}
-                                />
-                                <Button
-                                  text={t("Rejected")}
-                                  className={styles["Rejected-comment"]}
-                                  onClick={() =>
-                                    dispatch(rejectCommentModal(true))
-                                  }
-                                />
-                                <Button
-                                  text={t("Hide-comment")}
-                                  className={styles["Reject-comment"]}
-                                  onClick={() =>
-                                    dispatch(rejectCommentModal(true))
-                                  }
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                    </Col>
-                  </Row>
+                                ) : data.actorBundleStatusID === 2 ? (
+                                  <Button
+                                    text={t("Reject")}
+                                    className={styles["Reject-comment"]}
+                                    onClick={() =>
+                                      dispatch(rejectCommentModal(true))
+                                    }
+                                  />
+                                ) : data.actorBundleStatusID === 4 ? (
+                                  <>
+                                    <Button
+                                      text={t("Rejected")}
+                                      className={styles["Rejected-comment"]}
+                                    />
 
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div className={styles["version-control-wrapper-last"]}>
-                        <span></span>
-                      </div>
-                      <div className={styles["uploaded-details"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={8} md={8} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation
-                            </p>
-                          </Col>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
-                                  />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              >
-                                <Button
-                                  text={t("Edit")}
-                                  className={styles["Reject-comment"]}
-                                />
-                                <Button
-                                  text={t("Delete")}
-                                  className={styles["Reject-comment"]}
-                                />
+                                    <Button
+                                      text={t("Hide-comment")}
+                                      className={styles["Reject-comment"]}
+                                      onClick={() =>
+                                        dispatch(rejectCommentModal(true))
+                                      }
+                                    />
+                                  </>
+                                ) : null}
                               </Col>
                             </Row>
+
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 <p className={styles["time-uploader"]}>
-                                  4:00pm,
+                                  {convertToGMTMinuteTime(data.lastUpdatedTime)}
+                                  ,
                                 </p>
                                 <p className={styles["date-uploader"]}>
-                                  18th May, 2024
+                                  {convertDateToGMTMinute(data.lastUpdatedDate)}
                                 </p>
                               </Col>
                             </Row>
@@ -869,23 +298,273 @@ const ReviewMinutes = () => {
                       </div>
                     </Col>
                   </Row>
-                  {/* First End */}
-                  <Row>
+                  {data.agendaMinutesVersionHistory
+                    .slice()
+                    .reverse()
+                    .map((historyData, index) => {
+                      return (
+                        <>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="position-relative"
+                            >
+                              {historyData.declinedReviews.length === 0 ? (
+                                <div
+                                  className={
+                                    index === 0
+                                      ? styles[
+                                          "version-control-wrapper-with-more"
+                                        ]
+                                      : styles[
+                                          "version-control-wrapper-with-more-last"
+                                        ]
+                                  }
+                                >
+                                  <span className={styles["with-text"]}>
+                                    {historyData.versionNumber}.0
+                                  </span>
+                                </div>
+                              ) : (
+                                <div
+                                  className={
+                                    index === 0
+                                      ? styles["version-control-wrapper"]
+                                      : styles["version-control-wrapper-last"]
+                                  }
+                                ></div>
+                              )}
+                              <div
+                                className={
+                                  historyData.actorBundleStatusID === 3
+                                    ? styles["uploaded-details-accepted"]
+                                    : historyData.actorBundleStatusID === 4 &&
+                                      historyData.declinedReviews.length === 0
+                                    ? styles["uploaded-details-rejected"]
+                                    : styles["uploaded-details"]
+                                }
+                              >
+                                <Row className={styles["inherit-height"]}>
+                                  <Col lg={8} md={8} sm={12}>
+                                    <p
+                                      dangerouslySetInnerHTML={{
+                                        __html: historyData.minutesDetails,
+                                      }}
+                                      className={styles["minutes-text"]}
+                                    ></p>
+                                  </Col>
+                                  <Col
+                                    lg={4}
+                                    md={4}
+                                    sm={12}
+                                    className="position-relative"
+                                  >
+                                    <Row className="m-0">
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={12}
+                                        className="p-0"
+                                      >
+                                        <span
+                                          className={styles["bar-line"]}
+                                        ></span>
+                                        <p className={styles["uploadedbyuser"]}>
+                                          {historyData.declinedReviews
+                                            .length === 0
+                                            ? t("Uploaded-by")
+                                            : t("Reviewed-by")}
+                                        </p>
+                                        <div className={styles["gap-ti"]}>
+                                          <img
+                                            src={`data:image/jpeg;base64,${minutesAgenda[0].userProfilePicture.displayProfilePictureName}`}
+                                            className={styles["Image"]}
+                                            alt=""
+                                            draggable={false}
+                                          />
+                                          <p
+                                            className={styles["agendaCreater"]}
+                                          >
+                                            {minutesAgenda[0].userName}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      {historyData.declinedReviews.length ===
+                                      0 ? (
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={12}
+                                          className="d-grid justify-content-end p-0"
+                                        >
+                                          {historyData.actorBundleStatusID ===
+                                          3 ? (
+                                            <Button
+                                              text={t("Accepted")}
+                                              className={
+                                                styles["Accepted-comment"]
+                                              }
+                                              disableBtn={true}
+                                            />
+                                          ) : historyData.actorBundleStatusID ===
+                                            2 ? (
+                                            <Button
+                                              text={t("Accept")}
+                                              className={
+                                                styles["Accept-comment"]
+                                              }
+                                            />
+                                          ) : historyData.actorBundleStatusID ===
+                                            4 ? (
+                                            <Button
+                                              text={t("Accept")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                            />
+                                          ) : null}
+
+                                          {historyData.actorBundleStatusID ===
+                                          3 ? (
+                                            <Button
+                                              text={t("Reject")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                              disableBtn={true}
+                                            />
+                                          ) : historyData.actorBundleStatusID ===
+                                            2 ? (
+                                            <Button
+                                              text={t("Reject")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                              onClick={() =>
+                                                dispatch(
+                                                  rejectCommentModal(true)
+                                                )
+                                              }
+                                            />
+                                          ) : historyData.actorBundleStatusID ===
+                                            4 ? (
+                                            <>
+                                              <Button
+                                                text={t("Rejected")}
+                                                className={
+                                                  styles["Rejected-comment"]
+                                                }
+                                              />
+
+                                              <Button
+                                                text={t("Hide-comment")}
+                                                className={
+                                                  styles["Reject-comment"]
+                                                }
+                                                onClick={() =>
+                                                  dispatch(
+                                                    rejectCommentModal(true)
+                                                  )
+                                                }
+                                              />
+                                            </>
+                                          ) : null}
+                                        </Col>
+                                      ) : (
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={12}
+                                          className="d-grid justify-content-end p-0"
+                                        >
+                                          <Button
+                                            onClick={() =>
+                                              dispatch(editCommentModal(true))
+                                            }
+                                            text={t("Edit")}
+                                            className={styles["Reject-comment"]}
+                                          />
+                                          <Button
+                                            onClick={() =>
+                                              dispatch(deleteCommentModal(true))
+                                            }
+                                            text={t("Delete")}
+                                            className={styles["Reject-comment"]}
+                                          />
+                                        </Col>
+                                      )}
+                                    </Row>
+
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <p className={styles["time-uploader"]}>
+                                          {convertToGMTMinuteTime(
+                                            historyData.lastUpdatedTime
+                                          )}
+                                          ,
+                                        </p>
+                                        <p className={styles["date-uploader"]}>
+                                          {convertDateToGMTMinute(
+                                            historyData.lastUpdatedDate
+                                          )}
+                                        </p>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </div>
+                            </Col>
+                          </Row>
+                        </>
+                      );
+                    })}
+                </>
+              );
+            })}
+
+            {minutesGeneral.map((data, index) => {
+              console.log("minutesGeneral", data);
+              return (
+                <>
+                  <Row className="mx-50">
                     <Col lg={12} md={12} sm={12}>
                       <p className={styles["Parent-title-heading"]}>
-                        2. CEO Speech
+                        {index + 1 + ". " + t("General-minutes")}
                       </p>
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <div className={styles["uploaded-details"]}>
+                    <Col lg={12} md={12} sm={12} className="position-relative">
+                      {data.generalMinutesVersionHistory.length === 0 ? null : (
+                        <div
+                          className={
+                            styles["version-control-wrapper-with-more"]
+                          }
+                        >
+                          <span className={styles["with-text"]}>
+                            {data.versionNumber}.0
+                          </span>
+                        </div>
+                      )}
+                      <div
+                        className={
+                          data.actorBundleStatusID === 3
+                            ? styles["uploaded-details-accepted"]
+                            : data.actorBundleStatusID === 4
+                            ? styles["uploaded-details-rejected"]
+                            : styles["uploaded-details"]
+                        }
+                      >
                         <Row className={styles["inherit-height"]}>
                           <Col lg={8} md={8} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation
-                            </p>
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: data.minutesDetails,
+                              }}
+                              className={styles["minutes-text"]}
+                            ></p>
                           </Col>
                           <Col
                             lg={4}
@@ -897,17 +576,17 @@ const ReviewMinutes = () => {
                               <Col lg={6} md={6} sm={12} className="p-0">
                                 <span className={styles["bar-line"]}></span>
                                 <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
+                                  {t("Uploaded-by")}
                                 </p>
                                 <div className={styles["gap-ti"]}>
                                   <img
-                                    src={DefaultAvatar}
+                                    src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                                     className={styles["Image"]}
                                     alt=""
                                     draggable={false}
                                   />
                                   <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
+                                    {data.userName}
                                   </p>
                                 </div>
                               </Col>
@@ -917,108 +596,65 @@ const ReviewMinutes = () => {
                                 sm={12}
                                 className="d-grid justify-content-end p-0"
                               >
-                                <Button
-                                  text={t("Edit")}
-                                  className={styles["Reject-comment"]}
-                                />
-                                <Button
-                                  text={t("Delete")}
-                                  className={styles["Reject-comment"]}
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <p className={styles["Parent-title-heading"]}>
-                        2.2 CEO Speech
-                      </p>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <div className={styles["uploaded-details"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={8} md={8} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
-                          </Col>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
+                                {data.actorBundleStatusID === 3 ? (
+                                  <Button
+                                    text={t("Accepted")}
+                                    className={styles["Accepted-comment"]}
+                                    disableBtn={true}
                                   />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              >
-                                <Button
-                                  text={t("Accept")}
-                                  className={styles["Accept-comment"]}
-                                />
-                                <Button
-                                  text={t("Reject")}
-                                  className={styles["Reject-comment"]}
-                                />
+                                ) : data.actorBundleStatusID === 2 ? (
+                                  <Button
+                                    text={t("Accept")}
+                                    className={styles["Accept-comment"]}
+                                  />
+                                ) : data.actorBundleStatusID === 4 ? (
+                                  <Button
+                                    text={t("Accept")}
+                                    className={styles["Reject-comment"]}
+                                  />
+                                ) : null}
+
+                                {data.actorBundleStatusID === 3 ? (
+                                  <Button
+                                    text={t("Reject")}
+                                    className={styles["Reject-comment"]}
+                                    disableBtn={true}
+                                  />
+                                ) : data.actorBundleStatusID === 2 ? (
+                                  <Button
+                                    text={t("Reject")}
+                                    className={styles["Reject-comment"]}
+                                    onClick={() =>
+                                      dispatch(rejectCommentModal(true))
+                                    }
+                                  />
+                                ) : data.actorBundleStatusID === 4 ? (
+                                  <>
+                                    <Button
+                                      text={t("Rejected")}
+                                      className={styles["Rejected-comment"]}
+                                    />
+
+                                    <Button
+                                      text={t("Hide-comment")}
+                                      className={styles["Reject-comment"]}
+                                      onClick={() =>
+                                        dispatch(rejectCommentModal(true))
+                                      }
+                                    />
+                                  </>
+                                ) : null}
                               </Col>
                             </Row>
+
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 <p className={styles["time-uploader"]}>
-                                  4:00pm,
+                                  {convertToGMTMinuteTime(data.lastUpdatedTime)}
+                                  ,
                                 </p>
                                 <p className={styles["date-uploader"]}>
-                                  18th May, 2024
+                                  {convertDateToGMTMinute(data.lastUpdatedDate)}
                                 </p>
                               </Col>
                             </Row>
@@ -1027,10 +663,233 @@ const ReviewMinutes = () => {
                       </div>
                     </Col>
                   </Row>
-                </div>
-              </Col>
-            </Row>
+                  {data.generalMinutesVersionHistory
+                    .slice()
+                    .reverse()
+                    .map((historyData, index) => {
+                      return (
+                        <>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="position-relative"
+                            >
+                              {historyData.declinedReviews.length === 0 ? (
+                                <div
+                                  className={
+                                    index === 0
+                                      ? styles[
+                                          "version-control-wrapper-with-more"
+                                        ]
+                                      : styles[
+                                          "version-control-wrapper-with-more-last"
+                                        ]
+                                  }
+                                >
+                                  <span className={styles["with-text"]}>
+                                    {historyData.versionNumber}.0
+                                  </span>
+                                </div>
+                              ) : (
+                                <div
+                                  className={
+                                    index === 0
+                                      ? styles["version-control-wrapper"]
+                                      : styles["version-control-wrapper-last"]
+                                  }
+                                ></div>
+                              )}
+                              <div
+                                className={
+                                  historyData.actorBundleStatusID === 3
+                                    ? styles["uploaded-details-accepted"]
+                                    : historyData.actorBundleStatusID === 4 &&
+                                      historyData.declinedReviews.length === 0
+                                    ? styles["uploaded-details-rejected"]
+                                    : styles["uploaded-details"]
+                                }
+                              >
+                                <Row className={styles["inherit-height"]}>
+                                  <Col lg={8} md={8} sm={12}>
+                                    <p
+                                      dangerouslySetInnerHTML={{
+                                        __html: historyData.minutesDetails,
+                                      }}
+                                      className={styles["minutes-text"]}
+                                    ></p>
+                                  </Col>
+                                  <Col
+                                    lg={4}
+                                    md={4}
+                                    sm={12}
+                                    className="position-relative"
+                                  >
+                                    <Row className="m-0">
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={12}
+                                        className="p-0"
+                                      >
+                                        <span
+                                          className={styles["bar-line"]}
+                                        ></span>
+                                        <p className={styles["uploadedbyuser"]}>
+                                          {historyData.declinedReviews
+                                            .length === 0
+                                            ? t("Uploaded-by")
+                                            : t("Reviewed-by")}
+                                        </p>
+                                        <div className={styles["gap-ti"]}>
+                                          <img
+                                            src={`data:image/jpeg;base64,${minutesAgenda[0].userProfilePicture.displayProfilePictureName}`}
+                                            className={styles["Image"]}
+                                            alt=""
+                                            draggable={false}
+                                          />
+                                          <p
+                                            className={styles["agendaCreater"]}
+                                          >
+                                            {minutesAgenda[0].userName}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      {historyData.declinedReviews.length ===
+                                      0 ? (
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={12}
+                                          className="d-grid justify-content-end p-0"
+                                        >
+                                          {historyData.actorBundleStatusID ===
+                                          3 ? (
+                                            <Button
+                                              text={t("Accepted")}
+                                              className={
+                                                styles["Accepted-comment"]
+                                              }
+                                              disableBtn={true}
+                                            />
+                                          ) : historyData.actorBundleStatusID ===
+                                            2 ? (
+                                            <Button
+                                              text={t("Accept")}
+                                              className={
+                                                styles["Accept-comment"]
+                                              }
+                                            />
+                                          ) : historyData.actorBundleStatusID ===
+                                            4 ? (
+                                            <Button
+                                              text={t("Accept")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                            />
+                                          ) : null}
+
+                                          {historyData.actorBundleStatusID ===
+                                          3 ? (
+                                            <Button
+                                              text={t("Reject")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                              disableBtn={true}
+                                            />
+                                          ) : historyData.actorBundleStatusID ===
+                                            2 ? (
+                                            <Button
+                                              text={t("Reject")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                              onClick={() =>
+                                                dispatch(
+                                                  rejectCommentModal(true)
+                                                )
+                                              }
+                                            />
+                                          ) : historyData.actorBundleStatusID ===
+                                            4 ? (
+                                            <>
+                                              <Button
+                                                text={t("Rejected")}
+                                                className={
+                                                  styles["Rejected-comment"]
+                                                }
+                                              />
+
+                                              <Button
+                                                text={t("Hide-comment")}
+                                                className={
+                                                  styles["Reject-comment"]
+                                                }
+                                                onClick={() =>
+                                                  dispatch(
+                                                    rejectCommentModal(true)
+                                                  )
+                                                }
+                                              />
+                                            </>
+                                          ) : null}
+                                        </Col>
+                                      ) : (
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={12}
+                                          className="d-grid justify-content-end p-0"
+                                        >
+                                          <Button
+                                            onClick={() =>
+                                              dispatch(editCommentModal(true))
+                                            }
+                                            text={t("Edit")}
+                                            className={styles["Reject-comment"]}
+                                          />
+                                          <Button
+                                            onClick={() =>
+                                              dispatch(deleteCommentModal(true))
+                                            }
+                                            text={t("Delete")}
+                                            className={styles["Reject-comment"]}
+                                          />
+                                        </Col>
+                                      )}
+                                    </Row>
+
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <p className={styles["time-uploader"]}>
+                                          {convertToGMTMinuteTime(
+                                            historyData.lastUpdatedTime
+                                          )}
+                                          ,
+                                        </p>
+                                        <p className={styles["date-uploader"]}>
+                                          {convertDateToGMTMinute(
+                                            historyData.lastUpdatedDate
+                                          )}
+                                        </p>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </div>
+                            </Col>
+                          </Row>
+                        </>
+                      );
+                    })}
+                </>
+              );
+            })}
           </div>
+
           <Row className="mx-50">
             <Col
               lg={12}

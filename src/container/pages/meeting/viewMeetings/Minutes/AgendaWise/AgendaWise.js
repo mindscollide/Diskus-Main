@@ -28,6 +28,7 @@ import {
   saveFilesMeetingagendaWiseMinutesApi,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
+import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
 import AttachmentIcon from "./../Images/Attachment-Icon.png";
 import ArrowDown from "./../Images/Arrow-Down.png";
 import DropdownPurple from "./../Images/Dropdown-Purple.png";
@@ -38,6 +39,7 @@ import DeleteIcon from "./../Images/DeleteIcon.png";
 import { deleteCommentMeetingModal } from "../../../../../../store/actions/Minutes_action";
 import VersionHistory from "./VersionHistoryModal/VersionHistory";
 import RevisionHistory from "./RevisionHistoryModal/RevisionHistory";
+import { GetMinuteReviewStatsForOrganizerByMeetingId } from "../../../../../../store/actions/Minutes_action";
 
 const AgendaWise = ({
   advanceMeetingModalID,
@@ -87,16 +89,21 @@ const AgendaWise = ({
 
   useEffect(() => {
     let Data = {
+      isAgenda: true,
       MeetingID: Number(advanceMeetingModalID),
     };
-    // dispatch(
-    //   GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
-    //     Data,
-    //     navigate,
-    //     t,
-    //     advanceMeetingModalID
-    //   )
-    // );
+    let Data2 = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t));
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
+        Data2,
+        navigate,
+        t,
+        advanceMeetingModalID
+      )
+    );
     return () => {
       setMessages([]);
       setFileAttachments([]);
@@ -142,45 +149,6 @@ const AgendaWise = ({
       }
     } catch {}
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
-
-  // Combined Data for both Documents and Minutes Agenda Wise
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-  //       NewMeetingreducer.agendaWiseMinutesReducer &&
-  //       NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
-  //       NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
-  //     ) {
-  //       const minutesData =
-  //         NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
-  //       const documentsData =
-  //         NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
-  //       setOrganizerID(NewMeetingreducer.agendaWiseMinutesReducer.organizerID);
-  //       const combinedData = minutesData.map((item1) => {
-  //         const matchingItem = documentsData.find(
-  //           (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
-  //         );
-  //         if (matchingItem) {
-  //           return {
-  //             ...item1,
-  //             minutesAttachmets: matchingItem.files,
-  //           };
-  //         }
-  //         return item1;
-  //       });
-  //       setMessages(combinedData);
-  //     } else {
-  //       setMessages([]);
-  //     }
-  //   } catch (error) {
-  //     // Handle any errors here
-  //     console.error(error);
-  //   }
-  // }, [
-  //   NewMeetingreducer.agendaWiseMinutesReducer,
-  //   NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
-  // ]);
 
   let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
@@ -856,8 +824,7 @@ const AgendaWise = ({
         </>
       ) : null}
 
-      {/* Mapping of The Create Minutes */}
-      {minutesData.map((data, index) => {
+      {/* {minutesData.map((data, index) => {
         const isOpen = openIndices.includes(index);
         return (
           <Row className="mt-2">
@@ -1104,7 +1071,397 @@ const AgendaWise = ({
         );
       })}
 
-      {/* With Reviewers and stuff */}
+      {minutesData.map((data, index) => {
+        const isOpen = openIndices.includes(index);
+        return (
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
+              <>
+                <div>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className="mt-2">
+                      <div
+                        onClick={() =>
+                          accordianClick(data, data.minuteID, index)
+                        }
+                        className={
+                          isOpen
+                            ? styles["agenda-wrapper-closed"]
+                            : styles["agenda-wrapper-open"]
+                        }
+                      >
+                        <p className={styles["agenda-title"]}>
+                          {index + 1 + "." + " " + data.title}
+                        </p>
+                        <span>
+                          {data.attachments.length > 0 ? (
+                            <img
+                              className={styles["Attachment"]}
+                              alt=""
+                              src={AttachmentIcon}
+                            />
+                          ) : null}
+                          <img
+                            alt=""
+                            src={ArrowDown}
+                            className={
+                              isOpen
+                                ? styles["Arrow"]
+                                : styles["Arrow_Expanded"]
+                            }
+                          />
+                        </span>
+                      </div>
+                    </Col>
+                  </Row>
+                  {isOpen ? (
+                    <>
+                      {openReviewerDetail === false ? (
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <div
+                              className={styles["reviewer-progress-wrapper"]}
+                            >
+                              <Row>
+                                <Col lg={11} md={11} sm={12}>
+                                  <div
+                                    className={styles["reviewer-progress-text"]}
+                                  >
+                                    <p className="m-0">Total: 03</p>
+                                    <span>|</span>
+                                    <p className="m-0">Accepted: 01</p>
+                                    <span>|</span>
+                                    <p className="m-0">Rejected: 01</p>
+                                    <span>|</span>
+                                    <p className="m-0">Pending: 01</p>
+                                  </div>
+                                </Col>
+                                <Col lg={1} md={1} sm={12} className="text-end">
+                                  <img
+                                    alt=""
+                                    src={DropdownPurple}
+                                    className={
+                                      openReviewerDetail
+                                        ? `${styles["Arrow"]} cursor-pointer`
+                                        : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                    }
+                                    onClick={openCloseReviewerDetail}
+                                  />
+                                </Col>
+                              </Row>
+                            </div>
+                          </Col>
+                        </Row>
+                      ) : (
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <div
+                              className={styles["reviewer-progress-wrapper"]}
+                            >
+                              <Row>
+                                <Col lg={11} md={11} sm={12}>
+                                  <div
+                                    className={styles["reviewer-progress-text"]}
+                                  >
+                                    <p>Total: 03</p>
+                                    <span>|</span>
+                                    <p>Accepted: 01</p>
+                                    <span>|</span>
+                                    <p>Rejected: 01</p>
+                                    <span>|</span>
+                                    <p>Pending: 01</p>
+                                  </div>
+                                </Col>
+                                <Col lg={1} md={1} sm={12} className="text-end">
+                                  <img
+                                    alt=""
+                                    src={DropdownPurple}
+                                    className={
+                                      openReviewerDetail
+                                        ? `${styles["Arrow"]} cursor-pointer`
+                                        : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                    }
+                                    onClick={openCloseReviewerDetail}
+                                  />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <p
+                                    className={`${styles["text-wrapper-review"]}`}
+                                  >
+                                    <span className={styles["Review-accepted"]}>
+                                      Review Accepted:
+                                    </span>{" "}
+                                    Alessandra Costa, Emily Davis, Matthew
+                                    Jones, Christopher Martinez, Elizabeth
+                                    Garcia, Olivia Nguyen, Ethan Patel, Madison
+                                    Kim, Tyler Chen, Sophia Gupta, Mason Kumar,
+                                    Ava Wong, Logan Singh, Jackson Li, Chloe
+                                    Patel, Noah Patel, Lily Chang, Lucas Patel,
+                                    Amelia Tran.
+                                  </p>
+                                  <p
+                                    className={`${styles["text-wrapper-review"]}`}
+                                  >
+                                    <span className={styles["Review-declined"]}>
+                                      Review Rejected:
+                                    </span>{" "}
+                                    Alex Rodriguez, Samantha Lee.
+                                  </p>
+                                  <p
+                                    className={`${styles["text-wrapper-review"]}`}
+                                  >
+                                    <span className={styles["Review-pending"]}>
+                                      Review Pending:
+                                    </span>{" "}
+                                    Sarah Jenkins, Joshua Clark, Megan
+                                    Rodriguez, Brandon Young.
+                                  </p>
+                                </Col>
+                              </Row>
+                            </div>
+                          </Col>
+                        </Row>
+                      )}
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="position-relative"
+                        >
+                          <div className={styles["uploaded-details"]}>
+                            <Row className={styles["inherit-height"]}>
+                              <Col lg={9} md={9} sm={12}>
+                                <p className={styles["minutes-text"]}>
+                                  {data.description}
+                                </p>
+                                {data.attachments.length > 0 ? (
+                                  <Row>
+                                    {data.attachments.map((fileData, index) => (
+                                      <Col lg={3} md={3} sm={12}>
+                                        <AttachmentViewer
+                                          name={fileData.name}
+                                        />
+                                      </Col>
+                                    ))}
+                                  </Row>
+                                ) : null}
+                              </Col>
+                              <Col
+                                lg={3}
+                                md={3}
+                                sm={12}
+                                className="position-relative"
+                              >
+                                <Row className="m-0">
+                                  <Col lg={9} md={9} sm={12} className="p-0">
+                                    <span className={styles["bar-line"]}></span>
+                                    <p className={styles["uploadedbyuser"]}>
+                                      Uploaded By
+                                    </p>
+                                    <div className={styles["gap-ti"]}>
+                                      <img
+                                        src={DefaultAvatar}
+                                        className={styles["Image"]}
+                                        alt=""
+                                        draggable={false}
+                                      />
+                                      <p className={styles["agendaCreater"]}>
+                                        {data.uploader.name}
+                                      </p>
+                                    </div>
+                                  </Col>
+                                  <Col
+                                    lg={3}
+                                    md={3}
+                                    sm={12}
+                                    className="d-grid justify-content-end p-0"
+                                  >
+                                    <div>
+                                      <img
+                                        className="cursor-pointer mx-2"
+                                        src={EditIcon}
+                                        alt=""
+                                      />
+                                      <div
+                                        onClick={menuPopupMinute}
+                                        className={styles["box-agendas"]}
+                                        ref={closeMenuMinute}
+                                      >
+                                        <img
+                                          className="cursor-pointer"
+                                          src={MenuIcon}
+                                          alt=""
+                                        />
+                                        <div
+                                          className={
+                                            menuMinute
+                                              ? `${
+                                                  styles["popup-agenda-menu"]
+                                                } ${"opacity-1 pe-auto"}`
+                                              : `${
+                                                  styles["popup-agenda-menu"]
+                                                } ${"opacity-0 pe-none"}`
+                                          }
+                                        >
+                                          <span
+                                            onClick={() =>
+                                              setShowRevisionHistory(true)
+                                            }
+                                          >
+                                            {t("Revisions")}
+                                            <p className="m-0"> 3 </p>
+                                          </span>
+                                          <span
+                                            onClick={() =>
+                                              setShowVersionHistory(true)
+                                            }
+                                            className="border-0"
+                                          >
+                                            {t("Version-history")}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <p className={styles["time-uploader"]}>
+                                      {data.uploader.uploaded_time + ","}
+                                    </p>
+                                    <p className={styles["date-uploader"]}>
+                                      {data.uploader.uploaded_date}
+                                    </p>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </div>
+                        </Col>
+                      </Row>
+                      {data.subMinutes.map((subMinuteData, subMinuteIndex) => (
+                        <div>
+                          <Row className="mx-50">
+                            <Col lg={12} md={12} sm={12}>
+                              <p className={styles["Parent-title-heading"]}>
+                                {index +
+                                  1 +
+                                  "." +
+                                  subMinuteIndex +
+                                  1 +
+                                  " " +
+                                  subMinuteData.title}
+                              </p>
+                            </Col>
+                          </Row>
+                          <Row className="mxl-50">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="position-relative"
+                            >
+                              <div
+                                className={styles["version-control-wrapper"]}
+                              >
+                                <span></span>
+                              </div>
+                              <div className={styles["uploaded-details"]}>
+                                <Row className={styles["inherit-height"]}>
+                                  <Col lg={9} md={9} sm={12}>
+                                    <p className={styles["minutes-text"]}>
+                                      {subMinuteData.description}
+                                    </p>
+                                    {subMinuteData.attachments.length > 0 ? (
+                                      <Row>
+                                        {subMinuteData.attachments.map(
+                                          (subFileData, subFileIndex) => (
+                                            <Col lg={3} md={3} sm={12}>
+                                              <AttachmentViewer
+                                                name={subFileData.name}
+                                              />
+                                            </Col>
+                                          )
+                                        )}
+                                      </Row>
+                                    ) : null}
+                                  </Col>
+                                  <Col
+                                    lg={3}
+                                    md={3}
+                                    sm={12}
+                                    className="position-relative"
+                                  >
+                                    <Row className="m-0">
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={12}
+                                        className="p-0"
+                                      >
+                                        <span
+                                          className={styles["bar-line"]}
+                                        ></span>
+                                        <p className={styles["uploadedbyuser"]}>
+                                          Uploaded By
+                                        </p>
+                                        <div className={styles["gap-ti"]}>
+                                          <img
+                                            src={DefaultAvatar}
+                                            className={styles["Image"]}
+                                            alt=""
+                                            draggable={false}
+                                          />
+                                          <p
+                                            className={styles["agendaCreater"]}
+                                          >
+                                            {subMinuteData.uploader.name}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={12}
+                                        className="d-grid justify-content-end p-0"
+                                      ></Col>
+                                    </Row>
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <p className={styles["time-uploader"]}>
+                                          {data.uploader.uploaded_time + ","}
+                                        </p>
+                                        <p className={styles["date-uploader"]}>
+                                          {data.uploader.uploaded_date}
+                                        </p>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </div>
+                              <img
+                                className={styles["delete-icon"]}
+                                src={DeleteIcon}
+                                alt=""
+                                onClick={() =>
+                                  dispatch(deleteCommentMeetingModal(true))
+                                }
+                              />
+                            </Col>
+                          </Row>
+                        </div>
+                      ))}
+                    </>
+                  ) : null}
+                </div>
+              </>
+            </Col>
+          </Row>
+        );
+      })} */}
       {minutesData.map((data, index) => {
         const isOpen = openIndices.includes(index);
         return (

@@ -10,7 +10,7 @@ import {
 import AttachmentIcon from "./../../../../../../../assets/images/AttachmentIcon.png";
 import TickIcon from "./../../../../../../../assets/images/Tick-Icon.png";
 import { useTranslation } from "react-i18next";
-import { GetAllAssigneesToDoList } from "../../../../../../../store/actions/ToDoList_action";
+import { GetAllOrganizationUsersForReview } from "../../../../../../../store/actions/Minutes_action";
 
 const SelectReviewers = ({
   selectMinutes,
@@ -20,15 +20,13 @@ const SelectReviewers = ({
   sendReviewers,
   setSendReviewers,
   editReviewer,
-  setEditReviewer
+  setEditReviewer,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  let createrID = localStorage.getItem("userID");
-
-  const { MinutesReducer, toDoListReducer } = useSelector((state) => state);
+  const { MinutesReducer } = useSelector((state) => state);
 
   const [minutesDataAgenda, setMinutesDataAgenda] = useState([]);
   const textRef = useRef(null);
@@ -76,24 +74,27 @@ const SelectReviewers = ({
   };
 
   useEffect(() => {
-    dispatch(GetAllAssigneesToDoList(navigate, Number(createrID), t));
+    dispatch(GetAllOrganizationUsersForReview(navigate, t));
   }, []);
 
   useEffect(() => {
     if (
-      toDoListReducer.AllAssigneesData !== null &&
-      toDoListReducer.AllAssigneesData !== undefined &&
-      toDoListReducer.AllAssigneesData.length !== 0 &&
-      Object.keys(toDoListReducer.AllAssigneesData).length !== 0
+      MinutesReducer.GetAllOrganizationUsersForReviewData !== null &&
+      MinutesReducer.GetAllOrganizationUsersForReviewData !== undefined &&
+      MinutesReducer.GetAllOrganizationUsersForReviewData.length !== 0 &&
+      Object.keys(MinutesReducer.GetAllOrganizationUsersForReviewData)
+        .length !== 0
     ) {
-      setAllReviewers(toDoListReducer.AllAssigneesData);
+      setAllReviewers(
+        MinutesReducer.GetAllOrganizationUsersForReviewData.organizationUsers
+      );
     }
     return () => {
       setAllReviewers([]);
     };
-  }, [toDoListReducer.AllAssigneesData]);
+  }, [MinutesReducer.GetAllOrganizationUsersForReviewData]);
 
-  console.log("allReviewersallReviewers", allReviewers);
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   return (
     <>
@@ -388,10 +389,10 @@ const SelectReviewers = ({
                             height={32}
                             width={32}
                             className={styles["image-style"]}
-                            src={`data:image/jpeg;base64,${data.displayProfilePictureName}`}
+                            src={`data:image/jpeg;base64,${data.userProfileImg}`}
                             alt=""
                           />
-                          <span>{data.name}</span>
+                          <span>{data.userName}</span>
                         </div>
                       </>
                     }

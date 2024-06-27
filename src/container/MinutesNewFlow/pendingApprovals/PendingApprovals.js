@@ -10,6 +10,9 @@ import styles from "./PendingApprovals.module.css"; // Importing CSS module
 import {
   pendingApprovalPage,
   reviewMinutesPage,
+  GetMinuteReviewPendingApprovalsStatsByReviewerId,
+  GetMinuteReviewPendingApprovalsByReviewerId,
+  currentMeetingMinutesToReview,
 } from "../../../store/actions/Minutes_action"; // Importing Page Change State
 import { useDispatch } from "react-redux"; // Importing Redux hook
 import { useNavigate } from "react-router-dom"; // Importing navigation hook
@@ -36,6 +39,8 @@ const PendingApproval = () => {
   // State for tracking the active state of each button
   const [reviewMinutesActive, setReviewMinutesActive] = useState(true); // Default Review Minutes button to active
   const [reviewAndSignActive, setReviewAndSignActive] = useState(false);
+
+  const [progress, setProgress] = useState([]);
 
   // Click handler for Review Minutes button
   const handleReviewMinutesClick = () => {
@@ -95,13 +100,13 @@ const PendingApproval = () => {
           </span>
         </>
       ),
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "title",
+      key: "title",
       className: "nameParticipant",
       width: "200px",
       ellipsis: true,
       sorter: (a, b) =>
-        a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       sortOrderMeetingTitle,
       onHeaderCell: () => ({
         onClick: () => {
@@ -117,6 +122,7 @@ const PendingApproval = () => {
           onClick={() => {
             dispatch(reviewMinutesPage(true));
             dispatch(pendingApprovalPage(false));
+            dispatch(currentMeetingMinutesToReview(record));
           }}
           className={
             record.status === "Expired"
@@ -141,13 +147,13 @@ const PendingApproval = () => {
           </span>
         </>
       ),
-      dataIndex: "userEmail",
-      key: "userEmail",
+      dataIndex: "requestedBy",
+      key: "requestedBy",
       className: "emailParticipant",
       width: "180px",
       ellipsis: true,
       sorter: (a, b) =>
-        a.userEmail.toLowerCase().localeCompare(b.userEmail.toLowerCase()),
+        a.requestedBy.toLowerCase().localeCompare(b.requestedBy.toLowerCase()),
       sortOrderReviewRequest,
       onHeaderCell: () => ({
         onClick: () => {
@@ -177,13 +183,13 @@ const PendingApproval = () => {
           </span>
         </>
       ),
-      dataIndex: "leaveTime",
-      key: "leaveTime",
+      dataIndex: "deadline",
+      key: "deadline",
       className: "leaveTimeParticipant",
       width: "140px",
       ellipsis: true,
       sorter: (a, b) =>
-        utcConvertintoGMT(a.leaveTime) - utcConvertintoGMT(b.leaveTime),
+        utcConvertintoGMT(a.deadline) - utcConvertintoGMT(b.deadline),
       sortOrderLeaveDateTime,
       onHeaderCell: () => ({
         onClick: () => {
@@ -209,10 +215,9 @@ const PendingApproval = () => {
       className: "statusParticipant",
       width: "150px",
       filters: [
-        { text: t("Draft"), value: "Draft" },
-        { text: t("Pending-signature"), value: "Pending signature" },
-        { text: t("Signed"), value: "Signed" },
-        { text: t("Declined"), value: "Declined" },
+        { text: t("Reviewed"), value: "Reviewed" },
+        { text: t("Pending"), value: "Pending" },
+        { text: t("Expired"), value: "Expired" },
       ],
       onFilter: (value, record) => record.status === value,
       filterIcon: () => (
@@ -235,6 +240,12 @@ const PendingApproval = () => {
   ];
 
   const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
+
+  useEffect(() => {
+    let Data = { sRow: 0, Length: 10 };
+    dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
+    dispatch(GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t));
+  }, []);
 
   // Data for rows of the pending approval table
   // const rowsPendingApproval = [
@@ -285,15 +296,38 @@ const PendingApproval = () => {
 
   useEffect(() => {
     if (
-      MinutesReducer.pendingApprovalTableReducerData !== null &&
-      MinutesReducer.pendingApprovalTableReducerData !== undefined &&
-      MinutesReducer.pendingApprovalTableReducerData.length !== 0
+      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData !== null &&
+      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData !==
+        undefined &&
+      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData.length !==
+        0
     ) {
-      setRowsPendingApproval(MinutesReducer.pendingApprovalTableReducerData);
+      let reducerDataRow =
+        MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData
+          .pendingReviews;
+      setRowsPendingApproval(reducerDataRow);
     } else {
       setRowsPendingApproval([]);
     }
-  }, [MinutesReducer.pendingApprovalTableReducerData]);
+  }, [MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData]);
+
+  useEffect(() => {
+    if (
+      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData !==
+        null &&
+      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData !==
+        undefined &&
+      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
+        .length !== 0
+    ) {
+      let reducerData =
+        MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
+          .data;
+      setProgress(reducerData);
+    } else {
+      setProgress([]);
+    }
+  }, [MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData]);
 
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
@@ -350,24 +384,36 @@ const PendingApproval = () => {
                           <Col lg={6} md={6} sm={12}>
                             <div className="d-flex positionRelative">
                               {/* Progress bars with different colors and percentages */}
-                              <ProgressBar
-                                width={100}
-                                color="#F16B6B"
-                                indexValue="0"
-                                percentageValue={"60%"}
-                              />
-                              <ProgressBar
-                                width={30}
-                                color="#ffc300"
-                                indexValue="1"
-                                percentageValue={"30%"}
-                              />
-                              <ProgressBar
-                                width={10}
-                                color="#6172D6"
-                                indexValue="2"
-                                percentageValue={"10%"}
-                              />
+                              {progress.reviewed === 0 ? null : (
+                                <ProgressBar
+                                  width={progress.reviewedPercentage}
+                                  color="#F16B6B"
+                                  indexValue="0"
+                                  percentageValue={
+                                    progress.reviewedPercentage + "%"
+                                  }
+                                />
+                              )}
+                              {progress.pendingPercentage === 0 ? null : (
+                                <ProgressBar
+                                  width={progress.pendingPercentage}
+                                  color="#ffc300"
+                                  indexValue="1"
+                                  percentageValue={
+                                    progress.pendingPercentage + "%"
+                                  }
+                                />
+                              )}
+                              {progress.expired === 0 ? null : (
+                                <ProgressBar
+                                  width={progress.expiredPercentage}
+                                  color="#6172D6"
+                                  indexValue="2"
+                                  percentageValue={
+                                    progress.expiredPercentage + "%"
+                                  }
+                                />
+                              )}
                             </div>
                           </Col>
                           <Col lg={6} md={6} sm={12} className="d-flex">
@@ -378,9 +424,11 @@ const PendingApproval = () => {
                               }
                             >
                               <span className={styles["numeric-value"]}>
-                                03
+                                {progress.reviewed}
                               </span>
-                              <span className={styles["value"]}>Reviewed</span>
+                              <span className={styles["value"]}>
+                                {t("Reviewed")}
+                              </span>
                             </div>
                             <span className={styles["line"]} />
                             <div
@@ -389,18 +437,22 @@ const PendingApproval = () => {
                               }
                             >
                               <span className={styles["numeric-value"]}>
-                                03
+                                {progress.pending}
                               </span>
-                              <span className={styles["value"]}>Pending</span>
+                              <span className={styles["value"]}>
+                                {t("Pending")}
+                              </span>
                             </div>
                             <span className={styles["line"]} />
                             <div
                               className={styles["progress-value-wrapper-red"]}
                             >
                               <span className={styles["numeric-value"]}>
-                                02
+                                {progress.expired}
                               </span>
-                              <span className={styles["value"]}>Expired</span>
+                              <span className={styles["value"]}>
+                                {t("Expired")}
+                              </span>
                             </div>
                           </Col>
                         </Row>

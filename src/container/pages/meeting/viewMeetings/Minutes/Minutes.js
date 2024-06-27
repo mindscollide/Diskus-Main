@@ -30,20 +30,12 @@ import {
   GetAllGeneralMinutesApiFunc,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
-  cleareMinutsData,
-  searchNewUserMeeting,
   cleareAllState,
   InviteToCollaborateMinutesApiFunc,
-  viewAdvanceMeetingPublishPageFlag,
-  viewAdvanceMeetingUnpublishPageFlag,
   saveFilesMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../DataRoom/SearchFunctionality/option";
 import AddReviewers from "./AddReviewersModal/AddReviewers";
 import AttachmentIcon from "./Images/Attachment-Icon.png";
 import ArrowDown from "./Images/Arrow-Down.png";
@@ -1478,11 +1470,6 @@ const Minutes = ({
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
-            {/* <Button
-            text={t("Cancel")}
-            className={styles["Cancel_button_Minutes"]}
-            onClick={handleUNsaveChangesModal}
-          /> */}
 
             {editorRole.isPrimaryOrganizer === true ? (
               <Button

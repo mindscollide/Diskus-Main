@@ -193,6 +193,7 @@ const Dashboard = () => {
     SignatureWorkFlowReducer,
     UserMangementReducer,
     UserManagementModals,
+    MinutesReducer,
   } = useSelector((state) => state);
 
   console.log(
@@ -2367,6 +2368,7 @@ const Dashboard = () => {
             RealtimeNotification.Loading ||
             OrganizationBillingReducer.Loading ||
             DataRoomReducer.Loading ||
+            MinutesReducer.Loading ||
             DataRoomFileAndFoldersDetailsReducer.Loading ||
             SignatureWorkFlowReducer.Loading ||
             UserMangementReducer.Loading ? (

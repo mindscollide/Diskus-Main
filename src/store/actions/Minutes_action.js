@@ -5,6 +5,10 @@ import {
   listOfDefaultRejectionComments,
   pendingApprovalsCount,
   getMinuteReviewStatsForOrganizerByMeetingId,
+  getAllOrganizationUsersForReview,
+  getMinutesForReviewerByMeetingId,
+  getMinuteReviewPendingApprovalsStatsByReviewerId,
+  getMinuteReviewPendingApprovalsByReviewerId,
 } from "../../commen/apis/Api_config";
 import { workflowApi } from "../../commen/apis/Api_ends_points";
 
@@ -290,7 +294,10 @@ const GetMinuteReviewStatsForOrganizerByMeetingId = (Data, navigate, t) => {
   return (dispatch) => {
     dispatch(getMinuteReviewStatsForOrganizerByMeetingId_Init());
     let form = new FormData();
-    form.append("RequestMethod", pendingApprovalsCount.RequestMethod);
+    form.append(
+      "RequestMethod",
+      getMinuteReviewStatsForOrganizerByMeetingId.RequestMethod
+    );
     form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
@@ -391,6 +398,499 @@ const GetMinuteReviewStatsForOrganizerByMeetingId = (Data, navigate, t) => {
   };
 };
 
+const getAllOrganizationUsersForReview_Init = () => {
+  return {
+    type: actions.GET_ALLORGANIZATIONUSERSFORREVIEW_INIT,
+  };
+};
+
+const getAllOrganizationUsersForReview_Success = (response, message) => {
+  return {
+    type: actions.GET_ALLORGANIZATIONUSERSFORREVIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllOrganizationUsersForReview_Fail = (message, response) => {
+  return {
+    type: actions.GET_ALLORGANIZATIONUSERSFORREVIEW_FAIL,
+    message: message,
+    response: response,
+  };
+};
+
+const GetAllOrganizationUsersForReview = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllOrganizationUsersForReview_Init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getAllOrganizationUsersForReview.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllOrganizationUsersForReview(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllOrganizationUsersForReview_Success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                getAllOrganizationUsersForReview_Fail(
+                  t("No-data-available", data)
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+const getMinutesForReviewerByMeetingId_Init = () => {
+  return {
+    type: actions.GET_MINUTESFORREVIEWERBYMEETINGID_INIT,
+  };
+};
+
+const getMinutesForReviewerByMeetingId_Success = (response, message) => {
+  return {
+    type: actions.GET_MINUTESFORREVIEWERBYMEETINGID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getMinutesForReviewerByMeetingId_Fail = (message, response) => {
+  return {
+    type: actions.GET_MINUTESFORREVIEWERBYMEETINGID_FAIL,
+    message: message,
+    response: response,
+  };
+};
+
+const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getMinutesForReviewerByMeetingId_Init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getMinutesForReviewerByMeetingId.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMinutesForReviewerByMeetingId_Success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                getMinutesForReviewerByMeetingId_Fail(
+                  t("No-data-available", data)
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_03".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                getMinutesForReviewerByMeetingId_Fail(
+                  t("Minute-review-flow-not-found"),
+                  data
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_04".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                getMinutesForReviewerByMeetingId_Fail(
+                  t("User-has-not-been-assigned-any-minutes-to-review"),
+                  data
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+const getMinuteReviewPendingApprovalsStatsByReviewerId_Init = () => {
+  return {
+    type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSSTATSBYREVIEWERID_INIT,
+  };
+};
+
+const getMinuteReviewPendingApprovalsStatsByReviewerId_Success = (
+  response,
+  message
+) => {
+  return {
+    type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSSTATSBYREVIEWERID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getMinuteReviewPendingApprovalsStatsByReviewerId_Fail = (
+  message,
+  response
+) => {
+  return {
+    type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSSTATSBYREVIEWERID_FAIL,
+    message: message,
+    response: response,
+  };
+};
+
+const GetMinuteReviewPendingApprovalsStatsByReviewerId = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getMinuteReviewPendingApprovalsStatsByReviewerId_Init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getMinuteReviewPendingApprovalsStatsByReviewerId.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsStatsByReviewerId_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMinuteReviewPendingApprovalsStatsByReviewerId_Success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsStatsByReviewerId_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
+                  t("No-data-available", data)
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsStatsByReviewerId_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
+            t("Something-went-wrong")
+          )
+        );
+      });
+  };
+};
+
+const getMinuteReviewPendingApprovalsByReviewerId_Init = () => {
+  return {
+    type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_INIT,
+  };
+};
+
+const getMinuteReviewPendingApprovalsByReviewerId_Success = (
+  response,
+  message
+) => {
+  return {
+    type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getMinuteReviewPendingApprovalsByReviewerId_Fail = (
+  message,
+  response
+) => {
+  return {
+    type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_FAIL,
+    message: message,
+    response: response,
+  };
+};
+
+const GetMinuteReviewPendingApprovalsByReviewerId = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getMinuteReviewPendingApprovalsByReviewerId_Init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getMinuteReviewPendingApprovalsByReviewerId.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsByReviewerId_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMinuteReviewPendingApprovalsByReviewerId_Success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsByReviewerId_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                getMinuteReviewPendingApprovalsByReviewerId_Fail(
+                  t("No-data-available", data)
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsByReviewerId_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMinuteReviewPendingApprovalsByReviewerId_Fail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                getMinuteReviewPendingApprovalsByReviewerId_Fail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              getMinuteReviewPendingApprovalsByReviewerId_Fail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            getMinuteReviewPendingApprovalsByReviewerId_Fail(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getMinuteReviewPendingApprovalsByReviewerId_Fail(
+            t("Something-went-wrong")
+          )
+        );
+      });
+  };
+};
+
+const currentMeetingMinutesToReview = (response) => {
+  return {
+    type: actions.CURRENT_MEETING_MINUTE_REVIEW,
+    response: response,
+  };
+};
+
 export {
   pendingApprovalPage,
   reviewMinutesPage,
@@ -402,4 +902,9 @@ export {
   ListOfDefaultRejectionComments,
   GetPendingApprovalsCount,
   GetMinuteReviewStatsForOrganizerByMeetingId,
+  GetAllOrganizationUsersForReview,
+  GetMinutesForReviewerByMeetingId,
+  GetMinuteReviewPendingApprovalsStatsByReviewerId,
+  GetMinuteReviewPendingApprovalsByReviewerId,
+  currentMeetingMinutesToReview,
 };

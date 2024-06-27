@@ -92,6 +92,10 @@ p.minutes-text {
   margin: 0 !important;
 }
 
+p.minutes-text p {
+  margin: 0 !important;
+}
+
 span.bar-line {
   border: 1px solid #e1e1e1;
   display: block;
@@ -141,7 +145,7 @@ p.agendaCreater {
 }
 
 .uploaded-details-accepted {
-  border: 1px solid #81DB86;
+  border: 1px solid #81db86;
   border-radius: 4px;
   padding: 20px;
   margin-bottom: 20px;
@@ -208,6 +212,32 @@ p.agendaCreater {
   position: absolute;
   top: 60px;
   left: 30px;
+}
+
+.version-control-wrapper-with-more-last {
+  width: 35px;
+  height: 100%;
+  background: #fff;
+  border-radius: 9px;
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: 21px;
+  border: none !important;
+}
+
+.version-control-wrapper-with-more-last span.with-text {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 10px;
+  color: #6172d6;
+  height: 18px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 9px !important;
 }
 
 .version-control-wrapper::after {
@@ -336,8 +366,8 @@ body[dir="rtl"] .gap-ti {
 
 .Accepted-comment {
   width: 104px;
-  background: #81DB86 !important;
-  border-color: #81DB86 !important;
+  background: #81db86 !important;
+  border-color: #81db86 !important;
   height: 24px;
   font-size: 10px !important;
   font-weight: 600 !important;
@@ -346,12 +376,13 @@ body[dir="rtl"] .gap-ti {
   margin-bottom: 10px;
   line-height: 5px;
   padding: 0;
+  opacity: 0.7;
 }
 
 .Accepted-comment:is(:active, :hover, :focus, :focus-visible) {
   width: 104px;
-  background: #81DB86 !important;
-  border-color: #81DB86 !important;
+  background: #81db86 !important;
+  border-color: #81db86 !important;
   height: 24px;
   font-size: 10px !important;
   font-weight: 600 !important;

@@ -1615,6 +1615,23 @@ const getMinuteReviewStatsForOrganizerByMeetingId = {
   RequestMethod: "ServiceManager.GetMinuteReviewStatsForOrganizerByMeetingId",
 };
 
+const getAllOrganizationUsersForReview = {
+  RequestMethod: "ServiceManager.GetAllOrganizationUsersForReview",
+};
+
+const getMinutesForReviewerByMeetingId = {
+  RequestMethod: "ServiceManager.GetMinutesForReviewerByMeetingId",
+};
+
+const getMinuteReviewPendingApprovalsStatsByReviewerId = {
+  RequestMethod:
+    "ServiceManager.GetMinuteReviewPendingApprovalsStatsByReviewerId",
+};
+
+const getMinuteReviewPendingApprovalsByReviewerId = {
+  RequestMethod: "ServiceManager.GetMinuteReviewPendingApprovalsByReviewerId",
+};
+
 export {
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
@@ -2044,4 +2061,8 @@ export {
   listOfDefaultRejectionComments,
   pendingApprovalsCount,
   getMinuteReviewStatsForOrganizerByMeetingId,
+  getAllOrganizationUsersForReview,
+  getMinutesForReviewerByMeetingId,
+  getMinuteReviewPendingApprovalsStatsByReviewerId,
+  getMinuteReviewPendingApprovalsByReviewerId,
 };
