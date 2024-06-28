@@ -15,16 +15,19 @@
   text-align: center;
   color: #333;
   text-decoration: none;
+  min-width: 85px;
 }
 .iconItem:hover {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 4px;
   color: #fff;
+  min-width: 85px;
 }
 .iconItem_active {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 4px;
   color: #fff;
+  min-width: 85px;
 }
 
 .iconItem_active img {
@@ -44,14 +47,16 @@
 }
 .iconItem_active p {
   margin: 0;
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
   color: #fff !important;
+  white-space: nowrap;
+
 }
 
 .iconItem p {
   margin: 0;
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
   white-space: nowrap;
 }

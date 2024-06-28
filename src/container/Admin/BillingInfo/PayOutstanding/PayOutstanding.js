@@ -216,8 +216,15 @@ const PayOutstanding = () => {
                 <Col sm={12} md={12} lg={12} className="mt-3 p-0">
                   <Button
                     text={t("Pay-invoice-now")}
-                    className={styles["PayInvoiceButton"]}
+                    className={
+                      Number(payOutStanding.InvoiceID) === 0
+                        ? styles["PayInvoiceButton_disabled"]
+                        : styles["PayInvoiceButton"]
+                    }
                     onClick={hadlePayInvoiceButton}
+                    disableBtn={
+                      Number(payOutStanding.InvoiceID) === 0 ? true : false
+                    }
                   />
                 </Col>
               </Row>
@@ -226,7 +233,11 @@ const PayOutstanding = () => {
                 <Col sm={12} md={6} lg={6} className="mt-2 ps-0">
                   <Button
                     text={t("View-invoice-detail")}
-                    className={styles["viewInvocieButton"]}
+                    className={
+                      Number(payOutStanding.InvoiceID) === 0
+                        ? styles["viewInvocieButton_disabled"]
+                        : styles["viewInvocieButton"]
+                    }
                     onClick={handleViewInvoice}
                   />
                 </Col>
