@@ -9,9 +9,19 @@ import {
   getMinutesForReviewerByMeetingId,
   getMinuteReviewPendingApprovalsStatsByReviewerId,
   getMinuteReviewPendingApprovalsByReviewerId,
+  saveMinutesReviewFlow,
+  getPendingApprovalStatusesForMinuteReview,
+  acceptRejectMinuteReview,
+  resendUpdatedMinuteForReview,
+  getMinuteVersionHistoryWithComments,
+  getMinuteReviewFlowByMeetingId,
+  updateCommentForRejectedMinute,
+  getMinuteReviewDetailsForOrganizerByMinuteId,
+  deleteMinuteReviewByReviewer,
 } from "../../commen/apis/Api_config";
 import { workflowApi } from "../../commen/apis/Api_ends_points";
 
+// Pendin Approval Page Route
 const pendingApprovalPage = (response) => {
   return {
     type: actions.PENDING_APPROVAL_PAGE,
@@ -19,6 +29,7 @@ const pendingApprovalPage = (response) => {
   };
 };
 
+// Review Minutes Page Route
 const reviewMinutesPage = (response) => {
   return {
     type: actions.REVIEW_MINUTES_PAGE,
@@ -26,6 +37,7 @@ const reviewMinutesPage = (response) => {
   };
 };
 
+// reject comment modal
 const rejectCommentModal = (response) => {
   return {
     type: actions.REJECT_COMMENT_MODAL,
@@ -33,6 +45,7 @@ const rejectCommentModal = (response) => {
   };
 };
 
+// Edit Comment Modal
 const editCommentModal = (response) => {
   return {
     type: actions.EDIT_COMMENT_MODAL,
@@ -40,6 +53,7 @@ const editCommentModal = (response) => {
   };
 };
 
+//Delete Comment Modal
 const deleteCommentModal = (response) => {
   return {
     type: actions.DELETE_COMMENT_MODAL,
@@ -47,6 +61,7 @@ const deleteCommentModal = (response) => {
   };
 };
 
+// Delete Comment Meeting Modal
 const deleteCommentMeetingModal = (response) => {
   return {
     type: actions.DELETE_COMMENT_MEETING_MODAL,
@@ -54,6 +69,7 @@ const deleteCommentMeetingModal = (response) => {
   };
 };
 
+//Pending Approval graph data
 const pendingApprovalGraph = (response) => {
   return {
     type: actions.PENDING_APPROVAL_GRAPH_DATA,
@@ -83,6 +99,7 @@ const getListOfDefaultRejectionComments_Fail = (message, response) => {
   };
 };
 
+//ListOfDefaultRejectionComments
 const ListOfDefaultRejectionComments = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -189,6 +206,7 @@ const getPendingApprovalsCount_Fail = (message, response) => {
   };
 };
 
+// GetPendingApprovalsCount
 const GetPendingApprovalsCount = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -289,6 +307,7 @@ const getMinuteReviewStatsForOrganizerByMeetingId_Fail = (
   };
 };
 
+//GetMinuteReviewStatsForOrganizerByMeetingId
 const GetMinuteReviewStatsForOrganizerByMeetingId = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -420,6 +439,7 @@ const getAllOrganizationUsersForReview_Fail = (message, response) => {
   };
 };
 
+//GetAllOrganizationUsersForReview
 const GetAllOrganizationUsersForReview = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -525,6 +545,7 @@ const getMinutesForReviewerByMeetingId_Fail = (message, response) => {
   };
 };
 
+//GetMinutesForReviewerByMeetingId
 const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -665,6 +686,7 @@ const getMinuteReviewPendingApprovalsStatsByReviewerId_Fail = (
   };
 };
 
+//GetMinuteReviewPendingApprovalsStatsByReviewerId
 const GetMinuteReviewPendingApprovalsStatsByReviewerId = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -788,6 +810,7 @@ const getMinuteReviewPendingApprovalsByReviewerId_Fail = (
   };
 };
 
+//Get Minute REviewPendingApprovalByReviewerID
 const GetMinuteReviewPendingApprovalsByReviewerId = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -884,10 +907,158 @@ const GetMinuteReviewPendingApprovalsByReviewerId = (Data, navigate, t) => {
   };
 };
 
+//Current Minutes To Review (Reducer Data)
 const currentMeetingMinutesToReview = (response) => {
   return {
     type: actions.CURRENT_MEETING_MINUTE_REVIEW,
     response: response,
+  };
+};
+
+const saveMinutesReviewFlow_Init = () => {
+  return {
+    type: actions.SAVE_MINUTESREVIEWFLOW_INIT,
+  };
+};
+
+const saveMinutesReviewFlow_Success = (response, message) => {
+  return {
+    type: actions.SAVE_MINUTESREVIEWFLOW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const saveMinutesReviewFlow_Fail = (message, response) => {
+  return {
+    type: actions.SAVE_MINUTESREVIEWFLOW_FAIL,
+    message: message,
+    response: response,
+  };
+};
+
+//SaveMinutesReviewFlow
+const SaveMinutesReviewFlow = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(saveMinutesReviewFlow_Init());
+    let form = new FormData();
+    form.append("RequestMethod", saveMinutesReviewFlow.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveMinutesReviewFlow(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveMinutesReviewFlow_Success(
+                  response.data.responseResult,
+                  t("Minutes-review-flow-inserted-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(saveMinutesReviewFlow_Fail(t("Insertion-failed", data)));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_03".toLowerCase()
+                )
+            ) {
+              dispatch(saveMinutesReviewFlow_Fail(t("Flow-not-found-to-edit")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveMinutesReviewFlow_Success(
+                  response.data.responseResult,
+                  t("Minutes-review-flow-edited-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_05".toLowerCase()
+                )
+            ) {
+              dispatch(saveMinutesReviewFlow_Fail(t("Invalid-data-provided")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_06".toLowerCase()
+                )
+            ) {
+              dispatch(saveMinutesReviewFlow_Fail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveMinutesReviewFlow_Fail(t("Flow-deleted-successfully"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_08".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveMinutesReviewFlow_Fail(t("Error-while-saving-flow"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_09".toLowerCase()
+                )
+            ) {
+              dispatch(saveMinutesReviewFlow_Fail(t("Deadline-not-provided")));
+            } else {
+              dispatch(saveMinutesReviewFlow_Fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(saveMinutesReviewFlow_Fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(saveMinutesReviewFlow_Fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(saveMinutesReviewFlow_Fail(t("Something-went-wrong")));
+      });
   };
 };
 
@@ -907,4 +1078,5 @@ export {
   GetMinuteReviewPendingApprovalsStatsByReviewerId,
   GetMinuteReviewPendingApprovalsByReviewerId,
   currentMeetingMinutesToReview,
+  SaveMinutesReviewFlow,
 };

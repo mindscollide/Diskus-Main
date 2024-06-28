@@ -91,6 +91,7 @@ const initialState = {
         uploaded_date: "18th May, 2024",
       },
       minuteID: 24,
+      agendaID: 2451,
       subMinutes: [
         {
           title: "CEO Speech",
@@ -98,6 +99,7 @@ const initialState = {
             "Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to hold daily check-ins for quicker progress Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to hold daily check-ins for quicker progress Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to update.",
           attachments: [],
           minuteID: 25,
+          agendaID: 2454,
           uploader: {
             name: "Alex Rodriguez",
             avatar: "DefaultAvatar",
@@ -119,6 +121,7 @@ const initialState = {
         uploaded_date: "18th May, 2024",
       },
       minuteID: 26,
+      agendaID: 2459,
       subMinutes: [],
     },
   ],
@@ -235,6 +238,7 @@ const initialState = {
   GetMinuteReviewPendingApprovalsStatsByReviewerIdData: null,
   GetMinuteReviewPendingApprovalsByReviewerIdData: null,
   currentMeetingMinutesToReview: null,
+  SaveMinutesReviewFlowData: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -452,6 +456,29 @@ const MinutesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetMinuteReviewPendingApprovalsByReviewerIdData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_MINUTESREVIEWFLOW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVE_MINUTESREVIEWFLOW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        SaveMinutesReviewFlowData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_MINUTESREVIEWFLOW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        SaveMinutesReviewFlowData: null,
         ResponseMessage: action.message,
       };
     }

@@ -40,6 +40,7 @@ import { deleteCommentMeetingModal } from "../../../../../../store/actions/Minut
 import VersionHistory from "./VersionHistoryModal/VersionHistory";
 import RevisionHistory from "./RevisionHistoryModal/RevisionHistory";
 import { GetMinuteReviewStatsForOrganizerByMeetingId } from "../../../../../../store/actions/Minutes_action";
+import { transform } from "lodash";
 
 const AgendaWise = ({
   advanceMeetingModalID,
@@ -55,6 +56,7 @@ const AgendaWise = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let folderID = localStorage.getItem("folderDataRoomMeeting");
+  const Delta = Quill.import("delta");
 
   const [open, setOpen] = useState({
     flag: false,
@@ -79,6 +81,9 @@ const AgendaWise = ({
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
+
+  const [showMore, setShowMore] = useState(false);
+  const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
@@ -86,31 +91,6 @@ const AgendaWise = ({
       title: "",
     },
   });
-
-  useEffect(() => {
-    let Data = {
-      isAgenda: true,
-      MeetingID: Number(advanceMeetingModalID),
-    };
-    let Data2 = {
-      MeetingID: Number(advanceMeetingModalID),
-    };
-    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t));
-    dispatch(
-      GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
-        Data2,
-        navigate,
-        t,
-        advanceMeetingModalID
-      )
-    );
-    return () => {
-      setMessages([]);
-      setFileAttachments([]);
-      setPreviousFileIDs([]);
-      dispatch(cleareAllState());
-    };
-  }, []);
 
   console.log(
     AgendaWiseAgendaListReducer.AllAgendas,
@@ -150,6 +130,83 @@ const AgendaWise = ({
     } catch {}
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
 
+  // Combined Data for both Documents and Minutes Agenda Wise
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       NewMeetingreducer.agendaWiseMinutesReducer !== null &&
+  //       NewMeetingreducer.agendaWiseMinutesReducer &&
+  //       NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
+  //       NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
+  //     ) {
+  //       const minutesData =
+  //         NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
+  //       const documentsData =
+  //         NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
+  //       setOrganizerID(NewMeetingreducer.agendaWiseMinutesReducer.organizerID);
+  //       const combinedData = minutesData.map((item1) => {
+  //         const matchingItem = documentsData.find(
+  //           (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
+  //         );
+  //         if (matchingItem) {
+  //           return {
+  //             ...item1,
+  //             minutesAttachmets: matchingItem.files,
+  //           };
+  //         }
+  //         return item1;
+  //       });
+  //       setMessages(combinedData);
+  //     } else {
+  //       setMessages([]);
+  //     }
+  //   } catch (error) {
+  //     // Handle any errors here
+  //     console.error(error);
+  //   }
+  // }, [
+  //   NewMeetingreducer.agendaWiseMinutesReducer,
+  //   NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
+  // ]);
+
+  // Grouping the messages by agendaID while maintaining the unique titles
+  const groupedMessages = messages.reduce((acc, curr) => {
+    if (!acc[curr.agendaID]) {
+      acc[curr.agendaID] = {
+        agendaID: curr.agendaID,
+        agendaTitle: curr.agendaTitle,
+        items: [
+          {
+            minuteID: curr.minuteID,
+            minutesDetails: curr.minutesDetails,
+            userID: curr.userID,
+            userName: curr.userName,
+            lastUpdatedDate: curr.lastUpdatedDate,
+            lastUpdatedTime: curr.lastUpdatedTime,
+            userProfilePicture: curr.userProfilePicture,
+            minutesAttachmets: curr.minutesAttachmets,
+            agendaTitle: curr.agendaTitle,
+          },
+        ],
+      };
+    } else {
+      acc[curr.agendaID].items.push({
+        minuteID: curr.minuteID,
+        minutesDetails: curr.minutesDetails,
+        userID: curr.userID,
+        userName: curr.userName,
+        lastUpdatedDate: curr.lastUpdatedDate,
+        lastUpdatedTime: curr.lastUpdatedTime,
+        userProfilePicture: curr.userProfilePicture,
+        minutesAttachmets: curr.minutesAttachmets,
+        agendaTitle: curr.agendaTitle,
+      });
+    }
+
+    console.log(acc, "returnreturnreturn");
+    return acc;
+  }, {});
+
   let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -180,6 +237,10 @@ const AgendaWise = ({
       handlers: {},
       clipboard: { matchVisual: false },
     },
+  };
+
+  const toggleExpansion = () => {
+    setExpanded(!expanded);
   };
 
   const props = {
@@ -260,6 +321,18 @@ const AgendaWise = ({
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
+
+  //Sliders For Attachments
+
+  const SlideLeft = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft - 300;
+  };
+
+  const Slideright = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft + 300;
+  };
 
   const onTextChange = (content, delta, source) => {
     const deltaOps = delta.ops || [];
@@ -453,6 +526,57 @@ const AgendaWise = ({
     setisEdit(false);
   };
 
+  //handle Edit functionality
+  const handleEditFunc = (data) => {
+    setupdateData(data);
+    if (data.minutesDetails !== "") {
+      let findOptionValue = agendaOptions.filter(
+        (agendaOption, index) => agendaOption.label === data.agendaTitle
+      );
+      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
+      setAddNoteFields({
+        Description: {
+          value: data.minutesDetails,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+      setAgendaSelect({
+        ...agendaSelect,
+        agendaSelectOptions: {
+          id: findOptionValue.value,
+          title: data.agendaTitle,
+        },
+      });
+      setAgendaOptionValue({
+        label: data.agendaTitle,
+        value: findOptionValue.value,
+      });
+      setisEdit(true);
+    } else {
+      console.log("data.minutesDetails is undefined or null");
+    }
+    setisEdit(true);
+    console.log(data, "handleEditFunchandleEditFunc");
+    let Data = {
+      FK_MeetingAgendaMinutesID: data.minuteID,
+    };
+    dispatch(
+      AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
+    );
+  };
+
+  const toggleAcordion = (agendaID) => {
+    console.log(agendaID, "notesIDnotesIDnotesID");
+    // setExpanded((prev) => (prev === notesID ? true : false));
+    if (accordianExpand === agendaID) {
+      setAccordianExpand(false);
+    } else {
+      setAccordianExpand(agendaID);
+    }
+    // setExpand(!isExpand);
+  };
+
   useEffect(() => {
     try {
       if (
@@ -569,6 +693,50 @@ const AgendaWise = ({
     setFileForSend([]);
     setisEdit(false);
   };
+  const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
+    console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
+    let minuteID = 0;
+    AgendaWiseData.items.map((id, index) => {
+      minuteID = id.minuteID;
+    });
+    let Data = {
+      MDID: advanceMeetingModalID,
+      MeetingAgendaMinutesID: Number(minuteID),
+    };
+
+    dispatch(
+      DeleteAgendaWiseMinutesDocumentsApiFunc(
+        navigate,
+        Data,
+        t,
+        advanceMeetingModalID,
+        minuteID
+      )
+    );
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+
+    setFileAttachments([]);
+    // setAgendaOptions([]);
+  };
+
+  const handleshowMore = (index) => {
+    if (showMoreIndex === index && showMore) {
+      // If the clicked index is the same as the expanded one, collapse it
+      setShowMoreIndex(null);
+      setShowMore(false);
+    } else {
+      // If a different index is clicked or it's not expanded, expand the clicked section
+      setShowMoreIndex(index);
+      setShowMore(true);
+    }
+  };
 
   useEffect(() => {
     if (
@@ -597,6 +765,31 @@ const AgendaWise = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [NewMeetingreducer.ResponseMessage]);
+
+  useEffect(() => {
+    let Data = {
+      isAgenda: true,
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    let Data2 = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t));
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
+        Data2,
+        navigate,
+        t,
+        advanceMeetingModalID
+      )
+    );
+    return () => {
+      setMessages([]);
+      setFileAttachments([]);
+      setPreviousFileIDs([]);
+      dispatch(cleareAllState());
+    };
+  }, []);
 
   // NEW WORK OWAIS!!!!!!!!! ->>>> cxxx|::::::::::::::>
 
@@ -668,7 +861,53 @@ const AgendaWise = ({
 
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
-  console.log("minutesDataminutesData", minutesData);
+  // Assuming this is inside your functional component
+  useEffect(() => {
+    if (
+      NewMeetingreducer.agendaWiseMinutesReducer !== null &&
+      NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
+      Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
+    ) {
+      console.log("goes in the check");
+      let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
+      let transformedData = [];
+
+      reducerData.agendaHierarchyList.forEach((parentAgenda) => {
+        let parentAgendaDetails = reducerData.agendaWiseMinutes.find(
+          (minute) => minute.agendaID === parentAgenda.pK_MAID
+        );
+
+        let subMinutes = [];
+        parentAgenda.childAgendas.forEach((childAgenda) => {
+          let childMinutes = reducerData.agendaWiseMinutes.filter(
+            (minute) => minute.agendaID === childAgenda.pK_MAID
+          );
+          subMinutes.push(...childMinutes);
+        });
+
+        // Check if parentAgendaDetails exist to determine isParentData
+        let isParentData = !!parentAgendaDetails;
+
+        if (isParentData || subMinutes.length > 0) {
+          let parentAgendaObj = {
+            agendaID: isParentData ? parentAgendaDetails.agendaID : 0,
+            minuteID: isParentData ? parentAgendaDetails.minuteID : 0,
+            isParentData: isParentData,
+            subMinutes: subMinutes.map((subMinute) => ({
+              agendaID: subMinute.agendaID,
+              minuteID: subMinute.minuteID,
+            })),
+          };
+
+          transformedData.push(parentAgendaObj);
+        }
+      });
+
+      console.log("transformedData", transformedData);
+    }
+  }, [NewMeetingreducer.agendaWiseMinutesReducer]);
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <section className={styles["agenda-wise-minutes"]}>

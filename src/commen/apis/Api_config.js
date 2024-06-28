@@ -1603,6 +1603,8 @@ const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
 
+//Minutes APIs
+
 const listOfDefaultRejectionComments = {
   RequestMethod: "ServiceManager.ListOfDefaultRejectionComments",
 };
@@ -1630,6 +1632,42 @@ const getMinuteReviewPendingApprovalsStatsByReviewerId = {
 
 const getMinuteReviewPendingApprovalsByReviewerId = {
   RequestMethod: "ServiceManager.GetMinuteReviewPendingApprovalsByReviewerId",
+};
+
+const saveMinutesReviewFlow = {
+  RequestMethod: "ServiceManager.SaveMinutesReviewFlow",
+};
+
+const getPendingApprovalStatusesForMinuteReview = {
+  RequestMethod: "ServiceManager.GetPendingApprovalStatusesForMinuteReview",
+};
+
+const acceptRejectMinuteReview = {
+  RequestMethod: "ServiceManager.AcceptRejectMinuteReview",
+};
+
+const resendUpdatedMinuteForReview = {
+  RequestMethod: "ServiceManager.ResendUpdatedMinuteForReview",
+};
+
+const getMinuteVersionHistoryWithComments = {
+  RequestMethod: "ServiceManager.GetMinuteVersionHistoryWithComments",
+};
+
+const getMinuteReviewFlowByMeetingId = {
+  RequestMethod: "ServiceManager.GetMinuteReviewFlowByMeetingId",
+};
+
+const updateCommentForRejectedMinute = {
+  RequestMethod: "ServiceManager.UpdateCommentForRejectedMinute",
+};
+
+const getMinuteReviewDetailsForOrganizerByMinuteId = {
+  RequestMethod: "ServiceManager.GetMinuteReviewDetailsForOrganizerByMinuteId",
+};
+
+const deleteMinuteReviewByReviewer = {
+  RequestMethod: "ServiceManager.DeleteMinuteReviewByReviewer",
 };
 
 export {
@@ -2058,6 +2096,7 @@ export {
   downloadAttachmentTalk,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  //Minutes Flow
   listOfDefaultRejectionComments,
   pendingApprovalsCount,
   getMinuteReviewStatsForOrganizerByMeetingId,
@@ -2065,4 +2104,13 @@ export {
   getMinutesForReviewerByMeetingId,
   getMinuteReviewPendingApprovalsStatsByReviewerId,
   getMinuteReviewPendingApprovalsByReviewerId,
+  saveMinutesReviewFlow,
+  getPendingApprovalStatusesForMinuteReview,
+  acceptRejectMinuteReview,
+  resendUpdatedMinuteForReview,
+  getMinuteVersionHistoryWithComments,
+  getMinuteReviewFlowByMeetingId,
+  updateCommentForRejectedMinute,
+  getMinuteReviewDetailsForOrganizerByMinuteId,
+  deleteMinuteReviewByReviewer,
 };
