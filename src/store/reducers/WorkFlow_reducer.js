@@ -17,6 +17,8 @@ const initialState = {
   listOfPendingForApprovalSignatures: null,
   getAllPendingApprovalStatuses: null,
   declineReason: null,
+  deleteSignatureDocument: null,
+  getAllSignatoriesStatusWise: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -334,6 +336,51 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    case actions.DELETE_SIGNATURE_DOCUMENT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DELETE_SIGNATURE_DOCUMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deleteSignatureDocument: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETE_SIGNATURE_DOCUMENT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        deleteSignatureDocument: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLSIGNATORIESSTATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETALLSIGNATORIESSTATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSignatoriesStatusWise: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLSIGNATORIESSTATUS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSignatoriesStatusWise: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     case actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER: {
       return {
         ...state,

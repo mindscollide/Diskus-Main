@@ -557,7 +557,7 @@ const DataRoom = () => {
     // getAllPendingApprovalStatusApi
     let newData = { IsCreator: true };
     dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
-    let Data = { pageNo: 1, pageSize: 10 };
+    let Data = { sRow: 0, Length: 10 };
     await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     //  localStorage.set
     setGetAllData([]);

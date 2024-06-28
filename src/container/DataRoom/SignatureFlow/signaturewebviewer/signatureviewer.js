@@ -182,7 +182,7 @@ const SignatureViewer = () => {
           );
           function revert(data) {
             return data.map((item) => {
-              const xmlField = item.xmlField
+              const xmlField = item?.xmlField
                 .split("_#_")
                 .map((str) => JSON.parse(str));
               return {
@@ -193,13 +193,17 @@ const SignatureViewer = () => {
               };
             });
           }
+
           revertedData = revert(
             getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields
           );
+          console.log(revertedData, "revertedData");
           setUserAnnotations(revertedData);
           setFieldsData(newFieldsData);
         }
-      } catch {}
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [getAllFieldsByWorkflowID]);
   // === End === //
@@ -371,7 +375,7 @@ const SignatureViewer = () => {
       // Iterate over each user's annotations
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-
+      console.log(xmlDoc, "xmlDocxmlDocxmlDoc");
       xmlDoc.querySelectorAll("widget").forEach((widget) => {
         const widgetName = widget.getAttribute("name");
         const ffieldName = widget.getAttribute("field");
@@ -442,6 +446,7 @@ const SignatureViewer = () => {
 
         const { documentViewer, annotationManager, Annotations, Tools } =
           instance.Core;
+ 
         //======================================== disable header =====================================//
         instance.UI.disableTools([Tools.disableTextSelection]);
         instance.UI.disableElements([

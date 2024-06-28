@@ -19,7 +19,9 @@ import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
 import {
+  deleteSignatureFlowDocumentApi,
   getAllPendingApprovalStatusApi,
+  getAllSignatoriesStatusWise_Api,
   getAllSignaturesDocumentsforCreatorApi,
 } from "../../../../store/actions/workflow_actions";
 import { useDispatch } from "react-redux";
@@ -91,9 +93,7 @@ const ApprovalSend = () => {
         return (
           <span
             // onClick={() => setSignatoriesList(true)}
-            onClick={() =>
-              handleClickSignatoriesList(record.numberOfSignatories)
-            }
+            onClick={() => handleClickSignatoriesList(record)}
             className={styles["signatories_vale"]}
           >{` ${text} Signatories`}</span>
         );
@@ -163,21 +163,32 @@ const ApprovalSend = () => {
       width: 50,
       render: (text, record) => {
         // Render status text with appropriate styles
-        if (record.status === "Draft") {
-          return <img src={DeleteIcon} />;
+        if (Number(record?.workFlowStatusID) === 4) {
+          return (
+            <img
+              src={DeleteIcon}
+              className="cursor-pointer"
+              onClick={() => deleteSignatureDocument(record)}
+            />
+          );
         }
       },
     },
   ];
 
-  const handleClickSignatoriesList = (value) => {
-    setSignatureListVal(value);
-    setSignatoriesList(true);
+  const handleClickSignatoriesList = (record) => {
+    console.log(record, "handleClickSignatoriesListhandleClickSignatoriesList");
+    // setSignatureListVal(value);
+    // setSignatoriesList(true);
+    let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
+    dispatch(
+      getAllSignatoriesStatusWise_Api(navigate, t, Data, setSignatoriesList)
+    );
   };
 
   const handleClickOpenDoc = (record) => {
     let reponseData = JSON.stringify(record.fileID);
-    if (Number(record.status) === 4) {
+    if (Number(record.workFlowStatusID) === 4) {
       window.open(
         `/#/DisKus/signatureviewer?documentID=${encodeURIComponent(
           reponseData
@@ -196,10 +207,10 @@ const ApprovalSend = () => {
     }
   };
 
-  console.log(
-    { isScrolling, approvalsData, pageNo, totalRecords, rowsDataLength },
-    "CheckingScrolling"
-  );
+  const deleteSignatureDocument = (record) => {
+    let Data = { WorkFlowID: Number(record?.workFlowID) };
+    dispatch(deleteSignatureFlowDocumentApi(navigate, t, Data));
+  };
 
   useEffect(() => {
     if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator !== null) {
@@ -211,6 +222,7 @@ const ApprovalSend = () => {
           signatureFlowDocumentsForCreator.length > 0
         ) {
           if (isScrolling) {
+            setIsScrolling(false);
             setApprovalsData([
               ...signatureFlowDocumentsForCreator,
               ...approvalsData,
@@ -297,7 +309,7 @@ const ApprovalSend = () => {
     );
     if (rowsDataLength <= totalRecords) {
       setIsScrolling(true);
-      let Data = { pageNo: Number(pageNo), pageSize: 10 };
+      let Data = { sRow: Number(rowsDataLength), Length: 10 };
       console.log(Data, "handleScrollhandleScrollhandleScroll");
       await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     }
@@ -306,7 +318,7 @@ const ApprovalSend = () => {
     <>
       {" "}
       <Row className="mb-2">
-        {approvalsData.length > 100 ? (
+        {approvalsData.length > 0 ? (
           <Col sm={12} md={12} lg={12} className="mt-3">
             <InfiniteScroll
               dataLength={approvalsData.length}
@@ -360,7 +372,9 @@ const ApprovalSend = () => {
           >
             <section className={styles["ApprovalSend_emptyContainer"]}>
               <img className="d-flex justify-content-center" src={EmtpyImage} />
-              <span className={styles["emptyState_title"]}>Submit Document for Approval</span>
+              <span className={styles["emptyState_title"]}>
+                Submit Document for Approval
+              </span>
               <span className={styles["emptyState_tagline"]}>
                 Ready to send a document for approval? This tab awaits your next
                 submission!

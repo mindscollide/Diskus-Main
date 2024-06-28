@@ -27,18 +27,17 @@ import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ResponseMessagesCom from "./hooks/responseMessages/ResponseMessagesCom";
-
+import { newData } from "./commen/apis/test";
 const App = () => {
   // const state = useSelector((state) => state);
   // useEffect(() => {} ,[])
   // console.log(state, "stateAppComponent");
-
+  newData();
   return (
     <>
       <Suspense fallback={<Loader />}>
         {/* Define your routes here */}
         <RouterProvider router={router} />
-
         {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
         <OpenPaymentForm />
       </Suspense>

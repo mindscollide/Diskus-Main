@@ -13,6 +13,8 @@ import {
   ListOfPendingForApprovalSignaturesRM,
   GetPendingApprovalStatusforSignatureFlowRM,
   DeclineReason,
+  DeleteSignatureDocumentRM,
+  GetAllSignatoriesStatusRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1657,6 +1659,232 @@ const declineReasonApi = (
   };
 };
 
+const deleteSignatureFlowDocument_init = () => {
+  return {
+    type: actions.DELETE_SIGNATURE_DOCUMENT_INIT,
+  };
+};
+const deleteSignatureFlowDocument_success = (response, message) => {
+  return {
+    type: actions.DELETE_SIGNATURE_DOCUMENT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const deleteSignatureFlowDocument_fail = (message) => {
+  return {
+    type: actions.DELETE_SIGNATURE_DOCUMENT_FAIL,
+    message: message,
+  };
+};
+const deleteSignatureFlowDocumentApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(deleteSignatureFlowDocument_init());
+    let form = new FormData();
+    form.append("RequestMethod", DeleteSignatureDocumentRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteSignatureFlowDocumentApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteSignatureFlowDocument_success(
+                  response.data.responseResult,
+                  t("Signature-flow-deleted-successfully")
+                )
+              );
+              let Data2 = {
+                sRow: 0,
+                Length: 10,
+              };
+              dispatch(
+                getAllSignaturesDocumentsforCreatorApi(navigate, t, Data2)
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_02".toLowerCase()
+                )
+            ) {
+              dispatch(deleteSignatureFlowDocument_fail("WorkFlow-not-exists"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_03".toLowerCase()
+                )
+            ) {
+              dispatch(deleteSignatureFlowDocument_fail(t("Not-a-creator")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteSignatureFlowDocument_fail(t("Only-draft-can-be-deleted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_05".toLowerCase()
+                )
+            ) {
+              dispatch(deleteSignatureFlowDocument_fail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteSignatureFlowDocument_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                deleteSignatureFlowDocument_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              deleteSignatureFlowDocument_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(deleteSignatureFlowDocument_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(deleteSignatureFlowDocument_fail(t("Something-went-wrong")));
+      });
+  };
+};
+const getAllSignatoriesStatusWise_init = () => {
+  return {
+    type: actions.GETALLSIGNATORIESSTATUS_INIT,
+  };
+};
+const getAllSignatoriesStatusWise_success = (response, message) => {
+  return {
+    type: actions.GETALLSIGNATORIESSTATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAllSignatoriesStatusWise_fail = (message) => {
+  return {
+    type: actions.GETALLSIGNATORIESSTATUS_FAIL,
+    message: message,
+  };
+};
+const getAllSignatoriesStatusWise_Api = (
+  navigate,
+  t,
+  Data,
+  setSignatoriesList
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllSignatoriesStatusWise_init());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllSignatoriesStatusRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            getAllSignatoriesStatusWise_Api(
+              navigate,
+              t,
+              Data,
+              setSignatoriesList
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatoriesStatus_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllSignatoriesStatusWise_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+              setSignatoriesList(true);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatoriesStatus_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllSignatoriesStatusWise_fail("No-data-found"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatoriesStatus_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllSignatoriesStatusWise_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllSignatoriesStatusWise_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getAllSignatoriesStatusWise_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(getAllSignatoriesStatusWise_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllSignatoriesStatusWise_fail(t("Something-went-wrong")));
+      });
+  };
+};
 const clearWorkFlowResponseMessage = () => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER,
@@ -1664,6 +1892,8 @@ const clearWorkFlowResponseMessage = () => {
 };
 
 export {
+  getAllSignatoriesStatusWise_Api,
+  deleteSignatureFlowDocumentApi,
   getAllPendingApprovalStatusApi,
   clearWorkFlowResponseMessage,
   getAllPendingApprovalsStatsApi,

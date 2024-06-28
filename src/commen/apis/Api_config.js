@@ -1606,12 +1606,16 @@ const GetAllPendingForApprovalStatsRM = {
 const GetPendingApprovalStatusforSignatureFlowRM = {
   RequestMethod: "ServiceManager.GetPendingApprovalStatusesForSignatureFlow",
 };
+const DeleteSignatureDocumentRM = {
+  RequestMethod: "ServiceManager.DeleteSignatureFlowByWorkFlowId",
+};
 
-const DeclineReasonRM = {
-  RequestMethod: "ServiceManager.DeclineReason",
+const GetAllSignatoriesStatusRM = {
+  RequestMethod: "ServiceManager.GetAllSignatoriesStatus",
 };
 export {
-  DeclineReasonRM,
+  GetAllSignatoriesStatusRM,
+  DeleteSignatureDocumentRM,
   GetPendingApprovalStatusforSignatureFlowRM,
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,

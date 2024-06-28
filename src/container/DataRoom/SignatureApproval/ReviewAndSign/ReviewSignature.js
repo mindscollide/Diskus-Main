@@ -24,6 +24,7 @@ import {
 import { useSelector } from "react-redux";
 import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
 import { set } from "lodash";
+import InfiniteScroll from "react-infinite-scroll-component";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -52,6 +53,11 @@ const ReviewSignature = () => {
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
+
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [totalDataLnegth, setTotalDataLength] = useState(0);
+  const [isScrollling, setIsScrolling] = useState(false);
+
   // ProgressBar component for visualizing progress
   const ProgressBar = ({ width, color, indexValue, percentageValue }) => {
     const barStyle = {
@@ -186,12 +192,27 @@ const ReviewSignature = () => {
     let newData = { IsCreator: false };
     await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
     await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
-    let Data = { pageNo: 1, pageSize: 10 };
+    let Data = { sRow: 0, Length: 10 };
     dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
   };
   useEffect(() => {
     callingApi();
   }, []);
+
+  const handleScroll = async () => {
+    console.log(
+      totalDataLnegth <= totalRecords,
+      totalDataLnegth,
+      totalRecords,
+      "handleScrollhandleScroll"
+    );
+    if (totalDataLnegth <= totalRecords) {
+      setIsScrolling(true);
+      let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+      console.log(Data, "handleScrollhandleScrollhandleScroll");
+      await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+    }
+  };
 
   useEffect(() => {
     if (
@@ -237,9 +258,20 @@ const ReviewSignature = () => {
   useEffect(() => {
     if (listOfPendingForApprovalSignatures !== null) {
       try {
-        let { pendingApprovals } = listOfPendingForApprovalSignatures;
+        let { pendingApprovals, totalCount } =
+          listOfPendingForApprovalSignatures;
         if (Array.isArray(pendingApprovals) && pendingApprovals.length > 0) {
-          setReviewSignature(pendingApprovals);
+          if (isScrollling) {
+            setIsScrolling(false)
+            setReviewSignature([...pendingApprovals, ...reviewSignature]);
+            setTotalRecords(totalCount);
+            setTotalDataLength((prev) => prev + pendingApprovals.length);
+          } else {
+            setTotalRecords(totalCount);
+            setTotalDataLength(pendingApprovals.length);
+
+            setReviewSignature(pendingApprovals);
+          }
         }
       } catch (error) {}
     }
@@ -329,18 +361,27 @@ const ReviewSignature = () => {
       <Row>
         <Col>
           {reviewAndSignatureStatus.length > 0 && (
-            <TableToDo
-              sortDirections={["descend", "ascend"]}
-              column={pendingApprovalColumns}
-              className={"PendingApprovalsTable"}
-              rows={reviewSignature}
-              // scroll={scroll}
-              pagination={false}
-              scroll={reviewSignature.length > 10 ? { y: 385 } : undefined}
-              id={(record, index) =>
-                index === reviewSignature.length - 1 ? "last-row-class" : ""
-              }
-            />
+            <InfiniteScroll
+              dataLength={reviewSignature.length}
+              next={handleScroll}
+              hasMore={reviewSignature.length === totalRecords ? false : true}
+              style={{
+                overflowX: "hidden",
+              }}
+              height={"50vh"}
+            >
+              <TableToDo
+                sortDirections={["descend", "ascend"]}
+                column={pendingApprovalColumns}
+                className={"PendingApprovalsTable"}
+                rows={reviewSignature}
+                // scroll={scroll}
+                pagination={false}
+                id={(record, index) =>
+                  index === reviewSignature.length - 1 ? "last-row-class" : ""
+                }
+              />
+            </InfiniteScroll>
           )}
         </Col>
       </Row>{" "}
