@@ -868,7 +868,6 @@ const AgendaWise = ({
       NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
       Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
     ) {
-      console.log("goes in the check");
       let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
       let transformedData = [];
 
@@ -892,10 +891,12 @@ const AgendaWise = ({
           let parentAgendaObj = {
             agendaID: isParentData ? parentAgendaDetails.agendaID : 0,
             minuteID: isParentData ? parentAgendaDetails.minuteID : 0,
+            agendaTitle: parentAgendaDetails.agendaTitle,
             isParentData: isParentData,
             subMinutes: subMinutes.map((subMinute) => ({
               agendaID: subMinute.agendaID,
               minuteID: subMinute.minuteID,
+              agendaTitle: subMinute.agendaTitle,
             })),
           };
 
