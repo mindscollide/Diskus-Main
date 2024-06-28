@@ -78,11 +78,17 @@ import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
 import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
+import PrivateVideoMeeting from "./PrivateVideoMeetingRoute";
+import VideoMeetingBoardDeck from "../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
+      {/* Video Meeting Route */}
+      <Route element={<PrivateVideoMeeting />}>
+        <Route path="/Diskus/video" element={<VideoMeetingBoardDeck />} />
+      </Route>
       {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
 
