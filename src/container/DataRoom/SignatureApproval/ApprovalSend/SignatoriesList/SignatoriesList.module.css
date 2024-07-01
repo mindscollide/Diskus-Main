@@ -3,12 +3,7 @@
   font-weight: 600;
   color: #6172d6;
 }
-.signatoriesUsers {
-  /* min-height: 45vh; */
-  max-height: 45vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+
 .signatoriesComments {
   max-height: 28vh;
   overflow-y: auto;
@@ -26,6 +21,9 @@
   height: 20px;
 }
 img.signatories_image {
+  margin-left: 10px !important;
+}
+img.signatoriesComment_image {
   margin-bottom: 10px !important;
   margin-left: 10px !important;
 }
@@ -44,16 +42,21 @@ img.signatories_image {
   font-weight: 600;
   font-size: 12px;
 }
-.signatoriesList_height {
+/* .signatoriesList_height {
   max-height: 40vh !important;
   overflow-y: auto;
   overflow-x: hidden;
-}
+} */
 .commentsBox {
   width: 100%;
   max-height: 120px !important;
-  margin-left: 10px;
   border: 1px solid #e1e1e1;
+  padding: 10px;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.16) !important;
+  -moz-box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.16) !important;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.16) !important;
+  margin-bottom: 10px;
 }
 .commentMessage {
   font-weight: 500;
@@ -65,4 +68,25 @@ img.signatories_image {
   font-weight: 600;
   color: #a2a2a2;
   text-transform: uppercase;
+}
+.declined_text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f16b6b;
+  margin-left: 5px;
+}
+.Commented_user {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a5a5a;
+}
+
+.border_bottom::after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background-color: #e1e1e1;
+  position: absolute;
+  left: 0;
+  bottom: 2px;
 }

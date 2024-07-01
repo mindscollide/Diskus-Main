@@ -1,14 +1,10 @@
-import React, { useEffect, useMemo } from "react";
-import styles from "./SignatoriesList.module.css";
-import { Modal } from "../../../../../components/elements";
+import React, { useEffect, useState } from "react";
+import { Modal, Table } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import ProfilePicImg from "../../../../../assets/images/picprofile.png";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import NoComments from "../../../../../assets/images/NoComments.png";
-
-// console.log(UserList);
+import styles from "./SignatoriesList.module.css";
 
 const SignatoriesList = ({
   setSignatoriesList,
@@ -20,75 +16,159 @@ const SignatoriesList = ({
     (state) => state.SignatureWorkFlowReducer
   );
   const [members, setMembers] = useState([]);
-  const [declineSignatories, setDeclineSignatories] = useState([]);
-  const [signedSignatories, setSignedSignatories] = useState([]);
-  const [pendingSignatories, setPendingSignatories] = useState([]);
+  const [declineSignatories, setDeclineSignatories] = useState(0);
+  const [signedSignatories, setSignedSignatories] = useState(0);
+  const [pendingSignatories, setPendingSignatories] = useState(0);
   const [comments, setComments] = useState([]);
-  const signatoriesList = useMemo(() => {
-    // signatureListVal value is the number of names you want in the list
-    const namesArray = [
-      "John",
-      "Alice",
-      "Bob",
-      "Emma",
-      "Michael",
-      "Sophia",
-      "William",
-      "Olivia",
-      "James",
-      "Ava",
-      "Liam",
-      "Isabella",
-      "Mason",
-      "Mia",
-      "Ethan",
-      "Emily",
-      "Alexander",
-      "Charlotte",
-      "Daniel",
-      "Harper",
-    ];
-
-    // Ensure signatureListVal does not exceed the length of namesArray
-    const listLength = Math.min(signatureListVal, namesArray.length);
-
-    // Generate the user list based on the specified length
-    const UserList = namesArray.slice(0, listLength).map((name) => ({
-      name,
-      profilePic: ProfilePicImg,
-    }));
-
-    return UserList;
-  }, [signatureListVal]);
+  const [combinedData, setCombinedData] = useState([]);
 
   useEffect(() => {
     if (SignatureWorkFlowReducer.getAllSignatoriesStatusWise !== null) {
       try {
+        let declineCommentNewData = [];
+        let combinedArray = [];
         const {
           signedSignatories,
           declinedSignatories,
           pendingSignatories,
           declinedComments,
         } = SignatureWorkFlowReducer.getAllSignatoriesStatusWise;
+
+        let newSignedSig = [];
+        let newDeclineSig = [];
+        let newPendingSig = [];
         if (signedSignatories.length > 0) {
-          setSignedSignatories(signedSignatories);
+          newSignedSig = signedSignatories.map((signedData) => ({
+            ...signedData,
+            isSigned: true,
+            isDecline: false,
+            isPending: false,
+          }));
+          setSignedSignatories(signedSignatories.length);
         }
         if (declinedSignatories.length > 0) {
-          setDeclineSignatories(declinedSignatories);
+          newDeclineSig = declinedSignatories.map((declineData) => ({
+            ...declineData,
+            isSigned: false,
+            isDecline: true,
+            isPending: false,
+          }));
+          setDeclineSignatories(declinedSignatories.length);
         }
         if (pendingSignatories.length > 0) {
-          setPendingSignatories(pendingSignatories);
+          newPendingSig = pendingSignatories.map((pendingData) => ({
+            ...pendingData,
+            isSigned: false,
+            isDecline: false,
+            isPending: true,
+          }));
+          setPendingSignatories(pendingSignatories.length);
         }
+
+        combinedArray = [
+          { SignedData: [...newSignedSig] },
+          { DeclineData: [...newDeclineSig] },
+          { PendingData: [...newPendingSig] },
+        ];
+        setCombinedData(combinedArray);
         if (declinedComments.length > 0) {
-          setComments(declinedComments);
+          if (declinedSignatories.length > 0) {
+            declinedSignatories.forEach((data) => {
+              declinedComments.forEach((data2) => {
+                if (data.userID === data2.userId) {
+                  let mergedData = { ...data2, ...data };
+                  declineCommentNewData.push(mergedData);
+                }
+              });
+            });
+          }
+          setComments(declineCommentNewData);
         }
       } catch (error) {
         console.log(error, "SignatureWorkFlowReducer");
       }
     }
   }, [SignatureWorkFlowReducer.getAllSignatoriesStatusWise]);
+
   const formatValue = (value) => (value < 9 ? `0${value}` : value);
 
+  const columns = [
+    {
+      title: <span> Signed({formatValue(signedSignatories)})</span>,
+      dataIndex: "signed",
+      key: "signed",
+      render: (record) => {
+        console.log(record, "recordrecordrecord");
+        return (
+          <span className="d-flex gap-1  ">
+            <img
+              className={`${styles["signatories_image"]} rounded-circle`}
+              width={22}
+              height={22}
+              src={`data:image/jpeg;base64,${record.userProfileImg}`}
+              alt={record.userName}
+            />
+            <span className={styles["signatoriesname_value"]}>
+              {record.userName}
+            </span>
+          </span>
+        );
+      },
+    },
+    {
+      title: <span> Declined({formatValue(declineSignatories)})</span>,
+      dataIndex: "declined",
+      key: "declined",
+      render: (record) =>
+        record.userName ? (
+          <span className=" d-flex gap-1 align-items-center">
+            <img
+              className={`${styles["signatories_image"]} rounded-circle`}
+              width={22}
+              height={22}
+              src={`data:image/jpeg;base64,${record.userProfileImg}`}
+              alt={record.userName}
+            />
+            <span className={styles["signatoriesname_value"]}>
+              {record.userName}
+            </span>
+          </span>
+        ) : null,
+    },
+    {
+      title: <span> Pending Signature({formatValue(pendingSignatories)})</span>,
+      dataIndex: "pending",
+      key: "pending",
+      render: (record) =>
+        record.userName ? (
+          <span className=" d-flex gap-1 align-items-center ">
+            <img
+              className={`${styles["signatories_image"]} rounded-circle`}
+              width={22}
+              height={22}
+              src={`data:image/jpeg;base64,${record.userProfileImg}`}
+              alt={record.userName}
+            />
+            <span className={styles["signatoriesname_value"]}>
+              {record.userName}
+            </span>
+          </span>
+        ) : null,
+    },
+  ];
+
+  const maxRows = Math.max(
+    combinedData[0]?.SignedData.length || 0,
+    combinedData[1]?.DeclineData.length || 0,
+    combinedData[2]?.PendingData.length || 0
+  );
+
+  const alignedData = Array.from({ length: maxRows }, (_, index) => ({
+    signed: combinedData[0]?.SignedData[index] || {},
+    declined: combinedData[1]?.DeclineData[index] || {},
+    pending: combinedData[2]?.PendingData[index] || {},
+  }));
+  console.log(alignedData, "alignedDataalignedData");
   return (
     <Modal
       show={signatories_List}
@@ -108,140 +188,70 @@ const SignatoriesList = ({
               </h2>
             </Col>
             <Col sm={12} md={12} lg={12} className={styles["signatoriesUsers"]}>
-              <Row>
-                <Col sm={4} md={4} lg={4} className={styles["SignedHeading"]}>
-                  Signed({formatValue(signedSignatories.length)})
-                </Col>
-                <Col sm={4} md={4} lg={4} className={styles["DeclineHeading"]}>
-                  Decline({formatValue(declineSignatories.length)})
-                </Col>
-                <Col sm={4} md={4} lg={4} className={styles["PendingHeading"]}>
-                  Pending Signature({formatValue(pendingSignatories.length)})
-                </Col>
-              </Row>
-              <section className={styles["signatoriesList_height"]}>
-                <Row>
-                  <Col sm={4} md={4} lg={4} className="pe-0">
-                    {signedSignatories.map((nameValues, index) => {
-                      return (
-                        <section className="my-4 d-flex gap-1 align-items-center border-bottom ">
-                          <img
-                            className={`${styles["signatories_image"]} rounded-circle`}
-                            width={22}
-                            height={22}
-                            src={`data:image/jpeg;base64,${nameValues.userProfileImg}`}
-                          />
-                          <span className={styles["signatoriesname_value"]}>
-                            {" "}
-                            {nameValues.userName}
-                          </span>
-                        </section>
-                      );
-                    })}
-                  </Col>
-                  <Col sm={4} md={4} lg={4} className="p-0">
-                    {declineSignatories.map((nameValues, index) => {
-                      return (
-                        <section className="my-4 d-flex gap-1 align-items-center border-bottom">
-                          <img
-                            className={`${styles["signatories_image"]} rounded-circle`}
-                            width={22}
-                            height={22}
-                            src={`data:image/jpeg;base64,${nameValues.userProfileImg}`}
-                          />
-                          <span className={styles["signatoriesname_value"]}>
-                            {" "}
-                            {nameValues.userName}
-                          </span>
-                        </section>
-                      );
-                    })}
-                  </Col>
-                  <Col sm={4} md={4} lg={4} className="ps-0">
-                    {pendingSignatories.map((nameValues, index) => {
-                      return (
-                        <section className="my-4 d-flex gap-1 align-items-center border-bottom">
-                          <img
-                            className={`${styles["signatories_image"]} rounded-circle`}
-                            width={22}
-                            height={22}
-                            src={`data:image/jpeg;base64,${nameValues.userProfileImg}`}
-                          />
-                          <span className={styles["signatoriesname_value"]}>
-                            {" "}
-                            {nameValues.userName}
-                          </span>
-                        </section>
-                      );
-                    })}
-                  </Col>
-                </Row>
-              </section>
-              {/* {signatoriesList.map((nameValues, index) => {
-                return (
-                  <section className="my-4 d-flex gap-1 align-items-center">
-                    <img
-                      className="rounded-circle"
-                      width={22}
-                      height={22}
-                      src={nameValues.profilePic}
-                    />
-                    <span className={styles["signatoriesname_value"]}>
-                      {" "}
-                      {nameValues.name}
-                    </span>
-                  </section>
-                );
-              })} */}
+              <Table
+                column={columns}
+                rows={alignedData}
+                pagination={false}
+                rowKey={(record, index) => index}
+                size={"small"}
+                scroll={{ y: "40vh" }}
+                className={"SignatoriesList"}
+              />
             </Col>
-            <Col sm={12} md={12} lg={12}>
+            <Col sm={12} md={12} lg={12} className="mt-3">
               <h2 className={styles["Signatories_heading"]}>{t("Comments")}</h2>
             </Col>
-            <Col
-              sm={12}
-              md={12}
-              lg={12}
-              className={styles["signatoriesComments"]}
-            >
-              {comments.length > 0 ? (
-                comments.map((commentData, index) => {
-                  return (
-                    <>
-                      <section className={styles["commentsBox"]}>
-                        <Row>
-                          <Col sm={1} md={1} lg={1}></Col>
-                          <Col
-                            sm={11}
-                            md={11}
-                            lg={11}
-                            className="d-flex gap-2 flex-column"
-                          >
-                            <span>()</span>
-                            <span className={styles["commentMessage"]}>
-                              {commentData.reason}
+            <section className={styles["signatoriesComments"]}>
+              <Col sm={12} md={12} lg={12}>
+                {comments.length > 0 ? (
+                  comments.map((commentData, index) => (
+                    <section key={index} className={styles["commentsBox"]}>
+                      <Row>
+                        <Col sm={1} md={1} lg={1}>
+                          <img
+                            className={`${styles["signatoriesComment_image"]} rounded-circle`}
+                            width={22}
+                            height={22}
+                            src={`data:image/jpeg;base64,${commentData.userProfileImg}`}
+                          />
+                        </Col>
+                        <Col
+                          sm={11}
+                          md={11}
+                          lg={11}
+                          className="d-flex gap-2 flex-column"
+                        >
+                          <span className={styles["Commented_user"]}>
+                            {commentData.userName}
+                            <span className={styles["declined_text"]}>
+                              ({t("Declined")})
                             </span>
-                          </Col>
-                        </Row>
-                      </section>
-                    </>
-                  );
-                })
-              ) : (
-                <Col
-                  sm={12}
-                  lg={12}
-                  md={12}
-                  className="d-flex justify-content-center gap-2 align-items-center flex-column"
-                >
-                  <img src={NoComments} width={120} />
-                  <span className={styles["No_Comments-Message"]}>{t("No-comments")}</span>
-                </Col>
-              )}
-            </Col>
+                          </span>
+                          <span className={styles["commentMessage"]}>
+                            {commentData.reason}
+                          </span>
+                        </Col>
+                      </Row>
+                    </section>
+                  ))
+                ) : (
+                  <Col
+                    sm={12}
+                    lg={12}
+                    md={12}
+                    className="d-flex justify-content-center gap-2 align-items-center flex-column"
+                  >
+                    <img src={NoComments} width={120} />
+                    <span className={styles["No_Comments-Message"]}>
+                      {t("No-comments")}
+                    </span>
+                  </Col>
+                )}
+              </Col>
+            </section>
           </Row>
         </>
       }
-      closeButton={true}
     />
   );
 };
