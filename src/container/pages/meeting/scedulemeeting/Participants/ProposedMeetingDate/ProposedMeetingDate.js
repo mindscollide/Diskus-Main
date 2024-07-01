@@ -504,6 +504,9 @@ const ProposedMeetingDate = ({
         return a.EndTime.localeCompare(b.EndTime);
       }
     });
+
+    console.log(sortedDates, "newDatenewDatenewDatenewDate");
+
     if (sendResponseVal !== "") {
       let Data = {
         MeetingID: currentMeeting,

@@ -355,7 +355,7 @@ const UnpublishedProposedMeeting = ({
       },
     },
     {
-      title: t("Propose-date-poll"),
+      title: t("Polls"),
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
       width: "115px",

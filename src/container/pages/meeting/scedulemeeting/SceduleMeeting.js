@@ -33,6 +33,15 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewMeetingFlag,
+  meetingAgendaContributorAdded,
+  meetingAgendaContributorRemoved,
+  meetingOrganizerAdded,
+  meetingOrganizerRemoved,
+  searchNewUserMeeting,
+  scheduleMeetingPageFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -65,6 +74,11 @@ const SceduleMeeting = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
+
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let userID = localStorage.getItem("userID");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -372,6 +386,71 @@ const SceduleMeeting = ({
     dispatch(uploadGlobalFlag(false));
   };
 
+  useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingAcRemoved !== null &&
+      NewMeetingreducer.mqttMeetingAcRemoved !== undefined
+    ) {
+      try {
+        setSceduleMeeting(false);
+        dispatch(scheduleMeetingPageFlag(false));
+        setEdiorRole({ status: null, role: null });
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        setCurrentMeetingID(0);
+        setDataroomMapFolderId(0);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.removeItem("folderDataRoomMeeting");
+
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      } catch (error) {
+        console.error(error, "error");
+      }
+    }
+  }, [NewMeetingreducer.mqttMeetingAcRemoved]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
+      NewMeetingreducer.mqttMeetingOrgRemoved !== undefined
+    ) {
+      try {
+        setSceduleMeeting(false);
+        dispatch(scheduleMeetingPageFlag(false));
+        setEdiorRole({ status: null, role: null });
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        setCurrentMeetingID(0);
+        setDataroomMapFolderId(0);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.removeItem("folderDataRoomMeeting");
+
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      } catch (error) {
+        console.error(error, "error");
+      }
+    }
+  }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
   return (
     <section>
       <Row className="mt-2">

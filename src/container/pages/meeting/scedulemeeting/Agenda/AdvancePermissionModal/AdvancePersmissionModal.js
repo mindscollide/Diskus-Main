@@ -68,7 +68,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
   }, []);
 
   const OpenConfirmation = () => {
-    dispatch(showAdvancePermissionModal(false));
+    // dispatch(showAdvancePermissionModal(false));
     dispatch(showAdvancePermissionConfirmation(true));
   };
 
@@ -224,7 +224,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
           setShow={dispatch(showAdvancePermissionModal)}
           modalFooterClassName={"d-block"}
           modalParentClass={"AgendaPermissionModal"}
-          className={styles["AgendaPermissionModal"]}
+          className={NewMeetingreducer.advancePermissionConfirmation ? styles["AgendaPermissionModalHide"] : styles["AgendaPermissionModal"] }
           modalBodyClassName={styles["modal_body"]}
           modalHeaderClassName={styles["modal_header"]}
           onHide={() => {

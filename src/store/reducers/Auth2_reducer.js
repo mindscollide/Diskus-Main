@@ -319,6 +319,7 @@ const AuthReducer = (state = initialState, action) => {
     }
     case actions.CHECKINGAUTHENTICATEAFA_SUCCESS: {
       return {
+        ...state,
         Loading: false,
         AuthenticateAFAResponse: action.response,
         AuthenticateAFAResponseMessage: action.message,

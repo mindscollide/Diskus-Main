@@ -4162,6 +4162,7 @@ select {
 .MuiAlert-message {
   padding: 3px 0 !important;
   font-size: 13px;
+  font-family: "Montserrat" !important;
 }
 
 svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit {
@@ -7272,30 +7273,32 @@ body[dir="rtl"] span.billing-contact {
 }
 
 /* Selecting pakage Details Css Usermangement */
-tr.ant-table-row.ant-table-row-level-0.saif {
+tr.ant-table-row.ant-table-row-level-0.PakageDetailsTable {
   outline: solid;
   outline-color: #e1e1e1;
   outline-width: 1px;
 }
 
-tr.ant-table-row.ant-table-row-level-0.saif:last-child {
+tr.ant-table-row.ant-table-row-level-0.PakageDetailsTable:last-child {
   outline: none !important;
   background: none !important;
   border: none !important;
 }
 
-tr.ant-table-row.ant-table-row-level-0.saif:last-child:hover {
+tr.ant-table-row.ant-table-row-level-0.PakageDetailsTable:last-child:hover {
   outline: none !important;
   background: none !important;
   border: none !important;
 }
 
-.ant-table-tbody > tr.saif:last-child.ant-table-row:hover > td,
-.ant-table-tbody > tr.saif:last-child > td.ant-table-cell-row-hover {
+.ant-table-tbody > tr.PakageDetailsTable:last-child.ant-table-row:hover > td,
+.ant-table-tbody
+  > tr.PakageDetailsTable:last-child
+  > td.ant-table-cell-row-hover {
   background: transparent !important;
 }
 
-.ant-table-tbody > tr.saif > td {
+.ant-table-tbody > tr.PakageDetailsTable > td {
   border-bottom: none !important;
 }
 
