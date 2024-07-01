@@ -1602,6 +1602,13 @@ const LoginHistoryReportExporttoExcel = {
 const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
+const downgradeOrganizationSubscription = {
+  RequestMethod: "ServiceManager.DowngradeOrganizationSubscription",
+};
+
+const cancelOrganizationSubscription = {
+  RequestMethod: "ServiceManager.CancelOrganizationsSubscription",
+};
 export {
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
@@ -2028,4 +2035,6 @@ export {
   downloadAttachmentTalk,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  downgradeOrganizationSubscription,
+  cancelOrganizationSubscription,
 };

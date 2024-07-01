@@ -1,21 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SubscriptionDetailsUserManagement.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Button, TableToDo } from "../../../../../components/elements";
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
-import { signUpFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+import {
+  GetOrganizationSelectedPackagesByOrganizationIDApi,
+  signUpFlowRoutes,
+} from "../../../../../store/actions/UserManagementActions";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 const SubscriptionDetailsUserManagement = () => {
   const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
+  const { UserMangementReducer } = useSelector((state) => state);
+
+  //Subscription Details Table Data
+  const [subscriptionDetails, setSubscriptionDetails] = useState(null);
+
   const handleDowngradeOption = () => {
     navigate("/Admin/downgradeSubscription");
   };
+
+  //Calling Get Organization Selected Pakages By Organization
+  useEffect(() => {
+    try {
+      dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
+    } catch (error) {
+      console.log(error, "errorerror");
+    }
+  }, []);
+
+  //Extracting Data For Organization Pakage Details
+
+  useEffect(() => {
+    try {
+      if (
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData !==
+          null &&
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData !==
+          undefined
+      ) {
+        // setSubscriptionDetails();
+      }
+    } catch {}
+  }, []);
 
   const SubscriptionDetails = [
     {

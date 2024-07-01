@@ -18,6 +18,8 @@ import {
   paymentStatus,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  downgradeOrganizationSubscription,
+  cancelOrganizationSubscription,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -2371,6 +2373,228 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
       });
   };
 };
+
+//DownGrade Organization Subscription
+const downgradeOrganizationSubscriptionInit = () => {
+  return {
+    type: actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_INIT,
+  };
+};
+
+const downgradeOrganizationSubscriptionSuccess = (response, message) => {
+  return {
+    type: actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const downgradeOrganizationSubscriptionFailed = (message) => {
+  return {
+    type: actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_SUCCESS,
+    message: message,
+  };
+};
+
+const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(downgradeOrganizationSubscriptionInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      downgradeOrganizationSubscription.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(downgradeOrganizationSubscriptionApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionSuccess(
+                  t("Data-available"),
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionFailed(
+                  t("Invalid-request-data")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionFailed(t("No-packages-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//Cancel Organization Subscription
+
+const cancelOrganizationSubscriptionInit = () => {
+  return {
+    type: actions.CANCEL_ORGANIZATION_SUBSCRIPTION_INIT,
+  };
+};
+
+const cancelOrganizationSubscriptionSuccess = (response, message) => {
+  return {
+    type: actions.CANCEL_ORGANIZATION_SUBSCRIPTION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const cancelOrganizationSubscriptionFailed = (message) => {
+  return {
+    type: actions.CANCEL_ORGANIZATION_SUBSCRIPTION_FAILED,
+    message: message,
+  };
+};
+
+const cancelOrganizationSubscriptionApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(cancelOrganizationSubscriptionInit());
+    let form = new FormData();
+    form.append("RequestMethod", cancelOrganizationSubscription.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(cancelOrganizationSubscriptionApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelOrganizationSubscriptionSuccess(t("Successfull"), "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelOrganizationSubscriptionFailed(
+                  t("Organization-subscription-not-cancelled")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelOrganizationSubscriptionFailed(
+                  t("Invalid-subscription-status-id-provided")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelOrganizationSubscriptionFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              cancelOrganizationSubscriptionFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            cancelOrganizationSubscriptionFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          cancelOrganizationSubscriptionFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   changeSelectPacakgeApi,
   signUpOrganizationAndPakageSelection,
@@ -2397,4 +2621,6 @@ export {
   requestOrganizationExtendApi,
   paymentStatusApi,
   cancelisTrailandSubscriptionApi,
+  downgradeOrganizationSubscriptionApi,
+  cancelOrganizationSubscriptionApi,
 };

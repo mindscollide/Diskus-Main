@@ -35,13 +35,7 @@ const CancelSubscriptionAdmin = () => {
 
   // useEffect to hit an API
   useEffect(() => {
-    let data = {
-      // OrganizationID: 634,
-      // OrganizationID: Number(organizationID),
-    };
-    dispatch(
-      GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, data)
-    );
+    dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
   }, []);
 
   //useEffect to render data in expiry and subscription date
