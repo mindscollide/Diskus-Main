@@ -1609,6 +1609,10 @@ const downgradeOrganizationSubscription = {
 const cancelOrganizationSubscription = {
   RequestMethod: "ServiceManager.CancelOrganizationsSubscription",
 };
+
+const getOrganizationWallet = {
+  RequestMethod: "ServiceManager.GetOrganizationWallet",
+};
 export {
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
@@ -2037,4 +2041,5 @@ export {
   CancelTrailandUpdageOrganiztionRM,
   downgradeOrganizationSubscription,
   cancelOrganizationSubscription,
+  getOrganizationWallet,
 };

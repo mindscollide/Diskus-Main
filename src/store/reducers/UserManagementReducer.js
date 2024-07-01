@@ -29,6 +29,7 @@ const initialState = {
   isFreeTrailCancelandUpgradeOrganization: null,
   downgradeOrganizationSubscriptionData: null,
   cancelOrganizationSubscriptionData: null,
+  getOrganizationWallet: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -575,6 +576,31 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         cancelOrganizationSubscriptionData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ORGANIZATION_WALLET_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ORGANIZATION_WALLET_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationWallet: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ORGANIZATION_WALLET_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationWallet: null,
         ResponseMessage: action.message,
       };
     }

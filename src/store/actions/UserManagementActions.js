@@ -20,6 +20,7 @@ import {
   CancelTrailandUpdageOrganiztionRM,
   downgradeOrganizationSubscription,
   cancelOrganizationSubscription,
+  getOrganizationWallet,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -2488,7 +2489,6 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
 };
 
 //Cancel Organization Subscription
-
 const cancelOrganizationSubscriptionInit = () => {
   return {
     type: actions.CANCEL_ORGANIZATION_SUBSCRIPTION_INIT,
@@ -2595,6 +2595,90 @@ const cancelOrganizationSubscriptionApi = (navigate, t, data) => {
   };
 };
 
+//Cancel Organization wallet
+
+const getOrganizationWalletInit = () => {
+  return {
+    type: actions.GET_ORGANIZATION_WALLET_INIT,
+  };
+};
+
+const getOrganizationWalletSuccess = (message, response) => {
+  return {
+    type: actions.GET_ORGANIZATION_WALLET_INIT,
+    message: message,
+    response: response,
+  };
+};
+
+const getOrganizationWalletFailed = (message) => {
+  return {
+    type: actions.GET_ORGANIZATION_WALLET_INIT,
+    message: message,
+  };
+};
+
+const getOrganizationWalletApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getOrganizationWalletInit());
+    let form = new FormData();
+    form.append("RequestMethod", getOrganizationWallet.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getOrganizationWalletApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationWallet_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationWalletSuccess(t("Records-available"), "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationWallet_02".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationWalletFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationWallet_03".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   changeSelectPacakgeApi,
   signUpOrganizationAndPakageSelection,
@@ -2623,4 +2707,5 @@ export {
   cancelisTrailandSubscriptionApi,
   downgradeOrganizationSubscriptionApi,
   cancelOrganizationSubscriptionApi,
+  getOrganizationWalletApi,
 };

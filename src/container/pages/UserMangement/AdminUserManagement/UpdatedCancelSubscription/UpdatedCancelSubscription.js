@@ -1,17 +1,96 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./UpdatedCancelSubscription.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Button, TableToDo } from "../../../../../components/elements";
+import { Button, Loader, TableToDo } from "../../../../../components/elements";
 import { Col, Container, Row } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
+import { useDispatch } from "react-redux";
+import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
+import { useSelector } from "react-redux";
+import {
+  formatDateDownGradeSubscription,
+  formatDateToDDMMYYYYDownGradeSubscription,
+} from "../../../../../commen/functions/date_formater";
 const UpdatedCancelSubscription = () => {
   const { t } = useTranslation();
+
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { UserMangementReducer } = useSelector((state) => state);
+
+  //Cancel Subscription Table Data
+  const [cancelSubscription, setCancelSubscription] = useState([]);
 
   const handleCancelSubscriptionOption = () => {
     navigate("/Admin/CancelSubscriptionUserManagement");
   };
+
+  //Calling Get Organization Selected Pakages By Organization
+  useEffect(() => {
+    try {
+      dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
+    } catch (error) {
+      console.log(error, "errorerror");
+    }
+  }, []);
+
+  //Extracting Data For Organization Pakage Details
+  useEffect(() => {
+    try {
+      const data =
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+      if (data) {
+        setCancelSubscription(data.organizationSubscriptions);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+
+  // Calculate total essential licenses count
+  const totalEssentialLicenses = cancelSubscription.reduce((total, record) => {
+    if (!record.IsDefaultRow) {
+      const essentialPackage = record.organizationSelectedPackages?.find(
+        (pkg) => pkg.name === "Essential"
+      );
+      if (essentialPackage) {
+        return total + essentialPackage.headCount;
+      }
+    }
+    return total;
+  }, 0);
+
+  // Calculate total essential licenses count
+  const totalProfessionalLicenses = cancelSubscription.reduce(
+    (total, record) => {
+      if (!record.IsDefaultRow) {
+        const essentialPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Professional"
+        );
+        if (essentialPackage) {
+          return total + essentialPackage.headCount;
+        }
+      }
+      return total;
+    },
+    0
+  );
+
+  // Calculate total essential licenses count
+  const totalPremiumLicenses = cancelSubscription.reduce((total, record) => {
+    if (!record.IsDefaultRow) {
+      const essentialPackage = record.organizationSelectedPackages?.find(
+        (pkg) => pkg.name === "Premium"
+      );
+      if (essentialPackage) {
+        return total + essentialPackage.headCount;
+      }
+    }
+    return total;
+  }, 0);
 
   const CancelSubscriptionDetails = [
     {
@@ -25,6 +104,28 @@ const UpdatedCancelSubscription = () => {
       key: "SubscriptionNumber",
       ellipsis: true,
       align: "center",
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
+            </>
+          );
+        } else {
+          let startdate = record.subscriptionStartDate;
+          let orgnizationID = record.fK_OrganizationsID;
+          let organizationSubscriptionID = record.fK_SubscriptionStatusID;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {`${formatDateToDDMMYYYYDownGradeSubscription(
+                  startdate
+                )}-${orgnizationID}-${organizationSubscriptionID}`}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -37,6 +138,26 @@ const UpdatedCancelSubscription = () => {
       width: 100,
       ellipsis: true,
       align: "center",
+      render: (text, record) => {
+        console.log(record.organizationSelectedPackages, "recordrecord");
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <Row>
+                <Col lg={12} md={12} sm={12} className="text-center">
+                  <span className={styles["SubscritionNumber_Styles"]}>
+                    {formatDateDownGradeSubscription(
+                      record.subscriptionStartDate
+                    )}
+                  </span>
+                </Col>
+              </Row>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -49,6 +170,19 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "ExpiryDate",
       key: "ExpiryDate",
       align: "center",
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {formatDateDownGradeSubscription(record.subscriptionExpiryDate)}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -61,6 +195,19 @@ const UpdatedCancelSubscription = () => {
       ellipsis: true,
       align: "center",
       width: 100,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {record.tenure}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -76,6 +223,29 @@ const UpdatedCancelSubscription = () => {
       ellipsis: true,
       align: "center",
       width: 100,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totalEssentialLicenses}
+              </span>
+            </>
+          );
+        } else {
+          const essentialPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Essential"
+          );
+          const headCount = essentialPackage ? essentialPackage.headCount : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {headCount}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -91,6 +261,31 @@ const UpdatedCancelSubscription = () => {
       ellipsis: true,
       align: "center",
       width: 100,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totalProfessionalLicenses}
+              </span>
+            </>
+          );
+        } else {
+          const professionalPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Professional"
+          );
+          const headCount = professionalPackage
+            ? professionalPackage.headCount
+            : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {headCount}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -106,6 +301,29 @@ const UpdatedCancelSubscription = () => {
       ellipsis: true,
       align: "center",
       width: 100,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totalPremiumLicenses}
+              </span>
+            </>
+          );
+        } else {
+          const premiumPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Premium"
+          );
+          const headCount = premiumPackage ? premiumPackage.headCount : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {headCount}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -136,98 +354,26 @@ const UpdatedCancelSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-    },
-  ];
-
-  let Data = [
-    {
-      key: "1",
-      SubscriptionNumber: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>
-            203-345-98-1
-          </span>
-        </>
-      ),
-      SubscriptionDate: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>
-            22 December 2023
-          </span>
-        </>
-      ),
-      ExpiryDate: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>
-            14 December 2023
-          </span>
-        </>
-      ),
-      Duration: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>12 months</span>
-        </>
-      ),
-      EssentialLisences: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>10</span>
-        </>
-      ),
-      ProfessionalLisences: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>5</span>
-        </>
-      ),
-      PremiumLisences: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>2</span>
-        </>
-      ),
-      TotalCharges: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>$500</span>
-        </>
-      ),
-      CancelSubscription: (
-        <>
-          <Button
-            text={t("Cancel-subscription")}
-            className={styles["DowngradeButton_styles"]}
-            onClick={handleCancelSubscriptionOption}
-          />
-        </>
-      ),
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <Button
+                text={t("Cancel-subscription")}
+                className={styles["DowngradeButton_styles"]}
+                onClick={handleCancelSubscriptionOption}
+              />
+            </>
+          );
+        }
+      },
     },
   ];
 
   const defaultRow = {
-    SubscriptionNumber: (
-      <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
-    ),
-    SubscriptionDate: "",
-    ExpiryDate: "",
-    Duration: "",
-    EssentialLisences: (
-      <>
-        <span className={styles["TableheadingTotal"]}>29</span>
-      </>
-    ),
-    ProfessionalLisences: (
-      <>
-        <span className={styles["TableheadingTotal"]}>30</span>
-      </>
-    ),
-    PremiumLisences: (
-      <>
-        <span className={styles["TableheadingTotal"]}>15</span>
-      </>
-    ),
-    TotalCharges: (
-      <>
-        <span className={styles["TableheadingTotal"]}>$3000</span>
-      </>
-    ),
-    CancelSubscription: "",
+    IsDefaultRow: true,
   };
 
   return (
@@ -250,7 +396,7 @@ const UpdatedCancelSubscription = () => {
           <TableToDo
             column={CancelSubscriptionDetails}
             className={"SubscriptionExpiryTableStyles"}
-            rows={[...Data, defaultRow]}
+            rows={[...cancelSubscription, defaultRow]}
             pagination={false}
             footer={false}
             scroll={{
@@ -262,6 +408,7 @@ const UpdatedCancelSubscription = () => {
           />
         </Col>
       </Row>
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };
