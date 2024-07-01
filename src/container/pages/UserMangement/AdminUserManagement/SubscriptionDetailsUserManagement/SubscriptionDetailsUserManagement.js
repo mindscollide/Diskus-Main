@@ -5,9 +5,13 @@ import { useTranslation } from "react-i18next";
 import { Button, TableToDo } from "../../../../../components/elements";
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import { signUpFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+import { useDispatch } from "react-redux";
 const SubscriptionDetailsUserManagement = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const handleDowngradeOption = () => {
     navigate("/Admin/downgradeSubscription");
@@ -230,6 +234,14 @@ const SubscriptionDetailsUserManagement = () => {
     DowngradeSubscription: "",
   };
 
+  //handle Create New Subscrription
+
+  const handleCreateNewSubscription = () => {
+    localStorage.setItem("SignupFlowPageRoute", 1);
+    dispatch(signUpFlowRoutes(1));
+    navigate("/Signup");
+  };
+
   return (
     <Container>
       <Row className="mt-4">
@@ -247,6 +259,7 @@ const SubscriptionDetailsUserManagement = () => {
             text={t("Create-new-subscription")}
             icon={<Plus width={20} height={20} fontWeight={800} />}
             className={styles["Create_New_subscription_styles"]}
+            onClick={handleCreateNewSubscription}
           />
         </Col>
       </Row>
