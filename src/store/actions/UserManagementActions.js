@@ -2618,13 +2618,13 @@ const getOrganizationWalletFailed = (message) => {
   };
 };
 
-const getOrganizationWalletApi = (navigate, t, data) => {
+const getOrganizationWalletApi = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getOrganizationWalletInit());
     let form = new FormData();
     form.append("RequestMethod", getOrganizationWallet.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
+
     axios({
       method: "post",
       url: getAdminURLs,
@@ -2636,7 +2636,7 @@ const getOrganizationWalletApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getOrganizationWalletApi(navigate, t, data));
+          dispatch(getOrganizationWalletApi(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

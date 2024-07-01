@@ -1,16 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./DowngradeSubscription.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import {
   Button,
+  Loader,
   TableToDo,
   TextField,
 } from "../../../../../../components/elements";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  GetOrganizationSelectedPackagesByOrganizationIDApi,
+  getOrganizationWalletApi,
+} from "../../../../../../store/actions/UserManagementActions";
+import { useSelector } from "react-redux";
+import { render } from "@testing-library/react";
 const DowngradeSubscription = () => {
   const { t } = useTranslation();
+
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { UserMangementReducer } = useSelector((state) => state);
+  //Data States
+  const [downgradeSubsData, setDowngradeSubsData] = useState([]);
+  const [textFieldValues, setTextFieldValues] = useState({});
+  const [walletData, setWalletData] = useState(null);
+
+  //Calling Wallet and Selected pakage Api
+  useEffect(() => {
+    try {
+      dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
+      dispatch(getOrganizationWalletApi(navigate, t));
+    } catch (error) {
+      console.log(error, "errorerror");
+    }
+  }, []);
+
+  //Extracting Data for Table Selected pakages
+  useEffect(() => {
+    try {
+      if (
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData !==
+          null &&
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData !==
+          undefined
+      ) {
+        const data =
+          UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+        if (data && data.organizationSubscriptions) {
+          let subscriptionData = [];
+
+          data.organizationSubscriptions.forEach((subscription) => {
+            if (subscription.organizationSelectedPackages) {
+              subscription.organizationSelectedPackages.forEach(
+                (packageItem) => {
+                  subscriptionData.push(packageItem);
+                }
+              );
+            }
+          });
+
+          setDowngradeSubsData(subscriptionData);
+        }
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
 
   const handleCancelButton = () => {
     navigate("/Admin/subscriptionDetailsUserManagement");
@@ -28,6 +87,24 @@ const DowngradeSubscription = () => {
       key: "SubscriptionDetails",
       ellipsis: true,
       align: "center",
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>Total</span>
+            </>
+          );
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {record.name}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -43,6 +120,19 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {record.price}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -58,6 +148,19 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {record.headCount}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -73,6 +176,19 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {record.allotedUsers}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -88,6 +204,19 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {record.headCount - record.allotedUsers}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -103,21 +232,54 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-      render: () => {
-        return (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <TextField labelClass="d-none" applyClass="PakageDetails" />
-              </Col>
-            </Row>
-          </>
-        );
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          const handleTextFieldChange = (e, recordId) => {
+            const { value } = e.target;
+            // Allow only numeric input
+            if (/^\d*$/.test(value)) {
+              setTextFieldValues((prevValues) => {
+                const updatedValues = {
+                  ...prevValues,
+                  [recordId]: value,
+                };
+                console.log(updatedValues, "updatedValues");
+                return updatedValues;
+              });
+            }
+          };
+
+          return (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <TextField
+                    labelClass="d-none"
+                    applyClass="PakageDetails"
+                    value={
+                      textFieldValues[
+                        record.pK_OrganizationsSelectedPackageID
+                      ] || ""
+                    }
+                    change={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        record.pK_OrganizationsSelectedPackageID
+                      )
+                    }
+                  />
+                </Col>
+              </Row>
+            </>
+          );
+        }
       },
     },
     {
@@ -134,61 +296,17 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-    },
-  ];
-
-  const Data = [
-    {
-      key: "1",
-      SubscriptionDetails: (
-        <span className={styles["SubscritionNumber_Styles"]}>Basic Plan</span>
-      ),
-      Chargesperlisences: (
-        <span className={styles["SubscritionNumber_Styles"]}>10</span>
-      ),
-      lisencepurchased: (
-        <span className={styles["SubscritionNumber_Styles"]}>100</span>
-      ),
-      lisenceutilized: (
-        <span className={styles["SubscritionNumber_Styles"]}>1000</span>
-      ),
-      lisencenotutilized: (
-        <span className={styles["SubscritionNumber_Styles"]}>100</span>
-      ),
-
-      Transfertowallet: (
-        <span className={styles["SubscritionNumber_Styles"]}>100</span>
-      ),
-    },
-    {
-      key: "2",
-      SubscriptionDetails: (
-        <span className={styles["SubscritionNumber_Styles"]}>Essential</span>
-      ),
-      Chargesperlisences: (
-        <span className={styles["SubscritionNumber_Styles"]}>234</span>
-      ),
-      lisencepurchased: (
-        <span className={styles["SubscritionNumber_Styles"]}>567</span>
-      ),
-      lisenceutilized: (
-        <span className={styles["SubscritionNumber_Styles"]}>5345</span>
-      ),
-      lisencenotutilized: (
-        <span className={styles["SubscritionNumber_Styles"]}>24</span>
-      ),
-
-      Transfertowallet: (
-        <span className={styles["SubscritionNumber_Styles"]}>234</span>
-      ),
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return <></>;
+        }
+      },
     },
   ];
 
   const defaultRow = {
-    key: "3",
-    SubscriptionDetails: (
-      <span className={styles["TableheadingTotal"]}>Total</span>
-    ),
     Chargesperlisences: (
       <>
         <span className={styles["TableheadingTotal"]}>29</span>
@@ -215,6 +333,7 @@ const DowngradeSubscription = () => {
         <span className={styles["TableheadingTotal"]}>129</span>
       </>
     ),
+    IsDefaultRow: true,
   };
   return (
     <>
@@ -266,7 +385,7 @@ const DowngradeSubscription = () => {
             <TableToDo
               column={downgradePakageTable}
               className={"DowngradeTableStyles"}
-              rows={[...Data, defaultRow]}
+              rows={[...downgradeSubsData, defaultRow]}
               pagination={false}
               footer={false}
               scroll={{
@@ -295,6 +414,7 @@ const DowngradeSubscription = () => {
             />
           </Col>
         </Row>
+        {UserMangementReducer.Loading ? <Loader /> : null}
       </section>
     </>
   );
