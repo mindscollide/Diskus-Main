@@ -209,52 +209,36 @@ const CancelSubscriptionAdmin = () => {
       </Row>
       <Row>
         <Col lg={4} md={4} sm={12} xs={12}>
-          <Card className={styles["CardCancelSubscription"]}>
-            <Row className="mt-5">
-              <Col lg={12} md={12} sm={12}>
-                <table className={styles["single-cell-table"]}>
-                  <tr>
-                    <th>{t("Subscription-number")}</th>
-                  </tr>
-                  <tr>
-                    <td>2024-08-24-991-150</td>
-                  </tr>
-                </table>
+          <Card className={styles["CardCancelSubscriptionLeft"]}>
+            <Row className="mt-3">
+              <Col lg={12} md={12} sm={12} className="text-center">
+                <p className={styles["subcriptionkey_1"]}>
+                  {t("Subscription-number")}
+                </p>
+                <p className={styles["subcriptionvalue_1"]}>
+                  2024-08-24-991-150
+                </p>
               </Col>
             </Row>
-            <Row className="mt-4">
-              <Col lg={12} md={12} sm={12}>
-                <table className={styles["single-cell-table"]}>
-                  <tr>
-                    <th>{t("Subscription-date")}</th>
-                  </tr>
-                  <tr>
-                    <td>22 December 2023</td>
-                  </tr>
-                </table>
-              </Col>
-            </Row>
-            <Row className="mt-4">
-              <Col lg={12} md={12} sm={12}>
-                <table className={styles["single-cell-table"]}>
-                  <tr>
-                    <th>{t("Expiry-date")}</th>
-                  </tr>
-                  <tr>
-                    <td>21 December 2024</td>
-                  </tr>
-                </table>
-              </Col>
-            </Row>
-            <Row className="mt-4">
-              <Col lg={12} md={12} sm={12} className="text-center pe-0">
+            <Row className="mt-1">
+              <Col lg={12} md={12} sm={12} className="text-center">
                 <p className={styles["subcriptionkey_1"]}>
                   {t("Subscription-date")}
                 </p>
+                <p className={styles["subcriptionvalue_1"]}>22 December 2023</p>
+              </Col>
+            </Row>
+            <Row className="mt-1">
+              <Col lg={12} md={12} sm={12} className="text-center">
+                <p className={styles["subcriptionkey_1"]}>{t("Expiry-date")}</p>
+                <p className={styles["subcriptionvalue_1"]}>21 December 2024</p>
+              </Col>
+            </Row>
+            <Row className="mt-1">
+              <Col lg={12} md={12} sm={12} className="text-center">
+                <p className={styles["subcriptionkey_1"]}>{t("Duration")}</p>
                 <p className={styles["subcriptionvalue_1"]}>
-                  {_justShowDateformat(
-                    cancelSubsDetail.cancelSubscriptionDate + "000000"
-                  )}
+                  Annual Subscription
                 </p>
               </Col>
             </Row>
