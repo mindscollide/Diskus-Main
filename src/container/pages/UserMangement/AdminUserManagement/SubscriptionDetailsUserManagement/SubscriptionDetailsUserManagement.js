@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./SubscriptionDetailsUserManagement.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TableToDo } from "../../../../../components/elements";
+import { Button, Loader, TableToDo } from "../../../../../components/elements";
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,6 +11,11 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { render } from "@testing-library/react";
+import {
+  formatDateDownGradeSubscription,
+  formatDateToDDMMYYYYDownGradeSubscription,
+} from "../../../../../commen/functions/date_formater";
 const SubscriptionDetailsUserManagement = () => {
   const { t } = useTranslation();
 
@@ -21,7 +26,7 @@ const SubscriptionDetailsUserManagement = () => {
   const { UserMangementReducer } = useSelector((state) => state);
 
   //Subscription Details Table Data
-  const [subscriptionDetails, setSubscriptionDetails] = useState(null);
+  const [subscriptionDetails, setSubscriptionDetails] = useState([]);
 
   const handleDowngradeOption = () => {
     navigate("/Admin/downgradeSubscription");
@@ -37,19 +42,59 @@ const SubscriptionDetailsUserManagement = () => {
   }, []);
 
   //Extracting Data For Organization Pakage Details
-
   useEffect(() => {
     try {
-      if (
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData !==
-          null &&
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData !==
-          undefined
-      ) {
-        // setSubscriptionDetails();
+      const data =
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+      if (data) {
+        setSubscriptionDetails(data.organizationSubscriptions);
       }
-    } catch {}
-  }, []);
+    } catch (error) {
+      console.log("error", error);
+    }
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+
+  // Calculate total essential licenses count
+  const totalEssentialLicenses = subscriptionDetails.reduce((total, record) => {
+    if (!record.IsDefaultRow) {
+      const essentialPackage = record.organizationSelectedPackages?.find(
+        (pkg) => pkg.name === "Essential"
+      );
+      if (essentialPackage) {
+        return total + essentialPackage.headCount;
+      }
+    }
+    return total;
+  }, 0);
+
+  // Calculate total essential licenses count
+  const totalProfessionalLicenses = subscriptionDetails.reduce(
+    (total, record) => {
+      if (!record.IsDefaultRow) {
+        const essentialPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Professional"
+        );
+        if (essentialPackage) {
+          return total + essentialPackage.headCount;
+        }
+      }
+      return total;
+    },
+    0
+  );
+
+  // Calculate total essential licenses count
+  const totalPremiumLicenses = subscriptionDetails.reduce((total, record) => {
+    if (!record.IsDefaultRow) {
+      const essentialPackage = record.organizationSelectedPackages?.find(
+        (pkg) => pkg.name === "Premium"
+      );
+      if (essentialPackage) {
+        return total + essentialPackage.headCount;
+      }
+    }
+    return total;
+  }, 0);
 
   const SubscriptionDetails = [
     {
@@ -63,6 +108,28 @@ const SubscriptionDetailsUserManagement = () => {
       key: "SubscriptionNumber",
       ellipsis: true,
       align: "center",
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
+            </>
+          );
+        } else {
+          let startdate = record.subscriptionStartDate;
+          let orgnizationID = record.fK_OrganizationsID;
+          let organizationSubscriptionID = record.fK_SubscriptionStatusID;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {`${formatDateToDDMMYYYYDownGradeSubscription(
+                  startdate
+                )}-${orgnizationID}-${organizationSubscriptionID}`}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -75,6 +142,26 @@ const SubscriptionDetailsUserManagement = () => {
       width: 100,
       ellipsis: true,
       align: "center",
+      render: (text, record) => {
+        console.log(record.organizationSelectedPackages, "recordrecord");
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <Row>
+                <Col lg={12} md={12} sm={12} className="text-center">
+                  <span className={styles["SubscritionNumber_Styles"]}>
+                    {formatDateDownGradeSubscription(
+                      record.subscriptionStartDate
+                    )}
+                  </span>
+                </Col>
+              </Row>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -87,6 +174,19 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "ExpiryDate",
       key: "ExpiryDate",
       align: "center",
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {formatDateDownGradeSubscription(record.subscriptionExpiryDate)}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -99,6 +199,19 @@ const SubscriptionDetailsUserManagement = () => {
       ellipsis: true,
       align: "center",
       width: 100,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {record.tenure}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -109,11 +222,34 @@ const SubscriptionDetailsUserManagement = () => {
           </span>
         </span>
       ),
-      dataIndex: "EssentialLisences",
-      key: "EssentialLisences",
+      dataIndex: "EssentialLicenses",
+      key: "EssentialLicenses",
       ellipsis: true,
       align: "center",
       width: 100,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totalEssentialLicenses}
+              </span>
+            </>
+          );
+        } else {
+          const essentialPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Essential"
+          );
+          const headCount = essentialPackage ? essentialPackage.headCount : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {headCount}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -124,11 +260,36 @@ const SubscriptionDetailsUserManagement = () => {
           </span>
         </span>
       ),
-      dataIndex: "ProfessionalLisences",
-      key: "ProfessionalLisences",
+      dataIndex: "ProfessionalLicenses",
+      key: "ProfessionalLicenses",
       ellipsis: true,
       align: "center",
       width: 100,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totalProfessionalLicenses}
+              </span>
+            </>
+          );
+        } else {
+          const professionalPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Professional"
+          );
+          const headCount = professionalPackage
+            ? professionalPackage.headCount
+            : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {headCount}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -139,11 +300,34 @@ const SubscriptionDetailsUserManagement = () => {
           </span>
         </span>
       ),
-      dataIndex: "PremiumLisences",
-      key: "PremiumLisences",
+      dataIndex: "PremiumLicenses",
+      key: "PremiumLicenses",
       ellipsis: true,
       align: "center",
       width: 100,
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totalPremiumLicenses}
+              </span>
+            </>
+          );
+        } else {
+          const premiumPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Premium"
+          );
+          const headCount = premiumPackage ? premiumPackage.headCount : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {headCount}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
@@ -159,6 +343,7 @@ const SubscriptionDetailsUserManagement = () => {
       width: 100,
       align: "center",
       ellipsis: true,
+      render: () => {},
     },
     {
       title: (
@@ -174,102 +359,29 @@ const SubscriptionDetailsUserManagement = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-    },
-  ];
-
-  let Data = [
-    {
-      key: "1",
-      SubscriptionNumber: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>
-            203-345-98-1
-          </span>
-        </>
-      ),
-      SubscriptionDate: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>
-            22 December 2023
-          </span>
-        </>
-      ),
-      ExpiryDate: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>
-            14 December 2023
-          </span>
-        </>
-      ),
-      Duration: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>12 months</span>
-        </>
-      ),
-      EssentialLisences: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>10</span>
-        </>
-      ),
-      ProfessionalLisences: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>5</span>
-        </>
-      ),
-      PremiumLisences: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>2</span>
-        </>
-      ),
-      TotalCharges: (
-        <>
-          <span className={styles["SubscritionNumber_Styles"]}>$500</span>
-        </>
-      ),
-      DowngradeSubscription: (
-        <>
-          <Button
-            text={"Downgrade"}
-            className={styles["DowngradeButton_styles"]}
-            onClick={handleDowngradeOption}
-          />
-        </>
-      ),
+      render: (text, record) => {
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <Button
+                text={"Downgrade"}
+                className={styles["DowngradeButton_styles"]}
+                onClick={handleDowngradeOption}
+              />
+            </>
+          );
+        }
+      },
     },
   ];
 
   const defaultRow = {
-    SubscriptionNumber: (
-      <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
-    ),
-    SubscriptionDate: "",
-    ExpiryDate: "",
-    Duration: "",
-    EssentialLisences: (
-      <>
-        <span className={styles["TableheadingTotal"]}>29</span>
-      </>
-    ),
-    ProfessionalLisences: (
-      <>
-        <span className={styles["TableheadingTotal"]}>30</span>
-      </>
-    ),
-    PremiumLisences: (
-      <>
-        <span className={styles["TableheadingTotal"]}>15</span>
-      </>
-    ),
-    TotalCharges: (
-      <>
-        <span className={styles["TableheadingTotal"]}>$3000</span>
-      </>
-    ),
-    DowngradeSubscription: "",
+    IsDefaultRow: true,
   };
 
   //handle Create New Subscrription
-
   const handleCreateNewSubscription = () => {
     localStorage.setItem("SignupFlowPageRoute", 1);
     dispatch(signUpFlowRoutes(1));
@@ -302,7 +414,7 @@ const SubscriptionDetailsUserManagement = () => {
           <TableToDo
             column={SubscriptionDetails}
             className={"SubscriptionExpiryTableStyles"}
-            rows={[...Data, defaultRow]}
+            rows={[...subscriptionDetails, defaultRow]}
             pagination={false}
             footer={false}
             scroll={{
@@ -314,6 +426,7 @@ const SubscriptionDetailsUserManagement = () => {
           />
         </Col>
       </Row>
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };
