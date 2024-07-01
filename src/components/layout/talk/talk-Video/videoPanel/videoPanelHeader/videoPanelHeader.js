@@ -89,30 +89,22 @@ const VideoPanelHeader = () => {
 
   return (
     <>
-      <Container>
-        <Row>
-          <Col lg={2} md={2} sm={12}>
-            <p className="talk-video-heading">Video</p>
-          </Col>
-          <Col lg={4} md={4} sm={12}>
-            <Select
-              options={chatFilterOptions}
-              defaultValue={chatFilterOptions[0]}
-              onChange={chatFilterHandler}
-              className="videoFilter"
-              popupClassName="talk-video-filter"
-              onClick={preventPropagation}
-            />
-          </Col>
-          <Col lg={5} md={5} sm={12}></Col>
-
-          <Col lg={1} md={1} sm={12} className="p-0">
-            <div className="chat-icons" onClick={videoSearchFilterChat}>
-              <img src={SearchIcon} className="img-cover" />
-            </div>
-          </Col>
-        </Row>
-      </Container>
+      <section className="d-flex justify-content-between">
+        <div className="d-flex align-items-center gap-2">
+          <p className="talk-video-heading m-0">Video</p>
+          <Select
+            options={chatFilterOptions}
+            defaultValue={chatFilterOptions[0]}
+            onChange={chatFilterHandler}
+            className="videoFilter"
+            popupClassName="talk-video-filter"
+            onClick={preventPropagation}
+          />
+        </div>
+        <div className="d-flex align-items-center justify-content-center" onClick={videoSearchFilterChat}>
+          <img src={SearchIcon} className="img-cover" width={20} />
+        </div>
+      </section>
     </>
   );
 };

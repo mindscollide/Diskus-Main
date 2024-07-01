@@ -42,9 +42,9 @@ const UserSettings = () => {
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
-  // const { loaded, clientId } = useGoogleLogin({
-  //   clientId: process.env.REACT_APP_GOOGLE_LOGIN_URL,
-  // });
+  const { loaded, clientId } = useGoogleLogin({
+    clientId: process.env.REACT_APP_GOOGLE_LOGIN_URL,
+  });
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
     Is2FAEnabled: false,
@@ -113,34 +113,34 @@ const UserSettings = () => {
     }
   }, []);
 
-  // const handleGoogleLoginSuccess = (response) => {
-  //   console.log("Google Code ", response.code);
-  //   setSignUpCodeToken(response.code);
-  //   setUserOptionsSettings({
-  //     ...userOptionsSettings,
-  //     AllowGoogleCalenderSync: true,
-  //   });
-  // };
+  const handleGoogleLoginSuccess = (response) => {
+    console.log("Google Code ", response.code);
+    setSignUpCodeToken(response.code);
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      AllowGoogleCalenderSync: true,
+    });
+  };
 
-  // const handleGoogleLoginFailure = (response) => {
-  //   setSignUpCodeToken("");
-  //   setUserOptionsSettings({
-  //     ...userOptionsSettings,
-  //     AllowGoogleCalenderSync: userOptionsSettings.AllowGoogleCalenderSync,
-  //   });
-  // };
+  const handleGoogleLoginFailure = (response) => {
+    setSignUpCodeToken("");
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      AllowGoogleCalenderSync: userOptionsSettings.AllowGoogleCalenderSync,
+    });
+  };
 
-  // const signIn = useGoogleLogin({
-  //   onSuccess: handleGoogleLoginSuccess,
-  //   onError: handleGoogleLoginFailure,
-  //   flow: "auth-code",
-  //   cookiePolicy: "single_host_origin",
-  //   scope:
-  //     "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.events", //openid email profile
-  //   access_type: "offline",
-  //   responseType: "code",
-  //   prompt: "consent",
-  // });
+  const signIn = useGoogleLogin({
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginFailure,
+    flow: "auth-code",
+    cookiePolicy: "single_host_origin",
+    scope:
+      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.events", //openid email profile
+    access_type: "offline",
+    responseType: "code",
+    prompt: "consent",
+  });
 
   useEffect(() => {
     if (
@@ -434,7 +434,7 @@ const UserSettings = () => {
   const onChangeAllowCalenderSync = (e) => {
     let value = e.target.checked;
     if (value) {
-      // signIn();
+      signIn();
     } else {
       setUserOptionsSettings({
         ...userOptionsSettings,

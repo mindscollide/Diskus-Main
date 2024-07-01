@@ -1,14 +1,14 @@
 .talk-video-heading {
-    position: relative;
-    top: 12px;
-    font-size: 15px;
-    color: #5a5a5a !important;
-    font-weight: 600;
+  /* position: relative; */
+  /* top: 12px; */
+  font-size: 15px;
+  color: #5a5a5a !important;
+  font-weight: 600;
 }
 
 .videoFilter {
-    margin-top: 10px;
-    width: 108px;
+  /* margin-top: 10px; */
+  width: 108px;
 }
 
 .videoFilter .ant-select-selector {
@@ -18,14 +18,21 @@
     width: 85px !important;
     color: #fff !important;
     font-weight: 600 !important;
-    height: 27px !important;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(.rc-virtual-list-holder-inner .ant-select-item.ant-select-item-option.talk-video-filter) {
-    min-width: 87px !important;
-    width: 87px !important;
+
+.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(
+    .rc-virtual-list-holder-inner
+      .ant-select-item.ant-select-item-option.talk-video-filter
+  ) {
+  min-width: 87px !important;
+  width: 87px !important;
 }
 
 .rc-virtual-list-holder-inner:has(.talk-video-filter) {
-    display: flex !important;
+  display: flex !important;
 }
