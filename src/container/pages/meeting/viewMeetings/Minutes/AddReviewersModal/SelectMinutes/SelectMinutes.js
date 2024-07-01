@@ -20,7 +20,11 @@ const SelectMinutes = ({
   sendReviewers,
   setSendReviewers,
   editReviewer,
-  setEditReviewer
+  setEditReviewer,
+  setMinuteDataAgenda,
+  minuteDataAgenda,
+  setMinuteDataGeneral,
+  minuteDataGeneral,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -28,8 +32,8 @@ const SelectMinutes = ({
 
   const { MinutesReducer } = useSelector((state) => state);
 
-  const [minutesDataAgenda, setMinutesDataAgenda] = useState([]);
-  const [minutesDataGeneral, setMinutesDataGeneral] = useState([]);
+  // const [minutesDataAgenda, setMinutesDataAgenda] = useState([]);
+  // const [minutesDataGeneral, setMinutesDataGeneral] = useState([]);
   const [checkAllMinutes, setCheckAllMinutes] = useState(false);
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
@@ -40,23 +44,23 @@ const SelectMinutes = ({
   console.log("checkedMinutescheckedMinutes", checkedMinutes);
   const [checkedMinutesData, setCheckedMinutesData] = useState([]);
 
-  useEffect(() => {
-    if (
-      MinutesReducer.allMinutesAG !== undefined &&
-      MinutesReducer.allMinutesAG !== null &&
-      MinutesReducer.allMinutesAG.length !== 0
-    ) {
-      setMinutesDataAgenda(MinutesReducer.allMinutesAG.agendaWise);
-      setMinutesDataGeneral(MinutesReducer.allMinutesAG.general);
-    } else {
-      setMinutesDataAgenda([]);
-      setMinutesDataGeneral([]);
-    }
-    return () => {
-      setMinutesDataAgenda([]);
-      setMinutesDataGeneral([]);
-    };
-  }, [MinutesReducer.allMinutesAG]);
+  // useEffect(() => {
+  //   if (
+  //     MinutesReducer.allMinutesAG !== undefined &&
+  //     MinutesReducer.allMinutesAG !== null &&
+  //     MinutesReducer.allMinutesAG.length !== 0
+  //   ) {
+  //     setMinutesDataAgenda(MinutesReducer.allMinutesAG.agendaWise);
+  //     setMinutesDataGeneral(MinutesReducer.allMinutesAG.general);
+  //   } else {
+  //     setMinutesDataAgenda([]);
+  //     setMinutesDataGeneral([]);
+  //   }
+  //   return () => {
+  //     setMinutesDataAgenda([]);
+  //     setMinutesDataGeneral([]);
+  //   };
+  // }, [MinutesReducer.allMinutesAG]);
 
   useEffect(() => {
     const checkIfTruncated = () => {
@@ -86,168 +90,174 @@ const SelectMinutes = ({
   console.log("MinuteReducerMinuteReducer", MinutesReducer);
 
   const [selectAll, setSelectAll] = useState(false);
-  const SelectAllFunc = (event) => {
-    const { checked } = event.target;
-    let ids = [];
-    if (checked === false) {
-      setSelectAll(false);
-      setCheckAllMinutes(false);
-      setCheckBoxIds([]);
-    } else {
-      console.log(minutesDataAgenda, "minutesDataAgendaminutesDataAgenda");
-      minutesDataAgenda.forEach((data, index) => {
-        ids.push(data);
-        if (data.items.length > 0) {
-          data.items.forEach((data2, index) => {
-            ids.push(data2);
-          });
-        }
-        if (data.subItems.length > 0) {
-          data.subItems.forEach((data3, index) => {
-            ids.push(data3);
-            if (data3.items.length > 0) {
-              data3.items.forEach((data4, index) => {
-                ids.push(data4);
-              });
-            }
-          });
-        }
-      });
-      // setCheckBoxIds(ids);
-      const newIds = minutesDataGeneral.map((newData2) => newData2);
-      setCheckBoxIds((prev) => [...ids, ...newIds]);
-      setSelectAll(true);
-      setCheckAllMinutes(true);
-    }
-    // setSelectAll(!selectAll);
-  };
+  // const SelectAllFunc = (event) => {
+  //   const { checked } = event.target;
+  //   let ids = [];
+  //   if (checked === false) {
+  //     setSelectAll(false);
+  //     setCheckAllMinutes(false);
+  //     setCheckBoxIds([]);
+  //   } else {
+  //     console.log(minutesDataAgenda, "minutesDataAgendaminutesDataAgenda");
+  //     minutesDataAgenda.forEach((data, index) => {
+  //       ids.push(data);
+  //       if (data.items.length > 0) {
+  //         data.items.forEach((data2, index) => {
+  //           ids.push(data2);
+  //         });
+  //       }
+  //       if (data.subItems.length > 0) {
+  //         data.subItems.forEach((data3, index) => {
+  //           ids.push(data3);
+  //           if (data3.items.length > 0) {
+  //             data3.items.forEach((data4, index) => {
+  //               ids.push(data4);
+  //             });
+  //           }
+  //         });
+  //       }
+  //     });
+  //     // setCheckBoxIds(ids);
+  //     const newIds = minutesDataGeneral.map((newData2) => newData2);
+  //     setCheckBoxIds((prev) => [...ids, ...newIds]);
+  //     setSelectAll(true);
+  //     setCheckAllMinutes(true);
+  //   }
+  //   // setSelectAll(!selectAll);
+  // };
 
-  console.log({ checkBoxIds }, "checkBoxMainHandlecheckBoxMainHandle");
+  // console.log({ checkBoxIds }, "checkBoxMainHandlecheckBoxMainHandle");
 
-  const MainAgendaHeadingCheckbox = (data) => {
-    if (data.items.length > 0) {
-      const allItemsChecked = data.items.every((newData2) =>
-        checkBoxIds.includes(newData2)
-      );
+  // const MainAgendaHeadingCheckbox = (data) => {
+  //   if (data.items.length > 0) {
+  //     const allItemsChecked = data.items.every((newData2) =>
+  //       checkBoxIds.includes(newData2)
+  //     );
 
-      if (allItemsChecked && checkBoxIds.includes(data)) {
-        // If all items and data.id are checked, remove them
-        setCheckBoxIds((prev) =>
-          prev.filter(
-            (filterId) =>
-              !data.items.some((item) => item === filterId) && filterId !== data
-          )
-        );
-      } else {
-        // If not all items or data.id are checked, add them
-        const newIds = data.items.map((newData2) => newData2);
-        setCheckBoxIds((prev) => [...new Set([...prev, ...newIds, data])]);
-      }
-    }
-  };
+  //     if (allItemsChecked && checkBoxIds.includes(data)) {
+  //       // If all items and data.id are checked, remove them
+  //       setCheckBoxIds((prev) =>
+  //         prev.filter(
+  //           (filterId) =>
+  //             !data.items.some((item) => item === filterId) && filterId !== data
+  //         )
+  //       );
+  //     } else {
+  //       // If not all items or data.id are checked, add them
+  //       const newIds = data.items.map((newData2) => newData2);
+  //       setCheckBoxIds((prev) => [...new Set([...prev, ...newIds, data])]);
+  //     }
+  //   }
+  // };
 
-  const MainSubAgendaHeadingCheckbox = (data, subItem) => {
-    if (subItem.items.length > 0) {
-      const allItemsChecked = subItem.items.map((newData2) =>
-        checkBoxIds.includes(newData2)
-      );
-      console.log(
-        allItemsChecked,
-        "allItemsCheckedallItemsCheckedallItemsChecked"
-      );
-      if (allItemsChecked && checkBoxIds.includes(subItem)) {
-        // If all items and subItem are checked, remove them
-        setCheckBoxIds((prev) =>
-          prev.filter(
-            (filterId) =>
-              !subItem.items.some((item) => item === filterId) &&
-              filterId !== subItem
-          )
-        );
-      } else {
-        // If not all items or subItem are checked, add them
-        const newIds = subItem.items.map((newData2) => newData2);
-        setCheckBoxIds((prev) => [...new Set([...prev, ...newIds, subItem])]);
-      }
-    }
-  };
+  // const MainSubAgendaHeadingCheckbox = (data, subItem) => {
+  //   if (subItem.items.length > 0) {
+  //     const allItemsChecked = subItem.items.map((newData2) =>
+  //       checkBoxIds.includes(newData2)
+  //     );
+  //     console.log(
+  //       allItemsChecked,
+  //       "allItemsCheckedallItemsCheckedallItemsChecked"
+  //     );
+  //     if (allItemsChecked && checkBoxIds.includes(subItem)) {
+  //       // If all items and subItem are checked, remove them
+  //       setCheckBoxIds((prev) =>
+  //         prev.filter(
+  //           (filterId) =>
+  //             !subItem.items.some((item) => item === filterId) &&
+  //             filterId !== subItem
+  //         )
+  //       );
+  //     } else {
+  //       // If not all items or subItem are checked, add them
+  //       const newIds = subItem.items.map((newData2) => newData2);
+  //       setCheckBoxIds((prev) => [...new Set([...prev, ...newIds, subItem])]);
+  //     }
+  //   }
+  // };
 
-  const MainAgendaSubItem = (agendaID, items) => {
-    // Check if all items are checked
-    const allItemsChecked =
-      items.items.length > 0 &&
-      items.items.every((item) => checkBoxIds.includes(item));
+  // const MainAgendaSubItem = (agendaID, items) => {
+  //   // Check if all items are checked
+  //   const allItemsChecked =
+  //     items.items.length > 0 &&
+  //     items.items.every((item) => checkBoxIds.includes(item));
 
-    if (checkBoxIds.includes(agendaID) || allItemsChecked) {
-      // If agendaID or all items are checked, remove them
-      setCheckBoxIds((prev) =>
-        prev.filter((filterId) => filterId !== agendaID)
-      );
-    } else {
-      // If not, add them
-      setCheckBoxIds((prev) => [...prev, agendaID, items]);
-    }
-  };
+  //   if (checkBoxIds.includes(agendaID) || allItemsChecked) {
+  //     // If agendaID or all items are checked, remove them
+  //     setCheckBoxIds((prev) =>
+  //       prev.filter((filterId) => filterId !== agendaID)
+  //     );
+  //   } else {
+  //     // If not, add them
+  //     setCheckBoxIds((prev) => [...prev, agendaID, items]);
+  //   }
+  // };
 
-  const MainSubItemAgendaSubItem = (subAgendaID, subagendaMinuteData) => {
-    const allItemsChecked =
-      subagendaMinuteData.items.length > 0 &&
-      subagendaMinuteData.items.map((item) => checkBoxIds.includes(item));
-    console.log(
-      allItemsChecked,
-      "allItemsCheckedallItemsCheckedallItemsChecked"
-    );
-    if (checkBoxIds.includes(subAgendaID)) {
-      // If subAgendaID or all items are checked, remove them
-      setCheckBoxIds((prev) =>
-        prev.filter((filterId) => filterId !== subAgendaID)
-      );
-    } else {
-      // If not, add them
-      setCheckBoxIds((prev) => [...prev, subAgendaID, subagendaMinuteData]);
-    }
-  };
+  // const MainSubItemAgendaSubItem = (subAgendaID, subagendaMinuteData) => {
+  //   const allItemsChecked =
+  //     subagendaMinuteData.items.length > 0 &&
+  //     subagendaMinuteData.items.map((item) => checkBoxIds.includes(item));
+  //   console.log(
+  //     allItemsChecked,
+  //     "allItemsCheckedallItemsCheckedallItemsChecked"
+  //   );
+  //   if (checkBoxIds.includes(subAgendaID)) {
+  //     // If subAgendaID or all items are checked, remove them
+  //     setCheckBoxIds((prev) =>
+  //       prev.filter((filterId) => filterId !== subAgendaID)
+  //     );
+  //   } else {
+  //     // If not, add them
+  //     setCheckBoxIds((prev) => [...prev, subAgendaID, subagendaMinuteData]);
+  //   }
+  // };
 
-  const checkAllGeneralMinutes = (generalID, minutesDataGeneral) => {
-    const allItemsChecked =
-      minutesDataGeneral.length > 0 &&
-      minutesDataGeneral.every((item) => checkBoxIds.includes(item));
+  // const checkAllGeneralMinutes = (generalID, minutesDataGeneral) => {
+  //   const allItemsChecked =
+  //     minutesDataGeneral.length > 0 &&
+  //     minutesDataGeneral.every((item) => checkBoxIds.includes(item));
 
-    if (checkBoxIds.includes(generalID) || allItemsChecked) {
-      // setCheckAllMinutes(false);
+  //   if (checkBoxIds.includes(generalID) || allItemsChecked) {
+  //     // setCheckAllMinutes(false);
 
-      // If subAgendaID or all items are checked, remove them
-      setCheckBoxIds((prev) =>
-        prev.filter((filterId) => filterId !== generalID)
-      );
-    } else {
-      // If not, add them
-      setCheckAllMinutes(true);
-      setCheckBoxIds((prev) => [...prev, generalID]);
-    }
-  };
+  //     // If subAgendaID or all items are checked, remove them
+  //     setCheckBoxIds((prev) =>
+  //       prev.filter((filterId) => filterId !== generalID)
+  //     );
+  //   } else {
+  //     // If not, add them
+  //     setCheckAllMinutes(true);
+  //     setCheckBoxIds((prev) => [...prev, generalID]);
+  //   }
+  // };
 
-  const handleCheckAllGeneral = (minutesDataGeneral) => {
-    // Check if all items are checked
+  // const handleCheckAllGeneral = (minutesDataGeneral) => {
+  //   // Check if all items are checked
 
-    const allItemsChecked =
-      minutesDataGeneral.length > 0 &&
-      minutesDataGeneral.every((item) => checkBoxIds.includes(item));
+  //   const allItemsChecked =
+  //     minutesDataGeneral.length > 0 &&
+  //     minutesDataGeneral.every((item) => checkBoxIds.includes(item));
 
-    if (checkAllMinutes || allItemsChecked) {
-      // If all items and subItem are checked, remove them
-      setCheckBoxIds((prev) =>
-        prev.filter(
-          (filterId) => !minutesDataGeneral.some((item) => item === filterId)
-        )
-      );
-      setCheckAllMinutes(false);
-    } else {
-      // If not, add them
-      setCheckBoxIds((prev) => [...prev, ...minutesDataGeneral]);
-      setCheckAllMinutes(true);
-    }
-  };
+  //   if (checkAllMinutes || allItemsChecked) {
+  //     // If all items and subItem are checked, remove them
+  //     setCheckBoxIds((prev) =>
+  //       prev.filter(
+  //         (filterId) => !minutesDataGeneral.some((item) => item === filterId)
+  //       )
+  //     );
+  //     setCheckAllMinutes(false);
+  //   } else {
+  //     // If not, add them
+  //     setCheckBoxIds((prev) => [...prev, ...minutesDataGeneral]);
+  //     setCheckAllMinutes(true);
+  //   }
+  // };
+
+  console.log(
+    "SelectMinutesDataSelectMinutesData",
+    minuteDataAgenda,
+    minuteDataGeneral
+  );
 
   return (
     <>
@@ -264,18 +274,18 @@ const SelectMinutes = ({
             className="SearchCheckbox "
             name="IsChat"
             // checked={checkAllMinutes}
-            checked={selectAll}
+            // checked={selectAll}
             // onChange={handleCheckAll}
-            onChange={(event) => SelectAllFunc(event)}
+            // onChange={(event) => SelectAllFunc(event)}
             classNameDiv={styles["addReviewersCheckbox"]}
           />
         </Col>
       </Row>
       {/* Agenda Wise Minutes */}
 
-      {minutesDataAgenda.length > 0 ? (
+      {minuteDataAgenda !== null ? (
         <>
-          {minutesDataAgenda.map((data, index) => {
+          {minuteDataAgenda.map((data, index) => {
             console.log("minutesDataAgendaminutesDataAgenda", data);
             return (
               <div key={index}>
@@ -286,16 +296,16 @@ const SelectMinutes = ({
                       label2={data.title}
                       className="SearchCheckbox"
                       name="IsChat"
-                      checked={checkBoxIds.includes(data)}
-                      onChange={() => MainAgendaHeadingCheckbox(data)}
+                      // checked={checkBoxIds.includes(data)}
+                      // onChange={() => MainAgendaHeadingCheckbox(data)}
                       classNameDiv={styles["agendaTitleCheckbox"]}
                     />
                   </Col>
                 </Row>
                 {data.items.map((agendaMinuteData, index) => {
-                  const isTruncated = !expandedItems[agendaMinuteData.id];
+                  const isTruncated = !expandedItems[agendaMinuteData.minuteID];
                   return (
-                    <Row key={agendaMinuteData.id}>
+                    <Row key={agendaMinuteData.minuteID}>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           label2Class={styles["minuteParentLabel"]}
@@ -352,7 +362,9 @@ const SelectMinutes = ({
                                   >
                                     <span
                                       onClick={() =>
-                                        showHideDetails(agendaMinuteData.id)
+                                        showHideDetails(
+                                          agendaMinuteData.minuteID
+                                        )
                                       }
                                       className={styles["view-details"]}
                                     >
@@ -376,11 +388,11 @@ const SelectMinutes = ({
                             </>
                           }
                           className="SearchCheckbox"
-                          name={`minute-${agendaMinuteData.id}`}
-                          checked={checkBoxIds.includes(agendaMinuteData)}
-                          onChange={() =>
-                            MainAgendaSubItem(agendaMinuteData, data)
-                          }
+                          name={`minute-${agendaMinuteData.minuteID}`}
+                          // checked={checkBoxIds.includes(agendaMinuteData)}
+                          // onChange={() =>
+                          //   MainAgendaSubItem(agendaMinuteData, data)
+                          // }
                           // checked={checkedMinutes[agendaMinuteData.id]}
                           // onChange={(e) =>
                           //   onChange2(e, agendaMinuteData.id)
@@ -400,13 +412,13 @@ const SelectMinutes = ({
                             label2={subagendaMinuteData.title}
                             className="SearchCheckbox"
                             name="IsChat"
-                            onChange={() =>
-                              MainSubAgendaHeadingCheckbox(
-                                data,
-                                subagendaMinuteData
-                              )
-                            }
-                            checked={checkBoxIds.includes(subagendaMinuteData)}
+                            // onChange={() =>
+                            //   MainSubAgendaHeadingCheckbox(
+                            //     data,
+                            //     subagendaMinuteData
+                            //   )
+                            // }
+                            // checked={checkBoxIds.includes(subagendaMinuteData)}
                             // checked={checkAllMinutes}
                             // onChange={(e) =>
                             //   handleChangeTitle(
@@ -420,10 +432,11 @@ const SelectMinutes = ({
                             subagendaMinuteData.items.length > 0 &&
                             subagendaMinuteData.items.map(
                               (subItem, subIndex) => {
-                                const isTruncated = !expandedItems[subItem.id];
+                                const isTruncated =
+                                  !expandedItems[subItem.minuteID];
                                 return (
                                   <Checkbox
-                                    key={subItem.id}
+                                    key={subItem.minuteID}
                                     label2Class={styles["minuteParentLabel"]}
                                     label2={
                                       <>
@@ -488,7 +501,9 @@ const SelectMinutes = ({
                                             >
                                               <span
                                                 onClick={() =>
-                                                  showHideDetails(subItem.id)
+                                                  showHideDetails(
+                                                    subItem.minuteID
+                                                  )
                                                 }
                                                 className={
                                                   styles["view-details"]
@@ -514,14 +529,14 @@ const SelectMinutes = ({
                                       </>
                                     }
                                     className="SearchCheckbox"
-                                    name={`minute-${subItem.id}`}
-                                    checked={checkBoxIds.includes(subItem)}
-                                    onChange={() =>
-                                      MainSubItemAgendaSubItem(
-                                        subItem,
-                                        subagendaMinuteData
-                                      )
-                                    }
+                                    name={`minute-${subItem.minuteID}`}
+                                    // checked={checkBoxIds.includes(subItem)}
+                                    // onChange={() =>
+                                    //   MainSubItemAgendaSubItem(
+                                    //     subItem,
+                                    //     subagendaMinuteData
+                                    //   )
+                                    // }
                                     classNameDiv={styles["agendaTitleCheckbox"]}
                                   />
                                 );
@@ -538,7 +553,7 @@ const SelectMinutes = ({
       ) : null}
 
       {/* General Mintues */}
-      {minutesDataGeneral.length > 0 ? (
+      {minuteDataGeneral !== null ? (
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
@@ -547,15 +562,15 @@ const SelectMinutes = ({
                 label2={t("General-minutes")}
                 className="SearchCheckbox "
                 name="IsChat"
-                checked={checkAllMinutes}
+                // checked={checkAllMinutes}
                 // checked={Object.values(checkedMinutes).every(Boolean)}
-                onChange={() => handleCheckAllGeneral(minutesDataGeneral)}
+                // onChange={() => handleCheckAllGeneral(minutesDataGeneral)}
                 classNameDiv={styles["agendaTitleCheckbox"]}
               />
             </Col>
           </Row>
-          {minutesDataGeneral.map((data, index) => {
-            const isTruncated = !expandedItems[data.id];
+          {minuteDataGeneral.map((data, index) => {
+            const isTruncated = !expandedItems[data.minuteID];
             return (
               <Row>
                 <Col lg={12} md={12} sm={12}>
@@ -610,7 +625,9 @@ const SelectMinutes = ({
                               {isTruncated ? (
                                 <>
                                   <span
-                                    onClick={() => showHideDetails(data.id)}
+                                    onClick={() =>
+                                      showHideDetails(data.minuteID)
+                                    }
                                     className={styles["view-details"]}
                                   >
                                     {t("View-details")}
@@ -627,7 +644,9 @@ const SelectMinutes = ({
                               ) : (
                                 <>
                                   <span
-                                    onClick={() => showHideDetails(data.id)}
+                                    onClick={() =>
+                                      showHideDetails(data.minuteID)
+                                    }
                                     className={styles["view-details"]}
                                   >
                                     {t("Hide-details")}
@@ -648,11 +667,11 @@ const SelectMinutes = ({
                       </>
                     }
                     className="SearchCheckbox "
-                    name={`minute-${data.id}`}
-                    checked={checkBoxIds.includes(data)}
-                    onChange={(e) =>
-                      checkAllGeneralMinutes(data, minutesDataGeneral)
-                    }
+                    name={`minute-${data.minuteID}`}
+                    // checked={checkBoxIds.includes(data)}
+                    // onChange={(e) =>
+                    //   checkAllGeneralMinutes(data, minutesDataGeneral)
+                    // }
                     classNameDiv={styles["agendaTitleCheckbox"]}
                   />
                 </Col>

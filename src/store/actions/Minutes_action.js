@@ -1062,7 +1062,16 @@ const SaveMinutesReviewFlow = (Data, navigate, t) => {
   };
 };
 
+//Delete Minute Data
+const DeleteMinuteReducer = (response) => {
+  return {
+    type: actions.DELETE_MINUTE_DATA,
+    response: response,
+  };
+};
+
 export {
+  DeleteMinuteReducer,
   pendingApprovalPage,
   reviewMinutesPage,
   rejectCommentModal,

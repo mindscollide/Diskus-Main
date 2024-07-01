@@ -8,11 +8,14 @@ import {
   Button,
   Notification,
 } from "../../../../../components/elements";
+import DeleteCommentGeneral from "./deleteCommentModal/DeleteCommentGeneral";
 import { Col, Row } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
 import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../assets/images/featherupload.svg";
+import DropdownPurple from "./Images/Dropdown-Purple.png";
+import MenuIcon from "./Images/MenuIcon.png";
 import Leftploygon from "../../../../../assets/images/Polygon 3.svg";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 import file_image from "../../../../../assets/images/file_image.svg";
@@ -41,6 +44,13 @@ import AttachmentIcon from "./Images/Attachment-Icon.png";
 import ArrowDown from "./Images/Arrow-Down.png";
 import DefaultAvatar from "./Images/avatar.png";
 import EditIcon from "./Images/Edit-Icon.png";
+import {
+  convertToGMTMinuteTime,
+  convertDateToGMTMinute,
+} from "../../../../../commen/functions/time_formatter";
+import VersionHistory from "./AgendaWise/VersionHistoryModal/VersionHistory";
+import RevisionHistory from "./AgendaWise/RevisionHistoryModal/RevisionHistory";
+import { DeleteMinuteReducer, deleteCommentMeetingModal } from "../../../../../store/actions/Minutes_action";
 
 const Minutes = ({
   setMinutes,
@@ -61,7 +71,7 @@ const Minutes = ({
   const editorRef = useRef(null);
   const { Dragger } = Upload;
 
-  const { MinutesReducer } = useSelector((state) => state);
+  const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
 
   const generalMinutes = useSelector(
     (state) => state.NewMeetingreducer.generalMinutes
@@ -316,18 +326,18 @@ const Minutes = ({
     setupdateData(data);
     console.log(data, "handleEditFunccalled");
     console.log(data, "dataminutesDetails");
-    if (data.minutesDetails !== "") {
+    if (data.description !== "") {
       console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
-          value: data.minutesDetails,
+          value: data.description,
           errorMessage: "",
           errorStatus: false,
         },
       });
       setisEdit(true);
     } else {
-      console.log("data.minutesDetails is undefined or null");
+      console.log("data.description is undefined or null");
     }
     let Retrive = {
       FK_MeetingGeneralMinutesID: data.minuteID,
@@ -477,22 +487,6 @@ const Minutes = ({
       documentUploadingFunc(addMinuteID);
     }
   }, [addMinuteID]);
-
-  const handleRemovingTheMinutes = (MinuteData) => {
-    let Data = {
-      MDID: advanceMeetingModalID,
-      MeetingGeneralMinutesID: MinuteData.minuteID,
-    };
-    dispatch(
-      DeleteGeneralMinuteDocumentsApiFunc(
-        navigate,
-        Data,
-        t,
-        advanceMeetingModalID,
-        MinuteData
-      )
-    );
-  };
 
   //UPloading the Documents
   const handleRemoveFile = (data) => {
@@ -674,6 +668,15 @@ const Minutes = ({
 
   // OWAIS WORK cxx|:::::::>
 
+  const [openMenuId, setOpenMenuId] = useState(null);
+
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [showRevisionHistory, setShowRevisionHistory] = useState(false);
+
+  const [openReviewerDetail, setOpenReviewerDetail] = useState([]);
+
+  const [minuteReviewData, setMinuteReviewData] = useState(null);
+
   const [minutesData, setMinutesData] = useState([]);
 
   const [openIndices, setOpenIndices] = useState([]);
@@ -681,6 +684,8 @@ const Minutes = ({
   const [addReviewers, setAddReviewers] = useState(false);
 
   const [showPublishMinutes, setShowPublishMinutes] = useState(false);
+  const [menuMinute, setMenuMinute] = useState(false);
+  const closeMenuMinute = useRef(null);
 
   const addReviewersModal = () => {
     setAddReviewers(true);
@@ -695,20 +700,69 @@ const Minutes = ({
     console.log("openIndices", openIndices);
   };
 
+  const openCloseReviewerDetail = (index) => {
+    setOpenReviewerDetail((prevIndices) =>
+      prevIndices.includes(index)
+        ? prevIndices.filter((i) => i !== index)
+        : [...prevIndices, index]
+    );
+  };
+
+  const menuPopupMinute = (id) => {
+    setOpenMenuId(openMenuId === id ? null : id); // Toggle the menu for the clicked item
+  };
+
+  const transformData = (data) => {
+    return data.map((item) => ({
+      minuteID: item.minuteID,
+      description: item.minutesDetails,
+      attachments: item.minutesAttachmets,
+      uploader: {
+        userID: item.userID,
+        orignalProfilePictureName:
+          item.userProfilePicture.orignalProfilePictureName,
+        displayProfilePictureName:
+          item.userProfilePicture.displayProfilePictureName,
+      },
+      lastUpdatedDate: item.lastUpdatedDate,
+      lastUpdatedTime: item.lastUpdatedTime,
+      userID: item.userID,
+      userName: item.userName,
+    }));
+  };
+
   useEffect(() => {
     if (
-      MinutesReducer.minutesDataAgendaWise !== undefined &&
-      MinutesReducer.minutesDataAgendaWise !== null &&
-      MinutesReducer.minutesDataAgendaWise.length !== 0
+      NewMeetingreducer.generalMinutes !== undefined &&
+      NewMeetingreducer.generalMinutes !== null &&
+      NewMeetingreducer.generalMinutes.length !== 0
     ) {
-      setMinutesData(MinutesReducer.minutesDataAgendaWise);
+      let data = NewMeetingreducer.generalMinutes.meetingMinutes;
+      const transformedData = transformData(data);
+      setMinutesData(transformedData);
     } else {
       setMinutesData([]);
     }
     return () => {
       setMinutesData([]);
     };
-  }, [MinutesReducer.minutesDataAgendaWise]);
+  }, [NewMeetingreducer.generalMinutes]);
+
+  console.log("minutesDataminutesData", minutesData);
+
+  useEffect(() => {
+    if (
+      MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !== null &&
+      MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !==
+        undefined
+    ) {
+      setMinuteReviewData(
+        MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
+      );
+    } else {
+      setMinuteReviewData(null);
+    }
+  }, [MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData]);
 
   return showPublishMinutes ? (
     <>
@@ -1009,23 +1063,25 @@ const Minutes = ({
               onClick={handleAgendaWiseClick}
             />
           </Col>
-          <Col lg={6} md={6} sm={12} className="d-flex justify-content-end">
-            <Button
-              text={t("Publish-minutes")}
-              className={styles["PublishMinutes"]}
-              onClick={() => setShowPublishMinutes(true)}
-            />
-            <Button
-              text={t("Add-reviewers")}
-              className={styles["Add_Reviewers"]}
-              onClick={addReviewersModal}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={6} md={6} sm={12}></Col>
-          <Col lg={6} md={6} sm={12}>
+          <Col
+            lg={6}
+            md={6}
+            sm={12}
+            className="d-flex justify-content-between align-items-center"
+          >
             <p className={styles["Attachments"]}>{t("Attachments")}</p>
+            <div className={styles["button-block"]}>
+              <Button
+                text={t("Publish-minutes")}
+                className={styles["PublishMinutes"]}
+                onClick={() => setShowPublishMinutes(true)}
+              />
+              <Button
+                text={t("Add-reviewers")}
+                className={styles["Add_Reviewers"]}
+                onClick={addReviewersModal}
+              />
+            </div>
           </Col>
         </Row>
         {agenda ? (
@@ -1192,7 +1248,386 @@ const Minutes = ({
               </>
             ) : null}
             {/* Mapping of The Create Minutes */}
-            <Row className="mt-2">
+            {minutesData.map((data, index) => {
+              const isOpen = openIndices.includes(index);
+              const isOpenReviewer = openReviewerDetail.includes(index);
+              return (
+                <Row className="mt-2">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["ScrollerMinutes"]}
+                  >
+                    <>
+                      <div>
+                        <Row>
+                          <Col lg={12} md={12} sm={12} className="mt-2">
+                            <div
+                              onClick={() =>
+                                accordianClick(data, data.minuteID, index)
+                              }
+                              className={
+                                isOpen
+                                  ? styles["agenda-wrapper-closed"]
+                                  : styles["agenda-wrapper-open"]
+                              }
+                            >
+                              <p className={styles["agenda-title"]}>
+                                {`${t("General-minute")} ${+index + 1}`}
+                              </p>
+                              <span>
+                                {data.attachments.length > 0 ? (
+                                  <img
+                                    className={styles["Attachment"]}
+                                    alt=""
+                                    src={AttachmentIcon}
+                                  />
+                                ) : null}
+                                <img
+                                  alt=""
+                                  src={ArrowDown}
+                                  className={
+                                    isOpen
+                                      ? styles["Arrow"]
+                                      : styles["Arrow_Expanded"]
+                                  }
+                                />
+                              </span>
+                            </div>
+                          </Col>
+                        </Row>
+                        {isOpen ? (
+                          <>
+                            {isOpenReviewer && minuteReviewData !== null ? (
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <div
+                                    className={
+                                      styles["reviewer-progress-wrapper"]
+                                    }
+                                  >
+                                    <Row>
+                                      <Col lg={11} md={11} sm={12}>
+                                        <div
+                                          className={
+                                            styles["reviewer-progress-text"]
+                                          }
+                                        >
+                                          <p className="m-0">{t("Total")} 03</p>
+                                          <span>|</span>
+                                          <p className="m-0">
+                                            {t("Accepted")} 01
+                                          </p>
+                                          <span>|</span>
+                                          <p className="m-0">
+                                            {t("Rejected")} 01
+                                          </p>
+                                          <span>|</span>
+                                          <p className="m-0">
+                                            {t("Pending")} 01
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col
+                                        lg={1}
+                                        md={1}
+                                        sm={12}
+                                        className="text-end"
+                                      >
+                                        <img
+                                          alt=""
+                                          src={DropdownPurple}
+                                          className={
+                                            isOpenReviewer
+                                              ? `${styles["Arrow"]} cursor-pointer`
+                                              : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                          }
+                                          onClick={() =>
+                                            openCloseReviewerDetail(index)
+                                          }
+                                        />
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+                            ) : !isOpenReviewer && minuteReviewData !== null ? (
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <div
+                                    className={
+                                      styles["reviewer-progress-wrapper"]
+                                    }
+                                  >
+                                    <Row>
+                                      <Col lg={11} md={11} sm={12}>
+                                        <div
+                                          className={
+                                            styles["reviewer-progress-text"]
+                                          }
+                                        >
+                                          <p className="m-0">{t("Total")} 03</p>
+                                          <span>|</span>
+                                          <p className="m-0">
+                                            {t("Accepted")} 01
+                                          </p>
+                                          <span>|</span>
+                                          <p className="m-0">
+                                            {t("Rejected")} 01
+                                          </p>
+                                          <span>|</span>
+                                          <p className="m-0">
+                                            {t("Pending")} 01
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col
+                                        lg={1}
+                                        md={1}
+                                        sm={12}
+                                        className="text-end"
+                                      >
+                                        <img
+                                          alt=""
+                                          src={DropdownPurple}
+                                          className={
+                                            isOpenReviewer
+                                              ? `${styles["Arrow"]} cursor-pointer`
+                                              : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                          }
+                                          onClick={() =>
+                                            openCloseReviewerDetail(index)
+                                          }
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <p
+                                          className={`${styles["text-wrapper-review"]}`}
+                                        >
+                                          <span
+                                            className={
+                                              styles["Review-accepted"]
+                                            }
+                                          >
+                                            Review Accepted:
+                                          </span>{" "}
+                                          Alessandra Costa, Emily Davis, Matthew
+                                          Jones, Christopher Martinez, Elizabeth
+                                          Garcia, Olivia Nguyen, Ethan Patel,
+                                          Madison Kim, Tyler Chen, Sophia Gupta,
+                                          Mason Kumar, Ava Wong, Logan Singh,
+                                          Jackson Li, Chloe Patel, Noah Patel,
+                                          Lily Chang, Lucas Patel, Amelia Tran.
+                                        </p>
+                                        <p
+                                          className={`${styles["text-wrapper-review"]}`}
+                                        >
+                                          <span
+                                            className={
+                                              styles["Review-declined"]
+                                            }
+                                          >
+                                            Review Rejected:
+                                          </span>{" "}
+                                          Alex Rodriguez, Samantha Lee.
+                                        </p>
+                                        <p
+                                          className={`${styles["text-wrapper-review"]}`}
+                                        >
+                                          <span
+                                            className={styles["Review-pending"]}
+                                          >
+                                            Review Pending:
+                                          </span>{" "}
+                                          Sarah Jenkins, Joshua Clark, Megan
+                                          Rodriguez, Brandon Young.
+                                        </p>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+                            ) : null}
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="position-relative"
+                              >
+                                <div className={styles["uploaded-details"]}>
+                                  <img
+                                    draggable={false}
+                                    src={RedCroseeIcon}
+                                    height="20.76px"
+                                    width="20.76px"
+                                    className={styles["RedCrossClass"]}
+                                    onClick={() => {
+                                      dispatch(deleteCommentMeetingModal(true));
+                                      dispatch(DeleteMinuteReducer(data));
+                                    }}
+                                    alt=""
+                                  />
+                                  <Row className={styles["inherit-height"]}>
+                                    <Col lg={9} md={9} sm={12}>
+                                      <p
+                                        dangerouslySetInnerHTML={{
+                                          __html: data.description,
+                                        }}
+                                        className={styles["minutes-text"]}
+                                      ></p>
+                                      {data.attachments.length > 0 ? (
+                                        <Row>
+                                          {data.attachments.map(
+                                            (fileData, index) => (
+                                              <Col lg={3} md={3} sm={12}>
+                                                <AttachmentViewer
+                                                  name={fileData.name}
+                                                />
+                                              </Col>
+                                            )
+                                          )}
+                                        </Row>
+                                      ) : null}
+                                    </Col>
+                                    <Col
+                                      lg={3}
+                                      md={3}
+                                      sm={12}
+                                      className="position-relative"
+                                    >
+                                      <Row className="m-0">
+                                        <Col
+                                          lg={9}
+                                          md={9}
+                                          sm={12}
+                                          className="p-0"
+                                        >
+                                          <span
+                                            className={styles["bar-line"]}
+                                          ></span>
+                                          <p
+                                            className={styles["uploadedbyuser"]}
+                                          >
+                                            {t("Uploaded-by")}
+                                          </p>
+                                          <div className={styles["gap-ti"]}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data.uploader.displayProfilePictureName}`}
+                                              className={styles["Image"]}
+                                              alt=""
+                                              draggable={false}
+                                            />
+                                            <p
+                                              className={
+                                                styles["agendaCreater"]
+                                              }
+                                            >
+                                              {data.userName}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col
+                                          lg={3}
+                                          md={3}
+                                          sm={12}
+                                          className="d-grid justify-content-end p-0"
+                                        >
+                                          <div>
+                                            <img
+                                              className="cursor-pointer mx-2"
+                                              src={EditIcon}
+                                              onClick={() =>
+                                                handleEditFunc(data)
+                                              }
+                                              alt=""
+                                            />
+                                            <div
+                                              onClick={() =>
+                                                menuPopupMinute(data.minuteID)
+                                              }
+                                              className={styles["box-agendas"]}
+                                              ref={closeMenuMinute}
+                                            >
+                                              <img
+                                                className="cursor-pointer"
+                                                src={MenuIcon}
+                                                alt=""
+                                              />
+                                              <div
+                                                className={
+                                                  openMenuId === data.minuteID
+                                                    ? `${
+                                                        styles[
+                                                          "popup-agenda-menu"
+                                                        ]
+                                                      } ${"opacity-1 pe-auto"}`
+                                                    : `${
+                                                        styles[
+                                                          "popup-agenda-menu"
+                                                        ]
+                                                      } ${"opacity-0 pe-none"}`
+                                                }
+                                              >
+                                                <span
+                                                  onClick={() =>
+                                                    setShowRevisionHistory(true)
+                                                  }
+                                                >
+                                                  {t("Revisions")}
+                                                  <p className="m-0"> 3 </p>
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    setShowVersionHistory(true)
+                                                  }
+                                                  className="border-0"
+                                                >
+                                                  {t("Version-history")}
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </Col>
+                                      </Row>
+                                      <Row>
+                                        <Col lg={12} md={12} sm={12}>
+                                          <p
+                                            className={styles["time-uploader"]}
+                                          >
+                                            {convertToGMTMinuteTime(
+                                              data.lastUpdatedDate +
+                                                data.lastUpdatedTime
+                                            ) + ","}
+                                          </p>
+                                          <p
+                                            className={styles["date-uploader"]}
+                                          >
+                                            {convertDateToGMTMinute(
+                                              data.lastUpdatedDate +
+                                                data.lastUpdatedTime
+                                            )}
+                                          </p>
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </Col>
+                            </Row>
+                          </>
+                        ) : null}
+                      </div>
+                    </>
+                  </Col>
+                </Row>
+              );
+            })}
+
+            {/* <Row className="mt-2">
               <Col
                 lg={12}
                 md={12}
@@ -1367,62 +1802,6 @@ const Minutes = ({
                                                   data={filesname}
                                                   id={0}
                                                 />
-                                                {/* <section
-                                                className={styles["Outer_Box"]}
-                                              >
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <img
-                                                      src={file_image}
-                                                      width={"100%"}
-                                                      alt=""
-                                                      draggable="false"
-                                                    />
-                                                  </Col>
-                                                </Row>
-
-                                                <section
-                                                  className={
-                                                    styles[
-                                                      "backGround_name_Icon"
-                                                    ]
-                                                  }
-                                                >
-                                                  <Row className="mb-2">
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      className={
-                                                        styles["IconTextClass"]
-                                                      }
-                                                    >
-                                                      <img
-                                                        src={getIconSource(
-                                                          getFileExtension(
-                                                            filesname.displayFileName
-                                                          )
-                                                        )}
-                                                        height="10px"
-                                                        width="10px"
-                                                        className={
-                                                          styles["IconPDF"]
-                                                        }
-                                                        alt=""
-                                                      />
-                                                      <span
-                                                        className={
-                                                          styles["FileName"]
-                                                        }
-                                                      >
-                                                        {
-                                                          filesname.displayFileName
-                                                        }
-                                                      </span>
-                                                    </Col>
-                                                  </Row>
-                                                </section>
-                                              </section> */}
                                               </Col>
                                             </>
                                           );
@@ -1460,7 +1839,7 @@ const Minutes = ({
                     })
                   : null}
               </Col>
-            </Row>
+            </Row> */}
           </>
         ) : null}
         <Row className="mt-5">
@@ -1470,7 +1849,6 @@ const Minutes = ({
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
-
             {editorRole.isPrimaryOrganizer === true ? (
               <Button
                 text={t("Invite-to-collaborate")}
@@ -1507,8 +1885,33 @@ const Minutes = ({
           <AddReviewers
             addReviewers={addReviewers}
             setAddReviewers={setAddReviewers}
+            advanceMeetingModalID={advanceMeetingModalID}
           />
         ) : null}
+
+        {showVersionHistory ? (
+          <VersionHistory
+            showVersionHistory={showVersionHistory}
+            setShowVersionHistory={setShowVersionHistory}
+          />
+        ) : null}
+
+        {showRevisionHistory ? (
+          <RevisionHistory
+            showRevisionHistory={showRevisionHistory}
+            setShowRevisionHistory={setShowRevisionHistory}
+          />
+        ) : null}
+
+        {MinutesReducer.deleteMeetingCommentModal ? (
+          <DeleteCommentGeneral
+            advanceMeetingModalID={advanceMeetingModalID}
+            setAddNoteFields={setAddNoteFields}
+            addNoteFields={addNoteFields}
+            setFileAttachments={setFileAttachments}
+          />
+        ) : null}
+
         <Notification
           setOpen={setOpen}
           open={open.flag}

@@ -1,16 +1,48 @@
 import React, { useState } from "react";
 import { Modal, Button } from "../../../../../../components/elements"; // Importing necessary components
 import styles from "./DeleteCommentModal.module.css"; // Importing CSS styles
-import { deleteCommentMeetingModal } from "../../../../../../store/actions/Minutes_action"; // Importing action creator
+import {
+  DeleteMinuteReducer,
+  deleteCommentMeetingModal,
+} from "../../../../../../store/actions/Minutes_action"; // Importing action creator
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
+import { DeleteGeneralMinuteDocumentsApiFunc } from "../../../../../../store/actions/NewMeetingActions";
 
 // Functional component for deleting a comment
-const DeleteCommentModal = () => {
+const DeleteCommentGeneral = ({
+  advanceMeetingModalID,
+  setAddNoteFields,
+  setFileAttachments,
+  addNoteFields,
+}) => {
+  const { MinutesReducer } = useSelector((state) => state);
+
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
+
+  const navigate = useNavigate();
+
+  const handleRemovingTheMinutes = () => {
+    let MinuteData = MinutesReducer?.DeleteMinuteReducerData;
+    let Data = {
+      MDID: Number(advanceMeetingModalID),
+      MeetingGeneralMinutesID: MinuteData.minuteID,
+    };
+    dispatch(
+      DeleteGeneralMinuteDocumentsApiFunc(
+        navigate,
+        Data,
+        t,
+        advanceMeetingModalID,
+        MinuteData
+      )
+    );
+    dispatch(deleteCommentMeetingModal(false));
+  };
 
   return (
     <section>
@@ -49,13 +81,16 @@ const DeleteCommentModal = () => {
               >
                 {/* Button for confirming deletion */}
                 <Button
-                  onClick={() => dispatch(deleteCommentMeetingModal(false))} // Click handler for confirming deletion and closing modal
+                  onClick={handleRemovingTheMinutes} // Click handler for confirming deletion and closing modal
                   text={t("Yes")} // Translation for "Yes" button
                   className={styles["Yes_Modal"]} // CSS class for "Yes" button
                 />
                 {/* Button for canceling deletion */}
                 <Button
-                  onClick={() => dispatch(deleteCommentMeetingModal(false))} // Click handler for canceling deletion and closing modal
+                  onClick={() => {
+                    dispatch(deleteCommentMeetingModal(false));
+                    dispatch(DeleteMinuteReducer(null));
+                  }} // Click handler for canceling deletion and closing modal
                   text={t("No")} // Translation for "No" button
                   className={styles["No_Modal"]} // CSS class for "No" button
                 />
@@ -68,4 +103,4 @@ const DeleteCommentModal = () => {
   );
 };
 
-export default DeleteCommentModal; // Exporting the component
+export default DeleteCommentGeneral; // Exporting the component

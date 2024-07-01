@@ -393,8 +393,8 @@ body[dir="rtl"] .Leftpolygon {
 
 .RedCrossClass {
   position: absolute !important;
-  right: -8px;
-  top: -9px;
+  right: 0;
+  top: -10px;
   cursor: pointer !important;
 }
 
@@ -534,7 +534,6 @@ p.Attachments {
 
 .viewMinutesAttachments {
   max-height: 110px;
-  min-height: 110px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 15px;
@@ -978,4 +977,9 @@ span.reviewer-count {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.button-block {
+  display: flex;
+  margin-bottom: 15px;
 }

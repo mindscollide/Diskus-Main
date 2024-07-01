@@ -239,6 +239,7 @@ const initialState = {
   GetMinuteReviewPendingApprovalsByReviewerIdData: null,
   currentMeetingMinutesToReview: null,
   SaveMinutesReviewFlowData: null,
+  DeleteMinuteReducerData: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -480,6 +481,13 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         SaveMinutesReviewFlowData: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DELETE_MINUTE_DATA: {
+      return {
+        ...state,
+        DeleteMinuteReducerData: action.response,
       };
     }
 
