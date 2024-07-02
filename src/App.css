@@ -7861,4 +7861,7 @@ span.text-truncate.description {
 
 span.text-truncate.description p {
   margin: 0 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -150,9 +150,17 @@ span.reviewer-count {
 }
 
 .agendaTitleCheckboxGeneral {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 15px;
-    vertical-align: middle;
-  }
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+  vertical-align: middle;
+}
+
+.agendaTitleToCheckbox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+  vertical-align: middle;
+}

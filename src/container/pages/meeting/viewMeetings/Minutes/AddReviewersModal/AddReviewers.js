@@ -47,6 +47,8 @@ const AddReviewers = ({
 
   const [selectedMinuteIDs, setSelectedMinuteIDs] = useState([]);
 
+  const [selectReviewersArray, setSelectReviewersArray] = useState([]);
+
   const [minuteDate, setMinuteDate] = useState("");
 
   const [minuteDataAgenda, setMinuteDataAgenda] = useState(null);
@@ -306,6 +308,8 @@ const AddReviewers = ({
             minuteDataGeneral={minuteDataGeneral}
             selectedMinuteIDs={selectedMinuteIDs}
             setSelectedMinuteIDs={setSelectedMinuteIDs}
+            selectReviewersArray={selectReviewersArray}
+            setSelectReviewersArray={setSelectReviewersArray}
           />
         ) : selectMinutes === false &&
           selectReviewers === true &&
@@ -327,6 +331,8 @@ const AddReviewers = ({
             minuteDataGeneral={minuteDataGeneral}
             selectedMinuteIDs={selectedMinuteIDs}
             setSelectedMinuteIDs={setSelectedMinuteIDs}
+            selectReviewersArray={selectReviewersArray}
+            setSelectReviewersArray={setSelectReviewersArray}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -334,16 +340,24 @@ const AddReviewers = ({
           editReviewer === false &&
           (minuteDataAgenda !== null || minuteDataGeneral !== null) ? (
           <SendReviewers
-            selectMinutes={selectMinutes}
-            setSelectMinutes={setSelectMinutes}
-            setSelectReviewers={setSelectReviewers}
-            selectReviewers={selectReviewers}
-            sendReviewers={sendReviewers}
-            setSendReviewers={setSendReviewers}
-            setEditReviewer={setEditReviewer}
-            editReviewer={editReviewer}
-            setMinuteToEdit={setMinuteToEdit}
-            minuteToEdit={minuteToEdit}
+          selectMinutes={selectMinutes}
+          setSelectMinutes={setSelectMinutes}
+          setSelectReviewers={setSelectReviewers}
+          selectReviewers={selectReviewers}
+          sendReviewers={sendReviewers}
+          setSendReviewers={setSendReviewers}
+          setEditReviewer={setEditReviewer}
+          editReviewer={editReviewer}
+          setMinuteDataAgenda={setMinuteDataAgenda}
+          minuteDataAgenda={minuteDataAgenda}
+          setMinuteDataGeneral={setMinuteDataGeneral}
+          minuteDataGeneral={minuteDataGeneral}
+          selectedMinuteIDs={selectedMinuteIDs}
+          setSelectedMinuteIDs={setSelectedMinuteIDs}
+          selectReviewersArray={selectReviewersArray}
+          setSelectReviewersArray={setSelectReviewersArray}
+          setMinuteToEdit={setMinuteToEdit}
+          minuteToEdit={minuteToEdit}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
