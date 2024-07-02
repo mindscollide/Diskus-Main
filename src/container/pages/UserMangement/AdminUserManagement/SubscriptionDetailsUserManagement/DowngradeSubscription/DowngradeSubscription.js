@@ -8,13 +8,17 @@ import {
   TableToDo,
   TextField,
 } from "../../../../../../components/elements";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   GetOrganizationSelectedPackagesByOrganizationIDApi,
   getOrganizationWalletApi,
 } from "../../../../../../store/actions/UserManagementActions";
 import { useSelector } from "react-redux";
+import {
+  formatDateDownGradeSubscription,
+  formatDateToDDMMYYYYDownGradeSubscription,
+} from "../../../../../../commen/functions/date_formater";
 
 const DowngradeSubscription = () => {
   const { t } = useTranslation();
@@ -23,18 +27,31 @@ const DowngradeSubscription = () => {
 
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
+  const { subscriptionDetails } = location.state;
+
+  console.log(subscriptionDetails, "subscriptionDetailssubscriptionDetails");
+
   const { UserMangementReducer } = useSelector((state) => state);
 
   console.log(UserMangementReducer.Loading, "UserMangementReducer");
   //Data States
   const [downgradeSubsData, setDowngradeSubsData] = useState([]);
   const [textFieldValues, setTextFieldValues] = useState({});
-  const [walletData, setWalletData] = useState(null);
+  const [walletData, setWalletData] = useState({
+    walletamount: 0,
+  });
+  const [downgradeDetails, setDowngradeDetails] = useState({
+    SubscriptionNumber: 0,
+    subscriptionStartDate: "",
+    ExpiryDate: "",
+    tenure: "",
+  });
 
   //Calling Wallet and Selected pakage Api
   useEffect(() => {
     try {
-      dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
       dispatch(getOrganizationWalletApi(navigate, t));
     } catch (error) {
       console.log(error, "errorerror");
@@ -43,35 +60,25 @@ const DowngradeSubscription = () => {
 
   //Extracting Data for Table Selected pakages
   useEffect(() => {
-    try {
-      if (
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData !==
-          null &&
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData !==
-          undefined
-      ) {
-        const data =
-          UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
-        if (data && data.organizationSubscriptions) {
-          let subscriptionData = [];
-
-          data.organizationSubscriptions.forEach((subscription) => {
-            if (subscription.organizationSelectedPackages) {
-              subscription.organizationSelectedPackages.forEach(
-                (packageItem) => {
-                  subscriptionData.push(packageItem);
-                }
-              );
-            }
-          });
-
-          setDowngradeSubsData(subscriptionData);
-        }
-      }
-    } catch (error) {
-      console.log("error", error);
+    if (
+      subscriptionDetails &&
+      subscriptionDetails.organizationSelectedPackages
+    ) {
+      setDowngradeSubsData(subscriptionDetails.organizationSelectedPackages);
+      const startdate = subscriptionDetails.subscriptionStartDate;
+      const orgnizationID = subscriptionDetails.fK_OrganizationsID;
+      const organizationSubscriptionID =
+        subscriptionDetails.fK_SubscriptionStatusID;
+      setDowngradeDetails({
+        SubscriptionNumber: `${formatDateToDDMMYYYYDownGradeSubscription(
+          startdate
+        )}-${orgnizationID}-${organizationSubscriptionID}`,
+        subscriptionStartDate: subscriptionDetails.subscriptionStartDate,
+        ExpiryDate: subscriptionDetails.subscriptionExpiryDate,
+        tenure: subscriptionDetails.tenure,
+      });
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [subscriptionDetails]);
 
   useEffect(() => {
     try {
@@ -83,6 +90,11 @@ const DowngradeSubscription = () => {
           UserMangementReducer.getOrganizationWallet,
           "getOrganizationWallet"
         );
+        setWalletData({
+          walletamount:
+            UserMangementReducer.getOrganizationWallet.organizationWallet
+              .walletAmount,
+        });
       }
     } catch (error) {
       console.log(error, "error");
@@ -325,32 +337,6 @@ const DowngradeSubscription = () => {
   ];
 
   const defaultRow = {
-    Chargesperlisences: (
-      <>
-        <span className={styles["TableheadingTotal"]}>29</span>
-      </>
-    ),
-    lisencepurchased: (
-      <>
-        <span className={styles["TableheadingTotal"]}>29</span>
-      </>
-    ),
-    lisenceutilized: (
-      <>
-        <span className={styles["TableheadingTotal"]}>19</span>
-      </>
-    ),
-    lisencenotutilized: (
-      <>
-        <span className={styles["TableheadingTotal"]}>09</span>
-      </>
-    ),
-    lisenceReduce: "",
-    Transfertowallet: (
-      <>
-        <span className={styles["TableheadingTotal"]}>129</span>
-      </>
-    ),
     IsDefaultRow: true,
   };
   return (
@@ -361,7 +347,9 @@ const DowngradeSubscription = () => {
             <span className={styles["background"]}>
               <span className={styles["amount_heading_styles"]}>
                 {t("Your-current-wallet-balance-is")}
-                <span className={styles["amount_styles"]}>195$</span>
+                <span className={styles["amount_styles"]}>
+                  {walletData.walletamount}$
+                </span>
               </span>
             </span>
           </Col>
@@ -390,10 +378,16 @@ const DowngradeSubscription = () => {
                 <th>{t("Duration")}</th>
               </tr>
               <tr>
-                <td>2024-08-24-991-150</td>
-                <td>22 December 2023</td>
-                <td>21 December 2024</td>
-                <td>Annual Subscription</td>
+                <td>{downgradeDetails.SubscriptionNumber}</td>
+                <td>
+                  {formatDateDownGradeSubscription(
+                    downgradeDetails.subscriptionStartDate
+                  )}
+                </td>
+                <td>
+                  {formatDateDownGradeSubscription(downgradeDetails.ExpiryDate)}
+                </td>
+                <td>{downgradeDetails.tenure}</td>
               </tr>
             </table>
           </Col>

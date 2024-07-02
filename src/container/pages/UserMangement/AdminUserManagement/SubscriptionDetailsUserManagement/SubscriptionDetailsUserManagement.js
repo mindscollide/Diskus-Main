@@ -28,8 +28,10 @@ const SubscriptionDetailsUserManagement = () => {
   //Subscription Details Table Data
   const [subscriptionDetails, setSubscriptionDetails] = useState([]);
 
-  const handleDowngradeOption = () => {
-    navigate("/Admin/downgradeSubscription");
+  const handleDowngradeOption = (subscriptionDetails) => {
+    navigate("/Admin/downgradeSubscription", {
+      state: { subscriptionDetails },
+    });
   };
 
   //Calling Get Organization Selected Pakages By Organization
@@ -350,7 +352,7 @@ const SubscriptionDetailsUserManagement = () => {
         <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
           {t("Downgrade")}
           <span className="pakageselectionSpanUsermanagement">
-            {t("Subcription")}
+            {t("Subscription")}
           </span>
         </span>
       ),
@@ -368,7 +370,7 @@ const SubscriptionDetailsUserManagement = () => {
               <Button
                 text={"Downgrade"}
                 className={styles["DowngradeButton_styles"]}
-                onClick={handleDowngradeOption}
+                onClick={() => handleDowngradeOption(record)}
               />
             </>
           );

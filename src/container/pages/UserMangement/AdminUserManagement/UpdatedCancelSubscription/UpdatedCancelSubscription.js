@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Button, Loader, TableToDo } from "../../../../../components/elements";
 import { Col, Container, Row } from "react-bootstrap";
-import { Plus } from "react-bootstrap-icons";
 import { useDispatch } from "react-redux";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
 import { useSelector } from "react-redux";
