@@ -1606,10 +1606,6 @@ const downgradeOrganizationSubscription = {
   RequestMethod: "ServiceManager.DowngradeOrganizationSubscription",
 };
 
-const cancelOrganizationSubscription = {
-  RequestMethod: "ServiceManager.CancelOrganizationsSubscription",
-};
-
 const getOrganizationWallet = {
   RequestMethod: "ServiceManager.GetOrganizationWallet",
 };
@@ -2040,6 +2036,5 @@ export {
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
   downgradeOrganizationSubscription,
-  cancelOrganizationSubscription,
   getOrganizationWallet,
 };

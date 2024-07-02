@@ -23,8 +23,10 @@ const UpdatedCancelSubscription = () => {
   //Cancel Subscription Table Data
   const [cancelSubscription, setCancelSubscription] = useState([]);
 
-  const handleCancelSubscriptionOption = () => {
-    navigate("/Admin/CancelSubscriptionUserManagement");
+  const handleCancelSubscriptionOption = (CancellationDetials) => {
+    navigate("/Admin/CancelSubscriptionUserManagement", {
+      state: { CancellationDetials },
+    });
   };
 
   //Calling Get Organization Selected Pakages By Organization
@@ -441,7 +443,7 @@ const UpdatedCancelSubscription = () => {
               <Button
                 text={t("Cancel-subscription")}
                 className={styles["DowngradeButton_styles"]}
-                onClick={handleCancelSubscriptionOption}
+                onClick={() => handleCancelSubscriptionOption(record)}
               />
             </>
           );

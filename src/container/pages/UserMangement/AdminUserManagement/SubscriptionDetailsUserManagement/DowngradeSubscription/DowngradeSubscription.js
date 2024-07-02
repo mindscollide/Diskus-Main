@@ -38,8 +38,6 @@ const DowngradeSubscription = () => {
 
   const { subscriptionDetails } = location.state;
 
-  console.log(subscriptionDetails, "subscriptionDetailssubscriptionDetails");
-
   const { UserMangementReducer } = useSelector((state) => state);
 
   console.log(UserMangementReducer.Loading, "UserMangementReducer");

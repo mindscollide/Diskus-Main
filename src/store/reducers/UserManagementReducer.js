@@ -28,7 +28,6 @@ const initialState = {
   changeSelectedPackage: null,
   isFreeTrailCancelandUpgradeOrganization: null,
   downgradeOrganizationSubscriptionData: null,
-  cancelOrganizationSubscriptionData: null,
   getOrganizationWallet: null,
 };
 
@@ -551,31 +550,6 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         downgradeOrganizationSubscriptionData: null,
-        ResponseMessage: action.message,
-      };
-    }
-
-    case actions.CANCEL_ORGANIZATION_SUBSCRIPTION_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-
-    case actions.CANCEL_ORGANIZATION_SUBSCRIPTION_SUCCESS: {
-      return {
-        ...state,
-        Loading: false,
-        cancelOrganizationSubscriptionData: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-
-    case actions.CANCEL_ORGANIZATION_SUBSCRIPTION_FAILED: {
-      return {
-        ...state,
-        Loading: false,
-        cancelOrganizationSubscriptionData: null,
         ResponseMessage: action.message,
       };
     }

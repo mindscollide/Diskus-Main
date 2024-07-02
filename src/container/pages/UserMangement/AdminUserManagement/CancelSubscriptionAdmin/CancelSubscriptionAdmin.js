@@ -9,14 +9,24 @@ import { showCancelSubscriptionModal } from "../../../../../store/actions/UserMa
 import { useDispatch } from "react-redux";
 import ReasonForCancelSubs from "../../ModalsUserManagement/ResonsForCancelSubscriptionModal/ReasonForCancelSubs";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
-import { _justShowDateformat } from "../../../../../commen/functions/date_formater";
-import { useNavigate } from "react-router-dom";
+import {
+  _justShowDateformat,
+  formatDateDownGradeSubscription,
+  formatDateToDDMMYYYYDownGradeSubscription,
+} from "../../../../../commen/functions/date_formater";
+import { useLocation, useNavigate } from "react-router-dom";
 const CancelSubscriptionAdmin = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const { CancellationDetials } = location.state;
+
+  console.log(CancellationDetials, "CancellationDetialsCancellationDetials");
 
   const organizationID = localStorage.getItem("organizationID");
 
@@ -31,6 +41,13 @@ const CancelSubscriptionAdmin = () => {
     cancelPackageName: "",
     cancelSubscriptionDate: "",
     cancelExpiryDate: "",
+  });
+
+  const [cancelSubscriptionDetails, setCancelSubscriptionDetails] = useState({
+    SubscriptionNumber: 0,
+    subscriptionStartDate: "",
+    ExpiryDate: "",
+    tenure: "",
   });
 
   // useEffect to hit an API
@@ -56,6 +73,28 @@ const CancelSubscriptionAdmin = () => {
       });
     }
   }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+
+  //Extracting the PakageDetials Data
+
+  useEffect(() => {
+    if (
+      CancellationDetials &&
+      CancellationDetials.organizationSelectedPackages
+    ) {
+      const startdate = CancellationDetials.subscriptionStartDate;
+      const orgnizationID = CancellationDetials.fK_OrganizationsID;
+      const organizationSubscriptionID =
+        CancellationDetials.fK_SubscriptionStatusID;
+      setCancelSubscriptionDetails({
+        SubscriptionNumber: `${formatDateToDDMMYYYYDownGradeSubscription(
+          startdate
+        )}-${orgnizationID}-${organizationSubscriptionID}`,
+        subscriptionStartDate: CancellationDetials.subscriptionStartDate,
+        ExpiryDate: CancellationDetials.subscriptionExpiryDate,
+        tenure: CancellationDetials.tenure,
+      });
+    }
+  }, [CancellationDetials]);
 
   // col for Cancel Subs package details
   const ColumnsPakageSelection = [
@@ -210,7 +249,7 @@ const CancelSubscriptionAdmin = () => {
                   {t("Subscription-number")}
                 </p>
                 <p className={styles["subcriptionvalue_1"]}>
-                  2024-08-24-991-150
+                  {cancelSubscriptionDetails.SubscriptionNumber}
                 </p>
               </Col>
             </Row>
@@ -219,20 +258,28 @@ const CancelSubscriptionAdmin = () => {
                 <p className={styles["subcriptionkey_1"]}>
                   {t("Subscription-date")}
                 </p>
-                <p className={styles["subcriptionvalue_1"]}>22 December 2023</p>
+                <p className={styles["subcriptionvalue_1"]}>
+                  {formatDateDownGradeSubscription(
+                    cancelSubscriptionDetails.subscriptionStartDate
+                  )}
+                </p>
               </Col>
             </Row>
             <Row className="mt-1">
               <Col lg={12} md={12} sm={12} className="text-center">
                 <p className={styles["subcriptionkey_1"]}>{t("Expiry-date")}</p>
-                <p className={styles["subcriptionvalue_1"]}>21 December 2024</p>
+                <p className={styles["subcriptionvalue_1"]}>
+                  {formatDateDownGradeSubscription(
+                    cancelSubscriptionDetails.ExpiryDate
+                  )}
+                </p>
               </Col>
             </Row>
             <Row className="mt-1">
               <Col lg={12} md={12} sm={12} className="text-center">
                 <p className={styles["subcriptionkey_1"]}>{t("Duration")}</p>
                 <p className={styles["subcriptionvalue_1"]}>
-                  Annual Subscription
+                  {cancelSubscriptionDetails.tenure}
                 </p>
               </Col>
             </Row>
