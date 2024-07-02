@@ -84,6 +84,10 @@ const Summary = () => {
   });
   const { t } = useTranslation();
 
+  //Open Invoice Table State
+
+  const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
+
   //Invoice and payment History Api Call
   useEffect(() => {
     try {
@@ -114,9 +118,12 @@ const Summary = () => {
           adminReducer.searchPaymentHistory,
           "adminReduceradminReducer"
         );
+        setOpenInvoiceRecords(adminReducer.searchPaymentHistory.paymentHistory);
       }
-    } catch {}
-  }, []);
+    } catch (error) {
+      console.log(error, "errorerror");
+    }
+  }, [adminReducer.searchPaymentHistory]);
 
   useEffect(() => {
     if (
@@ -262,29 +269,29 @@ const Summary = () => {
   const columns = [
     {
       title: t("Subscription#"),
-      dataIndex: "Subscription",
-      key: "Subscription",
+      dataIndex: "subscriptionNumber",
+      key: "subscriptionNumber",
       ellipsis: true,
       align: "center",
     },
     {
       title: t("Invoice-number"),
-      dataIndex: "invoice",
-      key: "invoice",
+      dataIndex: "invoiceCustomerNumber",
+      key: "invoiceCustomerNumber",
       ellipsis: true,
       align: "center",
     },
     {
       title: t("Due-date"),
-      dataIndex: "duedate",
-      key: "duedate",
+      dataIndex: "invoiceDate",
+      key: "invoiceDate",
       ellipsis: true,
       align: "center",
     },
     {
       title: t("Invoice-amount"),
-      dataIndex: "invoiceamount",
-      key: "invoiceamount",
+      dataIndex: "paidAmount",
+      key: "paidAmount",
       ellipsis: true,
       align: "center",
     },
@@ -491,7 +498,7 @@ const Summary = () => {
                 lg={12}
                 className="Summary-Table-Invoice my-1"
               >
-                <Table rows={data} column={columns} />
+                <Table rows={openInvoiceRecords} column={columns} />
               </Col>
             </Col>
           </Row>
