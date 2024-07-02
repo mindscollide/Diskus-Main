@@ -42,9 +42,7 @@ const UserSettings = () => {
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
-  const { loaded, clientId } = useGoogleLogin({
-    clientId: process.env.REACT_APP_GOOGLE_LOGIN_URL,
-  });
+
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
     Is2FAEnabled: false,
@@ -107,6 +105,7 @@ const UserSettings = () => {
   });
   const [authMicrosoftAccessCode, setAuthMicrosoftAccessCode] = useState("");
 
+  console.log("Client ID:", process.env.REACT_APP_GOOGLE_LOGIN_URL);
   useEffect(() => {
     if (UserProfileData === undefined || UserProfileData === null) {
       dispatch(getUserSetting(navigate, t, false));
@@ -131,6 +130,8 @@ const UserSettings = () => {
   };
 
   const signIn = useGoogleLogin({
+    client_id:
+      "103867674074-tllj4s4mt4c5t15omf2t0s92097622jv.apps.googleusercontent.com",
     onSuccess: handleGoogleLoginSuccess,
     onError: handleGoogleLoginFailure,
     flow: "auth-code",
