@@ -281,10 +281,15 @@ const Polling = () => {
   };
 
   const handleViewModal = (record) => {
+    let userId = localStorage.getItem("userID");
     let check = 0;
     if (record.wasPollPublished) {
       if (record.pollStatus.pollStatusId === 3) {
-        check = 4;
+        if (Number(record.pollCreatorID) === Number(userId)) {
+          check = 3;
+        } else {
+          check = 4;
+        }
       } else {
         check = 3;
       }
@@ -426,8 +431,8 @@ const Polling = () => {
       width: "97px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       render: (text, record) => {
-        return <span className="text-truncate d-block">{text}</span>
-      }
+        return <span className="text-truncate d-block">{text}</span>;
+      },
     },
     {
       title: (
