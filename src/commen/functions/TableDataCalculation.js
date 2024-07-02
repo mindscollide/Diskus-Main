@@ -90,3 +90,12 @@ export const calculateTotalNotUtilizedDowngradeSubscription = (packages) => {
     0
   );
 };
+
+export const calculateTotalReductionDowngradeSubscription = (
+  textFieldValues
+) => {
+  return Object.values(textFieldValues).reduce(
+    (acc, value) => acc + (parseInt(value, 10) || 0),
+    0
+  );
+};

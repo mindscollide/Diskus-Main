@@ -24,6 +24,7 @@ import {
   calculateTotalChargesDowngradeSubscription,
   calculateTotalHeadCountDowngradeSubscription,
   calculateTotalNotUtilizedDowngradeSubscription,
+  calculateTotalReductionDowngradeSubscription,
 } from "../../../../../../commen/functions/TableDataCalculation";
 
 const DowngradeSubscription = () => {
@@ -107,8 +108,40 @@ const DowngradeSubscription = () => {
     }
   }, []);
 
+  //handle Cancel Button
   const handleCancelButton = () => {
     navigate("/Admin/subscriptionDetailsUserManagement");
+  };
+
+  //lisence to Reduce text field
+
+  const handleTextFieldChange = (e, recordId) => {
+    const { value } = e.target;
+    // Allow only numeric input
+    if (/^\d*$/.test(value)) {
+      setTextFieldValues((prevValues) => {
+        const updatedValues = {
+          ...prevValues,
+          [recordId]: value,
+        };
+        console.log(updatedValues, "updatedValues");
+        return updatedValues;
+      });
+    }
+  };
+
+  //Calculating total for Transfer to wallet
+
+  const calculateTotalTransferAmount = (data, textFieldValues) => {
+    return data.reduce((acc, record) => {
+      if (!record.IsDefaultRow) {
+        const value =
+          textFieldValues[record.pK_OrganizationsSelectedPackageID] || 0;
+        const transferAmount = (parseInt(value, 10) || 0) * record.price;
+        return acc + transferAmount;
+      }
+      return acc;
+    }, 0);
   };
 
   const downgradePakageTable = [
@@ -293,23 +326,14 @@ const DowngradeSubscription = () => {
       ellipsis: true,
       render: (text, record) => {
         if (record.IsDefaultRow) {
-          return <></>;
+          const totalReduction =
+            calculateTotalReductionDowngradeSubscription(textFieldValues);
+          return (
+            <span className={styles["TableheadingTotal"]}>
+              {totalReduction}
+            </span>
+          );
         } else {
-          const handleTextFieldChange = (e, recordId) => {
-            const { value } = e.target;
-            // Allow only numeric input
-            if (/^\d*$/.test(value)) {
-              setTextFieldValues((prevValues) => {
-                const updatedValues = {
-                  ...prevValues,
-                  [recordId]: value,
-                };
-                console.log(updatedValues, "updatedValues");
-                return updatedValues;
-              });
-            }
-          };
-
           return (
             <>
               <Row>
@@ -357,9 +381,29 @@ const DowngradeSubscription = () => {
       ellipsis: true,
       render: (text, record) => {
         if (record.IsDefaultRow) {
-          return <></>;
+          const totaltransfertowallet = calculateTotalTransferAmount(
+            downgradeSubsData,
+            textFieldValues
+          );
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totaltransfertowallet}
+              </span>
+            </>
+          );
         } else {
-          return <></>;
+          const value =
+            textFieldValues[record.pK_OrganizationsSelectedPackageID] || 0;
+          const transferAmount = (parseInt(value, 10) || 0) * record.price;
+
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {transferAmount}
+              </span>
+            </>
+          );
         }
       },
     },
