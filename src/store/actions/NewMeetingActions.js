@@ -942,11 +942,7 @@ const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
                 )
             ) {
               dispatch(
-                handleReucrringSuccess(
-                  response.data.responseResult,
-                  "",
-                  loader
-                )
+                handleReucrringSuccess(response.data.responseResult, "", loader)
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1048,9 +1044,7 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 pageNumbers: response.data.responseResult.pageNumbers,
                 totalRecords: response.data.responseResult.totalRecords,
               };
-              dispatch(
-                SearchMeeting_Success(newMeetingData, "")
-              );
+              dispatch(SearchMeeting_Success(newMeetingData, ""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1210,10 +1204,7 @@ const GetAllCommitteesUsersandGroupsParticipants = (Data, navigate, t) => {
                 )
             ) {
               dispatch(
-                showAddMoreParticipantsSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                showAddMoreParticipantsSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1302,10 +1293,7 @@ const GetAllParticipantsRoleNew = (navigate, t) => {
                 )
             ) {
               dispatch(
-                showParticipantsRolesSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                showParticipantsRolesSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1415,12 +1403,7 @@ const FetchMeetingURLApi = (
                   "Meeting_MeetingServiceManager_GetMeetingVideoURL_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                showMeetingURLSuccess(
-                  response.data.responseResult,
-                  ""
-                )
-              );
+              dispatch(showMeetingURLSuccess(response.data.responseResult, ""));
               dispatch(MeetingUrlSpinner(false));
               let meetingURL = response.data.responseResult.videoURL;
               var match = meetingURL.match(/RoomID=([^&]*)/);
@@ -2408,10 +2391,7 @@ const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
                 )
             ) {
               dispatch(
-                showPollsByMeetingIdSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                showPollsByMeetingIdSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2498,10 +2478,7 @@ const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
                 )
             ) {
               dispatch(
-                showGetAllMeetingUsersSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                showGetAllMeetingUsersSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3704,10 +3681,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
 
             // After DocumentsOfMeetingGenralMinutesApiFunc is done, call showAllGeneralMinutesSuccess
             dispatch(
-              showAllGeneralMinutesSuccess(
-                response.data.responseResult,
-                ""
-              )
+              showAllGeneralMinutesSuccess(response.data.responseResult, "")
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -4287,7 +4261,8 @@ const GetAllAgendaWiseMinutesApiFunc = (
   Data,
   t,
   currentMeeting,
-  loader
+  loader,
+  setAddReviewers
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -4315,7 +4290,8 @@ const GetAllAgendaWiseMinutesApiFunc = (
             Data,
             t,
             currentMeeting,
-            loader
+            loader,
+            setAddReviewers
           )
         );
       } else if (response.data.responseCode === 200) {
@@ -4331,7 +4307,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
               MDID: Number(currentMeeting),
             };
             // Call AllDocumentsForAgendaWiseMinutesApiFunc and wait for it to complete
-
+            setAddReviewers(true);
             await dispatch(
               AllDocumentsForAgendaWiseMinutesApiFunc(
                 navigate,
@@ -5905,10 +5881,7 @@ const getMeetingbyGroupApi = (navigate, t, Data) => {
                 )
             ) {
               dispatch(
-                getMeetingbyGroup_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getMeetingbyGroup_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage

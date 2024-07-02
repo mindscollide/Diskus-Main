@@ -31,6 +31,7 @@ import {
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   GetAllGeneralMinutesApiFunc,
+  GetAllAgendaWiseMinutesApiFunc,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
   cleareAllState,
@@ -691,7 +692,29 @@ const Minutes = ({
   const closeMenuMinute = useRef(null);
 
   const addReviewersModal = () => {
-    setAddReviewers(true);
+    let newData = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+
+    dispatch(
+      GetAllAgendaWiseMinutesApiFunc(
+        navigate,
+        newData,
+        t,
+        Number(advanceMeetingModalID),
+        false,
+        setAddReviewers
+      )
+    );
+
+    dispatch(
+      GetAllGeneralMinutesApiFunc(
+        navigate,
+        t,
+        newData,
+        Number(advanceMeetingModalID)
+      )
+    );
   };
 
   const accordianClick = (data, id, index) => {

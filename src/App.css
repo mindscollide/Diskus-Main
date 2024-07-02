@@ -7852,3 +7852,13 @@ th.ant-table-cell.leaveTimeParticipant.ant-table-cell-ellipsis.ant-table-column-
 .datepickerlength .rmdp-container svg {
   color: #f16b6b !important;
 }
+
+span.text-truncate.description {
+  font-weight: 500;
+  font-size: 12px;
+  color: #5a5a5a;
+}
+
+span.text-truncate.description p {
+  margin: 0 !important;
+}
