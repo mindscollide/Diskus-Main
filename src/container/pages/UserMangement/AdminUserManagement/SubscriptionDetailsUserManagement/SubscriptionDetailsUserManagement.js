@@ -98,6 +98,40 @@ const SubscriptionDetailsUserManagement = () => {
     return total;
   }, 0);
 
+  //Calculating the total of total charges
+  const calculateTotalCharges = (dataSource) => {
+    let totalCharges = dataSource.reduce((total, record) => {
+      if (!record.IsDefaultRow) {
+        const essentialPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Essential"
+        );
+        const ProfessionalPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Professional"
+        );
+        const PremiumPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Premium"
+        );
+
+        const EssentialTotal = essentialPackage
+          ? essentialPackage.headCount * essentialPackage.price
+          : 0;
+
+        const ProfessionalTotal = ProfessionalPackage
+          ? ProfessionalPackage.headCount * ProfessionalPackage.price
+          : 0;
+
+        const PremiumTotal = PremiumPackage
+          ? PremiumPackage.headCount * PremiumPackage.price
+          : 0;
+
+        return total + EssentialTotal + ProfessionalTotal + PremiumTotal;
+      }
+      return total;
+    }, 0);
+
+    return totalCharges;
+  };
+
   const SubscriptionDetails = [
     {
       title: (
@@ -230,6 +264,7 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
+        console.log(record, "recordrecordrecord");
         if (record.IsDefaultRow) {
           return (
             <>
@@ -345,7 +380,43 @@ const SubscriptionDetailsUserManagement = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-      render: () => {},
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        if (record.IsDefaultRow) {
+          const totalCharges = calculateTotalCharges(subscriptionDetails);
+
+          return (
+            <span className={styles["TableheadingTotal"]}>{totalCharges}</span>
+          );
+        } else {
+          const essentialPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Essential"
+          );
+          const ProfessionalPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Professional"
+          );
+          const PremiumPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Premium"
+          );
+          const EssentialTotal = essentialPackage
+            ? essentialPackage.headCount * essentialPackage.price
+            : 0;
+
+          const ProfessionalTotal = ProfessionalPackage
+            ? ProfessionalPackage.headCount * ProfessionalPackage.price
+            : 0;
+          const PremiumTotal = PremiumPackage
+            ? PremiumPackage.headCount * PremiumPackage.price
+            : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {EssentialTotal + ProfessionalTotal + PremiumTotal}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (

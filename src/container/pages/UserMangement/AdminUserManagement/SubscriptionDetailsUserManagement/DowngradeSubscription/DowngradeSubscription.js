@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./DowngradeSubscription.module.css";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -11,7 +11,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
-  GetOrganizationSelectedPackagesByOrganizationIDApi,
+  downgradeOrganizationSubscriptionApi,
   getOrganizationWalletApi,
 } from "../../../../../../store/actions/UserManagementActions";
 import { useSelector } from "react-redux";
@@ -55,6 +55,7 @@ const DowngradeSubscription = () => {
     ExpiryDate: "",
     tenure: "",
   });
+  const [headCountEntered, setHeadCountEntered] = useState({});
 
   //Calling Wallet and Selected pakage Api
   useEffect(() => {
@@ -84,9 +85,16 @@ const DowngradeSubscription = () => {
         ExpiryDate: subscriptionDetails.subscriptionExpiryDate,
         tenure: subscriptionDetails.tenure,
       });
+
+      const initialHeadCountEntered = {};
+      subscriptionDetails.organizationSelectedPackages.forEach((pkg) => {
+        initialHeadCountEntered[pkg.pK_OrganizationsSelectedPackageID] = false;
+      });
+      setHeadCountEntered(initialHeadCountEntered);
     }
   }, [subscriptionDetails]);
 
+  //Extracting Wallet Data
   useEffect(() => {
     try {
       if (
@@ -114,24 +122,37 @@ const DowngradeSubscription = () => {
   };
 
   //lisence to Reduce text field
-
   const handleTextFieldChange = (e, recordId) => {
     const { value } = e.target;
     // Allow only numeric input
     if (/^\d*$/.test(value)) {
-      setTextFieldValues((prevValues) => {
-        const updatedValues = {
-          ...prevValues,
-          [recordId]: value,
-        };
-        console.log(updatedValues, "updatedValues");
-        return updatedValues;
-      });
+      // Update textFieldValues state
+      setTextFieldValues((prevValues) => ({
+        ...prevValues,
+        [recordId]: value,
+      }));
+
+      // Update headCountEntered state
+      setHeadCountEntered((prevEntered) => ({
+        ...prevEntered,
+        [recordId]: value !== "" && parseInt(value, 10) > 0,
+      }));
+    } else {
+      // Handle case when value is not numeric (e.g., clearing the text field)
+      setTextFieldValues((prevValues) => ({
+        ...prevValues,
+        [recordId]: "",
+      }));
+
+      // Update headCountEntered state when value is cleared
+      setHeadCountEntered((prevEntered) => ({
+        ...prevEntered,
+        [recordId]: false,
+      }));
     }
   };
 
   //Calculating total for Transfer to wallet
-
   const calculateTotalTransferAmount = (data, textFieldValues) => {
     return data.reduce((acc, record) => {
       if (!record.IsDefaultRow) {
@@ -144,6 +165,7 @@ const DowngradeSubscription = () => {
     }, 0);
   };
 
+  //Table Columns Downgrade pakage
   const downgradePakageTable = [
     {
       title: (
@@ -290,6 +312,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
+        console.log(record, "recordrecordrecord");
         if (record.IsDefaultRow) {
           // Get the total not utilized only once, assuming you have access to the original data
           const totalNotUtilized =
@@ -409,9 +432,36 @@ const DowngradeSubscription = () => {
     },
   ];
 
+  //Default Row Check
   const defaultRow = {
     IsDefaultRow: true,
   };
+
+  // Handle onClick Downgrade button
+  const handelOnClickDownGradeButton = () => {
+    let packagesHeadCounts = [];
+    subscriptionDetails.organizationSelectedPackages.forEach((pkg) => {
+      if (headCountEntered[pkg.pK_OrganizationsSelectedPackageID]) {
+        packagesHeadCounts.push({
+          PackageID: pkg.fK_PackageID,
+          HeadCount: parseInt(
+            textFieldValues[pkg.pK_OrganizationsSelectedPackageID],
+            10
+          ),
+        });
+      }
+    });
+
+    const data = {
+      OrganizationSubscriptionID:
+        subscriptionDetails.pK_OrganizationsSubscriptionID,
+      PackagesHeadCounts: packagesHeadCounts,
+    };
+
+    console.log(data, "handelOnClickDownGradeButton");
+    dispatch(downgradeOrganizationSubscriptionApi(navigate, t, data));
+  };
+
   return (
     <>
       <section>
@@ -495,7 +545,11 @@ const DowngradeSubscription = () => {
             />
             <Button
               text={t("Downgrade-now")}
+              disableBtn={
+                !Object.values(headCountEntered).some((entered) => entered)
+              }
               className={styles["Downgrade_Button_Styles"]}
+              onClick={handelOnClickDownGradeButton}
             />
           </Col>
         </Row>

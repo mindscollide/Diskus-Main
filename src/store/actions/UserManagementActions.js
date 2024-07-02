@@ -2431,6 +2431,7 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
               dispatch(
                 downgradeOrganizationSubscriptionSuccess(t("Data-available"))
               );
+              navigate("/Admin/subscriptionDetailsUserManagement");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
