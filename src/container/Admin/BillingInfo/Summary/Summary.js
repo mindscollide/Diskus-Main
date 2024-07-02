@@ -215,68 +215,109 @@ const Summary = () => {
     navigate("/");
   };
 
+  //handle PayInvoice button
+  const handlePayInvoiceButton = () => {};
+
   const columns = [
     {
       title: t("Subscription#"),
       dataIndex: "Subscription",
       key: "Subscription",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Invoice-number"),
       dataIndex: "invoice",
       key: "invoice",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Due-date"),
       dataIndex: "duedate",
       key: "duedate",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Invoice-amount"),
       dataIndex: "invoiceamount",
       key: "invoiceamount",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Balance-due"),
       dataIndex: "balancedue",
       key: "balancedue",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Late-charges"),
       dataIndex: "latecharges",
       key: "latecharges",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Pay"),
       dataIndex: "Pay",
       key: "Pay",
+      ellipsis: true,
+      align: "center",
     },
   ];
 
   const data = [
     {
       key: "1",
-      invoice: "John Brown",
-      duedate: 32,
-      invoiceamount: "New York No. 1 Lake Park",
-      balancedue: "York No. ",
-      latecharges: "Testttt",
-    },
-    {
-      key: "2",
-      invoice: "John Brown",
-      duedate: 32,
-      invoiceamount: "New York No. 1 Lake Park",
-      balancedue: "York No. ",
-      latecharges: "Testttt",
-    },
-    {
-      key: "3",
-      invoice: "John Brown",
-      duedate: 32,
-      invoiceamount: "New York No. 1 Lake Park",
-      balancedue: "York No. ",
-      latecharges: "Testttt",
+      Subscription: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>
+            2024-08-24-991-150
+          </span>
+        </>
+      ),
+      invoice: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>
+            "John Brown"
+          </span>
+        </>
+      ),
+      duedate: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>32</span>
+        </>
+      ),
+      invoiceamount: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>
+            New York No. 1 Lake Park
+          </span>
+        </>
+      ),
+      balancedue: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>York No.</span>
+        </>
+      ),
+      latecharges: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>Testttt</span>
+        </>
+      ),
+      Pay: (
+        <>
+          <Button
+            text={t("Pay-Invoice")}
+            className={styles["Pay_invoice_button"]}
+            onClick={handlePayInvoiceButton}
+          />
+        </>
+      ),
     },
   ];
   useEffect(() => {
@@ -409,7 +450,7 @@ const Summary = () => {
                 lg={12}
                 className="Summary-Table-Invoice my-1"
               >
-                <Table rows={rows} column={columns} />
+                <Table rows={data} column={columns} />
               </Col>
             </Col>
           </Row>

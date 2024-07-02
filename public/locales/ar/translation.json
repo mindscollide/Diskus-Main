@@ -2042,5 +2042,6 @@
   "Users-can-be-created-in-trial-version": "users can be created in trial version",
   "Invalid-subscription-status-id-provided": "invalid subscription status id provided",
   "Subscription#": "Subscription #",
-  "Pay": "Pay"
+  "Pay": "Pay",
+  "Pay-Invoice": "Pay Invoice"
 }
