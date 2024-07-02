@@ -91,6 +91,43 @@ const UpdatedCancelSubscription = () => {
     return total;
   }, 0);
 
+  //calculating the total of TotalCharges
+
+  //Calculating the total of total charges
+  const calculateTotalCharges = (dataSource) => {
+    console.log(dataSource, "dataSourcedataSource");
+    let totalCharges = dataSource.reduce((total, record) => {
+      if (!record.IsDefaultRow) {
+        const essentialPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Essential"
+        );
+        const ProfessionalPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Professional"
+        );
+        const PremiumPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Premium"
+        );
+
+        const EssentialTotal = essentialPackage
+          ? essentialPackage.headCount * essentialPackage.price
+          : 0;
+
+        const ProfessionalTotal = ProfessionalPackage
+          ? ProfessionalPackage.headCount * ProfessionalPackage.price
+          : 0;
+
+        const PremiumTotal = PremiumPackage
+          ? PremiumPackage.headCount * PremiumPackage.price
+          : 0;
+
+        return total + EssentialTotal + ProfessionalTotal + PremiumTotal;
+      }
+      return total;
+    }, 0);
+
+    return totalCharges;
+  };
+
   const CancelSubscriptionDetails = [
     {
       title: (
@@ -338,6 +375,48 @@ const UpdatedCancelSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        if (record.IsDefaultRow) {
+          const TotalChargesCancelSubscription =
+            calculateTotalCharges(cancelSubscription);
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {TotalChargesCancelSubscription}
+              </span>
+            </>
+          );
+        } else {
+          const EssentialPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Essential"
+          );
+          const ProfessionalPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Professional"
+          );
+
+          const PremiumPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Premium"
+          );
+          const EssentialTotal = EssentialPackage
+            ? EssentialPackage.headCount * EssentialPackage.price
+            : 0;
+          const ProfessionalTotal = ProfessionalPackage
+            ? ProfessionalPackage.headCount * ProfessionalPackage.price
+            : 0;
+          const PremiumTotal = PremiumPackage
+            ? PremiumPackage.headCount * PremiumPackage.price
+            : 0;
+
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {EssentialTotal + ProfessionalTotal + PremiumTotal}
+              </span>
+            </>
+          );
+        }
+      },
     },
     {
       title: (
