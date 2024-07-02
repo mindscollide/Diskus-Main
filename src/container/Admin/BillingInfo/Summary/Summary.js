@@ -25,8 +25,11 @@ import {
   _justShowDateformat,
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
+import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
+import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 const Summary = () => {
   const navigate = useNavigate();
+  let organizationID = localStorage.getItem("organizationID");
   const [activateBlur, setActivateBlur] = useState(false);
   const [rows, setRows] = useState([]);
   const [summary, setSummary] = useState({
@@ -68,14 +71,52 @@ const Summary = () => {
     }
   }, [Blur]);
 
-  const { Authreducer, OrganizationBillingReducer, LanguageReducer } =
-    useSelector((state) => state);
+  const {
+    Authreducer,
+    OrganizationBillingReducer,
+    LanguageReducer,
+    adminReducer,
+  } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
   const { t } = useTranslation();
+
+  //Invoice and payment History Api Call
+  useEffect(() => {
+    try {
+      let Data = {
+        OrganizationID: Number(organizationID),
+        InvoiceNo: "",
+        InvoiceStartDate: "",
+        InvoiceEndDate: "",
+        PaymentStartDate: "",
+        PaymentEndDate: "",
+        PaymentID: 1,
+        IsLateSurcharge: false,
+      };
+      dispatch(searchPaymentHistoryApi(navigate, Data, t, false, false));
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, []);
+
+  //Extracting the data of payment and Invoice Details
+  useEffect(() => {
+    try {
+      if (
+        adminReducer.searchPaymentHistory !== null &&
+        adminReducer.searchPaymentHistory !== undefined
+      ) {
+        console.log(
+          adminReducer.searchPaymentHistory,
+          "adminReduceradminReducer"
+        );
+      }
+    } catch {}
+  }, []);
 
   useEffect(() => {
     if (
@@ -520,7 +561,9 @@ const Summary = () => {
           message={open.message}
         />
       </Fragment>
-      {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
+      {OrganizationBillingReducer.Loading ||
+      LanguageReducer.Loading ||
+      adminReducer.Loading ? (
         <Loader />
       ) : null}
     </>
