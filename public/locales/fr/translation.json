@@ -2029,5 +2029,7 @@
   "Address": "Address",
   "Organization-is-inactive": "Organization is inactive",
   "Users-can-be-created-in-trial-version": "users can be created in trial version",
-  "Invalid-subscription-status-id-provided": "invalid subscription status id provided"
+  "Invalid-subscription-status-id-provided": "invalid subscription status id provided",
+  "Subscription#": "Subscription #",
+  "Pay": "Pay"
 }

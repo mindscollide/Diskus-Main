@@ -217,6 +217,11 @@ const Summary = () => {
 
   const columns = [
     {
+      title: t("Subscription#"),
+      dataIndex: "Subscription",
+      key: "Subscription",
+    },
+    {
       title: t("Invoice-number"),
       dataIndex: "invoice",
       key: "invoice",
@@ -240,6 +245,11 @@ const Summary = () => {
       title: t("Late-charges"),
       dataIndex: "latecharges",
       key: "latecharges",
+    },
+    {
+      title: t("Pay"),
+      dataIndex: "Pay",
+      key: "Pay",
     },
   ];
 
