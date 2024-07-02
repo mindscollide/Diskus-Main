@@ -3,7 +3,7 @@ import { Modal, Button } from "../../../../../../components/elements"; // Import
 import styles from "./DeleteCommentModal.module.css"; // Importing CSS styles
 import {
   DeleteMinuteReducer,
-  deleteCommentMeetingModal,
+  deleteCommentModalGeneral,
 } from "../../../../../../store/actions/Minutes_action"; // Importing action creator
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next"; // Importing translation hook
@@ -41,20 +41,22 @@ const DeleteCommentGeneral = ({
         MinuteData
       )
     );
-    dispatch(deleteCommentMeetingModal(false));
+    dispatch(deleteCommentModalGeneral(false));
   };
+
+  console.log("This is Delete Modal of General");
 
   return (
     <section>
       {/* Modal component */}
       <Modal
         show={true} // Show modal
-        setShow={dispatch(deleteCommentMeetingModal)} // Set show modal action
+        setShow={dispatch(deleteCommentModalGeneral)} // Set show modal action
         modalFooterClassName={"d-block"} // CSS class for modal footer
         modalHeaderClassName={"d-block"} // CSS class for modal header
         className="DeleteCommentModal" // Additional CSS class for modal
         onHide={() => {
-          dispatch(deleteCommentMeetingModal(false)); // Hide modal action
+          dispatch(deleteCommentModalGeneral(false)); // Hide modal action
         }}
         size={"md"} // Modal size
         ModalBody={
@@ -88,7 +90,7 @@ const DeleteCommentGeneral = ({
                 {/* Button for canceling deletion */}
                 <Button
                   onClick={() => {
-                    dispatch(deleteCommentMeetingModal(false));
+                    dispatch(deleteCommentModalGeneral(false));
                     dispatch(DeleteMinuteReducer(null));
                   }} // Click handler for canceling deletion and closing modal
                   text={t("No")} // Translation for "No" button

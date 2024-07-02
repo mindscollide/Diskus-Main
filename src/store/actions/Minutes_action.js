@@ -61,6 +61,22 @@ const deleteCommentModal = (response) => {
   };
 };
 
+//Delete Comment Modal
+const deleteCommentModalGeneral = (response) => {
+  return {
+    type: actions.DELETE_COMMENT_GENERAL_MODAL,
+    response: response,
+  };
+};
+
+//Delete Comment Modal
+const deleteCommentModalAgenda = (response) => {
+  return {
+    type: actions.DELETE_COMMENT_AGENDA_MODAL,
+    response: response,
+  };
+};
+
 // Delete Comment Meeting Modal
 const deleteCommentMeetingModal = (response) => {
   return {
@@ -1077,6 +1093,8 @@ export {
   rejectCommentModal,
   editCommentModal,
   deleteCommentModal,
+  deleteCommentModalGeneral,
+  deleteCommentModalAgenda,
   deleteCommentMeetingModal,
   pendingApprovalGraph,
   ListOfDefaultRejectionComments,

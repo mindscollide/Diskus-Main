@@ -178,95 +178,99 @@ const AddReviewers = ({
   }, [NewMeetingreducer.generalMinutes]);
 
   useEffect(() => {
-    // Check if agendaWiseMinutesReducer is not null, undefined, and has at least one key
-    if (
-      NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-      NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
-      Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
-    ) {
-      // Store agendaWiseMinutesReducer in a local variable
-      let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
-      // Initialize an empty array to hold the transformed data
-      let transformedData = [];
+    try {
+      // Check if agendaWiseMinutesReducer is not null, undefined, and has at least one key
+      if (
+        NewMeetingreducer.agendaWiseMinutesReducer !== null &&
+        NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
+        Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
+      ) {
+        // Store agendaWiseMinutesReducer in a local variable
+        let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
+        // Initialize an empty array to hold the transformed data
+        let transformedData = [];
 
-      // Iterate through each parent agenda in the agenda hierarchy list
-      reducerData.agendaHierarchyList.forEach((parentAgenda) => {
-        // Find the parent agenda details in the agendaWiseMinutes array
-        let parentAgendaDetails = reducerData.agendaWiseMinutes.find(
-          (minute) => minute.agendaID === parentAgenda.pK_MAID
-        );
-
-        // Initialize an array to hold sub-minutes of the parent agenda
-        let subMinutes = [];
-        // Iterate through each child agenda of the parent agenda
-        parentAgenda.childAgendas.forEach((childAgenda) => {
-          // Filter the minutes that match the child agenda ID and push to subMinutes
-          let childMinutes = reducerData.agendaWiseMinutes.filter(
-            (minute) => minute.agendaID === childAgenda.pK_MAID
+        // Iterate through each parent agenda in the agenda hierarchy list
+        reducerData.agendaHierarchyList.forEach((parentAgenda) => {
+          // Find the parent agenda details in the agendaWiseMinutes array
+          let parentAgendaDetails = reducerData.agendaWiseMinutes.find(
+            (minute) => minute.agendaID === parentAgenda.pK_MAID
           );
-          subMinutes.push(...childMinutes);
+
+          // Initialize an array to hold sub-minutes of the parent agenda
+          let subMinutes = [];
+          // Iterate through each child agenda of the parent agenda
+          parentAgenda.childAgendas.forEach((childAgenda) => {
+            // Filter the minutes that match the child agenda ID and push to subMinutes
+            let childMinutes = reducerData.agendaWiseMinutes.filter(
+              (minute) => minute.agendaID === childAgenda.pK_MAID
+            );
+            subMinutes.push(...childMinutes);
+          });
+
+          // Check if parent agenda details exist to determine if it's parent data
+          let isParentData = !!parentAgendaDetails;
+
+          // If there are parent agenda details or sub-minutes, create a parent agenda object
+          if (isParentData || subMinutes.length > 0) {
+            // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
+            let agendaTitle = isParentData
+              ? parentAgendaDetails.agendaTitle
+              : parentAgenda.childAgendas.find((childAgenda) =>
+                  subMinutes.some(
+                    (minute) => minute.agendaID === childAgenda.pK_MAID
+                  )
+                )?.parentTitle || "";
+            let parentAgendaObj = {
+              // Use parent agenda details if they exist, otherwise default to 0
+              agendaID: isParentData ? parentAgendaDetails.agendaID : 0,
+              minuteID: isParentData ? parentAgendaDetails.minuteID : 0,
+              description: isParentData
+                ? parentAgendaDetails.minutesDetails
+                : "",
+              // Use parent agenda title if it exists, otherwise fallback to a default title
+              agendaTitle: agendaTitle,
+              isParentData: isParentData,
+              attachments: isParentData
+                ? parentAgendaDetails.minutesAttachmets
+                : [],
+              uploader: isParentData
+                ? parentAgendaDetails.userProfilePicture
+                : [],
+              lastUpdatedDate: isParentData
+                ? parentAgendaDetails.lastUpdatedDate
+                : "",
+              lastUpdatedTime: isParentData
+                ? parentAgendaDetails.lastUpdatedTime
+                : "",
+              userID: isParentData ? parentAgendaDetails.userID : 0,
+              userName: isParentData ? parentAgendaDetails.userName : "",
+              // Map subMinutes to include only the necessary properties
+              subMinutes: subMinutes.map((subMinute) => ({
+                agendaID: subMinute.agendaID,
+                minuteID: subMinute.minuteID,
+                description: subMinute.minutesDetails,
+                // Use parent agenda title if it exists, otherwise fallback to a default title
+                agendaTitle: subMinute.agendaTitle,
+                attachments: subMinute.minutesAttachmets,
+                uploader: subMinute.userProfilePicture,
+                lastUpdatedDate: subMinute.lastUpdatedDate,
+                lastUpdatedTime: subMinute.lastUpdatedTime,
+                userID: subMinute.userID,
+                userName: subMinute.userName,
+              })),
+            };
+
+            // Push the parent agenda object to the transformed data array
+            transformedData.push(parentAgendaObj);
+          }
         });
 
-        // Check if parent agenda details exist to determine if it's parent data
-        let isParentData = !!parentAgendaDetails;
-
-        // If there are parent agenda details or sub-minutes, create a parent agenda object
-        if (isParentData || subMinutes.length > 0) {
-          // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
-          let agendaTitle = isParentData
-            ? parentAgendaDetails.agendaTitle
-            : parentAgenda.childAgendas.find((childAgenda) =>
-                subMinutes.some(
-                  (minute) => minute.agendaID === childAgenda.pK_MAID
-                )
-              )?.parentTitle || "";
-          let parentAgendaObj = {
-            // Use parent agenda details if they exist, otherwise default to 0
-            agendaID: isParentData ? parentAgendaDetails.agendaID : 0,
-            minuteID: isParentData ? parentAgendaDetails.minuteID : 0,
-            description: isParentData ? parentAgendaDetails.minutesDetails : "",
-            // Use parent agenda title if it exists, otherwise fallback to a default title
-            agendaTitle: agendaTitle,
-            isParentData: isParentData,
-            attachments: isParentData
-              ? parentAgendaDetails.minutesAttachmets
-              : [],
-            uploader: isParentData
-              ? parentAgendaDetails.userProfilePicture
-              : [],
-            lastUpdatedDate: isParentData
-              ? parentAgendaDetails.lastUpdatedDate
-              : "",
-            lastUpdatedTime: isParentData
-              ? parentAgendaDetails.lastUpdatedTime
-              : "",
-            userID: isParentData ? parentAgendaDetails.userID : 0,
-            userName: isParentData ? parentAgendaDetails.userName : "",
-            // Map subMinutes to include only the necessary properties
-            subMinutes: subMinutes.map((subMinute) => ({
-              agendaID: subMinute.agendaID,
-              minuteID: subMinute.minuteID,
-              description: subMinute.minutesDetails,
-              // Use parent agenda title if it exists, otherwise fallback to a default title
-              agendaTitle: subMinute.agendaTitle,
-              attachments: subMinute.minutesAttachmets,
-              uploader: subMinute.userProfilePicture,
-              lastUpdatedDate: subMinute.lastUpdatedDate,
-              lastUpdatedTime: subMinute.lastUpdatedTime,
-              userID: subMinute.userID,
-              userName: subMinute.userName,
-            })),
-          };
-
-          // Push the parent agenda object to the transformed data array
-          transformedData.push(parentAgendaObj);
-        }
-      });
-
-      // Log the transformed data to the console
-      setMinuteDataAgenda(transformedData);
-      console.log("transformedData", transformedData);
-    }
+        // Log the transformed data to the console
+        setMinuteDataAgenda(transformedData);
+        console.log("transformedData", transformedData);
+      }
+    } catch {}
   }, [NewMeetingreducer.agendaWiseMinutesReducer]);
 
   console.log(
@@ -355,7 +359,9 @@ const AddReviewers = ({
             setMinuteToEdit={setMinuteToEdit}
             minuteToEdit={minuteToEdit}
           />
-        ) : <p>No minutes to send for review</p>
+        ) : (
+          <p>No minutes to send for review</p>
+        )
       }
       ModalFooter={
         <>

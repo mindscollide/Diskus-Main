@@ -287,13 +287,14 @@ const SelectMinutes = ({
         <>
           {minuteDataAgenda.map((data, index) => {
             console.log("minutesDataAgendaminutesDataAgenda", data);
+            const isTruncated = !expandedItems[data.minuteID];
             return (
               <div key={index}>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <Checkbox
                       label2Class={styles["agenda-title"]}
-                      label2={data.title}
+                      label2={data.agendaTitle}
                       className="SearchCheckbox"
                       name="IsChat"
                       // checked={checkBoxIds.includes(data)}
@@ -302,249 +303,231 @@ const SelectMinutes = ({
                     />
                   </Col>
                 </Row>
-                {data.items.map((agendaMinuteData, index) => {
-                  const isTruncated = !expandedItems[agendaMinuteData.minuteID];
-                  return (
-                    <Row key={agendaMinuteData.minuteID}>
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          label2Class={styles["minuteParentLabel"]}
-                          label2={
-                            <>
-                              <div className={styles["minuteWrapper"]}>
-                                <Row>
-                                  <Col className="pr-0" lg={10} md={10} sm={12}>
-                                    <p
-                                      ref={textRef}
-                                      className={
-                                        isTruncated
-                                          ? "m-0 text-truncate"
-                                          : "m-0"
-                                      }
-                                    >
-                                      {agendaMinuteData.description}
-                                    </p>
-                                    <Row>
-                                      {(isTruncated &&
-                                        agendaMinuteData.attachments.length ===
-                                          0) ||
-                                      (isTruncated &&
-                                        agendaMinuteData.attachments.length > 0)
-                                        ? null
-                                        : agendaMinuteData.attachments.map(
-                                            (filesData, index) => {
-                                              console.log(
-                                                "filesDatafilesData",
-                                                filesData
-                                              );
-                                              return (
-                                                <Col
-                                                  lg={2}
-                                                  md={2}
-                                                  sm={12}
-                                                  className="mx-2"
-                                                >
-                                                  <AttachmentViewer
-                                                    id={0}
-                                                    name={filesData.fileName}
-                                                  />
-                                                </Col>
-                                              );
-                                            }
-                                          )}
-                                    </Row>
-                                  </Col>
-                                  <Col
-                                    className="d-flex justify-content-end align-items-end gap-2"
-                                    lg={2}
-                                    md={2}
-                                    sm={12}
-                                  >
-                                    <span
-                                      onClick={() =>
-                                        showHideDetails(
-                                          agendaMinuteData.minuteID
-                                        )
-                                      }
-                                      className={styles["view-details"]}
-                                    >
-                                      {isTruncated
-                                        ? t("View-details")
-                                        : t("Hide-details")}
-                                    </span>
-                                    {agendaMinuteData.attachments &&
-                                      agendaMinuteData.attachments.length >
-                                        0 && (
-                                        <img
-                                          width={17}
-                                          height={16}
-                                          src={AttachmentIcon}
-                                          alt=""
-                                        />
-                                      )}
-                                  </Col>
-                                </Row>
-                              </div>
-                            </>
-                          }
-                          className="SearchCheckbox"
-                          name={`minute-${agendaMinuteData.minuteID}`}
-                          // checked={checkBoxIds.includes(agendaMinuteData)}
-                          // onChange={() =>
-                          //   MainAgendaSubItem(agendaMinuteData, data)
-                          // }
-                          // checked={checkedMinutes[agendaMinuteData.id]}
-                          // onChange={(e) =>
-                          //   onChange2(e, agendaMinuteData.id)
-                          // }
-                          classNameDiv={styles["agendaTitleCheckbox"]}
-                        />
-                      </Col>
-                    </Row>
-                  );
-                })}
-                {data.subItems && data.subItems.length > 0
-                  ? data.subItems.map((subagendaMinuteData, index) => (
-                      <Row key={index} className="mb-25 ml-25">
-                        <Col lg={12} md={12} sm={12}>
-                          <Checkbox
-                            label2Class={styles["agenda-title"]}
-                            label2={subagendaMinuteData.title}
-                            className="SearchCheckbox"
-                            name="IsChat"
-                            // onChange={() =>
-                            //   MainSubAgendaHeadingCheckbox(
-                            //     data,
-                            //     subagendaMinuteData
-                            //   )
-                            // }
-                            // checked={checkBoxIds.includes(subagendaMinuteData)}
-                            // checked={checkAllMinutes}
-                            // onChange={(e) =>
-                            //   handleChangeTitle(
-                            //     e,
-                            //     subagendaMinuteData.title
-                            //   )
-                            // }
-                            classNameDiv={styles["agendaTitleCheckbox"]}
-                          />
-                          {subagendaMinuteData.items &&
-                            subagendaMinuteData.items.length > 0 &&
-                            subagendaMinuteData.items.map(
-                              (subItem, subIndex) => {
-                                const isTruncated =
-                                  !expandedItems[subItem.minuteID];
-                                return (
-                                  <Checkbox
-                                    key={subItem.minuteID}
-                                    label2Class={styles["minuteParentLabel"]}
-                                    label2={
-                                      <>
-                                        <div
-                                          className={styles["minuteWrapper"]}
-                                        >
-                                          <Row>
-                                            <Col
-                                              className="pr-0"
-                                              lg={10}
-                                              md={10}
-                                              sm={12}
-                                            >
-                                              <p
-                                                ref={textRef}
-                                                className={
-                                                  isTruncated
-                                                    ? "m-0 text-truncate"
-                                                    : "m-0"
-                                                }
-                                              >
-                                                {subItem.description}
-                                              </p>
-                                              <Row>
-                                                {(isTruncated &&
-                                                  subItem.attachments.length ===
-                                                    0) ||
-                                                (isTruncated &&
-                                                  subItem.attachments.length >
-                                                    0)
-                                                  ? null
-                                                  : subItem.attachments.map(
-                                                      (filesData, index) => {
-                                                        console.log(
-                                                          "filesDatafilesData",
-                                                          filesData
-                                                        );
-                                                        return (
-                                                          <Col
-                                                            lg={2}
-                                                            md={2}
-                                                            sm={12}
-                                                            className="mx-2"
-                                                          >
-                                                            <AttachmentViewer
-                                                              id={0}
-                                                              name={
-                                                                filesData.fileName
-                                                              }
-                                                            />
-                                                          </Col>
-                                                        );
-                                                      }
-                                                    )}
-                                              </Row>
-                                            </Col>
-                                            <Col
-                                              className="d-flex justify-content-end align-items-end gap-2"
-                                              lg={2}
-                                              md={2}
-                                              sm={12}
-                                            >
-                                              <span
-                                                onClick={() =>
-                                                  showHideDetails(
-                                                    subItem.minuteID
-                                                  )
-                                                }
-                                                className={
-                                                  styles["view-details"]
-                                                }
-                                              >
-                                                {isTruncated
-                                                  ? t("View-details")
-                                                  : t("Hide-details")}
-                                              </span>
-                                              {subItem.attachments &&
-                                                subItem.attachments.length >
-                                                  0 && (
-                                                  <img
-                                                    width={17}
-                                                    height={16}
-                                                    src={AttachmentIcon}
-                                                    alt=""
-                                                  />
-                                                )}
-                                            </Col>
-                                          </Row>
-                                        </div>
-                                      </>
+                {data.isParentData === false ? null : (
+                  <Row key={data.minuteID}>
+                    <Col lg={12} md={12} sm={12}>
+                      <Checkbox
+                        label2Class={styles["minuteParentLabel"]}
+                        label2={
+                          <>
+                            <div className={styles["minuteWrapper"]}>
+                              <Row>
+                                <Col className="pr-0" lg={10} md={10} sm={12}>
+                                  <p
+                                    ref={textRef}
+                                    className={
+                                      isTruncated ? "m-0 text-truncate" : "m-0"
                                     }
-                                    className="SearchCheckbox"
-                                    name={`minute-${subItem.minuteID}`}
-                                    // checked={checkBoxIds.includes(subItem)}
-                                    // onChange={() =>
-                                    //   MainSubItemAgendaSubItem(
-                                    //     subItem,
-                                    //     subagendaMinuteData
-                                    //   )
-                                    // }
-                                    classNameDiv={styles["agendaTitleCheckbox"]}
-                                  />
-                                );
+                                    dangerouslySetInnerHTML={{
+                                      __html: data.description,
+                                    }}
+                                  ></p>
+                                  <Row>
+                                    {(isTruncated &&
+                                      data.attachments.length === 0) ||
+                                    (isTruncated && data.attachments.length > 0)
+                                      ? null
+                                      : data.attachments.map(
+                                          (filesData, index) => {
+                                            console.log(
+                                              "filesDatafilesData",
+                                              filesData
+                                            );
+                                            return (
+                                              <Col
+                                                lg={2}
+                                                md={2}
+                                                sm={12}
+                                                className="mx-2"
+                                              >
+                                                <AttachmentViewer
+                                                  id={0}
+                                                  name={filesData.fileName}
+                                                />
+                                              </Col>
+                                            );
+                                          }
+                                        )}
+                                  </Row>
+                                </Col>
+                                <Col
+                                  className="d-flex justify-content-end align-items-end gap-2"
+                                  lg={2}
+                                  md={2}
+                                  sm={12}
+                                >
+                                  <span
+                                    onClick={() =>
+                                      showHideDetails(data.minuteID)
+                                    }
+                                    className={styles["view-details"]}
+                                  >
+                                    {isTruncated
+                                      ? t("View-details")
+                                      : t("Hide-details")}
+                                  </span>
+                                  {data.attachments &&
+                                    data.attachments.length > 0 && (
+                                      <img
+                                        width={17}
+                                        height={16}
+                                        src={AttachmentIcon}
+                                        alt=""
+                                      />
+                                    )}
+                                </Col>
+                              </Row>
+                            </div>
+                          </>
+                        }
+                        className="SearchCheckbox"
+                        name={`minute-${data.minuteID}`}
+                        // checked={checkBoxIds.includes(data)}
+                        // onChange={() =>
+                        //   MainAgendaSubItem(data, data)
+                        // }
+                        // checked={checkedMinutes[data.id]}
+                        // onChange={(e) =>
+                        //   onChange2(e, data.id)
+                        // }
+                        classNameDiv={styles["agendaTitleCheckbox"]}
+                      />
+                    </Col>
+                  </Row>
+                )}
+                {data.subMinutes && data.subMinutes.length > 0
+                  ? data.subMinutes.map((subagendaMinuteData, index) => {
+                      const isTruncated =
+                        !expandedItems[subagendaMinuteData.minuteID];
+                      return (
+                        <Row key={index} className="mb-25 ml-25">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              label2Class={styles["agenda-title"]}
+                              label2={subagendaMinuteData.agendaTitle}
+                              className="SearchCheckbox"
+                              name="IsChat"
+                              // onChange={() =>
+                              //   MainSubAgendaHeadingCheckbox(
+                              //     data,
+                              //     subagendaMinuteData
+                              //   )
+                              // }
+                              // checked={checkBoxIds.includes(subagendaMinuteData)}
+                              // checked={checkAllMinutes}
+                              // onChange={(e) =>
+                              //   handleChangeTitle(
+                              //     e,
+                              //     subagendaMinuteData.title
+                              //   )
+                              // }
+                              classNameDiv={styles["agendaTitleCheckbox"]}
+                            />
+
+                            <Checkbox
+                              key={subagendaMinuteData.minuteID}
+                              label2Class={styles["minuteParentLabel"]}
+                              label2={
+                                <>
+                                  <div className={styles["minuteWrapper"]}>
+                                    <Row>
+                                      <Col
+                                        className="pr-0"
+                                        lg={10}
+                                        md={10}
+                                        sm={12}
+                                      >
+                                        <p
+                                          ref={textRef}
+                                          className={
+                                            isTruncated
+                                              ? "m-0 text-truncate"
+                                              : "m-0"
+                                          }
+                                        >
+                                          {subagendaMinuteData.description}
+                                        </p>
+                                        <Row>
+                                          {(isTruncated &&
+                                            subagendaMinuteData.attachments
+                                              .length === 0) ||
+                                          (isTruncated &&
+                                            subagendaMinuteData.attachments
+                                              .length > 0)
+                                            ? null
+                                            : subagendaMinuteData.attachments.map(
+                                                (filesData, index) => {
+                                                  console.log(
+                                                    "filesDatafilesData",
+                                                    filesData
+                                                  );
+                                                  return (
+                                                    <Col
+                                                      lg={2}
+                                                      md={2}
+                                                      sm={12}
+                                                      className="mx-2"
+                                                    >
+                                                      <AttachmentViewer
+                                                        id={0}
+                                                        name={
+                                                          filesData.fileName
+                                                        }
+                                                      />
+                                                    </Col>
+                                                  );
+                                                }
+                                              )}
+                                        </Row>
+                                      </Col>
+                                      <Col
+                                        className="d-flex justify-content-end align-items-end gap-2"
+                                        lg={2}
+                                        md={2}
+                                        sm={12}
+                                      >
+                                        <span
+                                          onClick={() =>
+                                            showHideDetails(
+                                              subagendaMinuteData.minuteID
+                                            )
+                                          }
+                                          className={styles["view-details"]}
+                                        >
+                                          {isTruncated
+                                            ? t("View-details")
+                                            : t("Hide-details")}
+                                        </span>
+                                        {subagendaMinuteData.attachments &&
+                                          subagendaMinuteData.attachments
+                                            .length > 0 && (
+                                            <img
+                                              width={17}
+                                              height={16}
+                                              src={AttachmentIcon}
+                                              alt=""
+                                            />
+                                          )}
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </>
                               }
-                            )}
-                        </Col>
-                      </Row>
-                    ))
+                              className="SearchCheckbox"
+                              name={`minute-${subagendaMinuteData.minuteID}`}
+                              // checked={checkBoxIds.includes(subItem)}
+                              // onChange={() =>
+                              //   MainSubItemAgendaSubItem(
+                              //     subItem,
+                              //     subagendaMinuteData
+                              //   )
+                              // }
+                              classNameDiv={styles["agendaTitleCheckbox"]}
+                            />
+                          </Col>
+                        </Row>
+                      );
+                    })
                   : null}
               </div>
             );

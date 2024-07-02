@@ -50,7 +50,10 @@ import {
 } from "../../../../../commen/functions/time_formatter";
 import VersionHistory from "./AgendaWise/VersionHistoryModal/VersionHistory";
 import RevisionHistory from "./AgendaWise/RevisionHistoryModal/RevisionHistory";
-import { DeleteMinuteReducer, deleteCommentMeetingModal } from "../../../../../store/actions/Minutes_action";
+import {
+  DeleteMinuteReducer,
+  deleteCommentModalGeneral,
+} from "../../../../../store/actions/Minutes_action";
 
 const Minutes = ({
   setMinutes,
@@ -1466,7 +1469,7 @@ const Minutes = ({
                                     width="20.76px"
                                     className={styles["RedCrossClass"]}
                                     onClick={() => {
-                                      dispatch(deleteCommentMeetingModal(true));
+                                      dispatch(deleteCommentModalGeneral(true));
                                       dispatch(DeleteMinuteReducer(data));
                                     }}
                                     alt=""
@@ -1903,7 +1906,7 @@ const Minutes = ({
           />
         ) : null}
 
-        {MinutesReducer.deleteMeetingCommentModal ? (
+        {MinutesReducer.deleteMinuteGeneral ? (
           <DeleteCommentGeneral
             advanceMeetingModalID={advanceMeetingModalID}
             setAddNoteFields={setAddNoteFields}

@@ -6,6 +6,8 @@ const initialState = {
   showReviewMinutesPage: false,
   rejectCommentModal: false,
   editCommentModal: false,
+  deleteMinuteAgenda: false,
+  deleteMinuteGeneral: false,
   deleteCommentModal: false,
   deleteMeetingCommentModal: false,
   pendingApprovalGraphReducerData: {
@@ -269,6 +271,20 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         editCommentModal: action.response,
+      };
+    }
+
+    case actions.DELETE_COMMENT_AGENDA_MODAL: {
+      return {
+        ...state,
+        deleteMinuteAgenda: action.response,
+      };
+    }
+
+    case actions.DELETE_COMMENT_GENERAL_MODAL: {
+      return {
+        ...state,
+        deleteMinuteGeneral: action.response,
       };
     }
 
