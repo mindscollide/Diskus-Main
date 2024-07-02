@@ -15,7 +15,7 @@ import {
   getOrganizationWalletApi,
 } from "../../../../../../store/actions/UserManagementActions";
 import { useSelector } from "react-redux";
-import { render } from "@testing-library/react";
+
 const DowngradeSubscription = () => {
   const { t } = useTranslation();
 
@@ -24,6 +24,8 @@ const DowngradeSubscription = () => {
   const dispatch = useDispatch();
 
   const { UserMangementReducer } = useSelector((state) => state);
+
+  console.log(UserMangementReducer.Loading, "UserMangementReducer");
   //Data States
   const [downgradeSubsData, setDowngradeSubsData] = useState([]);
   const [textFieldValues, setTextFieldValues] = useState({});
@@ -70,6 +72,22 @@ const DowngradeSubscription = () => {
       console.log("error", error);
     }
   }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+
+  useEffect(() => {
+    try {
+      if (
+        UserMangementReducer.getOrganizationWallet !== null &&
+        UserMangementReducer.getOrganizationWallet !== undefined
+      ) {
+        console.log(
+          UserMangementReducer.getOrganizationWallet,
+          "getOrganizationWallet"
+        );
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, []);
 
   const handleCancelButton = () => {
     navigate("/Admin/subscriptionDetailsUserManagement");

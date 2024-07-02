@@ -2429,10 +2429,7 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                downgradeOrganizationSubscriptionSuccess(
-                  t("Data-available"),
-                  ""
-                )
+                downgradeOrganizationSubscriptionSuccess(t("Data-available"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2538,9 +2535,7 @@ const cancelOrganizationSubscriptionApi = (navigate, t, data) => {
                   "Admin_AdminServiceManager_CancelOrganizationsSubscription_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                cancelOrganizationSubscriptionSuccess(t("Successfull"), "")
-              );
+              dispatch(cancelOrganizationSubscriptionSuccess(t("Successfull")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2603,17 +2598,17 @@ const getOrganizationWalletInit = () => {
   };
 };
 
-const getOrganizationWalletSuccess = (message, response) => {
+const getOrganizationWalletSuccess = (response, message) => {
   return {
-    type: actions.GET_ORGANIZATION_WALLET_INIT,
-    message: message,
+    type: actions.GET_ORGANIZATION_WALLET_SUCCESS,
     response: response,
+    message: message,
   };
 };
 
 const getOrganizationWalletFailed = (message) => {
   return {
-    type: actions.GET_ORGANIZATION_WALLET_INIT,
+    type: actions.GET_ORGANIZATION_WALLET_FAILED,
     message: message,
   };
 };
@@ -2646,9 +2641,7 @@ const getOrganizationWalletApi = (navigate, t) => {
                   "Admin_AdminServiceManager_GetOrganizationWallet_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                getOrganizationWalletSuccess(t("Records-available"), "")
-              );
+              dispatch(getOrganizationWalletSuccess(t("Records-available")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
