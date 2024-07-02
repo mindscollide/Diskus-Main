@@ -21,6 +21,12 @@ const SelectReviewers = ({
   setSendReviewers,
   editReviewer,
   setEditReviewer,
+  setMinuteDataAgenda,
+  minuteDataAgenda,
+  setMinuteDataGeneral,
+  minuteDataGeneral,
+  selectedMinuteIDs,
+  setSelectedMinuteIDs,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -94,7 +100,80 @@ const SelectReviewers = ({
     };
   }, [MinutesReducer.GetAllOrganizationUsersForReviewData]);
 
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
+  console.log(
+    "MintuesDataMintuesDataMintuesData",
+    minuteDataAgenda,
+    minuteDataGeneral,
+    selectedMinuteIDs
+  );
+
+  const updateMinutes = (state1, state2, state3) => {
+    const checkIds = new Set(state3);
+
+    // Helper function to update minuteData
+    const updateMinuteData = (minuteData) => {
+      return minuteData.map((minute) => ({
+        ...minute,
+        isChecked: checkIds.has(minute.minuteID),
+      }));
+    };
+
+    // Update first state
+    const updatedState1 = state1.map((agenda) => {
+      const updatedMinuteData = updateMinuteData(agenda.minuteData);
+      const updatedSubMinutes = agenda.subMinutes.map((subMinute) => {
+        const updatedSubMinuteData = updateMinuteData(subMinute.minuteData);
+        const isSubMinuteChecked = updatedSubMinuteData.some(
+          (minute) => minute.isChecked
+        );
+
+        return {
+          ...subMinute,
+          minuteData: updatedSubMinuteData,
+          isChecked: isSubMinuteChecked,
+        };
+      });
+
+      const isAgendaChecked =
+        updatedMinuteData.some((minute) => minute.isChecked) ||
+        updatedSubMinutes.some((subMinute) => subMinute.isChecked);
+
+      return {
+        ...agenda,
+        minuteData: updatedMinuteData,
+        subMinutes: updatedSubMinutes,
+        isChecked: isAgendaChecked,
+      };
+    });
+
+    // Update second state
+    const updatedState2 = state2.map((minute) => ({
+      ...minute,
+      isChecked: checkIds.has(minute.minuteID),
+    }));
+
+    return { updatedState1, updatedState2 };
+  };
+
+  useEffect(() => {
+    try {
+      const { updatedState1, updatedState2 } = updateMinutes(
+        minuteDataAgenda,
+        minuteDataGeneral,
+        selectedMinuteIDs
+      );
+      setMinuteDataAgenda(updatedState1);
+      setMinuteDataGeneral(updatedState2);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  }, []);
+
+  console.log(
+    "MinuteDataMinuteDataMinuteData",
+    minuteDataAgenda,
+    minuteDataGeneral
+  );
 
   return (
     <>

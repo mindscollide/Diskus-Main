@@ -25,6 +25,8 @@ const SelectMinutes = ({
   minuteDataAgenda,
   setMinuteDataGeneral,
   minuteDataGeneral,
+  selectedMinuteIDs,
+  setSelectedMinuteIDs,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -37,11 +39,6 @@ const SelectMinutes = ({
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
   const [expandedItems, setExpandedItems] = useState({});
-  const [checkedMinutes, setCheckedMinutes] = useState({});
-  const [checkBoxIds, setCheckBoxIds] = useState([]);
-
-  console.log("checkedMinutescheckedMinutes", checkedMinutes);
-  const [checkedMinutesData, setCheckedMinutesData] = useState([]);
 
   useEffect(() => {
     const checkIfTruncated = () => {
@@ -65,8 +62,6 @@ const SelectMinutes = ({
       [id]: !prev[id],
     }));
   };
-
-  const [selectedMinuteIDs, setSelectedMinuteIDs] = useState([]);
 
   console.log(
     "MinutesMinutesMinutesMinutes",

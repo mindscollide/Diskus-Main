@@ -45,6 +45,8 @@ const AddReviewers = ({
   const [addDateModal, setAddDateModal] = useState(false);
   const [minuteToEdit, setMinuteToEdit] = useState(null);
 
+  const [selectedMinuteIDs, setSelectedMinuteIDs] = useState([]);
+
   const [minuteDate, setMinuteDate] = useState("");
 
   const [minuteDataAgenda, setMinuteDataAgenda] = useState(null);
@@ -302,6 +304,8 @@ const AddReviewers = ({
             minuteDataAgenda={minuteDataAgenda}
             setMinuteDataGeneral={setMinuteDataGeneral}
             minuteDataGeneral={minuteDataGeneral}
+            selectedMinuteIDs={selectedMinuteIDs}
+            setSelectedMinuteIDs={setSelectedMinuteIDs}
           />
         ) : selectMinutes === false &&
           selectReviewers === true &&
@@ -317,6 +321,12 @@ const AddReviewers = ({
             setSendReviewers={setSendReviewers}
             setEditReviewer={setEditReviewer}
             editReviewer={editReviewer}
+            setMinuteDataAgenda={setMinuteDataAgenda}
+            minuteDataAgenda={minuteDataAgenda}
+            setMinuteDataGeneral={setMinuteDataGeneral}
+            minuteDataGeneral={minuteDataGeneral}
+            selectedMinuteIDs={selectedMinuteIDs}
+            setSelectedMinuteIDs={setSelectedMinuteIDs}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -378,6 +388,7 @@ const AddReviewers = ({
                   className={styles["Add-Button"]}
                   text={t("Add-reviewers")}
                   onClick={addReviewerScreen}
+                  disableBtn={selectedMinuteIDs.length === 0 ? true : false}
                 />
               </Col>
             </Row>
