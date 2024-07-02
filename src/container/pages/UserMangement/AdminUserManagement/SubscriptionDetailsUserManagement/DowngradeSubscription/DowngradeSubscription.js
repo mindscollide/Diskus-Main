@@ -19,6 +19,12 @@ import {
   formatDateDownGradeSubscription,
   formatDateToDDMMYYYYDownGradeSubscription,
 } from "../../../../../../commen/functions/date_formater";
+import {
+  calculateTotalAllotedUsersDowngradeSubscription,
+  calculateTotalChargesDowngradeSubscription,
+  calculateTotalHeadCountDowngradeSubscription,
+  calculateTotalNotUtilizedDowngradeSubscription,
+} from "../../../../../../commen/functions/TableDataCalculation";
 
 const DowngradeSubscription = () => {
   const { t } = useTranslation();
@@ -150,16 +156,20 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-      render: (text, record) => {
+      render: (text, record, index) => {
         if (record.IsDefaultRow) {
-          return <></>;
+          // Get the total charges only once, assuming you have access to the original data
+          const totalCharges = calculateTotalChargesDowngradeSubscription(
+            subscriptionDetails.organizationSelectedPackages
+          );
+          return (
+            <span className={styles["TableheadingTotal"]}>{totalCharges}</span>
+          );
         } else {
           return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {record.price}
-              </span>
-            </>
+            <span className={styles["SubscritionNumber_Styles"]}>
+              {record.price}
+            </span>
           );
         }
       },
@@ -180,14 +190,19 @@ const DowngradeSubscription = () => {
       ellipsis: true,
       render: (text, record) => {
         if (record.IsDefaultRow) {
-          return <></>;
+          const totalHeadCount = calculateTotalHeadCountDowngradeSubscription(
+            subscriptionDetails.organizationSelectedPackages
+          );
+          return (
+            <span className={styles["TableheadingTotal"]}>
+              {totalHeadCount}
+            </span>
+          );
         } else {
           return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {record.headCount}
-              </span>
-            </>
+            <span className={styles["SubscritionNumber_Styles"]}>
+              {record.headCount}
+            </span>
           );
         }
       },
@@ -208,14 +223,21 @@ const DowngradeSubscription = () => {
       ellipsis: true,
       render: (text, record) => {
         if (record.IsDefaultRow) {
-          return <></>;
+          // Get the total alloted users only once, assuming you have access to the original data
+          const totalAllotedUsers =
+            calculateTotalAllotedUsersDowngradeSubscription(
+              subscriptionDetails.organizationSelectedPackages
+            );
+          return (
+            <span className={styles["TableheadingTotal"]}>
+              {totalAllotedUsers}
+            </span>
+          );
         } else {
           return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {record.allotedUsers}
-              </span>
-            </>
+            <span className={styles["SubscritionNumber_Styles"]}>
+              {record.allotedUsers}
+            </span>
           );
         }
       },
@@ -236,14 +258,21 @@ const DowngradeSubscription = () => {
       ellipsis: true,
       render: (text, record) => {
         if (record.IsDefaultRow) {
-          return <></>;
+          // Get the total not utilized only once, assuming you have access to the original data
+          const totalNotUtilized =
+            calculateTotalNotUtilizedDowngradeSubscription(
+              subscriptionDetails.organizationSelectedPackages
+            );
+          return (
+            <span className={styles["TableheadingTotal"]}>
+              {totalNotUtilized}
+            </span>
+          );
         } else {
           return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {record.headCount - record.allotedUsers}
-              </span>
-            </>
+            <span className={styles["SubscritionNumber_Styles"]}>
+              {record.headCount - record.allotedUsers}
+            </span>
           );
         }
       },
