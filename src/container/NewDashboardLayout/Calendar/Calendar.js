@@ -300,7 +300,9 @@ const NewCalendar = () => {
   return (
     <>
       {calendarReducer.Spinner === true ? (
-        <Spin />
+        <section className="bg-white">
+          <Spin />
+        </section>
       ) : (
         <>
           <Calendar

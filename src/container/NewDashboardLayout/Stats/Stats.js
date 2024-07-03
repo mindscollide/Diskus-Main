@@ -46,28 +46,38 @@ const Stats = () => {
     dispatch(GetWeeklyMeetingsCount(navigate, Number(createrID), t));
   }, []);
   useEffect(() => {
-    setCounterValues({
-      ...counterValues,
-      UpcomingMeetingVal: meetingIdReducer.TotalMeetingCountThisWeek,
-      UpcomingMeetingProgressVal: {
-        RemainingCount: meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
-        totalCount: meetingIdReducer.TotalMeetingCountThisWeek,
-      },
-    });
+    if (
+      meetingIdReducer.TotalMeetingCountThisWeek !== 0 ||
+      meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek !== 0
+    ) {
+      setCounterValues({
+        ...counterValues,
+        UpcomingMeetingVal: meetingIdReducer.TotalMeetingCountThisWeek,
+        UpcomingMeetingProgressVal: {
+          RemainingCount: meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
+          totalCount: meetingIdReducer.TotalMeetingCountThisWeek,
+        },
+      });
+    }
   }, [
     meetingIdReducer.TotalMeetingCountThisWeek,
     meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
   ]);
 
   useEffect(() => {
-    setCounterValues({
-      ...counterValues,
-      PendingTasksVal: toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
-      UpcomingMeetingProgressVal: {
-        RemainingCount: toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
-        totalCount: toDoListReducer.TotalTodoCountThisWeek,
-      },
-    });
+    if (
+      toDoListReducer.TotalNumberOfUpcommingTodoInWeek !== 0 ||
+      toDoListReducer.TotalTodoCountThisWeek !== 0
+    ) {
+      setCounterValues({
+        ...counterValues,
+        PendingTasksVal: toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
+        UpcomingMeetingProgressVal: {
+          RemainingCount: toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
+          totalCount: toDoListReducer.TotalTodoCountThisWeek,
+        },
+      });
+    }
   }, [
     toDoListReducer.TotalTodoCountThisWeek,
     toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
@@ -121,8 +131,10 @@ const Stats = () => {
           className={` d-flex flex-column gap-3 ${styles["ProgressBarContains"]}`}
         >
           <ProgressBar
-            now={counterValues.UpcomingMeetingProgressVal.RemainingCount}
-            max={counterValues.UpcomingMeetingProgressVal.totalCount}
+            now={Number(
+              counterValues.UpcomingMeetingProgressVal.RemainingCount
+            )}
+            max={Number(counterValues?.UpcomingMeetingProgressVal?.totalCount)}
             label={`${counterValues?.UpcomingMeetingProgressVal?.RemainingCount}/${counterValues?.UpcomingMeetingProgressVal?.totalCount}`}
             className=" dashboard_progress_upcomingmeeting"
           />

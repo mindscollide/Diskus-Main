@@ -85,6 +85,7 @@ import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import Stats from "../../NewDashboardLayout/Stats/Stats";
 
 const Home = () => {
   const dCheck = useLoaderData();
@@ -1689,48 +1690,15 @@ const Home = () => {
     <>
       <Container fluid className="Dashboard-Main-Container">
         <Row>
+          <Col sm={12} md={12} lg={12}>
+            <section className="StatsBox">
+              <Stats />
+            </section>
+          </Col>
+        </Row>
+        <Row>
           <Col lg={4} md={4} sm={12} className="dashboard-container">
             <section className="dashboard-col-1">
-              <Row className="mb-3">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={false}
-                  xs={false}
-                  className="text-center mt-2  color-5a5a5a  "
-                >
-                  <div
-                    className={
-                      meetingIdReducer.Spinner === true
-                        ? "whiteBackground home-meetingcount-spin border"
-                        : "whiteBackground home-meetingcount border"
-                    }
-                  >
-                    {meetingIdReducer.Spinner === true ? (
-                      <Spin />
-                    ) : (
-                      <CustomTextProgressbar
-                        value={valueMeeting}
-                        maxValue={meetingCountThisWeek}
-                        text={
-                          <>
-                            <div className="progressbar-count m-0 ">
-                              <strong>
-                                {upcomingMeetingCountThisWeek}/
-                                {meetingCountThisWeek}
-                              </strong>
-                            </div>
-                            <div className="home-meetingcount-text Saved_money_Tagline">
-                              {t("Meetings")} <br />
-                              {t("This-month")}
-                            </div>
-                          </>
-                        }
-                      ></CustomTextProgressbar>
-                    )}
-                  </div>
-                </Col>
-              </Row>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div className="whiteBackground Spinner home-calendar-spinner calendar_home   ">
@@ -1813,44 +1781,6 @@ const Home = () => {
             </section>
           </Col>
           <Col lg={4} md={4} sm={12} className="m-0 ">
-            <Row className="mb-3">
-              <Col
-                lg={12}
-                md={12}
-                sm={false}
-                className="text-center mt-2 color-5a5a5a    "
-              >
-                <div
-                  className={
-                    toDoListReducer.Spinner === true
-                      ? "whiteBackground home-todolistcount-spin border"
-                      : "whiteBackground home-todolistcount border"
-                  }
-                >
-                  {toDoListReducer.Spinner === true ? (
-                    <Spin />
-                  ) : (
-                    <CustomTextProgressbar
-                      value={toDoValue}
-                      maxValue={todoListThisWeek}
-                      text={
-                        <>
-                          <div className="progressbar-count m-0">
-                            <strong>
-                              {todoListAssignedThisWeek}/{todoListThisWeek}
-                            </strong>
-                          </div>
-                          <div className="home-todocount-text Saved_money_Tagline">
-                            {t("Task")} <br />
-                            {t("This-month")}
-                          </div>
-                        </>
-                      }
-                    ></CustomTextProgressbar>
-                  )}
-                </div>
-              </Col>
-            </Row>
             <Row>
               <Col lg={12} md={12} sm={12} className="DashboardTodoTable ">
                 {toDoListReducer.TableSpinner === true && getTodoID === 0 ? (
@@ -1945,7 +1875,7 @@ const Home = () => {
               </Col>
             </Row>
           </Col>
-          <Col lg={4} md={4} sm={12} className="m-0 p-0">
+          <Col lg={4} md={4} sm={12} className="">
             <h1 className="border recent-activity color-5a5a5a ">
               {t("Recent-activity")}
             </h1>
@@ -2240,7 +2170,7 @@ const Home = () => {
                 )}
               </div>
             </div>
-            <Row className=" color-5a5a5a m-0 ">
+            <Row className=" color-5a5a5a  ">
               <Col className="Notes  whiteBackground-notes  mt-2">
                 <Row className="my-2 ">
                   <Col

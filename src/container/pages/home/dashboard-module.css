@@ -130,12 +130,13 @@ h1.recent-activity {
 .Recent-Activity-Box {
   height: 37vh !important;
   padding-left: 15px;
+  margin-bottom: 10px;
   overflow: hidden auto !important;
 }
 
 .DashboardTodoTable {
   position: relative;
-  height: 61vh !important;
+  /* height: 61vh !important; */
   /* overflow-y: auto;
   overflow-x   : hidden; */
   margin-left: -5px;
@@ -156,6 +157,7 @@ body[dir="rtl"] .DashboardTodoTable span.ant-typography.labelTitle {
 
 .DashboardTodoTable .ant-table-body {
   overflow-y: auto !important;
+  height: calc(91vh - 13vh) !important;
   /* max-height: 455px !important; */
   /* margin-top: 7px !important; */
 }
@@ -270,14 +272,14 @@ body[dir="rtl"] h1.upcoming-events {
 }
 
 .Upcoming-Events-Box {
-  height: 23vh;
+  height: 31vh;
   overflow-y: auto;
   overflow-x: hidden;
   margin-right: 7px !important;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
 }
 
 .event-details {
@@ -541,10 +543,14 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 
 .ant-table-wrapper.dashboard-todo .ant-table-tbody > tr > td {
   background: #fff !important;
+  padding: 5px;
+
 }
 
 .ant-table-wrapper.dashboard-todo .ant-table-tbody > tr {
   cursor: pointer;
+  border: 1px solid #e1e1e1;
+  border-radius: 20px;
 }
 
 /* .ant-table-wrapper.dashboard-todo .ant-table-tbody>tr {
@@ -570,10 +576,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
     border: 5px solid #ccc !important;
 } */
 .dashboard-todo {
-  max-height: 56.4vh !important;
-  /* overflow-x: hidden; */
-  /* overflow-y: auto;
-  margin-top: 0px; */
+
   padding-right: 8px;
 }
 
@@ -1254,7 +1257,7 @@ body[dir="rtl"] h1.noteheading {
 }
 
 .calendar_home {
-  height: 30.9vh !important;
+  height: 100% !important;
   border: 1px solid #e1e1e1 !important;
   border-bottom: none !important;
   border-bottom-left-radius: 0px;
@@ -1270,7 +1273,7 @@ body[dir="rtl"] h1.noteheading {
 }
 
 .dashboard-col-1 {
-  height: 91vh !important;
+  height: 61vh !important;
   /* background-color: #fff !important; */
 }
 
@@ -1420,4 +1423,12 @@ body[dir="rtl"] svg.DatePickerIcon {
 }
 .status_value {
   font-weight: 600;
+}
+.StatsBox {
+  margin-top: 10px;
+  min-height: 20vh !important;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  margin-bottom: 10px;
+  padding: 15px;
 }

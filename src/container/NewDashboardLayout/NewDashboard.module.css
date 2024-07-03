@@ -11,7 +11,7 @@
 }
 
 .CalendarBox {
-  min-height: 30vh;
+  flex: 1 !important;
   background-color: #fff;
   border-top: 1px solid #e1e1e1;
   border-right: 1px solid #e1e1e1;
@@ -20,7 +20,7 @@
 }
 .EventBox {
   padding: 0 10px;
-  min-height: 30vh;
+  flex: 1;
   background-color: #fff;
   border-bottom: 1px solid #e1e1e1;
   border-right: 1px solid #e1e1e1;
@@ -28,15 +28,18 @@
   margin-bottom: 5px;
 }
 .Tasks {
-  min-height: 60vh;
+  flex: 1;
+  max-width: 100%;
+  width: 100%;
 }
 .RecentActivity {
-  min-height: 30vh;
+  flex: 1;
   background-color: #fff;
   border: 1px solid #e1e1e1;
+  padding: 15px 10px;
 }
 .Notes {
-  min-height: 30vh;
+  flex: 1;
   background-color: #fff;
   border: 1px solid #e1e1e1;
 }

@@ -5,17 +5,19 @@ import { Container, Col, Row } from "react-bootstrap";
 import Stats from "./Stats/Stats";
 import NewCalendar from "./Calendar/Calendar";
 import Events from "./Events/Events";
+import Task from "./Tasks/Task";
+import RecentActivity from "./RecentActivity/RecentActivity";
 
 const NewDashobard = () => {
   return (
     <main className={styles["newDashboard"]}>
-      <Row>
-        <Col sm={12} md={12} lg={12}>
-          <section className={styles["StatsBox"]}>
+      <section className={styles["StatsBox"]}>
+        <Row>
+          <Col sm={12} md={12} lg={12}>
             <Stats />
-          </section>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </section>
       <section className={styles["Dashbaords"]}>
         <Row>
           <Col sm={12} md={4} lg={4} className="d-flex flex-column">
@@ -29,11 +31,15 @@ const NewDashobard = () => {
               </section>
             </section>
           </Col>
-          <Col sm={12} md={4} lg={4}>
-            <section className={styles["Tasks"]}>Tasks</section>
+          <Col sm={12} md={4} lg={4} className="d-flex ">
+            <section className={styles["Tasks"]}>
+              <Task />
+            </section>
           </Col>
-          <Col sm={12} md={4} lg={4} className="d-flex flex-column">
-            <section className={styles["RecentActivity"]}>Recent Activity</section>
+          <Col sm={12} md={4} lg={4} className="d-flex flex-column gap-3">
+            <section className={styles["RecentActivity"]}>
+              <RecentActivity />
+            </section>
             <section className={styles["Notes"]}>Notes</section>
           </Col>
         </Row>

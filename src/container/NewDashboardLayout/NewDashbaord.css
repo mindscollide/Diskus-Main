@@ -1,3 +1,30 @@
 .box {
     height: 100%;
 }
+.DashboardTask-thead tr th {
+    font-weight: 600;
+    font-size: 12px;
+    color: #6127d6;
+}
+.DashboardTask-body {
+    padding-right: 10px;
+}
+.DashboardTask-row  {
+    height: 39px;
+    border: 1px solid #e1e1e1;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.DashboardTask-body table {
+    border-spacing:10px !important;
+    table-layout: inherit !important;
+    border-collapse: separate;
+}
+.DashboardTask-body table tr {
+    border: 1px solid #e1e1e1;
+
+}
+.newDashboardTask  .ant-table table {
+    border-spacing: 0 10px !important;
+
+}

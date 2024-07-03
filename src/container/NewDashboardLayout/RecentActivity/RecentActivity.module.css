@@ -1,0 +1,8 @@
+.RecentAcitivy_newDashboard {
+  height: auto;
+  max-height: 40vh !important;
+  min-height: 40vh !important;
+  margin-bottom: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
