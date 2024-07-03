@@ -21,10 +21,20 @@ const EditReviewers = ({
   setSendReviewers,
   editReviewer,
   setEditReviewer,
+  setMinuteDataAgenda,
+  minuteDataAgenda,
+  setMinuteDataGeneral,
+  minuteDataGeneral,
+  selectedMinuteIDs,
+  setSelectedMinuteIDs,
+  selectReviewersArray,
+  setSelectReviewersArray,
   minuteToEdit,
   setMinuteToEdit,
   allReviewers,
   setAllReviewers,
+  isAgendaMinute,
+  setIsAgendaMinute,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -36,6 +46,42 @@ const EditReviewers = ({
 
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
+
+  const [selectedReviewersToEdit, setSelectedReviewersToEdit] = useState(
+    minuteToEdit.reviewersList
+  );
+  const [selectAll, setSelectAll] = useState(false);
+
+  // Handle individual checkbox change
+  const handleCheckboxChange = (userID) => {
+    setSelectedReviewersToEdit((prevSelected) => {
+      const newSelected = prevSelected.includes(userID)
+        ? prevSelected.filter((id) => id !== userID)
+        : [...prevSelected, userID];
+      setMinuteToEdit({ ...minuteToEdit, reviewersList: newSelected });
+      return newSelected;
+    });
+  };
+
+  // Handle "Select All" checkbox change
+  const handleSelectAllChange = () => {
+    setSelectAll(!selectAll);
+    if (!selectAll) {
+      const allIDs = allReviewers.map((reviewer) => reviewer.userID);
+      setSelectedReviewersToEdit(allIDs);
+      setMinuteToEdit({ ...minuteToEdit, reviewersList: allIDs });
+    } else {
+      setSelectedReviewersToEdit([]);
+      setMinuteToEdit({ ...minuteToEdit, reviewersList: [] });
+    }
+  };
+
+  // Update selectAll state based on selectedReviewers
+  useEffect(() => {
+    setSelectAll(selectedReviewersToEdit.length === allReviewers.length);
+  }, [selectedReviewersToEdit, allReviewers]);
+
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   console.log("minuteToEditminuteToEdit", minuteToEdit);
 
@@ -54,12 +100,15 @@ const EditReviewers = ({
                         src={TickIcon}
                         alt=""
                       />
-                      <p className={styles["agenda-title"]}>Dummy Title</p>
+                      <p className={styles["agenda-title"]}>
+                        {MinutesReducer?.EditSingleMinuteData?.agendaTitle ||
+                          t("General-minute")}
+                      </p>
                     </div>
                   </Col>
                 </Row>
                 <div className={styles["agendaTitleCheckbox"]}>
-                  <Row key={minuteToEdit.id}>
+                  <Row key={minuteToEdit.minuteID}>
                     <Col lg={12} md={12} sm={12} className="position-relative">
                       <img
                         className={styles["minuteTick"]}
@@ -69,7 +118,12 @@ const EditReviewers = ({
                       <div className={styles["minuteWrapper"]}>
                         <Row>
                           <Col className="pr-0" lg={10} md={10} sm={12}>
-                            <p className="m-0">{minuteToEdit.description}</p>
+                            <span
+                              className="text-truncate description m-0"
+                              dangerouslySetInnerHTML={{
+                                __html: minuteToEdit.description,
+                              }}
+                            ></span>
                             <Row>
                               {(isTruncated &&
                                 minuteToEdit.attachments.length === 0) ||
@@ -117,15 +171,15 @@ const EditReviewers = ({
               className="SearchCheckbox "
               name="IsChat"
               classNameDiv={`${styles["addReviewersCheckbox"]} margin-top-10`}
-              // checked={checkAll}
-              // onChange={handleCheckAllChange}
+              checked={selectAll}
+              onChange={handleSelectAllChange}
             />
             {allReviewers.map((data, index) => {
               return (
                 <div className={styles["profile-wrapper"]}>
                   <Checkbox
-                    // checked={selectReviewersArray.includes(data.userID)}
-                    // onChange={() => handleCheckboxChange(data.userID)}
+                    checked={selectedReviewersToEdit.includes(data.userID)}
+                    onChange={() => handleCheckboxChange(data.userID)}
                     label2Class={styles["SelectAll"]}
                     label2={
                       <>
@@ -134,10 +188,10 @@ const EditReviewers = ({
                             height={32}
                             width={32}
                             className={styles["image-style"]}
-                            // src={`data:image/jpeg;base64,${data.userProfileImg}`}
+                            src={`data:image/jpeg;base64,${data.userProfileImg}`}
                             alt=""
                           />
-                          {/* <span>{data.userName}</span> */}
+                          <span>{data.userName}</span>
                         </div>
                       </>
                     }

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./AddReviewers.module.css";
 import { Container, Col, Row } from "react-bootstrap";
 import { Button, Modal } from "./../../../../../../components/elements";
+import { UpdateMinuteFlag } from "../../../../../../store/actions/Minutes_action";
 import { ChevronDown } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
@@ -56,6 +57,8 @@ const AddReviewers = ({
 
   const [allReviewers, setAllReviewers] = useState([]);
 
+  const [isAgendaMinute, setIsAgendaMinute] = useState(false);
+
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -63,6 +66,7 @@ const AddReviewers = ({
 
   const handleClose = () => {
     setAddReviewers(false);
+    dispatch(UpdateMinuteFlag(false));
   };
 
   const addReviewerScreen = () => {
@@ -86,11 +90,13 @@ const AddReviewers = ({
       setSelectReviewers(false);
       setSendReviewers(true);
       setEditReviewer(false);
+      dispatch(UpdateMinuteFlag(false));
     } else if (editReviewer) {
       setSelectMinutes(false);
       setSelectReviewers(false);
-      setSendReviewers(false);
-      setEditReviewer(true);
+      setSendReviewers(true);
+      setEditReviewer(false);
+      dispatch(UpdateMinuteFlag(true));
     }
   };
 
@@ -103,6 +109,14 @@ const AddReviewers = ({
       setSendReviewers(true);
       setEditReviewer(false);
     }
+  };
+
+  const cancelEditScreen = () => {
+    setSelectMinutes(false);
+    setSelectReviewers(false);
+    setSendReviewers(true);
+    setEditReviewer(false);
+    dispatch(UpdateMinuteFlag(false));
   };
 
   //DatePicker Stuff
@@ -333,6 +347,12 @@ const AddReviewers = ({
     }
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(UpdateMinuteFlag(false));
+    };
+  }, []);
+
   return (
     <Modal
       show={true}
@@ -369,6 +389,8 @@ const AddReviewers = ({
             setSelectReviewersArray={setSelectReviewersArray}
             allReviewers={allReviewers}
             setAllReviewers={setAllReviewers}
+            isAgendaMinute={isAgendaMinute}
+            setIsAgendaMinute={setIsAgendaMinute}
           />
         ) : selectMinutes === false &&
           selectReviewers === true &&
@@ -394,6 +416,8 @@ const AddReviewers = ({
             setSelectReviewersArray={setSelectReviewersArray}
             allReviewers={allReviewers}
             setAllReviewers={setAllReviewers}
+            isAgendaMinute={isAgendaMinute}
+            setIsAgendaMinute={setIsAgendaMinute}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -421,6 +445,8 @@ const AddReviewers = ({
             minuteToEdit={minuteToEdit}
             allReviewers={allReviewers}
             setAllReviewers={setAllReviewers}
+            isAgendaMinute={isAgendaMinute}
+            setIsAgendaMinute={setIsAgendaMinute}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -440,6 +466,8 @@ const AddReviewers = ({
             minuteToEdit={minuteToEdit}
             allReviewers={allReviewers}
             setAllReviewers={setAllReviewers}
+            isAgendaMinute={isAgendaMinute}
+            setIsAgendaMinute={setIsAgendaMinute}
           />
         ) : (
           <p>No minutes to send for review</p>
@@ -565,7 +593,7 @@ const AddReviewers = ({
                 className="d-flex gap-3 justify-content-end"
               >
                 <Button
-                  onClick={sendReviewerScreen}
+                  onClick={cancelEditScreen}
                   className={styles["Cancel-Button"]}
                   text={t("Cancel")}
                 />

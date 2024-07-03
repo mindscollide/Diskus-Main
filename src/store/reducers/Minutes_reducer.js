@@ -242,6 +242,9 @@ const initialState = {
   currentMeetingMinutesToReview: null,
   SaveMinutesReviewFlowData: null,
   DeleteMinuteReducerData: null,
+  DeleteMinuteReducerData: null,
+  EditSingleMinuteData: null,
+  UpdateMinuteFlag: false,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -504,6 +507,20 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         DeleteMinuteReducerData: action.response,
+      };
+    }
+
+    case actions.EDIT_MINUTE_DATA: {
+      return {
+        ...state,
+        EditSingleMinuteData: action.response,
+      };
+    }
+
+    case actions.UPDATE_MINUTE_FLAG: {
+      return {
+        ...state,
+        UpdateMinuteFlag: action.response,
       };
     }
 

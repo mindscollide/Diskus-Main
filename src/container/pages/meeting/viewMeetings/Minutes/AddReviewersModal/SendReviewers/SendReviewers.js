@@ -8,6 +8,10 @@ import {
   Checkbox,
 } from "../../../../../../../components/elements";
 import AttachmentIcon from "./../../../../../../../assets/images/AttachmentIcon.png";
+import {
+  EditSingleMinute,
+  UpdateMinuteFlag,
+} from "../../../../../../../store/actions/Minutes_action";
 import TickIcon from "./../../../../../../../assets/images/Tick-Icon.png";
 import { useTranslation } from "react-i18next";
 import { GetAllAssigneesToDoList } from "../../../../../../../store/actions/ToDoList_action";
@@ -35,6 +39,8 @@ const SendReviewers = ({
   setMinuteToEdit,
   allReviewers,
   setAllReviewers,
+  isAgendaMinute,
+  setIsAgendaMinute,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -42,7 +48,7 @@ const SendReviewers = ({
 
   let createrID = localStorage.getItem("userID");
 
-  const { MinutesReducer, toDoListReducer } = useSelector((state) => state);
+  const { MinutesReducer } = useSelector((state) => state);
 
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
@@ -71,77 +77,21 @@ const SendReviewers = ({
     }));
   };
 
-  useEffect(() => {
-    dispatch(GetAllAssigneesToDoList(navigate, Number(createrID), t));
-  }, []);
-
-  const editMinuteFunction = (record) => {
+  const editMinuteFunction = (record, data) => {
     setSelectMinutes(false);
     setSelectReviewers(false);
     setSendReviewers(false);
     setEditReviewer(true);
     setMinuteToEdit(record);
+    dispatch(EditSingleMinute(data));
+    dispatch(UpdateMinuteFlag(true));
   };
 
   console.log("selectReviewersArrayselectReviewersArray", selectReviewersArray);
 
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
-  console.log("allReviewersallReviewers", allReviewers) 
-
-  // function updateMinutesData(state1, state2, reviewersList) {
-  //   try {
-  //     // Helper function to update minuteData with reviewersList based on isChecked value
-  //     const updateMinuteData = (minuteData) => {
-  //       return minuteData.map((minute) => {
-  //         return {
-  //           ...minute,
-  //           reviewersList: minute.isChecked ? reviewersList : [],
-  //         };
-  //       });
-  //     };
-
-  //     // Process the first state
-  //     const updatedState1 = state1.map((agenda) => {
-  //       // Update minuteData at the top level
-  //       let updatedAgenda = {
-  //         ...agenda,
-  //         minuteData: updateMinuteData(agenda.minuteData),
-  //       };
-
-  //       // Update subMinutes if they exist
-  //       if (agenda.subMinutes) {
-  //         updatedAgenda.subMinutes = agenda.subMinutes.map((subAgenda) => ({
-  //           ...subAgenda,
-  //           minuteData: updateMinuteData(subAgenda.minuteData),
-  //         }));
-  //       }
-
-  //       return updatedAgenda;
-  //     });
-
-  //     // Process the second state
-  //     const updatedState2 = state2.map((minute) => {
-  //       return {
-  //         ...minute,
-  //         reviewersList: minute.isChecked ? reviewersList : [],
-  //       };
-  //     });
-
-  //     return { updatedState1, updatedState2 };
-  //   } catch {}
-  // }
-
-  // const { updatedState1, updatedState2 } = updateMinutesData(
-  //   minuteDataAgenda,
-  //   minuteDataGeneral,
-  //   selectReviewersArray
-  // );
-
-  // useEffect(() => {
-  //   setMinuteDataAgenda(updatedState1);
-  //   setMinuteDataGeneral(updatedState2);
-  // }, []);
+  console.log("allReviewersallReviewers", allReviewers);
 
   const findUserProfileImg = (userId, users) => {
     console.log("profileImgprofileImg ", userId, users);
@@ -149,6 +99,84 @@ const SendReviewers = ({
     console.log("profileImgprofileImg ", user);
     return user ? user.userProfileImg : "";
   };
+
+  function updateReviewersList(state, updatedMinute) {
+    try {
+      // Create a deep copy of the state to avoid mutating the original state
+      const newState = JSON.parse(JSON.stringify(state));
+
+      // Helper function to update reviewersList
+      const updateMinuteData = (minuteData) => {
+        return minuteData.map((minute) => {
+          if (minute.minuteID === updatedMinute.minuteID) {
+            return {
+              ...minute,
+              reviewersList: updatedMinute.reviewersList,
+            };
+          }
+          return minute;
+        });
+      };
+
+      // Update reviewersList in minuteData
+      newState.forEach((agenda) => {
+        agenda.minuteData = updateMinuteData(agenda.minuteData);
+
+        // Update reviewersList in subMinutes
+        agenda.subMinutes.forEach((subMinute) => {
+          subMinute.minuteData = updateMinuteData(subMinute.minuteData);
+        });
+      });
+
+      return newState;
+    } catch (error) {
+      console.error("Error updating reviewers list:", error);
+      return state; // Return the original state if an error occurs
+    }
+  }
+
+  function updateReviewersListInMinutes(minutes, updatedMinute) {
+    try {
+      // Create a deep copy of the minutes array to avoid mutating the original array
+      const updatedMinutes = minutes.map((minute) => {
+        if (minute.minuteID === updatedMinute.minuteID) {
+          return {
+            ...minute,
+            reviewersList: updatedMinute.reviewersList,
+          };
+        }
+        return minute;
+      });
+
+      return updatedMinutes;
+    } catch {}
+  }
+
+  useEffect(() => {
+    if (MinutesReducer.UpdateMinuteFlag === true) {
+      console.log(
+        "Updated State before modification:",
+        minuteDataAgenda,
+        minuteToEdit
+      );
+      if (isAgendaMinute) {
+        const updatedMinuteData = updateReviewersList(
+          minuteDataAgenda,
+          minuteToEdit
+        );
+        setMinuteDataAgenda(updatedMinuteData);
+        console.log("Updated State after modification:", updatedMinuteData);
+      } else {
+        const newMinutes = updateReviewersListInMinutes(
+          minuteDataGeneral,
+          minuteToEdit
+        );
+        setMinuteDataGeneral(newMinutes);
+        console.log("Updated State after modification:", newMinutes);
+      }
+    } else {
+    }
+  }, [MinutesReducer.UpdateMinuteFlag]);
 
   return (
     <>
@@ -353,11 +381,13 @@ const SendReviewers = ({
                                             width={32}
                                             className={"cursor-pointer"}
                                             src={EditMinute}
-                                            onClick={() =>
+                                            onClick={() => {
                                               editMinuteFunction(
-                                                parentMinutedata
-                                              )
-                                            }
+                                                parentMinutedata,
+                                                data
+                                              );
+                                              setIsAgendaMinute(true);
+                                            }}
                                             alt=""
                                           />
                                         </div>
@@ -721,11 +751,13 @@ const SendReviewers = ({
                                                         "cursor-pointer"
                                                       }
                                                       src={EditMinute}
-                                                      onClick={() =>
+                                                      onClick={() => {
                                                         editMinuteFunction(
+                                                          subItem,
                                                           subagendaMinuteData
-                                                        )
-                                                      }
+                                                        );
+                                                        setIsAgendaMinute(true);
+                                                      }}
                                                       alt=""
                                                     />
                                                   </div>
@@ -1033,7 +1065,10 @@ const SendReviewers = ({
                                 width={32}
                                 className={"cursor-pointer"}
                                 src={EditMinute}
-                                onClick={() => editMinuteFunction(data)}
+                                onClick={() => {
+                                  editMinuteFunction(data, data);
+                                  setIsAgendaMinute(false);
+                                }}
                                 alt=""
                               />
                             </div>

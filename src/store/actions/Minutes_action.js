@@ -1086,6 +1086,22 @@ const DeleteMinuteReducer = (response) => {
   };
 };
 
+//Minute to Edit
+const EditSingleMinute = (response) => {
+  return {
+    type: actions.EDIT_MINUTE_DATA,
+    response: response,
+  };
+};
+
+//Update Minute Flag
+const UpdateMinuteFlag = (response) => {
+  return {
+    type: actions.UPDATE_MINUTE_FLAG,
+    response: response,
+  };
+};
+
 export {
   DeleteMinuteReducer,
   pendingApprovalPage,
@@ -1106,4 +1122,6 @@ export {
   GetMinuteReviewPendingApprovalsByReviewerId,
   currentMeetingMinutesToReview,
   SaveMinutesReviewFlow,
+  EditSingleMinute,
+  UpdateMinuteFlag,
 };

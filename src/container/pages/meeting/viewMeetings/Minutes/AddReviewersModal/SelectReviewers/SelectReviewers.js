@@ -31,6 +31,8 @@ const SelectReviewers = ({
   setSelectReviewersArray,
   allReviewers,
   setAllReviewers,
+  isAgendaMinute,
+  setIsAgendaMinute,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
