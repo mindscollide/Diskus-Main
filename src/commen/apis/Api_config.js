@@ -1602,7 +1602,11 @@ const LoginHistoryReportExporttoExcel = {
 const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
+const GetDownloadInvoiceRM = {
+  RequestMethod: "ServiceManager.DownloadInvoic",
+};
 export {
+  GetDownloadInvoiceRM,
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
   LoginHistoryReportExporttoExcel,

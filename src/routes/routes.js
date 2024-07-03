@@ -78,6 +78,7 @@ import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
 import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
+import NewDashobard from "../container/NewDashboardLayout/NewDashobard";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createHashRouter(
@@ -129,7 +130,9 @@ export const router = createHashRouter(
             path=""
             element={
               <RouteWrapperUser name="">
-                <Home />
+                {/* <Home />
+                 */}
+                 <NewDashobard/>
               </RouteWrapperUser>
             }
           />
@@ -137,7 +140,8 @@ export const router = createHashRouter(
             path="home"
             element={
               <RouteWrapperUser name="home">
-                <Home />
+                {/* <Home /> */}
+                <NewDashobard />
               </RouteWrapperUser>
             }
           />

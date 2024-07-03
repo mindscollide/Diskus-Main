@@ -283,7 +283,7 @@ body[dir="rtl"] h1.upcoming-events {
 .event-details {
   padding: 8px 15px;
   border-radius: 7px;
-  margin: 5px 15px;
+  margin: 5px 5px;
   color: #fff;
   font-size: 15px;
   border: 1px solid #6172d6;
@@ -304,7 +304,7 @@ body[dir="rtl"] .upcoming_events {
 .event-details:hover {
   padding: 8px 15px;
   border-radius: 7px;
-  margin: 5px 15px;
+  margin: 5px 5px;
   color: #fff;
   font-size: 15px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
@@ -346,8 +346,7 @@ body[dir="rtl"] .event-details:hover {
 
 .rmdp-wrapper.rmdp-shadow {
   width: 100% !important;
-  margin-top: -5px;
-  background: white !important;
+
 }
 
 .rmdp-top-class {
@@ -363,14 +362,10 @@ body[dir="rtl"] .event-details:hover {
   margin-top: -12px;
 }
 
-/* .rmdp-day-picker {
-  margin-top: -5px;
-} */
-
 .rmdp-week {
-  margin-top: -5px;
   font-weight: 600;
   text-transform: uppercase;
+  font-size: 12px;
 }
 
 .rmdp-week .rmdp-week-day {

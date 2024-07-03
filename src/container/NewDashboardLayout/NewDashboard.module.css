@@ -1,0 +1,56 @@
+.newDashboard {
+  max-height: calc(100vh - 10vh);
+  margin: 15px 10px;
+}
+.StatsBox {
+  min-height: 20vh !important;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  margin-bottom: 10px;
+  padding: 15px;
+}
+
+.CalendarBox {
+  min-height: 30vh;
+  background-color: #fff;
+  border-top: 1px solid #e1e1e1;
+  border-right: 1px solid #e1e1e1;
+  border-left: 1px solid #e1e1e1;
+  padding: 0 10px;
+}
+.EventBox {
+  padding: 0 10px;
+  min-height: 30vh;
+  background-color: #fff;
+  border-bottom: 1px solid #e1e1e1;
+  border-right: 1px solid #e1e1e1;
+  border-left: 1px solid #e1e1e1;
+  margin-bottom: 5px;
+}
+.Tasks {
+  min-height: 60vh;
+}
+.RecentActivity {
+  min-height: 30vh;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+}
+.Notes {
+  min-height: 30vh;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+}
+.EventBox_heading {
+  font-weight: 700;
+  font-size: 20px;
+  color: #5a5a5a;
+}
+.Events_content {
+  min-height: 29vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -57,3 +57,6 @@ body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
 .talk_features_home {
   width: 5%;
 }
+.mainDashboardLayout {
+  min-height: 100vh;
+}

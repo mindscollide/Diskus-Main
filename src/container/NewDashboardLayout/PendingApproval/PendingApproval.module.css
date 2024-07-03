@@ -1,0 +1,15 @@
+.PendingApprovalCount {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    color: #55CE5C;
+    text-align: center;
+  }
+  .PendingApprovalText {
+    font-weight: 700;
+    font-size: 12px;
+    text-align: center;
+    color: #5a5a5a;
+    text-transform: uppercase;
+  }
+  

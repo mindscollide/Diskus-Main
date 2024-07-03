@@ -1,0 +1,14 @@
+.UpComingMeetingCount {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  color: #6172d6;
+  text-align: center;
+}
+.UpComingMeetingText {
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
+  color: #5a5a5a;
+  text-transform: uppercase;
+}
