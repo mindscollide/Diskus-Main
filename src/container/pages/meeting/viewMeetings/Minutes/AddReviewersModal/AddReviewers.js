@@ -54,6 +54,8 @@ const AddReviewers = ({
   const [minuteDataAgenda, setMinuteDataAgenda] = useState(null);
   const [minuteDataGeneral, setMinuteDataGeneral] = useState(null);
 
+  const [allReviewers, setAllReviewers] = useState([]);
+
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -74,6 +76,11 @@ const AddReviewers = ({
       setSelectReviewers(false);
       setSendReviewers(true);
       setEditReviewer(false);
+      updateMinutesData(
+        minuteDataAgenda,
+        minuteDataGeneral,
+        selectReviewersArray
+      );
     } else if (sendReviewers) {
       setSelectMinutes(false);
       setSelectReviewers(false);
@@ -276,6 +283,56 @@ const AddReviewers = ({
     minuteDataGeneral
   );
 
+  const updateMinutesData = (
+    minuteDataAgenda,
+    minuteDataGeneral,
+    reviewersList
+  ) => {
+    try {
+      // Helper function to update minuteData with reviewersList based on isChecked value
+      const updateMinuteData = (minuteData) => {
+        return minuteData.map((minute) => {
+          return {
+            ...minute,
+            reviewersList: minute.isChecked ? reviewersList : [],
+          };
+        });
+      };
+
+      // Process the first state
+      const updatedState1 = minuteDataAgenda.map((agenda) => {
+        // Update minuteData at the top level
+        let updatedAgenda = {
+          ...agenda,
+          minuteData: updateMinuteData(agenda.minuteData),
+        };
+
+        // Update subMinutes if they exist
+        if (agenda.subMinutes) {
+          updatedAgenda.subMinutes = agenda.subMinutes.map((subAgenda) => ({
+            ...subAgenda,
+            minuteData: updateMinuteData(subAgenda.minuteData),
+          }));
+        }
+
+        return updatedAgenda;
+      });
+
+      // Process the second state
+      const updatedState2 = minuteDataGeneral.map((minute) => {
+        return {
+          ...minute,
+          reviewersList: minute.isChecked ? reviewersList : [],
+        };
+      });
+
+      setMinuteDataAgenda(updatedState1);
+      setMinuteDataGeneral(updatedState2);
+    } catch (error) {
+      console.error("Error updating minutes data:", error);
+    }
+  };
+
   return (
     <Modal
       show={true}
@@ -310,6 +367,8 @@ const AddReviewers = ({
             setSelectedMinuteIDs={setSelectedMinuteIDs}
             selectReviewersArray={selectReviewersArray}
             setSelectReviewersArray={setSelectReviewersArray}
+            allReviewers={allReviewers}
+            setAllReviewers={setAllReviewers}
           />
         ) : selectMinutes === false &&
           selectReviewers === true &&
@@ -333,6 +392,8 @@ const AddReviewers = ({
             setSelectedMinuteIDs={setSelectedMinuteIDs}
             selectReviewersArray={selectReviewersArray}
             setSelectReviewersArray={setSelectReviewersArray}
+            allReviewers={allReviewers}
+            setAllReviewers={setAllReviewers}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -340,24 +401,26 @@ const AddReviewers = ({
           editReviewer === false &&
           (minuteDataAgenda !== null || minuteDataGeneral !== null) ? (
           <SendReviewers
-          selectMinutes={selectMinutes}
-          setSelectMinutes={setSelectMinutes}
-          setSelectReviewers={setSelectReviewers}
-          selectReviewers={selectReviewers}
-          sendReviewers={sendReviewers}
-          setSendReviewers={setSendReviewers}
-          setEditReviewer={setEditReviewer}
-          editReviewer={editReviewer}
-          setMinuteDataAgenda={setMinuteDataAgenda}
-          minuteDataAgenda={minuteDataAgenda}
-          setMinuteDataGeneral={setMinuteDataGeneral}
-          minuteDataGeneral={minuteDataGeneral}
-          selectedMinuteIDs={selectedMinuteIDs}
-          setSelectedMinuteIDs={setSelectedMinuteIDs}
-          selectReviewersArray={selectReviewersArray}
-          setSelectReviewersArray={setSelectReviewersArray}
-          setMinuteToEdit={setMinuteToEdit}
-          minuteToEdit={minuteToEdit}
+            selectMinutes={selectMinutes}
+            setSelectMinutes={setSelectMinutes}
+            setSelectReviewers={setSelectReviewers}
+            selectReviewers={selectReviewers}
+            sendReviewers={sendReviewers}
+            setSendReviewers={setSendReviewers}
+            setEditReviewer={setEditReviewer}
+            editReviewer={editReviewer}
+            setMinuteDataAgenda={setMinuteDataAgenda}
+            minuteDataAgenda={minuteDataAgenda}
+            setMinuteDataGeneral={setMinuteDataGeneral}
+            minuteDataGeneral={minuteDataGeneral}
+            selectedMinuteIDs={selectedMinuteIDs}
+            setSelectedMinuteIDs={setSelectedMinuteIDs}
+            selectReviewersArray={selectReviewersArray}
+            setSelectReviewersArray={setSelectReviewersArray}
+            setMinuteToEdit={setMinuteToEdit}
+            minuteToEdit={minuteToEdit}
+            allReviewers={allReviewers}
+            setAllReviewers={setAllReviewers}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -375,6 +438,8 @@ const AddReviewers = ({
             editReviewer={editReviewer}
             setMinuteToEdit={setMinuteToEdit}
             minuteToEdit={minuteToEdit}
+            allReviewers={allReviewers}
+            setAllReviewers={setAllReviewers}
           />
         ) : (
           <p>No minutes to send for review</p>

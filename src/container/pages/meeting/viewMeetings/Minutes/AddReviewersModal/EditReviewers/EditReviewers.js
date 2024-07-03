@@ -23,6 +23,8 @@ const EditReviewers = ({
   setEditReviewer,
   minuteToEdit,
   setMinuteToEdit,
+  allReviewers,
+  setAllReviewers,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -32,45 +34,8 @@ const EditReviewers = ({
 
   const { MinutesReducer, toDoListReducer } = useSelector((state) => state);
 
-  const [minutesDataAgenda, setMinutesDataAgenda] = useState([]);
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
-  const [expandedItems, setExpandedItems] = useState({});
-
-  const [allReviewers, setAllReviewers] = useState([]);
-
-  useEffect(() => {
-    if (
-      MinutesReducer.allMinutesAG !== undefined &&
-      MinutesReducer.allMinutesAG !== null &&
-      MinutesReducer.allMinutesAG.length !== 0
-    ) {
-      setMinutesDataAgenda(MinutesReducer.allMinutesAG.agendaWise);
-    } else {
-      setMinutesDataAgenda([]);
-    }
-    return () => {
-      setMinutesDataAgenda([]);
-    };
-  }, [MinutesReducer.allMinutesAG]);
-
-  useEffect(() => {
-    dispatch(GetAllAssigneesToDoList(navigate, Number(createrID), t));
-  }, []);
-
-  useEffect(() => {
-    if (
-      toDoListReducer.AllAssigneesData !== null &&
-      toDoListReducer.AllAssigneesData !== undefined &&
-      toDoListReducer.AllAssigneesData.length !== 0 &&
-      Object.keys(toDoListReducer.AllAssigneesData).length !== 0
-    ) {
-      setAllReviewers(toDoListReducer.AllAssigneesData);
-    }
-    return () => {
-      setAllReviewers([]);
-    };
-  }, [toDoListReducer.AllAssigneesData]);
 
   console.log("minuteToEditminuteToEdit", minuteToEdit);
 
@@ -151,14 +116,16 @@ const EditReviewers = ({
               label2={t("Select-all-reviewers")}
               className="SearchCheckbox "
               name="IsChat"
-              // checked={selectAll}
-              // onChange={(event) => SelectAllFunc(event)}
               classNameDiv={`${styles["addReviewersCheckbox"]} margin-top-10`}
+              // checked={checkAll}
+              // onChange={handleCheckAllChange}
             />
             {allReviewers.map((data, index) => {
               return (
                 <div className={styles["profile-wrapper"]}>
                   <Checkbox
+                    // checked={selectReviewersArray.includes(data.userID)}
+                    // onChange={() => handleCheckboxChange(data.userID)}
                     label2Class={styles["SelectAll"]}
                     label2={
                       <>
@@ -167,17 +134,15 @@ const EditReviewers = ({
                             height={32}
                             width={32}
                             className={styles["image-style"]}
-                            src={`data:image/jpeg;base64,${data.displayProfilePictureName}`}
+                            // src={`data:image/jpeg;base64,${data.userProfileImg}`}
                             alt=""
                           />
-                          <span>{data.name}</span>
+                          {/* <span>{data.userName}</span> */}
                         </div>
                       </>
                     }
                     className="SearchCheckbox "
                     name="IsChat"
-                    // checked={selectAll}
-                    // onChange={(event) => SelectAllFunc(event)}
                     classNameDiv={styles["addReviewersCheckbox"]}
                   />
                 </div>

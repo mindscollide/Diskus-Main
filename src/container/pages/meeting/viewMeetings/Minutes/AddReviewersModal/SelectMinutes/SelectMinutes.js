@@ -28,7 +28,7 @@ const SelectMinutes = ({
   selectedMinuteIDs,
   setSelectedMinuteIDs,
   selectReviewersArray,
-  setSelectReviewersArray,
+  setSelectReviewersArray,allReviewers, setAllReviewers
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

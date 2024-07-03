@@ -29,6 +29,8 @@ const SelectReviewers = ({
   setSelectedMinuteIDs,
   selectReviewersArray,
   setSelectReviewersArray,
+  allReviewers,
+  setAllReviewers,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -40,8 +42,6 @@ const SelectReviewers = ({
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
   const [expandedItems, setExpandedItems] = useState({});
-
-  const [allReviewers, setAllReviewers] = useState([]);
 
   const [checkAll, setCheckAll] = useState(false);
 
@@ -101,9 +101,6 @@ const SelectReviewers = ({
         MinutesReducer.GetAllOrganizationUsersForReviewData.organizationUsers
       );
     }
-    return () => {
-      setAllReviewers([]);
-    };
   }, [MinutesReducer.GetAllOrganizationUsersForReviewData]);
 
   console.log(
@@ -182,11 +179,7 @@ const SelectReviewers = ({
   );
 
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
-  console.log(
-    "Checked List oF all the reviewers",
-    selectReviewersArray,
-    checkAll
-  );
+  console.log("allReviewers", allReviewers);
 
   return (
     <>

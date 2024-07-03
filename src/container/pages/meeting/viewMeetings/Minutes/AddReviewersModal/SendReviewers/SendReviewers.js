@@ -33,6 +33,8 @@ const SendReviewers = ({
   setSelectReviewersArray,
   minuteToEdit,
   setMinuteToEdit,
+  allReviewers,
+  setAllReviewers,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -45,8 +47,6 @@ const SendReviewers = ({
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
   const [expandedItems, setExpandedItems] = useState({});
-
-  const [allReviewers, setAllReviewers] = useState([]);
 
   useEffect(() => {
     const checkIfTruncated = () => {
@@ -75,20 +75,6 @@ const SendReviewers = ({
     dispatch(GetAllAssigneesToDoList(navigate, Number(createrID), t));
   }, []);
 
-  useEffect(() => {
-    if (
-      toDoListReducer.AllAssigneesData !== null &&
-      toDoListReducer.AllAssigneesData !== undefined &&
-      toDoListReducer.AllAssigneesData.length !== 0 &&
-      Object.keys(toDoListReducer.AllAssigneesData).length !== 0
-    ) {
-      setAllReviewers(toDoListReducer.AllAssigneesData);
-    }
-    return () => {
-      setAllReviewers([]);
-    };
-  }, [toDoListReducer.AllAssigneesData]);
-
   const editMinuteFunction = (record) => {
     setSelectMinutes(false);
     setSelectReviewers(false);
@@ -97,7 +83,72 @@ const SendReviewers = ({
     setMinuteToEdit(record);
   };
 
+  console.log("selectReviewersArrayselectReviewersArray", selectReviewersArray);
+
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
+
+  console.log("allReviewersallReviewers", allReviewers) 
+
+  // function updateMinutesData(state1, state2, reviewersList) {
+  //   try {
+  //     // Helper function to update minuteData with reviewersList based on isChecked value
+  //     const updateMinuteData = (minuteData) => {
+  //       return minuteData.map((minute) => {
+  //         return {
+  //           ...minute,
+  //           reviewersList: minute.isChecked ? reviewersList : [],
+  //         };
+  //       });
+  //     };
+
+  //     // Process the first state
+  //     const updatedState1 = state1.map((agenda) => {
+  //       // Update minuteData at the top level
+  //       let updatedAgenda = {
+  //         ...agenda,
+  //         minuteData: updateMinuteData(agenda.minuteData),
+  //       };
+
+  //       // Update subMinutes if they exist
+  //       if (agenda.subMinutes) {
+  //         updatedAgenda.subMinutes = agenda.subMinutes.map((subAgenda) => ({
+  //           ...subAgenda,
+  //           minuteData: updateMinuteData(subAgenda.minuteData),
+  //         }));
+  //       }
+
+  //       return updatedAgenda;
+  //     });
+
+  //     // Process the second state
+  //     const updatedState2 = state2.map((minute) => {
+  //       return {
+  //         ...minute,
+  //         reviewersList: minute.isChecked ? reviewersList : [],
+  //       };
+  //     });
+
+  //     return { updatedState1, updatedState2 };
+  //   } catch {}
+  // }
+
+  // const { updatedState1, updatedState2 } = updateMinutesData(
+  //   minuteDataAgenda,
+  //   minuteDataGeneral,
+  //   selectReviewersArray
+  // );
+
+  // useEffect(() => {
+  //   setMinuteDataAgenda(updatedState1);
+  //   setMinuteDataGeneral(updatedState2);
+  // }, []);
+
+  const findUserProfileImg = (userId, users) => {
+    console.log("profileImgprofileImg ", userId, users);
+    const user = users.find((user) => user.userID === userId);
+    console.log("profileImgprofileImg ", user);
+    return user ? user.userProfileImg : "";
+  };
 
   return (
     <>
@@ -149,6 +200,19 @@ const SendReviewers = ({
                             {data.minuteData.map((parentMinutedata, index) => {
                               const isTruncated =
                                 !expandedItems[parentMinutedata.minuteID];
+                              const reviewerId =
+                                parentMinutedata?.reviewersList?.[0] ?? null;
+                              console.log(
+                                "profileImgprofileImg",
+                                reviewerId,
+                                parentMinutedata
+                              );
+
+                              const profileImg = findUserProfileImg(
+                                reviewerId,
+                                allReviewers
+                              );
+                              console.log("profileImgprofileImg", profileImg);
                               return (
                                 <div className={styles["agendaTitleCheckbox"]}>
                                   {parentMinutedata.isChecked ? (
@@ -264,16 +328,25 @@ const SendReviewers = ({
                                               height={32}
                                               width={32}
                                               className={styles["image-style"]}
-                                              src={Avatar}
+                                              src={
+                                                profileImg
+                                                  ? `data:image/jpeg;base64,${profileImg}`
+                                                  : Avatar
+                                              }
                                               alt=""
                                             />
-                                            <span
-                                              className={
-                                                styles["reviewer-count"]
-                                              }
-                                            >
-                                              +3
-                                            </span>
+                                            {parentMinutedata.reviewersList
+                                              .length > 1 ? (
+                                              <span
+                                                className={
+                                                  styles["reviewer-count"]
+                                                }
+                                              >
+                                                {"+" +
+                                                  parentMinutedata.reviewersList
+                                                    .length}
+                                              </span>
+                                            ) : null}
                                           </div>
                                           <img
                                             height={32}
@@ -465,6 +538,22 @@ const SendReviewers = ({
                                       (subItem, subIndex) => {
                                         const isTruncated =
                                           !expandedItems[subItem.minuteID];
+                                        const reviewerId =
+                                          subItem?.reviewersList?.[0] ?? null;
+                                        console.log(
+                                          "profileImgprofileImg",
+                                          reviewerId,
+                                          subItem
+                                        );
+
+                                        const profileImg = findUserProfileImg(
+                                          reviewerId,
+                                          allReviewers
+                                        );
+                                        console.log(
+                                          "profileImgprofileImg",
+                                          profileImg
+                                        );
                                         return (
                                           <Row>
                                             {subItem.isChecked ? (
@@ -602,18 +691,28 @@ const SendReviewers = ({
                                                         className={
                                                           styles["image-style"]
                                                         }
-                                                        src={Avatar}
+                                                        src={
+                                                          profileImg
+                                                            ? `data:image/jpeg;base64,${profileImg}`
+                                                            : Avatar
+                                                        }
                                                         alt=""
                                                       />
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "reviewer-count"
-                                                          ]
-                                                        }
-                                                      >
-                                                        +3
-                                                      </span>
+                                                      {subItem.reviewersList
+                                                        .length > 1 ? (
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "reviewer-count"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {"+" +
+                                                            subItem
+                                                              .reviewersList
+                                                              .length}
+                                                        </span>
+                                                      ) : null}
                                                     </div>
                                                     <img
                                                       height={32}
@@ -818,6 +917,13 @@ const SendReviewers = ({
                 </Row>
                 {minuteDataGeneral.map((data, index) => {
                   const isTruncated = !expandedItems[data.minuteID];
+                  const reviewerId = data?.reviewersList?.[0] ?? null;
+                  console.log("profileImgprofileImg", reviewerId, data);
+                  const profileImg = findUserProfileImg(
+                    reviewerId,
+                    allReviewers
+                  );
+                  console.log("profileImgprofileImg", profileImg);
                   return (
                     <div className={styles["agendaTitleCheckbox"]}>
                       {data.isChecked ? (
@@ -909,12 +1015,18 @@ const SendReviewers = ({
                                   height={32}
                                   width={32}
                                   className={styles["image-style"]}
-                                  src={Avatar}
                                   alt=""
+                                  src={
+                                    profileImg
+                                      ? `data:image/jpeg;base64,${profileImg}`
+                                      : Avatar
+                                  }
                                 />
-                                <span className={styles["reviewer-count"]}>
-                                  +3
-                                </span>
+                                {data.reviewersList.length > 1 ? (
+                                  <span className={styles["reviewer-count"]}>
+                                    {"+" + data.reviewersList.length}
+                                  </span>
+                                ) : null}
                               </div>
                               <img
                                 height={32}
