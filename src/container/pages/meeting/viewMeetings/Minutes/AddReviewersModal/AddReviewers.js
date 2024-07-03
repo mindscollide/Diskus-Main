@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 import styles from "./AddReviewers.module.css";
 import { Container, Col, Row } from "react-bootstrap";
 import { Button, Modal } from "./../../../../../../components/elements";
-import { UpdateMinuteFlag } from "../../../../../../store/actions/Minutes_action";
+import {
+  SaveMinutesReviewFlow,
+  UpdateMinuteFlag,
+} from "../../../../../../store/actions/Minutes_action";
 import { ChevronDown } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
@@ -12,7 +15,7 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-import { get_CurrentDateTime } from "../../../../../../commen/functions/date_formater";
+import { get_CurrentDateTime, multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
 import SelectMinutes from "./SelectMinutes/SelectMinutes";
 import SelectReviewers from "./SelectReviewers/SelectReviewers";
@@ -28,6 +31,8 @@ const AddReviewers = ({
   const { t } = useTranslation();
 
   const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
+
+  let currentMeetingTitle = localStorage.getItem("meetingTitle");
 
   const dispatch = useDispatch();
 
@@ -135,14 +140,100 @@ const AddReviewers = ({
     );
   };
 
+  // Assuming minuteDataAgenda and minuteDataGeneral are your existing states
+
+  // Function to create the desired data format
+  function createListOfActionAbleBundle(minuteDataAgenda, minuteDataGeneral) {
+    let resultList = [];
+
+    // Process minuteDataAgenda
+    minuteDataAgenda.forEach((parentAgenda) => {
+      // Check if the parent agenda is checked
+      if (parentAgenda.isChecked) {
+        // Process minuteData within parent agenda
+        parentAgenda.minuteData.forEach((minute) => {
+          // Check if minute is checked
+          if (minute.isChecked) {
+            resultList.push({
+              ID: minute.minuteID.toString(),
+              Title: "", // Set title as needed
+              BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+              ListOfUsers: minute.reviewersList,
+              Entity: {
+                EntityID: minute.minuteID,
+                EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+              },
+            });
+          }
+        });
+
+        // Process subMinutes within parent agenda
+        parentAgenda.subMinutes.forEach((subAgenda) => {
+          // Check if sub agenda is checked
+          if (subAgenda.isChecked) {
+            subAgenda.minuteData.forEach((minute) => {
+              // Check if minute is checked
+              if (minute.isChecked) {
+                resultList.push({
+                  ID: minute.minuteID.toString(),
+                  Title: "", // Set title as needed
+                  BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+                  ListOfUsers: minute.reviewersList,
+                  Entity: {
+                    EntityID: minute.minuteID,
+                    EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+                  },
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+
+    // Process minuteDataGeneral
+    minuteDataGeneral.forEach((minute) => {
+      // Check if minute is checked
+      if (minute.isChecked) {
+        resultList.push({
+          ID: minute.minuteID.toString(),
+          Title: "", // Set title as needed
+          BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+          ListOfUsers: minute.reviewersList,
+          Entity: {
+            EntityID: minute.minuteID,
+            EntityTypeID: 2, // Assuming EntityTypeID for minuteDataGeneral is 2
+          },
+        });
+      }
+    });
+
+    return resultList;
+  }
+
   const sendReviewerScreen = () => {
     if (minuteDate === "") {
       setAddDateModal(true);
     } else {
-      setSelectMinutes(false);
-      setSelectReviewers(false);
-      setSendReviewers(true);
-      setEditReviewer(false);
+      let resultedActionableBundle = createListOfActionAbleBundle(
+        minuteDataAgenda,
+        minuteDataGeneral
+      );
+      let Data = {
+        MeetingID: Number(advanceMeetingModalID),
+        WorkFlowTitle: currentMeetingTitle,
+        Description: "",
+        isDeadline: true,
+        DeadlineDateTime: multiDatePickerDateChangIntoUTC(minuteDate),
+        ListOfActionAbleBundle: resultedActionableBundle,
+      };
+
+      console.log("DataDataData", Data);
+      dispatch(SaveMinutesReviewFlow(Data, navigate, t));
+      // setSelectMinutes(false);
+      // setSelectReviewers(false);
+      // setSendReviewers(true);
+      // setEditReviewer(false);
     }
   };
 
@@ -156,7 +247,7 @@ const AddReviewers = ({
 
   //DatePicker Stuff
   const minuteDateHandler = (date, format = "YYYYMMDD") => {
-    let minuteDateValueFormat = new DateObject(date).format("DD MMMM YYYY");
+    let minuteDateValueFormat = new Date(date);
     setMinuteDate(minuteDateValueFormat);
     if (calendRef.current.isOpen) {
       calendRef.current.closeCalendar();
@@ -355,6 +446,12 @@ const AddReviewers = ({
       dispatch(UpdateMinuteFlag(false));
     };
   }, []);
+
+  console.log(
+    "Agenda And General Minutes",
+    minuteDataAgenda,
+    minuteDataGeneral
+  );
 
   return (
     <Modal
