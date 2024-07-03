@@ -19,10 +19,6 @@ import SelectReviewers from "./SelectReviewers/SelectReviewers";
 import SendReviewers from "./SendReviewers/SendReviewers";
 import EditReviewers from "./EditReviewers/EditReviewers";
 import AddDateModal from "./AddDateModal/AddDateModal";
-// import {
-//   GetAllAgendaWiseMinutesApiFunc,
-//   GetAllGeneralMinutesApiFunc,
-// } from "../../../../../../store/actions/NewMeetingActions";
 
 const AddReviewers = ({
   addReviewers,
@@ -39,25 +35,50 @@ const AddReviewers = ({
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
+  //Select Minutes Checkboxes
   const [selectMinutes, setSelectMinutes] = useState(true);
+
+  //Select Reviewers Checkboxes
   const [selectReviewers, setSelectReviewers] = useState(false);
+
+  //Send Reviewers
   const [sendReviewers, setSendReviewers] = useState(false);
+
+  //Edit Reviewer
   const [editReviewer, setEditReviewer] = useState(false);
+
+  //Add Date
   const [addDateModal, setAddDateModal] = useState(false);
+
+  //Minute To Edit
   const [minuteToEdit, setMinuteToEdit] = useState(null);
 
+  //All Minute IDs
   const [selectedMinuteIDs, setSelectedMinuteIDs] = useState([]);
 
+  //All Reviewers IDs
   const [selectReviewersArray, setSelectReviewersArray] = useState([]);
 
+  //Minute Date
   const [minuteDate, setMinuteDate] = useState("");
 
+  //All Agenda wise minutes
   const [minuteDataAgenda, setMinuteDataAgenda] = useState(null);
+
+  //All general minutes
   const [minuteDataGeneral, setMinuteDataGeneral] = useState(null);
 
+  //All REviewers List
   const [allReviewers, setAllReviewers] = useState([]);
 
+  //Is agenda minute or not check
   const [isAgendaMinute, setIsAgendaMinute] = useState(false);
+
+  //More Reviewers to add to other minutes
+  const [moreMinutes, setMoreMinutes] = useState(false);
+
+  //Check if All Minutes Are selected or not
+  const [checkIsCheckAll, setCheckIsCheckAll] = useState(false);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -85,6 +106,7 @@ const AddReviewers = ({
         minuteDataGeneral,
         selectReviewersArray
       );
+      setMoreMinutes(false);
     } else if (sendReviewers) {
       setSelectMinutes(false);
       setSelectReviewers(false);
@@ -98,6 +120,19 @@ const AddReviewers = ({
       setEditReviewer(false);
       dispatch(UpdateMinuteFlag(true));
     }
+  };
+
+  const addMoreMinutesForReview = () => {
+    setMoreMinutes(true);
+    setSelectMinutes(false);
+    setSelectReviewers(true);
+    setSendReviewers(false);
+    setEditReviewer(false);
+    updateMinutesData(
+      minuteDataAgenda,
+      minuteDataGeneral,
+      selectReviewersArray
+    );
   };
 
   const sendReviewerScreen = () => {
@@ -128,43 +163,6 @@ const AddReviewers = ({
     }
   };
 
-  useEffect(() => {
-    if (currentLanguage !== undefined && currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
-      }
-    }
-  }, [currentLanguage]);
-
-  // useEffect(() => {
-  //   let newData = {
-  //     MeetingID: Number(advanceMeetingModalID),
-  //   };
-
-  //   dispatch(
-  //     GetAllAgendaWiseMinutesApiFunc(
-  //       navigate,
-  //       newData,
-  //       t,
-  //       Number(advanceMeetingModalID),
-  //       false
-  //     )
-  //   );
-
-  //   dispatch(
-  //     GetAllGeneralMinutesApiFunc(
-  //       navigate,
-  //       t,
-  //       newData,
-  //       Number(advanceMeetingModalID)
-  //     )
-  //   );
-  // }, []);
-
   const transformDataGeneral = (data) => {
     return data.map((item) => ({
       minuteID: item.minuteID,
@@ -183,6 +181,68 @@ const AddReviewers = ({
       userName: item.userName,
     }));
   };
+
+  const updateMinutesData = (
+    minuteDataAgenda,
+    minuteDataGeneral,
+    reviewersList
+  ) => {
+    try {
+      // Helper function to update minuteData with reviewersList based on isChecked value
+      const updateMinuteData = (minuteData) => {
+        return minuteData.map((minute) => {
+          return {
+            ...minute,
+            reviewersList: minute.isChecked ? reviewersList : [],
+          };
+        });
+      };
+
+      // Process the first state
+      const updatedState1 = minuteDataAgenda.map((agenda) => {
+        // Update minuteData at the top level
+        let updatedAgenda = {
+          ...agenda,
+          minuteData: updateMinuteData(agenda.minuteData),
+        };
+
+        // Update subMinutes if they exist
+        if (agenda.subMinutes) {
+          updatedAgenda.subMinutes = agenda.subMinutes.map((subAgenda) => ({
+            ...subAgenda,
+            minuteData: updateMinuteData(subAgenda.minuteData),
+          }));
+        }
+
+        return updatedAgenda;
+      });
+
+      // Process the second state
+      const updatedState2 = minuteDataGeneral.map((minute) => {
+        return {
+          ...minute,
+          reviewersList: minute.isChecked ? reviewersList : [],
+        };
+      });
+
+      setMinuteDataAgenda(updatedState1);
+      setMinuteDataGeneral(updatedState2);
+    } catch (error) {
+      console.error("Error updating minutes data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (currentLanguage !== undefined && currentLanguage !== null) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   useEffect(() => {
     if (
@@ -287,65 +347,8 @@ const AddReviewers = ({
 
       // Log the transformed data to the console
       setMinuteDataAgenda(transformedData);
-      console.log("transformedData", transformedData);
     }
   }, [NewMeetingreducer.agendaWiseMinutesReducer]);
-
-  console.log(
-    "SelectMinutesDataSelectMinutesData",
-    minuteDataAgenda,
-    minuteDataGeneral
-  );
-
-  const updateMinutesData = (
-    minuteDataAgenda,
-    minuteDataGeneral,
-    reviewersList
-  ) => {
-    try {
-      // Helper function to update minuteData with reviewersList based on isChecked value
-      const updateMinuteData = (minuteData) => {
-        return minuteData.map((minute) => {
-          return {
-            ...minute,
-            reviewersList: minute.isChecked ? reviewersList : [],
-          };
-        });
-      };
-
-      // Process the first state
-      const updatedState1 = minuteDataAgenda.map((agenda) => {
-        // Update minuteData at the top level
-        let updatedAgenda = {
-          ...agenda,
-          minuteData: updateMinuteData(agenda.minuteData),
-        };
-
-        // Update subMinutes if they exist
-        if (agenda.subMinutes) {
-          updatedAgenda.subMinutes = agenda.subMinutes.map((subAgenda) => ({
-            ...subAgenda,
-            minuteData: updateMinuteData(subAgenda.minuteData),
-          }));
-        }
-
-        return updatedAgenda;
-      });
-
-      // Process the second state
-      const updatedState2 = minuteDataGeneral.map((minute) => {
-        return {
-          ...minute,
-          reviewersList: minute.isChecked ? reviewersList : [],
-        };
-      });
-
-      setMinuteDataAgenda(updatedState1);
-      setMinuteDataGeneral(updatedState2);
-    } catch (error) {
-      console.error("Error updating minutes data:", error);
-    }
-  };
 
   useEffect(() => {
     return () => {
@@ -391,6 +394,8 @@ const AddReviewers = ({
             setAllReviewers={setAllReviewers}
             isAgendaMinute={isAgendaMinute}
             setIsAgendaMinute={setIsAgendaMinute}
+            moreMinutes={moreMinutes}
+            setMoreMinutes={setMoreMinutes}
           />
         ) : selectMinutes === false &&
           selectReviewers === true &&
@@ -418,6 +423,8 @@ const AddReviewers = ({
             setAllReviewers={setAllReviewers}
             isAgendaMinute={isAgendaMinute}
             setIsAgendaMinute={setIsAgendaMinute}
+            moreMinutes={moreMinutes}
+            setMoreMinutes={setMoreMinutes}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -447,6 +454,10 @@ const AddReviewers = ({
             setAllReviewers={setAllReviewers}
             isAgendaMinute={isAgendaMinute}
             setIsAgendaMinute={setIsAgendaMinute}
+            moreMinutes={moreMinutes}
+            setMoreMinutes={setMoreMinutes}
+            checkIsCheckAll={checkIsCheckAll}
+            setCheckIsCheckAll={setCheckIsCheckAll}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -468,6 +479,8 @@ const AddReviewers = ({
             setAllReviewers={setAllReviewers}
             isAgendaMinute={isAgendaMinute}
             setIsAgendaMinute={setIsAgendaMinute}
+            moreMinutes={moreMinutes}
+            setMoreMinutes={setMoreMinutes}
           />
         ) : (
           <p>No minutes to send for review</p>
@@ -571,8 +584,12 @@ const AddReviewers = ({
                 <Button
                   className={styles["Add-Button-Reviewerss"]}
                   text={t("Add-reviewers")}
-                  onClick={addReviewerScreen}
-                  disableBtn={true}
+                  onClick={addMoreMinutesForReview}
+                  disableBtn={
+                    selectedMinuteIDs.length === 0 || checkIsCheckAll
+                      ? true
+                      : false
+                  }
                 />
                 <Button
                   className={styles["Add-Button-Reviewers"]}

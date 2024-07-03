@@ -34,7 +34,7 @@ const EditReviewers = ({
   allReviewers,
   setAllReviewers,
   isAgendaMinute,
-  setIsAgendaMinute,
+  setIsAgendaMinute,moreMinutes, setMoreMinutes
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -80,10 +80,6 @@ const EditReviewers = ({
   useEffect(() => {
     setSelectAll(selectedReviewersToEdit.length === allReviewers.length);
   }, [selectedReviewersToEdit, allReviewers]);
-
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
-
-  console.log("minuteToEditminuteToEdit", minuteToEdit);
 
   return (
     <>
@@ -132,10 +128,6 @@ const EditReviewers = ({
                                 ? null
                                 : minuteToEdit.attachments.map(
                                     (filesData, index) => {
-                                      console.log(
-                                        "filesDatafilesData",
-                                        filesData
-                                      );
                                       return (
                                         <Col
                                           lg={3}

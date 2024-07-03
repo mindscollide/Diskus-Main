@@ -41,6 +41,10 @@ const SendReviewers = ({
   setAllReviewers,
   isAgendaMinute,
   setIsAgendaMinute,
+  moreMinutes,
+  setMoreMinutes,
+  checkIsCheckAll,
+  setCheckIsCheckAll,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -54,21 +58,7 @@ const SendReviewers = ({
   const [isTruncated, setIsTruncated] = useState(true);
   const [expandedItems, setExpandedItems] = useState({});
 
-  useEffect(() => {
-    const checkIfTruncated = () => {
-      const element = textRef.current;
-      if (element) {
-        setIsTruncated(element.scrollWidth > element.clientWidth);
-      }
-    };
-
-    checkIfTruncated();
-    window.addEventListener("resize", checkIfTruncated);
-
-    return () => {
-      window.removeEventListener("resize", checkIfTruncated);
-    };
-  }, []);
+  const [totalIds, setTotalIds] = useState([]);
 
   const showHideDetails = (id) => {
     setExpandedItems((prev) => ({
@@ -87,16 +77,8 @@ const SendReviewers = ({
     dispatch(UpdateMinuteFlag(true));
   };
 
-  console.log("selectReviewersArrayselectReviewersArray", selectReviewersArray);
-
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
-
-  console.log("allReviewersallReviewers", allReviewers);
-
   const findUserProfileImg = (userId, users) => {
-    console.log("profileImgprofileImg ", userId, users);
     const user = users.find((user) => user.userID === userId);
-    console.log("profileImgprofileImg ", user);
     return user ? user.userProfileImg : "";
   };
 
@@ -152,13 +134,195 @@ const SendReviewers = ({
     } catch {}
   }
 
+  const handleSelectAll = (checked) => {
+    try {
+      if (checked) {
+        // Combine all minute IDs from both agenda and general data into a single array
+        const agendaMinuteIDs = minuteDataAgenda.flatMap((item) => [
+          ...item.minuteData.map((subItem) => subItem.minuteID),
+          ...item.subMinutes.flatMap((subItem) =>
+            subItem.minuteData.map((subSubItem) => subSubItem.minuteID)
+          ),
+        ]);
+
+        const generalMinuteIDs = minuteDataGeneral.map((item) => item.minuteID);
+
+        const allMinuteIDs = [...agendaMinuteIDs, ...generalMinuteIDs];
+        setTotalIds(
+          minuteDataAgenda.reduce((acc, item) => {
+            const agendaMinuteIDs = [
+              ...item.minuteData.map((subItem) => subItem.minuteID),
+              ...item.subMinutes.flatMap((subItem) =>
+                subItem.minuteData.map((subSubItem) => subSubItem.minuteID)
+              ),
+            ];
+            return acc + agendaMinuteIDs.length;
+          }, 0) + minuteDataGeneral.length
+        );
+        setSelectedMinuteIDs(allMinuteIDs);
+      } else {
+        setSelectedMinuteIDs([]);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  const handleParentCheckboxChangeAgenda = (checked, agendaID) => {
+    if (checked) {
+      // Add all minute IDs from minuteData for the given agendaID to selectedMinuteIDs
+      const agenda = minuteDataAgenda.find(
+        (item) => item.agendaID === agendaID
+      );
+      if (agenda) {
+        const allMinuteIDs = agenda.minuteData.map((item) => item.minuteID);
+        setSelectedMinuteIDs([...selectedMinuteIDs, ...allMinuteIDs]);
+      }
+    } else {
+      // Remove all minute IDs from minuteData for the given agendaID from selectedMinuteIDs
+      const agenda = minuteDataAgenda.find(
+        (item) => item.agendaID === agendaID
+      );
+      if (agenda) {
+        const filteredIDs = selectedMinuteIDs.filter(
+          (id) => !agenda.minuteData.some((item) => item.minuteID === id)
+        );
+        setSelectedMinuteIDs(filteredIDs);
+      }
+    }
+  };
+
+  const handleParentCheckboxChangeSubMinutes = (checked, agendaID) => {
+    if (checked) {
+      // Add all minute IDs from subMinutes for the given agendaID to selectedMinuteIDs
+      const agenda = minuteDataAgenda.find(
+        (item) => item.agendaID === agendaID
+      );
+      if (agenda) {
+        const allMinuteIDs = agenda.subMinutes.flatMap((subItem) =>
+          subItem.minuteData.map((subData) => subData.minuteID)
+        );
+        setSelectedMinuteIDs([...selectedMinuteIDs, ...allMinuteIDs]);
+      }
+    } else {
+      // Remove all minute IDs from subMinutes for the given agendaID from selectedMinuteIDs
+      const agenda = minuteDataAgenda.find(
+        (item) => item.agendaID === agendaID
+      );
+      if (agenda) {
+        const filteredIDs = selectedMinuteIDs.filter(
+          (id) =>
+            !agenda.subMinutes.some((subItem) =>
+              subItem.minuteData.some((subData) => subData.minuteID === id)
+            )
+        );
+        setSelectedMinuteIDs(filteredIDs);
+      }
+    }
+  };
+
+  const handleChildCheckboxChangeAgenda = (checked, minuteID) => {
+    if (checked) {
+      setSelectedMinuteIDs([...selectedMinuteIDs, minuteID]);
+    } else {
+      setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== minuteID));
+    }
+  };
+
+  const handleChildCheckboxChangeSubMinutes = (checked, minuteID) => {
+    if (checked) {
+      setSelectedMinuteIDs([...selectedMinuteIDs, minuteID]);
+    } else {
+      setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== minuteID));
+    }
+  };
+
+  const handleParentCheckboxChange = (checked) => {
+    try {
+      if (checked) {
+        // Add all minute IDs from minuteDataGeneral to selectedMinuteIDs
+        const allMinuteIDs = minuteDataGeneral.map((item) => item.minuteID);
+        setSelectedMinuteIDs([...selectedMinuteIDs, ...allMinuteIDs]);
+      } else {
+        // Remove all minute IDs from minuteDataGeneral from selectedMinuteIDs
+        const filteredIDs = selectedMinuteIDs.filter(
+          (id) => !minuteDataGeneral.some((item) => item.minuteID === id)
+        );
+        setSelectedMinuteIDs(filteredIDs);
+      }
+    } catch {}
+  };
+
+  const handleChildCheckboxChange = (checked, minuteID) => {
+    try {
+      if (checked) {
+        setSelectedMinuteIDs([...selectedMinuteIDs, minuteID]);
+      } else {
+        setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== minuteID));
+      }
+    } catch {}
+  };
+
+  const checkIsChecked = (minuteDataAgenda, minuteDataGeneral) => {
+    // Function to check if all minuteData items are checked
+    const allChecked = (data) => {
+      return data.every((item) => item.isChecked);
+    };
+
+    // Recursive function to check agenda data
+    const checkAgenda = (agenda) => {
+      for (let item of agenda) {
+        if (!item.isChecked && item.minuteData.length > 0) {
+          return false;
+        }
+
+        if (item.minuteData.length > 0 && !allChecked(item.minuteData)) {
+          return false;
+        }
+
+        if (item.subMinutes && !checkAgenda(item.subMinutes)) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    // Check minuteDataAgenda
+    if (!checkAgenda(minuteDataAgenda)) {
+      return false;
+    }
+
+    // Check minuteDataGeneral
+    if (!allChecked(minuteDataGeneral)) {
+      return false;
+    }
+
+    return true;
+  };
+
+  useEffect(() => {
+    let result = checkIsChecked(minuteDataAgenda, minuteDataGeneral);
+    setCheckIsCheckAll(result);
+  }, []);
+
+  useEffect(() => {
+    const checkIfTruncated = () => {
+      const element = textRef.current;
+      if (element) {
+        setIsTruncated(element.scrollWidth > element.clientWidth);
+      }
+    };
+
+    checkIfTruncated();
+    window.addEventListener("resize", checkIfTruncated);
+
+    return () => {
+      window.removeEventListener("resize", checkIfTruncated);
+    };
+  }, []);
+
   useEffect(() => {
     if (MinutesReducer.UpdateMinuteFlag === true) {
-      console.log(
-        "Updated State before modification:",
-        minuteDataAgenda,
-        minuteToEdit
-      );
       if (isAgendaMinute) {
         const updatedMinuteData = updateReviewersList(
           minuteDataAgenda,
@@ -178,30 +342,40 @@ const SendReviewers = ({
     }
   }, [MinutesReducer.UpdateMinuteFlag]);
 
+  console.log("agendaData", minuteDataAgenda);
+  console.log("generalData", minuteDataGeneral);
+  console.log("checkIsCheckAll", checkIsCheckAll);
+
   return (
     <>
-      <Row>
-        <Col lg={11} md={11} sm={12}>
-          <Checkbox
-            label2Class={styles["SelectAll"]}
-            label2={t("Select-all-minutes")}
-            className="SearchCheckbox "
-            name="IsChat"
-            classNameDiv={styles["selectAllMinutesCheckbox"]}
-          />
-        </Col>
-        <Col lg={1} md={1} sm={12}></Col>
-      </Row>
+      {checkIsCheckAll ? null : (
+        <Row>
+          <Col lg={11} md={11} sm={12}>
+            <Checkbox
+              label2Class={styles["SelectAll"]}
+              label2={t("Select-all-minutes")}
+              className="SearchCheckbox "
+              name="IsChat"
+              classNameDiv={styles["selectAllMinutesCheckbox"]}
+              onChange={(e) => handleSelectAll(e.target.checked)}
+              checked={
+                selectedMinuteIDs.length > 0 &&
+                selectedMinuteIDs.length === totalIds
+              }
+            />
+          </Col>
+          <Col lg={1} md={1} sm={12}></Col>
+        </Row>
+      )}
       <Row>
         <Col lg={12} md={12} sm={12}>
           <div className={styles["height-manage-minutes"]}>
             {minuteDataAgenda !== null ? (
               <>
                 {minuteDataAgenda.map((data, index) => {
-                  console.log("minutesDataAgendaminutesDataAgenda", data);
                   return (
                     <div key={index}>
-                      {data.isChecked ? (
+                      {data.isChecked && moreMinutes === false ? (
                         <Row>
                           <Col
                             lg={11}
@@ -221,7 +395,28 @@ const SendReviewers = ({
                             </div>
                           </Col>
                         </Row>
-                      ) : null}
+                      ) : (
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              label2Class={styles["agenda-title"]}
+                              label2={data.agendaTitle}
+                              className="SearchCheckbox"
+                              name="IsChat"
+                              classNameDiv={styles["agendaTitleToCheckbox"]}
+                              onChange={(e) =>
+                                handleParentCheckboxChangeAgenda(
+                                  e.target.checked,
+                                  data.agendaID
+                                )
+                              }
+                              checked={data.minuteData.every((item) =>
+                                selectedMinuteIDs.includes(item.minuteID)
+                              )}
+                            />
+                          </Col>
+                        </Row>
+                      )}
                       {data.isParentData === false ? null : (
                         <Row>
                           <Col lg={12} md={12} sm={12}>
@@ -230,17 +425,11 @@ const SendReviewers = ({
                                 !expandedItems[parentMinutedata.minuteID];
                               const reviewerId =
                                 parentMinutedata?.reviewersList?.[0] ?? null;
-                              console.log(
-                                "profileImgprofileImg",
-                                reviewerId,
-                                parentMinutedata
-                              );
 
                               const profileImg = findUserProfileImg(
                                 reviewerId,
                                 allReviewers
                               );
-                              console.log("profileImgprofileImg", profileImg);
                               return (
                                 <div className={styles["agendaTitleCheckbox"]}>
                                   {parentMinutedata.isChecked ? (
@@ -288,10 +477,6 @@ const SendReviewers = ({
                                                   ? null
                                                   : parentMinutedata.attachments.map(
                                                       (filesData, index) => {
-                                                        console.log(
-                                                          "filesDatafilesData",
-                                                          filesData
-                                                        );
                                                         return (
                                                           <Col
                                                             lg={3}
@@ -441,10 +626,6 @@ const SendReviewers = ({
                                                               filesData,
                                                               index
                                                             ) => {
-                                                              console.log(
-                                                                "filesDatafilesData",
-                                                                filesData
-                                                              );
                                                               return (
                                                                 <Col
                                                                   lg={2}
@@ -502,12 +683,12 @@ const SendReviewers = ({
                                           }
                                           className="SearchCheckbox"
                                           name={`minute-${parentMinutedata.minuteID}`}
-                                          // onChange={(e) =>
-                                          //   handleChildCheckboxChangeAgenda(
-                                          //     e.target.checked,
-                                          //     parentMinutedata.minuteID
-                                          //   )
-                                          // }
+                                          onChange={(e) =>
+                                            handleChildCheckboxChangeAgenda(
+                                              e.target.checked,
+                                              parentMinutedata.minuteID
+                                            )
+                                          }
                                           checked={selectedMinuteIDs.includes(
                                             parentMinutedata.minuteID
                                           )}
@@ -532,11 +713,13 @@ const SendReviewers = ({
                                 className={
                                   subagendaMinuteData.isChecked
                                     ? "mb-25 ml-25"
-                                    : ""
+                                    : "ml-25"
                                 }
                               >
                                 <Col lg={12} md={12} sm={12}>
-                                  {subagendaMinuteData.isChecked ? (
+                                  {subagendaMinuteData.isChecked === true &&
+                                  (subagendaMinuteData.minuteData.length > 0 ||
+                                    moreMinutes === false) ? (
                                     <Row>
                                       <Col
                                         lg={11}
@@ -561,6 +744,31 @@ const SendReviewers = ({
                                         </div>
                                       </Col>
                                     </Row>
+                                  ) : subagendaMinuteData.isChecked === false &&
+                                    (subagendaMinuteData.minuteData.length >
+                                      0 ||
+                                      moreMinutes === true) ? (
+                                    <Checkbox
+                                      label2Class={styles["agenda-title"]}
+                                      label2={subagendaMinuteData.agendaTitle}
+                                      className="SearchCheckbox"
+                                      name="IsChat"
+                                      onChange={(e) =>
+                                        handleParentCheckboxChangeSubMinutes(
+                                          e.target.checked,
+                                          data.agendaID
+                                        )
+                                      }
+                                      checked={subagendaMinuteData.minuteData.every(
+                                        (item) =>
+                                          selectedMinuteIDs.includes(
+                                            item.minuteID
+                                          )
+                                      )}
+                                      classNameDiv={
+                                        styles["agendaTitleToCheckbox"]
+                                      }
+                                    />
                                   ) : null}
                                   {subagendaMinuteData.minuteData &&
                                     subagendaMinuteData.minuteData.length > 0 &&
@@ -570,19 +778,10 @@ const SendReviewers = ({
                                           !expandedItems[subItem.minuteID];
                                         const reviewerId =
                                           subItem?.reviewersList?.[0] ?? null;
-                                        console.log(
-                                          "profileImgprofileImg",
-                                          reviewerId,
-                                          subItem
-                                        );
 
                                         const profileImg = findUserProfileImg(
                                           reviewerId,
                                           allReviewers
-                                        );
-                                        console.log(
-                                          "profileImgprofileImg",
-                                          profileImg
                                         );
                                         return (
                                           <Row>
@@ -640,10 +839,6 @@ const SendReviewers = ({
                                                                     filesData,
                                                                     index
                                                                   ) => {
-                                                                    console.log(
-                                                                      "filesDatafilesData",
-                                                                      filesData
-                                                                    );
                                                                     return (
                                                                       <Col
                                                                         lg={3}
@@ -764,7 +959,7 @@ const SendReviewers = ({
                                                 </Col>
                                               </>
                                             ) : (
-                                              <Col lg={12} md={12} sm={12}>
+                                              <Col lg={11} md={11} sm={12}>
                                                 <Checkbox
                                                   key={subItem.minuteID}
                                                   label2Class={
@@ -826,10 +1021,6 @@ const SendReviewers = ({
                                                                       filesData,
                                                                       index
                                                                     ) => {
-                                                                      console.log(
-                                                                        "filesDatafilesData",
-                                                                        filesData
-                                                                      );
                                                                       return (
                                                                         <Col
                                                                           lg={2}
@@ -899,15 +1090,15 @@ const SendReviewers = ({
                                                   }
                                                   className="SearchCheckbox"
                                                   name={`minute-${subItem.minuteID}`}
-                                                  // onChange={(e) =>
-                                                  //   handleChildCheckboxChangeSubMinutes(
-                                                  //     e.target.checked,
-                                                  //     minuteDataSubminute.minuteID
-                                                  //   )
-                                                  // }
-                                                  // checked={selectedMinuteIDs.includes(
-                                                  //   minuteDataSubminute.minuteID
-                                                  // )}
+                                                  onChange={(e) =>
+                                                    handleChildCheckboxChangeSubMinutes(
+                                                      e.target.checked,
+                                                      subItem.minuteID
+                                                    )
+                                                  }
+                                                  checked={selectedMinuteIDs.includes(
+                                                    subItem.minuteID
+                                                  )}
                                                   classNameDiv={
                                                     styles[
                                                       "agendaTitleToCheckbox"
@@ -933,29 +1124,47 @@ const SendReviewers = ({
 
             {minuteDataGeneral !== null ? (
               <>
-                <Row>
-                  <Col lg={12} md={12} sm={12} className="position-relative">
-                    <div className={styles["agendaTitleCheckbox"]}>
-                      <img
-                        className={styles["titleTick"]}
-                        src={TickIcon}
-                        alt=""
+                {moreMinutes === false ? (
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className="position-relative">
+                      <div className={styles["agendaTitleCheckbox"]}>
+                        <img
+                          className={styles["titleTick"]}
+                          src={TickIcon}
+                          alt=""
+                        />
+                        <p className={styles["agenda-title"]}>
+                          {t("General-Minutes")}
+                        </p>
+                      </div>
+                    </Col>
+                  </Row>
+                ) : (
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <Checkbox
+                        label2Class={styles["agenda-title"]}
+                        label2={t("General-minutes")}
+                        className="SearchCheckbox "
+                        name="IsChat"
+                        onChange={(e) =>
+                          handleParentCheckboxChange(e.target.checked)
+                        }
+                        checked={minuteDataGeneral.every((item) =>
+                          selectedMinuteIDs.includes(item.minuteID)
+                        )}
+                        classNameDiv={styles["agendaTitleToCheckbox"]}
                       />
-                      <p className={styles["agenda-title"]}>
-                        {t("General-Minutes")}
-                      </p>
-                    </div>
-                  </Col>
-                </Row>
+                    </Col>
+                  </Row>
+                )}
                 {minuteDataGeneral.map((data, index) => {
                   const isTruncated = !expandedItems[data.minuteID];
                   const reviewerId = data?.reviewersList?.[0] ?? null;
-                  console.log("profileImgprofileImg", reviewerId, data);
                   const profileImg = findUserProfileImg(
                     reviewerId,
                     allReviewers
                   );
-                  console.log("profileImgprofileImg", profileImg);
                   return (
                     <div className={styles["agendaTitleCheckbox"]}>
                       {data.isChecked ? (
@@ -992,10 +1201,6 @@ const SendReviewers = ({
                                       ? null
                                       : data.attachments.map(
                                           (filesData, index) => {
-                                            console.log(
-                                              "filesDatafilesData",
-                                              filesData
-                                            );
                                             return (
                                               <Col
                                                 lg={3}
@@ -1108,10 +1313,6 @@ const SendReviewers = ({
                                           ? null
                                           : data.attachments.map(
                                               (filesData, index) => {
-                                                console.log(
-                                                  "filesDatafilesData",
-                                                  filesData
-                                                );
                                                 return (
                                                   <Col
                                                     lg={2}
@@ -1181,13 +1382,13 @@ const SendReviewers = ({
                             }
                             className="SearchCheckbox "
                             name={`minute-${data.minuteID}`}
-                            // onChange={(e) =>
-                            //   handleChildCheckboxChange(
-                            //     e.target.checked,
-                            //     data.minuteID
-                            //   )
-                            // }
-                            // checked={selectedMinuteIDs.includes(data.minuteID)}
+                            onChange={(e) =>
+                              handleChildCheckboxChange(
+                                e.target.checked,
+                                data.minuteID
+                              )
+                            }
+                            checked={selectedMinuteIDs.includes(data.minuteID)}
                             classNameDiv={styles["agendaTitleToCheckbox"]}
                           />
                         </Col>

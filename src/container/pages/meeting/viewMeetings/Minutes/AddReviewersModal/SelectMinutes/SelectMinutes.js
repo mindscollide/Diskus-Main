@@ -33,6 +33,8 @@ const SelectMinutes = ({
   setAllReviewers,
   isAgendaMinute,
   setIsAgendaMinute,
+  moreMinutes,
+  setMoreMinutes,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -69,12 +71,6 @@ const SelectMinutes = ({
     }));
   };
 
-  console.log(
-    "MinutesMinutesMinutesMinutes",
-    minuteDataAgenda,
-    minuteDataGeneral
-  );
-
   const [totalIds, setTotalIds] = useState([]);
 
   const handleSelectAll = (checked) => {
@@ -110,15 +106,6 @@ const SelectMinutes = ({
       console.log("Error:", error);
     }
   };
-
-  console.log(
-    "Lengths: ",
-    totalIds,
-    selectedMinuteIDs.length,
-    selectedMinuteIDs.length > 0,
-    selectedMinuteIDs.length === totalIds.length,
-    selectedMinuteIDs.length > 0 && selectedMinuteIDs.length === totalIds
-  );
 
   const handleParentCheckboxChangeAgenda = (checked, agendaID) => {
     if (checked) {
@@ -215,8 +202,6 @@ const SelectMinutes = ({
     } catch {}
   };
 
-  console.log("selectedMinutesselectedMinutes", selectedMinuteIDs);
-
   return (
     <>
       <Row className="mx-50">
@@ -245,7 +230,6 @@ const SelectMinutes = ({
       {minuteDataAgenda !== null ? (
         <>
           {minuteDataAgenda.map((data, index) => {
-            console.log("minutesDataAgendaminutesDataAgenda", data);
             return (
               <div key={index}>
                 <Row>
@@ -308,10 +292,6 @@ const SelectMinutes = ({
                                           ? null
                                           : parentMinutedata.attachments.map(
                                               (filesData, index) => {
-                                                console.log(
-                                                  "filesDatafilesData",
-                                                  filesData
-                                                );
                                                 return (
                                                   <Col
                                                     lg={2}
@@ -469,10 +449,6 @@ const SelectMinutes = ({
                                                             filesData,
                                                             index
                                                           ) => {
-                                                            console.log(
-                                                              "filesDatafilesData",
-                                                              filesData
-                                                            );
                                                             return (
                                                               <Col
                                                                 lg={2}
@@ -606,10 +582,6 @@ const SelectMinutes = ({
                                 (isTruncated && data.attachments.length > 0)
                                   ? null
                                   : data.attachments.map((filesData, index) => {
-                                      console.log(
-                                        "filesDatafilesData",
-                                        filesData
-                                      );
                                       return (
                                         <Col
                                           lg={2}
