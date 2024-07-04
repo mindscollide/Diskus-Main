@@ -39,8 +39,16 @@ const BoardDeckModal = () => {
   const onChangeSelectAll = (e) => {
     let value = e.target.checked;
     setBoarddeckOptions({
-      ...boarddeckOptions,
       selectall: value,
+      Organizer: value,
+      AgendaContributor: value,
+      Participants: value,
+      Minutes: value,
+      Task: value,
+      polls: value,
+      attendeceReport: value,
+      video: value,
+      Agenda: value,
     });
   };
 
