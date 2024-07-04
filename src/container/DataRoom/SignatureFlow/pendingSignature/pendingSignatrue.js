@@ -732,6 +732,7 @@ const SignatureViewer = () => {
               console.log(letsGet, "letsGetletsGetletsGet");
 
               const { r, g, b } = letsGet;
+              console.log(r, g, b, "letsGetletsGetletsGet");
 
               if (annotation.ToolName === "AnnotationCreateFreeText") {
                 annotation.TextColor = new Annotations.Color(r, g, b);

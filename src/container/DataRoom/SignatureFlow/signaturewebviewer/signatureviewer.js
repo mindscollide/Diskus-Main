@@ -38,6 +38,7 @@ import {
   saveWorkflowApi,
 } from "../../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
+import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
 const SignatureViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -59,7 +60,6 @@ const SignatureViewer = () => {
   const viewer = useRef(null);
   const [userList, setUserList] = useState([]);
   const [signerData, setSignerData] = useState([]);
-  console.log(signerData, "signerDatasignerDatasignerData");
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
@@ -94,7 +94,6 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
-  console.log(pdfResponceData, "pdfResponceDatapdfResponceData");
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
@@ -104,9 +103,8 @@ const SignatureViewer = () => {
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const participantsRef = useRef(participants);
   console.log(
-    selectedUserRef,
-    participantsRef,
-    "selectedUserRefselectedUserRef"
+    userAnnotationsRef,
+    "userAnnotationsRefuserAnnotationsRefuserAnnotationsRef"
   );
   // ===== this use for current state update get =====//
   // Ensure the ref stays in sync with the state
@@ -197,7 +195,6 @@ const SignatureViewer = () => {
           revertedData = revert(
             getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields
           );
-          console.log(revertedData, "revertedData");
           setUserAnnotations(revertedData);
           setFieldsData(newFieldsData);
         }
@@ -324,7 +321,10 @@ const SignatureViewer = () => {
             const fieldData = FieldsData.find(
               (field) => field.userID === usersData.pK_UID
             );
-
+            console.log(
+              { fieldData, FieldsData, usersData, users },
+              "fieldDatafieldDatafieldData"
+            );
             listOfUsers.push({
               name: usersData.name,
               pk_UID: usersData?.pK_UID,
@@ -338,7 +338,7 @@ const SignatureViewer = () => {
               xml: extractXML(usersData?.pK_UID),
               userID: usersData?.pK_UID,
               actorID: usersData?.fK_WorkFlowActor_ID,
-              actorColor: fieldData ? fieldData.actorColor : "#000000",
+              actorColor: usersData?.actorColor,
             });
           });
         });
@@ -370,15 +370,23 @@ const SignatureViewer = () => {
 
   // this will generate my xfdf files for user base and send into AddUpdateFieldValue
   const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
+    console.log(
+      "userAnnotations",
+      action,
+      xmlString,
+      userSelectID,
+      userAnnotations
+    );
     try {
       let userSelect = parseInt(userSelectID);
       // Iterate over each user's annotations
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-      console.log(xmlDoc, "xmlDocxmlDocxmlDoc");
       xmlDoc.querySelectorAll("widget").forEach((widget) => {
         const widgetName = widget.getAttribute("name");
         const ffieldName = widget.getAttribute("field");
+        // const uniqueWidgetName = `${ffieldName}-${userSelect}`;
+        // widget.setAttribute("name", uniqueWidgetName);
         let widgetFound = false;
         userAnnotations.forEach((user) => {
           user.xml.forEach((xml) => {
@@ -417,10 +425,9 @@ const SignatureViewer = () => {
       setUserAnnotations(userAnnotations);
       // }
     } catch (error) {
-      console.log("userAnnotations", error);
+      console.log(error);
     }
   };
-  console.log("saveWorkFlowData", userAnnotations);
 
   // === its triger when whe update blob file in our local state ===/
   useEffect(() => {
@@ -487,6 +494,7 @@ const SignatureViewer = () => {
           "viewControlsOverlay",
           "contextMenuPopup",
           "signaturePanelButton",
+          "colorPalette",
         ]);
         //======================================== disable header =====================================//
 
@@ -635,7 +643,6 @@ const SignatureViewer = () => {
             });
           });
 
-          console.log("saveWorkFlowData", convertData);
           // save signature document api
           let saveSignatureDocument = {
             FileID: Number(docWorkflowID),
@@ -681,12 +688,12 @@ const SignatureViewer = () => {
           const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
           const parser = new DOMParser();
           const mainXmlDoc = parser.parseFromString(xfdfString, "text/xml");
-          function existsInMainXML(name, type, mainXmlDoc) {
+          const existsInMainXML = (name, type, mainXmlDoc) => {
             const elements = mainXmlDoc.querySelectorAll(
               `${type}[name="${name}"]`
             );
             return elements.length > 0;
-          }
+          };
 
           let covert = userAnnotationsRef.current.map((user) => {
             let filteredXml = user.xml.filter((item) => {
@@ -741,7 +748,6 @@ const SignatureViewer = () => {
             });
           });
 
-          console.log("saveWorkFlowData", convertData);
           // save signature document api
           let saveSignatureDocument = {
             FileID: Number(docWorkflowID),
@@ -1075,7 +1081,7 @@ const SignatureViewer = () => {
   // === this is for update intance in ===//
   useEffect(() => {
     if (Instance) {
-      const { annotationManager, annotManager } = Instance.Core;
+      const { annotationManager, Annotations } = Instance.Core;
       annotationManager.addEventListener(
         "annotationChanged",
         async (annotations, action, { imported }) => {
@@ -1083,48 +1089,47 @@ const SignatureViewer = () => {
             return;
           }
           if (action === "add" || action === "modify") {
+            console.log("userAnnotations");
             try {
               annotations.forEach((annotation) => {
-                console.log(annotation, "annotationannotationannotation");
-                const { Color, Subject, TextColor } = annotation;
-                console.log(
-                  Color,
-                  Subject,
-                  TextColor.toHexString(),
-                  "annotationannotationannotationColor"
+                // const { Color, Subject, TextColor } = annotation;
+                let letsGet = getActorColorByUserID(
+                  selectedUserRef.current,
+                  userAnnotationsRef
                 );
-                if (annotation.Subject === "Signature") {
-                  annotation.NoResize = true;
-                  annotation.NoMove = true;
+                const { r, g, b } = letsGet;
+             if (annotation.ToolName === "AnnotationCreateFreeText") {
+                  annotation.TextColor = new Annotations.Color(r, g, b);
+                  annotation.StrokeColor = new Annotations.Color(r, g, b);
+                  // annotation.NoResize = true;
+                  // annotation.NoMove = true;
                   annotationManager.updateAnnotation(annotation);
                   annotationManager.redrawAnnotation(annotation);
                 }
-                // if (annotation.ToolName === "AnnotationCreateFreeText") {
-                //   annotation.TextColor = new Annotations.Color(r, g, b);
-                //   annotationManager.updateAnnotation(annotation);
-                //   annotationManager.redrawAnnotation(annotation);
-                // }
+                if (annotation.ToolName === "RadioButtonFormFieldCreateTool") {
+                  // Radio Button
+                  annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
+                  // annotation.FillColor = new Annotations.Color(r, g, b);
+                  annotation.TextColor = new Annotations.Color(r, g, b);
+                  annotationManager.updateAnnotation(annotation);
+                  annotationManager.redrawAnnotation(annotation);
+                }
+                if (annotation.ToolName === "CheckBoxFormFieldCreateTool") {
+                  // Checkbox Form Field
+                  annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
+                  // annotation.FillColor = new Annotations.Color(r, g, b);
+                  annotation.TextColor = new Annotations.Color(r, g, b);
+                  annotationManager.updateAnnotation(annotation);
+                  annotationManager.redrawAnnotation(annotation);
+                }
+                if (annotation.ToolName === "SignatureFormFieldCreateTool") {
+                  // Signature Field
+                  annotation.TextColor = new Annotations.Color(r, g, b);
+                  annotation.StrokeColor = new Annotations.Color(r, g, b);
+                  annotationManager.updateAnnotation(annotation);
+                  annotationManager.redrawAnnotation(annotation);
+                }
 
-                // if (annotation.Subject === "Ellipse") {
-                //   annotation.TextColor = new Annotations.Color(r, g, b);
-                //   annotationManager.updateAnnotation(annotation);
-                //   annotationManager.redrawAnnotation(annotation);
-                // }
-
-                // if (annotation.Subject === "Rectangle") {
-                //   annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-                //   annotation.FillColor = new Annotations.Color(r, g, b);
-                //   annotation.TextColor = new Annotations.Color(r, g, b);
-                //   annotationManager.updateAnnotation(annotation);
-                //   annotationManager.redrawAnnotation(annotation);
-                // }
-                // if (annotation.Subject === "Widget") {
-                //   annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-                //   annotation.FillColor = new Annotations.Color(r, g, b);
-                //   annotation.TextColor = new Annotations.Color(r, g, b);
-                //   annotationManager.updateAnnotation(annotation);
-                //   annotationManager.redrawAnnotation(annotation);
-                // }
               });
               // Export annotations to XFDF format using `exportAnnotations`
               const xfdfString = await annotationManager.exportAnnotations();
