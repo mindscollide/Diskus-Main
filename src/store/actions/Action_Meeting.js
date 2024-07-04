@@ -135,7 +135,8 @@ const uploadActionMeetingApi = (
   newFolder
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
     dispatch(actionMeetingInit());
     let form = new FormData();
@@ -172,15 +173,25 @@ const uploadActionMeetingApi = (
                 )
             ) {
               dispatch(actionMeetingSuccess(response.data.responseResult, ""));
-              await dispatch(
-                saveFilesTaskApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  dataroomMapFolderId,
-                  newFolder
-                )
-              );
+              newFolder.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
+              // await dispatch(
+              //   saveFilesTaskApi(
+              //     navigate,
+              //     t,
+              //     response.data.responseResult,
+              //     dataroomMapFolderId,
+              //     newFolder
+              //   )
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

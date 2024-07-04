@@ -30,6 +30,7 @@ import SuccessfullyUpdateModal from "../../ModalsUserManagement/SuccessFullyUpda
 import {
   AllOrganizationsUsersApi,
   clearMessegesUserManagement,
+  getOrganizationPackageUserStatsAPI,
 } from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
@@ -43,6 +44,8 @@ const ManageUsers = () => {
   let organizationID = localStorage.getItem("organizationID");
 
   let userID = localStorage.getItem("userID");
+
+  let FreeTrial = localStorage.getItem("isTrial");
 
   const { UserMangementReducer, UserManagementModals } = useSelector(
     (state) => state
@@ -66,6 +69,8 @@ const ManageUsers = () => {
   const [enterpressed, setEnterpressed] = useState(false);
 
   const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
+
+  const [headCount, setHeadCount] = useState(0);
 
   const [manangeUserSearch, setManangeUserSearch] = useState({
     searchValue: "",
@@ -97,6 +102,7 @@ const ManageUsers = () => {
           RequestingUserID: Number(userID),
         };
         dispatch(AllOrganizationsUsersApi(navigate, t, data));
+        dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
       } catch {}
       setFlagForStopRerendring(true);
     }
@@ -115,35 +121,46 @@ const ManageUsers = () => {
     };
   }, [flagForStopRerendring]);
 
-  //AllOrganizationsUsers Api Data
   useEffect(() => {
-    const Users = UserMangementReducer.allOrganizationUsersData;
-
-    console.log(Users, "UsersUsersUsers");
     if (
-      Users &&
-      Users.organizationUsers &&
-      Users.organizationUsers.length > 0
+      UserMangementReducer.getOrganizationUserStatsGraph !== null &&
+      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails
+        .length > 0
     ) {
       let UserCount = 0;
-      const userStats =
-        UserMangementReducer.allOrganizationUsersData.selectedPackageDetails;
+      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.forEach(
+        (data) => {
+          UserCount += data.headCount - data.packageAllotedUsers;
+        }
+      );
+      setTotalUserCount(UserCount);
+    }
+  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
-      userStats.forEach((data) => {
-        console.log(data, "UserCountUserCount");
-        UserCount += data.headCount - data.packageAllotedUsers;
+  //AllOrganizationsUsers Api Data
+  useEffect(() => {
+    try {
+      const Users = UserMangementReducer.allOrganizationUsersData;
+      Users.selectedPackageDetails.map((data, index) => {
+        console.log(data.headCount, "datadatadata");
+        setHeadCount(data.headCount);
       });
 
-      setTotalUserCount(UserCount);
-      setManageUserGrid(
-        UserMangementReducer.allOrganizationUsersData.organizationUsers
-      );
-    } else {
-      setManageUserGrid([]);
+      if (
+        Users &&
+        Users.organizationUsers &&
+        Users.organizationUsers.length > 0
+      ) {
+        setManageUserGrid(
+          UserMangementReducer.allOrganizationUsersData.organizationUsers
+        );
+      } else {
+        setManageUserGrid([]);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [UserMangementReducer.allOrganizationUsersData]);
-
-  console.log(totalUserCount, "totalUserCounttotalUserCount");
 
   //Table Columns All Users
   const ManageUsersColumn = [
@@ -819,7 +836,9 @@ const ManageUsers = () => {
               <Row>
                 <Col lg={11} md={11} sm={12} xs={12}>
                   <span className={styles["RedStripContent"]}>
-                    {t("Maximum-20-users-can-be-created-in-trial-version")}
+                    {t("Maximum")}&nbsp;
+                    <span>{headCount}</span>&nbsp;
+                    <span>{t("Users-can-be-created-in-trial-version")}</span>
                   </span>
                 </Col>
                 <Col

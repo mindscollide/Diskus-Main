@@ -1,15 +1,24 @@
 {
-  "UserDataList": [
+  "MeetingID": 3512,
+  "SendResponsebyDate": "20240615",
+  "ProposedDates": [
     {
-      "UserName": "Syed Ali Raza",
-      "OrganizationName": "",
-      "Designation": "Solution Architect ",
-      "MobileNumber": "",
-      "UserEmail": "syedAliRaza@yopmail.com",
-      "OrganizationID": 473,
-      "RoleID": 3,
-      "FK_NumberWorldCountryID": 153,
-      "PackageID": 4
+      "ProposedDate": "20240614",
+      "StartTime": "110000",
+      "EndTime": "120000",
+      "proposedDateID": 0
+    },
+    {
+      "ProposedDate": "20240615",
+      "StartTime": "110000",
+      "EndTime": "120000",
+      "proposedDateID": 0
+    },
+    {
+      "ProposedDate": "20240622",
+      "StartTime": "130000",
+      "EndTime": "150000",
+      "proposedDateID": 0
     }
   ]
 }

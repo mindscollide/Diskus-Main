@@ -181,10 +181,11 @@ const ApprovalSend = () => {
       }
     }
   }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
+  
   return (
     <>
       {" "}
-      <Row>
+      <Row className="mb-2">
         <Col sm={12} md={12} lg={12} className="mt-3">
           <TableToDo
             sortDirections={["descend", "ascend"]}
@@ -195,7 +196,7 @@ const ApprovalSend = () => {
             // scroll={scroll}
             pagination={false}
             scroll={
-              approvalsData.length > 10
+              approvalsData.length > 5
                 ? { y: 385, x: "max-content" }
                 : undefined
             }

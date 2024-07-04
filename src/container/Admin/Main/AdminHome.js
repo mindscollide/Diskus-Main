@@ -148,6 +148,21 @@ const AdminHome = () => {
         }, 4000);
       }
     }
+    if (data.action.toLowerCase() === "Login".toLowerCase()) {
+      if (data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()) {
+        let getToken =
+          localStorage.getItem("token") !== null &&
+          localStorage.getItem("token");
+        console.log(
+          getToken,
+          data.payload.authToken.token,
+          "USER_LOGIN_ACTIVITYUSER_LOGIN_ACTIVITY"
+        );
+        if (getToken !== data?.payload?.authToken?.token) {
+          dispatch(userLogOutApiFunc(navigate, t));
+        }
+      }
+    }
   };
   const onConnectionLost = () => {
     console.log("Connected to MQTT broker onConnectionLost");
@@ -155,21 +170,20 @@ const AdminHome = () => {
   };
 
   useEffect(() => {
-    console.log("Connected to MQTT broker onConnectionLost useEffect");
-    if (!flagForStopRerendring) {
-      if (Helper.socket === null) {
-        let userID = localStorage.getItem("userID");
-        mqttConnection(userID);
-      }
-      if (newClient != null) {
-        // newClient.onConnected = onConnected; // Callback when connected
-        newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-        // newClient.disconnectedPublishing = true; // Enable disconnected publishing
-        newClient.onMessageArrived = onMessageArrived;
-      }
-      setFlagForStopRerendring(true);
+    // if (!flagForStopRerendring) {
+    if (Helper.socket === null) {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
     }
-  }, [flagForStopRerendring]);
+    if (newClient != null) {
+      // newClient.onConnected = onConnected; // Callback when connected
+      newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
+      // newClient.disconnectedPublishing = true; // Enable disconnected publishing
+      newClient.onMessageArrived = onMessageArrived;
+    }
+    // setFlagForStopRerendring(true);
+    // }
+  }, [newClient]);
 
   // useEffect(() => {
   //   mqttConnection();

@@ -719,18 +719,6 @@ const NewMeeting = () => {
             setViewAdvanceMeetingModal
           )
         );
-        // let Data = { MeetingID: id };
-        // await dispatch(
-        //   ViewMeeting(
-        //     navigate,
-        //     Data,
-        //     t,
-        //     setViewFlag,
-        //     setEditFlag,
-        //     setSceduleMeeting,
-        //     1
-        //   )
-        // );
       } else {
         let joinMeetingData = {
           FK_MDID: id,
@@ -760,12 +748,6 @@ const NewMeeting = () => {
             t
           )
         );
-
-        // setAdvanceMeetingModalID(id);
-        // setViewAdvanceMeetingModal(true);
-        // dispatch(viewAdvanceMeetingPublishPageFlag(true));
-        // dispatch(scheduleMeetingPageFlag(false));
-        // localStorage.setItem("currentMeetingID", id);
       }
     } else {
       if (isQuickMeeting) {
@@ -2280,12 +2262,12 @@ const NewMeeting = () => {
                         ) : null}
 
                         {/* BoardDeck For Time Being */}
-                        <Dropdown.Item
+                        {/* <Dropdown.Item
                           className="dropdown-item"
                           onClick={boardDeckOnClick}
                         >
                           {t("Board-deck")}
-                        </Dropdown.Item>
+                        </Dropdown.Item> */}
                       </Dropdown.Menu>
                     </Dropdown>
                   </Col>

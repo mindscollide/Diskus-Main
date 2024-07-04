@@ -2241,13 +2241,13 @@ const Dashboard = () => {
       meetingIdReducer.MeetingStatusEnded !== undefined &&
       meetingIdReducer.MeetingStatusEnded.length !== 0
     ) {
-      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meetingDetails;
       let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       let isMeetingVideo = localStorage.getItem("isMeetingVideo");
       isMeetingVideo = isMeetingVideo ? JSON.parse(isMeetingVideo) : false;
       if (
         currentMeetingID === endMeetingData.pK_MDID &&
-        endMeetingData.status === "9"
+        Number(endMeetingData.statusID) === 9
       ) {
         if (isMeetingVideo === true) {
           dispatch(normalizeVideoPanelFlag(false));

@@ -16,9 +16,11 @@ const PermissionConfirmation = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const noBtnFunctionality = () => {
     dispatch(showAdvancePermissionModal(true));
+    dispatch(showAdvancePermissionConfirmation(false));
   };
   const yesBtnFunctionality = () => {
     dispatch(showAdvancePermissionConfirmation(false));
+    dispatch(showAdvancePermissionModal(false));
   };
   return (
     <section>

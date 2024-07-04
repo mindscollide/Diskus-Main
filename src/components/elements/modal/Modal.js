@@ -20,24 +20,10 @@ const CustomModal = ({
   dialogClassName,
   modalTitleClassName,
   fullscreen,
+  htmlCode,
 }) => {
-  // const [show, setShow] = useState(false);
-  // console.log("viewmodalo", show);
-
-  const handleClose = () => {
-    // console.log("viewmodalo", show);
-    setShow(false);
-  };
-
-  // console.log("modalTitle", ModalTitle);
-
-  // console.log("modalBody", ModalBody);
-
   return (
     <>
-      {/* <Button variant="primary" onClick={handleShow} data-tut="meetingbtn" >
-        {ButtonTitle}
-      </Button> */}
       <div className={modalParentClass}>
         <Modal
           show={show}
@@ -59,7 +45,19 @@ const CustomModal = ({
               {ModalTitle}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body className={modalBodyClassName}>{ModalBody}</Modal.Body>
+          {htmlCode !== "" && htmlCode !== null && htmlCode !== undefined ? (
+            <Modal.Body
+              dangerouslySetInnerHTML={{
+                __html: htmlCode !== "" ? htmlCode : null,
+              }}
+              className={modalBodyClassName}
+            >
+              {ModalBody}
+            </Modal.Body>
+          ) : (
+            <Modal.Body className={modalBodyClassName}>{ModalBody}</Modal.Body>
+          )}
+
           <Modal.Footer className={modalFooterClassName}>
             {ModalFooter}
           </Modal.Footer>
