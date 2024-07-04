@@ -787,7 +787,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               let newfile = [];
               const uploadPromises = fileForSend.map((newData) => {
                 // Return the promise from FileUploadToDo
-                return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+                return dispatch(
+                  FileUploadToDo(navigate, newData, t, newfile, 1)
+                );
               });
               // Wait for all uploadPromises to resolve
               await Promise.all(uploadPromises);
@@ -855,7 +857,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             let newfile = [];
             const uploadPromises = fileForSend.map((newData) => {
               // Return the promise from FileUploadToDo
-              return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+              return dispatch(FileUploadToDo(navigate, newData, t, newfile, 1));
             });
             // Wait for all uploadPromises to resolve
             await Promise.all(uploadPromises);
@@ -1010,7 +1012,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
           const uploadPromises = fileForSend.map((newData) => {
             // Return the promise from FileUploadToDo
-            return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+            return dispatch(FileUploadToDo(navigate, newData, t, newfile, 1));
           });
           // Wait for all uploadPromises to resolve
           await Promise.all(uploadPromises);
@@ -1668,6 +1670,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   };
 
   const deleteFilefromAttachments = (data, index) => {
+    setFileForSend((prevFileForSend) =>
+      prevFileForSend.filter(
+        (newData, index) => newData.name !== data.DisplayAttachmentName
+      )
+    );
     let searchIndex = meetingAgendaAttachments.MeetingAgendaAttachments;
     let newAttachments = attachments.filter(
       (fileData, index) =>
@@ -1680,7 +1687,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       ["MeetingAgendaAttachments"]: searchIndex,
     });
   };
-
+  console.log(
+    { attachments, meetingAgendaAttachments, fileForSend },
+    "deleteFilefromAttachmentsdeleteFilefromAttachmentsdeleteFilefromAttachments"
+  );
   const handleDeleteAttendee = (data, index) => {
     let user1 = createMeeting.MeetingAttendees;
     user1.splice(index, 1);

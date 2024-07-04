@@ -177,16 +177,20 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
       CommitteeReducer.getCommitteeByCommitteeID !== null &&
       CommitteeReducer.getCommitteeByCommitteeID !== undefined
     ) {
-      let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
-      setCommitteeData({
-        committeeTitle: committeedetails.committeeTitle,
-        committeeDescription: committeedetails.committeeDescription,
-        isTalkGroup: committeedetails.isTalkChatGroup,
-        committeeType: committeedetails.committeeType.committeeTypeId,
-        committeeStatus: committeedetails.committeeStatus.committeeStatusID,
-        committeeID: committeedetails.committeMembers[0].committeeID,
-        committeeMembers: committeedetails.committeMembers,
-      });
+      try {
+        let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
+        setCommitteeData({
+          committeeTitle: committeedetails.committeeTitle,
+          committeeDescription: committeedetails.committeeDescription,
+          isTalkGroup: committeedetails.isTalkChatGroup,
+          committeeType: committeedetails.committeeType?.committeeTypeId,
+          committeeStatus: committeedetails.committeeStatus?.committeeStatusID,
+          committeeID: committeedetails.committeMembers[0].committeeID,
+          committeeMembers: committeedetails.committeMembers,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
@@ -789,7 +793,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
               </Col>
             </Row>
             <section className={styles["files_View"]}>
-              <Row >
+              <Row>
                 {fileAttachments.length > 0
                   ? fileAttachments.map((data, index) => {
                       return (

@@ -1,35 +1,33 @@
 import React, { useRef, useEffect, useState } from "react";
 import WebViewer from "@pdftron/webviewer";
-import "./signaturewebviewer.css";
-import PlusSignSignatureFlow from "../../../assets/images/plus-sign-signatureflow.svg";
+import "./pendingSignature.css";
+import PlusSignSignatureFlow from "../../../../assets/images/plus-sign-signatureflow.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import DragIcon from "../../../assets/images/DragIcon_SignatureFlow.png";
-import {
-  ClearMessageAnnotations,
-  GetAnnotationsOfToDoAttachementMessageCleare,
-  addAnnotationsOnDataroomAttachement,
-  addAnnotationsOnNotesAttachement,
-  addAnnotationsOnResolutionAttachement,
-  addAnnotationsOnToDoAttachement,
-  getAnnotationsOfDataroomAttachement,
-  getAnnotationsOfNotesAttachement,
-  getAnnotationsOfResolutionAttachement,
-  getAnnotationsOfToDoAttachement,
-  setUserAnnotation,
-} from "../../../store/actions/webVieverApi_actions";
+import DragIcon from "../../../../assets/images/DragIcon_SignatureFlow.png";
+import { ClearMessageAnnotations } from "../../../../store/actions/webVieverApi_actions";
 
 import { useTranslation } from "react-i18next";
-import { Notification, Loader, Modal, Button, TextField } from "../index";
+import {
+  Notification,
+  Loader,
+  Modal,
+  Button,
+  TextField,
+} from "../../../../components/elements/index";
 import { Col, Row } from "react-bootstrap";
-import DeleteIcon from "../../../assets/images/Icon material-delete.svg";
+import DeleteIcon from "../../../../assets/images/Icon material-delete.svg";
 import Select from "react-select";
 import {
+  declineReasonApi,
   getWorkFlowByWorkFlowIdwApi,
   saveWorkflowApi,
-} from "../../../store/actions/workflow_actions";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+} from "../../../../store/actions/workflow_actions";
+import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
+import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
+import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
+import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/DeclineReasonCloseModal";
 const SignatureViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -42,6 +40,7 @@ const SignatureViewer = () => {
     getWorkfFlowByFileId,
     Loading,
     getDataroomAnnotation,
+    ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
@@ -50,11 +49,15 @@ const SignatureViewer = () => {
   const viewer = useRef(null);
   const [userList, setUserList] = useState([]);
   const [signerData, setSignerData] = useState([]);
-  console.log(signerData, "signerDatasignerDatasignerData");
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
+  const [reasonModal, setReasonModal] = useState(false);
+  const [declineConfirmationModal, setDeclineConfirmationModal] =
+    useState(false);
+  const [declineReasonMessage, setDeclineReasonMessage] = useState("");
+  const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
   const [signers, setSigners] = useState({
     Name: "",
@@ -84,7 +87,7 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
-  console.log(pdfResponceData, "pdfResponceDatapdfResponceData")
+  console.log(pdfResponceData, "pdfResponceDatapdfResponceData");
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
@@ -243,15 +246,217 @@ const SignatureViewer = () => {
   // === Get  the file details by Id from API and Set it === //
   useEffect(() => {
     if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
+      let currentUserID =
+        localStorage.getItem("userID") !== null
+          ? Number(localStorage.getItem("userID"))
+          : 0;
+      const { filteredXmlString, removedAnnotations } = filterFreetextElements(
+        getDataroomAnnotation.annotationString,
+        currentUserID
+      );
       setPdfResponceData((prevData) => ({
         ...prevData,
-        xfdfData: getDataroomAnnotation.annotationString,
+        xfdfData: filteredXmlString,
         attachmentBlob: getDataroomAnnotation.attachmentBlob,
-        removedAnnotations: "",
+        removedAnnotations: removedAnnotations,
       }));
     }
   }, [getDataroomAnnotation]);
   // === End === //
+
+  const filterFreetextElements = (xmlString, currentUserID) => {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+    const freetextElements = xmlDoc.querySelectorAll("freetext");
+    let removedAnnotations = ""; // Initialize as an empty string
+    const serializer = new XMLSerializer();
+    freetextElements.forEach((freetextElement) => {
+      const subject = freetextElement.getAttribute("subject");
+      const userIdIndex = subject.lastIndexOf("-");
+      console.log(
+        { subject, userIdIndex, currentUserID },
+        "filterFreetextElementsfilterFreetextElements"
+      );
+      if (userIdIndex !== -1) {
+        const userId = subject.substring(userIdIndex + 1);
+        console.log(
+          { subject, userIdIndex, userId, currentUserID },
+          "filterFreetextElementsfilterFreetextElements"
+        );
+
+        if (Number(userId) !== Number(currentUserID)) {
+          // User ID doesn't match, remove the annotation
+          removedAnnotations += serializer.serializeToString(freetextElement); // Concatenate the serialized string
+          freetextElement.parentNode.removeChild(freetextElement);
+        }
+      }
+    });
+
+    // Serialize the modified XML back to a string
+    const filteredXmlString = serializer.serializeToString(xmlDoc);
+    return { filteredXmlString, removedAnnotations };
+  };
+
+  // === It's triggered when we update the blob file in our local state ===
+  useEffect(() => {
+    if (pdfResponceData.attachmentBlob !== "") {
+      WebViewer(
+        {
+          path: "/webviewer/lib",
+          showLocalFilePicker: true,
+          fullAPI: true,
+          licenseKey:
+            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
+        },
+        viewer.current
+      ).then(async (instance) => {
+        setInstance(instance);
+        instance.UI.loadDocument(
+          handleBlobFiles(pdfResponceData.attachmentBlob),
+          {
+            filename: pdfResponceData.title,
+          }
+        );
+
+        const { documentViewer, annotationManager, Annotations, Tools } =
+          instance.Core;
+
+        // Add event listener for when the document is loaded
+        documentViewer.addEventListener("documentLoaded", async () => {
+          // Ensure the annotations are fully loaded
+          await documentViewer.getAnnotationsLoadedPromise();
+
+          // If XFDF data exists, import it
+          if (pdfResponceData.xfdfData !== "" && annotationManager) {
+            try {
+              await annotationManager.importAnnotations(
+                pdfResponceDataRef.current
+              );
+            } catch (error) {
+              console.error("Error importing annotations:", error);
+            }
+          }
+
+          // Refresh to apply the changes
+          documentViewer.refreshAll();
+          documentViewer.updateView();
+        });
+
+        // Disable header tools and elements
+        instance.UI.disableTools([Tools.disableTextSelection]);
+        instance.UI.disableElements([
+          "underlineToolGroupButton",
+          "textSelectButton",
+          "textSelectButtonGroup",
+          "textSelectButtonGroupButton",
+          "textPopup",
+          "outlinesPanelButton",
+          "comboBoxFieldToolGroupButton",
+          "listBoxFieldToolGroupButton",
+          "toolsOverlay",
+          "toolbarGroup-Shapes",
+          "toolbarGroup-Edit",
+          "toolbarGroup-Insert",
+          "shapeToolGroupButton",
+          "menuButton",
+          "freeHandHighlightToolGroupButton",
+          "underlineToolGroupButton",
+          "freeHandToolGroupButton",
+          "stickyToolGroupButton",
+          "squigglyToolGroupButton",
+          "strikeoutToolGroupButton",
+          "notesPanel",
+          "viewControlsButton",
+          "selectToolButton",
+          "toggleNotesButton",
+          "searchButton",
+          "freeTextToolGroupButton",
+          "crossStampToolButton",
+          "checkStampToolButton",
+          "dotStampToolButton",
+          "rubberStampToolGroupButton",
+          "dateFreeTextToolButton",
+          "eraserToolButton",
+          "panToolButton",
+          "signatureToolGroupButton",
+          "viewControlsOverlay",
+          "contextMenuPopup",
+          "signaturePanelButton",
+          "annotationPopup",
+          "textPopup",
+          "richTextPopup",
+          "toolbarGroup-Annotate",
+          "leftPanelButton",
+          "zoomOverlayButton",
+          "toolbarGroup-Forms",
+        ]);
+
+        // Custom header buttons
+        const handleClickDeclineBtn = () => {
+          setReasonModal(true);
+          // alert("Decline Button Clicked");
+        };
+
+        const handleClickSaveBtn = async () => {
+          alert("Save Button Clicked");
+        };
+
+        async function generateBase64FromBlob(blob) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onload = function () {
+              const base64String = reader.result.split(",")[1];
+              resolve(base64String);
+            };
+
+            reader.onerror = function (error) {
+              reject(error);
+            };
+
+            reader.readAsDataURL(blob);
+          });
+        }
+
+        instance.UI.setHeaderItems((header) => {
+          header.push({
+            type: "customElement",
+            render: () => {
+              const textBoxButton = document.createElement("button");
+              textBoxButton.textContent = "Decline";
+              textBoxButton.style.background = "#fff";
+              textBoxButton.style.border = "1px solid #e1e1e1";
+              textBoxButton.style.color = "#5a5a5a";
+              textBoxButton.style.padding = "8px 30px";
+              textBoxButton.style.cursor = "pointer";
+              textBoxButton.style.borderRadius = "4px";
+              textBoxButton.onclick = handleClickDeclineBtn;
+              return textBoxButton;
+            },
+          });
+
+          header.push({
+            type: "customElement",
+            render: () => {
+              const SaveButton = document.createElement("button");
+              SaveButton.textContent = "Save";
+              SaveButton.style.background = "#6172d6";
+              SaveButton.style.color = "#fff";
+              SaveButton.style.borderRadius = "4px";
+              SaveButton.style.cursor = "pointer";
+              SaveButton.style.padding = "8px 30px";
+              SaveButton.style.margin = "10px 0 10px 10px";
+              SaveButton.style.border = "1px solid #6172d6";
+              SaveButton.onclick = handleClickSaveBtn;
+              return SaveButton;
+            },
+          });
+        });
+      });
+    }
+  }, [pdfResponceData.attachmentBlob]);
+
+  // ==== End ====//
 
   // this is used for find pervious deleted data so we can delete it from our state and xfdf
   function getRemovedData(oldArray, newArray) {
@@ -403,461 +608,6 @@ const SignatureViewer = () => {
   };
   console.log("saveWorkFlowData", userAnnotations);
 
-  // === its triger when whe update blob file in our local state ===/
-  useEffect(() => {
-    if (pdfResponceData.attachmentBlob !== "") {
-      WebViewer(
-        {
-          path: "/webviewer/lib",
-          showLocalFilePicker: true,
-          fullAPI: true,
-          licenseKey:
-            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
-        },
-
-        viewer.current
-      ).then(async (instance) => {
-        setInstance(instance);
-        instance.UI.loadDocument(
-          handleBlobFiles(pdfResponceData.attachmentBlob),
-          {
-            filename: pdfResponceData.title,
-          }
-        );
-
-        const { documentViewer, annotationManager, Annotations, Tools } =
-          instance.Core;
-        //======================================== disable header =====================================//
-        instance.UI.disableTools([Tools.disableTextSelection]);
-        instance.UI.disableElements([
-          "underlineToolGroupButton",
-          "textSelectButton",
-          "textSelectButtonGroup",
-          "textSelectButtonGroupButton",
-          "textPopup ",
-          "outlinesPanelButton",
-          "comboBoxFieldToolGroupButton",
-          "listBoxFieldToolGroupButton",
-          "toolsOverlay",
-          "toolbarGroup-Shapes",
-          "toolbarGroup-Edit",
-          "toolbarGroup-Insert",
-          "shapeToolGroupButton",
-          "menuButton",
-          "freeHandHighlightToolGroupButton",
-          "underlineToolGroupButton",
-          "freeHandToolGroupButton",
-          "stickyToolGroupButton",
-          "squigglyToolGroupButton",
-          "strikeoutToolGroupButton",
-          "notesPanel",
-          "viewControlsButton",
-          "selectToolButton",
-          "toggleNotesButton",
-          "searchButton",
-          "freeTextToolGroupButton",
-          "crossStampToolButton",
-          "checkStampToolButton",
-          "dotStampToolButton",
-          "rubberStampToolGroupButton",
-          "dateFreeTextToolButton",
-          "eraserToolButton",
-          "panToolButton",
-          "signatureToolGroupButton",
-          "viewControlsOverlay",
-          "contextMenuPopup",
-          "signaturePanelButton",
-        ]);
-        //======================================== disable header =====================================//
-
-        //======================================== for cutome side bar =====================================//
-        const handleChangeUser = (event) => {
-          setSelectedUser(event.target.value);
-        };
-
-        const openCustomModal = () => {
-          setOpenAddParticipentModal(true); // Open the custom modal
-        };
-
-        const handleClickTItle = () => {
-          const annotation = new Annotations.FreeTextAnnotation();
-          annotation.PageNumber = documentViewer.getCurrentPage();
-          annotation.X = 100;
-          annotation.Y = 100;
-          annotation.Width = 200;
-          annotation.Height = 50;
-          annotation.TextAlign = "center";
-          annotation.TextVerticalAlign = "center";
-          annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
-          annotation.Subject = `Title-${selectedUserRef.current}`;
-
-          // Add the annotation to the document
-          annotationManager.addAnnotation(annotation);
-          annotationManager.redrawAnnotation(annotation);
-        };
-
-        const handleClickName = () => {
-          const annotation = new Annotations.FreeTextAnnotation();
-          annotation.PageNumber = documentViewer.getCurrentPage();
-          annotation.X = 100;
-          annotation.Y = 100;
-          annotation.Width = 200;
-          annotation.Height = 50;
-          annotation.TextAlign = "center";
-          annotation.TextVerticalAlign = "center";
-          annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
-          annotation.Subject = `Name-${selectedUserRef.current}`;
-
-          // Add the annotation to the document
-          annotationManager.addAnnotation(annotation);
-          annotationManager.redrawAnnotation(annotation);
-        };
-
-        const handleClickEmail = () => {
-          const annotation = new Annotations.FreeTextAnnotation();
-          annotation.PageNumber = documentViewer.getCurrentPage();
-          annotation.X = 100;
-          annotation.Y = 100;
-          annotation.Width = 200;
-          annotation.Height = 50;
-          annotation.TextAlign = "center";
-          annotation.TextVerticalAlign = "center";
-          annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
-          annotation.Subject = `Email-${selectedUserRef.current}`;
-
-          // Add the annotation to the document
-          annotationManager.addAnnotation(annotation);
-          annotationManager.redrawAnnotation(annotation);
-        };
-
-        const handleClickCancelBtn = () => {
-          window.close();
-        };
-
-        const handleClickSaveBtn = async () => {
-          const doc = documentViewer.getDocument();
-          const data = await doc.getFileData({}); // No xfdfString for annotations
-          const arr = new Uint8Array(data);
-          const blob = new Blob([arr], { type: "application/pdf" });
-          let getBase64 = await generateBase64FromBlob(blob)
-            .then(async (base64String) => {
-              return base64String;
-              // Here you can use the base64String as needed
-            })
-            .catch((error) => {
-              return null;
-            });
-
-          // this one sent do save signature document
-          const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
-          const parser = new DOMParser();
-          const mainXmlDoc = parser.parseFromString(xfdfString, "text/xml");
-          function existsInMainXML(name, type, mainXmlDoc) {
-            const elements = mainXmlDoc.querySelectorAll(
-              `${type}[name="${name}"]`
-            );
-            return elements.length > 0;
-          }
-
-          let covert = userAnnotationsRef.current.map((user) => {
-            let filteredXml = user.xml.filter((item) => {
-              const ffieldDoc = parser.parseFromString(item.ffield, "text/xml");
-              const widgetDoc = parser.parseFromString(item.widget, "text/xml");
-              const ffieldName = ffieldDoc.documentElement.getAttribute("name");
-              const widgetName = widgetDoc.documentElement.getAttribute("name");
-
-              return (
-                existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
-                existsInMainXML(widgetName, "widget", mainXmlDoc)
-              );
-            });
-
-            return { ...user, xml: filteredXml };
-          });
-          // for Save workFlow Api
-          let saveWorkFlowData = {
-            PK_WorkFlow_ID: pdfResponceData.workFlowID,
-            WorkFlowTitle: pdfResponceData.title,
-            Description: pdfResponceData.description,
-            isDeadline: pdfResponceData.isDeadline,
-            DeadlineDateTime:
-              pdfResponceData.isDeadline === false
-                ? ""
-                : pdfResponceData.deadlineDatetime,
-            CreatorID: pdfResponceData.creatorID,
-            ListOfActionAbleBundle: signerDataRef.current.map(
-              (sendData, index) => {
-                return {
-                  ID: `BundleID_# ${index + 1}`,
-                  Title: "",
-                  BundleDeadline: "",
-                  ListOfUsers: [sendData.userID],
-                  Entity: {
-                    EntityID: pdfResponceData.documentID,
-                    EntityTypeID: 1,
-                  },
-                };
-              }
-            ),
-          };
-
-          let convertData = [];
-          covert.forEach((data) => {
-            const xmlListStrings = data.xml.map((xmlObj) =>
-              JSON.stringify(xmlObj)
-            );
-            convertData.push({
-              ActorID: data.actorID,
-              xmlList: xmlListStrings,
-            });
-          });
-
-          console.log("saveWorkFlowData", convertData);
-          // save signature document api
-          let saveSignatureDocument = {
-            FileID: Number(docWorkflowID),
-            base64File: getBase64,
-          };
-          // add annotation  of files attachment api
-          let addAnnoatationofFilesAttachment = {
-            FileID: Number(docWorkflowID),
-            AnnotationString: xfdfString,
-          };
-          let newData = { ActorsFieldValuesList: convertData };
-          dispatch(
-            saveWorkflowApi(
-              saveWorkFlowData,
-              navigate,
-              t,
-              setOpenAddParticipentModal,
-              1,
-              newData,
-              addAnnoatationofFilesAttachment,
-              saveSignatureDocument
-            )
-          );
-        };
-
-        const handleClickPublishBtn = () => {
-          let saveWorkFlowData = {
-            PK_WorkFlow_ID: pdfResponceData.workFlowID,
-            WorkFlowTitle: pdfResponceData.title,
-            Description: pdfResponceData.description,
-            isDeadline: pdfResponceData.isDeadline,
-            DeadlineDateTime:
-              pdfResponceData.isDeadline === false
-                ? ""
-                : pdfResponceData.deadlineDatetime,
-            CreatorID: pdfResponceData.creatorID,
-            ListOfActionAbleBundle: signerData.map((sendData, index) => {
-              return {
-                ID: `BundleID_# ${index + 1}`,
-                Title: "",
-                BundleDeadline: "",
-                ListOfUsers: [sendData.userID],
-                Entity: {
-                  EntityID: pdfResponceData.documentID,
-                  EntityTypeID: 1,
-                },
-              };
-            }),
-          };
-        };
-
-        // Create a render function for the custom panel
-        const renderCustomPanel = () => {
-          return (
-            <div>
-              <div>
-                <label htmlFor="participantDropdown">{t("Participant")}</label>
-              </div>
-              <div className="w-100 d-flex justify-content-center">
-                <select
-                  style={{
-                    width: "100%",
-                    padding: "12px 5px",
-                    margin: "8px 0",
-                  }}
-                  id="select-country"
-                  data-live-search="true"
-                  onChange={handleChangeUser}
-                >
-                  {participantsRef.current.map((userData, index) => {
-                    return (
-                      <option value={userData.pk_UID}>{userData.name}</option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="w-100">
-                <button
-                  style={{
-                    width: "100%",
-                    padding: "12px 30px",
-                    margin: "8px 0",
-                    background: "#6172d6",
-                    border: "none",
-                    color: "#fff",
-                    cursor: "pointer",
-                  }}
-                  onClick={openCustomModal}
-                >
-                  {t("Add-Signaturies")}
-                </button>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                  alignItems: "center",
-                }}
-              >
-                <button
-                  style={{
-                    width: "100%",
-                    padding: "5px 12px",
-
-                    background: "#ffffff",
-                    border: "1px solid #e1e1e1",
-                  }}
-                  onClick={handleClickTItle}
-                >
-                  {t("Title")}
-                </button>
-                <button
-                  style={{
-                    width: "100%",
-                    padding: "5px 12px",
-                    background: "#ffffff",
-                    border: "1px solid #e1e1e1",
-                  }}
-                  onClick={handleClickName}
-                >
-                  {t("Name")}
-                </button>
-                <button
-                  style={{
-                    width: "100%",
-                    padding: "5px 12px",
-
-                    background: "#ffffff",
-                    border: "1px solid #e1e1e1",
-                  }}
-                  onClick={handleClickEmail}
-                >
-                  {t("Email")}
-                </button>
-              </div>
-            </div>
-          );
-        };
-
-        let myCustomPanel = {
-          tab: {
-            dataElement: "customPanelTab",
-            title: "customPanelTab",
-            img: "/favicon-32x32.png",
-          },
-          panel: {
-            dataElement: "customPanel",
-            render: renderCustomPanel,
-          },
-        };
-
-        instance.UI.setCustomPanel(myCustomPanel);
-        //======================================== for cutome side bar =====================================//
-
-        //======================================== header save button =====================================//
-        async function generateBase64FromBlob(blob) {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onload = function () {
-              const base64String = reader.result.split(",")[1];
-              resolve(base64String);
-            };
-
-            reader.onerror = function (error) {
-              reject(error);
-            };
-
-            reader.readAsDataURL(blob);
-          });
-        }
-        const { WidgetFlags } = Annotations;
-        instance.UI.setHeaderItems((header) => {
-          header.push({
-            type: "customElement",
-            render: () => {
-              const textBoxButton = document.createElement("button");
-              textBoxButton.textContent = "Cancel";
-              textBoxButton.style.background = "#fff";
-              textBoxButton.style.border = "1px solid #e1e1e1";
-              textBoxButton.style.color = "#5a5a5a";
-              textBoxButton.style.padding = "8px 30px";
-              textBoxButton.style.cursor = "pointer";
-              textBoxButton.style.borderRadius = "4px";
-              textBoxButton.onclick = handleClickCancelBtn;
-              return textBoxButton;
-            },
-          });
-
-          header.push({
-            type: "customElement",
-            render: () => {
-              const textBoxButton = document.createElement("button");
-              textBoxButton.textContent = "Save";
-              textBoxButton.style.background = "#fff";
-              textBoxButton.style.border = "1px solid #e1e1e1";
-              textBoxButton.style.color = "#5a5a5a";
-              textBoxButton.style.padding = "8px 30px";
-              textBoxButton.style.cursor = "pointer";
-              textBoxButton.style.borderRadius = "4px";
-              textBoxButton.style.marginLeft = "10px";
-              textBoxButton.onclick = handleClickSaveBtn;
-              return textBoxButton;
-            },
-          });
-
-          header.push({
-            type: "customElement",
-            render: () => {
-              const publishBtn = document.createElement("button");
-              publishBtn.textContent = "Send";
-              publishBtn.style.background = "#6172d6";
-              publishBtn.style.color = "#fff";
-              publishBtn.style.borderRadius = "4px";
-              publishBtn.style.cursor = "pointer";
-              publishBtn.style.padding = "8px 30px";
-              publishBtn.style.margin = "10px 0 10px 10px";
-              publishBtn.style.border = "1px solid #6172d6";
-              publishBtn.onclick = handleClickPublishBtn;
-              return publishBtn;
-            },
-          });
-        });
-
-        //======================================== header save button =====================================//
-
-        //======================================== for documentLoaded =====================================//
-        await documentViewer.getAnnotationsLoadedPromise();
-
-        documentViewer.addEventListener("documentLoaded", async () => {
-          if (pdfResponceData.xfdfData !== "" && annotationManager) {
-            try {
-              await annotationManager.importAnnotations(
-                pdfResponceDataRef.current
-              );
-            } catch (error) {}
-          }
-        });
-        //======================================== for documentLoaded =====================================//
-      });
-    }
-  }, [pdfResponceData.attachmentBlob]);
-  // ==== End ====//
-
   // ==== this is for remove specifi from Xfdf Main   === //
   function removeSignatureAnnotationsFromXFDF(xfdfString) {
     const parser = new DOMParser();
@@ -964,7 +714,7 @@ const SignatureViewer = () => {
   // === this is for update intance in ===//
   useEffect(() => {
     if (Instance) {
-      const { annotationManager } = Instance.Core;
+      const { annotationManager, Annotations } = Instance.Core;
       annotationManager.addEventListener(
         "annotationChanged",
         async (annotations, action, { imported }) => {
@@ -974,25 +724,65 @@ const SignatureViewer = () => {
 
           try {
             annotations.forEach((annotation) => {
+              console.log(annotation, "annotationannotationannotation");
+              let letsGet = getActorColorByUserID(
+                selectedUserRef.current,
+                userAnnotationsRef
+              );
+              console.log(letsGet, "letsGetletsGetletsGet");
+
+              const { r, g, b } = letsGet;
+
+              if (annotation.ToolName === "AnnotationCreateFreeText") {
+                annotation.TextColor = new Annotations.Color(r, g, b);
+                annotationManager.updateAnnotation(annotation);
+                annotationManager.redrawAnnotation(annotation);
+              }
+
+              if (annotation.Subject === "Ellipse") {
+                annotation.TextColor = new Annotations.Color(r, g, b);
+                annotationManager.updateAnnotation(annotation);
+                annotationManager.redrawAnnotation(annotation);
+              }
+
+              if (annotation.Subject === "Rectangle") {
+                annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
+                annotation.FillColor = new Annotations.Color(r, g, b);
+                annotation.TextColor = new Annotations.Color(r, g, b);
+                annotationManager.updateAnnotation(annotation);
+                annotationManager.redrawAnnotation(annotation);
+              }
+              if (annotation.Subject === "Widget") {
+                annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
+                annotation.FillColor = new Annotations.Color(r, g, b);
+                annotation.TextColor = new Annotations.Color(r, g, b);
+                annotationManager.updateAnnotation(annotation);
+                annotationManager.redrawAnnotation(annotation);
+              }
+
               if (annotation.Subject === "Signature") {
                 annotation.NoResize = true;
                 annotation.NoMove = true;
+                annotation.FillColor = new Annotations.Color(r, g, b);
+                annotation.TextColor = new Annotations.Color(r, g, b);
                 annotationManager.updateAnnotation(annotation);
                 annotationManager.redrawAnnotation(annotation);
               }
             });
+
             // Export annotations to XFDF format using `exportAnnotations`
             const xfdfString = await annotationManager.exportAnnotations();
 
             // Update the user's annotations based on the action
-
             updateXFDF(
               action,
               xfdfString,
               selectedUserRef.current,
               userAnnotationsRef.current
             );
-          } catch (error) {}
+          } catch (error) {
+            console.error(error);
+          }
         }
       );
     }
@@ -1175,13 +965,10 @@ const SignatureViewer = () => {
 
   // === this is for Response Message===//
   useEffect(() => {
-    if (
-      webViewer.ResponseMessage !== "" &&
-      webViewer.ResponseMessage !== undefined
-    ) {
+    if (ResponseMessage !== "" && ResponseMessage !== undefined) {
       setOpen({
         ...open,
-        message: webViewer.ResponseMessage,
+        message: ResponseMessage,
         open: true,
       });
       setTimeout(() => {
@@ -1193,7 +980,7 @@ const SignatureViewer = () => {
         });
       }, 4000);
     }
-  }, [webViewer.ResponseMessage]);
+  }, [ResponseMessage]);
   // === End ===//
 
   const handleOnDragEnd = (result) => {
@@ -1205,7 +992,35 @@ const SignatureViewer = () => {
 
     setSignerData(items);
   };
+  const handleClickDeclineBtn = () => {
+    if (declineReasonMessage !== "") {
+      let userID = localStorage.getItem("userID");
 
+      let findActorID = userAnnotationsRef.current.find(
+        (data, index) => Number(data.userID) === Number(userID)
+      );
+      if (findActorID !== undefined) {
+        let Data = {
+          FK_WorkFlow_ID: pdfResponceData.workFlowID,
+          Reason: declineReasonMessage,
+          DeclinedById: Number(findActorID.actorID),
+        };
+        dispatch(
+          declineReasonApi(
+            navigate,
+            t,
+            Data,
+            setReasonModal,
+            setDeclineConfirmationModal
+          )
+        );
+      }
+
+      // setDeclineConfirmationModal
+    } else {
+      setDeclineErrorMessage(true);
+    }
+  };
   return (
     <>
       <div className="documnetviewer">
@@ -1408,6 +1223,23 @@ const SignatureViewer = () => {
           </>
         }
       />
+      {reasonModal && (
+        <DeclineReasonModal
+          show={reasonModal}
+          setShow={setReasonModal}
+          declineReasonMessage={declineReasonMessage}
+          setDeclineReasonMessage={setDeclineReasonMessage}
+          handleClickDecline={handleClickDeclineBtn}
+          declineErrorMessage={declineErrorMessage}
+          setDeclineErrorMessage={setDeclineErrorMessage}
+        />
+      )}
+      {declineConfirmationModal && (
+        <DeclineReasonCloseModal
+          setShow={setDeclineConfirmationModal}
+          show={declineConfirmationModal}
+        />
+      )}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
       {Loading && <Loader />}
     </>

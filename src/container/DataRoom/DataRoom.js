@@ -118,6 +118,7 @@ import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
 import {
   createWorkflowApi,
+  getAllPendingApprovalStatusApi,
   getAllSignaturesDocumentsforCreatorApi,
 } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
@@ -344,6 +345,14 @@ const DataRoom = () => {
         };
         dispatch(getRecentDocumentsApi(navigate, t, Data));
       } else if (currentView === 5) {
+        let Data = { pageNo: 1, pageSize: 10 };
+        dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+        setGetAllData([]);
+        setSharedwithmebtn(true);
+        localStorage.removeItem("folderID");
+        if (searchoptions) {
+          setSearchoptions(false);
+        }
       } else {
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
         localStorage.removeItem("folderID");
@@ -545,7 +554,10 @@ const DataRoom = () => {
     setSRowsData(0);
 
     localStorage.setItem("setTableView", 5);
-    let Data = { pageNo: 1, pageSize: 10 };
+    // getAllPendingApprovalStatusApi
+    let newData = { IsCreator: true };
+    dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
+    let Data = { sRow: 0, Length: 10 };
     await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     //  localStorage.set
     setGetAllData([]);
@@ -3273,7 +3285,9 @@ const DataRoom = () => {
   ]);
 
   const handleClickDeleteFolder = () => {
-    dispatch(deleteFolder(navigate, Number(isFolderDeleteId), t,setIsFolderDelete));
+    dispatch(
+      deleteFolder(navigate, Number(isFolderDeleteId), t, setIsFolderDelete)
+    );
   };
   const handleCancelDeleteFolder = () => {
     setIsFolderDeleteId(0);
@@ -3284,7 +3298,9 @@ const DataRoom = () => {
     setIsFileDelete(false);
   };
   const handleClickDeleteFile = () => {
-    dispatch(deleteFileDataroom(navigate, Number(isFileDeleteId), t,setIsFileDelete));
+    dispatch(
+      deleteFileDataroom(navigate, Number(isFileDeleteId), t, setIsFileDelete)
+    );
   };
   return (
     <>
