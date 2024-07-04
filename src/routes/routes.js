@@ -62,10 +62,12 @@ import {
 
 import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateRoutes from "./private_routes";
+import SignatureViewer from "../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer";
+import PendingSignature from "../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue";
 import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
-import { DocumentViewer, SignatureViewer } from "../components/elements";
+import { DocumentViewer } from "../components/elements";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createHashRouter(
@@ -158,6 +160,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="signatureviewer">
                 <SignatureViewer />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="signeddocument"
+            element={
+              <RouteWrapperUser name="signatureviewer">
+                <PendingSignature />
               </RouteWrapperUser>
             }
           />
