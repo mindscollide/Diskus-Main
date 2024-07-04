@@ -446,7 +446,7 @@ const SignatureViewer = () => {
 
         const { documentViewer, annotationManager, Annotations, Tools } =
           instance.Core;
-
+ 
         //======================================== disable header =====================================//
         instance.UI.disableTools([Tools.disableTextSelection]);
         instance.UI.disableElements([
@@ -1074,70 +1074,36 @@ const SignatureViewer = () => {
   // === this is for update intance in ===//
   useEffect(() => {
     if (Instance) {
-      const { annotationManager, annotManager } = Instance.Core;
+      const { annotationManager } = Instance.Core;
       annotationManager.addEventListener(
         "annotationChanged",
         async (annotations, action, { imported }) => {
           if (imported) {
             return;
           }
-          if (action === "add" || action === "modify") {
-            try {
-              annotations.forEach((annotation) => {
-                console.log(annotation, "annotationannotationannotation");
-                const { Color, Subject, TextColor } = annotation;
-                console.log(
-                  Color,
-                  Subject,
-                  TextColor.toHexString(),
-                  "annotationannotationannotationColor"
-                );
-                if (annotation.Subject === "Signature") {
-                  annotation.NoResize = true;
-                  annotation.NoMove = true;
-                  annotationManager.updateAnnotation(annotation);
-                  annotationManager.redrawAnnotation(annotation);
-                }
-                // if (annotation.ToolName === "AnnotationCreateFreeText") {
-                //   annotation.TextColor = new Annotations.Color(r, g, b);
-                //   annotationManager.updateAnnotation(annotation);
-                //   annotationManager.redrawAnnotation(annotation);
-                // }
 
-                // if (annotation.Subject === "Ellipse") {
-                //   annotation.TextColor = new Annotations.Color(r, g, b);
-                //   annotationManager.updateAnnotation(annotation);
-                //   annotationManager.redrawAnnotation(annotation);
-                // }
+          try {
+            annotations.forEach((annotation) => {
+              console.log(annotation, "annotationannotationannotation");
+              if (annotation.Subject === "Signature") {
+                annotation.NoResize = true;
+                annotation.NoMove = true;
+                annotationManager.updateAnnotation(annotation);
+                annotationManager.redrawAnnotation(annotation);
+              }
+            });
+            // Export annotations to XFDF format using `exportAnnotations`
+            const xfdfString = await annotationManager.exportAnnotations();
 
-                // if (annotation.Subject === "Rectangle") {
-                //   annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-                //   annotation.FillColor = new Annotations.Color(r, g, b);
-                //   annotation.TextColor = new Annotations.Color(r, g, b);
-                //   annotationManager.updateAnnotation(annotation);
-                //   annotationManager.redrawAnnotation(annotation);
-                // }
-                // if (annotation.Subject === "Widget") {
-                //   annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-                //   annotation.FillColor = new Annotations.Color(r, g, b);
-                //   annotation.TextColor = new Annotations.Color(r, g, b);
-                //   annotationManager.updateAnnotation(annotation);
-                //   annotationManager.redrawAnnotation(annotation);
-                // }
-              });
-              // Export annotations to XFDF format using `exportAnnotations`
-              const xfdfString = await annotationManager.exportAnnotations();
+            // Update the user's annotations based on the action
 
-              // Update the user's annotations based on the action
-
-              updateXFDF(
-                action,
-                xfdfString,
-                selectedUserRef.current,
-                userAnnotationsRef.current
-              );
-            } catch (error) {}
-          }
+            updateXFDF(
+              action,
+              xfdfString,
+              selectedUserRef.current,
+              userAnnotationsRef.current
+            );
+          } catch (error) {}
         }
       );
     }
