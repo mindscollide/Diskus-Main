@@ -50,7 +50,6 @@ const SignatureViewer = () => {
   const viewer = useRef(null);
   const [userList, setUserList] = useState([]);
   const [signerData, setSignerData] = useState([]);
-  console.log(signerData, "signerDatasignerDatasignerData");
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
@@ -84,7 +83,7 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
-  console.log(pdfResponceData, "pdfResponceDatapdfResponceData")
+  console.log(pdfResponceData, "pdfResponceDatapdfResponceData");
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
@@ -348,6 +347,16 @@ const SignatureViewer = () => {
     return new Blob([bytes], { type: "application/pdf" });
   }
   // ==== End ===//
+  // this will return the color of current selected user
+  function getActorColorByUserID(userID) {
+    for (let i = 0; i < userAnnotationsRef.current.length; i++) {
+      if (userAnnotationsRef.current[i].userID === userID) {
+        return userAnnotationsRef.current[i].actorColor;
+      }
+    }
+    return null; // Return null if userID is not found
+  }
+  // ==== End ===//
 
   // this will generate my xfdf files for user base and send into AddUpdateFieldValue
   const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
@@ -467,6 +476,10 @@ const SignatureViewer = () => {
           "viewControlsOverlay",
           "contextMenuPopup",
           "signaturePanelButton",
+          // apply on aprovalflow
+          "annotationPopup",
+          "textPopup",
+          "richTextPopup",
         ]);
         //======================================== disable header =====================================//
 
@@ -487,6 +500,9 @@ const SignatureViewer = () => {
           annotation.Width = 200;
           annotation.Height = 50;
           annotation.TextAlign = "center";
+          annotation.TextColor = new Annotations.Color(
+            getActorColorByUserID(selectedUserRef.current)
+          );
           annotation.TextVerticalAlign = "center";
           annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
           annotation.Subject = `Title-${selectedUserRef.current}`;
@@ -504,6 +520,10 @@ const SignatureViewer = () => {
           annotation.Width = 200;
           annotation.Height = 50;
           annotation.TextAlign = "center";
+          annotation.TextColor = new Annotations.Color(
+            getActorColorByUserID(selectedUserRef.current)
+          );
+
           annotation.TextVerticalAlign = "center";
           annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
           annotation.Subject = `Name-${selectedUserRef.current}`;
@@ -521,6 +541,10 @@ const SignatureViewer = () => {
           annotation.Width = 200;
           annotation.Height = 50;
           annotation.TextAlign = "center";
+          annotation.TextColor = new Annotations.Color(
+            getActorColorByUserID(selectedUserRef.current)
+          );
+
           annotation.TextVerticalAlign = "center";
           annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
           annotation.Subject = `Email-${selectedUserRef.current}`;
@@ -964,7 +988,7 @@ const SignatureViewer = () => {
   // === this is for update intance in ===//
   useEffect(() => {
     if (Instance) {
-      const { annotationManager } = Instance.Core;
+      const { annotationManager, Annotations } = Instance.Core;
       annotationManager.addEventListener(
         "annotationChanged",
         async (annotations, action, { imported }) => {
@@ -974,9 +998,23 @@ const SignatureViewer = () => {
 
           try {
             annotations.forEach((annotation) => {
+              if (annotation.Subject === "Ellipse") {
+                annotation.TextColor = new Annotations.Color(160, 32, 240);
+                annotationManager.updateAnnotation(annotation);
+                annotationManager.redrawAnnotation(annotation);
+              }
+              if (annotation.Subject === "Rectangle") {
+                annotation.StrokeColor = new Annotations.Color(160, 32, 240); // Example: Green color for rectangle
+                annotation.FillColor = new Annotations.Color(0, 255, 0, 0.5);
+                annotation.TextColor = new Annotations.Color(160, 32, 240);
+
+                annotationManager.updateAnnotation(annotation);
+                annotationManager.redrawAnnotation(annotation);
+              }
               if (annotation.Subject === "Signature") {
                 annotation.NoResize = true;
                 annotation.NoMove = true;
+                annotation.TextColor = new Annotations.Color(160, 32, 240);
                 annotationManager.updateAnnotation(annotation);
                 annotationManager.redrawAnnotation(annotation);
               }
