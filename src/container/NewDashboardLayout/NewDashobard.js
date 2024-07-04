@@ -36,7 +36,7 @@ const NewDashobard = () => {
               <Task />
             </section>
           </Col>
-          <Col sm={12} md={4} lg={4} className="d-flex flex-column gap-3">
+          <Col sm={12} md={4} lg={4} className="d-flex flex-column gap-2">
             <section className={styles["RecentActivity"]}>
               <RecentActivity />
             </section>

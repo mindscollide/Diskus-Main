@@ -6,3 +6,8 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+.RecentActivity_Title {
+  font-weight: 700;
+  font-size: 20px;
+  color: #5a5a5a;
+}
