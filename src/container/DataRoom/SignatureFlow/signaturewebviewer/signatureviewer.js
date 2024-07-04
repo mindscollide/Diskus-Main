@@ -491,6 +491,7 @@ const SignatureViewer = () => {
         //======================================== disable header =====================================//
 
         //======================================== for cutome side bar =====================================//
+        // Please check this function
         const handleChangeUser = (event) => {
           const newSelectedUser = Number(event.target.value);
           setSelectedUser(newSelectedUser);
