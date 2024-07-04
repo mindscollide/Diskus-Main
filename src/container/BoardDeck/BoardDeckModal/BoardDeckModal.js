@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BoardDeckModal.module.css";
 import { Button, Modal } from "../../../components/elements";
+import blacktick from "../../../assets/images/BlacksmallTick.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +33,7 @@ const BoardDeckModal = () => {
     polls: false,
     attendeceReport: false,
     video: false,
+    Agenda: false,
   });
 
   const onChangeSelectAll = (e) => {
@@ -47,6 +49,14 @@ const BoardDeckModal = () => {
     setBoarddeckOptions({
       ...boarddeckOptions,
       Organizer: value,
+    });
+  };
+
+  const onChangeAgenda = (e) => {
+    let value = e.target.checked;
+    setBoarddeckOptions({
+      ...boarddeckOptions,
+      Agenda: value,
     });
   };
 
@@ -149,14 +159,12 @@ const BoardDeckModal = () => {
               </Row>
               <Row className="mt-4">
                 <Col lg={4} md={4} sm={4}>
-                  <Checkbox
-                    onChange={onChangeSelectAll}
-                    checked={boarddeckOptions.selectall}
-                  >
+                  <div className="d-flex gap-3 align-items-center">
+                    <img src={blacktick} alt="" />
                     <span className={styles["Box_options"]}>
                       {t("Meeting-details")}
                     </span>
-                  </Checkbox>
+                  </div>
                 </Col>
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox
@@ -240,8 +248,8 @@ const BoardDeckModal = () => {
               <Row className="mt-4">
                 <Col lg={12} md={12} sm={12}>
                   <Checkbox
-                    onChange={onChangeTask}
-                    checked={boarddeckOptions.Task}
+                    onChange={onChangeAgenda}
+                    checked={boarddeckOptions.Agenda}
                   >
                     <span className={styles["Box_options_Agendaas"]}>
                       <Radio.Group
