@@ -36,7 +36,11 @@ import DefaultAvatar from "./../Images/avatar.png";
 import EditIcon from "./../Images/Edit-Icon.png";
 import MenuIcon from "./../Images/MenuIcon.png";
 import DeleteIcon from "./../Images/DeleteIcon.png";
-import { deleteCommentModalAgenda } from "../../../../../../store/actions/Minutes_action";
+import {
+  GetMinuteReviewDetailsByOrganizerByMinuteId_Api,
+  GetMinutesVersionHistoryWithCommentsApi,
+  deleteCommentModalAgenda,
+} from "../../../../../../store/actions/Minutes_action";
 import VersionHistory from "./VersionHistoryModal/VersionHistory";
 import RevisionHistory from "./RevisionHistoryModal/RevisionHistory";
 import {
@@ -1065,6 +1069,40 @@ const AgendaWise = ({
 
   console.log("minutesDataminutesData", minutesData);
 
+  // When you click on Revision History Button then the api will hit and If minute has revison then open a modal
+  const handleClickShowRevision = (data, MinuteID) => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+      MinuteID: Number(MinuteID),
+      IsAgendaMinute: true,
+    };
+    dispatch(
+      GetMinuteReviewDetailsByOrganizerByMinuteId_Api(
+        Data,
+        navigate,
+        t,
+        setShowRevisionHistory
+      )
+    );
+  };
+
+  // When you click on Show Verison History Button then the api will hit and If minute has Version History then open a modal
+  const handleClickShowVersionHistory = (data, MinuteID) => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+      MinuteID: Number(MinuteID),
+      IsAgendaMinute: true,
+    };
+    dispatch(
+      GetMinutesVersionHistoryWithCommentsApi(
+        Data,
+        navigate,
+        t,
+        setShowVersionHistory
+      )
+    );
+  };
+
   return (
     <section className={styles["agenda-wise-minutes"]}>
       {Number(editorRole.status) === 1 ||
@@ -1505,7 +1543,12 @@ const AgendaWise = ({
                                                 }
                                               >
                                                 <span
-                                                  onClick={() =>
+                                                  onClick={
+                                                    () =>
+                                                      // handleClickShowRevision(
+                                                      //   data,
+                                                      //   parentMinutedata.minuteID
+                                                      // )
                                                     setShowRevisionHistory(true)
                                                   }
                                                 >
@@ -1514,6 +1557,10 @@ const AgendaWise = ({
                                                 </span>
                                                 <span
                                                   onClick={() =>
+                                                    // handleClickShowVersionHistory(
+                                                    //   data,
+                                                    //   parentMinutedata.minuteID
+                                                    // )
                                                     setShowVersionHistory(true)
                                                   }
                                                   className="border-0"
@@ -1862,9 +1909,12 @@ const AgendaWise = ({
                                                   >
                                                     <span
                                                       onClick={() =>
-                                                        setShowRevisionHistory(
-                                                          true
-                                                        )
+                                                        // handleClickShowRevision(
+                                                        //   data,
+                                                        //   minuteDataSubminute.minuteID
+                                                        // )
+                                                    setShowRevisionHistory(true)
+
                                                       }
                                                     >
                                                       {t("Revisions")}
@@ -1872,6 +1922,10 @@ const AgendaWise = ({
                                                     </span>
                                                     <span
                                                       onClick={() =>
+                                                        // handleClickShowVersionHistory(
+                                                        //   data,
+                                                        //   minuteDataSubminute.minuteID
+                                                        // )
                                                         setShowVersionHistory(
                                                           true
                                                         )

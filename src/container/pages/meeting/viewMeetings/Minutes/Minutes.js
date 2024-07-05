@@ -53,6 +53,8 @@ import VersionHistory from "./AgendaWise/VersionHistoryModal/VersionHistory";
 import RevisionHistory from "./AgendaWise/RevisionHistoryModal/RevisionHistory";
 import {
   DeleteMinuteReducer,
+  GetMinuteReviewDetailsByOrganizerByMinuteId_Api,
+  GetMinutesVersionHistoryWithCommentsApi,
   deleteCommentModalGeneral,
 } from "../../../../../store/actions/Minutes_action";
 
@@ -789,6 +791,40 @@ const Minutes = ({
       setMinuteReviewData(null);
     }
   }, [MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData]);
+
+  // When you click on Show Verison History Button then the api will hit and If minute has Version History then open a modal
+  const handleClickShowVersionHistory = (data, MinuteID) => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+      MinuteID: Number(MinuteID),
+      IsAgendaMinute: false,
+    };
+    dispatch(
+      GetMinutesVersionHistoryWithCommentsApi(
+        Data,
+        navigate,
+        t,
+        setShowVersionHistory
+      )
+    );
+  };
+
+  // When you click on Revision History Button then the api will hit and If minute has revison then open a modal
+  const handleClickShowRevision = (data, MinuteID) => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+      MinuteID: Number(MinuteID),
+      IsAgendaMinute: false,
+    };
+    dispatch(
+      GetMinuteReviewDetailsByOrganizerByMinuteId_Api(
+        Data,
+        navigate,
+        t,
+        setShowRevisionHistory
+      )
+    );
+  };
 
   return showPublishMinutes ? (
     <>
@@ -1601,14 +1637,23 @@ const Minutes = ({
                                                 <span
                                                   onClick={() =>
                                                     setShowRevisionHistory(true)
+                                                    // handleClickShowRevision(
+                                                    //   data,
+                                                    //   data.minuteID
+                                                    // )
                                                   }
                                                 >
                                                   {t("Revisions")}
                                                   <p className="m-0"> 3 </p>
                                                 </span>
                                                 <span
-                                                  onClick={() =>
-                                                    setShowVersionHistory(true)
+                                                  onClick={
+                                                    () =>
+                                                      handleClickShowVersionHistory(
+                                                        data,
+                                                        data.minuteID
+                                                      )
+                                                    // setShowVersionHistory(true)
                                                   }
                                                   className="border-0"
                                                 >

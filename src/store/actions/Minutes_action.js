@@ -1078,6 +1078,277 @@ const SaveMinutesReviewFlow = (Data, navigate, t) => {
   };
 };
 
+const GetMinuteVersionHistorywithComments_init = () => {
+  return {
+    type: actions.GETMINUTEVERSIONHISTORYWITHCOMMENTS_INIT,
+  };
+};
+const GetMinuteVersionHistorywithComments_success = (response, message) => {
+  return {
+    type: actions.GETMINUTEVERSIONHISTORYWITHCOMMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const GetMinuteVersionHistorywithComments_fail = (message) => {
+  return {
+    type: actions.GETMINUTEVERSIONHISTORYWITHCOMMENTS_FAIL,
+    message,
+  };
+};
+
+const GetMinutesVersionHistoryWithCommentsApi = (
+  Data,
+  navigate,
+  t,
+  setShowVersionHistory
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(GetMinuteVersionHistorywithComments_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getMinuteVersionHistoryWithComments.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            GetMinutesVersionHistoryWithCommentsApi(
+              Data,
+              navigate,
+              t,
+              setShowVersionHistory
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetMinuteVersionHistorywithComments_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+              setShowVersionHistory(true);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetMinuteVersionHistorywithComments_fail(t("No-data-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetMinuteVersionHistorywithComments_fail(
+                  t("Minute-review-flow-not-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetMinuteVersionHistorywithComments_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                GetMinuteVersionHistorywithComments_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              GetMinuteVersionHistorywithComments_fail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            GetMinuteVersionHistorywithComments_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          GetMinuteVersionHistorywithComments_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+const GetMinuteReviewDetailsByOrganizerByMinuteId_init = () => {
+  return {
+    type: actions.GETMINUTEREVIEWDETAILSFORORGANIZATIONBYMINUTEID_INIT,
+  };
+};
+const GetMinuteReviewDetailsByOrganizerByMinuteId_success = (
+  response,
+  message
+) => {
+  return {
+    type: actions.GETMINUTEREVIEWDETAILSFORORGANIZATIONBYMINUTEID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const GetMinuteReviewDetailsByOrganizerByMinuteId_fail = (message) => {
+  return {
+    type: actions.GETMINUTEREVIEWDETAILSFORORGANIZATIONBYMINUTEID_FAIL,
+    message: message,
+  };
+};
+
+const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
+  Data,
+  navigate,
+  t,
+  setShowRevisionHistory
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(GetMinuteReviewDetailsByOrganizerByMinuteId_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getMinuteReviewDetailsForOrganizerByMinuteId.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            GetMinuteReviewDetailsByOrganizerByMinuteId_Api(
+              Data,
+              navigate,
+              t,
+              setShowRevisionHistory
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetMinuteReviewDetailsByOrganizerByMinuteId_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+              setShowRevisionHistory(true);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
+                  t("No-data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
+                  t("Minute-review-flow-not-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
+            t("Something-went-wrong")
+          )
+        );
+      });
+  };
+};
+
 //Delete Minute Data
 const DeleteMinuteReducer = (response) => {
   return {
@@ -1124,4 +1395,6 @@ export {
   SaveMinutesReviewFlow,
   EditSingleMinute,
   UpdateMinuteFlag,
+  GetMinutesVersionHistoryWithCommentsApi,
+  GetMinuteReviewDetailsByOrganizerByMinuteId_Api,
 };

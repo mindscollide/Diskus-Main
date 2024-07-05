@@ -1670,6 +1670,8 @@ const deleteMinuteReviewByReviewer = {
   RequestMethod: "ServiceManager.DeleteMinuteReviewByReviewer",
 };
 
+
+
 export {
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
