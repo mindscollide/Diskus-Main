@@ -53,7 +53,6 @@ import ProgressLine from "./progressBarPending/ProgressBarPending";
 import SelectComment from "./select-comment/SelectComment";
 
 import DocumentViewer from "../elements/webviewer/DocumentViewer";
-import SignatureViewer from "../elements/signaturewebviewer/signatureviewer";
 export {
   SelectComment,
   AttachmentViewer,
@@ -110,6 +109,5 @@ export {
   LoaderPanelVideoScreen,
   ProgressLine,
   AddtionalUserCard,
-  SignatureViewer,
   DocumentViewer,
 };
