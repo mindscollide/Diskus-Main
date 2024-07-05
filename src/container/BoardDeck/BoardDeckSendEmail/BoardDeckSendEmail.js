@@ -261,15 +261,15 @@ const BoardDeckSendEmail = ({
         }
         ModalBody={
           <>
-            <Row className="m-0">
-              <Col className="p-0">
-                <p className={`${styles["organizationUsers"]} m-0`}>
-                  {t("Select-organization-users")}
-                </p>
-              </Col>
-            </Row>
             {radioValue === 1 ? (
               <>
+                <Row className="m-0">
+                  <Col className="p-0">
+                    <p className={`${styles["organizationUsers"]} m-0`}>
+                      {t("Select-organization-users")}
+                    </p>
+                  </Col>
+                </Row>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <Select
