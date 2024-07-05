@@ -137,28 +137,41 @@ const SendReviewers = ({
   const handleSelectAll = (checked) => {
     try {
       if (checked) {
-        // Combine all minute IDs from both agenda and general data into a single array
+        // Combine all minute IDs from both agenda and general data into a single array, filtering out already checked items
         const agendaMinuteIDs = minuteDataAgenda.flatMap((item) => [
-          ...item.minuteData.map((subItem) => subItem.minuteID),
+          ...item.minuteData
+            .filter((subItem) => !subItem.isChecked)
+            .map((subItem) => subItem.minuteID),
           ...item.subMinutes.flatMap((subItem) =>
-            subItem.minuteData.map((subSubItem) => subSubItem.minuteID)
+            subItem.minuteData
+              .filter((subSubItem) => !subSubItem.isChecked)
+              .map((subSubItem) => subSubItem.minuteID)
           ),
         ]);
 
-        const generalMinuteIDs = minuteDataGeneral.map((item) => item.minuteID);
+        const generalMinuteIDs = minuteDataGeneral
+          .filter((item) => !item.isChecked)
+          .map((item) => item.minuteID);
 
         const allMinuteIDs = [...agendaMinuteIDs, ...generalMinuteIDs];
-        setTotalIds(
+
+        // Calculate total number of selectable minute IDs
+        const totalSelectableIDs =
           minuteDataAgenda.reduce((acc, item) => {
             const agendaMinuteIDs = [
-              ...item.minuteData.map((subItem) => subItem.minuteID),
+              ...item.minuteData
+                .filter((subItem) => !subItem.isChecked)
+                .map((subItem) => subItem.minuteID),
               ...item.subMinutes.flatMap((subItem) =>
-                subItem.minuteData.map((subSubItem) => subSubItem.minuteID)
+                subItem.minuteData
+                  .filter((subSubItem) => !subSubItem.isChecked)
+                  .map((subSubItem) => subSubItem.minuteID)
               ),
             ];
             return acc + agendaMinuteIDs.length;
-          }, 0) + minuteDataGeneral.length
-        );
+          }, 0) + minuteDataGeneral.filter((item) => !item.isChecked).length;
+
+        setTotalIds(totalSelectableIDs);
         setSelectedMinuteIDs(allMinuteIDs);
       } else {
         setSelectedMinuteIDs([]);
@@ -300,6 +313,12 @@ const SendReviewers = ({
     return true;
   };
 
+  const allUnchecked = (data) => {
+    try {
+      return data.every((item) => !item.isChecked);
+    } catch {}
+  };
+
   useEffect(() => {
     let result = checkIsChecked(minuteDataAgenda, minuteDataGeneral);
     setCheckIsCheckAll(result);
@@ -342,9 +361,8 @@ const SendReviewers = ({
     }
   }, [MinutesReducer.UpdateMinuteFlag]);
 
-  console.log("agendaData", minuteDataAgenda);
-  console.log("generalData", minuteDataGeneral);
-  console.log("checkIsCheckAll", checkIsCheckAll);
+  console.log("Minute Data General Send Reviewers", minuteDataGeneral);
+  console.log("Minute Data Agenda Send Reviewers", minuteDataAgenda);
 
   return (
     <>
@@ -375,7 +393,9 @@ const SendReviewers = ({
                 {minuteDataAgenda.map((data, index) => {
                   return (
                     <div key={index}>
-                      {data.isChecked && moreMinutes === false ? (
+                      {data.isChecked &&
+                      moreMinutes === false &&
+                      !allUnchecked(data.minuteData) ? (
                         <Row>
                           <Col
                             lg={11}
@@ -485,9 +505,11 @@ const SendReviewers = ({
                                                             className="mx-2"
                                                           >
                                                             <AttachmentViewer
-                                                              id={0}
+                                                              id={
+                                                                filesData.pK_FileID
+                                                              }
                                                               name={
-                                                                filesData.fileName
+                                                                filesData.displayFileName
                                                               }
                                                             />
                                                           </Col>
@@ -634,9 +656,11 @@ const SendReviewers = ({
                                                                   className="mx-2"
                                                                 >
                                                                   <AttachmentViewer
-                                                                    id={0}
+                                                                    id={
+                                                                      filesData.pK_FileID
+                                                                    }
                                                                     name={
-                                                                      filesData.fileName
+                                                                      filesData.displayFileName
                                                                     }
                                                                   />
                                                                 </Col>
@@ -847,9 +871,11 @@ const SendReviewers = ({
                                                                         className="mx-2"
                                                                       >
                                                                         <AttachmentViewer
-                                                                          id={0}
+                                                                          id={
+                                                                            filesData.pK_FileID
+                                                                          }
                                                                           name={
-                                                                            filesData.fileName
+                                                                            filesData.displayFileName
                                                                           }
                                                                         />
                                                                       </Col>
@@ -867,7 +893,7 @@ const SendReviewers = ({
                                                           <span
                                                             onClick={() =>
                                                               showHideDetails(
-                                                                subItem.id
+                                                                subItem.minuteID
                                                               )
                                                             }
                                                             className={
@@ -1032,10 +1058,10 @@ const SendReviewers = ({
                                                                         >
                                                                           <AttachmentViewer
                                                                             id={
-                                                                              0
+                                                                              filesData.pK_FileID
                                                                             }
                                                                             name={
-                                                                              filesData.fileName
+                                                                              filesData.displayFileName
                                                                             }
                                                                           />
                                                                         </Col>
@@ -1124,7 +1150,7 @@ const SendReviewers = ({
 
             {minuteDataGeneral !== null ? (
               <>
-                {moreMinutes === false ? (
+                {moreMinutes === false && !allUnchecked(minuteDataGeneral) ? (
                   <Row>
                     <Col lg={12} md={12} sm={12} className="position-relative">
                       <div className={styles["agendaTitleCheckbox"]}>
@@ -1209,8 +1235,10 @@ const SendReviewers = ({
                                                 className="mx-2"
                                               >
                                                 <AttachmentViewer
-                                                  id={0}
-                                                  name={filesData.fileName}
+                                                  id={filesData.pK_FileID}
+                                                  name={
+                                                    filesData.displayFileName
+                                                  }
                                                 />
                                               </Col>
                                             );
@@ -1225,7 +1253,9 @@ const SendReviewers = ({
                                   sm={12}
                                 >
                                   <span
-                                    onClick={() => showHideDetails(data.id)}
+                                    onClick={() =>
+                                      showHideDetails(data.minuteID)
+                                    }
                                     className={styles["view-details"]}
                                   >
                                     {isTruncated
@@ -1321,8 +1351,10 @@ const SendReviewers = ({
                                                     className="mx-2"
                                                   >
                                                     <AttachmentViewer
-                                                      id={0}
-                                                      name={filesData.fileName}
+                                                      id={filesData.pK_FileID}
+                                                      name={
+                                                        filesData.displayFileName
+                                                      }
                                                     />
                                                   </Col>
                                                 );

@@ -34,7 +34,9 @@ const EditReviewers = ({
   allReviewers,
   setAllReviewers,
   isAgendaMinute,
-  setIsAgendaMinute,moreMinutes, setMoreMinutes
+  setIsAgendaMinute,
+  moreMinutes,
+  setMoreMinutes,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -80,6 +82,9 @@ const EditReviewers = ({
   useEffect(() => {
     setSelectAll(selectedReviewersToEdit.length === allReviewers.length);
   }, [selectedReviewersToEdit, allReviewers]);
+
+  console.log("Minute Data General Edit Reviewer", minuteDataGeneral);
+  console.log("Minute Data Agenda Edit Reviewer", minuteDataAgenda);
 
   return (
     <>
@@ -136,8 +141,8 @@ const EditReviewers = ({
                                           className="mx-2"
                                         >
                                           <AttachmentViewer
-                                            id={0}
-                                            name={filesData.fileName}
+                                            id={filesData.pK_FileID}
+                                            name={filesData.displayFileName}
                                           />
                                         </Col>
                                       );

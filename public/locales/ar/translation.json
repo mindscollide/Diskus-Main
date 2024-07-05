@@ -2038,5 +2038,8 @@
   "Users-can-be-created-in-trial-version": "users can be created in trial version",
   "Select-all-reviewers": "Select All Reviewers",
   "Please-add-deadline": "Please add deadline",
-  "Remaining-minutes-to-review": "Remaining minutes to review: "
+  "Remaining-minutes-to-review": "Remaining minutes to review: ",
+  "Set-signer-order": "Set signer order",
+  "No-comments": "No comments"
+
 }

@@ -737,7 +737,7 @@ const UpdatePolls = () => {
                               applyClass={"PollingCreateModal"}
                               labelClass="d-none"
                               name={"TypingTitle"}
-                              maxLength={490}
+                              maxLength={140}
                               value={UpdatePolls.TypingTitle}
                               change={HandleChangeUpdatePolls}
                             />
@@ -824,7 +824,7 @@ const UpdatePolls = () => {
                                                     "PollingCreateModal"
                                                   }
                                                   labelClass="d-none"
-                                                  maxLength={490}
+                                                  maxLength={100}
                                                   name={data.name}
                                                   value={data.value}
                                                   change={(e) =>
@@ -855,7 +855,7 @@ const UpdatePolls = () => {
                                                   "PollingCreateModal"
                                                 }
                                                 labelClass="d-none"
-                                                maxLength={490}
+                                                maxLength={100}
                                                 name={data.name}
                                                 value={data.value}
                                                 change={(e) =>

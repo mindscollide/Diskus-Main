@@ -202,6 +202,9 @@ const SelectMinutes = ({
     } catch {}
   };
 
+  console.log("Minute Data General Select Minutes", minuteDataGeneral);
+  console.log("Minute Data Agenda Select MInutes", minuteDataAgenda);
+
   return (
     <>
       <Row className="mx-50">
@@ -300,8 +303,10 @@ const SelectMinutes = ({
                                                     className="mx-2"
                                                   >
                                                     <AttachmentViewer
-                                                      id={0}
-                                                      name={filesData.fileName}
+                                                      id={filesData.pK_FileID}
+                                                      name={
+                                                        filesData.displayFileName
+                                                      }
                                                     />
                                                   </Col>
                                                 );
@@ -457,9 +462,11 @@ const SelectMinutes = ({
                                                                 className="mx-2"
                                                               >
                                                                 <AttachmentViewer
-                                                                  id={0}
+                                                                  id={
+                                                                    filesData.pK_FileID
+                                                                  }
                                                                   name={
-                                                                    filesData.fileName
+                                                                    filesData.displayFileName
                                                                   }
                                                                 />
                                                               </Col>
@@ -590,8 +597,8 @@ const SelectMinutes = ({
                                           className="mx-2"
                                         >
                                           <AttachmentViewer
-                                            id={0}
-                                            name={filesData.fileName}
+                                            id={filesData.pK_FileID}
+                                            name={filesData.displayFileName}
                                           />
                                         </Col>
                                       );

@@ -541,12 +541,6 @@ const ScheduleNewResolution = () => {
     ) {
       setsendStatus(2);
       if (fileForSend.length > 0) {
-        // let newfile = [];
-        // const uploadPromises = fileForSend.map((newData) => {
-        //   return dispatch(FileUploadToDo(navigate, newData, t, newfile));
-        // });
-        // await Promise.all(uploadPromises);
-        // let tasksAttachments = newfile;
         let Data = {
           ResolutionModel: {
             FK_ResolutionStatusID: 2,

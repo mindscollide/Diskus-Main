@@ -455,7 +455,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                 labelClass={"d-none"}
                 value={updatePolls.Title}
                 name={"UpdatePollsTitle"}
-                maxLength={490}
+                maxLength={140}
                 change={HandleChangeUpdatePolls}
                 disable={checkForPollStatus}
               />
@@ -491,7 +491,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                                   labelClass="d-none"
                                   name={data.name}
                                   disable={checkForPollStatus}
-                                  maxLength={490}
+                                  maxLength={100}
                                   value={data.value}
                                   change={(e) => HandleOptionChange(e)}
                                 />
@@ -511,7 +511,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                                   name={data.name}
                                   disable={checkForPollStatus}
                                   value={data.value}
-                                  maxLength={490}
+                                  maxLength={100}
                                   change={(e) => HandleOptionChange(e)}
                                   inputicon={
                                     checkForPollStatus ? null : (

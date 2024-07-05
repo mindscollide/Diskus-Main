@@ -247,6 +247,7 @@ const initialState = {
   UpdateMinuteFlag: false,
   GetMinutesVersionHistorywithCommentsData: null,
   GetMinuteReviewDetailsForOrganizerbyMinuteId: null,
+  GetMinuteReviewFlowByMeetingIdData: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -568,6 +569,36 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinuteReviewDetailsForOrganizerbyMinuteId: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewFlowByMeetingIdData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewFlowByMeetingIdData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CLEAR_MINUTES_MESSAGES: {
+      return {
+        ...state,
+        ResponseMessage: "",
       };
     }
 
