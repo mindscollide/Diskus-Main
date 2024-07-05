@@ -245,6 +245,8 @@ const initialState = {
   DeleteMinuteReducerData: null,
   EditSingleMinuteData: null,
   UpdateMinuteFlag: false,
+  GetMinutesVersionHistorywithCommentsData: null,
+  GetMinuteReviewDetailsForOrganizerbyMinuteId: null,
   GetMinuteReviewFlowByMeetingIdData: null,
 };
 
@@ -522,6 +524,51 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         UpdateMinuteFlag: action.response,
+      };
+    }
+    case actions.GETMINUTEVERSIONHISTORYWITHCOMMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETMINUTEVERSIONHISTORYWITHCOMMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinutesVersionHistorywithCommentsData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETMINUTEVERSIONHISTORYWITHCOMMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinutesVersionHistorywithCommentsData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GETMINUTEREVIEWDETAILSFORORGANIZATIONBYMINUTEID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETMINUTEREVIEWDETAILSFORORGANIZATIONBYMINUTEID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewDetailsForOrganizerbyMinuteId: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETMINUTEREVIEWDETAILSFORORGANIZATIONBYMINUTEID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewDetailsForOrganizerbyMinuteId: null,
+        ResponseMessage: action.message,
       };
     }
 

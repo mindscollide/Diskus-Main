@@ -191,12 +191,12 @@ p.agendaCreater {
 .version-control-wrapper {
   width: 18px;
   height: 18px;
-  /* background: #e1e1e1; */
+  background: #f16b6b;
   border-radius: 9px;
   display: block;
   position: absolute;
   top: 60px;
-  left: 29px;
+  left: 30px;
 }
 
 .version-control-wrapper-last {
@@ -242,7 +242,7 @@ p.agendaCreater {
   width: 1px;
   background: #e1e1e1;
   left: 50%;
-  top: 10px;
+  top: 20px;
   height: 184px;
 }
 
