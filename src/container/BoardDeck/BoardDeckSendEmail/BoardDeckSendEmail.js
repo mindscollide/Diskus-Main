@@ -21,7 +21,12 @@ import blueCrossIcon from "../../../assets/images/BlueCross.png";
 import { Checkbox } from "antd";
 import { BoardDeckSendEmailApi } from "../../../store/actions/UserManagementActions";
 import { GetAllCommitteesUsersandGroups } from "../../../store/actions/MeetingOrganizers_action";
-const BoardDeckSendEmail = ({ boardDeckMeetingID, boarddeckOptions }) => {
+const BoardDeckSendEmail = ({
+  boardDeckMeetingID,
+  boarddeckOptions,
+  radioValue,
+}) => {
+  console.log(radioValue, "radioValueradioValue");
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -263,56 +268,66 @@ const BoardDeckSendEmail = ({ boardDeckMeetingID, boarddeckOptions }) => {
                 </p>
               </Col>
             </Row>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Select
-                  onChange={handleSelectValue}
-                  value={selectedsearch}
-                  classNamePrefix={"selectMemberAgendaView"}
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  options={dropdowndata}
-                  isSearchable={true}
-                  filterOption={customFilter}
-                />
-              </Col>
-            </Row>
-            <Row className="m-0">
-              <Col className="p-0">
-                <p className={`${styles["NonOrganizationUsers"]} m-0`}>
-                  {t("Select-non-organization-users")}
-                </p>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <div
-                  className={
-                    tags.length <= 4
-                      ? styles["tags-input-container"]
-                      : styles["tags-input-containerr"]
-                  }
-                >
-                  {tags.map((tag, index) => (
-                    <div className={styles["tag-item"]} key={index}>
-                      <span className={styles["text"]}>{tag}</span>
-                      <span
-                        className={styles["close"]}
-                        onClick={() => removeTag(index)}
-                      >
-                        <img src={CrossEmail} alt="" />
-                      </span>
+            {radioValue === 1 ? (
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <Select
+                      onChange={handleSelectValue}
+                      value={selectedsearch}
+                      classNamePrefix={"selectMemberAgendaView"}
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      isMulti
+                      options={dropdowndata}
+                      isSearchable={true}
+                      filterOption={customFilter}
+                    />
+                  </Col>
+                </Row>
+              </>
+            ) : null}
+
+            {radioValue === 2 ? (
+              <>
+                <Row className="m-0">
+                  <Col className="p-0">
+                    <p className={`${styles["NonOrganizationUsers"]} m-0`}>
+                      {t("Select-non-organization-users")}
+                    </p>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div
+                      className={
+                        tags.length <= 4
+                          ? styles["tags-input-container"]
+                          : styles["tags-input-containerr"]
+                      }
+                    >
+                      {tags.map((tag, index) => (
+                        <div className={styles["tag-item"]} key={index}>
+                          <span className={styles["text"]}>{tag}</span>
+                          <span
+                            className={styles["close"]}
+                            onClick={() => removeTag(index)}
+                          >
+                            <img src={CrossEmail} alt="" />
+                          </span>
+                        </div>
+                      ))}
+                      <input
+                        onKeyDown={handleKeyDown}
+                        type="text"
+                        className={styles["tags-input"]}
+                      />
                     </div>
-                  ))}
-                  <input
-                    onKeyDown={handleKeyDown}
-                    type="text"
-                    className={styles["tags-input"]}
-                  />
-                </div>
-              </Col>
-            </Row>
+                  </Col>
+                </Row>
+              </>
+            ) : null}
+
             <Row className="m-0">
               <Col className="p-0">
                 <p className={`${styles["NonOrganizationUsers"]} m-0`}>

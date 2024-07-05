@@ -219,6 +219,7 @@ const NewMeeting = () => {
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [responseByDate, setResponseByDate] = useState("");
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
+  const [radioValue, setRadioValue] = useState(1);
   const [editorRole, setEdiorRole] = useState({
     status: null,
     role: null,
@@ -2580,11 +2581,17 @@ const NewMeeting = () => {
           setBoarddeckOptions={setBoarddeckOptions}
         />
       )}
-      {NewMeetingreducer.boarddeckShareModal && <ShareModalBoarddeck />}
+      {NewMeetingreducer.boarddeckShareModal && (
+        <ShareModalBoarddeck
+          radioValue={radioValue}
+          setRadioValue={setRadioValue}
+        />
+      )}
       {NewMeetingreducer.boardDeckEmailModal && (
         <BoardDeckSendEmail
           boardDeckMeetingID={boardDeckMeetingID}
           boarddeckOptions={boarddeckOptions}
+          radioValue={radioValue}
         />
       )}
     </>
