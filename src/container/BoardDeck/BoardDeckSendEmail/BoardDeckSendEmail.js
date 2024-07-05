@@ -118,26 +118,42 @@ const BoardDeckSendEmail = ({ boardDeckMeetingID }) => {
   };
 
   const handleSendEmailButton = () => {
-    let data = {
-      ListOfEmailAddresses: ["aunn@yopmail.com"],
-      Messege: notificationMessage,
-      BoarddeckFileParams: {
-        PK_MDID: Number(boardDeckMeetingID),
-        fetchOrganizers: true,
-        fetchAgendaContributors: true,
-        fetchParticipants: true,
-        fetchMinutes: true,
-        fetchTasks: true,
-        fetchPolls: true,
-        fetchAttendance: true,
-        fetchVideo: true,
-        fetchAgenda: true,
-        fetchAgendaWithAttachments: true,
-        fetchAdvanceMeetingDetails: true,
-      },
-    };
+    let organizationalUsers = selectedsearch.map((item) => item.value);
 
-    dispatch(BoardDeckSendEmailApi(navigate, t, data));
+    let mergedUserEmails = organizationalUsers.concat(tags);
+
+    console.log(mergedUserEmails, "mergedUserEmailsmergedUserEmails");
+
+    if (mergedUserEmails.length !== 0) {
+      let data = {
+        ListOfEmailAddresses: mergedUserEmails,
+        Messege: notificationMessage,
+        BoarddeckFileParams: {
+          PK_MDID: Number(boardDeckMeetingID),
+          fetchOrganizers: true,
+          fetchAgendaContributors: true,
+          fetchParticipants: true,
+          fetchMinutes: true,
+          fetchTasks: true,
+          fetchPolls: true,
+          fetchAttendance: true,
+          fetchVideo: true,
+          fetchAgenda: true,
+          fetchAgendaWithAttachments: true,
+          fetchAdvanceMeetingDetails: true,
+        },
+      };
+
+      dispatch(BoardDeckSendEmailApi(navigate, t, data));
+    } else {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Atleast-add-one-user"),
+        }),
+        3000
+      );
+    }
   };
 
   //Newly Component
