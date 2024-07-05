@@ -138,7 +138,7 @@ const BoardDeckSendEmail = ({ boardDeckMeetingID, boarddeckOptions }) => {
           fetchPolls: boarddeckOptions.polls,
           fetchAttendance: boarddeckOptions.attendeceReport,
           fetchVideo: boarddeckOptions.video,
-          fetchAgenda: boarddeckOptions,
+          fetchAgenda: boarddeckOptions.Agenda,
           fetchAgendaWithAttachments: boarddeckOptions.Agenda,
           fetchAdvanceMeetingDetails: true,
         },

@@ -43,6 +43,7 @@ import {
   clearPaymentActionFromUrl,
   handleLoginResponse,
 } from "../../commen/functions/utils";
+import { boardDeckEmailModal } from "./NewMeetingActions";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -2418,6 +2419,7 @@ const BoardDeckSendEmailApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(BoardDeckSendEmail_success(t("Successfully")));
+              dispatch(boardDeckEmailModal(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
