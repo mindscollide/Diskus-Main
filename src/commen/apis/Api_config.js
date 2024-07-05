@@ -1670,7 +1670,20 @@ const deleteMinuteReviewByReviewer = {
   RequestMethod: "ServiceManager.DeleteMinuteReviewByReviewer",
 };
 
+const GetPendingApprovalStatusforSignatureFlowRM = {
+  RequestMethod: "ServiceManager.GetPendingApprovalStatusesForSignatureFlow",
+};
+const DeleteSignatureDocumentRM = {
+  RequestMethod: "ServiceManager.DeleteSignatureFlowByWorkFlowId",
+};
+
+const GetAllSignatoriesStatusRM = {
+  RequestMethod: "ServiceManager.GetAllSignatoriesStatus",
+};
 export {
+  GetAllSignatoriesStatusRM,
+  DeleteSignatureDocumentRM,
+  GetPendingApprovalStatusforSignatureFlowRM,
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
   LoginHistoryReportExporttoExcel,

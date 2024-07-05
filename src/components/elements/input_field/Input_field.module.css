@@ -349,3 +349,14 @@ body[dir="rtl"] .updateNotes_titleInput {
   font-size: 12px !important;
   font-weight: 600 !important;
 }
+.DeclineReasonInput {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+.DeclineReasonInput::placeholder {
+  color: #a2a2a2 !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  font-family: "Montserrat" !important;
+}

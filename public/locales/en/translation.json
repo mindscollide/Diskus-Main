@@ -2091,5 +2091,7 @@
   "Please-add-deadline": "Please add deadline",
   "Any-unsaved-changes-will-be-lost-continue": "Any unsaved changes will be lost. Continue?",
   "Remaining-minutes-to-review": "Remaining minutes to review: ",
-  "Minutes-review-flow-inserted-successfully": "Minutes review flow inserted successfully"
+  "Minutes-review-flow-inserted-successfully": "Minutes review flow inserted successfully",
+  "Set-signer-order": "Set signer order",
+  "No-comments": "No comments"
 }

@@ -15,6 +15,10 @@ const initialState = {
   getAllSignatureDocumentsforCreator: null,
   getAllPendingForApprovalStats: null,
   listOfPendingForApprovalSignatures: null,
+  getAllPendingApprovalStatuses: null,
+  declineReason: null,
+  deleteSignatureDocument: null,
+  getAllSignatoriesStatusWise: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -288,6 +292,102 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    case actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllPendingApprovalStatuses: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllPendingApprovalStatuses: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DECLINE_REASON_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DECLINE_REASON_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        declineReason: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DECLINE_REASON_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        declineReason: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETE_SIGNATURE_DOCUMENT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DELETE_SIGNATURE_DOCUMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deleteSignatureDocument: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETE_SIGNATURE_DOCUMENT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        deleteSignatureDocument: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLSIGNATORIESSTATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETALLSIGNATORIESSTATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSignatoriesStatusWise: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLSIGNATORIESSTATUS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSignatoriesStatusWise: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER: {
+      return {
+        ...state,
+        ResponseMessage: "",
+      };
+    }
+
     default:
       return { ...state };
   }
