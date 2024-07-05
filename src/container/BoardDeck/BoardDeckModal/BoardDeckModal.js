@@ -12,6 +12,7 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import { Checkbox, Radio } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
+import { BoardDeckPDFDownloadApi } from "../../../store/actions/UserManagementActions";
 const BoardDeckModal = ({ boarddeckOptions, setBoarddeckOptions }) => {
   const { t } = useTranslation();
 
@@ -119,6 +120,23 @@ const BoardDeckModal = ({ boarddeckOptions, setBoarddeckOptions }) => {
   const handleRadioChange = (value) => {
     setRadioValue(value);
     console.log("valuevaluevalue", value);
+  };
+
+  const handleDownloadButton = () => {
+    let data = {
+      PK_MDID: 3499,
+      fetchOrganizers: true,
+      fetchAgendaContributors: true,
+      fetchParticipants: true,
+      fetchMinutes: true,
+      fetchTasks: true,
+      fetchPolls: true,
+      fetchAttendance: true,
+      fetchVideo: true,
+      fetchAgendaWithAttachments: false,
+      fetchAgenda: true,
+    };
+    dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
   };
 
   return (
@@ -286,6 +304,7 @@ const BoardDeckModal = ({ boarddeckOptions, setBoarddeckOptions }) => {
                   <Button
                     text={t("Download")}
                     className={styles["ShareButton"]}
+                    onClick={handleDownloadButton}
                   />
                 </Col>
               </Row>

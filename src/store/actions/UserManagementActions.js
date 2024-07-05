@@ -25,6 +25,7 @@ import {
   authenticationApi,
   dataRoomApi,
   getAdminURLs,
+  settingDownloadApi,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import axios from "axios";
@@ -2470,17 +2471,22 @@ const BoardDeckDownloadPDF_failed = () => {
   };
 };
 
+const SetLoaderFalseDownload = () => {
+  return {
+    type: actions.DOWNLOAD_BOARDDECKPDF_LOADER_FALSE,
+  };
+};
+
 const BoardDeckPDFDownloadApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(BoardDeckDownloadPDF_init());
-    let form = new FormData();
-    form.append("RequestMethod", DownloadBoarddeckPDF.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
-
+  let form = new FormData();
+  form.append("RequestMethod", DownloadBoarddeckPDF.RequestMethod);
+  form.append("RequestData", JSON.stringify(data));
+  return async (dispatch) => {
+    await dispatch(BoardDeckDownloadPDF_init());
     axios({
       method: "post",
-      url: excelURL,
+      url: settingDownloadApi,
       data: form,
       headers: {
         _token: token,
@@ -2488,30 +2494,24 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       },
-      responseType: "blob",
+      responseType: "arraybuffer",
     })
       .then(async (response) => {
-        if (response.data.responseCode === 417) {
+        if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
         } else if (response.status === 200) {
-          // Create a temporary URL for the blob data
           const url = window.URL.createObjectURL(new Blob([response.data]));
 
-          // Create a link element and simulate a click to trigger the download
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute(
-            "download",
-            "download-Subscription-Expired-reports.xlsx"
-          );
+          link.setAttribute("download", "download-Attendance-Report.xlsx");
           document.body.appendChild(link);
           link.click();
-        } else {
-          dispatch(BoardDeckDownloadPDF_failed(t("Something-went-wrong")));
+          dispatch(SetLoaderFalseDownload(false));
         }
       })
-      .catch((error) => {
+      .catch((response) => {
         dispatch(BoardDeckDownloadPDF_failed(t("Something-went-wrong")));
       });
   };
@@ -2544,4 +2544,5 @@ export {
   paymentStatusApi,
   cancelisTrailandSubscriptionApi,
   BoardDeckSendEmailApi,
+  BoardDeckPDFDownloadApi,
 };

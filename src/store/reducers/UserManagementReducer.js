@@ -579,6 +579,13 @@ const UserMangementReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.DOWNLOAD_BOARDDECKPDF_LOADER_FALSE: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
     case actions.CLEAR_MESSEGES_USER_MANAGEMENT:
       return {
         ...state,
