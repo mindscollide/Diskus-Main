@@ -23,6 +23,7 @@ import {
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
+  DataRoomAllFilesDownloads,
   dataRoomApi,
   getAdminURLs,
   settingDownloadApi,
@@ -2488,7 +2489,7 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
 
     axios({
       method: "post",
-      url: settingDownloadApi,
+      url: DataRoomAllFilesDownloads,
       data: form,
       headers: {
         _token: token,
