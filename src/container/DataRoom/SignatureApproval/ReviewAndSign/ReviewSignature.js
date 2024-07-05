@@ -188,16 +188,16 @@ const ReviewSignature = () => {
     },
   ];
 
-  const callingApi = async () => {
-    let newData = { IsCreator: false };
-    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
-    await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
-    let Data = { sRow: 0, Length: 10 };
-    dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
-  };
-  useEffect(() => {
-    callingApi();
-  }, []);
+  // const callingApi = async () => {
+  //   let newData = { IsCreator: false };
+  //   await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
+  //   await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
+  //   let Data = { sRow: 0, Length: 10 };
+  //   dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+  // };
+  // useEffect(() => {
+  //   callingApi();
+  // }, []);
 
   const handleScroll = async () => {
     console.log(

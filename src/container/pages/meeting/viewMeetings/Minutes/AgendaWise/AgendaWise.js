@@ -1922,28 +1922,28 @@ const AgendaWise = ({
                                                     }
                                                   >
                                                     <span
-                                                      onClick={
-                                                        () =>
-                                                          handleClickShowRevision(
-                                                            data,
-                                                            minuteDataSubminute.minuteID
-                                                          )
-                                                        // setShowRevisionHistory(true)
+                                                      onClick={() =>
+                                                        // handleClickShowRevision(
+                                                        //   data,
+                                                        //   minuteDataSubminute.minuteID
+                                                        // )
+                                                        setShowRevisionHistory(
+                                                          true
+                                                        )
                                                       }
                                                     >
                                                       {t("Revisions")}
                                                       <p className="m-0"> 3 </p>
                                                     </span>
                                                     <span
-                                                      onClick={
-                                                        () =>
-                                                          handleClickShowVersionHistory(
-                                                            data,
-                                                            minuteDataSubminute.minuteID
-                                                          )
-                                                        // setShowVersionHistory(
-                                                        //   true
+                                                      onClick={() =>
+                                                        // handleClickShowVersionHistory(
+                                                        //   data,
+                                                        //   minuteDataSubminute.minuteID
                                                         // )
+                                                        setShowVersionHistory(
+                                                          true
+                                                        )
                                                       }
                                                       className="border-0"
                                                     >

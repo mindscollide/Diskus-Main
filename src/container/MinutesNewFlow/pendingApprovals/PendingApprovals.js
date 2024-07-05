@@ -24,6 +24,11 @@ import ArrowDownIcon from "./../Images/Arrow-down.png";
 import ArrowUpIcon from "./../Images/Arrow-up.png";
 import NoApprovals from "./../Images/No-Approvals.png";
 import ReviewSignature from "../../DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
+import {
+  getAllPendingApprovalStatusApi,
+  getAllPendingApprovalsSignaturesApi,
+  getAllPendingApprovalsStatsApi,
+} from "../../../store/actions/workflow_actions";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -43,14 +48,26 @@ const PendingApproval = () => {
   const [progress, setProgress] = useState([]);
 
   // Click handler for Review Minutes button
-  const handleReviewMinutesClick = () => {
+  const handleReviewMinutesClick = async () => {
+    let Data = { sRow: 0, Length: 10 };
+    await dispatch(
+      GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t)
+    );
+    await dispatch(
+      GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t)
+    );
     setReviewMinutesActive(true); // Set Review Minutes button to active
     setReviewAndSignActive(false); // Set Review & Sign button to inactive
     // Your functionality for Review Minutes button
   };
 
   // Click handler for Review & Sign button
-  const handleReviewAndSignClick = () => {
+  const handleReviewAndSignClick = async () => {
+    let newData = { IsCreator: false };
+    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
+    await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
+    let Data = { sRow: 0, Length: 10 };
+    dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
     setReviewMinutesActive(false); // Set Review Minutes button to inactive
     setReviewAndSignActive(true); // Set Review & Sign button to active
     // Your functionality for Review & Sign button
@@ -241,11 +258,11 @@ const PendingApproval = () => {
 
   const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
 
-  useEffect(() => {
-    let Data = { sRow: 0, Length: 10 };
-    dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
-    dispatch(GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t));
-  }, []);
+  // useEffect(() => {
+  //   let Data = { sRow: 0, Length: 10 };
+  //   dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
+  //   dispatch(GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t));
+  // }, []);
 
   // Data for rows of the pending approval table
   // const rowsPendingApproval = [
