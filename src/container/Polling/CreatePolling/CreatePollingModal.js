@@ -690,7 +690,7 @@ const CreatePolling = () => {
                             placeholder={t("Title") + "*"}
                             applyClass={"PollingCreateModal"}
                             labelClass="d-none"
-                            maxLength={490}
+                            maxLength={140}
                             name={"TypingTitle"}
                             value={createPollData.TypingTitle}
                             change={HandleChange}
@@ -735,7 +735,7 @@ const CreatePolling = () => {
                                               applyClass={"PollingCreateModal"}
                                               labelClass="d-none"
                                               name={data.name}
-                                              maxLength={490}
+                                              maxLength={100}
                                               value={data.value}
                                               change={(e) =>
                                                 HandleOptionChange(e)
@@ -759,7 +759,7 @@ const CreatePolling = () => {
                                               labelClass="d-none"
                                               name={data.name}
                                               value={data.value}
-                                              maxLength={490}
+                                              maxLength={100}
                                               change={(e) =>
                                                 HandleOptionChange(e)
                                               }

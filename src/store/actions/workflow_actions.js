@@ -11,6 +11,10 @@ import {
   GetAllSignatureFlowDocumentsForCreatorRM,
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
+  GetPendingApprovalStatusforSignatureFlowRM,
+  DeclineReason,
+  DeleteSignatureDocumentRM,
+  GetAllSignatoriesStatusRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -192,7 +196,9 @@ const saveWorkflowApi = (
   value,
   updateFieldValueData,
   addAnnoatationofFilesAttachment,
-  saveSignatureDocument
+  saveSignatureDocument,
+  status,
+  sendDocumentData
 ) => {
   console.log(
     Data,
@@ -229,7 +235,9 @@ const saveWorkflowApi = (
               value,
               updateFieldValueData,
               addAnnoatationofFilesAttachment,
-              saveSignatureDocument
+              saveSignatureDocument,
+              status,
+              sendDocumentData
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -255,7 +263,9 @@ const saveWorkflowApi = (
                     navigate,
                     t,
                     addAnnoatationofFilesAttachment,
-                    saveSignatureDocument
+                    saveSignatureDocument,
+                    status,
+                    sendDocumentData
                   )
                 );
               } else {
@@ -298,7 +308,9 @@ const saveWorkflowApi = (
                     navigate,
                     t,
                     addAnnoatationofFilesAttachment,
-                    saveSignatureDocument
+                    saveSignatureDocument,
+                    status,
+                    sendDocumentData
                   )
                 );
                 dispatch(
@@ -479,7 +491,9 @@ const addUpdateFieldValueApi = (
   navigate,
   t,
   addAnnoatationofFilesAttachment,
-  saveSignatureDocument
+  saveSignatureDocument,
+  status,
+  sendDocumentData
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -505,7 +519,9 @@ const addUpdateFieldValueApi = (
               navigate,
               t,
               addAnnoatationofFilesAttachment,
-              saveSignatureDocument
+              saveSignatureDocument,
+              status,
+              sendDocumentData
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -522,7 +538,9 @@ const addUpdateFieldValueApi = (
                   navigate,
                   t,
                   addAnnoatationofFilesAttachment,
-                  saveSignatureDocument
+                  saveSignatureDocument,
+                  status,
+                  sendDocumentData
                 )
               );
               dispatch(
@@ -593,7 +611,13 @@ const saveSignatureDocument_fail = (message) => {
   };
 };
 
-const saveSignatureDocumentApi = (Data, navigate, t) => {
+const saveSignatureDocumentApi = (
+  Data,
+  navigate,
+  t,
+  status,
+  sendDocumentData
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(saveSignatureDocument_init());
@@ -612,22 +636,32 @@ const saveSignatureDocumentApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(saveSignatureDocumentApi(Data, navigate, t));
+          dispatch(
+            saveSignatureDocumentApi(Data, navigate, t, sendDocumentData)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveSignatureDocument_01".toLowerCase()
+                  "DataRoom_DataRoomManager_SaveSignatureDocument_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                saveSignatureDocument_success(
-                  response.data.responseResult,
-                  t("Signature-file-created-and-added-to-dataroom")
-                )
-              );
+              if (Number(status) === 2) {
+                console.log({ status }, "statusstatusValue");
+
+                dispatch(sendDocumentIdApi(sendDocumentData, navigate, t));
+              } else {
+                dispatch(
+                  saveSignatureDocument_success(
+                    response.data.responseResult,
+                    t("Signature-file-created-and-added-to-dataroom")
+                  )
+                );
+              }
+              console.log({ status }, "statusstatusValue");
+              // window.close();
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -640,7 +674,7 @@ const saveSignatureDocumentApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveSignatureDocument_03".toLowerCase()
+                  "DataRoom_DataRoomManager_SaveSignatureDocument_03".toLowerCase()
                 )
             ) {
               dispatch(saveSignatureDocument_fail(t("File-not-exist")));
@@ -648,7 +682,7 @@ const saveSignatureDocumentApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveSignatureDocument_04".toLowerCase()
+                  "DataRoom_DataRoomManager_SaveSignatureDocument_04".toLowerCase()
                 )
             ) {
               dispatch(
@@ -676,7 +710,7 @@ const saveSignatureDocumentApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveSignatureDocument_07".toLowerCase()
+                  "DataRoom_DataRoomManager_SaveSignatureDocument_04".toLowerCase()
                 )
             ) {
               dispatch(saveSignatureDocument_fail(t("Something-went-wrong")));
@@ -808,7 +842,9 @@ const addAnnoationSignatrueFlow = (
   navigate,
   t,
   Data,
-  saveSignatureDocument
+  saveSignatureDocument,
+  status,
+  sendDocumentData
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -831,7 +867,14 @@ const addAnnoationSignatrueFlow = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            addAnnoationSignatrueFlow(navigate, t, Data, saveSignatureDocument)
+            addAnnoationSignatrueFlow(
+              navigate,
+              t,
+              Data,
+              saveSignatureDocument,
+              status,
+              sendDocumentData
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -843,7 +886,13 @@ const addAnnoationSignatrueFlow = (
                 )
             ) {
               dispatch(
-                saveSignatureDocumentApi(saveSignatureDocument, navigate, t)
+                saveSignatureDocumentApi(
+                  saveSignatureDocument,
+                  navigate,
+                  t,
+                  status,
+                  sendDocumentData
+                )
               );
               dispatch(
                 addAnnotationDataRoom_success(
@@ -867,7 +916,13 @@ const addAnnoationSignatrueFlow = (
                 )
               );
               dispatch(
-                saveSignatureDocumentApi(saveSignatureDocument, navigate, t)
+                saveSignatureDocumentApi(
+                  saveSignatureDocument,
+                  navigate,
+                  t,
+                  status,
+                  sendDocumentData
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1038,79 +1093,70 @@ const sendDocument_fail = (message) => {
 
 const sendDocumentIdApi = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return new Promise((resolve, reject) => {
-    return (dispatch) => {
-      dispatch(sendDocument_init());
-      let form = new FormData();
-      form.append("RequestMethod", sendDocumentRM.RequestMethod);
-      form.append("RequestData", JSON.stringify(Data));
+  return (dispatch) => {
+    dispatch(sendDocument_init());
+    let form = new FormData();
+    form.append("RequestMethod", sendDocumentRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
 
-      axios({
-        method: "post",
-        url: workflowApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
-        .then(async (response) => {
-          if (response.data.responseCode === 417) {
-            await dispatch(RefreshToken(navigate, t));
-            dispatch(sendDocumentIdApi(Data, navigate, t));
-          } else if (response.data.responseCode === 200) {
-            if (response.data.responseResult.isExecuted === true) {
-              if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "WorkFlow_WorkFlowServiceManager_SendDocument_01".toLowerCase()
-                  )
-              ) {
-                resolve(response.data.responseResult);
-                dispatch(
-                  sendDocument_success(
-                    response.data.responseResult,
-                    t("Saved-successfully")
-                  )
-                );
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "WorkFlow_WorkFlowServiceManager_SendDocument_02".toLowerCase()
-                  )
-              ) {
-                reject(response.data.responseResult.responseMessage);
-                dispatch(sendDocument_fail(t("Failed-to-save")));
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "WorkFlow_WorkFlowServiceManager_SendDocument_03".toLowerCase()
-                  )
-              ) {
-                reject(response.data.responseResult.responseMessage);
-
-                dispatch(sendDocument_fail(t("Something-went-wrong")));
-              } else {
-                dispatch(sendDocument_fail(t("Something-went-wrong")));
-                reject(response.data.responseResult.responseMessage);
-              }
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(sendDocumentIdApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SendDocument_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                sendDocument_success(
+                  response.data.responseResult,
+                  t("Saved-successfully")
+                )
+              );
+              window.close();
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SendDocument_02".toLowerCase()
+                )
+            ) {
+              dispatch(sendDocument_fail(t("Failed-to-save")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_SendDocument_03".toLowerCase()
+                )
+            ) {
+              dispatch(sendDocument_fail(t("Something-went-wrong")));
             } else {
               dispatch(sendDocument_fail(t("Something-went-wrong")));
-              reject(response.data.responseResult.responseMessage);
             }
           } else {
             dispatch(sendDocument_fail(t("Something-went-wrong")));
-            reject(response.data.responseResult.responseMessage);
           }
-        })
-        .catch((response) => {
+        } else {
           dispatch(sendDocument_fail(t("Something-went-wrong")));
-          reject(response.data.responseResult.responseMessage);
-        });
-    };
-  });
+        }
+      })
+      .catch((response) => {
+        dispatch(sendDocument_fail(t("Something-went-wrong")));
+      });
+  };
 };
 
 const getAllSignaturesDocumentsforCreator_init = () => {
@@ -1415,7 +1461,441 @@ const getAllPendingApprovalsSignaturesApi = (navigate, t, Data) => {
   };
 };
 
+const getAllPendingApprovalStatus_init = () => {
+  return {
+    type: actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_INIT,
+  };
+};
+
+const getAllPendingApprovalStatus_success = (response, message) => {
+  return {
+    type: actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllPendingApprovalStatus_fail = (message) => {
+  return {
+    type: actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_FAIL,
+    message: message,
+  };
+};
+
+const getAllPendingApprovalStatusApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllPendingApprovalStatus_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      GetPendingApprovalStatusforSignatureFlowRM.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllPendingApprovalStatusApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetPendingApprovalStatusesForSignatureFlow_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalStatus_success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetPendingApprovalStatusesForSignatureFlow_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllPendingApprovalStatus_fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetPendingApprovalStatusesForSignatureFlow_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalStatus_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllPendingApprovalStatus_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getAllPendingApprovalStatus_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(getAllPendingApprovalStatus_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllPendingApprovalStatus_fail(t("Something-went-wrong")));
+      });
+  };
+};
+const declineReason_init = () => {
+  return {
+    type: actions.DECLINE_REASON_INIT,
+  };
+};
+const declineReason_success = (response, message) => {
+  return {
+    type: actions.DECLINE_REASON_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const declineReason_fail = (message) => {
+  return {
+    type: actions.DECLINE_REASON_FAIL,
+    message: message,
+  };
+};
+
+const declineReasonApi = (
+  navigate,
+  t,
+  Data,
+  setReasonModal,
+  setDeclineConfirmationModal
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(declineReason_init());
+    let form = new FormData();
+    form.append("RequestMethod", DeclineReason.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            declineReasonApi(
+              navigate,
+              t,
+              Data,
+              setReasonModal,
+              setDeclineConfirmationModal
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeclineReason_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                declineReason_success(
+                  response.data.responseResult,
+                  t("Saved-successfully")
+                )
+              );
+              setReasonModal(false);
+              setDeclineConfirmationModal(true);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeclineReason_02".toLowerCase()
+                )
+            ) {
+              dispatch(declineReason_fail("Failure-to-save"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeclineReason_03".toLowerCase()
+                )
+            ) {
+              dispatch(declineReason_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(declineReason_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(declineReason_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(declineReason_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(declineReason_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const deleteSignatureFlowDocument_init = () => {
+  return {
+    type: actions.DELETE_SIGNATURE_DOCUMENT_INIT,
+  };
+};
+const deleteSignatureFlowDocument_success = (response, message) => {
+  return {
+    type: actions.DELETE_SIGNATURE_DOCUMENT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const deleteSignatureFlowDocument_fail = (message) => {
+  return {
+    type: actions.DELETE_SIGNATURE_DOCUMENT_FAIL,
+    message: message,
+  };
+};
+const deleteSignatureFlowDocumentApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(deleteSignatureFlowDocument_init());
+    let form = new FormData();
+    form.append("RequestMethod", DeleteSignatureDocumentRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteSignatureFlowDocumentApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteSignatureFlowDocument_success(
+                  response.data.responseResult,
+                  t("Signature-flow-deleted-successfully")
+                )
+              );
+              let Data2 = {
+                sRow: 0,
+                Length: 10,
+              };
+              dispatch(
+                getAllSignaturesDocumentsforCreatorApi(navigate, t, Data2)
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_02".toLowerCase()
+                )
+            ) {
+              dispatch(deleteSignatureFlowDocument_fail("WorkFlow-not-exists"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_03".toLowerCase()
+                )
+            ) {
+              dispatch(deleteSignatureFlowDocument_fail(t("Not-a-creator")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteSignatureFlowDocument_fail(t("Only-draft-can-be-deleted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_05".toLowerCase()
+                )
+            ) {
+              dispatch(deleteSignatureFlowDocument_fail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeleteSignatureFlowByWorkFlowId_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteSignatureFlowDocument_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                deleteSignatureFlowDocument_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              deleteSignatureFlowDocument_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(deleteSignatureFlowDocument_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(deleteSignatureFlowDocument_fail(t("Something-went-wrong")));
+      });
+  };
+};
+const getAllSignatoriesStatusWise_init = () => {
+  return {
+    type: actions.GETALLSIGNATORIESSTATUS_INIT,
+  };
+};
+const getAllSignatoriesStatusWise_success = (response, message) => {
+  return {
+    type: actions.GETALLSIGNATORIESSTATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAllSignatoriesStatusWise_fail = (message) => {
+  return {
+    type: actions.GETALLSIGNATORIESSTATUS_FAIL,
+    message: message,
+  };
+};
+const getAllSignatoriesStatusWise_Api = (
+  navigate,
+  t,
+  Data,
+  setSignatoriesList
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllSignatoriesStatusWise_init());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllSignatoriesStatusRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            getAllSignatoriesStatusWise_Api(
+              navigate,
+              t,
+              Data,
+              setSignatoriesList
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatoriesStatus_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllSignatoriesStatusWise_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+              setSignatoriesList(true);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatoriesStatus_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllSignatoriesStatusWise_fail("No-data-found"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatoriesStatus_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllSignatoriesStatusWise_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllSignatoriesStatusWise_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getAllSignatoriesStatusWise_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(getAllSignatoriesStatusWise_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllSignatoriesStatusWise_fail(t("Something-went-wrong")));
+      });
+  };
+};
+const clearWorkFlowResponseMessage = () => {
+  return {
+    type: actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER,
+  };
+};
+
 export {
+  getAllSignatoriesStatusWise_Api,
+  deleteSignatureFlowDocumentApi,
+  getAllPendingApprovalStatusApi,
+  clearWorkFlowResponseMessage,
   getAllPendingApprovalsStatsApi,
   getAllPendingApprovalsSignaturesApi,
   getAllSignaturesDocumentsforCreatorApi,
@@ -1428,4 +1908,5 @@ export {
   sendDocumentIdApi,
   getAnnoationSignatrueFlow,
   addAnnoationSignatrueFlow,
+  declineReasonApi,
 };

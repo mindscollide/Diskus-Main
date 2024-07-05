@@ -1,0 +1,50 @@
+.ReasonModalHeaderClass {
+  height: 20px;
+}
+
+.DeclineModalHeading {
+  font-weight: 600;
+  font-size: 20px;
+  color: #6172d6;
+}
+.DeclineModalSubTitle {
+  font-weight: 500;
+  font-size: 16px;
+  color: #5a5a5a;
+}
+.Steric {
+  color: #f16b6b;
+}
+.DeclineModalHeading2 {
+  font-weight: 600;
+  font-size: 20px;
+  color: #6172d6;
+}
+.DeclineModalSubLine {
+  font-weight: 600;
+  font-size: 10px;
+  color: #5a5a5a;
+}
+.CancelBtn {
+  padding: 12px 30px !important;
+  background-color: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+}
+.DeclineBtn {
+  padding: 12px 30px !important;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+}
+.declineErrorMessage {
+  font-size: 10px;
+  font-weight: 600;
+  color: #f16b6b;
+}

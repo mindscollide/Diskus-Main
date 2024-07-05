@@ -567,7 +567,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                     <TextField
                       labelClass={"d-none"}
                       name={"TitlePolls"}
-                      maxLength={490}
+                      maxLength={140}
                       value={pollsData.Title}
                       change={HandleChange}
                     />
@@ -602,7 +602,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                         applyClass={"PollingCreateModal"}
                                         labelClass="d-none"
                                         name={data.name}
-                                        maxLength={490}
+                                        maxLength={100}
                                         value={data.value}
                                         change={(e) => HandleOptionChange(e)}
                                       />
@@ -621,7 +621,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                         labelClass="d-none"
                                         name={data.name}
                                         value={data.value}
-                                        maxLength={490}
+                                        maxLength={100}
                                         change={(e) => HandleOptionChange(e)}
                                         inputicon={
                                           <img
