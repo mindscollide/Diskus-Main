@@ -1602,6 +1602,10 @@ const LoginHistoryReportExporttoExcel = {
 const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
+
+const BoardDeckSendEmail = {
+  RequestMethod: "ServiceManager.SendBoardDeckPDFAsEmail",
+};
 export {
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
@@ -2028,4 +2032,5 @@ export {
   downloadAttachmentTalk,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  BoardDeckSendEmail,
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./BoardDeckSendEmail.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -8,13 +8,20 @@ import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import CrossEmail from "./../../pages/meeting/viewMeetings/AgendaViewer/AV-Images/Cross-Email.png";
 import { Col, Container, Row } from "react-bootstrap";
-import { Button, Modal, TextField } from "../../../components/elements";
+import {
+  Button,
+  Modal,
+  TextField,
+  Notification,
+} from "../../../components/elements";
 import { boardDeckEmailModal } from "../../../store/actions/NewMeetingActions";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { validateInput } from "../../../commen/functions/regex";
 import blueCrossIcon from "../../../assets/images/BlueCross.png";
 import { Checkbox } from "antd";
-const BoardDeckSendEmail = () => {
+import { BoardDeckSendEmailApi } from "../../../store/actions/UserManagementActions";
+import { GetAllCommitteesUsersandGroups } from "../../../store/actions/MeetingOrganizers_action";
+const BoardDeckSendEmail = ({ boardDeckMeetingID }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -23,14 +30,32 @@ const BoardDeckSendEmail = () => {
 
   const animatedComponents = makeAnimated();
 
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
+    (state) => state
+  );
 
   const [selectedsearch, setSelectedsearch] = useState([]);
+  const [dropdowndata, setDropdowndata] = useState([]);
   const [tags, setTags] = useState([]);
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const [notificationMessage, setNotificationMessage] = useState("");
+  console.log(notificationMessage, "notificationMessage");
   const [notifyPeople, setNotifyPeople] = useState({
     notifyPeople: false,
   });
+
+  //For All Organizational Users
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(boardDeckMeetingID),
+    };
+    dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
+  }, []);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -78,7 +103,10 @@ const BoardDeckSendEmail = () => {
 
   const handleAddTag = () => {
     if (selectedsearch && selectedsearch.length > 0) {
-      setTags((prevTags) => [...prevTags, ...selectedsearch]);
+      const newTags = selectedsearch.map((tag) =>
+        typeof tag === "string" ? { value: tag, label: tag } : tag
+      );
+      setTags((prevTags) => [...prevTags, ...newTags]);
       setSelectedsearch([]);
     }
   };
@@ -88,6 +116,106 @@ const BoardDeckSendEmail = () => {
       prevTags.filter((_, index) => index !== indexToRemove)
     );
   };
+
+  const handleSendEmailButton = () => {
+    let data = {
+      ListOfEmailAddresses: ["aunn@yopmail.com"],
+      Messege: notificationMessage,
+      BoarddeckFileParams: {
+        PK_MDID: Number(boardDeckMeetingID),
+        fetchOrganizers: true,
+        fetchAgendaContributors: true,
+        fetchParticipants: true,
+        fetchMinutes: true,
+        fetchTasks: true,
+        fetchPolls: true,
+        fetchAttendance: true,
+        fetchVideo: true,
+        fetchAgenda: true,
+        fetchAgendaWithAttachments: true,
+        fetchAdvanceMeetingDetails: true,
+      },
+    };
+
+    dispatch(BoardDeckSendEmailApi(navigate, t, data));
+  };
+
+  //Newly Component
+
+  function handleKeyDown(e) {
+    if (e.key !== "Enter") return;
+    const value = e.target.value.trim();
+
+    // Regular expression to validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(value)) {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Invalid-email-format"),
+        }),
+        3000
+      );
+      return;
+    }
+
+    setTags([...tags, value]);
+    e.target.value = "";
+  }
+
+  //Organizational Users
+  useEffect(() => {
+    let newOrganizersData =
+      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+    if (newOrganizersData !== null && newOrganizersData !== undefined) {
+      let temp = [];
+      if (Object.keys(newOrganizersData).length > 0) {
+        if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
+          console.log(
+            newOrganizersData.organizationUsers,
+            "organizationUsersorganizationUsersorganizationUsers"
+          );
+          newOrganizersData.organizationUsers.map((a, index) => {
+            let newData = {
+              value: a.emailAddress,
+              name: a.userName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 3,
+            };
+            temp.push(newData);
+          });
+        }
+        setDropdowndata(temp);
+      } else {
+        setDropdowndata([]);
+      }
+    }
+  }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
 
   return (
     <Container>
@@ -112,8 +240,15 @@ const BoardDeckSendEmail = () => {
         }
         ModalBody={
           <>
+            <Row className="m-0">
+              <Col className="p-0">
+                <p className={`${styles["organizationUsers"]} m-0`}>
+                  {t("Select-organization-users")}
+                </p>
+              </Col>
+            </Row>
             <Row>
-              <Col lg={10} md={10} sm={10}>
+              <Col lg={12} md={12} sm={12}>
                 <Select
                   onChange={handleSelectValue}
                   value={selectedsearch}
@@ -121,22 +256,17 @@ const BoardDeckSendEmail = () => {
                   closeMenuOnSelect={false}
                   components={animatedComponents}
                   isMulti
-                  options={options}
+                  options={dropdowndata}
                   isSearchable={true}
                   filterOption={customFilter}
                 />
               </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={2}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <Button
-                  text={t("Add")}
-                  className={styles["AddButton"]}
-                  onClick={handleAddTag}
-                />
+            </Row>
+            <Row className="m-0">
+              <Col className="p-0">
+                <p className={`${styles["NonOrganizationUsers"]} m-0`}>
+                  {t("Select-non-organization-users")}
+                </p>
               </Col>
             </Row>
             <Row>
@@ -150,15 +280,20 @@ const BoardDeckSendEmail = () => {
                 >
                   {tags.map((tag, index) => (
                     <div className={styles["tag-item"]} key={index}>
-                      <span className={styles["text"]}>{tag.label}</span>
+                      <span className={styles["text"]}>{tag}</span>
                       <span
                         className={styles["close"]}
                         onClick={() => removeTag(index)}
                       >
-                        <img src={blueCrossIcon} alt="Remove" />
+                        <img src={CrossEmail} alt="" />
                       </span>
                     </div>
                   ))}
+                  <input
+                    onKeyDown={handleKeyDown}
+                    type="text"
+                    className={styles["tags-input"]}
+                  />
                 </div>
               </Col>
             </Row>
@@ -213,12 +348,17 @@ const BoardDeckSendEmail = () => {
                 sm={12}
                 className="d-flex justify-content-end"
               >
-                <Button text={t("Send")} className={styles["SendButton"]} />
+                <Button
+                  text={t("Send")}
+                  className={styles["Send_Notify"]}
+                  onClick={handleSendEmailButton}
+                />
               </Col>
             </Row>
           </>
         }
       />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </Container>
   );
 };

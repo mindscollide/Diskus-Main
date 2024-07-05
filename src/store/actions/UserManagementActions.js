@@ -18,9 +18,11 @@ import {
   paymentStatus,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  BoardDeckSendEmail,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
+  dataRoomApi,
   getAdminURLs,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -2310,14 +2312,6 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
                 Number(response.data.responseResult.subscriptionID)
               );
               navigate("/Admin/PaymentFormUserManagement");
-              // localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
-              // if (changePacakgeFlag) {
-
-              //   localStorage.setItem("SignupFlowPageRoute", 5);
-              //   dispatch(signUpFlowRoutes(5));
-              //   localStorage.removeItem("changePacakgeFlag");
-              //   navigate("/Signup")
-              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2371,6 +2365,88 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
       });
   };
 };
+
+//BoardDeck Send Email
+
+const BoardDeckSendEmail_init = () => {
+  return {
+    type: actions.BOARD_DECK_SEND_EMAIL_INIT,
+  };
+};
+
+const BoardDeckSendEmail_success = (response, message) => {
+  return {
+    type: actions.BOARD_DECK_SEND_EMAIL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const BoardDeckSendEmail_failed = (message) => {
+  return {
+    type: actions.BOARD_DECK_SEND_EMAIL_FAILED,
+    message: message,
+  };
+};
+
+const BoardDeckSendEmailApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(BoardDeckSendEmail_init());
+    let form = new FormData();
+    form.append("RequestMethod", BoardDeckSendEmail.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(BoardDeckSendEmailApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_01".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckSendEmail_success(t("Successfully")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_02".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckSendEmail_failed(t("Failed sending email")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_03".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckSendEmail_failed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(BoardDeckSendEmail_failed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(BoardDeckSendEmail_failed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(BoardDeckSendEmail_failed(t("Something-went-wrong")));
+      });
+  };
+};
 export {
   changeSelectPacakgeApi,
   signUpOrganizationAndPakageSelection,
@@ -2397,4 +2473,5 @@ export {
   requestOrganizationExtendApi,
   paymentStatusApi,
   cancelisTrailandSubscriptionApi,
+  BoardDeckSendEmailApi,
 };

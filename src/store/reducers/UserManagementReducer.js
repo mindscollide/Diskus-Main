@@ -27,6 +27,7 @@ const initialState = {
   paymentStatusModal: null,
   changeSelectedPackage: null,
   isFreeTrailCancelandUpgradeOrganization: null,
+  boardDeckSendEmailData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -526,6 +527,32 @@ const UserMangementReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.BOARD_DECK_SEND_EMAIL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.BOARD_DECK_SEND_EMAIL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        boardDeckSendEmailData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.BOARD_DECK_SEND_EMAIL_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        boardDeckSendEmailData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     case actions.CLEAR_MESSEGES_USER_MANAGEMENT:
       return {
         ...state,

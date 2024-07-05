@@ -207,7 +207,7 @@ const NewMeeting = () => {
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [responseByDate, setResponseByDate] = useState("");
-
+  const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [editorRole, setEdiorRole] = useState({
     status: null,
     role: null,
@@ -1318,12 +1318,13 @@ const NewMeeting = () => {
           } else if (record.isParticipant) {
           }
         } else if (Number(record.status) === 9) {
+          console.log(record, "recordrecordrecord");
           return (
             <>
               <Button
                 text={t("Board-deck")}
                 className={styles["BoardDeckButton"]}
-                onClick={boardDeckOnClick}
+                onClick={() => boardDeckOnClick(record)}
               />
             </>
           );
@@ -1510,8 +1511,8 @@ const NewMeeting = () => {
   };
 
   //Board Deck Onclick function
-
-  const boardDeckOnClick = () => {
+  const boardDeckOnClick = (record) => {
+    setBoardDeckMeetingID(record.pK_MDID);
     dispatch(boardDeckModal(true));
   };
 
@@ -2561,9 +2562,13 @@ const NewMeeting = () => {
           </>
         )}
       </section>
-      {NewMeetingreducer.boardDeckModalData && <BoardDeckModal />}
+      {NewMeetingreducer.boardDeckModalData && (
+        <BoardDeckModal boardDeckMeetingID={boardDeckMeetingID} />
+      )}
       {NewMeetingreducer.boarddeckShareModal && <ShareModalBoarddeck />}
-      {NewMeetingreducer.boardDeckEmailModal && <BoardDeckSendEmail />}
+      {NewMeetingreducer.boardDeckEmailModal && (
+        <BoardDeckSendEmail boardDeckMeetingID={boardDeckMeetingID} />
+      )}
     </>
   );
 };

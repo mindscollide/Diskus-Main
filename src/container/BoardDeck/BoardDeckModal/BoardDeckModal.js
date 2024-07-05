@@ -12,7 +12,7 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import { Checkbox, Radio } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
-const BoardDeckModal = () => {
+const BoardDeckModal = ({ boardDeckMeetingID }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
