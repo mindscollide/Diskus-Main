@@ -13,7 +13,11 @@ import {
 import { Checkbox, Radio } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 import { BoardDeckPDFDownloadApi } from "../../../store/actions/UserManagementActions";
-const BoardDeckModal = ({ boarddeckOptions, setBoarddeckOptions }) => {
+const BoardDeckModal = ({
+  boarddeckOptions,
+  setBoarddeckOptions,
+  boardDeckMeetingID,
+}) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -124,17 +128,17 @@ const BoardDeckModal = ({ boarddeckOptions, setBoarddeckOptions }) => {
 
   const handleDownloadButton = () => {
     let data = {
-      PK_MDID: 3499,
-      fetchOrganizers: true,
-      fetchAgendaContributors: true,
-      fetchParticipants: true,
-      fetchMinutes: true,
-      fetchTasks: true,
-      fetchPolls: true,
-      fetchAttendance: true,
-      fetchVideo: true,
-      fetchAgendaWithAttachments: false,
-      fetchAgenda: true,
+      PK_MDID: Number(boardDeckMeetingID),
+      fetchOrganizers: boarddeckOptions.Organizer,
+      fetchAgendaContributors: boarddeckOptions.AgendaContributor,
+      fetchParticipants: boarddeckOptions.Participants,
+      fetchMinutes: boarddeckOptions.Minutes,
+      fetchTasks: boarddeckOptions.Task,
+      fetchPolls: boarddeckOptions.polls,
+      fetchAttendance: boarddeckOptions.attendeceReport,
+      fetchVideo: boarddeckOptions.video,
+      fetchAgendaWithAttachments: boarddeckOptions.Agenda,
+      fetchAgenda: boarddeckOptions.Agenda,
     };
     dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
   };

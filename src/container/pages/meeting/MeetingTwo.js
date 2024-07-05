@@ -2575,6 +2575,7 @@ const NewMeeting = () => {
       </section>
       {NewMeetingreducer.boardDeckModalData && (
         <BoardDeckModal
+          boardDeckMeetingID={boardDeckMeetingID}
           boarddeckOptions={boarddeckOptions}
           setBoarddeckOptions={setBoarddeckOptions}
         />

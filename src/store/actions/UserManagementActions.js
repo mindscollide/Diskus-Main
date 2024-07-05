@@ -2482,36 +2482,44 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
   let form = new FormData();
   form.append("RequestMethod", DownloadBoarddeckPDF.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
+
   return async (dispatch) => {
     await dispatch(BoardDeckDownloadPDF_init());
+
     axios({
       method: "post",
       url: settingDownloadApi,
       data: form,
       headers: {
         _token: token,
-        "Content-Disposition": "attachment; filename=template.xlsx",
-        "Content-Type":
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       },
       responseType: "arraybuffer",
     })
       .then(async (response) => {
-        if (response.status === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
-        } else if (response.status === 200) {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
+        if (response.status === 200) {
+          console.log(response.status, "responsestatus");
+          console.log("Response data:", response.data);
+
+          const blob = new Blob([response.data], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+          console.log("Blob URL:", url);
 
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "download-Attendance-Report.xlsx");
+          link.setAttribute("download", "BoardDeckFile.pdf");
           document.body.appendChild(link);
           link.click();
+          document.body.removeChild(link);
+
           dispatch(SetLoaderFalseDownload(false));
+        } else {
+          console.log("Unexpected response status:", response.status);
+          console.log("Response headers:", response.headers);
+          console.log("Response data:", response.data);
         }
       })
-      .catch((response) => {
+      .catch((error) => {
+        console.error("Error during file download:", error);
         dispatch(BoardDeckDownloadPDF_failed(t("Something-went-wrong")));
       });
   };
