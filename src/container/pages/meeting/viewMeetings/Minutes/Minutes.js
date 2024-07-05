@@ -1757,11 +1757,11 @@ const Minutes = ({
                                               >
                                                 <span
                                                   onClick={() =>
-                                                    setShowRevisionHistory(true)
-                                                    // handleClickShowRevision(
-                                                    //   data,
-                                                    //   data.minuteID
-                                                    // )
+                                                    // setShowRevisionHistory(true)
+                                                    handleClickShowRevision(
+                                                      data,
+                                                      data.minuteID
+                                                    )
                                                   }
                                                 >
                                                   {t("Revisions")}

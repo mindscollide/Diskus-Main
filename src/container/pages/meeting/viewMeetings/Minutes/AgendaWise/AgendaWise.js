@@ -1513,7 +1513,7 @@ const AgendaWise = ({
                                           sm={12}
                                           className="d-grid justify-content-end p-0"
                                         >
-                                          <div>
+                                          <div className="d-flex justify-content-center align-items-center">
                                             <img
                                               className="cursor-pointer mx-2"
                                               src={EditIcon}
@@ -1555,23 +1555,24 @@ const AgendaWise = ({
                                                 <span
                                                   onClick={
                                                     () =>
-                                                      // handleClickShowRevision(
-                                                      //   data,
-                                                      //   parentMinutedata.minuteID
-                                                      // )
-                                                    setShowRevisionHistory(true)
+                                                      handleClickShowRevision(
+                                                        data,
+                                                        parentMinutedata.minuteID
+                                                      )
+                                                    // setShowRevisionHistory(true)
                                                   }
                                                 >
                                                   {t("Revisions")}
                                                   <p className="m-0"> 3 </p>
                                                 </span>
                                                 <span
-                                                  onClick={() =>
-                                                    // handleClickShowVersionHistory(
-                                                    //   data,
-                                                    //   parentMinutedata.minuteID
-                                                    // )
-                                                    setShowVersionHistory(true)
+                                                  onClick={
+                                                    () =>
+                                                      handleClickShowVersionHistory(
+                                                        data,
+                                                        parentMinutedata.minuteID
+                                                      )
+                                                    // setShowVersionHistory(true)
                                                   }
                                                   className="border-0"
                                                 >
@@ -1877,7 +1878,7 @@ const AgendaWise = ({
                                               sm={12}
                                               className="d-grid justify-content-end p-0"
                                             >
-                                              <div>
+                                              <div className="d-flex justify-content-center align-items-center">
                                                 <img
                                                   className="cursor-pointer mx-2"
                                                   src={EditIcon}
@@ -1921,27 +1922,28 @@ const AgendaWise = ({
                                                     }
                                                   >
                                                     <span
-                                                      onClick={() =>
-                                                        // handleClickShowRevision(
-                                                        //   data,
-                                                        //   minuteDataSubminute.minuteID
-                                                        // )
-                                                    setShowRevisionHistory(true)
-
+                                                      onClick={
+                                                        () =>
+                                                          handleClickShowRevision(
+                                                            data,
+                                                            minuteDataSubminute.minuteID
+                                                          )
+                                                        // setShowRevisionHistory(true)
                                                       }
                                                     >
                                                       {t("Revisions")}
                                                       <p className="m-0"> 3 </p>
                                                     </span>
                                                     <span
-                                                      onClick={() =>
-                                                        // handleClickShowVersionHistory(
-                                                        //   data,
-                                                        //   minuteDataSubminute.minuteID
+                                                      onClick={
+                                                        () =>
+                                                          handleClickShowVersionHistory(
+                                                            data,
+                                                            minuteDataSubminute.minuteID
+                                                          )
+                                                        // setShowVersionHistory(
+                                                        //   true
                                                         // )
-                                                        setShowVersionHistory(
-                                                          true
-                                                        )
                                                       }
                                                       className="border-0"
                                                     >

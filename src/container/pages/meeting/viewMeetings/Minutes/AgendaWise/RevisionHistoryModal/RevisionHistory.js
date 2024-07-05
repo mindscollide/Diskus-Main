@@ -20,13 +20,15 @@ import {
   newTimeFormaterAsPerUTCTalkTime,
   utcConvertintoGMT,
 } from "../../../../../../../commen/functions/date_formater";
+import { useSelector } from "react-redux";
 
 const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
   const { t } = useTranslation();
-
+  const { GetMinuteReviewDetailsForOrganizerbyMinuteId } = useSelector(
+    (state) => state.MinutesReducer
+  );
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const [openReviewerDetail, setOpenReviewerDetail] = useState(false);
   const [reviewHistory, setReviewHistory] = useState([
     {
       versionNumber: 1,
@@ -94,15 +96,24 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
   };
 
   const openCloseReviewerDetail = (index) => {
-    if (openReviewerDetail === false) {
-      setOpenReviewerDetail(true);
-      setIsDrawerOpen(index);
-    } else {
+    if (isDrawerOpen === index) {
       setIsDrawerOpen(null);
-
-      setOpenReviewerDetail(false);
+    } else {
+      setIsDrawerOpen(index);
     }
   };
+
+  useEffect(() => {
+    if (GetMinuteReviewDetailsForOrganizerbyMinuteId !== null) {
+      try {
+        // if(GetMinuteReviewDetailsForOrganizerbyMinuteId.)
+        console.log(
+          GetMinuteReviewDetailsForOrganizerbyMinuteId,
+          "GetMinuteReviewDetailsForOrganizerbyMinuteIdGetMinuteReviewDetailsForOrganizerbyMinuteId"
+        );
+      } catch (error) {}
+    }
+  }, [GetMinuteReviewDetailsForOrganizerbyMinuteId]);
 
   return (
     <Modal
@@ -181,127 +192,62 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                         console.log(reviewData, "reviewDatareviewData");
                         return (
                           <>
-                            {openReviewerDetail === false ? (
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <div
-                                    className={
-                                      styles["reviewer-progress-wrapper"]
-                                    }
-                                  >
-                                    <Row>
-                                      <Col lg={11} md={11} sm={12}>
-                                        <div
-                                          className={
-                                            styles["reviewer-progress-text"]
-                                          }
-                                        >
-                                          <p className="m-0">
-                                            Total:{" "}
-                                            {
-                                              reviewData.reviewStats
-                                                .totalReviews
-                                            }
-                                          </p>
-                                          <span>|</span>
-                                          <p className="m-0">
-                                            Accepted:{" "}
-                                            {reviewData.reviewStats.accepted}
-                                          </p>
-                                          <span>|</span>
-                                          <p className="m-0">
-                                            Rejected:{" "}
-                                            {reviewData.reviewStats.rejected}
-                                          </p>
-                                          <span>|</span>
-                                          <p className="m-0">
-                                            Pending:{" "}
-                                            {reviewData.reviewStats.pending}
-                                          </p>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        lg={1}
-                                        md={1}
-                                        sm={12}
-                                        className="text-end"
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <div
+                                  className={
+                                    styles["reviewer-progress-wrapper"]
+                                  }
+                                >
+                                  <Row>
+                                    <Col lg={11} md={11} sm={12}>
+                                      <div
+                                        className={
+                                          styles["reviewer-progress-text"]
+                                        }
                                       >
-                                        <img
-                                          alt=""
-                                          src={DropdownPurple}
-                                          className={
-                                            openReviewerDetail
-                                              ? `${styles["Arrow"]} cursor-pointer`
-                                              : `${styles["Arrow_Expanded"]} cursor-pointer`
-                                          }
-                                          onClick={() =>
-                                            openCloseReviewerDetail(index)
-                                          }
-                                        />
-                                      </Col>
-                                    </Row>
-                                  </div>
-                                </Col>
-                              </Row>
-                            ) : (
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <div
-                                    className={
-                                      styles["reviewer-progress-wrapper"]
-                                    }
-                                  >
-                                    <Row>
-                                      <Col lg={11} md={11} sm={12}>
-                                        <div
-                                          className={
-                                            styles["reviewer-progress-text"]
-                                          }
-                                        >
-                                          <p>
-                                            Total:{" "}
-                                            {
-                                              reviewData.reviewStats
-                                                .totalReviews
-                                            }
-                                          </p>
-                                          <span>|</span>
-                                          <p>
-                                            Accepted:{" "}
-                                            {reviewData.reviewStats.accepted}
-                                          </p>
-                                          <span>|</span>
-                                          <p>
-                                            Rejected:{" "}
-                                            {reviewData.reviewStats.rejected}
-                                          </p>
-                                          <span>|</span>
-                                          <p>
-                                            Pending:{" "}
-                                            {reviewData.reviewStats.pending}
-                                          </p>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        lg={1}
-                                        md={1}
-                                        sm={12}
-                                        className="text-end"
-                                      >
-                                        <img
-                                          alt=""
-                                          src={DropdownPurple}
-                                          className={
-                                            openReviewerDetail
-                                              ? `${styles["Arrow"]} cursor-pointer`
-                                              : `${styles["Arrow_Expanded"]} cursor-pointer`
-                                          }
-                                          onClick={() =>
-                                            openCloseReviewerDetail(index)
-                                          }
-                                        />
-                                      </Col>
-                                    </Row>
+                                        <p>
+                                          Total:{" "}
+                                          {reviewData.reviewStats.totalReviews}
+                                        </p>
+                                        <span>|</span>
+                                        <p>
+                                          Accepted:{" "}
+                                          {reviewData.reviewStats.accepted}
+                                        </p>
+                                        <span>|</span>
+                                        <p>
+                                          Rejected:{" "}
+                                          {reviewData.reviewStats.rejected}
+                                        </p>
+                                        <span>|</span>
+                                        <p>
+                                          Pending:{" "}
+                                          {reviewData.reviewStats.pending}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col
+                                      lg={1}
+                                      md={1}
+                                      sm={12}
+                                      className="text-end"
+                                    >
+                                      <img
+                                        alt=""
+                                        src={DropdownPurple}
+                                        className={
+                                          isDrawerOpen === index
+                                            ? `${styles["Arrow"]} cursor-pointer`
+                                            : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                        }
+                                        onClick={() =>
+                                          openCloseReviewerDetail(index)
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                  {isDrawerOpen === index && (
                                     <Row>
                                       <Col lg={12} md={12} sm={12}>
                                         <p
@@ -352,10 +298,10 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                         </p>
                                       </Col>
                                     </Row>
-                                  </div>
-                                </Col>
-                              </Row>
-                            )}
+                                  )}
+                                </div>
+                              </Col>
+                            </Row>
                             <Row>
                               <Col
                                 lg={12}
