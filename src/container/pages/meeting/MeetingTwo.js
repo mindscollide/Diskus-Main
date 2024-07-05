@@ -1317,11 +1317,17 @@ const NewMeeting = () => {
           if (record.isOrganizer) {
           } else if (record.isParticipant) {
           }
+        } else if (Number(record.status) === 9) {
+          return (
+            <>
+              <Button
+                text={t("Board-deck")}
+                className={styles["BoardDeckButton"]}
+                onClick={boardDeckOnClick}
+              />
+            </>
+          );
         } else {
-          <Button
-            text={t("Board-deck")}
-            className={styles["BoardDeckButton"]}
-          />;
         }
       },
     },
@@ -2262,12 +2268,12 @@ const NewMeeting = () => {
                         ) : null}
 
                         {/* BoardDeck For Time Being */}
-                        <Dropdown.Item
+                        {/* <Dropdown.Item
                           className="dropdown-item"
                           onClick={boardDeckOnClick}
                         >
                           {t("Board-deck")}
-                        </Dropdown.Item>
+                        </Dropdown.Item> */}
                       </Dropdown.Menu>
                     </Dropdown>
                   </Col>
