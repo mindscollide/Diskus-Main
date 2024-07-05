@@ -96,6 +96,7 @@ const SelectReviewers = ({
     return () => {
       setSelectReviewersArray([]);
       setSelectedMinuteIDs([]);
+      setNewSelectedMinutes([]);
     };
   }, []);
 
@@ -163,13 +164,23 @@ const SelectReviewers = ({
 
   useEffect(() => {
     try {
-      const { updatedState1, updatedState2 } = updateMinutes(
-        minuteDataAgenda,
-        minuteDataGeneral,
-        selectedMinuteIDs
-      );
-      setMinuteDataAgenda(updatedState1);
-      setMinuteDataGeneral(updatedState2);
+      if (moreMinutes === true) {
+        const { updatedState1, updatedState2 } = updateMinutes(
+          minuteDataAgenda,
+          minuteDataGeneral,
+          newSelectedMinutes
+        );
+        setMinuteDataAgenda(updatedState1);
+        setMinuteDataGeneral(updatedState2);
+      } else {
+        const { updatedState1, updatedState2 } = updateMinutes(
+          minuteDataAgenda,
+          minuteDataGeneral,
+          selectedMinuteIDs
+        );
+        setMinuteDataAgenda(updatedState1);
+        setMinuteDataGeneral(updatedState2);
+      }
     } catch (error) {
       console.log("Error: ", error);
     }

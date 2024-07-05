@@ -132,31 +132,33 @@ const SelectMinutes = ({
     }
   };
 
-  const handleParentCheckboxChangeSubMinutes = (checked, agendaID) => {
-    if (checked) {
-      // Add all minute IDs from subMinutes for the given agendaID to selectedMinuteIDs
-      const agenda = minuteDataAgenda.find(
-        (item) => item.agendaID === agendaID
+  const handleParentCheckboxChangeSubMinutes = (checked, subAgendaID) => {
+    // Flatten all subMinutes across all agendas
+    const allSubMinutes = minuteDataAgenda.flatMap(
+      (agenda) => agenda.subMinutes
+    );
+
+    // Find the specific sub-agenda using the subAgendaID
+    const targetSubAgenda = allSubMinutes.find(
+      (item) => item.agendaID === subAgendaID
+    );
+
+    if (targetSubAgenda) {
+      const subAgendaMinuteIDs = targetSubAgenda.minuteData.map(
+        (minute) => minute.minuteID
       );
-      if (agenda) {
-        const allMinuteIDs = agenda.subMinutes.flatMap((subItem) =>
-          subItem.minuteData.map((subData) => subData.minuteID)
+
+      if (checked) {
+        // Add only the minute IDs from sub-agenda minuteData to selectedMinuteIDs
+        setSelectedMinuteIDs((prevSelected) => [
+          ...prevSelected,
+          ...subAgendaMinuteIDs.filter((id) => !prevSelected.includes(id)),
+        ]);
+      } else {
+        // Remove only the minute IDs from sub-agenda minuteData from selectedMinuteIDs
+        setSelectedMinuteIDs((prevSelected) =>
+          prevSelected.filter((id) => !subAgendaMinuteIDs.includes(id))
         );
-        setSelectedMinuteIDs([...selectedMinuteIDs, ...allMinuteIDs]);
-      }
-    } else {
-      // Remove all minute IDs from subMinutes for the given agendaID from selectedMinuteIDs
-      const agenda = minuteDataAgenda.find(
-        (item) => item.agendaID === agendaID
-      );
-      if (agenda) {
-        const filteredIDs = selectedMinuteIDs.filter(
-          (id) =>
-            !agenda.subMinutes.some((subItem) =>
-              subItem.minuteData.some((subData) => subData.minuteID === id)
-            )
-        );
-        setSelectedMinuteIDs(filteredIDs);
       }
     }
   };
@@ -380,7 +382,7 @@ const SelectMinutes = ({
                                 onChange={(e) =>
                                   handleParentCheckboxChangeSubMinutes(
                                     e.target.checked,
-                                    data.agendaID
+                                    subagendaMinuteData.agendaID
                                   )
                                 }
                                 checked={subagendaMinuteData.minuteData.every(

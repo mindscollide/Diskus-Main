@@ -174,9 +174,9 @@ const SendReviewers = ({
           }, 0) + minuteDataGeneral.filter((item) => !item.isChecked).length;
 
         setTotalIds(totalSelectableIDs);
-        setSelectedMinuteIDs(allMinuteIDs);
+        setNewSelectedMinutes(allMinuteIDs);
       } else {
-        setSelectedMinuteIDs([]);
+        setNewSelectedMinutes([]);
       }
     } catch (error) {
       console.log("Error:", error);
@@ -191,7 +191,7 @@ const SendReviewers = ({
       );
       if (agenda) {
         const allMinuteIDs = agenda.minuteData.map((item) => item.minuteID);
-        setSelectedMinuteIDs([...selectedMinuteIDs, ...allMinuteIDs]);
+        setNewSelectedMinutes([...newSelectedMinutes, ...allMinuteIDs]);
       }
     } else {
       // Remove all minute IDs from minuteData for the given agendaID from selectedMinuteIDs
@@ -199,71 +199,73 @@ const SendReviewers = ({
         (item) => item.agendaID === agendaID
       );
       if (agenda) {
-        const filteredIDs = selectedMinuteIDs.filter(
+        const filteredIDs = newSelectedMinutes.filter(
           (id) => !agenda.minuteData.some((item) => item.minuteID === id)
         );
-        setSelectedMinuteIDs(filteredIDs);
+        setNewSelectedMinutes(filteredIDs);
       }
     }
   };
 
-  const handleParentCheckboxChangeSubMinutes = (checked, agendaID) => {
-    if (checked) {
-      // Add all minute IDs from subMinutes for the given agendaID to selectedMinuteIDs
-      const agenda = minuteDataAgenda.find(
-        (item) => item.agendaID === agendaID
+  const handleParentCheckboxChangeSubMinutes = (checked, subAgendaID) => {
+    // Flatten all subMinutes across all agendas
+    const allSubMinutes = minuteDataAgenda.flatMap(
+      (agenda) => agenda.subMinutes
+    );
+
+    // Find the specific sub-agenda using the subAgendaID
+    const targetSubAgenda = allSubMinutes.find(
+      (item) => item.agendaID === subAgendaID
+    );
+
+    if (targetSubAgenda) {
+      const subAgendaMinuteIDs = targetSubAgenda.minuteData.map(
+        (minute) => minute.minuteID
       );
-      if (agenda) {
-        const allMinuteIDs = agenda.subMinutes.flatMap((subItem) =>
-          subItem.minuteData.map((subData) => subData.minuteID)
+
+      if (checked) {
+        // Add only the minute IDs from sub-agenda minuteData to selectedMinuteIDs
+        setNewSelectedMinutes((prevSelected) => [
+          ...prevSelected,
+          ...subAgendaMinuteIDs.filter((id) => !prevSelected.includes(id)),
+        ]);
+      } else {
+        // Remove only the minute IDs from sub-agenda minuteData from selectedMinuteIDs
+        setNewSelectedMinutes((prevSelected) =>
+          prevSelected.filter((id) => !subAgendaMinuteIDs.includes(id))
         );
-        setSelectedMinuteIDs([...selectedMinuteIDs, ...allMinuteIDs]);
-      }
-    } else {
-      // Remove all minute IDs from subMinutes for the given agendaID from selectedMinuteIDs
-      const agenda = minuteDataAgenda.find(
-        (item) => item.agendaID === agendaID
-      );
-      if (agenda) {
-        const filteredIDs = selectedMinuteIDs.filter(
-          (id) =>
-            !agenda.subMinutes.some((subItem) =>
-              subItem.minuteData.some((subData) => subData.minuteID === id)
-            )
-        );
-        setSelectedMinuteIDs(filteredIDs);
       }
     }
   };
 
   const handleChildCheckboxChangeAgenda = (checked, minuteID) => {
     if (checked) {
-      setSelectedMinuteIDs([...selectedMinuteIDs, minuteID]);
+      setNewSelectedMinutes([...newSelectedMinutes, minuteID]);
     } else {
-      setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== minuteID));
+      setNewSelectedMinutes(newSelectedMinutes.filter((id) => id !== minuteID));
     }
   };
 
   const handleChildCheckboxChangeSubMinutes = (checked, minuteID) => {
     if (checked) {
-      setSelectedMinuteIDs([...selectedMinuteIDs, minuteID]);
+      setNewSelectedMinutes([...newSelectedMinutes, minuteID]);
     } else {
-      setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== minuteID));
+      setNewSelectedMinutes(newSelectedMinutes.filter((id) => id !== minuteID));
     }
   };
 
   const handleParentCheckboxChange = (checked) => {
     try {
       if (checked) {
-        // Add all minute IDs from minuteDataGeneral to selectedMinuteIDs
+        // Add all minute IDs from minuteDataGeneral to newSelectedMinutes
         const allMinuteIDs = minuteDataGeneral.map((item) => item.minuteID);
-        setSelectedMinuteIDs([...selectedMinuteIDs, ...allMinuteIDs]);
+        setNewSelectedMinutes([...newSelectedMinutes, ...allMinuteIDs]);
       } else {
-        // Remove all minute IDs from minuteDataGeneral from selectedMinuteIDs
-        const filteredIDs = selectedMinuteIDs.filter(
+        // Remove all minute IDs from minuteDataGeneral from newSelectedMinutes
+        const filteredIDs = newSelectedMinutes.filter(
           (id) => !minuteDataGeneral.some((item) => item.minuteID === id)
         );
-        setSelectedMinuteIDs(filteredIDs);
+        setNewSelectedMinutes(filteredIDs);
       }
     } catch {}
   };
@@ -271,9 +273,11 @@ const SendReviewers = ({
   const handleChildCheckboxChange = (checked, minuteID) => {
     try {
       if (checked) {
-        setSelectedMinuteIDs([...selectedMinuteIDs, minuteID]);
+        setNewSelectedMinutes([...newSelectedMinutes, minuteID]);
       } else {
-        setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== minuteID));
+        setNewSelectedMinutes(
+          newSelectedMinutes.filter((id) => id !== minuteID)
+        );
       }
     } catch {}
   };
@@ -379,8 +383,8 @@ const SendReviewers = ({
               classNameDiv={styles["selectAllMinutesCheckbox"]}
               onChange={(e) => handleSelectAll(e.target.checked)}
               checked={
-                selectedMinuteIDs.length > 0 &&
-                selectedMinuteIDs.length === totalIds
+                newSelectedMinutes.length > 0 &&
+                newSelectedMinutes.length === totalIds
               }
             />
           </Col>
@@ -433,7 +437,7 @@ const SendReviewers = ({
                                 )
                               }
                               checked={data.minuteData.every((item) =>
-                                selectedMinuteIDs.includes(item.minuteID)
+                                newSelectedMinutes.includes(item.minuteID)
                               )}
                             />
                           </Col>
@@ -715,7 +719,7 @@ const SendReviewers = ({
                                               parentMinutedata.minuteID
                                             )
                                           }
-                                          checked={selectedMinuteIDs.includes(
+                                          checked={newSelectedMinutes.includes(
                                             parentMinutedata.minuteID
                                           )}
                                           classNameDiv={
@@ -782,12 +786,12 @@ const SendReviewers = ({
                                       onChange={(e) =>
                                         handleParentCheckboxChangeSubMinutes(
                                           e.target.checked,
-                                          data.agendaID
+                                          subagendaMinuteData.agendaID
                                         )
                                       }
                                       checked={subagendaMinuteData.minuteData.every(
                                         (item) =>
-                                          selectedMinuteIDs.includes(
+                                          newSelectedMinutes.includes(
                                             item.minuteID
                                           )
                                       )}
@@ -1124,7 +1128,7 @@ const SendReviewers = ({
                                                       subItem.minuteID
                                                     )
                                                   }
-                                                  checked={selectedMinuteIDs.includes(
+                                                  checked={newSelectedMinutes.includes(
                                                     subItem.minuteID
                                                   )}
                                                   classNameDiv={
@@ -1179,7 +1183,7 @@ const SendReviewers = ({
                           handleParentCheckboxChange(e.target.checked)
                         }
                         checked={minuteDataGeneral.every((item) =>
-                          selectedMinuteIDs.includes(item.minuteID)
+                          newSelectedMinutes.includes(item.minuteID)
                         )}
                         classNameDiv={styles["agendaTitleToCheckbox"]}
                       />
@@ -1422,7 +1426,7 @@ const SendReviewers = ({
                                 data.minuteID
                               )
                             }
-                            checked={selectedMinuteIDs.includes(data.minuteID)}
+                            checked={newSelectedMinutes.includes(data.minuteID)}
                             classNameDiv={styles["agendaTitleToCheckbox"]}
                           />
                         </Col>
