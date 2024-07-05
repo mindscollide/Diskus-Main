@@ -1257,6 +1257,7 @@ const Minutes = ({
               <Button
                 text={t("Add-reviewers")}
                 className={styles["Add_Reviewers"]}
+                // disableBtn={minutesData.length > 0 ? true : false}
                 onClick={addReviewersModal}
               />
             </div>
@@ -1757,11 +1758,11 @@ const Minutes = ({
                                               >
                                                 <span
                                                   onClick={() =>
-                                                    // setShowRevisionHistory(true)
-                                                    handleClickShowRevision(
-                                                      data,
-                                                      data.minuteID
-                                                    )
+                                                    setShowRevisionHistory(true)
+                                                    // handleClickShowRevision(
+                                                    //   data,
+                                                    //   data.minuteID
+                                                    // )
                                                   }
                                                 >
                                                   {t("Revisions")}
@@ -1770,11 +1771,11 @@ const Minutes = ({
                                                 <span
                                                   onClick={
                                                     () =>
-                                                      handleClickShowVersionHistory(
-                                                        data,
-                                                        data.minuteID
-                                                      )
-                                                    // setShowVersionHistory(true)
+                                                      // handleClickShowVersionHistory(
+                                                      //   data,
+                                                      //   data.minuteID
+                                                      // )
+                                                    setShowVersionHistory(true)
                                                   }
                                                   className="border-0"
                                                 >

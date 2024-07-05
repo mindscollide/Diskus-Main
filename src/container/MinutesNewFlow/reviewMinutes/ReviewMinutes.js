@@ -36,7 +36,134 @@ const ReviewMinutes = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const [reviewWrapperScroll, setReviewWrapperScroll] = useState(false);
+  const [demoData, setDemoData] = useState({
+    workFlowID: 65,
+    generalMinutes: [
+      {
+        generalMinutesVersionHistory: [],
+        versionNumber: 1,
+        minuteID: 86,
+        meetingID: 0,
+        minutesDetails: "<p>General Minutes 1 one</p>",
+        userID: 954,
+        actionableBundleID: 216,
+        actorBundleStatusID: 3,
+        reason: "",
+        userName: "Ali Mamdani",
+        lastUpdatedDate: "20240620",
+        lastUpdatedTime: "140650",
+        userProfilePicture: {
+          userID: 954,
+          orignalProfilePictureName: "20240614102831931.jpg",
+          displayProfilePictureName: "20240614102831931.jpg",
+        },
+        minuteAttachmentFiles: [
+          {
+            minuteID: 86,
+            pK_FileID: 3007,
+            displayFileName: "featurewise_ids.pdf",
+            diskusFileName: 2024060609035371313,
+            diskusFileNameString: "",
+            shareAbleLink: "2024060609035371313",
+            fileSize: 0,
+            fileSizeOnDisk: 0,
+            fK_UserID: 954,
+            fK_OrganizationID: 399,
+            uriPath: null,
+            fK_GAID: 0,
+            createdDate: "",
+            modifiedDate: "",
+            modifiedByUser: "",
+            openedDateTime: "",
+            openedByUser: "",
+            location: "",
+            type: "",
+            description: "",
+          },
+        ],
+        declinedReviews: [],
+      },
+      {
+        generalMinutesVersionHistory: [],
+        versionNumber: 1,
+        minuteID: 87,
+        meetingID: 0,
+        minutesDetails: "<p>General Minutes two </p>",
+        userID: 954,
+        actionableBundleID: 217,
+        actorBundleStatusID: 2,
+        reason: "",
+        userName: "Ali Mamdani",
+        lastUpdatedDate: "20240606",
+        lastUpdatedTime: "090412",
+        userProfilePicture: {
+          userID: 954,
+          orignalProfilePictureName: "20240614102831931.jpg",
+          displayProfilePictureName: "20240614102831931.jpg",
+        },
+        minuteAttachmentFiles: [
+          {
+            minuteID: 87,
+            pK_FileID: 3008,
+            displayFileName: "SQA Assignment One (2).docx",
+            diskusFileName: 2024060609041292090,
+            diskusFileNameString: "",
+            shareAbleLink: "2024060609041292090",
+            fileSize: 0,
+            fileSizeOnDisk: 0,
+            fK_UserID: 954,
+            fK_OrganizationID: 399,
+            uriPath: null,
+            fK_GAID: 0,
+            createdDate: "",
+            modifiedDate: "",
+            modifiedByUser: "",
+            openedDateTime: "",
+            openedByUser: "",
+            location: "",
+            type: "",
+            description: "",
+          },
+        ],
+        declinedReviews: [],
+      },
+    ],
+    agendaMinutes: [],
+    agendaHierarchyList: [
+      {
+        pK_MAID: 3740,
+        title: "Agenda Main One",
+        childAgendas: [
+          {
+            pK_MAID: 3741,
+            parentID: 3740,
+            title: "Agenda Main One SubAgenda",
+            parentTitle: "Agenda Main One",
+          },
+          {
+            pK_MAID: 3742,
+            parentID: 3740,
+            title: "Subagenda Second ",
+            parentTitle: "Agenda Main One",
+          },
+        ],
+      },
+      {
+        pK_MAID: 3743,
+        title: "Second Main agenda ",
+        childAgendas: [
+          {
+            pK_MAID: 3744,
+            parentID: 3743,
+            title: "Second main subagenda ",
+            parentTitle: "Second Main agenda ",
+          },
+        ],
+      },
+    ],
+  });
 
+  console.log(demoData, "demoDatademoDatademoDatademoData");
   const [minutesAgenda, setMinutesAgenda] = useState([]);
   const [minutesAgendaHierarchy, setMinutesAgendaHierarchy] = useState([]);
   const [minutesGeneral, setMinutesGeneral] = useState([]);
@@ -115,6 +242,131 @@ const ReviewMinutes = () => {
       }
     } catch {}
   }, [MinutesReducer.GetMinutesForReviewerByMeetingIdData]);
+  useEffect(() => {
+    try {
+      // Check if agendaWiseMinutesReducer is not null, undefined, and has at least one key
+      if (demoData !== null) {
+        // Store agendaWiseMinutesReducer in a local variable
+        let reducerData = demoData;
+        // Initialize an empty array to hold the transformed data
+        let transformedData = [];
+        console.log("transformedDatatransformedData", transformedData);
+        // Iterate through each parent agenda in the agenda hierarchy list
+        reducerData.agendaHierarchyList.forEach((parentAgenda) => {
+          // Find the parent agenda details in the agendaWiseMinutes array
+          let parentAgendaMinutes = reducerData.agendaMinutes.filter(
+            (minute) => minute.agendaID === parentAgenda.pK_MAID
+          );
+
+          // Initialize an array to hold sub-minutes of the parent agenda
+          let subMinutes = [];
+          // Iterate through each child agenda of the parent agenda
+          parentAgenda.childAgendas.forEach((childAgenda) => {
+            // Filter the minutes that match the child agenda ID and push to subMinutes
+            let childMinutes = reducerData.agendaMinutes.filter(
+              (minute) => minute.agendaID === childAgenda.pK_MAID
+            );
+            subMinutes.push(...childMinutes);
+          });
+
+          // Check if parent agenda details exist to determine if it's parent data
+          let isParentData = parentAgendaMinutes.length > 0;
+
+          // If there are parent agenda details or sub-minutes, create a parent agenda object
+          if (isParentData || subMinutes.length > 0) {
+            // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
+            let agendaTitle = isParentData
+              ? parentAgendaMinutes[0].agendaTitle
+              : parentAgenda.childAgendas.find((childAgenda) =>
+                  subMinutes.some(
+                    (minute) => minute.agendaID === childAgenda.pK_MAID
+                  )
+                )?.parentTitle || "";
+
+            let parentAgendaObj = {
+              agendaID: parentAgenda.pK_MAID,
+              agendaTitle: agendaTitle,
+              isParentData: isParentData,
+              minuteData: parentAgendaMinutes.map((minute) => ({
+                minuteID: minute.minuteID,
+                description: minute.minutesDetails,
+                attachments: minute.minutesAttachmets,
+                uploader: minute.userProfilePicture,
+                lastUpdatedDate: minute.lastUpdatedDate,
+                lastUpdatedTime: minute.lastUpdatedTime,
+                userID: minute.userID,
+                userName: minute.userName,
+              })),
+              subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+                let childMinutes = subMinutes.filter(
+                  (minute) => minute.agendaID === childAgenda.pK_MAID
+                );
+                return {
+                  agendaID: childAgenda.pK_MAID,
+                  agendaTitle: childMinutes[0]?.agendaTitle || "",
+                  minuteData: childMinutes.map((minute) => ({
+                    minuteID: minute.minuteID,
+                    description: minute.minutesDetails,
+                    attachments: minute.minutesAttachmets,
+                    uploader: minute.userProfilePicture,
+                    lastUpdatedDate: minute.lastUpdatedDate,
+                    lastUpdatedTime: minute.lastUpdatedTime,
+                    userID: minute.userID,
+                    userName: minute.userName,
+                  })),
+                };
+              }),
+            };
+
+            // Push the parent agenda object to the transformed data array
+            transformedData.push(parentAgendaObj);
+          }
+        });
+        console.log("transformedDatatransformedData", transformedData);
+
+        // Update attachments in transformedData based on data state
+        console.log("transformedDatatransformedData", transformedData);
+
+        // transformedData.forEach((agenda) => {
+        //   agenda.minuteData.forEach((minute) => {
+        //     // Find matching entry in data state by pK_MeetingAgendaMinutesID
+        //     let matchingData =
+        //     demoData.getallDocumentsForAgendaWiseMinutes.data.find(
+        //         (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+        //       );
+
+        //     // If matchingData found, update attachments in minuteData
+        //     if (matchingData) {
+        //       minute.attachments = matchingData.files || [];
+        //     }
+        //   });
+
+        // agenda.subMinutes.forEach((subAgenda) => {
+        //   subAgenda.minuteData.forEach((minute) => {
+        //     // Find matching entry in data state by pK_MeetingAgendaMinutesID
+        //     let matchingData =
+        //     demoData.getallDocumentsForAgendaWiseMinutes.data.find(
+        //         (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+        //       );
+
+        //     // If matchingData found, update attachments in minuteData
+        //     if (matchingData) {
+        //       minute.attachments = matchingData.files || [];
+        //     }
+        //   });
+        // });
+        // });
+        console.log("transformedDatatransformedData", transformedData);
+
+        // Log the transformed data to the console
+        // setMinutesData(transformedData);
+        console.log("transformedDatatransformedData", transformedData);
+      }
+    } catch (error) {
+      console.error("Error transforming data:", error);
+      // setMinutesData([]);
+    }
+  }, [demoData]);
 
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
 

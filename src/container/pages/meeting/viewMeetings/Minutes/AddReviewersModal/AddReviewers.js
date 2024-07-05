@@ -712,18 +712,18 @@ const AddReviewers = ({
     };
   }, []);
 
-  useEffect(() => {
-    if (
-      MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null &&
-      MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== undefined
-    ) {
-      setSelectMinutes(false);
-      setSelectReviewers(false);
-      setSendReviewers(true);
-      setEditReviewer(false);
-      dispatch(UpdateMinuteFlag(false));
-    }
-  }, [MinutesReducer.GetMinuteReviewFlowByMeetingIdData]);
+  // useEffect(() => {
+  //   if (
+  //     MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null &&
+  //     MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== undefined
+  //   ) {
+  //     setSelectMinutes(false);
+  //     setSelectReviewers(false);
+  //     setSendReviewers(true);
+  //     setEditReviewer(false);
+  //     dispatch(UpdateMinuteFlag(false));
+  //   }
+  // }, [MinutesReducer.GetMinuteReviewFlowByMeetingIdData]);
 
   console.log("MinutesReducerMinutesReducerMinutesReducer", MinutesReducer);
 

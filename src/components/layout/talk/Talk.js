@@ -53,6 +53,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { GetMinuteReviewPendingApprovalsByReviewerId, GetMinuteReviewPendingApprovalsStatsByReviewerId } from "../../../store/actions/Minutes_action.js";
 
 const Talk = () => {
   const { t } = useTranslation();
@@ -114,7 +115,7 @@ const Talk = () => {
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
 
-  const handleMeetingPendingApprovals = () => {
+  const handleMeetingPendingApprovals = async () => {
     if (
       (NewMeetingreducer.scheduleMeetingPageFlag === true ||
         NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
@@ -129,6 +130,13 @@ const Talk = () => {
       console.log("This Check");
     } else {
       navigate("/DisKus/Minutes");
+      let newData = { sRow: 0, Length: 10 };
+      await dispatch(
+        GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t)
+      );
+      await dispatch(
+        GetMinuteReviewPendingApprovalsByReviewerId(newData, navigate, t)
+      );
       dispatch(showCancelModalmeetingDeitals(false));
       dispatch(scheduleMeetingPageFlag(false));
       dispatch(viewProposeDateMeetingPageFlag(false));
