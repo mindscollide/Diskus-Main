@@ -1606,6 +1606,10 @@ const GetAllPendingForApprovalStatsRM = {
 const BoardDeckSendEmail = {
   RequestMethod: "ServiceManager.SendBoardDeckPDFAsEmail",
 };
+
+const DownloadBoarddeckPDF = {
+  RequestMethod: "ServiceManager.DownloadBoardDeckPDF",
+};
 export {
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
@@ -2033,4 +2037,5 @@ export {
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
   BoardDeckSendEmail,
+  DownloadBoarddeckPDF,
 };

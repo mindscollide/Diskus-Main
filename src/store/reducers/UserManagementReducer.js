@@ -28,6 +28,7 @@ const initialState = {
   changeSelectedPackage: null,
   isFreeTrailCancelandUpgradeOrganization: null,
   boardDeckSendEmailData: null,
+  downloadBoardDeckPDF: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -549,6 +550,31 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         boardDeckSendEmailData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DOWNLOAD__BOARDDECKPDF_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DOWNLOAD_BOARDDECKPDF_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        downloadBoardDeckPDF: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DOWNLOAD_BOARDDECKPDF_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        downloadBoardDeckPDF: null,
         ResponseMessage: action.message,
       };
     }

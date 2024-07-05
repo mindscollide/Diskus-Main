@@ -19,6 +19,7 @@ import {
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
   BoardDeckSendEmail,
+  DownloadBoarddeckPDF,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -2368,7 +2369,6 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
 };
 
 //BoardDeck Send Email
-
 const BoardDeckSendEmail_init = () => {
   return {
     type: actions.BOARD_DECK_SEND_EMAIL_INIT,
@@ -2449,6 +2449,74 @@ const BoardDeckSendEmailApi = (navigate, t, data) => {
       });
   };
 };
+
+//Board Deck PDF Download
+
+const BoardDeckDownloadPDF_init = () => {
+  return {
+    type: actions.DOWNLOAD__BOARDDECKPDF_INIT,
+  };
+};
+
+const BoardDeckDownloadPDF_success = () => {
+  return {
+    type: actions.DOWNLOAD_BOARDDECKPDF_SUCCESS,
+  };
+};
+
+const BoardDeckDownloadPDF_failed = () => {
+  return {
+    type: actions.DOWNLOAD_BOARDDECKPDF_FAILED,
+  };
+};
+
+const BoardDeckPDFDownloadApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(BoardDeckDownloadPDF_init());
+    let form = new FormData();
+    form.append("RequestMethod", DownloadBoarddeckPDF.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: excelURL,
+      data: form,
+      headers: {
+        _token: token,
+        "Content-Disposition": "attachment; filename=template.xlsx",
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      },
+      responseType: "blob",
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
+        } else if (response.status === 200) {
+          // Create a temporary URL for the blob data
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+
+          // Create a link element and simulate a click to trigger the download
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute(
+            "download",
+            "download-Subscription-Expired-reports.xlsx"
+          );
+          document.body.appendChild(link);
+          link.click();
+        } else {
+          dispatch(BoardDeckDownloadPDF_failed(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(BoardDeckDownloadPDF_failed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   changeSelectPacakgeApi,
   signUpOrganizationAndPakageSelection,
