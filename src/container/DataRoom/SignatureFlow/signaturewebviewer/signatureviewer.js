@@ -1077,7 +1077,6 @@ const SignatureViewer = () => {
     }
   }, [participants]);
   // ==== End ====//
-
   // === this is for update intance in ===//
   useEffect(() => {
     if (Instance) {
@@ -1089,47 +1088,52 @@ const SignatureViewer = () => {
             return;
           }
           if (action === "add" || action === "modify") {
-            console.log("userAnnotations");
             try {
               annotations.forEach((annotation) => {
-                // const { Color, Subject, TextColor } = annotation;
+                console.log(annotation, "annotationannotationannotation");
+                const { Color, Subject, TextColor } = annotation;
                 let letsGet = getActorColorByUserID(
                   selectedUserRef.current,
                   userAnnotationsRef
                 );
                 const { r, g, b } = letsGet;
-             if (annotation.ToolName === "AnnotationCreateFreeText") {
-                  annotation.TextColor = new Annotations.Color(r, g, b);
-                  annotation.StrokeColor = new Annotations.Color(r, g, b);
-                  // annotation.NoResize = true;
-                  // annotation.NoMove = true;
+                console.log(
+                  Color,
+                  Subject,
+                  TextColor.toHexString(),
+                  "annotationannotationannotationColor"
+                );
+                if (annotation.Subject === "Signature") {
+                  annotation.NoResize = true;
+                  annotation.NoMove = true;
                   annotationManager.updateAnnotation(annotation);
                   annotationManager.redrawAnnotation(annotation);
                 }
-                if (annotation.ToolName === "RadioButtonFormFieldCreateTool") {
-                  // Radio Button
-                  annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-                  // annotation.FillColor = new Annotations.Color(r, g, b);
+                if (annotation.ToolName === "AnnotationCreateFreeText") {
                   annotation.TextColor = new Annotations.Color(r, g, b);
-                  annotationManager.updateAnnotation(annotation);
-                  annotationManager.redrawAnnotation(annotation);
-                }
-                if (annotation.ToolName === "CheckBoxFormFieldCreateTool") {
-                  // Checkbox Form Field
-                  annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-                  // annotation.FillColor = new Annotations.Color(r, g, b);
-                  annotation.TextColor = new Annotations.Color(r, g, b);
-                  annotationManager.updateAnnotation(annotation);
-                  annotationManager.redrawAnnotation(annotation);
-                }
-                if (annotation.ToolName === "SignatureFormFieldCreateTool") {
-                  // Signature Field
-                  annotation.TextColor = new Annotations.Color(r, g, b);
-                  annotation.StrokeColor = new Annotations.Color(r, g, b);
                   annotationManager.updateAnnotation(annotation);
                   annotationManager.redrawAnnotation(annotation);
                 }
 
+                if (annotation.Subject === "Ellipse") {
+                  annotation.TextColor = new Annotations.Color(r, g, b);
+                  annotationManager.updateAnnotation(annotation);
+                  annotationManager.redrawAnnotation(annotation);
+                }
+
+                if (annotation.Subject === "Rectangle") {
+                  annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
+                  annotation.TextColor = new Annotations.Color(r, g, b);
+                  annotationManager.updateAnnotation(annotation);
+                  annotationManager.redrawAnnotation(annotation);
+                }
+                if (annotation.Subject === "Widget") {
+                  annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
+                  annotation.FillColor = new Annotations.Color(r, g, b);
+                  annotation.TextColor = new Annotations.Color(r, g, b);
+                  annotationManager.updateAnnotation(annotation);
+                  annotationManager.redrawAnnotation(annotation);
+                }
               });
               // Export annotations to XFDF format using `exportAnnotations`
               const xfdfString = await annotationManager.exportAnnotations();
@@ -1149,6 +1153,83 @@ const SignatureViewer = () => {
     }
   }, [Instance]);
   // === End ===//
+
+  // // === this is for update intance in ===//
+  // useEffect(() => {
+  //   if (Instance) {
+  //     const { annotationManager, Annotations } = Instance.Core;
+  //     annotationManager.addEventListener(
+  //       "annotationChanged",
+  //       async (annotations, action, { imported }) => {
+  //         if (imported) {
+  //           return;
+  //         }
+  //         if (action === "add" || action === "modify") {
+  //           try {
+  //             annotations.forEach((annotation) => {
+  //               // const { Color, Subject, TextColor } = annotation;
+  //               let letsGet = getActorColorByUserID(
+  //                 selectedUserRef.current,
+  //                 userAnnotationsRef
+  //               );
+  //               const { r, g, b } = letsGet;
+  //               console.log({ r, g, b }, "letsGetletsGet");
+
+  //               if (annotation.ToolName === "AnnotationCreateFreeText") {
+  //                 annotation.TextColor = new Annotations.Color(r, g, b);
+  //                 annotation.StrokeColor = new Annotations.Color(r, g, b);
+  //                 // annotation.NoResize = true;
+  //                 // annotation.NoMove = true;
+  //                 annotationManager.updateAnnotation(annotation);
+  //                 annotationManager.redrawAnnotation(annotation);
+  //                 console.log("userAnnotations AnnotationCreateFreeText", annotation);
+  //               }
+  //               if (annotation.ToolName === "RadioButtonFormFieldCreateTool") {
+  //                 // Radio Button
+  //                 annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
+  //                 // annotation.FillColor = new Annotations.Color(r, g, b);
+  //                 annotation.TextColor = new Annotations.Color(r, g, b);
+
+  //                 annotationManager.updateAnnotation(annotation);
+  //                 annotationManager.redrawAnnotation(annotation);
+  //                 console.log("userAnnotations RadioButtonFormFieldCreateTool", annotation);
+  //               }
+  //               if (annotation.ToolName === "CheckBoxFormFieldCreateTool") {
+  //                 // Checkbox Form Field
+  //                 annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
+  //                 // annotation.FillColor = new Annotations.Color(r, g, b);
+  //                 annotation.TextColor = new Annotations.Color(r, g, b);
+  //                 annotationManager.updateAnnotation(annotation);
+  //                 annotationManager.redrawAnnotation(annotation);
+  //                 console.log("userAnnotations CheckBoxFormFieldCreateTool", annotation);
+  //               }
+  //               if (annotation.ToolName === "SignatureFormFieldCreateTool") {
+  //                 // Signature Field
+  //                 annotation.TextColor = new Annotations.Color(r, g, b);
+  //                 annotation.StrokeColor = new Annotations.Color(r, g, b);
+  //                 annotationManager.updateAnnotation(annotation);
+  //                 annotationManager.redrawAnnotation(annotation);
+  //                 console.log("userAnnotations SignatureFormFieldCreateTool", annotation);
+  //               }
+  //             });
+  //             // Export annotations to XFDF format using `exportAnnotations`
+  //             const xfdfString = await annotationManager.exportAnnotations();
+
+  //             // Update the user's annotations based on the action
+
+  //             updateXFDF(
+  //               action,
+  //               xfdfString,
+  //               selectedUserRef.current,
+  //               userAnnotationsRef.current
+  //             );
+  //           } catch (error) {}
+  //         }
+  //       }
+  //     );
+  //   }
+  // }, [Instance]);
+  // // === End ===//
 
   // === these are the function which we are using in add signaturtires modal === //
   //  its use for update dropdown display of signatries modal users list
