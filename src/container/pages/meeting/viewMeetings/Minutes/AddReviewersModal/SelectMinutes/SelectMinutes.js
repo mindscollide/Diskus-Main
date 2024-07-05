@@ -61,6 +61,7 @@ const SelectMinutes = ({
 
     return () => {
       window.removeEventListener("resize", checkIfTruncated);
+      setSelectedMinuteIDs([]);
     };
   }, []);
 

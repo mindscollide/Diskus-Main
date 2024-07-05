@@ -711,7 +711,7 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                       >
                         <div
                           className={
-                            styles["version-control-wrapper-with-more-last"]
+                            styles["version-control-wrapper"]
                           }
                         >
                           <span className={styles["with-text"]}>V1.0</span>

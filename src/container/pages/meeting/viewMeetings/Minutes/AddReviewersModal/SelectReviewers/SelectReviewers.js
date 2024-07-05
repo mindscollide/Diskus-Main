@@ -35,6 +35,8 @@ const SelectReviewers = ({
   setIsAgendaMinute,
   moreMinutes,
   setMoreMinutes,
+  newSelectedMinutes,
+  setNewSelectedMinutes,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -91,6 +93,10 @@ const SelectReviewers = ({
 
   useEffect(() => {
     dispatch(GetAllOrganizationUsersForReview(navigate, t));
+    return () => {
+      setSelectReviewersArray([]);
+      setSelectedMinuteIDs([]);
+    };
   }, []);
 
   useEffect(() => {

@@ -69,6 +69,9 @@ const AddReviewers = ({
   //All Minute IDs
   const [selectedMinuteIDs, setSelectedMinuteIDs] = useState([]);
 
+  //New Selected Minutes
+  const [newSelectedMinutes, setNewSelectedMinutes] = useState([]);
+
   //All Reviewers IDs
   const [selectReviewersArray, setSelectReviewersArray] = useState([]);
 
@@ -92,6 +95,11 @@ const AddReviewers = ({
 
   //Check if All Minutes Are selected or not
   const [checkIsCheckAll, setCheckIsCheckAll] = useState(false);
+
+  //Edit Reviewer
+  const [selectedReviewersToEdit, setSelectedReviewersToEdit] = useState(
+    minuteToEdit?.reviewersList || []
+  );
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -790,6 +798,8 @@ const AddReviewers = ({
             setIsAgendaMinute={setIsAgendaMinute}
             moreMinutes={moreMinutes}
             setMoreMinutes={setMoreMinutes}
+            newSelectedMinutes={newSelectedMinutes}
+            setNewSelectedMinutes={setNewSelectedMinutes}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -823,6 +833,8 @@ const AddReviewers = ({
             setMoreMinutes={setMoreMinutes}
             checkIsCheckAll={checkIsCheckAll}
             setCheckIsCheckAll={setCheckIsCheckAll}
+            newSelectedMinutes={newSelectedMinutes}
+            setNewSelectedMinutes={setNewSelectedMinutes}
           />
         ) : selectMinutes === false &&
           selectReviewers === false &&
@@ -846,6 +858,8 @@ const AddReviewers = ({
             setIsAgendaMinute={setIsAgendaMinute}
             moreMinutes={moreMinutes}
             setMoreMinutes={setMoreMinutes}
+            selectedReviewersToEdit={selectedReviewersToEdit}
+            setSelectedReviewersToEdit={setSelectedReviewersToEdit}
           />
         ) : (
           <p>No minutes to send for review</p>
@@ -951,11 +965,7 @@ const AddReviewers = ({
                   className={styles["Add-Button-Reviewerss"]}
                   text={t("Add-reviewers")}
                   onClick={addMoreMinutesForReview}
-                  disableBtn={
-                    selectedMinuteIDs.length === 0 || checkIsCheckAll
-                      ? true
-                      : false
-                  }
+                  disableBtn={selectedMinuteIDs.length === 0 ? true : false}
                 />
                 <Button
                   className={styles["Add-Button-Reviewers"]}
@@ -984,6 +994,9 @@ const AddReviewers = ({
                   className={styles["Add-Button-Reviewers"]}
                   text={t("Update")}
                   onClick={addReviewerScreen}
+                  disableBtn={
+                    selectedReviewersToEdit.length === 0 ? true : false
+                  }
                 />
               </Col>
             </Row>

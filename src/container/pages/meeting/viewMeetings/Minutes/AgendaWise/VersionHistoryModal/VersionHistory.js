@@ -293,7 +293,7 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                   <Col lg={12} md={12} sm={12} className="position-relative">
                     <div
                       className={
-                        styles["version-control-wrapper-with-more-last"]
+                        styles["version-control-wrapper-last"]
                       }
                     >
                       <span className={styles["with-text"]}>V1.0</span>

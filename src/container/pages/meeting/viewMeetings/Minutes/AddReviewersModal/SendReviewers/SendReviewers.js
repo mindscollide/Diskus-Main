@@ -45,6 +45,8 @@ const SendReviewers = ({
   setMoreMinutes,
   checkIsCheckAll,
   setCheckIsCheckAll,
+  newSelectedMinutes,
+  setNewSelectedMinutes,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

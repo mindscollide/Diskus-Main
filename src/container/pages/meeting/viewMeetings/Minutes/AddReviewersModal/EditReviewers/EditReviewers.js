@@ -37,6 +37,8 @@ const EditReviewers = ({
   setIsAgendaMinute,
   moreMinutes,
   setMoreMinutes,
+  selectedReviewersToEdit,
+  setSelectedReviewersToEdit,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -49,9 +51,6 @@ const EditReviewers = ({
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
 
-  const [selectedReviewersToEdit, setSelectedReviewersToEdit] = useState(
-    minuteToEdit.reviewersList
-  );
   const [selectAll, setSelectAll] = useState(false);
 
   // Handle individual checkbox change
