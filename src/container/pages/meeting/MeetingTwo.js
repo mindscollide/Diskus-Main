@@ -171,7 +171,18 @@ const NewMeeting = () => {
   const [searchMeeting, setSearchMeeting] = useState(false);
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
-
+  const [boarddeckOptions, setBoarddeckOptions] = useState({
+    selectall: false,
+    Organizer: false,
+    AgendaContributor: false,
+    Participants: false,
+    Minutes: false,
+    Task: false,
+    polls: false,
+    attendeceReport: false,
+    video: false,
+    Agenda: false,
+  });
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
@@ -2563,11 +2574,17 @@ const NewMeeting = () => {
         )}
       </section>
       {NewMeetingreducer.boardDeckModalData && (
-        <BoardDeckModal boardDeckMeetingID={boardDeckMeetingID} />
+        <BoardDeckModal
+          boarddeckOptions={boarddeckOptions}
+          setBoarddeckOptions={setBoarddeckOptions}
+        />
       )}
       {NewMeetingreducer.boarddeckShareModal && <ShareModalBoarddeck />}
       {NewMeetingreducer.boardDeckEmailModal && (
-        <BoardDeckSendEmail boardDeckMeetingID={boardDeckMeetingID} />
+        <BoardDeckSendEmail
+          boardDeckMeetingID={boardDeckMeetingID}
+          boarddeckOptions={boarddeckOptions}
+        />
       )}
     </>
   );

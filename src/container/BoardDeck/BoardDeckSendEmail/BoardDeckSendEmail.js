@@ -21,7 +21,7 @@ import blueCrossIcon from "../../../assets/images/BlueCross.png";
 import { Checkbox } from "antd";
 import { BoardDeckSendEmailApi } from "../../../store/actions/UserManagementActions";
 import { GetAllCommitteesUsersandGroups } from "../../../store/actions/MeetingOrganizers_action";
-const BoardDeckSendEmail = ({ boardDeckMeetingID }) => {
+const BoardDeckSendEmail = ({ boardDeckMeetingID, boarddeckOptions }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -130,16 +130,16 @@ const BoardDeckSendEmail = ({ boardDeckMeetingID }) => {
         Messege: notificationMessage,
         BoarddeckFileParams: {
           PK_MDID: Number(boardDeckMeetingID),
-          fetchOrganizers: true,
-          fetchAgendaContributors: true,
-          fetchParticipants: true,
-          fetchMinutes: true,
-          fetchTasks: true,
-          fetchPolls: true,
-          fetchAttendance: true,
-          fetchVideo: true,
-          fetchAgenda: true,
-          fetchAgendaWithAttachments: true,
+          fetchOrganizers: boarddeckOptions.Organizer,
+          fetchAgendaContributors: boarddeckOptions.AgendaContributor,
+          fetchParticipants: boarddeckOptions.Participants,
+          fetchMinutes: boarddeckOptions.Minutes,
+          fetchTasks: boarddeckOptions.Task,
+          fetchPolls: boarddeckOptions.polls,
+          fetchAttendance: boarddeckOptions.attendeceReport,
+          fetchVideo: boarddeckOptions.video,
+          fetchAgenda: boarddeckOptions,
+          fetchAgendaWithAttachments: boarddeckOptions.Agenda,
           fetchAdvanceMeetingDetails: true,
         },
       };

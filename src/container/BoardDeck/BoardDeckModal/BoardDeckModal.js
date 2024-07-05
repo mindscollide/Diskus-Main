@@ -12,7 +12,7 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import { Checkbox, Radio } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
-const BoardDeckModal = ({ boardDeckMeetingID }) => {
+const BoardDeckModal = ({ boarddeckOptions, setBoarddeckOptions }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -22,19 +22,6 @@ const BoardDeckModal = ({ boardDeckMeetingID }) => {
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const [radioValue, setRadioValue] = useState(1);
-
-  const [boarddeckOptions, setBoarddeckOptions] = useState({
-    selectall: false,
-    Organizer: false,
-    AgendaContributor: false,
-    Participants: false,
-    Minutes: false,
-    Task: false,
-    polls: false,
-    attendeceReport: false,
-    video: false,
-    Agenda: false,
-  });
 
   const onChangeSelectAll = (e) => {
     let value = e.target.checked;
