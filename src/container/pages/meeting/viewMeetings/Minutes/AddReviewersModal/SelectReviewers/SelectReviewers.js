@@ -169,6 +169,13 @@ const SelectReviewers = ({
     }
   }, []);
 
+  console.log("Minute Data General Select Reviewers", minuteDataGeneral);
+  console.log("Minute Data Agenda Select Reviewers", minuteDataAgenda);
+
+  const allUnchecked = (data) => {
+    return data.every((item) => !item.isChecked);
+  };
+
   return (
     <>
       <Row>
@@ -266,9 +273,11 @@ const SelectReviewers = ({
                                                             className="mx-2"
                                                           >
                                                             <AttachmentViewer
-                                                              id={0}
+                                                              id={
+                                                                filesData.pK_FileID
+                                                              }
                                                               name={
-                                                                filesData.fileName
+                                                                filesData.displayFileName
                                                               }
                                                             />
                                                           </Col>
@@ -417,9 +426,11 @@ const SelectReviewers = ({
                                                                 className="mx-2"
                                                               >
                                                                 <AttachmentViewer
-                                                                  id={0}
+                                                                  id={
+                                                                    filesData.pK_FileID
+                                                                  }
                                                                   name={
-                                                                    filesData.fileName
+                                                                    filesData.displayFileName
                                                                   }
                                                                 />
                                                               </Col>
@@ -567,9 +578,11 @@ const SelectReviewers = ({
                                                             className="mx-2"
                                                           >
                                                             <AttachmentViewer
-                                                              id={0}
+                                                              id={
+                                                                filesData.pK_FileID
+                                                              }
                                                               name={
-                                                                filesData.fileName
+                                                                filesData.displayFileName
                                                               }
                                                             />
                                                           </Col>
@@ -621,6 +634,10 @@ const SelectReviewers = ({
                       )}
                       {data.subMinutes && data.subMinutes.length > 0
                         ? data.subMinutes.map((subagendaMinuteData, index) => {
+                            let result = subagendaMinuteData.minuteData.every(
+                              (subItem) => subItem.isChecked === true
+                            );
+                            console.log("resultresultresult", result);
                             return (
                               <Row
                                 key={index}
@@ -631,7 +648,7 @@ const SelectReviewers = ({
                                 }
                               >
                                 <Col lg={12} md={12} sm={12}>
-                                  {subagendaMinuteData.isChecked ? (
+                                  {subagendaMinuteData.isChecked && !result ? (
                                     <Row>
                                       <Col
                                         lg={12}
@@ -722,9 +739,11 @@ const SelectReviewers = ({
                                                                 className="mx-2"
                                                               >
                                                                 <AttachmentViewer
-                                                                  id={0}
+                                                                  id={
+                                                                    filesData.pK_FileID
+                                                                  }
                                                                   name={
-                                                                    filesData.fileName
+                                                                    filesData.displayFileName
                                                                   }
                                                                 />
                                                               </Col>
@@ -782,7 +801,9 @@ const SelectReviewers = ({
 
             {minuteDataGeneral !== null && moreMinutes === false ? (
               <>
-                {minuteDataGeneral === null ? null : (
+                {minuteDataGeneral === null ? null : allUnchecked(
+                    minuteDataGeneral
+                  ) ? null : (
                   <Row>
                     <Col lg={12} md={12} sm={12} className="position-relative">
                       <div className={styles["agendaTitleCheckbox"]}>
@@ -845,8 +866,10 @@ const SelectReviewers = ({
                                                 className="mx-2"
                                               >
                                                 <AttachmentViewer
-                                                  id={0}
-                                                  name={filesData.fileName}
+                                                  id={filesData.pK_FileID}
+                                                  name={
+                                                    filesData.displayFileName
+                                                  }
                                                 />
                                               </Col>
                                             );
@@ -951,8 +974,10 @@ const SelectReviewers = ({
                                                 className="mx-2"
                                               >
                                                 <AttachmentViewer
-                                                  id={0}
-                                                  name={filesData.fileName}
+                                                  id={filesData.pK_FileID}
+                                                  name={
+                                                    filesData.displayFileName
+                                                  }
                                                 />
                                               </Col>
                                             );

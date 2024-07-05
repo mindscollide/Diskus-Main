@@ -54,6 +54,8 @@ import RevisionHistory from "./AgendaWise/RevisionHistoryModal/RevisionHistory";
 import {
   DeleteMinuteReducer,
   deleteCommentModalGeneral,
+  GetMinuteReviewStatsForOrganizerByMeetingId,
+  CleareMessegeMinutes,
 } from "../../../../../store/actions/Minutes_action";
 
 const Minutes = ({
@@ -94,6 +96,10 @@ const Minutes = ({
   );
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
+  );
+
+  const ResponseMessageMinute = useSelector(
+    (state) => state.MinutesReducer.ResponseMessage
   );
   const [fileSize, setFileSize] = useState(0);
   const [useCase, setUseCase] = useState(null);
@@ -169,9 +175,15 @@ const Minutes = ({
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
+    let Data2 = {
+      isAgenda: false,
+      MeetingID: Number(advanceMeetingModalID),
+    };
     dispatch(
       GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
     );
+
+    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
     return () => {
       setUseCase(null);
       setMessages([]);
@@ -192,6 +204,8 @@ const Minutes = ({
           generalMinutes.organizerID,
           "generalMinutesgeneralMinutesgeneralMinutes"
         );
+
+        console.log("generalMinutesgeneralMinutes", generalMinutes);
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
         setOrganizerID(generalMinutes.organizerID);
@@ -668,7 +682,34 @@ const Minutes = ({
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [ResponseMessage]);
+    if (
+      ResponseMessageMinute.trim() !== "" &&
+      ResponseMessageMinute !== t("No-record-found") &&
+      ResponseMessageMinute !== t("No-records-found") &&
+      ResponseMessageMinute !== "" &&
+      ResponseMessageMinute !== t("No-record-found") &&
+      ResponseMessageMinute !== t("List-updated-successfully") &&
+      ResponseMessageMinute !== t("No-data-available") &&
+      ResponseMessageMinute !== t("Minute-review-flow-not-found") &&
+      ResponseMessageMinute !== t("Data-available")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: ResponseMessageMinute,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+        dispatch(CleareMessegeMinutes());
+      }, 3000);
+    } else {
+      dispatch(CleareMessegeMinutes());
+    }
+  }, [ResponseMessage, ResponseMessageMinute]);
 
   // OWAIS WORK cxx|:::::::>
 
@@ -688,7 +729,7 @@ const Minutes = ({
   const [addReviewers, setAddReviewers] = useState(false);
 
   const [showPublishMinutes, setShowPublishMinutes] = useState(false);
-  const [menuMinute, setMenuMinute] = useState(false);
+
   const closeMenuMinute = useRef(null);
 
   const addReviewersModal = () => {
@@ -703,7 +744,8 @@ const Minutes = ({
         t,
         Number(advanceMeetingModalID),
         false,
-        setAddReviewers
+        setAddReviewers,
+        true
       )
     );
 
@@ -738,43 +780,108 @@ const Minutes = ({
     setOpenMenuId(openMenuId === id ? null : id); // Toggle the menu for the clicked item
   };
 
-  const transformData = (data) => {
-    return data.map((item) => ({
-      minuteID: item.minuteID,
-      description: item.minutesDetails,
-      attachments: item.minutesAttachmets,
-      uploader: {
-        userID: item.userID,
-        orignalProfilePictureName:
-          item.userProfilePicture.orignalProfilePictureName,
-        displayProfilePictureName:
-          item.userProfilePicture.displayProfilePictureName,
-      },
-      lastUpdatedDate: item.lastUpdatedDate,
-      lastUpdatedTime: item.lastUpdatedTime,
-      userID: item.userID,
-      userName: item.userName,
-    }));
+  // const transformData = (data) => {
+  //   return data.map((item) => ({
+  //     minuteID: item.minuteID,
+  //     description: item.minutesDetails,
+  //     attachments: item.minutesAttachmets,
+  //     uploader: {
+  //       userID: item.userID,
+  //       orignalProfilePictureName:
+  //         item.userProfilePicture.orignalProfilePictureName,
+  //       displayProfilePictureName:
+  //         item.userProfilePicture.displayProfilePictureName,
+  //     },
+  //     lastUpdatedDate: item.lastUpdatedDate,
+  //     lastUpdatedTime: item.lastUpdatedTime,
+  //     userID: item.userID,
+  //     userName: item.userName,
+  //   }));
+  // };
+
+  const transformData = (data, generalMinutesData) => {
+    if (!data || !generalMinutesData) return [];
+
+    return data.map((item) => {
+      const matchedMinute = generalMinutesData.find(
+        (minute) => minute.pK_MeetingGeneralMinutesID === item.minuteID
+      );
+
+      const updatedAttachments = matchedMinute
+        ? (item.minutesAttachmets || []).map((attachment) => {
+            const matchedFile = (matchedMinute.files || []).find(
+              (file) => file.pK_FileID === attachment.fileID
+            );
+            return matchedFile ? matchedFile : attachment;
+          })
+        : item.minutesAttachmets || [];
+
+      return {
+        minuteID: item.minuteID,
+        description: item.minutesDetails || "",
+        attachments: updatedAttachments,
+        uploader: {
+          userID: item.userID || null,
+          orignalProfilePictureName:
+            item.userProfilePicture?.orignalProfilePictureName || "",
+          displayProfilePictureName:
+            item.userProfilePicture?.displayProfilePictureName || "",
+        },
+        lastUpdatedDate: item.lastUpdatedDate || "",
+        lastUpdatedTime: item.lastUpdatedTime || "",
+        userID: item.userID || null,
+        userName: item.userName || "",
+      };
+    });
   };
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.generalMinutes !== undefined &&
-      NewMeetingreducer.generalMinutes !== null &&
-      NewMeetingreducer.generalMinutes.length !== 0
-    ) {
-      let data = NewMeetingreducer.generalMinutes.meetingMinutes;
-      const transformedData = transformData(data);
-      setMinutesData(transformedData);
-    } else {
+    try {
+      const generalMinutes = NewMeetingreducer.generalMinutes;
+
+      if (generalMinutes && Object.keys(generalMinutes).length > 0) {
+        const minutesData = generalMinutes.meetingMinutes;
+        const documentsData = generalminutesDocumentForMeeting.data;
+        console.log(
+          "minutesDataminutesDataminutesData",
+          minutesData,
+          documentsData
+        );
+        const combinedData = transformData(minutesData, documentsData);
+        setMinutesData(combinedData);
+      } else {
+        setMinutesData([]);
+      }
+    } catch (error) {
+      console.error("Error transforming data:", error);
       setMinutesData([]);
     }
+
     return () => {
       setMinutesData([]);
     };
   }, [NewMeetingreducer.generalMinutes]);
 
-  console.log("minutesDataminutesData", minutesData);
+  console.log("minutesDataminutesDataminutesData", minutesData);
+
+  // useEffect(() => {
+  //   if (
+  //     NewMeetingreducer.generalMinutes !== undefined &&
+  //     NewMeetingreducer.generalMinutes !== null &&
+  //     NewMeetingreducer.generalMinutes.length !== 0
+  //   ) {
+  //     let data = NewMeetingreducer.generalMinutes.meetingMinutes;
+  //     const transformedData = transformData(data);
+  //     setMinutesData(transformedData);
+  //   } else {
+  //     setMinutesData([]);
+  //   }
+  //   return () => {
+  //     setMinutesData([]);
+  //   };
+  // }, [NewMeetingreducer.generalMinutes]);
+
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   useEffect(() => {
     if (
@@ -855,7 +962,13 @@ const Minutes = ({
                                     {data.attachments.map((fileData, index) => (
                                       <Col lg={3} md={3} sm={12}>
                                         <AttachmentViewer
-                                          name={fileData.name}
+                                          fk_UID={fileData.fK_UserID}
+                                          handleClickRemove={() =>
+                                            handleRemoveFile(fileData)
+                                          }
+                                          data={fileData}
+                                          id={0}
+                                          name={fileData.displayFileName}
                                         />
                                       </Col>
                                     ))}
@@ -969,7 +1082,10 @@ const Minutes = ({
                                           (subFileData, subFileIndex) => (
                                             <Col lg={3} md={3} sm={12}>
                                               <AttachmentViewer
-                                                name={subFileData.name}
+                                                id={0}
+                                                name={
+                                                  subFileData.displayFileName
+                                                }
                                               />
                                             </Col>
                                           )
@@ -1120,6 +1236,8 @@ const Minutes = ({
             setAddNoteFields={setAgendaWiseFields}
             fileAttachments={addAgendaWiseFiles}
             setFileAttachments={setaddAgendaWiseFiles}
+            addReviewers={addReviewers}
+            setAddReviewers={setAddReviewers}
           />
         ) : general ? (
           <>
@@ -1511,7 +1629,10 @@ const Minutes = ({
                                             (fileData, index) => (
                                               <Col lg={3} md={3} sm={12}>
                                                 <AttachmentViewer
-                                                  name={fileData.name}
+                                                  id={fileData.pK_FileID}
+                                                  name={
+                                                    fileData.displayFileName
+                                                  }
                                                 />
                                               </Col>
                                             )

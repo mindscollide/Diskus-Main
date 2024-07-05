@@ -7,6 +7,7 @@ import { Button, Modal } from "./../../../../../../components/elements";
 import {
   SaveMinutesReviewFlow,
   UpdateMinuteFlag,
+  GetMinuteReviewFlowByMeetingId,
 } from "../../../../../../store/actions/Minutes_action";
 import { ChevronDown } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -15,7 +16,10 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-import { get_CurrentDateTime, multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import {
+  get_CurrentDateTime,
+  multiDatePickerDateChangIntoUTC,
+} from "../../../../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
 import SelectMinutes from "./SelectMinutes/SelectMinutes";
 import SelectReviewers from "./SelectReviewers/SelectReviewers";
@@ -31,6 +35,10 @@ const AddReviewers = ({
   const { t } = useTranslation();
 
   const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
+
+  const generalminutesDocumentForMeeting = useSelector(
+    (state) => state.NewMeetingreducer.generalminutesDocumentForMeeting
+  );
 
   let currentMeetingTitle = localStorage.getItem("meetingTitle");
 
@@ -155,7 +163,8 @@ const AddReviewers = ({
           // Check if minute is checked
           if (minute.isChecked) {
             resultList.push({
-              ID: minute.minuteID.toString(),
+              // ID: minute.minuteID.toString(),
+              ID: "0",
               Title: "", // Set title as needed
               BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
               ListOfUsers: minute.reviewersList,
@@ -175,7 +184,8 @@ const AddReviewers = ({
               // Check if minute is checked
               if (minute.isChecked) {
                 resultList.push({
-                  ID: minute.minuteID.toString(),
+                  // ID: minute.minuteID.toString(),
+                  ID: "0",
                   Title: "", // Set title as needed
                   BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
                   ListOfUsers: minute.reviewersList,
@@ -196,7 +206,8 @@ const AddReviewers = ({
       // Check if minute is checked
       if (minute.isChecked) {
         resultList.push({
-          ID: minute.minuteID.toString(),
+          // ID: minute.minuteID.toString(),
+          ID: "0",
           Title: "", // Set title as needed
           BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
           ListOfUsers: minute.reviewersList,
@@ -229,7 +240,7 @@ const AddReviewers = ({
       };
 
       console.log("DataDataData", Data);
-      dispatch(SaveMinutesReviewFlow(Data, navigate, t));
+      dispatch(SaveMinutesReviewFlow(Data, navigate, t, setAddReviewers));
       // setSelectMinutes(false);
       // setSelectReviewers(false);
       // setSendReviewers(true);
@@ -254,24 +265,27 @@ const AddReviewers = ({
     }
   };
 
-  const transformDataGeneral = (data) => {
-    return data.map((item) => ({
-      minuteID: item.minuteID,
-      description: item.minutesDetails,
-      attachments: item.minutesAttachmets,
-      uploader: {
-        userID: item.userID,
-        orignalProfilePictureName:
-          item.userProfilePicture.orignalProfilePictureName,
-        displayProfilePictureName:
-          item.userProfilePicture.displayProfilePictureName,
-      },
-      lastUpdatedDate: item.lastUpdatedDate,
-      lastUpdatedTime: item.lastUpdatedTime,
-      userID: item.userID,
-      userName: item.userName,
-    }));
-  };
+  // const transformDataGeneral = (data) => {
+  //   try {
+  //     return data.map((item) => ({
+  //       minuteID: item.minuteID,
+  //       description: item.minutesDetails,
+  //       attachments: item.minutesAttachmets,
+  //       uploader: {
+  //         userID: item.userID,
+  //         orignalProfilePictureName:
+  //           item.userProfilePicture.orignalProfilePictureName,
+  //         displayProfilePictureName:
+  //           item.userProfilePicture.displayProfilePictureName,
+  //       },
+  //       lastUpdatedDate: item.lastUpdatedDate,
+  //       lastUpdatedTime: item.lastUpdatedTime,
+  //       userID: item.userID,
+  //       userName: item.userName,
+  //       reviewersList: [],
+  //     }));
+  //   } catch {}
+  // };
 
   const updateMinutesData = (
     minuteDataAgenda,
@@ -323,6 +337,51 @@ const AddReviewers = ({
     }
   };
 
+  const allUnchecked = (data) => {
+    try {
+      return data.every((item) => !item.isChecked);
+    } catch {
+      return false; // Return false in case of any error
+    }
+  };
+
+  const allUncheckedReviewers = (data, reviewers) => {
+    try {
+      return reviewers.length === 0 && data.every((item) => !item.isChecked);
+    } catch {
+      return false; // Return false in case of any error
+    }
+  };
+
+  const allUncheckedReviewersMinuteDataAgenda = (minuteDataAgenda) => {
+    try {
+      return minuteDataAgenda.every((minuteDataItem) => {
+        const { minuteData, subMinutes } = minuteDataItem;
+        const allMinuteDataUnchecked = minuteData.every(
+          (item) =>
+            !item.isChecked ||
+            (item.isChecked && item.reviewersList.length === 0)
+        );
+        const allSubMinutesUnchecked = subMinutes.every((subMinute) => {
+          const { minuteData: subMinuteData } = subMinute;
+          return (
+            !subMinute.isChecked ||
+            (subMinute.isChecked &&
+              subMinuteData.every(
+                (item) =>
+                  !item.isChecked ||
+                  (item.isChecked && item.reviewersList.length === 0)
+              ))
+          );
+        });
+        return allMinuteDataUnchecked && allSubMinutesUnchecked;
+      });
+    } catch (error) {
+      console.error("Error checking allUncheckedReviewers:", error);
+      return false; // Return false in case of any error
+    }
+  };
+
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
       if (currentLanguage === "en") {
@@ -335,123 +394,332 @@ const AddReviewers = ({
     }
   }, [currentLanguage]);
 
+  const transformDataGeneral = (data, generalMinutesData) => {
+    if (!data || !generalMinutesData) return [];
+
+    return data.map((item) => {
+      const matchedMinute = generalMinutesData.find(
+        (minute) => minute.pK_MeetingGeneralMinutesID === item.minuteID
+      );
+
+      const updatedAttachments = matchedMinute
+        ? (item.minutesAttachmets || []).map((attachment) => {
+            const matchedFile = (matchedMinute.files || []).find(
+              (file) => file.pK_FileID === attachment.fileID
+            );
+            return matchedFile ? matchedFile : attachment;
+          })
+        : item.minutesAttachmets || [];
+
+      return {
+        minuteID: item.minuteID,
+        description: item.minutesDetails || "",
+        attachments: updatedAttachments,
+        uploader: {
+          userID: item.userID || null,
+          orignalProfilePictureName:
+            item.userProfilePicture?.orignalProfilePictureName || "",
+          displayProfilePictureName:
+            item.userProfilePicture?.displayProfilePictureName || "",
+        },
+        lastUpdatedDate: item.lastUpdatedDate || "",
+        lastUpdatedTime: item.lastUpdatedTime || "",
+        userID: item.userID || null,
+        userName: item.userName || "",
+      };
+    });
+  };
+
   useEffect(() => {
-    if (
-      NewMeetingreducer.generalMinutes !== undefined &&
-      NewMeetingreducer.generalMinutes !== null &&
-      NewMeetingreducer.generalMinutes.length !== 0
-    ) {
-      let data = NewMeetingreducer?.generalMinutes?.meetingMinutes;
-      const transformedData = transformDataGeneral(data);
-      setMinuteDataGeneral(transformedData);
-    } else {
+    try {
+      const generalMinutes = NewMeetingreducer.generalMinutes;
+
+      if (generalMinutes && Object.keys(generalMinutes).length > 0) {
+        const minutesData = generalMinutes.meetingMinutes;
+        const documentsData = generalminutesDocumentForMeeting.data;
+        console.log(
+          "minutesDataminutesDataminutesData",
+          minutesData,
+          documentsData
+        );
+        const combinedData = transformDataGeneral(minutesData, documentsData);
+        setMinuteDataGeneral(combinedData);
+      } else {
+        setMinuteDataGeneral(null);
+      }
+    } catch (error) {
+      console.error("Error transforming data:", error);
       setMinuteDataGeneral(null);
     }
-    return () => {
-      setMinuteDataGeneral(null);
-    };
   }, [NewMeetingreducer.generalMinutes]);
 
   useEffect(() => {
-    // Check if agendaWiseMinutesReducer is not null, undefined, and has at least one key
-    if (
-      NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-      NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
-      Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
-    ) {
-      // Store agendaWiseMinutesReducer in a local variable
-      let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
-      // Initialize an empty array to hold the transformed data
-      let transformedData = [];
-
-      // Iterate through each parent agenda in the agenda hierarchy list
-      reducerData.agendaHierarchyList.forEach((parentAgenda) => {
-        // Find the parent agenda details in the agendaWiseMinutes array
-        let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
-          (minute) => minute.agendaID === parentAgenda.pK_MAID
-        );
-
-        // Initialize an array to hold sub-minutes of the parent agenda
-        let subMinutes = [];
-        // Iterate through each child agenda of the parent agenda
-        parentAgenda.childAgendas.forEach((childAgenda) => {
-          // Filter the minutes that match the child agenda ID and push to subMinutes
-          let childMinutes = reducerData.agendaWiseMinutes.filter(
-            (minute) => minute.agendaID === childAgenda.pK_MAID
+    try {
+      // Check if agendaWiseMinutesReducer is not null, undefined, and has at least one key
+      if (
+        NewMeetingreducer.agendaWiseMinutesReducer !== null &&
+        NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
+        Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
+      ) {
+        // Store agendaWiseMinutesReducer in a local variable
+        let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
+        // Initialize an empty array to hold the transformed data
+        let transformedData = [];
+        console.log("transformedDatatransformedData", transformedData);
+        // Iterate through each parent agenda in the agenda hierarchy list
+        reducerData.agendaHierarchyList.forEach((parentAgenda) => {
+          // Find the parent agenda details in the agendaWiseMinutes array
+          let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
+            (minute) => minute.agendaID === parentAgenda.pK_MAID
           );
-          subMinutes.push(...childMinutes);
-        });
 
-        // Check if parent agenda details exist to determine if it's parent data
-        let isParentData = parentAgendaMinutes.length > 0;
+          // Initialize an array to hold sub-minutes of the parent agenda
+          let subMinutes = [];
+          // Iterate through each child agenda of the parent agenda
+          parentAgenda.childAgendas.forEach((childAgenda) => {
+            // Filter the minutes that match the child agenda ID and push to subMinutes
+            let childMinutes = reducerData.agendaWiseMinutes.filter(
+              (minute) => minute.agendaID === childAgenda.pK_MAID
+            );
+            subMinutes.push(...childMinutes);
+          });
 
-        // If there are parent agenda details or sub-minutes, create a parent agenda object
-        if (isParentData || subMinutes.length > 0) {
-          // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
-          let agendaTitle = isParentData
-            ? parentAgendaMinutes[0].agendaTitle
-            : parentAgenda.childAgendas.find((childAgenda) =>
-                subMinutes.some(
+          // Check if parent agenda details exist to determine if it's parent data
+          let isParentData = parentAgendaMinutes.length > 0;
+
+          // If there are parent agenda details or sub-minutes, create a parent agenda object
+          if (isParentData || subMinutes.length > 0) {
+            // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
+            let agendaTitle = isParentData
+              ? parentAgendaMinutes[0].agendaTitle
+              : parentAgenda.childAgendas.find((childAgenda) =>
+                  subMinutes.some(
+                    (minute) => minute.agendaID === childAgenda.pK_MAID
+                  )
+                )?.parentTitle || "";
+
+            let parentAgendaObj = {
+              agendaID: parentAgenda.pK_MAID,
+              agendaTitle: agendaTitle,
+              isParentData: isParentData,
+              minuteData: parentAgendaMinutes.map((minute) => ({
+                minuteID: minute.minuteID,
+                description: minute.minutesDetails,
+                attachments: minute.minutesAttachmets,
+                uploader: minute.userProfilePicture,
+                lastUpdatedDate: minute.lastUpdatedDate,
+                lastUpdatedTime: minute.lastUpdatedTime,
+                userID: minute.userID,
+                userName: minute.userName,
+              })),
+              subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+                let childMinutes = subMinutes.filter(
                   (minute) => minute.agendaID === childAgenda.pK_MAID
-                )
-              )?.parentTitle || "";
+                );
+                return {
+                  agendaID: childAgenda.pK_MAID,
+                  agendaTitle: childMinutes[0]?.agendaTitle || "",
+                  minuteData: childMinutes.map((minute) => ({
+                    minuteID: minute.minuteID,
+                    description: minute.minutesDetails,
+                    attachments: minute.minutesAttachmets,
+                    uploader: minute.userProfilePicture,
+                    lastUpdatedDate: minute.lastUpdatedDate,
+                    lastUpdatedTime: minute.lastUpdatedTime,
+                    userID: minute.userID,
+                    userName: minute.userName,
+                  })),
+                };
+              }),
+            };
 
-          let parentAgendaObj = {
-            agendaID: parentAgenda.pK_MAID,
-            agendaTitle: agendaTitle,
-            isParentData: isParentData,
-            minuteData: parentAgendaMinutes.map((minute) => ({
-              minuteID: minute.minuteID,
-              description: minute.minutesDetails,
-              attachments: minute.minutesAttachmets,
-              uploader: minute.userProfilePicture,
-              lastUpdatedDate: minute.lastUpdatedDate,
-              lastUpdatedTime: minute.lastUpdatedTime,
-              userID: minute.userID,
-              userName: minute.userName,
-            })),
-            subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
-              let childMinutes = subMinutes.filter(
-                (minute) => minute.agendaID === childAgenda.pK_MAID
+            // Push the parent agenda object to the transformed data array
+            transformedData.push(parentAgendaObj);
+          }
+        });
+        console.log("transformedDatatransformedData", transformedData);
+
+        // Update attachments in transformedData based on data state
+        console.log("transformedDatatransformedData", transformedData);
+
+        transformedData.forEach((agenda) => {
+          agenda.minuteData.forEach((minute) => {
+            // Find matching entry in data state by pK_MeetingAgendaMinutesID
+            let matchingData =
+              NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+                (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
               );
-              return {
-                agendaID: childAgenda.pK_MAID,
-                agendaTitle: childMinutes[0]?.agendaTitle || "",
-                minuteData: childMinutes.map((minute) => ({
-                  minuteID: minute.minuteID,
-                  description: minute.minutesDetails,
-                  attachments: minute.minutesAttachmets,
-                  uploader: minute.userProfilePicture,
-                  lastUpdatedDate: minute.lastUpdatedDate,
-                  lastUpdatedTime: minute.lastUpdatedTime,
-                  userID: minute.userID,
-                  userName: minute.userName,
-                })),
-              };
-            }),
-          };
 
-          // Push the parent agenda object to the transformed data array
-          transformedData.push(parentAgendaObj);
-        }
-      });
+            // If matchingData found, update attachments in minuteData
+            if (matchingData) {
+              minute.attachments = matchingData.files || [];
+            }
+          });
 
-      // Log the transformed data to the console
-      setMinuteDataAgenda(transformedData);
+          agenda.subMinutes.forEach((subAgenda) => {
+            subAgenda.minuteData.forEach((minute) => {
+              // Find matching entry in data state by pK_MeetingAgendaMinutesID
+              let matchingData =
+                NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+                  (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                );
+
+              // If matchingData found, update attachments in minuteData
+              if (matchingData) {
+                minute.attachments = matchingData.files || [];
+              }
+            });
+          });
+        });
+        console.log("transformedDatatransformedData", transformedData);
+
+        // Log the transformed data to the console
+        setMinuteDataAgenda(transformedData);
+        console.log("transformedDatatransformedData", transformedData);
+      }
+    } catch (error) {
+      console.error("Error transforming data:", error);
+      setMinuteDataAgenda(null);
     }
-  }, [NewMeetingreducer.agendaWiseMinutesReducer]);
+  }, [
+    NewMeetingreducer.agendaWiseMinutesReducer,
+    NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
+  ]);
+
+  // useEffect(() => {
+  //   if (
+  //     NewMeetingreducer.generalMinutes !== undefined &&
+  //     NewMeetingreducer.generalMinutes !== null &&
+  //     NewMeetingreducer.generalMinutes.length !== 0
+  //   ) {
+  //     let data = NewMeetingreducer?.generalMinutes?.meetingMinutes;
+  //     const transformedData = transformDataGeneral(data);
+  //     setMinuteDataGeneral(transformedData);
+  //   } else {
+  //     setMinuteDataGeneral(null);
+  //   }
+  //   return () => {
+  //     setMinuteDataGeneral(null);
+  //   };
+  // }, [NewMeetingreducer.generalMinutes]);
+
+  // useEffect(() => {
+  //   // Check if agendaWiseMinutesReducer is not null, undefined, and has at least one key
+  //   if (
+  //     NewMeetingreducer.agendaWiseMinutesReducer !== null &&
+  //     NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
+  //     Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
+  //   ) {
+  //     // Store agendaWiseMinutesReducer in a local variable
+  //     let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
+  //     // Initialize an empty array to hold the transformed data
+  //     let transformedData = [];
+
+  //     // Iterate through each parent agenda in the agenda hierarchy list
+  //     reducerData.agendaHierarchyList.forEach((parentAgenda) => {
+  //       // Find the parent agenda details in the agendaWiseMinutes array
+  //       let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
+  //         (minute) => minute.agendaID === parentAgenda.pK_MAID
+  //       );
+
+  //       // Initialize an array to hold sub-minutes of the parent agenda
+  //       let subMinutes = [];
+  //       // Iterate through each child agenda of the parent agenda
+  //       parentAgenda.childAgendas.forEach((childAgenda) => {
+  //         // Filter the minutes that match the child agenda ID and push to subMinutes
+  //         let childMinutes = reducerData.agendaWiseMinutes.filter(
+  //           (minute) => minute.agendaID === childAgenda.pK_MAID
+  //         );
+  //         subMinutes.push(...childMinutes);
+  //       });
+
+  //       // Check if parent agenda details exist to determine if it's parent data
+  //       let isParentData = parentAgendaMinutes.length > 0;
+
+  //       // If there are parent agenda details or sub-minutes, create a parent agenda object
+  //       if (isParentData || subMinutes.length > 0) {
+  //         // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
+  //         let agendaTitle = isParentData
+  //           ? parentAgendaMinutes[0].agendaTitle
+  //           : parentAgenda.childAgendas.find((childAgenda) =>
+  //               subMinutes.some(
+  //                 (minute) => minute.agendaID === childAgenda.pK_MAID
+  //               )
+  //             )?.parentTitle || "";
+
+  //         let parentAgendaObj = {
+  //           agendaID: parentAgenda.pK_MAID,
+  //           agendaTitle: agendaTitle,
+  //           isParentData: isParentData,
+  //           minuteData: parentAgendaMinutes.map((minute) => ({
+  //             minuteID: minute.minuteID,
+  //             description: minute.minutesDetails,
+  //             attachments: minute.minutesAttachmets,
+  //             uploader: minute.userProfilePicture,
+  //             lastUpdatedDate: minute.lastUpdatedDate,
+  //             lastUpdatedTime: minute.lastUpdatedTime,
+  //             userID: minute.userID,
+  //             userName: minute.userName,
+  //             reviewersList: [],
+  //           })),
+  //           subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+  //             let childMinutes = subMinutes.filter(
+  //               (minute) => minute.agendaID === childAgenda.pK_MAID
+  //             );
+  //             return {
+  //               agendaID: childAgenda.pK_MAID,
+  //               agendaTitle: childMinutes[0]?.agendaTitle || "",
+  //               minuteData: childMinutes.map((minute) => ({
+  //                 minuteID: minute.minuteID,
+  //                 description: minute.minutesDetails,
+  //                 attachments: minute.minutesAttachmets,
+  //                 uploader: minute.userProfilePicture,
+  //                 lastUpdatedDate: minute.lastUpdatedDate,
+  //                 lastUpdatedTime: minute.lastUpdatedTime,
+  //                 userID: minute.userID,
+  //                 userName: minute.userName,
+  //                 reviewersList: [],
+  //               })),
+  //             };
+  //           }),
+  //         };
+
+  //         // Push the parent agenda object to the transformed data array
+  //         transformedData.push(parentAgendaObj);
+  //       }
+  //     });
+
+  //     // Log the transformed data to the console
+  //     setMinuteDataAgenda(transformedData);
+  //   }
+  // }, [NewMeetingreducer.agendaWiseMinutesReducer]);
 
   useEffect(() => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(GetMinuteReviewFlowByMeetingId(Data, navigate, t));
     return () => {
       dispatch(UpdateMinuteFlag(false));
     };
   }, []);
 
-  console.log(
-    "Agenda And General Minutes",
-    minuteDataAgenda,
-    minuteDataGeneral
-  );
+  useEffect(() => {
+    if (
+      MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null &&
+      MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== undefined
+    ) {
+      setSelectMinutes(false);
+      setSelectReviewers(false);
+      setSendReviewers(true);
+      setEditReviewer(false);
+      dispatch(UpdateMinuteFlag(false));
+    }
+  }, [MinutesReducer.GetMinuteReviewFlowByMeetingIdData]);
+
+  console.log("MinutesReducerMinutesReducerMinutesReducer", MinutesReducer);
+
+  console.log("Add Reviewer Disable Button Logic");
 
   return (
     <Modal
@@ -629,6 +897,7 @@ const AddReviewers = ({
                   className={styles["Add-Button-Reviewers"]}
                   text={t("Add")}
                   onClick={addReviewerScreen}
+                  disableBtn={selectReviewersArray.length > 0 ? false : true}
                 />
               </Col>
             </Row>

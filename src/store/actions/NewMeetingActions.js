@@ -4262,7 +4262,8 @@ const GetAllAgendaWiseMinutesApiFunc = (
   t,
   currentMeeting,
   loader,
-  setAddReviewers
+  setAddReviewers,
+  clickFlag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -4291,7 +4292,8 @@ const GetAllAgendaWiseMinutesApiFunc = (
             t,
             currentMeeting,
             loader,
-            setAddReviewers
+            setAddReviewers,
+            clickFlag
           )
         );
       } else if (response.data.responseCode === 200) {
@@ -4307,7 +4309,9 @@ const GetAllAgendaWiseMinutesApiFunc = (
               MDID: Number(currentMeeting),
             };
             // Call AllDocumentsForAgendaWiseMinutesApiFunc and wait for it to complete
-            setAddReviewers(true);
+            if (clickFlag === true) {
+              setAddReviewers(true);
+            }
             await dispatch(
               AllDocumentsForAgendaWiseMinutesApiFunc(
                 navigate,

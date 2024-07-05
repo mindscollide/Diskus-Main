@@ -954,7 +954,7 @@ const saveMinutesReviewFlow_Fail = (message, response) => {
 };
 
 //SaveMinutesReviewFlow
-const SaveMinutesReviewFlow = (Data, navigate, t) => {
+const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(saveMinutesReviewFlow_Init());
@@ -972,7 +972,7 @@ const SaveMinutesReviewFlow = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveMinutesReviewFlow(Data, navigate, t));
+          dispatch(SaveMinutesReviewFlow(Data, navigate, t, setAddReviewers));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -988,6 +988,7 @@ const SaveMinutesReviewFlow = (Data, navigate, t) => {
                   t("Minutes-review-flow-inserted-successfully")
                 )
               );
+              setAddReviewers(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1018,6 +1019,7 @@ const SaveMinutesReviewFlow = (Data, navigate, t) => {
                   t("Minutes-review-flow-edited-successfully")
                 )
               );
+              setAddReviewers(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1026,6 +1028,7 @@ const SaveMinutesReviewFlow = (Data, navigate, t) => {
                 )
             ) {
               dispatch(saveMinutesReviewFlow_Fail(t("Invalid-data-provided")));
+              setAddReviewers(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1102,6 +1105,130 @@ const UpdateMinuteFlag = (response) => {
   };
 };
 
+const getMinuteReviewFlowByMeetingId_Init = () => {
+  return {
+    type: actions.GET_MINUTEREVIEWFLOWBYMEETINGID_INIT,
+  };
+};
+
+const getMinuteReviewFlowByMeetingId_Success = (response, message) => {
+  return {
+    type: actions.GET_MINUTEREVIEWFLOWBYMEETINGID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getMinuteReviewFlowByMeetingId_Fail = (message, response) => {
+  return {
+    type: actions.GET_MINUTEREVIEWFLOWBYMEETINGID_FAIL,
+    message: message,
+    response: response,
+  };
+};
+
+//GetMinuteReviewFlowByMeetingId
+const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getMinuteReviewFlowByMeetingId_Init());
+    let form = new FormData();
+    form.append("RequestMethod", getMinuteReviewFlowByMeetingId.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetMinuteReviewFlowByMeetingId(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMinuteReviewFlowByMeetingId_Success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                getMinuteReviewFlowByMeetingId_Fail(
+                  t("No-data-available", data)
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_03".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                getMinuteReviewFlowByMeetingId_Fail(
+                  t("Minute-review-flow-not-found"),
+                  data
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+const CleareMessegeMinutes = () => {
+  return {
+    type: actions.CLEAR_MINUTES_MESSAGES,
+  };
+};
+
 export {
   DeleteMinuteReducer,
   pendingApprovalPage,
@@ -1124,4 +1251,6 @@ export {
   SaveMinutesReviewFlow,
   EditSingleMinute,
   UpdateMinuteFlag,
+  GetMinuteReviewFlowByMeetingId,
+  CleareMessegeMinutes,
 };
