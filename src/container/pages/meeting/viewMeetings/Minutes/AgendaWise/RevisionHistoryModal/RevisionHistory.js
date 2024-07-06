@@ -390,12 +390,14 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                           >
                                             Uploaded By
                                           </p>{" "}
-                                          <img
-                                            className={styles["edit-icon"]}
-                                            src={EditIcon}
-                                            alt=""
-                                            onClick={editMinuteFunction}
-                                          />
+                                          {index === 0 && (
+                                            <img
+                                              className={styles["edit-icon"]}
+                                              src={EditIcon}
+                                              alt=""
+                                              onClick={editMinuteFunction}
+                                            />
+                                          )}
                                           <div className={styles["gap-ti"]}>
                                             <img
                                               src={DefaultAvatar}

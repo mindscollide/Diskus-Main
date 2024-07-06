@@ -409,6 +409,11 @@ const Minutes = ({
     dispatch(
       GetAllGeneralMinutesApiFunc(navigate, t, Meet, advanceMeetingModalID)
     );
+    let Data2 = {
+      isAgenda: false,
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
     setAgenda(false);
     setGeneral(true);
   };
@@ -839,18 +844,53 @@ const Minutes = ({
 
   useEffect(() => {
     try {
+      console.log(
+        "NewMeetingreducer.generalMinutes:",
+        NewMeetingreducer.generalMinutes
+      );
+      console.log(
+        "MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData:",
+        MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
+      );
+
       const generalMinutes = NewMeetingreducer.generalMinutes;
 
       if (generalMinutes && Object.keys(generalMinutes).length > 0) {
         const minutesData = generalMinutes.meetingMinutes;
+        // Ensure generalMinutesDocumentForMeeting is defined
         const documentsData = generalminutesDocumentForMeeting.data;
-        console.log(
-          "minutesDataminutesDataminutesData",
-          minutesData,
-          documentsData
-        );
+        console.log("minutesData:", minutesData);
+        console.log("documentsData:", documentsData);
+
         const combinedData = transformData(minutesData, documentsData);
-        setMinutesData(combinedData);
+
+        if (
+          MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData &&
+          MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
+            .minuteReviewStatsModelList &&
+          MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
+            .minuteReviewStatsModelList.length > 0
+        ) {
+          const { minuteReviewStatsModelList } =
+            MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData;
+
+          const updatedCombinedData = combinedData.map((combinData) => {
+            const matchedStats = minuteReviewStatsModelList.find(
+              (minuteStatsData) =>
+                combinData.minuteID === minuteStatsData.minuteID
+            );
+            return matchedStats
+              ? { ...combinData, MinuteStats: matchedStats }
+              : combinData;
+          });
+          console.log("combinedData updatedCombinedData:", updatedCombinedData);
+
+          setMinutesData(updatedCombinedData);
+        } else {
+          setMinutesData(combinedData);
+        }
+
+        console.log("combinedData:", combinedData);
       } else {
         setMinutesData([]);
       }
@@ -862,7 +902,17 @@ const Minutes = ({
     return () => {
       setMinutesData([]);
     };
-  }, [NewMeetingreducer.generalMinutes]);
+  }, [
+    NewMeetingreducer.generalMinutes,
+    MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData,
+  ]);
+
+  useEffect(() => {
+    console.log();
+  }, [
+    NewMeetingreducer.generalMinutes,
+    NewMeetingreducer.GetMinuteReviewStatsForOrganizerByMeetingIdData,
+  ]);
 
   console.log("minutesDataminutesDataminutesData", minutesData);
 
@@ -1430,6 +1480,7 @@ const Minutes = ({
             ) : null}
             {/* Mapping of The Create Minutes */}
             {minutesData.map((data, index) => {
+              console.log(data, "datadatadataminutesData");
               const isOpen = openIndices.includes(index);
               const isOpenReviewer = openReviewerDetail.includes(index);
               return (
@@ -1495,18 +1546,24 @@ const Minutes = ({
                                             styles["reviewer-progress-text"]
                                           }
                                         >
-                                          <p className="m-0">{t("Total")} 03</p>
-                                          <span>|</span>
                                           <p className="m-0">
-                                            {t("Accepted")} 01
+                                            {t("Total")}{" "}
+                                            {data?.MinuteStats?.totalReviews}
                                           </p>
                                           <span>|</span>
                                           <p className="m-0">
-                                            {t("Rejected")} 01
+                                            {t("Accepted")}{" "}
+                                            {data?.MinuteStats?.accepted}
                                           </p>
                                           <span>|</span>
                                           <p className="m-0">
-                                            {t("Pending")} 01
+                                            {t("Rejected")}{" "}
+                                            {data?.MinuteStats?.rejected}
+                                          </p>
+                                          <span>|</span>
+                                          <p className="m-0">
+                                            {t("Pending")}{" "}
+                                            {data?.MinuteStats?.pending}
                                           </p>
                                         </div>
                                       </Col>
@@ -1548,18 +1605,24 @@ const Minutes = ({
                                             styles["reviewer-progress-text"]
                                           }
                                         >
-                                          <p className="m-0">{t("Total")} 03</p>
-                                          <span>|</span>
                                           <p className="m-0">
-                                            {t("Accepted")} 01
+                                            {t("Total")}{" "}
+                                            {data?.MinuteStats?.totalReviews}
                                           </p>
                                           <span>|</span>
                                           <p className="m-0">
-                                            {t("Rejected")} 01
+                                            {t("Accepted")}{" "}
+                                            {data?.MinuteStats?.accepted}
                                           </p>
                                           <span>|</span>
                                           <p className="m-0">
-                                            {t("Pending")} 01
+                                            {t("Rejected")}{" "}
+                                            {data?.MinuteStats?.rejected}
+                                          </p>
+                                          <span>|</span>
+                                          <p className="m-0">
+                                            {t("Pending")}{" "}
+                                            {data?.MinuteStats?.pending}
                                           </p>
                                         </div>
                                       </Col>
@@ -1595,13 +1658,12 @@ const Minutes = ({
                                           >
                                             Review Accepted:
                                           </span>{" "}
-                                          Alessandra Costa, Emily Davis, Matthew
-                                          Jones, Christopher Martinez, Elizabeth
-                                          Garcia, Olivia Nguyen, Ethan Patel,
-                                          Madison Kim, Tyler Chen, Sophia Gupta,
-                                          Mason Kumar, Ava Wong, Logan Singh,
-                                          Jackson Li, Chloe Patel, Noah Patel,
-                                          Lily Chang, Lucas Patel, Amelia Tran.
+                                          {data?.MinuteStats?.acceptedByUsers
+                                            ?.length > 0 &&
+                                            data?.MinuteStats?.acceptedByUsers?.map(
+                                              (minuteAcceptedUser, index) =>
+                                                `${minuteAcceptedUser}, `
+                                            )}
                                         </p>
                                         <p
                                           className={`${styles["text-wrapper-review"]}`}
@@ -1613,7 +1675,12 @@ const Minutes = ({
                                           >
                                             Review Rejected:
                                           </span>{" "}
-                                          Alex Rodriguez, Samantha Lee.
+                                          {data?.MinuteStats?.rejectedByUsers
+                                            ?.length > 0 &&
+                                            data?.MinuteStats?.rejectedByUsers?.map(
+                                              (minuteRejectedUser, index) =>
+                                                `${minuteRejectedUser}, `
+                                            )}
                                         </p>
                                         <p
                                           className={`${styles["text-wrapper-review"]}`}
@@ -1623,8 +1690,12 @@ const Minutes = ({
                                           >
                                             Review Pending:
                                           </span>{" "}
-                                          Sarah Jenkins, Joshua Clark, Megan
-                                          Rodriguez, Brandon Young.
+                                          {data?.MinuteStats?.pendingUsers
+                                            ?.length > 0 &&
+                                            data?.MinuteStats?.pendingUsers?.map(
+                                              (minutePendingUser, index) =>
+                                                `${minutePendingUser}, `
+                                            )}
                                         </p>
                                       </Col>
                                     </Row>
@@ -1758,11 +1829,13 @@ const Minutes = ({
                                               >
                                                 <span
                                                   onClick={() =>
-                                                    setShowRevisionHistory(true)
-                                                    // handleClickShowRevision(
-                                                    //   data,
-                                                    //   data.minuteID
+                                                    // setShowRevisionHistory(
+                                                    //   true
                                                     // )
+                                                    handleClickShowRevision(
+                                                      data,
+                                                      data.minuteID
+                                                    )
                                                   }
                                                 >
                                                   {t("Revisions")}
@@ -1771,11 +1844,11 @@ const Minutes = ({
                                                 <span
                                                   onClick={
                                                     () =>
-                                                      // handleClickShowVersionHistory(
-                                                      //   data,
-                                                      //   data.minuteID
-                                                      // )
-                                                    setShowVersionHistory(true)
+                                                      handleClickShowVersionHistory(
+                                                        data,
+                                                        data.minuteID
+                                                      )
+                                                    // setShowVersionHistory(true)
                                                   }
                                                   className="border-0"
                                                 >
