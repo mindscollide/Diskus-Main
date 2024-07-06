@@ -238,6 +238,27 @@ const SearchBarComponent = ({
       Location: null,
       People: null,
     });
+    setSearchResultBoxFields({
+      documentType: {
+        value: 0,
+        label: "",
+      },
+      lastModifedDate: {
+        value: 0,
+        label: "",
+      },
+      documetLocation: {
+        value: 0,
+        label: "",
+      },
+      itemname: "",
+      haswords: "",
+      owner: {
+        value: 0,
+        label: "",
+      },
+      specifiPeople: "",
+    });
     setSelectedStartDate(null);
     setSelectedEndDate(null);
   };
@@ -812,6 +833,27 @@ const SearchBarComponent = ({
       Location: null,
       People: null,
     });
+    setSearchResultBoxFields({
+      documentType: {
+        value: 0,
+        label: "",
+      },
+      lastModifedDate: {
+        value: 0,
+        label: "",
+      },
+      documetLocation: {
+        value: 0,
+        label: "",
+      },
+      itemname: "",
+      haswords: "",
+      owner: {
+        value: 0,
+        label: "",
+      },
+      specifiPeople: "",
+    });
     setSelectedEndDate(null);
     setSelectedStartDate(null);
   };
@@ -1175,7 +1217,7 @@ const SearchBarComponent = ({
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
       StatusID: Number(searchDataFields.StatusID),
-      Title: searchDataFields.Title,
+      Title: searchResultBoxFields.itemname,
       isDocument: searchDataFields.isDocument,
       isSpreadSheet: searchDataFields.isSpreadSheet,
       isPresentation: searchDataFields.isPresentation,
