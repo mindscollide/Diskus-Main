@@ -39,6 +39,7 @@ import {
 } from "../../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
+import { debounce } from "lodash";
 const SignatureViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -97,15 +98,14 @@ const SignatureViewer = () => {
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
+  const [annotationsColorRecord, setAnnotationsColorRecord] = useState([]);
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const participantsRef = useRef(participants);
-  console.log(
-    userAnnotationsRef,
-    "userAnnotationsRefuserAnnotationsRefuserAnnotationsRef"
-  );
+  const annotationsColorRecordRef = useRef(annotationsColorRecord);
+
   // ===== this use for current state update get =====//
   // Ensure the ref stays in sync with the state
   useEffect(() => {
@@ -127,6 +127,10 @@ const SignatureViewer = () => {
   useEffect(() => {
     signerDataRef.current = signerData;
   }, [signerData]);
+  useEffect(() => {
+    annotationsColorRecordRef.current = annotationsColorRecord;
+  }, [annotationsColorRecord]);
+
   // === End === //
 
   // === Api calling === //
@@ -146,6 +150,12 @@ const SignatureViewer = () => {
 
     fetchData();
   }, []);
+  // === End === //
+
+  // === checker for null array === //
+  function containsNull(arr) {
+    return arr.some((element) => element === null);
+  }
   // === End === //
 
   // === this is responce of GetAllFieldsByWorkFlowID ===//
@@ -178,11 +188,41 @@ const SignatureViewer = () => {
               });
             }
           );
+          console.log(
+            "userAnnotations",
+            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields
+          );
+
+          // function revert(data) {
+          //   return data.map((item) => {
+          //     const xmlField = item?.xmlField
+          //       .split("_#_")
+          //       .map((str) => JSON.parse(str));
+          //     return {
+          //       actorID: item.actorID,
+          //       userID: item.userID,
+          //       actorColor: item.actorColor,
+          //       xml: xmlField ? xmlField : [],
+          //     };
+          //   });
+          // }
           function revert(data) {
             return data.map((item) => {
-              const xmlField = item?.xmlField
-                .split("_#_")
-                .map((str) => JSON.parse(str));
+              const xmlField = item.xmlField
+                ? item.xmlField.split("_#_").map((str) => {
+                    try {
+                      return JSON.parse(str);
+                    } catch (error) {
+                      console.error(
+                        "Error parsing JSON:",
+                        error,
+                        "Input:",
+                        str
+                      );
+                      return null; // or handle the error as needed
+                    }
+                  })
+                : [];
               return {
                 actorID: item.actorID,
                 userID: item.userID,
@@ -191,11 +231,36 @@ const SignatureViewer = () => {
               };
             });
           }
+          // this is using if we are getting null value for anotations
+          if (
+            containsNull(
+              getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
+                .listOfFields
+            )
+          ) {
+            let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
 
-          revertedData = revert(
-            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields
-          );
-          setUserAnnotations(revertedData);
+            if (bundleModels?.length > 0) {
+              let listOfUsers = [];
+              bundleModels.forEach((users, index) => {
+                users.actors.forEach((usersData, index) => {
+                  listOfUsers.push({
+                    actorID: usersData.fK_WorkFlowActor_ID,
+                    userID: usersData.pK_UID,
+                    actorColor: usersData.actorColor,
+                    xml: [],
+                  });
+                });
+              });
+              setUserAnnotations(listOfUsers);
+            }
+          } else {
+            revertedData = revert(
+              getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
+                .listOfFields
+            );
+            setUserAnnotations(revertedData);
+          }
           setFieldsData(newFieldsData);
         }
       } catch (error) {
@@ -230,6 +295,35 @@ const SignatureViewer = () => {
           setParticipants(listOfUsers);
           setLastParticipants(listOfUsers);
           setSelectedUser(listOfUsers[0].pk_UID);
+          // this is using if we are getting null value for anotations
+          if (
+            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.bundleDetails
+              .length > 0
+          ) {
+            if (
+              containsNull(
+                getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
+                  .listOfFields
+              )
+            ) {
+              let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
+
+              if (bundleModels?.length > 0) {
+                let listOfUsers = [];
+                bundleModels.forEach((users, index) => {
+                  users.actors.forEach((usersData, index) => {
+                    listOfUsers.push({
+                      actorID: usersData.fK_WorkFlowActor_ID,
+                      userID: usersData.pK_UID,
+                      actorColor: usersData.actorColor,
+                      xml: [],
+                    });
+                  });
+                });
+                setUserAnnotations(listOfUsers);
+              }
+            }
+          }
         } else {
           setOpenAddParticipentModal(true);
         }
@@ -255,8 +349,37 @@ const SignatureViewer = () => {
     }
   }, [getWorkfFlowByFileId, FieldsData]);
   // === End === //
-
   // === Get  the file details by Id from API and Set it === //
+
+  // Function to parse XML and extract field names
+  const parseXmlAndExtractNames = (xmlString) => {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+
+    // Find all <ffield> elements and extract their name attributes
+    const fieldNodes = xmlDoc.getElementsByTagName("ffield");
+    const names = [];
+
+    for (let i = 0; i < fieldNodes.length; i++) {
+      const name = fieldNodes[i].getAttribute("name");
+      if (name) {
+        names.push(name);
+      }
+    }
+
+    return names;
+  };
+  // Function to update annotationsColorRecord with extracted names
+  const updateAnnotationsColorRecordFromXml = (xmlString) => {
+    // Parse XML and extract names
+    const names = parseXmlAndExtractNames(xmlString);
+
+    // Update annotationsColorRecord state with new names (remove duplicates)
+    const uniqueNames = Array.from(
+      new Set([...annotationsColorRecord, ...names])
+    );
+    setAnnotationsColorRecord(uniqueNames);
+  };
   useEffect(() => {
     if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
       setPdfResponceData((prevData) => ({
@@ -265,8 +388,19 @@ const SignatureViewer = () => {
         attachmentBlob: getDataroomAnnotation.attachmentBlob,
         removedAnnotations: "",
       }));
+      if (getDataroomAnnotation.annotationString) {
+        updateAnnotationsColorRecordFromXml(
+          getDataroomAnnotation.annotationString
+        );
+      }
+      console.log(
+        "userAnnotations userAnnotations",
+        getDataroomAnnotation.annotationString
+      );
     }
   }, [getDataroomAnnotation]);
+  console.log("userAnnotations userAnnotations", userAnnotations);
+
   // === End === //
 
   // this is used for find pervious deleted data so we can delete it from our state and xfdf
@@ -317,14 +451,6 @@ const SignatureViewer = () => {
 
         getUsers.bundleModels.forEach((users, index) => {
           users.actors.forEach((usersData, index) => {
-            // Find matching user in FieldsData to get actorColor
-            const fieldData = FieldsData.find(
-              (field) => field.userID === usersData.pK_UID
-            );
-            console.log(
-              { fieldData, FieldsData, usersData, users },
-              "fieldDatafieldDatafieldData"
-            );
             listOfUsers.push({
               name: usersData.name,
               pk_UID: usersData?.pK_UID,
@@ -344,7 +470,6 @@ const SignatureViewer = () => {
         });
         setSignerData(signersData);
         setParticipants(listOfUsers);
-
         let deletedData = getRemovedData(userAnnotations, selectedUserList);
         setTeletedDataTem(deletedData);
         setSelectedUser(listOfUsers[0]?.pk_UID);
@@ -371,7 +496,7 @@ const SignatureViewer = () => {
   // this will generate my xfdf files for user base and send into AddUpdateFieldValue
   const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
     console.log(
-      "userAnnotations",
+      "userAnnotations updateXFDF",
       action,
       xmlString,
       userSelectID,
@@ -422,6 +547,7 @@ const SignatureViewer = () => {
         }
       });
       // Update the state with the modified userAnnotations
+      console.log("userAnnotations userAnnotations in", userAnnotations);
       setUserAnnotations(userAnnotations);
       // }
     } catch (error) {
@@ -707,7 +833,6 @@ const SignatureViewer = () => {
                 existsInMainXML(widgetName, "widget", mainXmlDoc)
               );
             });
-
             return { ...user, xml: filteredXml };
           });
           // for Save workFlow Api
@@ -739,9 +864,9 @@ const SignatureViewer = () => {
 
           let convertData = [];
           covert.forEach((data) => {
-            const xmlListStrings = data.xml.map((xmlObj) =>
-              JSON.stringify(xmlObj)
-            );
+            const xmlListStrings = data.xml.map((xmlObj) => {
+              return JSON.stringify(xmlObj);
+            });
             convertData.push({
               ActorID: data.actorID,
               xmlList: xmlListStrings,
@@ -1020,10 +1145,12 @@ const SignatureViewer = () => {
         freetextElement.parentNode.removeChild(freetextElement);
       });
     });
+    console.log("removeHandlerForPrticipantDelete",xmlDoc)
 
     // Serialize the modified XML back to a string
     const serializer = new XMLSerializer();
     const modifiedXFDFString = serializer.serializeToString(xmlDoc);
+    console.log("removeHandlerForPrticipantDelete",modifiedXFDFString)
 
     return modifiedXFDFString;
   }
@@ -1039,6 +1166,7 @@ const SignatureViewer = () => {
         annotations,
         usersNotInParticipants
       );
+      console.log("removeHandlerForPrticipantDelete",modifiedXFDF)
 
       // Remove existing annotations
       const annots = annotationManager.getAnnotationsList();
@@ -1071,16 +1199,27 @@ const SignatureViewer = () => {
       if (usersNotInParticipants.length > 0) {
         setLastParticipants(participants);
         removeHandlerForPrticipantDelete(usersNotInParticipants);
+        console.log("removeHandlerForPrticipantDelete")
       } else {
         setLastParticipants(participants);
       }
     }
   }, [participants]);
   // ==== End ====//
+
+  // ==== This is for temproray anoto name save for color slection ====//
+  const updateAnnotationsColorRecord = (newValue) => {
+    if (!annotationsColorRecordRef.current.includes(newValue)) {
+      setAnnotationsColorRecord((prevRecord) => [...prevRecord, newValue]);
+    }
+  };
+  // ==== End ====//
+
+  console.log("annotationsColorRecord", annotationsColorRecordRef.current);
   // === this is for update intance in ===//
   useEffect(() => {
     if (Instance) {
-      const { annotationManager, Annotations } = Instance.Core;
+      const { annotationManager } = Instance.Core;
       annotationManager.addEventListener(
         "annotationChanged",
         async (annotations, action, { imported }) => {
@@ -1089,147 +1228,47 @@ const SignatureViewer = () => {
           }
           if (action === "add" || action === "modify") {
             try {
-              annotations.forEach((annotation) => {
-                console.log(annotation, "annotationannotationannotation");
-                const { Color, Subject, TextColor } = annotation;
-                let letsGet = getActorColorByUserID(
-                  selectedUserRef.current,
-                  userAnnotationsRef
-                );
-                const { r, g, b } = letsGet;
-                console.log(
-                  Color,
-                  Subject,
-                  TextColor.toHexString(),
-                  "annotationannotationannotationColor"
-                );
-                if (annotation.Subject === "Signature") {
-                  annotation.NoResize = true;
-                  annotation.NoMove = true;
-                  annotationManager.updateAnnotation(annotation);
-                  annotationManager.redrawAnnotation(annotation);
-                }
-                if (annotation.ToolName === "AnnotationCreateFreeText") {
-                  annotation.TextColor = new Annotations.Color(r, g, b);
-                  annotationManager.updateAnnotation(annotation);
-                  annotationManager.redrawAnnotation(annotation);
-                }
+              const letsGet = getActorColorByUserID(
+                selectedUserRef.current,
+                userAnnotationsRef
+              );
+              const { r, g, b } = letsGet;
+              annotations.forEach((annotation, index) => {
+                const formFieldName = annotation.ij?.["trn-form-field-name"];
 
-                if (annotation.Subject === "Ellipse") {
-                  annotation.TextColor = new Annotations.Color(r, g, b);
-                  annotationManager.updateAnnotation(annotation);
-                  annotationManager.redrawAnnotation(annotation);
-                }
-
-                if (annotation.Subject === "Rectangle") {
-                  annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-                  annotation.TextColor = new Annotations.Color(r, g, b);
-                  annotationManager.updateAnnotation(annotation);
-                  annotationManager.redrawAnnotation(annotation);
-                }
-                if (annotation.Subject === "Widget") {
-                  annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-                  annotation.FillColor = new Annotations.Color(r, g, b);
-                  annotation.TextColor = new Annotations.Color(r, g, b);
-                  annotationManager.updateAnnotation(annotation);
-                  annotationManager.redrawAnnotation(annotation);
+                // Add formFieldName to annotationsColorRecord if not already present
+                if (
+                  formFieldName &&
+                  !annotationsColorRecordRef.current.includes(formFieldName)
+                ) {
+                  updateAnnotationsColorRecord(formFieldName);
+                  const annot = annotations[index];
+                  annot.isNew = false;
+                  annot.Color = new Instance.Core.Annotations.Color(r, g, b);
+                  annotationManager.updateAnnotation(annot);
+                  annotationManager.redrawAnnotation(annot);
                 }
               });
-              // Export annotations to XFDF format using `exportAnnotations`
-              const xfdfString = await annotationManager.exportAnnotations();
+            } catch (error) {
+              console.error("Error updating annotations:", error);
+            }
+            // Export annotations to XFDF format using `exportAnnotations`
+            const xfdfString = await annotationManager.exportAnnotations();
 
-              // Update the user's annotations based on the action
-
-              updateXFDF(
-                action,
-                xfdfString,
-                selectedUserRef.current,
-                userAnnotationsRef.current
-              );
-            } catch (error) {}
+            // Update the user's annotations based on the action
+            updateXFDF(
+              action,
+              xfdfString,
+              selectedUserRef.current,
+              userAnnotationsRef.current
+            );
           }
         }
       );
     }
   }, [Instance]);
+
   // === End ===//
-
-  // // === this is for update intance in ===//
-  // useEffect(() => {
-  //   if (Instance) {
-  //     const { annotationManager, Annotations } = Instance.Core;
-  //     annotationManager.addEventListener(
-  //       "annotationChanged",
-  //       async (annotations, action, { imported }) => {
-  //         if (imported) {
-  //           return;
-  //         }
-  //         if (action === "add" || action === "modify") {
-  //           try {
-  //             annotations.forEach((annotation) => {
-  //               // const { Color, Subject, TextColor } = annotation;
-  //               let letsGet = getActorColorByUserID(
-  //                 selectedUserRef.current,
-  //                 userAnnotationsRef
-  //               );
-  //               const { r, g, b } = letsGet;
-  //               console.log({ r, g, b }, "letsGetletsGet");
-
-  //               if (annotation.ToolName === "AnnotationCreateFreeText") {
-  //                 annotation.TextColor = new Annotations.Color(r, g, b);
-  //                 annotation.StrokeColor = new Annotations.Color(r, g, b);
-  //                 // annotation.NoResize = true;
-  //                 // annotation.NoMove = true;
-  //                 annotationManager.updateAnnotation(annotation);
-  //                 annotationManager.redrawAnnotation(annotation);
-  //                 console.log("userAnnotations AnnotationCreateFreeText", annotation);
-  //               }
-  //               if (annotation.ToolName === "RadioButtonFormFieldCreateTool") {
-  //                 // Radio Button
-  //                 annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-  //                 // annotation.FillColor = new Annotations.Color(r, g, b);
-  //                 annotation.TextColor = new Annotations.Color(r, g, b);
-
-  //                 annotationManager.updateAnnotation(annotation);
-  //                 annotationManager.redrawAnnotation(annotation);
-  //                 console.log("userAnnotations RadioButtonFormFieldCreateTool", annotation);
-  //               }
-  //               if (annotation.ToolName === "CheckBoxFormFieldCreateTool") {
-  //                 // Checkbox Form Field
-  //                 annotation.StrokeColor = new Annotations.Color(r, g, b); // Example: Green color for rectangle
-  //                 // annotation.FillColor = new Annotations.Color(r, g, b);
-  //                 annotation.TextColor = new Annotations.Color(r, g, b);
-  //                 annotationManager.updateAnnotation(annotation);
-  //                 annotationManager.redrawAnnotation(annotation);
-  //                 console.log("userAnnotations CheckBoxFormFieldCreateTool", annotation);
-  //               }
-  //               if (annotation.ToolName === "SignatureFormFieldCreateTool") {
-  //                 // Signature Field
-  //                 annotation.TextColor = new Annotations.Color(r, g, b);
-  //                 annotation.StrokeColor = new Annotations.Color(r, g, b);
-  //                 annotationManager.updateAnnotation(annotation);
-  //                 annotationManager.redrawAnnotation(annotation);
-  //                 console.log("userAnnotations SignatureFormFieldCreateTool", annotation);
-  //               }
-  //             });
-  //             // Export annotations to XFDF format using `exportAnnotations`
-  //             const xfdfString = await annotationManager.exportAnnotations();
-
-  //             // Update the user's annotations based on the action
-
-  //             updateXFDF(
-  //               action,
-  //               xfdfString,
-  //               selectedUserRef.current,
-  //               userAnnotationsRef.current
-  //             );
-  //           } catch (error) {}
-  //         }
-  //       }
-  //     );
-  //   }
-  // }, [Instance]);
-  // // === End ===//
 
   // === these are the function which we are using in add signaturtires modal === //
   //  its use for update dropdown display of signatries modal users list

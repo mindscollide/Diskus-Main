@@ -26,17 +26,8 @@ import {
   PackageUpgradeDetail,
   PackageUpgradeSelect,
   PasswordUpdateMessage,
-  // CreatePassword,
-  // PackageSelection,
-  // PaymentForm,
-  // PackageSelected,
-  // Signup,
-  // VerifyEmailOTP,
   Notes,
   CalendarPage,
-  // TwoFactor,
-  // TwoFacSendEmail,
-  // VerificationIphone,
   ForgotPasswordVerification,
   UpdatePasswordSuccessfully,
   Committee,
@@ -50,38 +41,33 @@ import {
   EmptyState,
   RSVP,
   MinutesFlow,
+  UserManagementProcess,
+  SignupProcessUserManagement,
+  PakageDetailsUserManagement,
+  BillingMethodUsermanagement,
+  PaymentTest,
+  ManageUsers,
+  PaymentProcess,
+  Reports,
+  PakageDetailsUMUpgrade,
+  AddUsers,
+  UserLevelConfigUM,
+  AddUserMain,
+  PaymentMethodBillInfo,
+  OrganizationLevelConfigUM,
+  CancelSubscriptionAdmin,
+  PakageDetailsAdmin,
+  DeleteOrganizationAdmin,
 } from "../container";
 
-import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
 import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateRoutes from "./private_routes";
-import Reports from "../container/Admin/Reports/Reports";
-import SignUpOrganizationUM from "../container/pages/UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
-import VerifyOTPUM from "../container/pages/UserMangement/VerifyOTPUM/VerifyOTPUM";
-import PasswordCreationUM from "../container/pages/UserMangement/PasswordCreationUM/PasswordCreationUM";
 import SignatureViewer from "../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer";
-import PendingSignature from '../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue'
-import ManageUsers from "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers";
-import AddUsers from "../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers";
-import OrganizationLevelConfigUM from "../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM";
-import UserLevelConfigUM from "../container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM";
-import PakageDetailsUserManagement from "../container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement";
-import BillingMethodUsermanagement from "../container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement";
-import PakageDetailsAdmin from "../container/pages/UserMangement/AdminUserManagement/PakageDetailsAdmin/PakageDetailsAdmin";
-import CancelSubscriptionAdmin from "../container/pages/UserMangement/AdminUserManagement/CancelSubscriptionAdmin/CancelSubscriptionAdmin";
-import DeleteOrganizationAdmin from "../container/pages/UserMangement/AdminUserManagement/DeleteOrganizationAdmin/DeleteOrganizationAdmin";
-import PaymentMethodBillInfo from "../container/pages/UserMangement/AdminUserManagement/PaymentMethodBillInfoUserManagement/PaymentMethodBillInfo";
-import AddUserMain from "../container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain";
-import UserManagementProcess from "../container/pages/UserManagementProcess/UserManagementProcess";
-import SignupProcessUserManagement from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement";
+import PendingSignature from "../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue";
 import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
-import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade";
-import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
-import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
-import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
-import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
+import { DocumentViewer } from "../components/elements";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 
@@ -186,7 +172,7 @@ export const router = createHashRouter(
               </RouteWrapperUser>
             }
           />
-            <Route
+          <Route
             path="signeddocument"
             element={
               <RouteWrapperUser name="signatureviewer">
