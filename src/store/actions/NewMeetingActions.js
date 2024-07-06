@@ -8376,4 +8376,5 @@ export {
   boardDeckModal,
   boardDeckShareModal,
   boardDeckEmailModal,
+  AllDocumentsForAgendaWiseMinutesApiFunc,
 };

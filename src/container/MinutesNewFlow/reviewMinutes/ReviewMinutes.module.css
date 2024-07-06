@@ -83,6 +83,13 @@ p.Parent-title-heading {
   color: #5f78d6;
 }
 
+p.SUB-title-heading {
+  font-weight: 600;
+  font-size: 16px;
+  color: #5f78d6;
+  margin-left: 62px;
+}
+
 p.minutes-text {
   font-family: "Montserrat";
   font-style: normal;

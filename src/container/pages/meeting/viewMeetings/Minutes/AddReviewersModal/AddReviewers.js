@@ -965,7 +965,7 @@ const AddReviewers = ({
                   className={styles["Add-Button-Reviewerss"]}
                   text={t("Add-reviewers")}
                   onClick={addMoreMinutesForReview}
-                  disableBtn={selectedMinuteIDs.length === 0 ? true : false}
+                  disableBtn={newSelectedMinutes.length === 0 ? true : false}
                 />
                 <Button
                   className={styles["Add-Button-Reviewers"]}

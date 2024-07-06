@@ -96,6 +96,7 @@ const SelectReviewers = ({
     return () => {
       setSelectReviewersArray([]);
       setSelectedMinuteIDs([]);
+      setNewSelectedMinutes([]);
     };
   }, []);
 
@@ -116,12 +117,18 @@ const SelectReviewers = ({
   const updateMinutes = (state1, state2, state3) => {
     const checkIds = new Set(state3);
 
-    // Helper function to update minuteData
+    // Helper function to update minuteData selectively
     const updateMinuteData = (minuteData) => {
-      return minuteData.map((minute) => ({
-        ...minute,
-        isChecked: checkIds.has(minute.minuteID),
-      }));
+      return minuteData.map((minute) => {
+        if (checkIds.has(minute.minuteID)) {
+          return {
+            ...minute,
+            isChecked: true,
+            reviewersList: [1195, 1199], // Example reviewersList, update as needed
+          };
+        }
+        return minute;
+      });
     };
 
     // Update first state
@@ -153,23 +160,39 @@ const SelectReviewers = ({
     });
 
     // Update second state
-    const updatedState2 = state2.map((minute) => ({
-      ...minute,
-      isChecked: checkIds.has(minute.minuteID),
-    }));
+    const updatedState2 = state2.map((minute) => {
+      if (checkIds.has(minute.minuteID)) {
+        return {
+          ...minute,
+          isChecked: true,
+          reviewersList: [1195, 1199], // Example reviewersList, update as needed
+        };
+      }
+      return minute;
+    });
 
     return { updatedState1, updatedState2 };
   };
 
   useEffect(() => {
     try {
-      const { updatedState1, updatedState2 } = updateMinutes(
-        minuteDataAgenda,
-        minuteDataGeneral,
-        selectedMinuteIDs
-      );
-      setMinuteDataAgenda(updatedState1);
-      setMinuteDataGeneral(updatedState2);
+      if (moreMinutes === true) {
+        const { updatedState1, updatedState2 } = updateMinutes(
+          minuteDataAgenda,
+          minuteDataGeneral,
+          newSelectedMinutes
+        );
+        setMinuteDataAgenda(updatedState1);
+        setMinuteDataGeneral(updatedState2);
+      } else {
+        const { updatedState1, updatedState2 } = updateMinutes(
+          minuteDataAgenda,
+          minuteDataGeneral,
+          selectedMinuteIDs
+        );
+        setMinuteDataAgenda(updatedState1);
+        setMinuteDataGeneral(updatedState2);
+      }
     } catch (error) {
       console.log("Error: ", error);
     }
