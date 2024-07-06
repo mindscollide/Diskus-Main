@@ -7,7 +7,10 @@ import {
 } from "../../../../components/elements"; // Importing necessary components
 import styles from "./RejectCommentModal.module.css"; // Importing CSS module for styling
 import { useNavigate } from "react-router-dom";
-import { rejectCommentModal } from "../../../../store/actions/Minutes_action"; // Importing action creator
+import {
+  RejectMinute,
+  rejectCommentModal,
+} from "../../../../store/actions/Minutes_action"; // Importing action creator
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
@@ -15,7 +18,7 @@ import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing cross icon i
 import { ListOfDefaultRejectionComments } from "../../../../store/actions/Minutes_action";
 
 // RejectCommentModal component definition
-const RejectCommentModal = () => {
+const RejectCommentModal = ({ minuteDataToReject, setMinuteDataToReject }) => {
   const { t } = useTranslation(); // Initializing translation function
 
   const { MinutesReducer } = useSelector((state) => state);
@@ -53,7 +56,30 @@ const RejectCommentModal = () => {
     };
   }, [MinutesReducer.ListOfDefaultRejectionCommentsData]);
 
-  console.log("commentsListcommentsList", commentsList);
+  useEffect(() => {
+    if (
+      MinutesReducer.RejectMinuteData !== null &&
+      MinutesReducer.RejectMinuteData !== undefined
+    ) {
+      setMinuteDataToReject(MinutesReducer.RejectMinuteData);
+    }
+  }, [MinutesReducer.RejectMinuteData]);
+
+  const RejectButton = () => {
+    // Update state
+    const updatedMinuteData = {
+      ...minuteDataToReject,
+      reason: commentText,
+      actorBundleStatusID: 4,
+    };
+
+    // Optional: Update local state if needed
+    setMinuteDataToReject(updatedMinuteData);
+
+    dispatch(RejectMinute(updatedMinuteData));
+
+    console.log("Updated Minute Data to Reject:", MinutesReducer);
+  };
 
   return (
     <section>
@@ -122,7 +148,7 @@ const RejectCommentModal = () => {
                 className="d-flex justify-content-end gap-2"
               >
                 <Button
-                  onClick={() => dispatch(rejectCommentModal(false))}
+                  onClick={RejectButton}
                   text={t("Reject")} // Translation for button text
                   className={styles["Reject_Comment_Modal"]} // Styling for reject button
                 />

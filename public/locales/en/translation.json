@@ -2093,5 +2093,6 @@
   "Remaining-minutes-to-review": "Remaining minutes to review: ",
   "Minutes-review-flow-inserted-successfully": "Minutes review flow inserted successfully",
   "Set-signer-order": "Set signer order",
-  "No-comments": "No comments"
+  "No-comments": "No comments",
+  "If-you-accept-all-minutes": "If you accept all minutes, previous comments will be discarded. Would you like to proceed with accepting all?"
 }

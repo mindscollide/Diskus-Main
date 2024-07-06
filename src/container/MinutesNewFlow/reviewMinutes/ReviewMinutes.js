@@ -14,11 +14,15 @@ import {
   deleteCommentModal,
   currentMeetingMinutesToReview,
   GetMinutesForReviewerByMeetingId,
+  acceptCommentModal,
+  AcceptRejectMinuteReview,
+  RejectMinute,
 } from "../../../store/actions/Minutes_action";
 import DefaultAvatar from "./../Images/avatar.png";
 import RejectCommentModal from "./rejectCommentModal/RejectCommentModal";
 import EditCommentModal from "./editCommentModal/EditCommentModal";
 import DeleteCommentModal from "./deleteCommentModal/DeleteCommentModal";
+import AcceptCommentModal from "./acceptAllCommentsModal/AcceptCommentModal.js";
 import { AllDocumentsForAgendaWiseMinutesApiFunc } from "../../../store/actions/NewMeetingActions.js";
 import {
   convertDateToGMTMinute,
@@ -37,137 +41,13 @@ const ReviewMinutes = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const [reviewWrapperScroll, setReviewWrapperScroll] = useState(false);
-  // const [demoData, setDemoData] = useState({
-  //   workFlowID: 65,
-  //   generalMinutes: [
-  //     {
-  //       generalMinutesVersionHistory: [],
-  //       versionNumber: 1,
-  //       minuteID: 86,
-  //       meetingID: 0,
-  //       minutesDetails: "<p>General Minutes 1 one</p>",
-  //       userID: 954,
-  //       actionableBundleID: 216,
-  //       actorBundleStatusID: 3,
-  //       reason: "",
-  //       userName: "Ali Mamdani",
-  //       lastUpdatedDate: "20240620",
-  //       lastUpdatedTime: "140650",
-  //       userProfilePicture: {
-  //         userID: 954,
-  //         orignalProfilePictureName: "20240614102831931.jpg",
-  //         displayProfilePictureName: "20240614102831931.jpg",
-  //       },
-  //       minuteAttachmentFiles: [
-  //         {
-  //           minuteID: 86,
-  //           pK_FileID: 3007,
-  //           displayFileName: "featurewise_ids.pdf",
-  //           diskusFileName: 2024060609035371313,
-  //           diskusFileNameString: "",
-  //           shareAbleLink: "2024060609035371313",
-  //           fileSize: 0,
-  //           fileSizeOnDisk: 0,
-  //           fK_UserID: 954,
-  //           fK_OrganizationID: 399,
-  //           uriPath: null,
-  //           fK_GAID: 0,
-  //           createdDate: "",
-  //           modifiedDate: "",
-  //           modifiedByUser: "",
-  //           openedDateTime: "",
-  //           openedByUser: "",
-  //           location: "",
-  //           type: "",
-  //           description: "",
-  //         },
-  //       ],
-  //       declinedReviews: [],
-  //     },
-  //     {
-  //       generalMinutesVersionHistory: [],
-  //       versionNumber: 1,
-  //       minuteID: 87,
-  //       meetingID: 0,
-  //       minutesDetails: "<p>General Minutes two </p>",
-  //       userID: 954,
-  //       actionableBundleID: 217,
-  //       actorBundleStatusID: 2,
-  //       reason: "",
-  //       userName: "Ali Mamdani",
-  //       lastUpdatedDate: "20240606",
-  //       lastUpdatedTime: "090412",
-  //       userProfilePicture: {
-  //         userID: 954,
-  //         orignalProfilePictureName: "20240614102831931.jpg",
-  //         displayProfilePictureName: "20240614102831931.jpg",
-  //       },
-  //       minuteAttachmentFiles: [
-  //         {
-  //           minuteID: 87,
-  //           pK_FileID: 3008,
-  //           displayFileName: "SQA Assignment One (2).docx",
-  //           diskusFileName: 2024060609041292090,
-  //           diskusFileNameString: "",
-  //           shareAbleLink: "2024060609041292090",
-  //           fileSize: 0,
-  //           fileSizeOnDisk: 0,
-  //           fK_UserID: 954,
-  //           fK_OrganizationID: 399,
-  //           uriPath: null,
-  //           fK_GAID: 0,
-  //           createdDate: "",
-  //           modifiedDate: "",
-  //           modifiedByUser: "",
-  //           openedDateTime: "",
-  //           openedByUser: "",
-  //           location: "",
-  //           type: "",
-  //           description: "",
-  //         },
-  //       ],
-  //       declinedReviews: [],
-  //     },
-  //   ],
-  //   agendaMinutes: [],
-  //   agendaHierarchyList: [
-  //     {
-  //       pK_MAID: 3740,
-  //       title: "Agenda Main One",
-  //       childAgendas: [
-  //         {
-  //           pK_MAID: 3741,
-  //           parentID: 3740,
-  //           title: "Agenda Main One SubAgenda",
-  //           parentTitle: "Agenda Main One",
-  //         },
-  //         {
-  //           pK_MAID: 3742,
-  //           parentID: 3740,
-  //           title: "Subagenda Second ",
-  //           parentTitle: "Agenda Main One",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       pK_MAID: 3743,
-  //       title: "Second Main agenda ",
-  //       childAgendas: [
-  //         {
-  //           pK_MAID: 3744,
-  //           parentID: 3743,
-  //           title: "Second main subagenda ",
-  //           parentTitle: "Second Main agenda ",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // });
 
+  const [workflowID, setWorkflowID] = useState(0);
   const [minutesAgenda, setMinutesAgenda] = useState([]);
   const [minutesAgendaHierarchy, setMinutesAgendaHierarchy] = useState([]);
   const [minutesGeneral, setMinutesGeneral] = useState([]);
   const [minutesToReview, setMinutesToReview] = useState(0);
+  const [minuteDataToReject, setMinuteDataToReject] = useState(null);
 
   const divRef = useRef(null);
 
@@ -200,6 +80,65 @@ const ReviewMinutes = () => {
     return count;
   };
 
+  const submitReviews = () => {
+    console.log("submitReviewssubmitReviews", minutesAgenda);
+
+    // Extract minuteData from all agendas and their subMinutes
+    const extractMinuteData = (agendas) => {
+      let allMinuteData = [];
+
+      agendas.forEach((agenda) => {
+        // Add main agenda's minuteData
+        if (Array.isArray(agenda.minuteData)) {
+          allMinuteData = [...allMinuteData, ...agenda.minuteData];
+        }
+
+        // Add subMinutes' minuteData
+        if (Array.isArray(agenda.subMinutes)) {
+          agenda.subMinutes.forEach((subMinute) => {
+            if (Array.isArray(subMinute.minuteData)) {
+              allMinuteData = [...allMinuteData, ...subMinute.minuteData];
+            }
+          });
+        }
+      });
+
+      return allMinuteData;
+    };
+
+    const allMinuteData = extractMinuteData(minutesAgenda);
+
+    console.log("submitReviewssubmitReviews", allMinuteData);
+
+    // Transform the first state data to the required format
+    const actorMinuteReviewsFromState1 = allMinuteData.map((minute) => ({
+      ActionableBundleID: minute.actionableBundleID,
+      IsAccepted: minute.actorBundleStatusID === 3,
+      DeclineReason: minute.reason || "",
+    }));
+
+    // Transform the second state data to the required format
+    const actorMinuteReviewsFromState2 = minutesGeneral.map((minute) => ({
+      ActionableBundleID: minute.actionableBundleID,
+      IsAccepted: minute.actorBundleStatusID === 3,
+      DeclineReason: minute.reason || "",
+    }));
+
+    // Combine the transformed data from both states
+    const ActorMinuteReviews = [
+      ...actorMinuteReviewsFromState1,
+      ...actorMinuteReviewsFromState2,
+    ];
+
+    let Data = {
+      WorkFlowID: workflowID,
+      ActorMinuteReviews,
+    };
+
+    // dispatch(AcceptRejectMinuteReview(Data, navigate, t));
+    console.log("submitReviewssubmitReviews", Data);
+  };
+
   useEffect(() => {
     const div = divRef.current;
 
@@ -224,10 +163,6 @@ const ReviewMinutes = () => {
     );
 
     dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
-
-    // return () => {
-    //   dispatch(currentMeetingMinutesToReview(null));
-    // };
   }, []);
 
   useEffect(() => {
@@ -241,102 +176,114 @@ const ReviewMinutes = () => {
         setMinutesAgendaHierarchy(reducerData.agendaHierarchyList);
         setMinutesGeneral(reducerData.generalMinutes);
         setMinutesToReview(countActorBundleStatusID2(reducerData));
+        setWorkflowID(reducerData.workFlowID);
+        // Initialize an empty array to hold the transformed data
+        let transformedData = [];
+        console.log("transformedDatatransformedData", transformedData);
+        // Iterate through each parent agenda in the agenda hierarchy list
+        minutesAgendaHierarchy.forEach((parentAgenda) => {
+          // Find the parent agenda details in the agendaWiseMinutes array
+          let parentAgendaMinutes = reducerData.agendaMinutes.filter(
+            (minute) => minute.agendaID === parentAgenda.pK_MAID
+          );
 
-        {
-          // Initialize an empty array to hold the transformed data
-          let transformedData = [];
-          console.log("transformedDatatransformedData", transformedData);
-          // Iterate through each parent agenda in the agenda hierarchy list
-          minutesAgendaHierarchy.forEach((parentAgenda) => {
-            // Find the parent agenda details in the agendaWiseMinutes array
-            let parentAgendaMinutes = reducerData.agendaMinutes.filter(
-              (minute) => minute.agendaID === parentAgenda.pK_MAID
+          // Initialize an array to hold sub-minutes of the parent agenda
+          let subMinutes = [];
+          // Iterate through each child agenda of the parent agenda
+          parentAgenda.childAgendas.forEach((childAgenda) => {
+            // Filter the minutes that match the child agenda ID and push to subMinutes
+            let childMinutes = reducerData.agendaMinutes.filter(
+              (minute) => minute.agendaID === childAgenda.pK_MAID
             );
+            subMinutes.push(...childMinutes);
+          });
 
-            // Initialize an array to hold sub-minutes of the parent agenda
-            let subMinutes = [];
-            // Iterate through each child agenda of the parent agenda
-            parentAgenda.childAgendas.forEach((childAgenda) => {
-              // Filter the minutes that match the child agenda ID and push to subMinutes
-              let childMinutes = reducerData.agendaMinutes.filter(
-                (minute) => minute.agendaID === childAgenda.pK_MAID
-              );
-              subMinutes.push(...childMinutes);
-            });
+          // Check if parent agenda details exist to determine if it's parent data
+          let isParentData = parentAgendaMinutes.length > 0;
 
-            // Check if parent agenda details exist to determine if it's parent data
-            let isParentData = parentAgendaMinutes.length > 0;
-
-            // If there are parent agenda details or sub-minutes, create a parent agenda object
-            if (isParentData || subMinutes.length > 0) {
-              // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
-              let agendaTitle = isParentData
-                ? parentAgendaMinutes[0].agendaTitle
-                : parentAgenda.childAgendas.find((childAgenda) =>
-                    subMinutes.some(
-                      (minute) => minute.agendaID === childAgenda.pK_MAID
-                    )
-                  )?.parentTitle || "";
-
-              let parentAgendaObj = {
-                agendaID: parentAgenda.pK_MAID,
-                agendaTitle: agendaTitle,
-                minuteData: parentAgendaMinutes.map((minute) => ({
-                  agendaMinutesVersionHistory:
-                    minute.agendaMinutesVersionHistory,
-                  versionNumber: minute.versionNumber,
-                  minuteID: minute.minuteID,
-                  actionableBundleID: minute.actionableBundleID,
-                  minutesDetails: minute.minutesDetails,
-                  actorBundleStatusID: minute.actorBundleStatusID,
-                  reason: minute.reason,
-                  userID: minute.userID,
-                  userName: minute.userName,
-                  lastUpdatedDate: minute.lastUpdatedDate,
-                  lastUpdatedTime: minute.lastUpdatedTime,
-                  userProfilePicture: minute.userProfilePicture,
-                  minuteAttachmentFiles: minute.minuteAttachmentFiles,
-                  declinedReviews: minute.declinedReviews,
-                })),
-                subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
-                  let childMinutes = subMinutes.filter(
+          // If there are parent agenda details or sub-minutes, create a parent agenda object
+          if (isParentData || subMinutes.length > 0) {
+            // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
+            let agendaTitle = isParentData
+              ? parentAgendaMinutes[0].agendaTitle
+              : parentAgenda.childAgendas.find((childAgenda) =>
+                  subMinutes.some(
                     (minute) => minute.agendaID === childAgenda.pK_MAID
-                  );
-                  return {
-                    agendaID: childAgenda.pK_MAID,
-                    agendaTitle: childMinutes[0]?.agendaTitle || "",
-                    minuteData: childMinutes.map((minute) => ({
-                      agendaMinutesVersionHistory:
-                        minute.agendaMinutesVersionHistory,
-                      versionNumber: minute.versionNumber,
-                      minuteID: minute.minuteID,
-                      actionableBundleID: minute.actionableBundleID,
-                      minutesDetails: minute.minutesDetails,
-                      actorBundleStatusID: minute.actorBundleStatusID,
-                      reason: minute.reason,
-                      userID: minute.userID,
-                      userName: minute.userName,
-                      lastUpdatedDate: minute.lastUpdatedDate,
-                      lastUpdatedTime: minute.lastUpdatedTime,
-                      userProfilePicture: minute.userProfilePicture,
-                      minuteAttachmentFiles: minute.minuteAttachmentFiles,
-                      declinedReviews: minute.declinedReviews,
-                    })),
-                  };
-                }),
-              };
+                  )
+                )?.parentTitle || "";
 
-              // Push the parent agenda object to the transformed data array
-              transformedData.push(parentAgendaObj);
+            let parentAgendaObj = {
+              agendaID: parentAgenda.pK_MAID,
+              agendaTitle: agendaTitle,
+              minuteData: parentAgendaMinutes.map((minute) => ({
+                agendaMinutesVersionHistory: minute.agendaMinutesVersionHistory,
+                versionNumber: minute.versionNumber,
+                minuteID: minute.minuteID,
+                actionableBundleID: minute.actionableBundleID,
+                minutesDetails: minute.minutesDetails,
+                actorBundleStatusID: minute.actorBundleStatusID,
+                reason: minute.reason,
+                userID: minute.userID,
+                userName: minute.userName,
+                lastUpdatedDate: minute.lastUpdatedDate,
+                lastUpdatedTime: minute.lastUpdatedTime,
+                userProfilePicture: minute.userProfilePicture,
+                minuteAttachmentFiles: minute.minuteAttachmentFiles,
+                declinedReviews: minute.declinedReviews,
+              })),
+              subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+                let childMinutes = subMinutes.filter(
+                  (minute) => minute.agendaID === childAgenda.pK_MAID
+                );
+                return {
+                  agendaID: childAgenda.pK_MAID,
+                  agendaTitle: childMinutes[0]?.agendaTitle || "",
+                  minuteData: childMinutes.map((minute) => ({
+                    agendaMinutesVersionHistory:
+                      minute.agendaMinutesVersionHistory,
+                    versionNumber: minute.versionNumber,
+                    minuteID: minute.minuteID,
+                    actionableBundleID: minute.actionableBundleID,
+                    minutesDetails: minute.minutesDetails,
+                    actorBundleStatusID: minute.actorBundleStatusID,
+                    reason: minute.reason,
+                    userID: minute.userID,
+                    userName: minute.userName,
+                    lastUpdatedDate: minute.lastUpdatedDate,
+                    lastUpdatedTime: minute.lastUpdatedTime,
+                    userProfilePicture: minute.userProfilePicture,
+                    minuteAttachmentFiles: minute.minuteAttachmentFiles,
+                    declinedReviews: minute.declinedReviews,
+                  })),
+                };
+              }),
+            };
+
+            // Push the parent agenda object to the transformed data array
+            transformedData.push(parentAgendaObj);
+          }
+        });
+        console.log("transformedDatatransformedData", transformedData);
+
+        // Update attachments in transformedData based on data state
+        console.log("transformedDatatransformedData", transformedData);
+
+        transformedData.forEach((agenda) => {
+          agenda.minuteData.forEach((minute) => {
+            // Find matching entry in data state by pK_MeetingAgendaMinutesID
+            let matchingData =
+              NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+                (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+              );
+
+            // If matchingData found, update attachments in minuteData
+            if (matchingData) {
+              minute.attachments = matchingData.files || [];
             }
           });
-          console.log("transformedDatatransformedData", transformedData);
 
-          // Update attachments in transformedData based on data state
-          console.log("transformedDatatransformedData", transformedData);
-
-          transformedData.forEach((agenda) => {
-            agenda.minuteData.forEach((minute) => {
+          agenda.subMinutes.forEach((subAgenda) => {
+            subAgenda.minuteData.forEach((minute) => {
               // Find matching entry in data state by pK_MeetingAgendaMinutesID
               let matchingData =
                 NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
@@ -348,29 +295,13 @@ const ReviewMinutes = () => {
                 minute.attachments = matchingData.files || [];
               }
             });
-
-            agenda.subMinutes.forEach((subAgenda) => {
-              subAgenda.minuteData.forEach((minute) => {
-                // Find matching entry in data state by pK_MeetingAgendaMinutesID
-                let matchingData =
-                  NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
-                    (entry) =>
-                      entry.pK_MeetingAgendaMinutesID === minute.minuteID
-                  );
-
-                // If matchingData found, update attachments in minuteData
-                if (matchingData) {
-                  minute.attachments = matchingData.files || [];
-                }
-              });
-            });
           });
-          console.log("transformedDatatransformedData", transformedData);
+        });
+        console.log("transformedDatatransformedData", transformedData);
 
-          // Log the transformed data to the console
-          setMinutesAgenda(transformedData);
-          console.log("transformedDatatransformedData", transformedData);
-        }
+        // Log the transformed data to the console
+        setMinutesAgenda(transformedData);
+        console.log("transformedDatatransformedData", transformedData);
       } else {
         setMinutesAgenda([]);
         setMinutesAgendaHierarchy([]);
@@ -383,7 +314,18 @@ const ReviewMinutes = () => {
     }
   }, [MinutesReducer.GetMinutesForReviewerByMeetingIdData]);
 
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
+  // useEffect(() => {
+  //   if(MinutesReducer.RejectMinuteData !== null && MinutesReducer.RejectMinuteData !== undefined)
+  // }, [MinutesReducer.RejectMinuteData])
+
+  console.log(
+    "DataDataDataData",
+    minutesAgenda,
+    minutesGeneral,
+    minuteDataToReject
+  );
+
+  console.log("MinutesReducerMinutesReducerMinutesReducer", MinutesReducer);
 
   return (
     <section className={styles["pendingApprovalContainer"]}>
@@ -413,7 +355,11 @@ const ReviewMinutes = () => {
               <span className={styles["No-of-reviews"]}>
                 {t("Remaining-minutes-to-review") + minutesToReview}
               </span>
-              <Button text={t("Accept All")} className={styles["Accept-all"]} />
+              <Button
+                onClick={() => dispatch(acceptCommentModal(true))}
+                text={t("Accept All")}
+                className={styles["Accept-all"]}
+              />
             </Col>
           </Row>
           <div
@@ -425,7 +371,7 @@ const ReviewMinutes = () => {
             ref={divRef}
           >
             {/* CONTENT */}
-            {minutesAgenda.map((data, index) => {
+            {minutesAgenda?.map((data, index) => {
               return (
                 <>
                   <Row className="mx-50">
@@ -550,9 +496,14 @@ const ReviewMinutes = () => {
                                           <Button
                                             text={t("Reject")}
                                             className={styles["Reject-comment"]}
-                                            onClick={() =>
-                                              dispatch(rejectCommentModal(true))
-                                            }
+                                            onClick={() => {
+                                              dispatch(
+                                                rejectCommentModal(true)
+                                              );
+                                              dispatch(
+                                                RejectMinute(parentMinutedata)
+                                              );
+                                            }}
                                           />
                                         ) : parentMinutedata.actorBundleStatusID ===
                                           4 ? (
@@ -768,13 +719,18 @@ const ReviewMinutes = () => {
                                                       className={
                                                         styles["Reject-comment"]
                                                       }
-                                                      onClick={() =>
+                                                      onClick={() => {
                                                         dispatch(
                                                           rejectCommentModal(
                                                             true
                                                           )
-                                                        )
-                                                      }
+                                                        );
+                                                        dispatch(
+                                                          RejectMinute(
+                                                            historyData
+                                                          )
+                                                        );
+                                                      }}
                                                     />
                                                   ) : historyData.actorBundleStatusID ===
                                                     4 ? (
@@ -1038,11 +994,16 @@ const ReviewMinutes = () => {
                                                     className={
                                                       styles["Reject-comment"]
                                                     }
-                                                    onClick={() =>
+                                                    onClick={() => {
                                                       dispatch(
                                                         rejectCommentModal(true)
-                                                      )
-                                                    }
+                                                      );
+                                                      dispatch(
+                                                        RejectMinute(
+                                                          minuteDataSubminute
+                                                        )
+                                                      );
+                                                    }}
                                                   />
                                                 ) : minuteDataSubminute.actorBundleStatusID ===
                                                   4 ? (
@@ -1306,13 +1267,18 @@ const ReviewMinutes = () => {
                                                                   "Reject-comment"
                                                                 ]
                                                               }
-                                                              onClick={() =>
+                                                              onClick={() => {
                                                                 dispatch(
                                                                   rejectCommentModal(
                                                                     true
                                                                   )
-                                                                )
-                                                              }
+                                                                );
+                                                                dispatch(
+                                                                  RejectMinute(
+                                                                    historyData
+                                                                  )
+                                                                );
+                                                              }}
                                                             />
                                                           ) : historyData.actorBundleStatusID ===
                                                             4 ? (
@@ -1540,9 +1506,10 @@ const ReviewMinutes = () => {
                                   <Button
                                     text={t("Reject")}
                                     className={styles["Reject-comment"]}
-                                    onClick={() =>
-                                      dispatch(rejectCommentModal(true))
-                                    }
+                                    onClick={() => {
+                                      dispatch(rejectCommentModal(true));
+                                      dispatch(RejectMinute(data));
+                                    }}
                                   />
                                 ) : data.actorBundleStatusID === 4 ? (
                                   <>
@@ -1723,11 +1690,14 @@ const ReviewMinutes = () => {
                                               className={
                                                 styles["Reject-comment"]
                                               }
-                                              onClick={() =>
+                                              onClick={() => {
                                                 dispatch(
                                                   rejectCommentModal(true)
-                                                )
-                                              }
+                                                );
+                                                dispatch(
+                                                  RejectMinute(historyData)
+                                                );
+                                              }}
                                             />
                                           ) : historyData.actorBundleStatusID ===
                                             4 ? (
@@ -1824,14 +1794,28 @@ const ReviewMinutes = () => {
               <Button
                 text={t("Submit-review")}
                 className={styles["Submit-review"]}
+                onClick={submitReviews}
               />
             </Col>
           </Row>
         </div>
       </Paper>
-      {MinutesReducer.rejectCommentModal ? <RejectCommentModal /> : null}
+      {MinutesReducer.rejectCommentModal ? (
+        <RejectCommentModal
+          minuteDataToReject={minuteDataToReject}
+          setMinuteDataToReject={setMinuteDataToReject}
+        />
+      ) : null}
       {MinutesReducer.editCommentModal ? <EditCommentModal /> : null}
       {MinutesReducer.deleteCommentModal ? <DeleteCommentModal /> : null}
+      {MinutesReducer.acceptCommentModal ? (
+        <AcceptCommentModal
+          minutesAgenda={minutesAgenda}
+          setMinutesAgenda={setMinutesAgenda}
+          minutesGeneral={minutesGeneral}
+          setMinutesGeneral={setMinutesGeneral}
+        />
+      ) : null}
     </section>
   );
 };
