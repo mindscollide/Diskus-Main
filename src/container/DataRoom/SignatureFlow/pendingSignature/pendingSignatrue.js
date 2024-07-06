@@ -52,23 +52,13 @@ const SignatureViewer = () => {
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
-  const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
   const [reasonModal, setReasonModal] = useState(false);
   const [declineConfirmationModal, setDeclineConfirmationModal] =
     useState(false);
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
-  const [signers, setSigners] = useState({
-    Name: "",
-    EmailAddress: "",
-    UserID: 0,
-  });
-  const [signerUserData, setSingerUserData] = useState({
-    value: 0,
-    label: "",
-    name: "",
-  });
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -91,11 +81,13 @@ const SignatureViewer = () => {
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
+
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const participantsRef = useRef(participants);
+  console.log(userAnnotationsRef.current, "userAnnotationsuserAnnotations");
 
   // ===== this use for current state update get =====//
   useEffect(() => {
@@ -117,6 +109,7 @@ const SignatureViewer = () => {
   useEffect(() => {
     signerDataRef.current = signerData;
   }, [signerData]);
+
   // === End === //
 
   // === Api calling === //
@@ -136,6 +129,12 @@ const SignatureViewer = () => {
 
     fetchData();
   }, []);
+  // === End === //
+
+  // === checker for null array === //
+  function containsNull(arr) {
+    return arr.some((element) => element === null);
+  }
   // === End === //
 
   // === this is responce of GetAllFieldsByWorkFlowID ===//
@@ -171,8 +170,20 @@ const SignatureViewer = () => {
           function revert(data) {
             return data.map((item) => {
               const xmlField = item.xmlField
-                .split("_#_")
-                .map((str) => JSON.parse(str));
+                ? item.xmlField.split("_#_").map((str) => {
+                    try {
+                      return JSON.parse(str);
+                    } catch (error) {
+                      console.error(
+                        "Error parsing JSON:",
+                        error,
+                        "Input:",
+                        str
+                      );
+                      return null; // or handle the error as needed
+                    }
+                  })
+                : [];
               return {
                 actorID: item.actorID,
                 userID: item.userID,
@@ -181,10 +192,36 @@ const SignatureViewer = () => {
               };
             });
           }
-          revertedData = revert(
-            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields
-          );
-          setUserAnnotations(revertedData);
+          // this is using if we are getting null value for anotations
+          if (
+            containsNull(
+              getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
+                .listOfFields
+            )
+          ) {
+            let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
+
+            if (bundleModels?.length > 0) {
+              let listOfUsers = [];
+              bundleModels.forEach((users, index) => {
+                users.actors.forEach((usersData, index) => {
+                  listOfUsers.push({
+                    actorID: usersData.fK_WorkFlowActor_ID,
+                    userID: usersData.pK_UID,
+                    actorColor: usersData.actorColor,
+                    xml: [],
+                  });
+                });
+              });
+              setUserAnnotations(listOfUsers);
+            }
+          } else {
+            revertedData = revert(
+              getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
+                .listOfFields
+            );
+            setUserAnnotations(revertedData);
+          }
           setFieldsData(newFieldsData);
         }
       } catch {}
@@ -217,8 +254,37 @@ const SignatureViewer = () => {
           setParticipants(listOfUsers);
           setLastParticipants(listOfUsers);
           setSelectedUser(listOfUsers[0].pk_UID);
+          // this is using if we are getting null value for anotations
+          if (
+            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.bundleDetails
+              .length > 0
+          ) {
+            if (
+              containsNull(
+                getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
+                  .listOfFields
+              )
+            ) {
+              let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
+
+              if (bundleModels?.length > 0) {
+                let listOfUsers = [];
+                bundleModels.forEach((users, index) => {
+                  users.actors.forEach((usersData, index) => {
+                    listOfUsers.push({
+                      actorID: usersData.fK_WorkFlowActor_ID,
+                      userID: usersData.pK_UID,
+                      actorColor: usersData.actorColor,
+                      xml: [],
+                    });
+                  });
+                });
+                setUserAnnotations(listOfUsers);
+              }
+            }
+          }
         } else {
-          setOpenAddParticipentModal(true);
+          // setOpenAddParticipentModal(true);
         }
 
         setPdfResponceData((prevData) => ({
@@ -242,7 +308,103 @@ const SignatureViewer = () => {
     }
   }, [getWorkfFlowByFileId, FieldsData]);
   // === End === //
+  // === used for read only === //
+  const initialState = {
+    removedFields: [], // Array to store removed fields
+    originalXmlString: '', // Store original XML string for reverting
+  };
+  function processXml(xmlString, nameValues) {
+    // Parse the XML string
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
 
+    // Iterate through each name value
+    nameValues.forEach((nameValue) => {
+      // Find the ffield with the specified name attribute value
+      const ffield = xmlDoc.querySelector(`ffield[name="${nameValue}"]`);
+
+      if (ffield) {
+        // Check if the ffield already has a flags attribute
+        const flagsAttribute = ffield.getAttribute("flags");
+
+        if (!flagsAttribute) {
+          // If flags attribute does not exist, add it with value "ReadOnly"
+          ffield.setAttribute("flags", "ReadOnly");
+        } else {
+          // If flags attribute exists, update its value to "ReadOnly"
+          ffield.setAttribute("flags", "ReadOnly");
+        }
+      }
+    });
+
+    // Serialize the updated XML back to string
+    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
+    return updatedXmlString;
+  }
+  function processXmlToHideFields(xmlString, nameValues) {
+    // Parse the XML string
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+  
+    // Array to store removed fields
+    const removedFields = [];
+  
+    // Iterate over each name value in the array
+    nameValues.forEach((nameValue) => {
+      // Find the ffield with the specified name attribute
+      const ffields = xmlDoc.querySelectorAll(`ffield[name="${nameValue}"]`);
+  
+      // Iterate through each matching ffield
+      ffields.forEach((ffield) => {
+        // Find and remove the widget element associated with this ffield
+        const widget = ffield.nextElementSibling;
+        if (widget && widget.tagName.toLowerCase() === 'widget' && widget.getAttribute('field') === nameValue) {
+          // Store a combined object of both ffield and widget
+          removedFields.push({
+            widget: widget.cloneNode(true),
+            ffield: ffield.cloneNode(true)
+          });
+          // Remove the widget element
+          widget.parentNode.removeChild(widget);
+        } else {
+          // If no associated widget, store just the ffield
+          removedFields.push({
+            ffield: ffield.cloneNode(true)
+          });
+        }
+  
+        // Remove the ffield element
+        ffield.parentNode.removeChild(ffield);
+      });
+    });
+  
+    // Serialize the updated XML back to string
+    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
+  
+    // Return the updated XML string and the removed fields
+    return { updatedXmlString, removedFields };
+  }
+
+// Function to revert the removed fields back to the XML document
+  function revertXmlFields(xmlString, removedFields) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+  
+    // Re-add removed fields back to the XML document
+    removedFields.forEach((removedField) => {
+      if (removedField.widget) {
+        xmlDoc.documentElement.appendChild(removedField.widget);
+      }
+      xmlDoc.documentElement.appendChild(removedField.ffield);
+    });
+  
+    // Serialize the updated XML back to string
+    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
+    return updatedXmlString;
+  }
+  
+  
+  // === End === //
   // === Get  the file details by Id from API and Set it === //
   useEffect(() => {
     if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
@@ -250,8 +412,37 @@ const SignatureViewer = () => {
         localStorage.getItem("userID") !== null
           ? Number(localStorage.getItem("userID"))
           : 0;
-      const { filteredXmlString, removedAnnotations } = filterFreetextElements(
+      let nameArray = [];
+
+      // Iterate over each object in the data array
+      userAnnotationsRef.current.forEach((obj) => {
+        // Check if userID does not match currentID
+        if (obj.userID !== currentUserID) {
+          // Iterate over xml array in the current object
+          obj.xml.forEach((item) => {
+            // Extract all 'name' attributes from ffield excluding font tag
+            let ffield = item.ffield;
+            let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
+            if (matches) {
+              matches.forEach((match) => {
+                // Extract the name value and push into nameArray
+                let name = match.match(/name="([^"]+)"/)[1];
+                nameArray.push(name);
+              });
+            }
+          });
+        }
+      });
+
+      console.log("userAnnotationsuserAnnotations nameArray", nameArray);
+      // let newXml= processXml(getDataroomAnnotation.annotationString, nameArray);
+      let newXml = processXmlToHideFields(
         getDataroomAnnotation.annotationString,
+        nameArray
+      );
+      console.log("userAnnotationsuserAnnotations newXml", newXml);
+      const { filteredXmlString, removedAnnotations } = filterFreetextElements(
+        newXml.updatedXmlString,
         currentUserID
       );
       setPdfResponceData((prevData) => ({
@@ -264,6 +455,7 @@ const SignatureViewer = () => {
   }, [getDataroomAnnotation]);
   // === End === //
 
+  // === used for remove free text  === //
   const filterFreetextElements = (xmlString, currentUserID) => {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, "text/xml");
@@ -291,11 +483,20 @@ const SignatureViewer = () => {
         }
       }
     });
+    console.log(
+      removedAnnotations,
+      "filterFreetextElementsfilterFreetextElements removedAnnotations"
+    );
 
     // Serialize the modified XML back to a string
     const filteredXmlString = serializer.serializeToString(xmlDoc);
+    console.log(
+      filteredXmlString,
+      "filterFreetextElementsfilterFreetextElements filteredXmlString"
+    );
     return { filteredXmlString, removedAnnotations };
   };
+  // === End === //
 
   // === It's triggered when we update the blob file in our local state ===
   useEffect(() => {
@@ -482,64 +683,6 @@ const SignatureViewer = () => {
 
     return removedData;
   }
-
-  //=== Save Workflow Api Response Update ===//
-  useEffect(() => {
-    try {
-      if (saveWorkFlowResponse !== null) {
-        let getUsers = saveWorkFlowResponse.workFlow;
-        let listOfUsers = [];
-        let selectedUserList = [];
-        let signersData = [];
-
-        const extractXML = (ID) => {
-          const xmlData = userAnnotations.find(
-            (userAnnotData) => Number(userAnnotData?.userID) === Number(ID)
-          );
-
-          if (xmlData) {
-            return xmlData.xml;
-          } else {
-            return []; // or any appropriate default value if no XML data is found
-          }
-        };
-
-        getUsers.bundleModels.forEach((users, index) => {
-          users.actors.forEach((usersData, index) => {
-            // Find matching user in FieldsData to get actorColor
-            const fieldData = FieldsData.find(
-              (field) => field.userID === usersData.pK_UID
-            );
-
-            listOfUsers.push({
-              name: usersData.name,
-              pk_UID: usersData?.pK_UID,
-            });
-            signersData.push({
-              Name: usersData.name,
-              EmailAddress: usersData.emailAddress,
-              userID: usersData?.pK_UID,
-            });
-            selectedUserList.push({
-              xml: extractXML(usersData?.pK_UID),
-              userID: usersData?.pK_UID,
-              actorID: usersData?.fK_WorkFlowActor_ID,
-              actorColor: fieldData ? fieldData.actorColor : "#000000",
-            });
-          });
-        });
-        setSignerData(signersData);
-        setParticipants(listOfUsers);
-
-        let deletedData = getRemovedData(userAnnotations, selectedUserList);
-        setTeletedDataTem(deletedData);
-        setSelectedUser(listOfUsers[0]?.pk_UID);
-        setUserAnnotations(selectedUserList);
-      } else {
-      }
-    } catch (error) {}
-  }, [saveWorkFlowResponse]);
-  // === End === //
 
   //===  this is for covert blob file ===//
   function handleBlobFiles(base64) {
@@ -829,141 +972,6 @@ const SignatureViewer = () => {
     } catch (error) {}
   }, [assignees.user]);
 
-  // this is for searching in dropdown
-  const filterFunc = (options, searchText) => {
-    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  // this is for cahneg value of user selection dropdown
-  const handleChangeFllName = (value) => {
-    setSingerUserData(value);
-    setSigners({
-      ...signers,
-      EmailAddress: value.email,
-      UserID: value.value,
-      Name: value.name,
-    });
-  };
-
-  // this  func for remove user fron list
-  const handleRemoveSigner = (index) => {
-    setSignerData((prevSignersData) => {
-      return prevSignersData.filter((_, i) => i !== index);
-    });
-  };
-
-  // this is add another user func
-  const handleClickAdd = () => {
-    if (signers.EmailAddress !== "" && signers.Name !== "") {
-      let isExist = signerData.find(
-        (data, index) =>
-          data.EmailAddress.toLowerCase() === signers.EmailAddress.toLowerCase()
-      );
-
-      if (isExist === undefined) {
-        setSingerUserData({
-          value: 0,
-          label: "",
-          name: "",
-        });
-        setSignerData([
-          ...signerData,
-          {
-            Name: signers.Name,
-            EmailAddress: signers.EmailAddress,
-            userID: signers.UserID,
-          },
-        ]);
-        setSigners({
-          ...signers,
-          EmailAddress: "",
-          UserID: 0,
-          Name: "",
-        });
-      } else {
-        setSingerUserData({
-          value: 0,
-          label: "",
-          name: "",
-        });
-        setSigners({
-          ...signers,
-          EmailAddress: "",
-          UserID: 0,
-          Name: "",
-        });
-        setOpen({
-          message: "User Already is List",
-          open: true,
-        });
-      }
-    } else {
-    }
-  };
-
-  // this for cancel modal
-  const handleHideModal = () => {
-    if (signerData.length > 0) {
-      setOpenAddParticipentModal(false);
-      setSingerUserData({
-        label: "",
-        name: "",
-        value: 0,
-      });
-      setSigners({
-        EmailAddress: "",
-        Name: "",
-        UserID: 0,
-      });
-    } else {
-      setOpen({
-        ...open,
-        message: "Data Must Required",
-        open: true,
-      });
-    }
-  };
-
-  // this is for  save sinatries
-  const clickSaveSigners = async () => {
-    if (Object.keys(signerData).length > 0) {
-      let Data = {
-        PK_WorkFlow_ID: pdfResponceData.workFlowID,
-        WorkFlowTitle: pdfResponceData.title,
-        Description: pdfResponceData.description,
-        isDeadline: pdfResponceData.isDeadline,
-        DeadlineDateTime:
-          pdfResponceData.isDeadline === false
-            ? ""
-            : pdfResponceData.deadlineDatetime,
-        CreatorID: pdfResponceData.creatorID,
-        ListOfActionAbleBundle: signerData.map((sendData, index) => {
-          return {
-            ID: `BundleID_# ${index + 1}`,
-            Title: "",
-            BundleDeadline: "",
-            ListOfUsers: [sendData.userID],
-            Entity: {
-              EntityID: pdfResponceData.documentID,
-              EntityTypeID: 1,
-            },
-          };
-        }),
-      };
-      setSingerUserData({
-        value: 0,
-        label: "",
-        name: "",
-      });
-      dispatch(saveWorkflowApi(Data, navigate, t, setOpenAddParticipentModal));
-    }
-  };
-  // === End === //
-
   // === this is for Response Message===//
   useEffect(() => {
     if (ResponseMessage !== "" && ResponseMessage !== undefined) {
@@ -984,15 +992,6 @@ const SignatureViewer = () => {
   }, [ResponseMessage]);
   // === End ===//
 
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const items = Array.from(signerData);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setSignerData(items);
-  };
   const handleClickDeclineBtn = () => {
     if (declineReasonMessage !== "") {
       let userID = localStorage.getItem("userID");
@@ -1027,203 +1026,7 @@ const SignatureViewer = () => {
       <div className="documnetviewer">
         <div className="webviewer" ref={viewer}></div>
       </div>
-      <Modal
-        show={openAddParticipentModal}
-        onHide={handleHideModal}
-        setShow={setOpenAddParticipentModal}
-        ButtonTitle={"Block"}
-        centered
-        closeButton
-        size={"md"}
-        modalFooterClassName={"d-block"}
-        modalBodyClassName={"Signers_modal_body"}
-        modalHeaderClassName="Signers_modal_header"
-        ModalBody={
-          <>
-            <>
-              <Row className="mb-1">
-                <Col lg={12} md={12} xs={12} sm={12}>
-                  <span className="Signers_heading">{t("Signers")}</span>
-                </Col>
-                <Col lg={12} md={12} xs={12} sm={12} className="mt-4 mb-3">
-                  <span className="Signers_tagLine">
-                    {t("Add-the-people-who-need-to-sign-this-document")}
-                  </span>
-                </Col>
-                <Col lg={12} md={12} xs={12} sm={12}>
-                  <Row>
-                    <Col sm={6} md={6} lg={6}>
-                      <p className="pb-1 m-0 inputlabel_style">{"Full Name"}</p>
-                      <Select
-                        placeholder="Full Name"
-                        onChange={handleChangeFllName}
-                        options={userList}
-                        filterOption={filterFunc}
-                        value={
-                          signerUserData.value !== 0 ? signerUserData : null
-                        }
-                      />
-                    </Col>
-                    <Col sm={6} md={6} lg={6}>
-                      <TextField
-                        width={"100%"}
-                        name={"EmailAddress"}
-                        type="email"
-                        disable={true}
-                        // disable={index !== 0 ? true : false}
-                        labelClass={"inputlabel_style"}
-                        applyClass={"signatureflow_input"}
-                        placeholder={t("Email")}
-                        value={signers.EmailAddress}
-                        label={"Email"}
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="d-flex align-items-center">
-                    <Col sm={12} md={12} lg={12} className="signersList">
-                      <DragDropContext onDragEnd={handleOnDragEnd}>
-                        <Droppable droppableId="signers">
-                          {(provided) => (
-                            <Row
-                              {...provided.droppableProps}
-                              ref={provided.innerRef}
-                            >
-                              {signerData.length > 0 &&
-                                signerData.map((fieldsData, index) => {
-                                  return (
-                                    <Draggable
-                                      key={index}
-                                      draggableId={index.toString()}
-                                      index={index}
-                                    >
-                                      {(provided) => (
-                                        <>
-                                          <Col
-                                            sm={1}
-                                            md={1}
-                                            lg={1}
-                                            className="my-1 d-flex align-items-end mb-2"
-                                          >
-                                            <img
-                                              src={DragIcon}
-                                              width={20}
-                                              ref={provided.innerRef}
-                                              {...provided.draggableProps}
-                                              {...provided.dragHandleProps}
-                                            />
-                                          </Col>
-                                          <Col
-                                            sm={10}
-                                            md={10}
-                                            lg={10}
-                                            className="my-1"
-                                            // ref={provided.innerRef}
-                                            // {...provided.draggableProps}
-                                            // {...provided.dragHandleProps}
-                                          >
-                                            <Row>
-                                              <Col sm={6} md={6} lg={6}>
-                                                <TextField
-                                                  placeholder={t("Full-name")}
-                                                  labelClass={
-                                                    "inputlabel_style"
-                                                  }
-                                                  width={"100%"}
-                                                  applyClass={
-                                                    "signatureflow_input"
-                                                  }
-                                                  name={"Name"}
-                                                  type="text"
-                                                  disable={true}
-                                                  value={fieldsData.Name}
-                                                  label={"Name"}
-                                                />
-                                              </Col>
-                                              <Col sm={6} md={6} lg={6}>
-                                                <TextField
-                                                  width={"100%"}
-                                                  name={"EmailAddress"}
-                                                  type="email"
-                                                  disable={true}
-                                                  labelClass={
-                                                    "inputlabel_style"
-                                                  }
-                                                  applyClass={
-                                                    "signatureflow_input"
-                                                  }
-                                                  placeholder={t("Email")}
-                                                  value={
-                                                    fieldsData.EmailAddress
-                                                  }
-                                                  label={"Email"}
-                                                />
-                                              </Col>
-                                            </Row>
-                                          </Col>
-                                          <Col
-                                            sm={1}
-                                            md={1}
-                                            lg={1}
-                                            className="my-1 d-flex align-items-end mb-3"
-                                          >
-                                            <img
-                                              src={DeleteIcon}
-                                              className="cursor-pointer"
-                                              onClick={() =>
-                                                handleRemoveSigner(index)
-                                              }
-                                              width={20}
-                                            />
-                                          </Col>
-                                        </>
-                                      )}
-                                    </Draggable>
-                                  );
-                                })}
-                              {provided.placeholder}
-                            </Row>
-                          )}
-                        </Droppable>
-                      </DragDropContext>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col lg={12} md={12} xs={12} sm={12}>
-                  <Button
-                    className="addOther_field"
-                    text={t("Add-another-signer")}
-                    onClick={handleClickAdd}
-                    icon={<img src={PlusSignSignatureFlow} />}
-                  />
-                </Col>
-              </Row>
-            </>
-          </>
-        }
-        ModalFooter={
-          <>
-            <Row>
-              <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className="d-flex justify-content-end gap-2"
-              >
-                <Button
-                  className={"CancelBtn"}
-                  text={t("Cancel")}
-                  onClick={handleHideModal}
-                />
-                <Button
-                  className={"Add"}
-                  text={t("Add")}
-                  onClick={clickSaveSigners}
-                />
-              </Col>
-            </Row>
-          </>
-        }
-      />
+
       {reasonModal && (
         <DeclineReasonModal
           show={reasonModal}
