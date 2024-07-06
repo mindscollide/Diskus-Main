@@ -18,8 +18,10 @@ import {
   updateCommentForRejectedMinute,
   getMinuteReviewDetailsForOrganizerByMinuteId,
   deleteMinuteReviewByReviewer,
+  PublishMeetingMinutesRM,
+  GetAllPublishedMeetingMinutesRM,
 } from "../../commen/apis/Api_config";
-import { workflowApi } from "../../commen/apis/Api_ends_points";
+import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
 
 // Pendin Approval Page Route
 const pendingApprovalPage = (response) => {
@@ -1494,6 +1496,189 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
   };
 };
 
+const MeetingPublishedMinutes_init = () => {
+  return {
+    type: actions.PUBLISHEDMEETINGMINUTES_INIT,
+  };
+};
+
+const MeetingPublishedMinutes_success = (response, message) => {
+  return {
+    type: actions.PUBLISHEDMEETINGMINUTES_SUCCESS,
+    reponse: response,
+    message: message,
+  };
+};
+const MeetingPublishedMinutes_fail = (message) => {
+  return {
+    type: actions.PUBLISHEDMEETINGMINUTES_FAIL,
+    message: message,
+  };
+};
+
+const MeetingPublishedMinutesApi = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(MeetingPublishedMinutes_init());
+    let form = new FormData();
+    form.append("RequestMethod", PublishMeetingMinutesRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(MeetingPublishedMinutesApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                MeetingPublishedMinutes_success(
+                  response.data.responseResult,
+                  t("Published-successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                MeetingPublishedMinutes_fail(t("Published-Unsuccessful"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_03".toLowerCase()
+                )
+            ) {
+              dispatch(MeetingPublishedMinutes_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(MeetingPublishedMinutes_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(MeetingPublishedMinutes_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(MeetingPublishedMinutes_fail(t("Something-went-wrong")));
+
+        }
+      })
+      .catch((response) => {
+        dispatch(MeetingPublishedMinutes_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const GetPublishedMeetingMinutes_init = () => {
+  return {
+    type: actions.GETPUBLISHEDMEETINGMINUTES_INIT,
+  };
+};
+const GetPublishedMeetingMinutes_success = (response, message) => {
+  return {
+    type: actions.GETPUBLISHEDMEETINGMINUTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetPublishedMeetingMinutes_fail = (message) => {
+  return {
+    type: actions.GETPUBLISHEDMEETINGMINUTES_FAIL,
+    message: message,
+  };
+};
+
+const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(GetPublishedMeetingMinutes_init());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllPublishedMeetingMinutesRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllPublishedMinutes_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetPublishedMeetingMinutes_success(
+                  response.data.responseResult,
+                  t("Record-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllPublishedMinutes_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetPublishedMeetingMinutes_fail(t("No-record-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllPublishedMinutes_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetPublishedMeetingMinutes_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                GetPublishedMeetingMinutes_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              GetPublishedMeetingMinutes_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(GetPublishedMeetingMinutes_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(GetPublishedMeetingMinutes_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 const CleareMessegeMinutes = () => {
   return {
     type: actions.CLEAR_MINUTES_MESSAGES,
@@ -1501,6 +1686,8 @@ const CleareMessegeMinutes = () => {
 };
 
 export {
+  GetPublishedMeetingMinutesApi,
+  MeetingPublishedMinutesApi,
   DeleteMinuteReducer,
   pendingApprovalPage,
   reviewMinutesPage,
