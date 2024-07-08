@@ -884,7 +884,8 @@ const getDocumentsAndFolderApiScrollbehaviour = (
   statusID,
   t,
   sRows,
-  filterValue
+  filterValue,
+  order
 ) => {
   console.log(
     navigate,
@@ -902,7 +903,7 @@ const getDocumentsAndFolderApiScrollbehaviour = (
     OrganizationID: parseInt(OrganizationID),
     StatusID: parseInt(statusID),
     SortBy: filterValue !== 0 ? filterValue : 1,
-    isDescending: true,
+    isDescending: Boolean(order),
     sRow: Number(sRows),
     Length: 10,
   };
