@@ -639,7 +639,7 @@ const Actions = ({
                       className="d-flex justify-content-center"
                     >
                       <span className={styles["Empty-State_Heading"]}>
-                        {t("Take-Task")}
+                      {t("Create-tasks-instantly")}
                       </span>
                     </Col>
                   </Row>
@@ -651,7 +651,7 @@ const Actions = ({
                       className="d-flex justify-content-center"
                     >
                       <span className={styles["EmptyState_SubHeading"]}>
-                        {t("Create-tasks-instantly")}
+                      {t("The-meeting-wrapped-up-lets-dive-into-some-task")}
                       </span>
                     </Col>
                   </Row>

@@ -392,60 +392,66 @@ const SceduleMeeting = ({
       NewMeetingreducer.mqttMeetingAcRemoved !== undefined
     ) {
       try {
-        setSceduleMeeting(false);
-        dispatch(scheduleMeetingPageFlag(false));
-        setEdiorRole({ status: null, role: null });
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        setCurrentMeetingID(0);
-        setDataroomMapFolderId(0);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        localStorage.removeItem("folderDataRoomMeeting");
+        const { pK_MDID } = NewMeetingreducer.mqttMeetingAcRemoved;
+        if (Number(pK_MDID) === Number(currentMeeting)) {
+          setSceduleMeeting(false);
+          dispatch(scheduleMeetingPageFlag(false));
+          setEdiorRole({ status: null, role: null });
+          dispatch(viewAdvanceMeetingPublishPageFlag(false));
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+          setCurrentMeetingID(0);
+          setDataroomMapFolderId(0);
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber:
+              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+            Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+            PublishedMeetings:
+              currentView && Number(currentView) === 1 ? true : false,
+          };
+          localStorage.removeItem("folderDataRoomMeeting");
 
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+        }
       } catch (error) {
         console.error(error, "error");
       }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
-
+  console.log({ NewMeetingreducer, currentMeeting }, "NewMeetingreducer");
   useEffect(() => {
     if (
       NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
       NewMeetingreducer.mqttMeetingOrgRemoved !== undefined
     ) {
       try {
-        setSceduleMeeting(false);
-        dispatch(scheduleMeetingPageFlag(false));
-        setEdiorRole({ status: null, role: null });
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        setCurrentMeetingID(0);
-        setDataroomMapFolderId(0);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        localStorage.removeItem("folderDataRoomMeeting");
+        const { pK_MDID } = NewMeetingreducer.mqttMeetingOrgRemoved;
+        if (Number(pK_MDID) === Number(currentMeeting)) {
+          setSceduleMeeting(false);
+          dispatch(scheduleMeetingPageFlag(false));
+          setEdiorRole({ status: null, role: null });
+          dispatch(viewAdvanceMeetingPublishPageFlag(false));
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+          setCurrentMeetingID(0);
+          setDataroomMapFolderId(0);
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber:
+              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+            Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+            PublishedMeetings:
+              currentView && Number(currentView) === 1 ? true : false,
+          };
+          localStorage.removeItem("folderDataRoomMeeting");
 
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+        }
       } catch (error) {
         console.error(error, "error");
       }

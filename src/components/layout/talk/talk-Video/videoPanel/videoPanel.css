@@ -113,8 +113,9 @@ body[dir="rtl"] .group-btn span img {
 }
 
 .videocall-header-panel {
-  height: 50px;
   box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+  padding: 10px 5px;
+  width: 100%;
 }
 
 .videocall-normal-panel {

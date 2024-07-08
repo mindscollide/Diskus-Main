@@ -114,14 +114,12 @@ const Polls = ({
   };
 
   const handleClickTitle = (record) => {
-    if (
-      Number(record.pollStatus.pollStatusId) === 1 ||
-      Number(record.pollStatus.pollStatusId) === 3
-    ) {
-      let data = {
-        PollID: record.pollID,
-        UserID: parseInt(userID),
-      };
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    if (Number(record.pollStatus.pollStatusId) === 1) {
+      // UnPublished Poll
       dispatch(
         getPollByPollIdforMeeting(
           navigate,
@@ -135,10 +133,7 @@ const Polls = ({
         )
       );
     } else if (record.pollStatus.pollStatusId === 2) {
-      let data = {
-        PollID: record.pollID,
-        UserID: parseInt(userID),
-      };
+      // Poll Published
       dispatch(
         getPollByPollIdforMeeting(
           navigate,
@@ -151,6 +146,37 @@ const Polls = ({
           setViewPublishedPoll
         )
       );
+    } else if (record.pollStatus.pollStatusId === 3) {
+      // Expired Poll
+      if (Number(record.pollCreatorID) === Number(userID)) {
+        // if User is Poll Creator then poll should modal should open same like published view poll with View Votes Button
+        dispatch(
+          getPollByPollIdforMeeting(
+            navigate,
+            data,
+            4,
+            t,
+            setEditPolls,
+            setvotePolls,
+            setUnPublished,
+            setViewPublishedPoll
+          )
+        );
+      } else {
+        // If User is just a Participant then modal should open like Unpublished Poll
+        dispatch(
+          getPollByPollIdforMeeting(
+            navigate,
+            data,
+            3,
+            t,
+            setEditPolls,
+            setvotePolls,
+            setUnPublished,
+            setViewPublishedPoll
+          )
+        );
+      }
     }
   };
   useEffect(() => {
