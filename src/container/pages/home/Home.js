@@ -45,6 +45,7 @@ import {
   getTodoListInit,
   GetWeeklyToDoCount,
   HideNotificationTodo,
+  SearchTodoListApi,
   SetSpinnersTrue,
   ViewToDoList,
 } from "../../../store/actions/ToDoList_action";
@@ -67,7 +68,7 @@ import {
   cleareAssigneesState,
   HideNotification,
 } from "../../../store/actions/Get_List_Of_Assignees";
-import {  useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
 import VerificationFailedIcon from "./../../../assets/images/failed.png";
 import {
@@ -81,9 +82,7 @@ import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import EventsModal from "../../EventsModal/EventsModal";
 import ModalViewNote from "../../notes/modalViewNote/ModalViewNote";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
-import {
-  dashboardCalendarEvent,
-} from "../../../store/actions/NewMeetingActions";
+import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
@@ -265,8 +264,16 @@ const Home = () => {
     // todoList Feature
     if (checkFeatureIDAvailability(14)) {
       await dispatch(getTodoListInit());
+      let searchData = {
+        Date: "",
+        Title: "",
+        AssignedToName: "",
+        UserID: 0,
+      };
+      await dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
       dispatch(GetWeeklyToDoCount(navigate, Data2, t));
-      dispatch(GetTodoListByUser(navigate, Data2, t));
+
+      // dispatch(GetTodoListByUser(navigate, Data2, t));
     }
     dispatch(GetWeeklyMeetingsCount(navigate, createrID, t));
     dispatch(GetUpcomingEvents(navigate, Data2, t));
@@ -857,30 +864,32 @@ const Home = () => {
       }
     } catch (error) {}
   }, [toDoListReducer.SocketTodoActivityData]);
-
+  console.log(toDoListReducer, "toDoListReducer");
+  //get todolist reducer
   useEffect(() => {
-    try {
-      if (
-        !toDoListReducer.AllTodolistData ||
-        !toDoListReducer.AllTodolistData.length
-      ) {
-        setRowToDo([]);
-        return;
-      }
-
-      const sortedTasks = [...toDoListReducer.AllTodolistData].sort(
-        (taskA, taskB) => {
+    if (
+      toDoListReducer.SearchTodolist !== null &&
+      toDoListReducer.SearchTodolist !== undefined
+    ) {
+      if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
+        let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
+        const sortedTasks = dataToSort.sort((taskA, taskB) => {
           const deadlineA = taskA?.deadlineDateTime;
           const deadlineB = taskB?.deadlineDateTime;
+
+          // Compare the deadlineDateTime values as numbers for sorting
           return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-        }
-      );
-
-      setTotalRecordTodo(sortedTasks.length);
-      setRowToDo(sortedTasks.slice(0, 15));
-    } catch {}
-  }, [toDoListReducer.AllTodolistData]);
-
+        });
+        setTotalRecordTodo(sortedTasks.length);
+        setRowToDo(sortedTasks.slice(0, 15));
+      } else {
+        setRowToDo([]);
+      }
+    } else {
+      setRowToDo([]);
+    }
+  }, [toDoListReducer.SearchTodolist]);
+  console.log(rowsToDo, "toDoListReducertoDoListReducer");
   const viewTodoModal = (id) => {
     setTodoID(id);
     let Data = { ToDoListID: id };
@@ -1851,6 +1860,7 @@ const Home = () => {
                       indicator: <Spin />,
                     }}
                     column={columnsToDo}
+                    rows={[]}
                     className="dashboard-todo"
                     labelTitle={
                       <span className="task-title">{t("Tasks")}</span>

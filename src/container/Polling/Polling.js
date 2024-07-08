@@ -281,14 +281,25 @@ const Polling = () => {
   };
 
   const handleViewModal = (record) => {
+    let userId = localStorage.getItem("userID");
     let check = 0;
     if (record.wasPollPublished) {
+      // Poll was published is meant that Poll status is Published or Expired
       if (record.pollStatus.pollStatusId === 3) {
-        check = 4;
+        // Poll Expired
+        if (Number(record.pollCreatorID) === Number(userId)) {
+          // if User is Poll Creator then poll should modal should open same like published view poll with View Votes Button
+          check = 3;
+        } else {
+          // If User is just a Participant then modal should open like Unpublished Poll
+          check = 4;
+        }
       } else {
+        // if User is Poll Creator then poll should modal should open same like published view poll with View Votes Button
         check = 3;
       }
     } else {
+      // UnPublished Poll
       check = 4;
     }
 
@@ -426,8 +437,8 @@ const Polling = () => {
       width: "97px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       render: (text, record) => {
-        return <span className="text-truncate d-block">{text}</span>
-      }
+        return <span className="text-truncate d-block">{text}</span>;
+      },
     },
     {
       title: (

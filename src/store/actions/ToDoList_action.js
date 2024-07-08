@@ -150,10 +150,7 @@ const GetTodoListByUser = (navigate, data, t) => {
                 )
             ) {
               await dispatch(
-                getTodoListSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getTodoListSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -387,10 +384,7 @@ const GetAllAssigneesToDoList = (navigate, object, t, check) => {
                 )
             ) {
               await dispatch(
-                GetAllAssigneesSuccess(
-                  response.data.responseResult.user,
-                  ""
-                )
+                GetAllAssigneesSuccess(response.data.responseResult.user, "")
               );
               dispatch(TaskLoader(false));
             } else if (
@@ -637,10 +631,7 @@ const searchTodoListByUser = (navigate, data, t) => {
                 )
             ) {
               await dispatch(
-                getTodoListSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getTodoListSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -724,10 +715,7 @@ const GetWeeklyToDoCount = (navigate, data, t) => {
                 )
             ) {
               await dispatch(
-                getWeeklyToDoCountSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getWeeklyToDoCountSuccess(response.data.responseResult, "")
               );
               await dispatch(SetSpinnerFalse());
             } else if (
@@ -828,11 +816,10 @@ const SearchTodoListApi = (navigate, searchData, page, size, t) => {
                 )
             ) {
               dispatch(
-                searchTodoList_success(
-                  response.data.responseResult,
-                  ""
-                )
+                searchTodoList_success(response.data.responseResult, "")
               );
+              await dispatch(SetSpinnerFalse());
+              await dispatch(SetTableSpinnerFalse());
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -841,6 +828,8 @@ const SearchTodoListApi = (navigate, searchData, page, size, t) => {
                 )
             ) {
               dispatch(searchTodoList_fail(t("No-records-found")));
+              await dispatch(SetSpinnerFalse());
+              await dispatch(SetTableSpinnerFalse());
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -849,18 +838,31 @@ const SearchTodoListApi = (navigate, searchData, page, size, t) => {
                 )
             ) {
               dispatch(searchTodoList_fail(t("No-records-found")));
+              await dispatch(SetTableSpinnerFalse());
+
+              await dispatch(SetSpinnerFalse());
             } else {
               dispatch(searchTodoList_fail(t("No-records-found")));
+              await dispatch(SetTableSpinnerFalse());
+
+              await dispatch(SetSpinnerFalse());
             }
           } else {
             dispatch(searchTodoList_fail(t("No-records-found")));
+            await dispatch(SetSpinnerFalse());
           }
         } else {
           dispatch(searchTodoList_fail(t("No-records-found")));
+          await dispatch(SetTableSpinnerFalse());
+
+          await dispatch(SetSpinnerFalse());
         }
       })
-      .catch((error) => {
+      .catch(async (error) => {
         dispatch(searchTodoList_fail(t("No-records-found")));
+        await dispatch(SetTableSpinnerFalse());
+
+        await dispatch(SetSpinnerFalse());
       });
   };
 };
@@ -1647,7 +1649,14 @@ const saveTaskDocuments_fail = (message) => {
   };
 };
 
-const saveTaskDocumentsApi = (navigate, Data, t, value, setShow, todoStatus) => {
+const saveTaskDocumentsApi = (
+  navigate,
+  Data,
+  t,
+  value,
+  setShow,
+  todoStatus
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     try {
@@ -1678,7 +1687,7 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow, todoStatus) => 
                   "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase()
                 )
             ) {
-              if(Number(value) === 2) {
+              if (Number(value) === 2) {
                 dispatch(
                   saveTaskDocuments_success(
                     response.data.responseResult,
@@ -1693,7 +1702,6 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow, todoStatus) => 
                   )
                 );
               }
-             
 
               // Create Task from main TOdo list
               if (value === 1) {
