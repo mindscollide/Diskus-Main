@@ -219,6 +219,7 @@ const NewMeeting = () => {
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [responseByDate, setResponseByDate] = useState("");
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
+  console.log(boardDeckMeetingID, "boardDeckMeetingIDboardDeckMeetingID");
   const [radioValue, setRadioValue] = useState(1);
   const [editorRole, setEdiorRole] = useState({
     status: null,

@@ -126,6 +126,10 @@ const BoardDeckModal = ({
     console.log("valuevaluevalue", value);
   };
 
+  const handleCancelButton = () => {
+    dispatch(boardDeckModal(false));
+  };
+
   const handleDownloadButton = () => {
     let data = {
       PK_MDID: Number(boardDeckMeetingID),
@@ -299,6 +303,7 @@ const BoardDeckModal = ({
                   <Button
                     text={t("Cancel")}
                     className={styles["CancelButton"]}
+                    onClick={handleCancelButton}
                   />
                   <Button
                     text={t("Share")}

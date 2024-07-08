@@ -26,7 +26,7 @@ const BoardDeckSendEmail = ({
   boarddeckOptions,
   radioValue,
 }) => {
-  console.log(radioValue, "radioValueradioValue");
+  console.log(boardDeckMeetingID, "radioValueradioValue");
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -68,15 +68,6 @@ const BoardDeckSendEmail = ({
     setSelectedsearch(value);
   };
 
-  console.log(tags, "tagstags");
-
-  //Default options react select
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
-
   //handle Change For TextArea
   const HandleChange = (e, index) => {
     let name = e.target.name;
@@ -106,20 +97,14 @@ const BoardDeckSendEmail = ({
     return true;
   };
 
-  const handleAddTag = () => {
-    if (selectedsearch && selectedsearch.length > 0) {
-      const newTags = selectedsearch.map((tag) =>
-        typeof tag === "string" ? { value: tag, label: tag } : tag
-      );
-      setTags((prevTags) => [...prevTags, ...newTags]);
-      setSelectedsearch([]);
-    }
-  };
-
   const removeTag = (indexToRemove) => {
     setTags((prevTags) =>
       prevTags.filter((_, index) => index !== indexToRemove)
     );
+  };
+
+  const handleCrossIcon = () => {
+    dispatch(boardDeckEmailModal(false));
   };
 
   const handleSendEmailButton = () => {
@@ -127,14 +112,13 @@ const BoardDeckSendEmail = ({
 
     let mergedUserEmails = organizationalUsers.concat(tags);
 
-    console.log(mergedUserEmails, "mergedUserEmailsmergedUserEmails");
-
     if (mergedUserEmails.length !== 0) {
       let data = {
         ListOfEmailAddresses: mergedUserEmails,
         Messege: notificationMessage,
+        isNotify: notifyPeople.notifyPeople,
         BoarddeckFileParams: {
-          PK_MDID: Number(boardDeckMeetingID),
+          PK_MDID: boardDeckMeetingID,
           fetchOrganizers: boarddeckOptions.Organizer,
           fetchAgendaContributors: boarddeckOptions.AgendaContributor,
           fetchParticipants: boarddeckOptions.Participants,
@@ -193,10 +177,6 @@ const BoardDeckSendEmail = ({
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          console.log(
-            newOrganizersData.organizationUsers,
-            "organizationUsersorganizationUsersorganizationUsers"
-          );
           newOrganizersData.organizationUsers.map((a, index) => {
             let newData = {
               value: a.emailAddress,
@@ -313,7 +293,11 @@ const BoardDeckSendEmail = ({
                             className={styles["close"]}
                             onClick={() => removeTag(index)}
                           >
-                            <img src={CrossEmail} alt="" />
+                            <img
+                              src={CrossEmail}
+                              alt=""
+                              onClick={handleCrossIcon}
+                            />
                           </span>
                         </div>
                       ))}
