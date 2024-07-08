@@ -751,3 +751,21 @@ span.Review-pending {
   border-radius: 100%;
   font-size: 9px;
 }
+.subMinuteExtend {
+  height: auto;
+  transition: transform 0.5s ease;
+}
+.subMinuteNotExtend {
+  height: 0px;
+  overflow: hidden;
+  transition: transform 0.5s ease;
+}
+.ParentMinuteExtend {
+  height: auto;
+  transition: transform 0.5s ease;
+}
+.ParentMinuteNotExtend {
+  height: 0px;
+  overflow: hidden;
+  transition: transform 0.5s ease;
+}

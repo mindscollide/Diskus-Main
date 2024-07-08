@@ -1680,7 +1680,20 @@ const DeleteSignatureDocumentRM = {
 const GetAllSignatoriesStatusRM = {
   RequestMethod: "ServiceManager.GetAllSignatoriesStatus",
 };
+
+const PublishMeetingMinutesRM = {
+  RequestMethod: "ServiceManager.PublishMeetingMinutes",
+};
+const GetAllPublishedMeetingMinutesRM = {
+  RequestMethod: "ServiceManager.GetAllPublishedMinutes",
+};
+const DownloadInvoiceRM = {
+  RequestMethod: "ServiceManager.DownloadInvoice",
+};
 export {
+  DownloadInvoiceRM,
+  GetAllPublishedMeetingMinutesRM,
+  PublishMeetingMinutesRM,
   GetAllSignatoriesStatusRM,
   DeleteSignatureDocumentRM,
   GetPendingApprovalStatusforSignatureFlowRM,

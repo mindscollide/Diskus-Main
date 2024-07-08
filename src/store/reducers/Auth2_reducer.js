@@ -32,6 +32,7 @@ const initialState = {
   UpdateProfilePicture: null,
   logoutUser: null,
   getInvoiceHTML: null,
+  downloadInvoice: null,
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -512,6 +513,28 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getInvoiceHTML: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DOWNLOADINVOICE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DOWNLOADINVOICE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        downloadInvoice: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DOWNLOADINVOICE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        downloadInvoice: null,
         ResponseMessage: action.message,
       };
     }

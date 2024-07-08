@@ -782,6 +782,9 @@ const AgendaWise = ({
   const [openReviewerDetailSubminute, setOpenReviewerDetailSubminute] =
     useState([]);
 
+  const [isOpenDrawerMinute, setIsOpenDrawerMinute] = useState(null);
+  const [isOpenDrawerSubMinute, setIsOpenDrawerSubMinute] = useState(null);
+
   const [menuMinute, setMenuMinute] = useState(false);
 
   const [minuteReviewData, setMinuteReviewData] = useState(null);
@@ -816,6 +819,21 @@ const AgendaWise = ({
         : [...prevIndices, index]
     );
     console.log("openIndices", openIndices);
+  };
+
+  const openMinuteDrawer = (minuteID) => {
+    if (isOpenDrawerMinute === minuteID) {
+      setIsOpenDrawerMinute(null);
+    } else {
+      setIsOpenDrawerMinute(minuteID);
+    }
+  };
+  const openSubMinuteDrawer = (subMinuteID) => {
+    if (isOpenDrawerSubMinute === subMinuteID) {
+      setIsOpenDrawerSubMinute(null);
+    } else {
+      setIsOpenDrawerSubMinute(subMinuteID);
+    }
   };
 
   const openCloseReviewerDetail = (index) => {
@@ -1362,19 +1380,35 @@ const AgendaWise = ({
                                             }
                                           >
                                             <p className="m-0">
-                                              {t("Total")} 03
+                                              {t("Total")}{" "}
+                                              {
+                                                parentMinutedata?.MinuteStats
+                                                  ?.totalReviews
+                                              }
                                             </p>
                                             <span>|</span>
                                             <p className="m-0">
-                                              {t("Accepted")} 01
+                                              {t("Accepted")}{" "}
+                                              {
+                                                parentMinutedata?.MinuteStats
+                                                  ?.accepted
+                                              }
                                             </p>
                                             <span>|</span>
                                             <p className="m-0">
-                                              {t("Rejected")} 01
+                                              {t("Rejected")}{" "}
+                                              {
+                                                parentMinutedata?.MinuteStats
+                                                  ?.rejected
+                                              }
                                             </p>
                                             <span>|</span>
                                             <p className="m-0">
-                                              {t("Pending")} 01
+                                              {t("Pending")}{" "}
+                                              {
+                                                parentMinutedata?.MinuteStats
+                                                  ?.pending
+                                              }
                                             </p>
                                           </div>
                                         </Col>
@@ -1388,18 +1422,31 @@ const AgendaWise = ({
                                             alt=""
                                             src={DropdownPurple}
                                             className={
-                                              isOpenReviewer
+                                              isOpenDrawerMinute ===
+                                              parentMinutedata.minuteID
                                                 ? `${styles["Arrow"]} cursor-pointer`
                                                 : `${styles["Arrow_Expanded"]} cursor-pointer`
                                             }
                                             onClick={() =>
-                                              openCloseReviewerDetail(index)
+                                              openMinuteDrawer(
+                                                parentMinutedata.minuteID
+                                              )
                                             }
                                           />
                                         </Col>
                                       </Row>
                                       <Row>
-                                        <Col lg={12} md={12} sm={12}>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={
+                                            isOpenDrawerMinute ===
+                                            parentMinutedata.minuteID
+                                              ? styles["ParentMinuteExtend"]
+                                              : styles["ParentMinuteNotExtend"]
+                                          }
+                                        >
                                           <p
                                             className={`${styles["text-wrapper-review"]}`}
                                           >
@@ -1410,14 +1457,12 @@ const AgendaWise = ({
                                             >
                                               Review Accepted:
                                             </span>{" "}
-                                            Alessandra Costa, Emily Davis,
-                                            Matthew Jones, Christopher Martinez,
-                                            Elizabeth Garcia, Olivia Nguyen,
-                                            Ethan Patel, Madison Kim, Tyler
-                                            Chen, Sophia Gupta, Mason Kumar, Ava
-                                            Wong, Logan Singh, Jackson Li, Chloe
-                                            Patel, Noah Patel, Lily Chang, Lucas
-                                            Patel, Amelia Tran.
+                                            {parentMinutedata?.MinuteStats
+                                              ?.acceptedByUsers?.length > 0 &&
+                                              parentMinutedata?.MinuteStats?.acceptedByUsers?.map(
+                                                (acceptedUser, index) =>
+                                                  `${acceptedUser}, `
+                                              )}
                                           </p>
                                           <p
                                             className={`${styles["text-wrapper-review"]}`}
@@ -1429,7 +1474,12 @@ const AgendaWise = ({
                                             >
                                               Review Rejected:
                                             </span>{" "}
-                                            Alex Rodriguez, Samantha Lee.
+                                            {parentMinutedata?.MinuteStats
+                                              ?.rejectedByUsers?.length > 0 &&
+                                              parentMinutedata?.MinuteStats?.rejectedByUsers?.map(
+                                                (rejectedUser, index) =>
+                                                  `${rejectedUser}, `
+                                              )}
                                           </p>
                                           <p
                                             className={`${styles["text-wrapper-review"]}`}
@@ -1441,8 +1491,12 @@ const AgendaWise = ({
                                             >
                                               Review Pending:
                                             </span>{" "}
-                                            Sarah Jenkins, Joshua Clark, Megan
-                                            Rodriguez, Brandon Young.
+                                            {parentMinutedata?.MinuteStats
+                                              ?.pendingUsers?.length > 0 &&
+                                              parentMinutedata?.MinuteStats?.pendingUsers?.map(
+                                                (pendingUserData, index) =>
+                                                  `${pendingUserData}, `
+                                              )}
                                           </p>
                                         </Col>
                                       </Row>
@@ -1477,19 +1531,19 @@ const AgendaWise = ({
                                           <p
                                             dangerouslySetInnerHTML={{
                                               __html:
-                                                parentMinutedata.description,
+                                                parentMinutedata?.description,
                                             }}
                                             className={styles["minutes-text"]}
                                           ></p>
-                                          {parentMinutedata.attachments.length >
-                                          0 ? (
+                                          {parentMinutedata?.attachments
+                                            ?.length > 0 ? (
                                             <Row>
                                               {parentMinutedata.attachments.map(
                                                 (fileData, index) => (
                                                   <Col lg={3} md={3} sm={12}>
                                                     <AttachmentViewer
                                                       name={
-                                                        fileData.displayFileName
+                                                        fileData?.displayFileName
                                                       }
                                                       id={fileData.pK_FileID}
                                                     />
@@ -1699,19 +1753,36 @@ const AgendaWise = ({
                                                 }
                                               >
                                                 <p className="m-0">
-                                                  {t("Total")} 03
+                                                  {t("Total")}{" "}
+                                                  {
+                                                    minuteDataSubminute
+                                                      ?.MinuteStats
+                                                      ?.totalReviews
+                                                  }
                                                 </p>
                                                 <span>|</span>
                                                 <p className="m-0">
-                                                  {t("Accepted")} 01
+                                                  {t("Accepted")}{" "}
+                                                  {
+                                                    minuteDataSubminute
+                                                      ?.MinuteStats?.accepted
+                                                  }
                                                 </p>
                                                 <span>|</span>
                                                 <p className="m-0">
-                                                  {t("Rejected")} 01
+                                                  {t("Rejected")}{" "}
+                                                  {
+                                                    minuteDataSubminute
+                                                      ?.MinuteStats?.rejected
+                                                  }
                                                 </p>
                                                 <span>|</span>
                                                 <p className="m-0">
-                                                  {t("Pending")} 01
+                                                  {t("Pending")}{" "}
+                                                  {
+                                                    minuteDataSubminute
+                                                      ?.MinuteStats?.pending
+                                                  }
                                                 </p>
                                               </div>
                                             </Col>
@@ -1725,20 +1796,31 @@ const AgendaWise = ({
                                                 alt=""
                                                 src={DropdownPurple}
                                                 className={
-                                                  openReviewerDetailSubminute
+                                                  minuteDataSubminute.minuteID ===
+                                                  isOpenDrawerSubMinute
                                                     ? `${styles["Arrow"]} cursor-pointer`
                                                     : `${styles["Arrow_Expanded"]} cursor-pointer`
                                                 }
                                                 onClick={() =>
-                                                  openCloseReviewerDetailSubminute(
-                                                    subMinuteIndex
+                                                  openSubMinuteDrawer(
+                                                    minuteDataSubminute.minuteID
                                                   )
                                                 }
                                               />
                                             </Col>
                                           </Row>
                                           <Row>
-                                            <Col lg={12} md={12} sm={12}>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className={
+                                                minuteDataSubminute.minuteID ===
+                                                isOpenDrawerSubMinute
+                                                  ? styles["subMinuteExtend"]
+                                                  : styles["subMinuteNotExtend"]
+                                              }
+                                            >
                                               <p
                                                 className={`${styles["text-wrapper-review"]}`}
                                               >
@@ -1749,15 +1831,13 @@ const AgendaWise = ({
                                                 >
                                                   Review Accepted:
                                                 </span>{" "}
-                                                Alessandra Costa, Emily Davis,
-                                                Matthew Jones, Christopher
-                                                Martinez, Elizabeth Garcia,
-                                                Olivia Nguyen, Ethan Patel,
-                                                Madison Kim, Tyler Chen, Sophia
-                                                Gupta, Mason Kumar, Ava Wong,
-                                                Logan Singh, Jackson Li, Chloe
-                                                Patel, Noah Patel, Lily Chang,
-                                                Lucas Patel, Amelia Tran.
+                                                {minuteDataSubminute
+                                                  ?.MinuteStats?.acceptedByUsers
+                                                  ?.length > 0 &&
+                                                  minuteDataSubminute?.MinuteStats?.acceptedByUsers?.map(
+                                                    (acceptedUserData) =>
+                                                      `${acceptedUserData}, `
+                                                  )}
                                               </p>
                                               <p
                                                 className={`${styles["text-wrapper-review"]}`}
@@ -1769,7 +1849,13 @@ const AgendaWise = ({
                                                 >
                                                   Review Rejected:
                                                 </span>{" "}
-                                                Alex Rodriguez, Samantha Lee.
+                                                {minuteDataSubminute
+                                                  ?.MinuteStats?.rejectedByUsers
+                                                  ?.length > 0 &&
+                                                  minuteDataSubminute?.MinuteStats?.rejectedByUsers?.map(
+                                                    (rejectedUserData) =>
+                                                      `${rejectedUserData}, `
+                                                  )}
                                               </p>
                                               <p
                                                 className={`${styles["text-wrapper-review"]}`}
@@ -1781,8 +1867,13 @@ const AgendaWise = ({
                                                 >
                                                   Review Pending:
                                                 </span>{" "}
-                                                Sarah Jenkins, Joshua Clark,
-                                                Megan Rodriguez, Brandon Young.
+                                                {minuteDataSubminute
+                                                  ?.MinuteStats?.pendingUsers
+                                                  ?.length > 0 &&
+                                                  minuteDataSubminute?.MinuteStats?.pendingUsers?.map(
+                                                    (pendingUserData) =>
+                                                      `${pendingUserData}, `
+                                                  )}
                                               </p>
                                             </Col>
                                           </Row>

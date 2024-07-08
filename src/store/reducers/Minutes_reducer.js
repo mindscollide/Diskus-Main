@@ -29,6 +29,8 @@ const initialState = {
   GetMinuteReviewFlowByMeetingIdData: null,
   AcceptRejectMinuteReviewData: null,
   RejectMinuteData: null,
+  PublishedMinutes: null,
+  GetPublishedMinutes: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -380,6 +382,50 @@ const MinutesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetMinuteReviewFlowByMeetingIdData: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.PUBLISHEDMEETINGMINUTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.PUBLISHEDMEETINGMINUTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        PublishedMinutes: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.PUBLISHEDMEETINGMINUTES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        PublishedMinutes: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETPUBLISHEDMEETINGMINUTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETPUBLISHEDMEETINGMINUTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetPublishedMinutes: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETPUBLISHEDMEETINGMINUTES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetPublishedMinutes: null,
         ResponseMessage: action.message,
       };
     }

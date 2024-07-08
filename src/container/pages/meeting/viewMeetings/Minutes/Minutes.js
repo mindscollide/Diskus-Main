@@ -58,6 +58,8 @@ import {
   deleteCommentModalGeneral,
   GetMinuteReviewStatsForOrganizerByMeetingId,
   CleareMessegeMinutes,
+  MeetingPublishedMinutesApi,
+  GetPublishedMeetingMinutesApi,
 } from "../../../../../store/actions/Minutes_action";
 
 const Minutes = ({
@@ -143,6 +145,14 @@ const Minutes = ({
     value: 0,
   });
 
+  let isMinutePublished =
+    localStorage.getItem("isMinutePublished") !== null
+      ? localStorage.getItem("isMinutePublished")
+      : false;
+  console.log(
+    isMinutePublished,
+    "isMinutePublishedisMinutePublishedisMinutePublished"
+  );
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
@@ -181,11 +191,25 @@ const Minutes = ({
       isAgenda: false,
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(
-      GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
-    );
 
-    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
+    if (Boolean(isMinutePublished) === false) {
+      console.log(
+        isMinutePublished,
+        "isMinutePublishedisMinutePublishedisMinutePublished"
+      );
+      dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
+    } else {
+      console.log(
+        isMinutePublished,
+        "isMinutePublishedisMinutePublishedisMinutePublished"
+      );
+      dispatch(
+        GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
+      );
+
+      dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
+    }
+
     return () => {
       setUseCase(null);
       setMessages([]);
@@ -983,288 +1007,289 @@ const Minutes = ({
     );
   };
 
-  return showPublishMinutes ? (
+  return !isMinutePublished ? (
     <>
       {minutesData.map((data, index) => {
         const isOpen = openIndices.includes(index);
-        return (
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
-              <>
-                <div>
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="mt-2">
-                      <div
-                        onClick={() =>
-                          accordianClick(data, data.minuteID, index)
-                        }
-                        className={
-                          isOpen
-                            ? styles["agenda-wrapper-closed"]
-                            : styles["agenda-wrapper-open"]
-                        }
-                      >
-                        <p className={styles["agenda-title"]}>
-                          {index + 1 + "." + " " + data.title}
-                        </p>
-                        <span>
-                          {data.attachments.length > 0 ? (
-                            <img
-                              className={styles["Attachment"]}
-                              alt=""
-                              src={AttachmentIcon}
-                            />
-                          ) : null}
-                          <img
-                            alt=""
-                            src={ArrowDown}
-                            className={
-                              isOpen
-                                ? styles["Arrow"]
-                                : styles["Arrow_Expanded"]
-                            }
-                          />
-                        </span>
-                      </div>
-                    </Col>
-                  </Row>
-                  {isOpen ? (
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="position-relative"
-                        >
-                          <div className={styles["uploaded-details"]}>
-                            <Row className={styles["inherit-height"]}>
-                              <Col lg={10} md={10} sm={12}>
-                                <p className={styles["minutes-text"]}>
-                                  {data.description}
-                                </p>
-                                {data.attachments.length > 0 ? (
-                                  <Row>
-                                    {data.attachments.map((fileData, index) => (
-                                      <Col lg={3} md={3} sm={12}>
-                                        <AttachmentViewer
-                                          fk_UID={fileData.fK_UserID}
-                                          handleClickRemove={() =>
-                                            handleRemoveFile(fileData)
-                                          }
-                                          data={fileData}
-                                          id={0}
-                                          name={fileData.displayFileName}
-                                        />
-                                      </Col>
-                                    ))}
-                                  </Row>
-                                ) : null}
-                              </Col>
-                              <Col
-                                lg={2}
-                                md={2}
-                                sm={12}
-                                className="position-relative p-0"
-                              >
-                                <Row className="m-0">
-                                  <Col lg={12} md={12} sm={12} className="p-0">
-                                    <span className={styles["bar-line"]}></span>
-                                    <p
-                                      className={`${styles["uploadedbyuser"]} m-0`}
-                                    >
-                                      Uploaded By
-                                    </p>
-                                    <div className={styles["gap-ti"]}>
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />
-                                      <p className={styles["agendaCreater"]}>
-                                        {data.uploader.name}
-                                      </p>
-                                    </div>
-                                    <p
-                                      className={`${styles["uploadedbyuser"]} mt-3`}
-                                    >
-                                      Uploaded By
-                                    </p>
-                                    <div className={styles["gap-ti"]}>
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />{" "}
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />
-                                      <span
-                                        className={styles["reviewer-count"]}
-                                      >
-                                        +9
-                                      </span>
-                                    </div>
-                                  </Col>
-                                </Row>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </Row>
-                      {data.subMinutes.map((subMinuteData, subMinuteIndex) => (
-                        <div>
-                          <Row className="mx-50">
-                            <Col lg={12} md={12} sm={12}>
-                              <p className={styles["Parent-title-heading"]}>
-                                {index +
-                                  1 +
-                                  "." +
-                                  subMinuteIndex +
-                                  1 +
-                                  " " +
-                                  subMinuteData.title}
-                              </p>
-                            </Col>
-                          </Row>
-                          <Row className="mxl-50">
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="position-relative"
-                            >
-                              <div
-                                className={styles["version-control-wrapper"]}
-                              >
-                                <span></span>
-                              </div>
-                              <div className={styles["uploaded-details"]}>
-                                <Row className={styles["inherit-height"]}>
-                                  <Col lg={10} md={10} sm={12}>
-                                    <p className={styles["minutes-text"]}>
-                                      {subMinuteData.description}
-                                    </p>
-                                    {subMinuteData.attachments.length > 0 ? (
-                                      <Row>
-                                        {subMinuteData.attachments.map(
-                                          (subFileData, subFileIndex) => (
-                                            <Col lg={3} md={3} sm={12}>
-                                              <AttachmentViewer
-                                                id={0}
-                                                name={
-                                                  subFileData.displayFileName
-                                                }
-                                              />
-                                            </Col>
-                                          )
-                                        )}
-                                      </Row>
-                                    ) : null}
-                                  </Col>
-                                  <Col
-                                    lg={2}
-                                    md={2}
-                                    sm={12}
-                                    className="position-relative"
-                                  >
-                                    <Row className="m-0">
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className="p-0"
-                                      >
-                                        <span
-                                          className={styles["bar-line"]}
-                                        ></span>
-                                        <p
-                                          className={`${styles["uploadedbyuser"]} m-0`}
-                                        >
-                                          Uploaded By
-                                        </p>
-                                        <div className={styles["gap-ti"]}>
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
-                                          <p
-                                            className={styles["agendaCreater"]}
-                                          >
-                                            {data.uploader.name}
-                                          </p>
-                                        </div>
-                                        <p
-                                          className={`${styles["uploadedbyuser"]} mt-3`}
-                                        >
-                                          Uploaded By
-                                        </p>
-                                        <div className={styles["gap-ti"]}>
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />{" "}
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
-                                          <span
-                                            className={styles["reviewer-count"]}
-                                          >
-                                            +9
-                                          </span>
-                                        </div>
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </Row>
-                              </div>
-                            </Col>
-                          </Row>
-                        </div>
-                      ))}
-                    </>
-                  ) : null}
-                </div>
-              </>
-            </Col>
-          </Row>
-        );
+        console.log(isOpen, "isOpenisOpenisOpenisOpen");
+        // return (
+        //   <Row className="mt-2">
+        //     <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
+        //       <>
+        //         <div>
+        //           <Row>
+        //             <Col lg={12} md={12} sm={12} className="mt-2">
+        //               <div
+        //                 onClick={() =>
+        //                   accordianClick(data, data.minuteID, index)
+        //                 }
+        //                 className={
+        //                   isOpen
+        //                     ? styles["agenda-wrapper-closed"]
+        //                     : styles["agenda-wrapper-open"]
+        //                 }
+        //               >
+        //                 <p className={styles["agenda-title"]}>
+        //                   {index + 1 + "." + " " + data.title}
+        //                 </p>
+        //                 <span>
+        //                   {data.attachments.length > 0 ? (
+        //                     <img
+        //                       className={styles["Attachment"]}
+        //                       alt=""
+        //                       src={AttachmentIcon}
+        //                     />
+        //                   ) : null}
+        //                   <img
+        //                     alt=""
+        //                     src={ArrowDown}
+        //                     className={
+        //                       isOpen
+        //                         ? styles["Arrow"]
+        //                         : styles["Arrow_Expanded"]
+        //                     }
+        //                   />
+        //                 </span>
+        //               </div>
+        //             </Col>
+        //           </Row>
+        //           {isOpen ? (
+        //             <>
+        //               <Row>
+        //                 <Col
+        //                   lg={12}
+        //                   md={12}
+        //                   sm={12}
+        //                   className="position-relative"
+        //                 >
+        //                   <div className={styles["uploaded-details"]}>
+        //                     <Row className={styles["inherit-height"]}>
+        //                       <Col lg={10} md={10} sm={12}>
+        //                         <p className={styles["minutes-text"]}>
+        //                           {data.description}
+        //                         </p>
+        //                         {data.attachments.length > 0 ? (
+        //                           <Row>
+        //                             {data.attachments.map((fileData, index) => (
+        //                               <Col lg={3} md={3} sm={12}>
+        //                                 <AttachmentViewer
+        //                                   fk_UID={fileData.fK_UserID}
+        //                                   handleClickRemove={() =>
+        //                                     handleRemoveFile(fileData)
+        //                                   }
+        //                                   data={fileData}
+        //                                   id={0}
+        //                                   name={fileData.displayFileName}
+        //                                 />
+        //                               </Col>
+        //                             ))}
+        //                           </Row>
+        //                         ) : null}
+        //                       </Col>
+        //                       <Col
+        //                         lg={2}
+        //                         md={2}
+        //                         sm={12}
+        //                         className="position-relative p-0"
+        //                       >
+        //                         <Row className="m-0">
+        //                           <Col lg={12} md={12} sm={12} className="p-0">
+        //                             <span className={styles["bar-line"]}></span>
+        //                             <p
+        //                               className={`${styles["uploadedbyuser"]} m-0`}
+        //                             >
+        //                               Uploaded By
+        //                             </p>
+        //                             <div className={styles["gap-ti"]}>
+        //                               <img
+        //                                 src={DefaultAvatar}
+        //                                 className={styles["Image"]}
+        //                                 alt=""
+        //                                 draggable={false}
+        //                               />
+        //                               <p className={styles["agendaCreater"]}>
+        //                                 {data.uploader.name}
+        //                               </p>
+        //                             </div>
+        //                             <p
+        //                               className={`${styles["uploadedbyuser"]} mt-3`}
+        //                             >
+        //                               Uploaded By
+        //                             </p>
+        //                             <div className={styles["gap-ti"]}>
+        //                               <img
+        //                                 src={DefaultAvatar}
+        //                                 className={styles["Image"]}
+        //                                 alt=""
+        //                                 draggable={false}
+        //                               />
+        //                               <img
+        //                                 src={DefaultAvatar}
+        //                                 className={styles["Image"]}
+        //                                 alt=""
+        //                                 draggable={false}
+        //                               />{" "}
+        //                               <img
+        //                                 src={DefaultAvatar}
+        //                                 className={styles["Image"]}
+        //                                 alt=""
+        //                                 draggable={false}
+        //                               />
+        //                               <img
+        //                                 src={DefaultAvatar}
+        //                                 className={styles["Image"]}
+        //                                 alt=""
+        //                                 draggable={false}
+        //                               />
+        //                               <span
+        //                                 className={styles["reviewer-count"]}
+        //                               >
+        //                                 +9
+        //                               </span>
+        //                             </div>
+        //                           </Col>
+        //                         </Row>
+        //                       </Col>
+        //                     </Row>
+        //                   </div>
+        //                 </Col>
+        //               </Row>
+        //               {data.subMinutes.map((subMinuteData, subMinuteIndex) => (
+        //                 <div>
+        //                   <Row className="mx-50">
+        //                     <Col lg={12} md={12} sm={12}>
+        //                       <p className={styles["Parent-title-heading"]}>
+        //                         {index +
+        //                           1 +
+        //                           "." +
+        //                           subMinuteIndex +
+        //                           1 +
+        //                           " " +
+        //                           subMinuteData.title}
+        //                       </p>
+        //                     </Col>
+        //                   </Row>
+        //                   <Row className="mxl-50">
+        //                     <Col
+        //                       lg={12}
+        //                       md={12}
+        //                       sm={12}
+        //                       className="position-relative"
+        //                     >
+        //                       <div
+        //                         className={styles["version-control-wrapper"]}
+        //                       >
+        //                         <span></span>
+        //                       </div>
+        //                       <div className={styles["uploaded-details"]}>
+        //                         <Row className={styles["inherit-height"]}>
+        //                           <Col lg={10} md={10} sm={12}>
+        //                             <p className={styles["minutes-text"]}>
+        //                               {subMinuteData.description}
+        //                             </p>
+        //                             {subMinuteData.attachments.length > 0 ? (
+        //                               <Row>
+        //                                 {subMinuteData.attachments.map(
+        //                                   (subFileData, subFileIndex) => (
+        //                                     <Col lg={3} md={3} sm={12}>
+        //                                       <AttachmentViewer
+        //                                         id={0}
+        //                                         name={
+        //                                           subFileData.displayFileName
+        //                                         }
+        //                                       />
+        //                                     </Col>
+        //                                   )
+        //                                 )}
+        //                               </Row>
+        //                             ) : null}
+        //                           </Col>
+        //                           <Col
+        //                             lg={2}
+        //                             md={2}
+        //                             sm={12}
+        //                             className="position-relative"
+        //                           >
+        //                             <Row className="m-0">
+        //                               <Col
+        //                                 lg={12}
+        //                                 md={12}
+        //                                 sm={12}
+        //                                 className="p-0"
+        //                               >
+        //                                 <span
+        //                                   className={styles["bar-line"]}
+        //                                 ></span>
+        //                                 <p
+        //                                   className={`${styles["uploadedbyuser"]} m-0`}
+        //                                 >
+        //                                   Uploaded By
+        //                                 </p>
+        //                                 <div className={styles["gap-ti"]}>
+        //                                   <img
+        //                                     src={DefaultAvatar}
+        //                                     className={styles["Image"]}
+        //                                     alt=""
+        //                                     draggable={false}
+        //                                   />
+        //                                   <p
+        //                                     className={styles["agendaCreater"]}
+        //                                   >
+        //                                     {data.uploader.name}
+        //                                   </p>
+        //                                 </div>
+        //                                 <p
+        //                                   className={`${styles["uploadedbyuser"]} mt-3`}
+        //                                 >
+        //                                   Uploaded By
+        //                                 </p>
+        //                                 <div className={styles["gap-ti"]}>
+        //                                   <img
+        //                                     src={DefaultAvatar}
+        //                                     className={styles["Image"]}
+        //                                     alt=""
+        //                                     draggable={false}
+        //                                   />
+        //                                   <img
+        //                                     src={DefaultAvatar}
+        //                                     className={styles["Image"]}
+        //                                     alt=""
+        //                                     draggable={false}
+        //                                   />{" "}
+        //                                   <img
+        //                                     src={DefaultAvatar}
+        //                                     className={styles["Image"]}
+        //                                     alt=""
+        //                                     draggable={false}
+        //                                   />
+        //                                   <img
+        //                                     src={DefaultAvatar}
+        //                                     className={styles["Image"]}
+        //                                     alt=""
+        //                                     draggable={false}
+        //                                   />
+        //                                   <span
+        //                                     className={styles["reviewer-count"]}
+        //                                   >
+        //                                     +9
+        //                                   </span>
+        //                                 </div>
+        //                               </Col>
+        //                             </Row>
+        //                           </Col>
+        //                         </Row>
+        //                       </div>
+        //                     </Col>
+        //                   </Row>
+        //                 </div>
+        //               ))}
+        //             </>
+        //           ) : null}
+        //         </div>
+        //       </>
+        //     </Col>
+        //   </Row>
+        // );
       })}
     </>
   ) : (
@@ -1531,7 +1556,9 @@ const Minutes = ({
                         </Row>
                         {isOpen ? (
                           <>
-                            {isOpenReviewer && minuteReviewData !== null ? (
+                            {isOpenReviewer &&
+                            minuteReviewData !== null &&
+                            data?.MinuteStats ? (
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <div
@@ -1590,7 +1617,9 @@ const Minutes = ({
                                   </div>
                                 </Col>
                               </Row>
-                            ) : !isOpenReviewer && minuteReviewData !== null ? (
+                            ) : !isOpenReviewer &&
+                              minuteReviewData !== null &&
+                              data?.MinuteStats ? (
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <div
