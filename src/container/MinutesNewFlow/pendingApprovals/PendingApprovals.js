@@ -258,11 +258,11 @@ const PendingApproval = () => {
 
   const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
 
-  // useEffect(() => {
-  //   let Data = { sRow: 0, Length: 10 };
-  //   dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
-  //   dispatch(GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t));
-  // }, []);
+  useEffect(() => {
+    let Data = { sRow: 0, Length: 10 };
+    dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
+    dispatch(GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t));
+  }, []);
 
   // Data for rows of the pending approval table
   // const rowsPendingApproval = [

@@ -35,6 +35,9 @@ const ReviewMinutes = () => {
   const dispatch = useDispatch(); // Redux hook
   const navigate = useNavigate(); // Navigation hook
 
+  let currentUserID = Number(localStorage.getItem("userID"));
+  let currentUserName = localStorage.getItem("name");
+
   const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
 
   //Getting current Language
@@ -48,6 +51,10 @@ const ReviewMinutes = () => {
   const [minutesGeneral, setMinutesGeneral] = useState([]);
   const [minutesToReview, setMinutesToReview] = useState(0);
   const [minuteDataToReject, setMinuteDataToReject] = useState(null);
+  const [visibleParentMinuteIDs, setVisibleParentMinuteIDs] = useState([]);
+  const [deleteCommentLocal, setDeleteCommentLocal] = useState(null);
+  const [editCommentLocal, setEditCommentLocal] = useState(null);
+  const [isAgenda, setIsAgenda] = useState(false);
 
   const divRef = useRef(null);
 
@@ -68,13 +75,13 @@ const ReviewMinutes = () => {
           count++;
         }
         // Check version history in agendaMinutes
-        if (minute.agendaMinutesVersionHistory) {
-          minute.agendaMinutesVersionHistory.forEach((history) => {
-            if (history.actorBundleStatusID === 2) {
-              count++;
-            }
-          });
-        }
+        // if (minute.agendaMinutesVersionHistory) {
+        //   minute.agendaMinutesVersionHistory.forEach((history) => {
+        //     if (history.actorBundleStatusID === 2) {
+        //       count++;
+        //     }
+        //   });
+        // }
       });
     }
     return count;
@@ -135,8 +142,185 @@ const ReviewMinutes = () => {
       ActorMinuteReviews,
     };
 
-    // dispatch(AcceptRejectMinuteReview(Data, navigate, t));
+    dispatch(AcceptRejectMinuteReview(Data, navigate, t));
     console.log("submitReviewssubmitReviews", Data);
+  };
+
+  const updateRejectMinutes = (minutesData, rejectData) => {
+    const newDeclinedReview = {
+      fK_ActorBundlesStatus_ID: 0,
+      fK_UID: currentUserID,
+      fK_WorkFlowActor_ID: 0,
+      fK_WorkFlowActionableBundle_ID: 0,
+      fK_ActorBundlesStatusState_ID: 2,
+      actorName: currentUserName,
+      reason: rejectData.reason,
+      modifiedOn: new Date()
+        .toISOString()
+        .replace(/[-:T.]/g, "")
+        .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
+      userProfilePicture: {
+        userID: currentUserID,
+        orignalProfilePictureName: "",
+        displayProfilePictureName: "",
+      },
+    };
+
+    return minutesData.map((agenda) => {
+      // Update main minuteData
+      const updatedMinuteData = agenda.minuteData.map((minute) => {
+        if (minute.minuteID === rejectData.minuteID) {
+          const updatedDeclinedReviews = [
+            ...minute.declinedReviews,
+            newDeclinedReview,
+          ];
+          return {
+            ...minute,
+            reason: rejectData.reason,
+            actorBundleStatusID: rejectData.actorBundleStatusID,
+            declinedReviews: updatedDeclinedReviews,
+          };
+        }
+        return minute;
+      });
+
+      // Update subMinutes if they exist
+      const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
+        const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
+          if (subMinute.minuteID === rejectData.minuteID) {
+            const updatedDeclinedReviews = [
+              ...subMinute.declinedReviews,
+              newDeclinedReview,
+            ];
+            return {
+              ...subMinute,
+              reason: rejectData.reason,
+              actorBundleStatusID: rejectData.actorBundleStatusID,
+              declinedReviews: updatedDeclinedReviews,
+            };
+          }
+          return subMinute;
+        });
+        return { ...subAgenda, minuteData: updatedSubMinuteData };
+      });
+
+      return {
+        ...agenda,
+        minuteData: updatedMinuteData,
+        subMinutes: updatedSubMinutes,
+      };
+    });
+  };
+
+  const updateRejectMinutesGeneral = (minutesData, rejectData) => {
+    const newDeclinedReview = {
+      fK_ActorBundlesStatus_ID: 0,
+      fK_UID: currentUserID,
+      fK_WorkFlowActor_ID: 0,
+      fK_WorkFlowActionableBundle_ID: 0,
+      fK_ActorBundlesStatusState_ID: 2,
+      actorName: currentUserName,
+      reason: rejectData.reason,
+      modifiedOn: new Date()
+        .toISOString()
+        .replace(/[-:T.]/g, "")
+        .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
+      userProfilePicture: {
+        userID: currentUserID,
+        orignalProfilePictureName: "",
+        displayProfilePictureName: "",
+      },
+    };
+
+    return minutesData.map((minute) => {
+      if (minute.minuteID === rejectData.minuteID) {
+        const updatedDeclinedReviews = [
+          ...minute.declinedReviews,
+          newDeclinedReview,
+        ];
+        return {
+          ...minute,
+          reason: rejectData.reason,
+          actorBundleStatusID: rejectData.actorBundleStatusID,
+          declinedReviews: updatedDeclinedReviews,
+        };
+      }
+      return minute;
+    });
+  };
+
+  const updateAcceptMinutes = (minutesData, rejectData) => {
+    return minutesData.map((agenda) => {
+      // Update main minuteData
+      const updatedMinuteData = agenda.minuteData.map((minute) => {
+        if (minute.minuteID === rejectData.minuteID) {
+          return {
+            ...minute,
+            reason: "",
+            actorBundleStatusID: 3,
+          };
+        }
+        return minute;
+      });
+
+      // Update subMinutes if they exist
+      const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
+        const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
+          if (subMinute.minuteID === rejectData.minuteID) {
+            return {
+              ...subMinute,
+              reason: "",
+              actorBundleStatusID: 3,
+            };
+          }
+          return subMinute;
+        });
+        return { ...subAgenda, minuteData: updatedSubMinuteData };
+      });
+
+      return {
+        ...agenda,
+        minuteData: updatedMinuteData,
+        subMinutes: updatedSubMinutes,
+      };
+    });
+  };
+
+  const acceptMinute = (data) => {
+    // Update MinutesAgenda
+    const updatedMinutesAgenda = updateAcceptMinutes(minutesAgenda, data);
+
+    // Update MinutesGeneral
+    const updatedMinutesGeneral = minutesGeneral.map((minute) => {
+      if (minute.minuteID === data.minuteID) {
+        return {
+          ...minute,
+          reason: "",
+          actorBundleStatusID: 3,
+        };
+      }
+      return minute;
+    });
+
+    console.log("Updated MinutesAgenda:", updatedMinutesAgenda);
+    console.log("Updated MinutesGeneral:", updatedMinutesGeneral);
+
+    setMinutesAgenda(updatedMinutesAgenda);
+    setMinutesGeneral(updatedMinutesGeneral);
+    setMinutesToReview(minutesToReview - 1);
+  };
+
+  const toggleShowHide = (parentMinuteID) => {
+    const isVisible = visibleParentMinuteIDs.includes(parentMinuteID);
+    if (isVisible) {
+      // Remove from visible list
+      setVisibleParentMinuteIDs(
+        visibleParentMinuteIDs.filter((id) => id !== parentMinuteID)
+      );
+    } else {
+      // Add to visible list
+      setVisibleParentMinuteIDs([...visibleParentMinuteIDs, parentMinuteID]);
+    }
   };
 
   useEffect(() => {
@@ -152,17 +336,19 @@ const ReviewMinutes = () => {
   }, []); // This effect runs once after the component mounts
 
   useEffect(() => {
-    let allAgendaWiseDocs = {
-      MDID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
-    };
-    let Data = {
-      MeetingID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
-    };
-    dispatch(
-      AllDocumentsForAgendaWiseMinutesApiFunc(navigate, allAgendaWiseDocs, t)
-    );
+    try {
+      let allAgendaWiseDocs = {
+        MDID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
+      };
+      let Data = {
+        MeetingID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
+      };
+      dispatch(
+        AllDocumentsForAgendaWiseMinutesApiFunc(navigate, allAgendaWiseDocs, t)
+      );
 
-    dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+      dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -312,20 +498,78 @@ const ReviewMinutes = () => {
     } catch (error) {
       console.log("transformedDatatransformedData", error);
     }
-  }, [MinutesReducer.GetMinutesForReviewerByMeetingIdData]);
+  }, [
+    MinutesReducer.GetMinutesForReviewerByMeetingIdData,
+    minutesAgenda.length,
+    minutesGeneral.length,
+  ]);
 
-  // useEffect(() => {
-  //   if(MinutesReducer.RejectMinuteData !== null && MinutesReducer.RejectMinuteData !== undefined)
-  // }, [MinutesReducer.RejectMinuteData])
+  function filterEmptyReasons(state) {
+    // Iterate through the main state
+    state.forEach((item) => {
+      // Iterate through minuteData
+      item.minuteData.forEach((minute) => {
+        // Filter declinedReviews where reason is not empty
+        minute.declinedReviews = minute.declinedReviews.filter(
+          (review) => review.reason !== ""
+        );
+      });
 
-  console.log(
-    "DataDataDataData",
-    minutesAgenda,
-    minutesGeneral,
-    minuteDataToReject
-  );
+      // Iterate through subMinutes
+      item.subMinutes.forEach((subItem) => {
+        subItem.minuteData.forEach((minute) => {
+          // Filter declinedReviews where reason is not empty
+          minute.declinedReviews = minute.declinedReviews.filter(
+            (review) => review.reason !== ""
+          );
+        });
+      });
+    });
 
-  console.log("MinutesReducerMinutesReducerMinutesReducer", MinutesReducer);
+    return state;
+  }
+
+  function filterEmptyReasonsForStateGeneral(state) {
+    // Iterate through the state array
+    state.forEach((item) => {
+      // Filter declinedReviews where reason is not empty
+      item.declinedReviews = item.declinedReviews.filter(
+        (review) => review.reason !== ""
+      );
+    });
+
+    return state;
+  }
+
+  useEffect(() => {
+    try {
+      if (MinutesReducer.RejectMinuteData) {
+        const rejectMinuteData = MinutesReducer.RejectMinuteData;
+
+        // Update MinutesAgenda
+        let updatedMinutesAgenda = updateRejectMinutes(
+          minutesAgenda,
+          rejectMinuteData
+        );
+
+        updatedMinutesAgenda = filterEmptyReasons(updatedMinutesAgenda);
+
+        // Update MinutesGeneral
+        let updatedMinutesData = updateRejectMinutesGeneral(
+          minutesGeneral,
+          rejectMinuteData
+        );
+
+        updatedMinutesData = filterEmptyReasonsForStateGeneral(updatedMinutesData);
+        console.log("Updated MinutesAgenda:", updatedMinutesAgenda);
+        // console.log("Updated MinutesGeneral:", updatedMinutesGeneral);
+
+        setMinutesAgenda(updatedMinutesAgenda);
+        setMinutesGeneral(updatedMinutesData);
+        setMinutesToReview(minutesToReview - 1);
+      }
+    } catch {}
+  }, [MinutesReducer.RejectMinuteData]);
 
   return (
     <section className={styles["pendingApprovalContainer"]}>
@@ -371,1043 +615,1870 @@ const ReviewMinutes = () => {
             ref={divRef}
           >
             {/* CONTENT */}
-            {minutesAgenda?.map((data, index) => {
-              return (
-                <>
-                  <Row className="mx-50">
-                    <Col lg={12} md={12} sm={12}>
-                      <p className={styles["Parent-title-heading"]}>
-                        {data.agendaTitle}
-                      </p>
-                    </Col>
-                  </Row>
-                  <>
-                    {data.minuteData.map((parentMinutedata, index) => {
-                      return (
-                        <>
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="position-relative"
-                            >
-                              {parentMinutedata.agendaMinutesVersionHistory
-                                .length === 0 ? null : (
-                                <div
-                                  className={
-                                    styles["version-control-wrapper-with-more"]
-                                  }
+            {minutesAgenda.length > 0
+              ? minutesAgenda?.map((data, index) => {
+                  return (
+                    <>
+                      <Row className="mx-50">
+                        <Col lg={12} md={12} sm={12}>
+                          <p className={styles["Parent-title-heading"]}>
+                            {data.agendaTitle}
+                          </p>
+                        </Col>
+                      </Row>
+                      <>
+                        {data?.minuteData?.map((parentMinutedata, index) => {
+                          return (
+                            <>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="position-relative"
                                 >
-                                  <span className={styles["with-text"]}>
-                                    {parentMinutedata.versionNumber}.0
-                                  </span>
-                                </div>
-                              )}
-                              <div
-                                className={
-                                  parentMinutedata.actorBundleStatusID === 3
-                                    ? styles["uploaded-details-accepted"]
-                                    : parentMinutedata.actorBundleStatusID === 4
-                                    ? styles["uploaded-details-rejected"]
-                                    : styles["uploaded-details"]
-                                }
-                              >
-                                <Row className={styles["inherit-height"]}>
-                                  <Col lg={8} md={8} sm={12}>
-                                    <p
-                                      dangerouslySetInnerHTML={{
-                                        __html: parentMinutedata.minutesDetails,
-                                      }}
-                                      className={styles["minutes-text"]}
-                                    ></p>
-                                  </Col>
-                                  <Col
-                                    lg={4}
-                                    md={4}
-                                    sm={12}
-                                    className="position-relative"
-                                  >
-                                    <Row className="m-0">
-                                      <Col
-                                        lg={6}
-                                        md={6}
-                                        sm={12}
-                                        className="p-0"
-                                      >
-                                        <span
-                                          className={styles["bar-line"]}
-                                        ></span>
-                                        <p className={styles["uploadedbyuser"]}>
-                                          {t("Uploaded-by")}
-                                        </p>
-                                        <div className={styles["gap-ti"]}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${parentMinutedata?.userProfilePicture?.displayProfilePictureName}`}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
-                                          <p
-                                            className={styles["agendaCreater"]}
-                                          >
-                                            {parentMinutedata.userName}
-                                          </p>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        lg={6}
-                                        md={6}
-                                        sm={12}
-                                        className="d-grid justify-content-end p-0"
-                                      >
-                                        {parentMinutedata.actorBundleStatusID ===
-                                        3 ? (
-                                          <Button
-                                            text={t("Accepted")}
-                                            className={
-                                              styles["Accepted-comment"]
-                                            }
-                                            disableBtn={true}
-                                          />
-                                        ) : parentMinutedata.actorBundleStatusID ===
-                                          2 ? (
-                                          <Button
-                                            text={t("Accept")}
-                                            className={styles["Accept-comment"]}
-                                          />
-                                        ) : parentMinutedata.actorBundleStatusID ===
-                                          4 ? (
-                                          <Button
-                                            text={t("Accept")}
-                                            className={styles["Reject-comment"]}
-                                          />
-                                        ) : null}
-
-                                        {parentMinutedata.actorBundleStatusID ===
-                                        3 ? (
-                                          <Button
-                                            text={t("Reject")}
-                                            className={styles["Reject-comment"]}
-                                            disableBtn={true}
-                                          />
-                                        ) : parentMinutedata.actorBundleStatusID ===
-                                          2 ? (
-                                          <Button
-                                            text={t("Reject")}
-                                            className={styles["Reject-comment"]}
-                                            onClick={() => {
-                                              dispatch(
-                                                rejectCommentModal(true)
-                                              );
-                                              dispatch(
-                                                RejectMinute(parentMinutedata)
-                                              );
-                                            }}
-                                          />
-                                        ) : parentMinutedata.actorBundleStatusID ===
-                                          4 ? (
-                                          <>
-                                            <Button
-                                              text={t("Rejected")}
-                                              className={
-                                                styles["Rejected-comment"]
-                                              }
-                                            />
-
-                                            <Button
-                                              text={t("Hide-comment")}
-                                              className={
-                                                styles["Reject-comment"]
-                                              }
-                                              onClick={() =>
-                                                dispatch(
-                                                  rejectCommentModal(true)
-                                                )
-                                              }
-                                            />
-                                          </>
-                                        ) : null}
-                                      </Col>
-                                    </Row>
-
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <p className={styles["time-uploader"]}>
-                                          {convertToGMTMinuteTime(
-                                            parentMinutedata.lastUpdatedTime
-                                          )}
-                                          ,
-                                        </p>
-                                        <p className={styles["date-uploader"]}>
-                                          {convertDateToGMTMinute(
-                                            parentMinutedata.lastUpdatedDate
-                                          )}
-                                        </p>
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </Row>
-                              </div>
-                            </Col>
-                          </Row>
-                          {parentMinutedata.agendaMinutesVersionHistory
-                            .slice()
-                            .reverse()
-                            .map((historyData, index) => {
-                              return (
-                                <>
-                                  <Row>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className="position-relative"
+                                  {parentMinutedata.agendaMinutesVersionHistory
+                                    .length === 0 &&
+                                  parentMinutedata.declinedReviews.length ===
+                                    0 ? null : (
+                                    <div
+                                      className={
+                                        styles[
+                                          "version-control-wrapper-with-more"
+                                        ]
+                                      }
                                     >
-                                      {historyData.declinedReviews.length ===
-                                      0 ? (
-                                        <div
-                                          className={
-                                            index === 0
-                                              ? styles[
-                                                  "version-control-wrapper-with-more"
-                                                ]
-                                              : styles[
-                                                  "version-control-wrapper-with-more-last"
-                                                ]
-                                          }
-                                        >
-                                          <span className={styles["with-text"]}>
-                                            {historyData.versionNumber}.0
-                                          </span>
-                                        </div>
-                                      ) : (
-                                        <div
-                                          className={
-                                            index === 0
-                                              ? styles[
-                                                  "version-control-wrapper"
-                                                ]
-                                              : styles[
-                                                  "version-control-wrapper-last"
-                                                ]
-                                          }
-                                        ></div>
-                                      )}
-                                      <div
-                                        className={
-                                          historyData.actorBundleStatusID === 3
-                                            ? styles[
-                                                "uploaded-details-accepted"
-                                              ]
-                                            : historyData.actorBundleStatusID ===
-                                                4 &&
-                                              historyData.declinedReviews
-                                                .length === 0
-                                            ? styles[
-                                                "uploaded-details-rejected"
-                                              ]
-                                            : styles["uploaded-details"]
-                                        }
+                                      <span className={styles["with-text"]}>
+                                        {parentMinutedata.versionNumber}.0
+                                      </span>
+                                    </div>
+                                  )}
+                                  <div
+                                    className={
+                                      parentMinutedata.actorBundleStatusID === 3
+                                        ? styles["uploaded-details-accepted"]
+                                        : parentMinutedata.actorBundleStatusID ===
+                                          4
+                                        ? styles["uploaded-details-rejected"]
+                                        : styles["uploaded-details"]
+                                    }
+                                  >
+                                    <Row className={styles["inherit-height"]}>
+                                      <Col lg={8} md={8} sm={12}>
+                                        <p
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              parentMinutedata.minutesDetails,
+                                          }}
+                                          className={styles["minutes-text"]}
+                                        ></p>
+                                      </Col>
+                                      <Col
+                                        lg={4}
+                                        md={4}
+                                        sm={12}
+                                        className="position-relative"
                                       >
-                                        <Row
-                                          className={styles["inherit-height"]}
-                                        >
-                                          <Col lg={8} md={8} sm={12}>
+                                        <Row className="m-0">
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={12}
+                                            className="p-0"
+                                          >
+                                            <span
+                                              className={styles["bar-line"]}
+                                            ></span>
                                             <p
-                                              dangerouslySetInnerHTML={{
-                                                __html:
-                                                  historyData.minutesDetails,
-                                              }}
-                                              className={styles["minutes-text"]}
-                                            ></p>
+                                              className={
+                                                styles["uploadedbyuser"]
+                                              }
+                                            >
+                                              {t("Uploaded-by")}
+                                            </p>
+                                            <div className={styles["gap-ti"]}>
+                                              <img
+                                                src={`data:image/jpeg;base64,${parentMinutedata?.userProfilePicture?.displayProfilePictureName}`}
+                                                className={styles["Image"]}
+                                                alt=""
+                                                draggable={false}
+                                              />
+                                              <p
+                                                className={
+                                                  styles["agendaCreater"]
+                                                }
+                                              >
+                                                {parentMinutedata.userName}
+                                              </p>
+                                            </div>
                                           </Col>
                                           <Col
-                                            lg={4}
-                                            md={4}
+                                            lg={6}
+                                            md={6}
+                                            sm={12}
+                                            className="d-grid justify-content-end p-0"
+                                          >
+                                            {parentMinutedata.actorBundleStatusID ===
+                                            3 ? (
+                                              <Button
+                                                text={t("Accepted")}
+                                                className={
+                                                  styles["Accepted-comment"]
+                                                }
+                                                disableBtn={true}
+                                              />
+                                            ) : parentMinutedata.actorBundleStatusID ===
+                                              2 ? (
+                                              <Button
+                                                text={t("Accept")}
+                                                className={
+                                                  styles["Accept-comment"]
+                                                }
+                                                onClick={() =>
+                                                  acceptMinute(parentMinutedata)
+                                                }
+                                              />
+                                            ) : parentMinutedata.actorBundleStatusID ===
+                                              4 ? (
+                                              <Button
+                                                text={t("Accept")}
+                                                className={
+                                                  styles["Reject-comment"]
+                                                }
+                                                onClick={() =>
+                                                  acceptMinute(parentMinutedata)
+                                                }
+                                              />
+                                            ) : null}
+
+                                            {parentMinutedata.actorBundleStatusID ===
+                                            3 ? (
+                                              <Button
+                                                text={t("Reject")}
+                                                className={
+                                                  styles["Reject-comment"]
+                                                }
+                                                disableBtn={true}
+                                              />
+                                            ) : parentMinutedata.actorBundleStatusID ===
+                                              2 ? (
+                                              <Button
+                                                text={t("Reject")}
+                                                className={
+                                                  styles["Reject-comment"]
+                                                }
+                                                onClick={() => {
+                                                  dispatch(
+                                                    rejectCommentModal(true)
+                                                  );
+                                                  setIsAgenda(true);
+                                                  dispatch(
+                                                    RejectMinute(
+                                                      parentMinutedata
+                                                    )
+                                                  );
+                                                }}
+                                              />
+                                            ) : parentMinutedata.actorBundleStatusID ===
+                                              4 ? (
+                                              <>
+                                                <Button
+                                                  text={t("Rejected")}
+                                                  className={
+                                                    styles["Rejected-comment"]
+                                                  }
+                                                />
+                                              </>
+                                            ) : null}
+                                          </Col>
+                                        </Row>
+
+                                        <Row>
+                                          <Col lg={12} md={12} sm={12}>
+                                            <p
+                                              className={
+                                                styles["time-uploader"]
+                                              }
+                                            >
+                                              {convertToGMTMinuteTime(
+                                                parentMinutedata.lastUpdatedTime
+                                              )}
+                                              ,
+                                            </p>
+                                            <p
+                                              className={
+                                                styles["date-uploader"]
+                                              }
+                                            >
+                                              {convertDateToGMTMinute(
+                                                parentMinutedata.lastUpdatedDate
+                                              )}
+                                            </p>
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+                              {parentMinutedata.declinedReviews.length > 0 ? (
+                                <Row className="mx-50">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <div className={styles["wrapper-userlist"]}>
+                                      <p>
+                                        {t("This minute is rejected by: ")}
+                                        {parentMinutedata.declinedReviews
+                                          .slice(0, 5)
+                                          .map((usersList, index) => (
+                                            <React.Fragment key={index}>
+                                              {usersList.actorName}
+                                              {index !== 4 &&
+                                                index <
+                                                  parentMinutedata
+                                                    .declinedReviews.length -
+                                                    1 &&
+                                                ", "}
+                                            </React.Fragment>
+                                          ))}
+                                        {parentMinutedata.declinedReviews
+                                          .length > 5 && (
+                                          <>
+                                            {" and "}
+                                            {parentMinutedata.declinedReviews
+                                              .length - 5}{" "}
+                                            {parentMinutedata.declinedReviews
+                                              .length -
+                                              5 ===
+                                            1
+                                              ? "more"
+                                              : "more"}
+                                          </>
+                                        )}
+                                      </p>
+                                      <p
+                                        className="text-decoration-underline cursor-pointer"
+                                        onClick={() =>
+                                          toggleShowHide(
+                                            parentMinutedata.minuteID
+                                          )
+                                        }
+                                      >
+                                        {visibleParentMinuteIDs.includes(
+                                          parentMinutedata.minuteID
+                                        )
+                                          ? t("Hide-comments")
+                                          : t("Show-comments")}
+                                      </p>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              ) : null}
+
+                              {visibleParentMinuteIDs.includes(
+                                parentMinutedata.minuteID
+                              ) &&
+                                parentMinutedata.declinedReviews.map(
+                                  (declinedData, index) => {
+                                    const isLastIndex =
+                                      index ===
+                                      parentMinutedata.declinedReviews.length -
+                                        1;
+                                    return (
+                                      <>
+                                        <Row>
+                                          <Col
+                                            lg={12}
+                                            md={12}
                                             sm={12}
                                             className="position-relative"
                                           >
-                                            <Row className="m-0">
-                                              <Col
-                                                lg={6}
-                                                md={6}
-                                                sm={12}
-                                                className="p-0"
+                                            {declinedData.length === 0 ? (
+                                              <div
+                                                className={
+                                                  index === 0
+                                                    ? styles[
+                                                        "version-control-wrapper-with-more"
+                                                      ]
+                                                    : styles[
+                                                        "version-control-wrapper-with-more-last"
+                                                      ]
+                                                }
+                                              ></div>
+                                            ) : (
+                                              <div
+                                                className={
+                                                  !isLastIndex ||
+                                                  parentMinutedata
+                                                    .agendaMinutesVersionHistory
+                                                    .length > 0
+                                                    ? styles[
+                                                        "version-control-wrapper"
+                                                      ]
+                                                    : styles[
+                                                        "version-control-wrapper-last"
+                                                      ]
+                                                }
+                                              ></div>
+                                            )}
+                                            <div
+                                              className={
+                                                styles["uploaded-details"]
+                                              }
+                                            >
+                                              <Row
+                                                className={
+                                                  styles["inherit-height"]
+                                                }
                                               >
-                                                <span
-                                                  className={styles["bar-line"]}
-                                                ></span>
-                                                <p
-                                                  className={
-                                                    styles["uploadedbyuser"]
-                                                  }
-                                                >
-                                                  {historyData.declinedReviews
-                                                    .length === 0
-                                                    ? t("Uploaded-by")
-                                                    : t("Reviewed-by")}
-                                                </p>
-                                                <div
-                                                  className={styles["gap-ti"]}
-                                                >
-                                                  <img
-                                                    src={`data:image/jpeg;base64,${minutesAgenda[0].userProfilePicture.displayProfilePictureName}`}
-                                                    className={styles["Image"]}
-                                                    alt=""
-                                                    draggable={false}
-                                                  />
+                                                <Col lg={8} md={8} sm={12}>
                                                   <p
                                                     className={
-                                                      styles["agendaCreater"]
+                                                      styles["minutes-text"]
                                                     }
                                                   >
-                                                    {minutesAgenda[0].userName}
+                                                    {declinedData.reason}
                                                   </p>
-                                                </div>
-                                              </Col>
-                                              {historyData.declinedReviews
-                                                .length === 0 ? (
+                                                </Col>
                                                 <Col
-                                                  lg={6}
-                                                  md={6}
+                                                  lg={4}
+                                                  md={4}
                                                   sm={12}
-                                                  className="d-grid justify-content-end p-0"
+                                                  className="position-relative"
                                                 >
-                                                  {historyData.actorBundleStatusID ===
-                                                  3 ? (
-                                                    <Button
-                                                      text={t("Accepted")}
-                                                      className={
-                                                        styles[
-                                                          "Accepted-comment"
-                                                        ]
-                                                      }
-                                                      disableBtn={true}
-                                                    />
-                                                  ) : historyData.actorBundleStatusID ===
-                                                    2 ? (
-                                                    <Button
-                                                      text={t("Accept")}
-                                                      className={
-                                                        styles["Accept-comment"]
-                                                      }
-                                                    />
-                                                  ) : historyData.actorBundleStatusID ===
-                                                    4 ? (
-                                                    <Button
-                                                      text={t("Accept")}
-                                                      className={
-                                                        styles["Reject-comment"]
-                                                      }
-                                                    />
-                                                  ) : null}
-
-                                                  {historyData.actorBundleStatusID ===
-                                                  3 ? (
-                                                    <Button
-                                                      text={t("Reject")}
-                                                      className={
-                                                        styles["Reject-comment"]
-                                                      }
-                                                      disableBtn={true}
-                                                    />
-                                                  ) : historyData.actorBundleStatusID ===
-                                                    2 ? (
-                                                    <Button
-                                                      text={t("Reject")}
-                                                      className={
-                                                        styles["Reject-comment"]
-                                                      }
-                                                      onClick={() => {
-                                                        dispatch(
-                                                          rejectCommentModal(
-                                                            true
-                                                          )
-                                                        );
-                                                        dispatch(
-                                                          RejectMinute(
-                                                            historyData
-                                                          )
-                                                        );
-                                                      }}
-                                                    />
-                                                  ) : historyData.actorBundleStatusID ===
-                                                    4 ? (
-                                                    <>
-                                                      <Button
-                                                        text={t("Rejected")}
+                                                  <Row className="m-0">
+                                                    <Col
+                                                      lg={6}
+                                                      md={6}
+                                                      sm={12}
+                                                      className="p-0"
+                                                    >
+                                                      <span
+                                                        className={
+                                                          styles["bar-line"]
+                                                        }
+                                                      ></span>
+                                                      <p
                                                         className={
                                                           styles[
-                                                            "Rejected-comment"
+                                                            "uploadedbyuser"
                                                           ]
                                                         }
+                                                      >
+                                                        {t("Reviewed-by")}
+                                                      </p>
+                                                      <div
+                                                        className={
+                                                          styles["gap-ti"]
+                                                        }
+                                                      >
+                                                        <img
+                                                          src={`data:image/jpeg;base64,${declinedData?.userProfilePicture?.displayProfilePictureName}`}
+                                                          className={
+                                                            styles["Image"]
+                                                          }
+                                                          alt=""
+                                                          draggable={false}
+                                                        />
+                                                        <p
+                                                          className={
+                                                            styles[
+                                                              "agendaCreater"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {
+                                                            declinedData.actorName
+                                                          }
+                                                        </p>
+                                                      </div>
+                                                    </Col>
+                                                    {declinedData.fK_WorkFlowActor_ID ===
+                                                    0 ? (
+                                                      <Col
+                                                        lg={6}
+                                                        md={6}
+                                                        sm={12}
+                                                        className="d-grid justify-content-end p-0"
+                                                      >
+                                                        <Button
+                                                          onClick={() => {
+                                                            dispatch(
+                                                              editCommentModal(
+                                                                true
+                                                              )
+                                                            );
+                                                            setEditCommentLocal(
+                                                              declinedData
+                                                            );
+                                                          }}
+                                                          text={t("Edit")}
+                                                          className={
+                                                            styles[
+                                                              "Reject-comment"
+                                                            ]
+                                                          }
+                                                        />
+                                                        <Button
+                                                          onClick={() => {
+                                                            dispatch(
+                                                              deleteCommentModal(
+                                                                true
+                                                              )
+                                                            );
+                                                            setDeleteCommentLocal(
+                                                              declinedData
+                                                            );
+                                                          }}
+                                                          text={t("Delete")}
+                                                          className={
+                                                            styles[
+                                                              "Reject-comment"
+                                                            ]
+                                                          }
+                                                        />
+                                                      </Col>
+                                                    ) : null}
+                                                  </Row>
+                                                </Col>
+                                              </Row>
+                                            </div>
+                                          </Col>
+                                        </Row>
+                                      </>
+                                    );
+                                  }
+                                )}
+                              {parentMinutedata.agendaMinutesVersionHistory
+                                .slice()
+                                .reverse()
+                                .map((historyData, index) => {
+                                  const isLastIndex =
+                                    index ===
+                                    parentMinutedata.agendaMinutesVersionHistory
+                                      .length -
+                                      1;
+                                  return (
+                                    <>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="position-relative"
+                                        >
+                                          <div
+                                            className={
+                                              historyData.declinedReviews
+                                                .length > 0 || !isLastIndex
+                                                ? styles[
+                                                    "version-control-wrapper-with-more"
+                                                  ]
+                                                : styles[
+                                                    "version-control-wrapper-with-more-last"
+                                                  ]
+                                            }
+                                          >
+                                            <span
+                                              className={styles["with-text"]}
+                                            >
+                                              {historyData.versionNumber}.0
+                                            </span>
+                                          </div>
+                                          <div
+                                            className={
+                                              historyData.actorBundleStatusID ===
+                                              3
+                                                ? styles[
+                                                    "uploaded-details-accepted"
+                                                  ]
+                                                : historyData.actorBundleStatusID ===
+                                                    4 &&
+                                                  historyData.declinedReviews
+                                                    .length === 0
+                                                ? styles[
+                                                    "uploaded-details-rejected"
+                                                  ]
+                                                : styles["uploaded-details"]
+                                            }
+                                          >
+                                            <Row
+                                              className={
+                                                styles["inherit-height"]
+                                              }
+                                            >
+                                              <Col lg={8} md={8} sm={12}>
+                                                <p
+                                                  dangerouslySetInnerHTML={{
+                                                    __html:
+                                                      historyData.minutesDetails,
+                                                  }}
+                                                  className={
+                                                    styles["minutes-text"]
+                                                  }
+                                                ></p>
+                                              </Col>
+                                              <Col
+                                                lg={4}
+                                                md={4}
+                                                sm={12}
+                                                className="position-relative"
+                                              >
+                                                <Row className="m-0">
+                                                  <Col
+                                                    lg={6}
+                                                    md={6}
+                                                    sm={12}
+                                                    className="p-0"
+                                                  >
+                                                    <span
+                                                      className={
+                                                        styles["bar-line"]
+                                                      }
+                                                    ></span>
+                                                    <p
+                                                      className={
+                                                        styles["uploadedbyuser"]
+                                                      }
+                                                    >
+                                                      {historyData
+                                                        .declinedReviews
+                                                        .length === 0
+                                                        ? t("Uploaded-by")
+                                                        : t("Reviewed-by")}
+                                                    </p>
+                                                    <div
+                                                      className={
+                                                        styles["gap-ti"]
+                                                      }
+                                                    >
+                                                      <img
+                                                        src={`data:image/jpeg;base64,${minutesAgenda[0]?.minuteData[0]?.userProfilePicture?.displayProfilePictureName}`}
+                                                        className={
+                                                          styles["Image"]
+                                                        }
+                                                        alt=""
+                                                        draggable={false}
                                                       />
+                                                      <p
+                                                        className={
+                                                          styles[
+                                                            "agendaCreater"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {
+                                                          minutesAgenda[0]
+                                                            ?.minuteData[0]
+                                                            ?.userName
+                                                        }
+                                                      </p>
+                                                    </div>
+                                                  </Col>
+                                                </Row>
 
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <p
+                                                      className={
+                                                        styles["time-uploader"]
+                                                      }
+                                                    >
+                                                      {convertToGMTMinuteTime(
+                                                        historyData.lastUpdatedTime
+                                                      )}
+                                                      ,
+                                                    </p>
+                                                    <p
+                                                      className={
+                                                        styles["date-uploader"]
+                                                      }
+                                                    >
+                                                      {convertDateToGMTMinute(
+                                                        historyData.lastUpdatedDate
+                                                      )}
+                                                    </p>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </div>
+                                        </Col>
+                                      </Row>
+
+                                      {historyData.declinedReviews.length >
+                                      0 ? (
+                                        <Row className="mx-50">
+                                          <Col lg={12} md={12} sm={12}>
+                                            <div
+                                              className={
+                                                styles["wrapper-userlist"]
+                                              }
+                                            >
+                                              <p>
+                                                {t(
+                                                  "This minute is rejected by: "
+                                                )}
+                                                {historyData.declinedReviews
+                                                  .slice(0, 5)
+                                                  .map((usersList, index) => (
+                                                    <React.Fragment key={index}>
+                                                      {usersList.actorName}
+                                                      {index !== 4 &&
+                                                        index <
+                                                          historyData
+                                                            .declinedReviews
+                                                            .length -
+                                                            1 &&
+                                                        ", "}
+                                                    </React.Fragment>
+                                                  ))}
+                                                {historyData.declinedReviews
+                                                  .length > 5 && (
+                                                  <>
+                                                    {" and "}
+                                                    {historyData.declinedReviews
+                                                      .length - 5}{" "}
+                                                    {historyData.declinedReviews
+                                                      .length -
+                                                      5 ===
+                                                    1
+                                                      ? "more"
+                                                      : "more"}
+                                                  </>
+                                                )}
+                                              </p>
+                                              <p
+                                                className="text-decoration-underline cursor-pointer"
+                                                onClick={() =>
+                                                  toggleShowHide(
+                                                    historyData.minuteID
+                                                  )
+                                                }
+                                              >
+                                                {visibleParentMinuteIDs.includes(
+                                                  historyData.minuteID
+                                                )
+                                                  ? t("Hide-comments")
+                                                  : t("Show-comments")}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        </Row>
+                                      ) : null}
+                                      {visibleParentMinuteIDs.includes(
+                                        historyData.minuteID
+                                      ) &&
+                                        historyData.declinedReviews.map(
+                                          (declinedDataHistory, index) => {
+                                            const isLastIndexx =
+                                              index ===
+                                              historyData.declinedReviews
+                                                .length -
+                                                1;
+                                            return (
+                                              <>
+                                                <Row>
+                                                  <Col
+                                                    lg={12}
+                                                    md={12}
+                                                    sm={12}
+                                                    className="position-relative"
+                                                  >
+                                                    {declinedDataHistory.length ===
+                                                    0 ? (
+                                                      <div
+                                                        className={
+                                                          !isLastIndexx
+                                                            ? styles[
+                                                                "version-control-wrapper-with-more"
+                                                              ]
+                                                            : styles[
+                                                                "version-control-wrapper-with-more-last"
+                                                              ]
+                                                        }
+                                                      ></div>
+                                                    ) : (
+                                                      <div
+                                                        className={
+                                                          !isLastIndexx
+                                                            ? styles[
+                                                                "version-control-wrapper"
+                                                              ]
+                                                            : styles[
+                                                                "version-control-wrapper-last"
+                                                              ]
+                                                        }
+                                                      ></div>
+                                                    )}
+                                                    <div
+                                                      className={
+                                                        styles[
+                                                          "uploaded-details"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <Row
+                                                        className={
+                                                          styles[
+                                                            "inherit-height"
+                                                          ]
+                                                        }
+                                                      >
+                                                        <Col
+                                                          lg={8}
+                                                          md={8}
+                                                          sm={12}
+                                                        >
+                                                          <p
+                                                            className={
+                                                              styles[
+                                                                "minutes-text"
+                                                              ]
+                                                            }
+                                                          >
+                                                            {
+                                                              declinedDataHistory.reason
+                                                            }
+                                                          </p>
+                                                        </Col>
+                                                        <Col
+                                                          lg={4}
+                                                          md={4}
+                                                          sm={12}
+                                                          className="position-relative"
+                                                        >
+                                                          <Row className="m-0">
+                                                            <Col
+                                                              lg={6}
+                                                              md={6}
+                                                              sm={12}
+                                                              className="p-0"
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "bar-line"
+                                                                  ]
+                                                                }
+                                                              ></span>
+                                                              <p
+                                                                className={
+                                                                  styles[
+                                                                    "uploadedbyuser"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {t(
+                                                                  "Reviewed-by"
+                                                                )}
+                                                              </p>
+                                                              <div
+                                                                className={
+                                                                  styles[
+                                                                    "gap-ti"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                <img
+                                                                  src={`data:image/jpeg;base64,${declinedDataHistory?.userProfilePicture?.displayProfilePictureName}`}
+                                                                  className={
+                                                                    styles[
+                                                                      "Image"
+                                                                    ]
+                                                                  }
+                                                                  alt=""
+                                                                  draggable={
+                                                                    false
+                                                                  }
+                                                                />
+                                                                <p
+                                                                  className={
+                                                                    styles[
+                                                                      "agendaCreater"
+                                                                    ]
+                                                                  }
+                                                                >
+                                                                  {
+                                                                    declinedDataHistory.actorName
+                                                                  }
+                                                                </p>
+                                                              </div>
+                                                            </Col>
+                                                            {declinedDataHistory.fK_WorkFlowActor_ID ===
+                                                            0 ? (
+                                                              <Col
+                                                                lg={6}
+                                                                md={6}
+                                                                sm={12}
+                                                                className="d-grid justify-content-end p-0"
+                                                              >
+                                                                <Button
+                                                                  onClick={() => {
+                                                                    dispatch(
+                                                                      editCommentModal(
+                                                                        true
+                                                                      )
+                                                                    );
+                                                                    setEditCommentLocal(
+                                                                      declinedDataHistory
+                                                                    );
+                                                                  }}
+                                                                  className={
+                                                                    styles[
+                                                                      "Reject-comment"
+                                                                    ]
+                                                                  }
+                                                                />
+                                                                <Button
+                                                                  onClick={() => {
+                                                                    dispatch(
+                                                                      deleteCommentModal(
+                                                                        true
+                                                                      )
+                                                                    );
+                                                                    setDeleteCommentLocal(
+                                                                      declinedDataHistory
+                                                                    );
+                                                                  }}
+                                                                  text={t(
+                                                                    "Delete"
+                                                                  )}
+                                                                  className={
+                                                                    styles[
+                                                                      "Reject-comment"
+                                                                    ]
+                                                                  }
+                                                                />
+                                                              </Col>
+                                                            ) : null}
+                                                          </Row>
+                                                        </Col>
+                                                      </Row>
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                    </>
+                                  );
+                                })}
+                            </>
+                          );
+                        })}
+
+                        {data?.subMinutes.map((subMinuteData, index) => {
+                          return (
+                            <>
+                              {subMinuteData.minuteData.length === 0 ? null : (
+                                <Row className="mx-50">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <p className={styles["SUB-title-heading"]}>
+                                      {index +
+                                        1 +
+                                        "." +
+                                        index +
+                                        1 +
+                                        " " +
+                                        subMinuteData.agendaTitle}
+                                    </p>
+                                  </Col>
+                                </Row>
+                              )}
+                              {subMinuteData?.minuteData.map(
+                                (minuteDataSubminute, index) => {
+                                  return (
+                                    <>
+                                      <Row className="mxl-50">
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="position-relative"
+                                        >
+                                          {minuteDataSubminute
+                                            .agendaMinutesVersionHistory
+                                            .length === 0 &&
+                                          minuteDataSubminute.declinedReviews
+                                            .length === 0 ? null : (
+                                            <div
+                                              className={
+                                                styles[
+                                                  "version-control-wrapper-with-more"
+                                                ]
+                                              }
+                                            >
+                                              <span
+                                                className={styles["with-text"]}
+                                              >
+                                                {
+                                                  minuteDataSubminute.versionNumber
+                                                }
+                                                .0
+                                              </span>
+                                            </div>
+                                          )}
+                                          <div
+                                            className={
+                                              minuteDataSubminute.actorBundleStatusID ===
+                                              3
+                                                ? styles[
+                                                    "uploaded-details-accepted"
+                                                  ]
+                                                : minuteDataSubminute.actorBundleStatusID ===
+                                                  4
+                                                ? styles[
+                                                    "uploaded-details-rejected"
+                                                  ]
+                                                : styles["uploaded-details"]
+                                            }
+                                          >
+                                            <Row
+                                              className={
+                                                styles["inherit-height"]
+                                              }
+                                            >
+                                              <Col lg={8} md={8} sm={12}>
+                                                <p
+                                                  dangerouslySetInnerHTML={{
+                                                    __html:
+                                                      minuteDataSubminute.minutesDetails,
+                                                  }}
+                                                  className={
+                                                    styles["minutes-text"]
+                                                  }
+                                                ></p>
+                                              </Col>
+                                              <Col
+                                                lg={4}
+                                                md={4}
+                                                sm={12}
+                                                className="position-relative"
+                                              >
+                                                <Row className="m-0">
+                                                  <Col
+                                                    lg={6}
+                                                    md={6}
+                                                    sm={12}
+                                                    className="p-0"
+                                                  >
+                                                    <span
+                                                      className={
+                                                        styles["bar-line"]
+                                                      }
+                                                    ></span>
+                                                    <p
+                                                      className={
+                                                        styles["uploadedbyuser"]
+                                                      }
+                                                    >
+                                                      {t("Uploaded-by")}
+                                                    </p>
+                                                    <div
+                                                      className={
+                                                        styles["gap-ti"]
+                                                      }
+                                                    >
+                                                      <img
+                                                        src={`data:image/jpeg;base64,${minuteDataSubminute?.userProfilePicture?.displayProfilePictureName}`}
+                                                        className={
+                                                          styles["Image"]
+                                                        }
+                                                        alt=""
+                                                        draggable={false}
+                                                      />
+                                                      <p
+                                                        className={
+                                                          styles[
+                                                            "agendaCreater"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {
+                                                          minuteDataSubminute.userName
+                                                        }
+                                                      </p>
+                                                    </div>
+                                                  </Col>
+                                                  <Col
+                                                    lg={6}
+                                                    md={6}
+                                                    sm={12}
+                                                    className="d-grid justify-content-end p-0"
+                                                  >
+                                                    {minuteDataSubminute.actorBundleStatusID ===
+                                                    3 ? (
                                                       <Button
-                                                        text={t("Hide-comment")}
+                                                        text={t("Accepted")}
+                                                        className={
+                                                          styles[
+                                                            "Accepted-comment"
+                                                          ]
+                                                        }
+                                                        disableBtn={true}
+                                                      />
+                                                    ) : minuteDataSubminute.actorBundleStatusID ===
+                                                      2 ? (
+                                                      <Button
+                                                        text={t("Accept")}
+                                                        className={
+                                                          styles[
+                                                            "Accept-comment"
+                                                          ]
+                                                        }
+                                                        onClick={() =>
+                                                          acceptMinute(
+                                                            minuteDataSubminute
+                                                          )
+                                                        }
+                                                      />
+                                                    ) : minuteDataSubminute.actorBundleStatusID ===
+                                                      4 ? (
+                                                      <Button
+                                                        text={t("Accept")}
                                                         className={
                                                           styles[
                                                             "Reject-comment"
                                                           ]
                                                         }
                                                         onClick={() =>
+                                                          acceptMinute(
+                                                            minuteDataSubminute
+                                                          )
+                                                        }
+                                                      />
+                                                    ) : null}
+
+                                                    {minuteDataSubminute.actorBundleStatusID ===
+                                                    3 ? (
+                                                      <Button
+                                                        text={t("Reject")}
+                                                        className={
+                                                          styles[
+                                                            "Reject-comment"
+                                                          ]
+                                                        }
+                                                        disableBtn={true}
+                                                      />
+                                                    ) : minuteDataSubminute.actorBundleStatusID ===
+                                                      2 ? (
+                                                      <Button
+                                                        text={t("Reject")}
+                                                        className={
+                                                          styles[
+                                                            "Reject-comment"
+                                                          ]
+                                                        }
+                                                        onClick={() => {
                                                           dispatch(
                                                             rejectCommentModal(
                                                               true
                                                             )
-                                                          )
-                                                        }
+                                                          );
+                                                          setIsAgenda(true);
+                                                          dispatch(
+                                                            RejectMinute(
+                                                              minuteDataSubminute
+                                                            )
+                                                          );
+                                                        }}
                                                       />
-                                                    </>
-                                                  ) : null}
-                                                </Col>
-                                              ) : (
-                                                <Col
-                                                  lg={6}
-                                                  md={6}
-                                                  sm={12}
-                                                  className="d-grid justify-content-end p-0"
-                                                >
-                                                  <Button
-                                                    onClick={() =>
-                                                      dispatch(
-                                                        editCommentModal(true)
-                                                      )
-                                                    }
-                                                    text={t("Edit")}
-                                                    className={
-                                                      styles["Reject-comment"]
-                                                    }
-                                                  />
-                                                  <Button
-                                                    onClick={() =>
-                                                      dispatch(
-                                                        deleteCommentModal(true)
-                                                      )
-                                                    }
-                                                    text={t("Delete")}
-                                                    className={
-                                                      styles["Reject-comment"]
-                                                    }
-                                                  />
-                                                </Col>
-                                              )}
-                                            </Row>
+                                                    ) : minuteDataSubminute.actorBundleStatusID ===
+                                                      4 ? (
+                                                      <>
+                                                        <Button
+                                                          text={t("Rejected")}
+                                                          className={
+                                                            styles[
+                                                              "Rejected-comment"
+                                                            ]
+                                                          }
+                                                        />
+                                                      </>
+                                                    ) : null}
+                                                  </Col>
+                                                </Row>
 
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <p
-                                                  className={
-                                                    styles["time-uploader"]
-                                                  }
-                                                >
-                                                  {convertToGMTMinuteTime(
-                                                    historyData.lastUpdatedTime
-                                                  )}
-                                                  ,
-                                                </p>
-                                                <p
-                                                  className={
-                                                    styles["date-uploader"]
-                                                  }
-                                                >
-                                                  {convertDateToGMTMinute(
-                                                    historyData.lastUpdatedDate
-                                                  )}
-                                                </p>
-                                              </Col>
-                                            </Row>
-                                          </Col>
-                                        </Row>
-                                      </div>
-                                    </Col>
-                                  </Row>
-                                </>
-                              );
-                            })}
-                        </>
-                      );
-                    })}
-
-                    {data.subMinutes.map((subMinuteData, subMinuteIndex) => {
-                      return (
-                        <div>
-                          {subMinuteData.minuteData.length === 0 ? null : (
-                            <Row className="mx-50">
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["SUB-title-heading"]}>
-                                  {index +
-                                    1 +
-                                    "." +
-                                    subMinuteIndex +
-                                    1 +
-                                    " " +
-                                    subMinuteData.agendaTitle}
-                                </p>
-                              </Col>
-                            </Row>
-                          )}
-                          {subMinuteData.minuteData.map(
-                            (minuteDataSubminute) => {
-                              return (
-                                <>
-                                  <Row className="mxl-50">
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className="position-relative"
-                                    >
-                                      {minuteDataSubminute
-                                        .agendaMinutesVersionHistory.length ===
-                                      0 ? null : (
-                                        <div
-                                          className={
-                                            styles[
-                                              "version-control-wrapper-with-more"
-                                            ]
-                                          }
-                                        >
-                                          <span className={styles["with-text"]}>
-                                            {minuteDataSubminute.versionNumber}
-                                            .0
-                                          </span>
-                                        </div>
-                                      )}
-                                      <div
-                                        className={
-                                          minuteDataSubminute.actorBundleStatusID ===
-                                          3
-                                            ? styles[
-                                                "uploaded-details-accepted"
-                                              ]
-                                            : minuteDataSubminute.actorBundleStatusID ===
-                                              4
-                                            ? styles[
-                                                "uploaded-details-rejected"
-                                              ]
-                                            : styles["uploaded-details"]
-                                        }
-                                      >
-                                        <Row
-                                          className={styles["inherit-height"]}
-                                        >
-                                          <Col lg={8} md={8} sm={12}>
-                                            <p
-                                              dangerouslySetInnerHTML={{
-                                                __html:
-                                                  minuteDataSubminute.minutesDetails,
-                                              }}
-                                              className={styles["minutes-text"]}
-                                            ></p>
-                                          </Col>
-                                          <Col
-                                            lg={4}
-                                            md={4}
-                                            sm={12}
-                                            className="position-relative"
-                                          >
-                                            <Row className="m-0">
-                                              <Col
-                                                lg={6}
-                                                md={6}
-                                                sm={12}
-                                                className="p-0"
-                                              >
-                                                <span
-                                                  className={styles["bar-line"]}
-                                                ></span>
-                                                <p
-                                                  className={
-                                                    styles["uploadedbyuser"]
-                                                  }
-                                                >
-                                                  {t("Uploaded-by")}
-                                                </p>
-                                                <div
-                                                  className={styles["gap-ti"]}
-                                                >
-                                                  <img
-                                                    src={`data:image/jpeg;base64,${minuteDataSubminute?.userProfilePicture?.displayProfilePictureName}`}
-                                                    className={styles["Image"]}
-                                                    alt=""
-                                                    draggable={false}
-                                                  />
-                                                  <p
-                                                    className={
-                                                      styles["agendaCreater"]
-                                                    }
-                                                  >
-                                                    {
-                                                      minuteDataSubminute.userName
-                                                    }
-                                                  </p>
-                                                </div>
-                                              </Col>
-                                              <Col
-                                                lg={6}
-                                                md={6}
-                                                sm={12}
-                                                className="d-grid justify-content-end p-0"
-                                              >
-                                                {minuteDataSubminute.actorBundleStatusID ===
-                                                3 ? (
-                                                  <Button
-                                                    text={t("Accepted")}
-                                                    className={
-                                                      styles["Accepted-comment"]
-                                                    }
-                                                    disableBtn={true}
-                                                  />
-                                                ) : minuteDataSubminute.actorBundleStatusID ===
-                                                  2 ? (
-                                                  <Button
-                                                    text={t("Accept")}
-                                                    className={
-                                                      styles["Accept-comment"]
-                                                    }
-                                                  />
-                                                ) : minuteDataSubminute.actorBundleStatusID ===
-                                                  4 ? (
-                                                  <Button
-                                                    text={t("Accept")}
-                                                    className={
-                                                      styles["Reject-comment"]
-                                                    }
-                                                  />
-                                                ) : null}
-
-                                                {minuteDataSubminute.actorBundleStatusID ===
-                                                3 ? (
-                                                  <Button
-                                                    text={t("Reject")}
-                                                    className={
-                                                      styles["Reject-comment"]
-                                                    }
-                                                    disableBtn={true}
-                                                  />
-                                                ) : minuteDataSubminute.actorBundleStatusID ===
-                                                  2 ? (
-                                                  <Button
-                                                    text={t("Reject")}
-                                                    className={
-                                                      styles["Reject-comment"]
-                                                    }
-                                                    onClick={() => {
-                                                      dispatch(
-                                                        rejectCommentModal(true)
-                                                      );
-                                                      dispatch(
-                                                        RejectMinute(
-                                                          minuteDataSubminute
-                                                        )
-                                                      );
-                                                    }}
-                                                  />
-                                                ) : minuteDataSubminute.actorBundleStatusID ===
-                                                  4 ? (
-                                                  <>
-                                                    <Button
-                                                      text={t("Rejected")}
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <p
                                                       className={
-                                                        styles[
-                                                          "Rejected-comment"
-                                                        ]
+                                                        styles["time-uploader"]
                                                       }
-                                                    />
-
-                                                    <Button
-                                                      text={t("Hide-comment")}
+                                                    >
+                                                      {convertToGMTMinuteTime(
+                                                        minuteDataSubminute.lastUpdatedTime
+                                                      )}
+                                                      ,
+                                                    </p>
+                                                    <p
                                                       className={
-                                                        styles["Reject-comment"]
+                                                        styles["date-uploader"]
                                                       }
-                                                      onClick={() =>
-                                                        dispatch(
-                                                          rejectCommentModal(
-                                                            true
-                                                          )
-                                                        )
-                                                      }
-                                                    />
-                                                  </>
-                                                ) : null}
+                                                    >
+                                                      {convertDateToGMTMinute(
+                                                        minuteDataSubminute.lastUpdatedDate
+                                                      )}
+                                                    </p>
+                                                  </Col>
+                                                </Row>
                                               </Col>
                                             </Row>
-
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <p
-                                                  className={
-                                                    styles["time-uploader"]
-                                                  }
-                                                >
-                                                  {convertToGMTMinuteTime(
-                                                    minuteDataSubminute.lastUpdatedTime
-                                                  )}
-                                                  ,
-                                                </p>
-                                                <p
-                                                  className={
-                                                    styles["date-uploader"]
-                                                  }
-                                                >
-                                                  {convertDateToGMTMinute(
-                                                    minuteDataSubminute.lastUpdatedDate
-                                                  )}
-                                                </p>
-                                              </Col>
-                                            </Row>
-                                          </Col>
-                                        </Row>
-                                      </div>
-                                    </Col>
-                                  </Row>
-                                  {minuteDataSubminute.agendaMinutesVersionHistory
-                                    .slice()
-                                    .reverse()
-                                    .map((historyData, index) => {
-                                      return (
-                                        <>
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="position-relative"
+                                          </div>
+                                        </Col>
+                                      </Row>
+                                      {minuteDataSubminute.declinedReviews
+                                        .length > 0 ? (
+                                        <Row className="mxl-50">
+                                          <Col lg={12} md={12} sm={12}>
+                                            <div
+                                              className={
+                                                styles[
+                                                  "wrapper-userlist-subagenda"
+                                                ]
+                                              }
                                             >
-                                              {historyData.declinedReviews
-                                                .length === 0 ? (
-                                                <div
-                                                  className={
-                                                    index === 0
-                                                      ? styles[
-                                                          "version-control-wrapper-with-more"
-                                                        ]
-                                                      : styles[
-                                                          "version-control-wrapper-with-more-last"
-                                                        ]
-                                                  }
-                                                >
-                                                  <span
-                                                    className={
-                                                      styles["with-text"]
-                                                    }
-                                                  >
-                                                    {historyData.versionNumber}
-                                                    .0
-                                                  </span>
-                                                </div>
-                                              ) : (
-                                                <div
-                                                  className={
-                                                    index === 0
-                                                      ? styles[
-                                                          "version-control-wrapper"
-                                                        ]
-                                                      : styles[
-                                                          "version-control-wrapper-last"
-                                                        ]
-                                                  }
-                                                ></div>
-                                              )}
-                                              <div
-                                                className={
-                                                  historyData.actorBundleStatusID ===
-                                                  3
-                                                    ? styles[
-                                                        "uploaded-details-accepted"
-                                                      ]
-                                                    : historyData.actorBundleStatusID ===
-                                                        4 &&
-                                                      historyData
-                                                        .declinedReviews
-                                                        .length === 0
-                                                    ? styles[
-                                                        "uploaded-details-rejected"
-                                                      ]
-                                                    : styles["uploaded-details"]
+                                              <p>
+                                                {t(
+                                                  "This minute is rejected by: "
+                                                )}
+                                                {minuteDataSubminute.declinedReviews
+                                                  .slice(0, 5)
+                                                  .map((usersList, index) => (
+                                                    <React.Fragment key={index}>
+                                                      {usersList.actorName}
+                                                      {index !== 4 &&
+                                                        index <
+                                                          minuteDataSubminute
+                                                            .declinedReviews
+                                                            .length -
+                                                            1 &&
+                                                        ", "}
+                                                    </React.Fragment>
+                                                  ))}
+                                                {minuteDataSubminute
+                                                  .declinedReviews.length >
+                                                  5 && (
+                                                  <>
+                                                    {" and "}
+                                                    {minuteDataSubminute
+                                                      .declinedReviews.length -
+                                                      5}{" "}
+                                                    {minuteDataSubminute
+                                                      .declinedReviews.length -
+                                                      5 ===
+                                                    1
+                                                      ? "more"
+                                                      : "more"}
+                                                  </>
+                                                )}
+                                              </p>
+                                              <p
+                                                className="text-decoration-underline cursor-pointer"
+                                                onClick={() =>
+                                                  toggleShowHide(
+                                                    minuteDataSubminute.minuteID
+                                                  )
                                                 }
                                               >
-                                                <Row
-                                                  className={
-                                                    styles["inherit-height"]
-                                                  }
-                                                >
-                                                  <Col lg={8} md={8} sm={12}>
-                                                    <p
-                                                      dangerouslySetInnerHTML={{
-                                                        __html:
-                                                          historyData.minutesDetails,
-                                                      }}
-                                                      className={
-                                                        styles["minutes-text"]
-                                                      }
-                                                    ></p>
-                                                  </Col>
+                                                {visibleParentMinuteIDs.includes(
+                                                  minuteDataSubminute.minuteID
+                                                )
+                                                  ? t("Hide-comments")
+                                                  : t("Show-comments")}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        </Row>
+                                      ) : null}
+
+                                      {visibleParentMinuteIDs.includes(
+                                        minuteDataSubminute.minuteID
+                                      ) &&
+                                        minuteDataSubminute.declinedReviews.map(
+                                          (declinedData, index) => {
+                                            const isLastIndex =
+                                              index ===
+                                              minuteDataSubminute
+                                                .declinedReviews.length -
+                                                1;
+                                            return (
+                                              <>
+                                                <Row className="mxl-50">
                                                   <Col
-                                                    lg={4}
-                                                    md={4}
+                                                    lg={12}
+                                                    md={12}
                                                     sm={12}
                                                     className="position-relative"
                                                   >
-                                                    <Row className="m-0">
-                                                      <Col
-                                                        lg={6}
-                                                        md={6}
-                                                        sm={12}
-                                                        className="p-0"
+                                                    {declinedData.length ===
+                                                    0 ? (
+                                                      <div
+                                                        className={
+                                                          index === 0
+                                                            ? styles[
+                                                                "version-control-wrapper-with-more"
+                                                              ]
+                                                            : styles[
+                                                                "version-control-wrapper-with-more-last"
+                                                              ]
+                                                        }
+                                                      ></div>
+                                                    ) : (
+                                                      <div
+                                                        className={
+                                                          !isLastIndex ||
+                                                          minuteDataSubminute
+                                                            .agendaMinutesVersionHistory
+                                                            .length > 0
+                                                            ? styles[
+                                                                "version-control-wrapper"
+                                                              ]
+                                                            : styles[
+                                                                "version-control-wrapper-last"
+                                                              ]
+                                                        }
+                                                      ></div>
+                                                    )}
+                                                    <div
+                                                      className={
+                                                        styles[
+                                                          "uploaded-details"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <Row
+                                                        className={
+                                                          styles[
+                                                            "inherit-height"
+                                                          ]
+                                                        }
                                                       >
-                                                        <span
-                                                          className={
-                                                            styles["bar-line"]
-                                                          }
-                                                        ></span>
-                                                        <p
-                                                          className={
-                                                            styles[
-                                                              "uploadedbyuser"
-                                                            ]
-                                                          }
+                                                        <Col
+                                                          lg={8}
+                                                          md={8}
+                                                          sm={12}
                                                         >
-                                                          {historyData
-                                                            .declinedReviews
-                                                            .length === 0
-                                                            ? t("Uploaded-by")
-                                                            : t("Reviewed-by")}
-                                                        </p>
-                                                        <div
-                                                          className={
-                                                            styles["gap-ti"]
-                                                          }
-                                                        >
-                                                          <img
-                                                            src={`data:image/jpeg;base64,${minutesAgenda[0].userProfilePicture.displayProfilePictureName}`}
-                                                            className={
-                                                              styles["Image"]
-                                                            }
-                                                            alt=""
-                                                            draggable={false}
-                                                          />
                                                           <p
                                                             className={
                                                               styles[
-                                                                "agendaCreater"
+                                                                "minutes-text"
                                                               ]
                                                             }
                                                           >
                                                             {
-                                                              minutesAgenda[0]
-                                                                .userName
+                                                              declinedData.reason
                                                             }
                                                           </p>
-                                                        </div>
-                                                      </Col>
-                                                      {historyData
+                                                        </Col>
+                                                        <Col
+                                                          lg={4}
+                                                          md={4}
+                                                          sm={12}
+                                                          className="position-relative"
+                                                        >
+                                                          <Row className="m-0">
+                                                            <Col
+                                                              lg={6}
+                                                              md={6}
+                                                              sm={12}
+                                                              className="p-0"
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "bar-line"
+                                                                  ]
+                                                                }
+                                                              ></span>
+                                                              <p
+                                                                className={
+                                                                  styles[
+                                                                    "uploadedbyuser"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {t(
+                                                                  "Reviewed-by"
+                                                                )}
+                                                              </p>
+                                                              <div
+                                                                className={
+                                                                  styles[
+                                                                    "gap-ti"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                <img
+                                                                  src={`data:image/jpeg;base64,${declinedData?.userProfilePicture?.displayProfilePictureName}`}
+                                                                  className={
+                                                                    styles[
+                                                                      "Image"
+                                                                    ]
+                                                                  }
+                                                                  alt=""
+                                                                  draggable={
+                                                                    false
+                                                                  }
+                                                                />
+                                                                <p
+                                                                  className={
+                                                                    styles[
+                                                                      "agendaCreater"
+                                                                    ]
+                                                                  }
+                                                                >
+                                                                  {
+                                                                    declinedData.actorName
+                                                                  }
+                                                                </p>
+                                                              </div>
+                                                            </Col>
+                                                            {declinedData.fK_WorkFlowActor_ID ===
+                                                            0 ? (
+                                                              <Col
+                                                                lg={6}
+                                                                md={6}
+                                                                sm={12}
+                                                                className="d-grid justify-content-end p-0"
+                                                              >
+                                                                <Button
+                                                                  onClick={() => {
+                                                                    dispatch(
+                                                                      editCommentModal(
+                                                                        true
+                                                                      )
+                                                                    );
+                                                                    setEditCommentLocal(
+                                                                      declinedData
+                                                                    );
+                                                                  }}
+                                                                  text={t(
+                                                                    "Edit"
+                                                                  )}
+                                                                  className={
+                                                                    styles[
+                                                                      "Reject-comment"
+                                                                    ]
+                                                                  }
+                                                                />
+                                                                <Button
+                                                                  onClick={() => {
+                                                                    dispatch(
+                                                                      deleteCommentModal(
+                                                                        true
+                                                                      )
+                                                                    );
+                                                                    setDeleteCommentLocal(
+                                                                      declinedData
+                                                                    );
+                                                                  }}
+                                                                  text={t(
+                                                                    "Delete"
+                                                                  )}
+                                                                  className={
+                                                                    styles[
+                                                                      "Reject-comment"
+                                                                    ]
+                                                                  }
+                                                                />
+                                                              </Col>
+                                                            ) : null}
+                                                          </Row>
+                                                        </Col>
+                                                      </Row>
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                      {minuteDataSubminute.agendaMinutesVersionHistory
+                                        .slice()
+                                        .reverse()
+                                        .map((historyData, index) => {
+                                          const isLastIndex =
+                                            index ===
+                                            minuteDataSubminute
+                                              .agendaMinutesVersionHistory
+                                              .length -
+                                              1;
+                                          return (
+                                            <>
+                                              <Row className="mxl-50">
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className="position-relative"
+                                                >
+                                                  <div
+                                                    className={
+                                                      historyData
                                                         .declinedReviews
-                                                        .length === 0 ? (
-                                                        <Col
-                                                          lg={6}
-                                                          md={6}
-                                                          sm={12}
-                                                          className="d-grid justify-content-end p-0"
-                                                        >
-                                                          {historyData.actorBundleStatusID ===
-                                                          3 ? (
-                                                            <Button
-                                                              text={t(
-                                                                "Accepted"
-                                                              )}
-                                                              className={
-                                                                styles[
-                                                                  "Accepted-comment"
-                                                                ]
-                                                              }
-                                                              disableBtn={true}
-                                                            />
-                                                          ) : historyData.actorBundleStatusID ===
-                                                            2 ? (
-                                                            <Button
-                                                              text={t("Accept")}
-                                                              className={
-                                                                styles[
-                                                                  "Accept-comment"
-                                                                ]
-                                                              }
-                                                            />
-                                                          ) : historyData.actorBundleStatusID ===
-                                                            4 ? (
-                                                            <Button
-                                                              text={t("Accept")}
-                                                              className={
-                                                                styles[
-                                                                  "Reject-comment"
-                                                                ]
-                                                              }
-                                                            />
-                                                          ) : null}
-
-                                                          {historyData.actorBundleStatusID ===
-                                                          3 ? (
-                                                            <Button
-                                                              text={t("Reject")}
-                                                              className={
-                                                                styles[
-                                                                  "Reject-comment"
-                                                                ]
-                                                              }
-                                                              disableBtn={true}
-                                                            />
-                                                          ) : historyData.actorBundleStatusID ===
-                                                            2 ? (
-                                                            <Button
-                                                              text={t("Reject")}
-                                                              className={
-                                                                styles[
-                                                                  "Reject-comment"
-                                                                ]
-                                                              }
-                                                              onClick={() => {
-                                                                dispatch(
-                                                                  rejectCommentModal(
-                                                                    true
-                                                                  )
-                                                                );
-                                                                dispatch(
-                                                                  RejectMinute(
-                                                                    historyData
-                                                                  )
-                                                                );
-                                                              }}
-                                                            />
-                                                          ) : historyData.actorBundleStatusID ===
-                                                            4 ? (
-                                                            <>
-                                                              <Button
-                                                                text={t(
-                                                                  "Rejected"
-                                                                )}
-                                                                className={
-                                                                  styles[
-                                                                    "Rejected-comment"
-                                                                  ]
-                                                                }
-                                                              />
-
-                                                              <Button
-                                                                text={t(
-                                                                  "Hide-comment"
-                                                                )}
-                                                                className={
-                                                                  styles[
-                                                                    "Reject-comment"
-                                                                  ]
-                                                                }
-                                                                onClick={() =>
-                                                                  dispatch(
-                                                                    rejectCommentModal(
-                                                                      true
-                                                                    )
-                                                                  )
-                                                                }
-                                                              />
-                                                            </>
-                                                          ) : null}
-                                                        </Col>
-                                                      ) : (
-                                                        <Col
-                                                          lg={6}
-                                                          md={6}
-                                                          sm={12}
-                                                          className="d-grid justify-content-end p-0"
-                                                        >
-                                                          <Button
-                                                            onClick={() =>
-                                                              dispatch(
-                                                                editCommentModal(
-                                                                  true
-                                                                )
-                                                              )
-                                                            }
-                                                            text={t("Edit")}
-                                                            className={
-                                                              styles[
-                                                                "Reject-comment"
-                                                              ]
-                                                            }
-                                                          />
-                                                          <Button
-                                                            onClick={() =>
-                                                              dispatch(
-                                                                deleteCommentModal(
-                                                                  true
-                                                                )
-                                                              )
-                                                            }
-                                                            text={t("Delete")}
-                                                            className={
-                                                              styles[
-                                                                "Reject-comment"
-                                                              ]
-                                                            }
-                                                          />
-                                                        </Col>
-                                                      )}
-                                                    </Row>
-
-                                                    <Row>
+                                                        .length > 0 ||
+                                                      !isLastIndex
+                                                        ? styles[
+                                                            "version-control-wrapper-with-more"
+                                                          ]
+                                                        : styles[
+                                                            "version-control-wrapper-with-more-last"
+                                                          ]
+                                                    }
+                                                  >
+                                                    <span
+                                                      className={
+                                                        styles["with-text"]
+                                                      }
+                                                    >
+                                                      {
+                                                        historyData.versionNumber
+                                                      }
+                                                      .0
+                                                    </span>
+                                                  </div>
+                                                  <div
+                                                    className={
+                                                      historyData.actorBundleStatusID ===
+                                                      3
+                                                        ? styles[
+                                                            "uploaded-details-accepted"
+                                                          ]
+                                                        : historyData.actorBundleStatusID ===
+                                                            4 &&
+                                                          historyData
+                                                            .declinedReviews
+                                                            .length === 0
+                                                        ? styles[
+                                                            "uploaded-details-rejected"
+                                                          ]
+                                                        : styles[
+                                                            "uploaded-details"
+                                                          ]
+                                                    }
+                                                  >
+                                                    <Row
+                                                      className={
+                                                        styles["inherit-height"]
+                                                      }
+                                                    >
                                                       <Col
-                                                        lg={12}
-                                                        md={12}
+                                                        lg={8}
+                                                        md={8}
                                                         sm={12}
                                                       >
                                                         <p
+                                                          dangerouslySetInnerHTML={{
+                                                            __html:
+                                                              historyData.minutesDetails,
+                                                          }}
                                                           className={
                                                             styles[
-                                                              "time-uploader"
+                                                              "minutes-text"
                                                             ]
                                                           }
-                                                        >
-                                                          {convertToGMTMinuteTime(
-                                                            historyData.lastUpdatedTime
-                                                          )}
-                                                          ,
-                                                        </p>
-                                                        <p
-                                                          className={
-                                                            styles[
-                                                              "date-uploader"
-                                                            ]
-                                                          }
-                                                        >
-                                                          {convertDateToGMTMinute(
-                                                            historyData.lastUpdatedDate
-                                                          )}
-                                                        </p>
+                                                        ></p>
+                                                      </Col>
+                                                      <Col
+                                                        lg={4}
+                                                        md={4}
+                                                        sm={12}
+                                                        className="position-relative"
+                                                      >
+                                                        <Row className="m-0">
+                                                          <Col
+                                                            lg={6}
+                                                            md={6}
+                                                            sm={12}
+                                                            className="p-0"
+                                                          >
+                                                            <span
+                                                              className={
+                                                                styles[
+                                                                  "bar-line"
+                                                                ]
+                                                              }
+                                                            ></span>
+                                                            <p
+                                                              className={
+                                                                styles[
+                                                                  "uploadedbyuser"
+                                                                ]
+                                                              }
+                                                            >
+                                                              {historyData
+                                                                .declinedReviews
+                                                                .length === 0
+                                                                ? t(
+                                                                    "Uploaded-by"
+                                                                  )
+                                                                : t(
+                                                                    "Reviewed-by"
+                                                                  )}
+                                                            </p>
+                                                            <div
+                                                              className={
+                                                                styles["gap-ti"]
+                                                              }
+                                                            >
+                                                              <img
+                                                                src={`data:image/jpeg;base64,${minutesAgenda[0]?.minuteData[0]?.userProfilePicture?.displayProfilePictureName}`}
+                                                                className={
+                                                                  styles[
+                                                                    "Image"
+                                                                  ]
+                                                                }
+                                                                alt=""
+                                                                draggable={
+                                                                  false
+                                                                }
+                                                              />
+                                                              <p
+                                                                className={
+                                                                  styles[
+                                                                    "agendaCreater"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {
+                                                                  minutesAgenda[0]
+                                                                    ?.minuteData[0]
+                                                                    ?.userName
+                                                                }
+                                                              </p>
+                                                            </div>
+                                                          </Col>
+                                                        </Row>
+
+                                                        <Row>
+                                                          <Col
+                                                            lg={12}
+                                                            md={12}
+                                                            sm={12}
+                                                          >
+                                                            <p
+                                                              className={
+                                                                styles[
+                                                                  "time-uploader"
+                                                                ]
+                                                              }
+                                                            >
+                                                              {convertToGMTMinuteTime(
+                                                                historyData.lastUpdatedTime
+                                                              )}
+                                                              ,
+                                                            </p>
+                                                            <p
+                                                              className={
+                                                                styles[
+                                                                  "date-uploader"
+                                                                ]
+                                                              }
+                                                            >
+                                                              {convertDateToGMTMinute(
+                                                                historyData.lastUpdatedDate
+                                                              )}
+                                                            </p>
+                                                          </Col>
+                                                        </Row>
                                                       </Col>
                                                     </Row>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                              {historyData.declinedReviews
+                                                .length > 0 ? (
+                                                <Row className="mx-50">
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <div
+                                                      className={
+                                                        styles[
+                                                          "wrapper-userlist"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <p>
+                                                        {t(
+                                                          "This minute is rejected by: "
+                                                        )}
+                                                        {historyData.declinedReviews
+                                                          .slice(0, 5)
+                                                          .map(
+                                                            (
+                                                              usersList,
+                                                              index
+                                                            ) => (
+                                                              <React.Fragment
+                                                                key={index}
+                                                              >
+                                                                {
+                                                                  usersList.actorName
+                                                                }
+                                                                {index !== 4 &&
+                                                                  index <
+                                                                    historyData
+                                                                      .declinedReviews
+                                                                      .length -
+                                                                      1 &&
+                                                                  ", "}
+                                                              </React.Fragment>
+                                                            )
+                                                          )}
+                                                        {historyData
+                                                          .declinedReviews
+                                                          .length > 5 && (
+                                                          <>
+                                                            {" and "}
+                                                            {historyData
+                                                              .declinedReviews
+                                                              .length - 5}{" "}
+                                                            {historyData
+                                                              .declinedReviews
+                                                              .length -
+                                                              5 ===
+                                                            1
+                                                              ? "more"
+                                                              : "more"}
+                                                          </>
+                                                        )}
+                                                      </p>
+                                                      <p
+                                                        className="text-decoration-underline cursor-pointer"
+                                                        onClick={() =>
+                                                          toggleShowHide(
+                                                            historyData.minuteID
+                                                          )
+                                                        }
+                                                      >
+                                                        {visibleParentMinuteIDs.includes(
+                                                          historyData.minuteID
+                                                        )
+                                                          ? t("Hide-comments")
+                                                          : t("Show-comments")}
+                                                      </p>
+                                                    </div>
                                                   </Col>
                                                 </Row>
-                                              </div>
-                                            </Col>
-                                          </Row>
-                                        </>
-                                      );
-                                    })}
-                                </>
-                              );
-                            }
-                          )}
-                        </div>
-                      );
-                    })}
-                  </>
-                </>
-              );
-            })}
+                                              ) : null}
+                                              {visibleParentMinuteIDs.includes(
+                                                historyData.minuteID
+                                              ) &&
+                                                historyData.declinedReviews.map(
+                                                  (
+                                                    declinedDataHistory,
+                                                    index
+                                                  ) => {
+                                                    const isLastIndexx =
+                                                      index ===
+                                                      historyData
+                                                        .declinedReviews
+                                                        .length -
+                                                        1;
+                                                    return (
+                                                      <>
+                                                        <Row className="mxl-50">
+                                                          <Col
+                                                            lg={12}
+                                                            md={12}
+                                                            sm={12}
+                                                            className="position-relative"
+                                                          >
+                                                            {declinedDataHistory.length ===
+                                                            0 ? (
+                                                              <div
+                                                                className={
+                                                                  !isLastIndexx
+                                                                    ? styles[
+                                                                        "version-control-wrapper-with-more"
+                                                                      ]
+                                                                    : styles[
+                                                                        "version-control-wrapper-with-more-last"
+                                                                      ]
+                                                                }
+                                                              ></div>
+                                                            ) : (
+                                                              <div
+                                                                className={
+                                                                  !isLastIndexx
+                                                                    ? styles[
+                                                                        "version-control-wrapper"
+                                                                      ]
+                                                                    : styles[
+                                                                        "version-control-wrapper-last"
+                                                                      ]
+                                                                }
+                                                              ></div>
+                                                            )}
+                                                            <div
+                                                              className={
+                                                                styles[
+                                                                  "uploaded-details"
+                                                                ]
+                                                              }
+                                                            >
+                                                              <Row
+                                                                className={
+                                                                  styles[
+                                                                    "inherit-height"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                <Col
+                                                                  lg={8}
+                                                                  md={8}
+                                                                  sm={12}
+                                                                >
+                                                                  <p
+                                                                    className={
+                                                                      styles[
+                                                                        "minutes-text"
+                                                                      ]
+                                                                    }
+                                                                  >
+                                                                    {
+                                                                      declinedDataHistory.reason
+                                                                    }
+                                                                  </p>
+                                                                </Col>
+                                                                <Col
+                                                                  lg={4}
+                                                                  md={4}
+                                                                  sm={12}
+                                                                  className="position-relative"
+                                                                >
+                                                                  <Row className="m-0">
+                                                                    <Col
+                                                                      lg={6}
+                                                                      md={6}
+                                                                      sm={12}
+                                                                      className="p-0"
+                                                                    >
+                                                                      <span
+                                                                        className={
+                                                                          styles[
+                                                                            "bar-line"
+                                                                          ]
+                                                                        }
+                                                                      ></span>
+                                                                      <p
+                                                                        className={
+                                                                          styles[
+                                                                            "uploadedbyuser"
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        {t(
+                                                                          "Reviewed-by"
+                                                                        )}
+                                                                      </p>
+                                                                      <div
+                                                                        className={
+                                                                          styles[
+                                                                            "gap-ti"
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        <img
+                                                                          src={`data:image/jpeg;base64,${declinedDataHistory?.userProfilePicture?.displayProfilePictureName}`}
+                                                                          className={
+                                                                            styles[
+                                                                              "Image"
+                                                                            ]
+                                                                          }
+                                                                          alt=""
+                                                                          draggable={
+                                                                            false
+                                                                          }
+                                                                        />
+                                                                        <p
+                                                                          className={
+                                                                            styles[
+                                                                              "agendaCreater"
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          {
+                                                                            declinedDataHistory.actorName
+                                                                          }
+                                                                        </p>
+                                                                      </div>
+                                                                    </Col>
+                                                                    {declinedDataHistory.fK_WorkFlowActor_ID ===
+                                                                    0 ? (
+                                                                      <Col
+                                                                        lg={6}
+                                                                        md={6}
+                                                                        sm={12}
+                                                                        className="d-grid justify-content-end p-0"
+                                                                      >
+                                                                        <Button
+                                                                          onClick={() => {
+                                                                            dispatch(
+                                                                              editCommentModal(
+                                                                                true
+                                                                              )
+                                                                            );
+                                                                            setEditCommentLocal(
+                                                                              declinedDataHistory
+                                                                            );
+                                                                          }}
+                                                                          text={t(
+                                                                            "Edit"
+                                                                          )}
+                                                                          className={
+                                                                            styles[
+                                                                              "Reject-comment"
+                                                                            ]
+                                                                          }
+                                                                        />
+                                                                        <Button
+                                                                          onClick={() =>
+                                                                            dispatch(
+                                                                              deleteCommentModal(
+                                                                                true
+                                                                              )
+                                                                            )
+                                                                          }
+                                                                          text={t(
+                                                                            "Delete"
+                                                                          )}
+                                                                          className={
+                                                                            styles[
+                                                                              "Reject-comment"
+                                                                            ]
+                                                                          }
+                                                                        />
+                                                                      </Col>
+                                                                    ) : null}
+                                                                  </Row>
+                                                                </Col>
+                                                              </Row>
+                                                            </div>
+                                                          </Col>
+                                                        </Row>
+                                                      </>
+                                                    );
+                                                  }
+                                                )}
+                                            </>
+                                          );
+                                        })}
+                                    </>
+                                  );
+                                }
+                              )}
+                            </>
+                          );
+                        })}
+                      </>
+                    </>
+                  );
+                })
+              : null}
 
-            {minutesGeneral.map((data, index) => {
-              console.log("minutesGeneral", data);
+            {minutesGeneral?.map((data, index) => {
               return (
                 <>
                   <Row className="mx-50">
@@ -1417,152 +2488,327 @@ const ReviewMinutes = () => {
                       </p>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      {data.generalMinutesVersionHistory.length === 0 ? null : (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="position-relative"
+                      >
+                        {data.generalMinutesVersionHistory.length === 0 &&
+                        data.declinedReviews.length === 0 ? null : (
+                          <div
+                            className={
+                              styles["version-control-wrapper-with-more"]
+                            }
+                          >
+                            <span className={styles["with-text"]}>
+                              {data.versionNumber}.0
+                            </span>
+                          </div>
+                        )}
                         <div
                           className={
-                            styles["version-control-wrapper-with-more"]
+                            data.actorBundleStatusID === 3
+                              ? styles["uploaded-details-accepted"]
+                              : data.actorBundleStatusID === 4
+                              ? styles["uploaded-details-rejected"]
+                              : styles["uploaded-details"]
                           }
                         >
-                          <span className={styles["with-text"]}>
-                            {data.versionNumber}.0
-                          </span>
-                        </div>
-                      )}
-                      <div
-                        className={
-                          data.actorBundleStatusID === 3
-                            ? styles["uploaded-details-accepted"]
-                            : data.actorBundleStatusID === 4
-                            ? styles["uploaded-details-rejected"]
-                            : styles["uploaded-details"]
-                        }
-                      >
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={8} md={8} sm={12}>
-                            <p
-                              dangerouslySetInnerHTML={{
-                                __html: data.minutesDetails,
-                              }}
-                              className={styles["minutes-text"]}
-                            ></p>
-                          </Col>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  {t("Uploaded-by")}
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
-                                  />
-                                  <p className={styles["agendaCreater"]}>
-                                    {data.userName}
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              >
-                                {data.actorBundleStatusID === 3 ? (
-                                  <Button
-                                    text={t("Accepted")}
-                                    className={styles["Accepted-comment"]}
-                                    disableBtn={true}
-                                  />
-                                ) : data.actorBundleStatusID === 2 ? (
-                                  <Button
-                                    text={t("Accept")}
-                                    className={styles["Accept-comment"]}
-                                  />
-                                ) : data.actorBundleStatusID === 4 ? (
-                                  <Button
-                                    text={t("Accept")}
-                                    className={styles["Reject-comment"]}
-                                  />
-                                ) : null}
-
-                                {data.actorBundleStatusID === 3 ? (
-                                  <Button
-                                    text={t("Reject")}
-                                    className={styles["Reject-comment"]}
-                                    disableBtn={true}
-                                  />
-                                ) : data.actorBundleStatusID === 2 ? (
-                                  <Button
-                                    text={t("Reject")}
-                                    className={styles["Reject-comment"]}
-                                    onClick={() => {
-                                      dispatch(rejectCommentModal(true));
-                                      dispatch(RejectMinute(data));
-                                    }}
-                                  />
-                                ) : data.actorBundleStatusID === 4 ? (
-                                  <>
-                                    <Button
-                                      text={t("Rejected")}
-                                      className={styles["Rejected-comment"]}
-                                    />
-
-                                    <Button
-                                      text={t("Hide-comment")}
-                                      className={styles["Reject-comment"]}
-                                      onClick={() =>
-                                        dispatch(rejectCommentModal(true))
-                                      }
-                                    />
-                                  </>
-                                ) : null}
-                              </Col>
-                            </Row>
-
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  {convertToGMTMinuteTime(data.lastUpdatedTime)}
-                                  ,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  {convertDateToGMTMinute(data.lastUpdatedDate)}
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                    </Col>
-                  </Row>
-                  {data.generalMinutesVersionHistory
-                    .slice()
-                    .reverse()
-                    .map((historyData, index) => {
-                      return (
-                        <>
-                          <Row>
+                          <Row className={styles["inherit-height"]}>
+                            <Col lg={8} md={8} sm={12}>
+                              <p
+                                dangerouslySetInnerHTML={{
+                                  __html: data.minutesDetails,
+                                }}
+                                className={styles["minutes-text"]}
+                              ></p>
+                            </Col>
                             <Col
-                              lg={12}
-                              md={12}
+                              lg={4}
+                              md={4}
                               sm={12}
                               className="position-relative"
                             >
-                              {historyData.declinedReviews.length === 0 ? (
+                              <Row className="m-0">
+                                <Col lg={6} md={6} sm={12} className="p-0">
+                                  <span className={styles["bar-line"]}></span>
+                                  <p className={styles["uploadedbyuser"]}>
+                                    {t("Uploaded-by")}
+                                  </p>
+                                  <div className={styles["gap-ti"]}>
+                                    <img
+                                      src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
+                                      className={styles["Image"]}
+                                      alt=""
+                                      draggable={false}
+                                    />
+                                    <p className={styles["agendaCreater"]}>
+                                      {data.userName}
+                                    </p>
+                                  </div>
+                                </Col>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={12}
+                                  className="d-grid justify-content-end p-0"
+                                >
+                                  {data.actorBundleStatusID === 3 ? (
+                                    <Button
+                                      text={t("Accepted")}
+                                      className={styles["Accepted-comment"]}
+                                      disableBtn={true}
+                                    />
+                                  ) : data.actorBundleStatusID === 2 ? (
+                                    <Button
+                                      text={t("Accept")}
+                                      className={styles["Accept-comment"]}
+                                      onClick={() => acceptMinute(data)}
+                                    />
+                                  ) : data.actorBundleStatusID === 4 ? (
+                                    <Button
+                                      text={t("Accept")}
+                                      className={styles["Reject-comment"]}
+                                      onClick={() => acceptMinute(data)}
+                                    />
+                                  ) : null}
+
+                                  {data.actorBundleStatusID === 3 ? (
+                                    <Button
+                                      text={t("Reject")}
+                                      className={styles["Reject-comment"]}
+                                      disableBtn={true}
+                                    />
+                                  ) : data.actorBundleStatusID === 2 ? (
+                                    <Button
+                                      text={t("Reject")}
+                                      className={styles["Reject-comment"]}
+                                      onClick={() => {
+                                        dispatch(rejectCommentModal(true));
+                                        setIsAgenda(false);
+                                        dispatch(RejectMinute(data));
+                                      }}
+                                    />
+                                  ) : data.actorBundleStatusID === 4 ? (
+                                    <>
+                                      <Button
+                                        text={t("Rejected")}
+                                        className={styles["Rejected-comment"]}
+                                      />
+                                    </>
+                                  ) : null}
+                                </Col>
+                              </Row>
+
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <p className={styles["time-uploader"]}>
+                                    {convertToGMTMinuteTime(
+                                      data.lastUpdatedTime
+                                    )}
+                                    ,
+                                  </p>
+                                  <p className={styles["date-uploader"]}>
+                                    {convertDateToGMTMinute(
+                                      data.lastUpdatedDate
+                                    )}
+                                  </p>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </div>
+                      </Col>
+                    </Row>
+                    {data.declinedReviews.length > 0 ? (
+                      <Row className="mx-50">
+                        <Col lg={12} md={12} sm={12}>
+                          <div className={styles["wrapper-userlist"]}>
+                            <p>
+                              {t("This minute is rejected by: ")}
+                              {data.declinedReviews
+                                .slice(0, 5)
+                                .map((usersList, index) => (
+                                  <React.Fragment key={index}>
+                                    {usersList.actorName}
+                                    {index !== 4 &&
+                                      index < data.declinedReviews.length - 1 &&
+                                      ", "}
+                                  </React.Fragment>
+                                ))}
+                              {data.declinedReviews.length > 5 && (
+                                <>
+                                  {" and "}
+                                  {data.declinedReviews.length - 5}{" "}
+                                  {data.declinedReviews.length - 5 === 1
+                                    ? "more"
+                                    : "more"}
+                                </>
+                              )}
+                            </p>
+                            <p
+                              className="text-decoration-underline cursor-pointer"
+                              onClick={() => toggleShowHide(data.minuteID)}
+                            >
+                              {visibleParentMinuteIDs.includes(data.minuteID)
+                                ? t("Hide-comments")
+                                : t("Show-comments")}
+                            </p>
+                          </div>
+                        </Col>
+                      </Row>
+                    ) : null}
+
+                    {visibleParentMinuteIDs.includes(data.minuteID) &&
+                      data?.declinedReviews.map((declinedData, index) => {
+                        const isLastIndex =
+                          index === data.declinedReviews.length - 1;
+                        return (
+                          <>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="position-relative"
+                              >
+                                {declinedData.length === 0 ? (
+                                  <div
+                                    className={
+                                      index === 0
+                                        ? styles[
+                                            "version-control-wrapper-with-more"
+                                          ]
+                                        : styles[
+                                            "version-control-wrapper-with-more-last"
+                                          ]
+                                    }
+                                  ></div>
+                                ) : (
+                                  <div
+                                    className={
+                                      !isLastIndex ||
+                                      data.generalMinutesVersionHistory.length >
+                                        0
+                                        ? styles["version-control-wrapper"]
+                                        : styles["version-control-wrapper-last"]
+                                    }
+                                  ></div>
+                                )}
+                                <div className={styles["uploaded-details"]}>
+                                  <Row className={styles["inherit-height"]}>
+                                    <Col lg={8} md={8} sm={12}>
+                                      <p className={styles["minutes-text"]}>
+                                        {declinedData.reason}
+                                      </p>
+                                    </Col>
+                                    <Col
+                                      lg={4}
+                                      md={4}
+                                      sm={12}
+                                      className="position-relative"
+                                    >
+                                      <Row className="m-0">
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={12}
+                                          className="p-0"
+                                        >
+                                          <span
+                                            className={styles["bar-line"]}
+                                          ></span>
+                                          <p
+                                            className={styles["uploadedbyuser"]}
+                                          >
+                                            {t("Reviewed-by")}
+                                          </p>
+                                          <div className={styles["gap-ti"]}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${declinedData?.userProfilePicture?.displayProfilePictureName}`}
+                                              className={styles["Image"]}
+                                              alt=""
+                                              draggable={false}
+                                            />
+                                            <p
+                                              className={
+                                                styles["agendaCreater"]
+                                              }
+                                            >
+                                              {declinedData.actorName}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        {declinedData.fK_WorkFlowActor_ID ===
+                                        0 ? (
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={12}
+                                            className="d-grid justify-content-end p-0"
+                                          >
+                                            <Button
+                                              onClick={() => {
+                                                dispatch(
+                                                  editCommentModal(true)
+                                                );
+                                                setEditCommentLocal(
+                                                  declinedData
+                                                );
+                                              }}
+                                              text={t("Edit")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                            />
+                                            <Button
+                                              onClick={() => {
+                                                dispatch(
+                                                  deleteCommentModal(true)
+                                                );
+                                                setDeleteCommentLocal(
+                                                  declinedData
+                                                );
+                                              }}
+                                              text={t("Delete")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                            />
+                                          </Col>
+                                        ) : null}
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </Col>
+                            </Row>
+                          </>
+                        );
+                      })}
+                    {data?.generalMinutesVersionHistory
+                      .slice()
+                      .reverse()
+                      .map((historyData, index) => {
+                        const isLastIndex =
+                          index ===
+                          data.generalMinutesVersionHistory.length - 1;
+                        return (
+                          <>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="position-relative"
+                              >
                                 <div
                                   className={
-                                    index === 0
+                                    historyData.declinedReviews.length > 0 ||
+                                    !isLastIndex
                                       ? styles[
                                           "version-control-wrapper-with-more"
                                         ]
@@ -1575,202 +2821,316 @@ const ReviewMinutes = () => {
                                     {historyData.versionNumber}.0
                                   </span>
                                 </div>
-                              ) : (
                                 <div
                                   className={
-                                    index === 0
-                                      ? styles["version-control-wrapper"]
-                                      : styles["version-control-wrapper-last"]
+                                    historyData.actorBundleStatusID === 3
+                                      ? styles["uploaded-details-accepted"]
+                                      : historyData.actorBundleStatusID === 4 &&
+                                        historyData.declinedReviews.length === 0
+                                      ? styles["uploaded-details-rejected"]
+                                      : styles["uploaded-details"]
                                   }
-                                ></div>
-                              )}
-                              <div
-                                className={
-                                  historyData.actorBundleStatusID === 3
-                                    ? styles["uploaded-details-accepted"]
-                                    : historyData.actorBundleStatusID === 4 &&
-                                      historyData.declinedReviews.length === 0
-                                    ? styles["uploaded-details-rejected"]
-                                    : styles["uploaded-details"]
-                                }
-                              >
-                                <Row className={styles["inherit-height"]}>
-                                  <Col lg={8} md={8} sm={12}>
-                                    <p
-                                      dangerouslySetInnerHTML={{
-                                        __html: historyData.minutesDetails,
-                                      }}
-                                      className={styles["minutes-text"]}
-                                    ></p>
-                                  </Col>
-                                  <Col
-                                    lg={4}
-                                    md={4}
-                                    sm={12}
-                                    className="position-relative"
-                                  >
-                                    <Row className="m-0">
-                                      <Col
-                                        lg={6}
-                                        md={6}
-                                        sm={12}
-                                        className="p-0"
-                                      >
-                                        <span
-                                          className={styles["bar-line"]}
-                                        ></span>
-                                        <p className={styles["uploadedbyuser"]}>
-                                          {historyData.declinedReviews
-                                            .length === 0
-                                            ? t("Uploaded-by")
-                                            : t("Reviewed-by")}
-                                        </p>
-                                        <div className={styles["gap-ti"]}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${minutesAgenda[0].userProfilePicture.displayProfilePictureName}`}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
+                                >
+                                  <Row className={styles["inherit-height"]}>
+                                    <Col lg={8} md={8} sm={12}>
+                                      <p
+                                        dangerouslySetInnerHTML={{
+                                          __html: historyData.minutesDetails,
+                                        }}
+                                        className={styles["minutes-text"]}
+                                      ></p>
+                                    </Col>
+                                    <Col
+                                      lg={4}
+                                      md={4}
+                                      sm={12}
+                                      className="position-relative"
+                                    >
+                                      <Row className="m-0">
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={12}
+                                          className="p-0"
+                                        >
+                                          <span
+                                            className={styles["bar-line"]}
+                                          ></span>
                                           <p
-                                            className={styles["agendaCreater"]}
+                                            className={styles["uploadedbyuser"]}
                                           >
-                                            {minutesAgenda[0].userName}
+                                            {historyData.declinedReviews
+                                              .length === 0
+                                              ? t("Uploaded-by")
+                                              : t("Reviewed-by")}
                                           </p>
-                                        </div>
-                                      </Col>
-                                      {historyData.declinedReviews.length ===
-                                      0 ? (
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={12}
-                                          className="d-grid justify-content-end p-0"
-                                        >
-                                          {historyData.actorBundleStatusID ===
-                                          3 ? (
-                                            <Button
-                                              text={t("Accepted")}
-                                              className={
-                                                styles["Accepted-comment"]
-                                              }
-                                              disableBtn={true}
+                                          <div className={styles["gap-ti"]}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${minutesAgenda[0]?.minuteData[0]?.userProfilePicture?.displayProfilePictureName}`}
+                                              className={styles["Image"]}
+                                              alt=""
+                                              draggable={false}
                                             />
-                                          ) : historyData.actorBundleStatusID ===
-                                            2 ? (
-                                            <Button
-                                              text={t("Accept")}
+                                            <p
                                               className={
-                                                styles["Accept-comment"]
+                                                styles["agendaCreater"]
                                               }
-                                            />
-                                          ) : historyData.actorBundleStatusID ===
-                                            4 ? (
-                                            <Button
-                                              text={t("Accept")}
-                                              className={
-                                                styles["Reject-comment"]
+                                            >
+                                              {
+                                                minutesAgenda[0]?.minuteData[0]
+                                                  ?.userName
                                               }
-                                            />
-                                          ) : null}
-
-                                          {historyData.actorBundleStatusID ===
-                                          3 ? (
-                                            <Button
-                                              text={t("Reject")}
-                                              className={
-                                                styles["Reject-comment"]
-                                              }
-                                              disableBtn={true}
-                                            />
-                                          ) : historyData.actorBundleStatusID ===
-                                            2 ? (
-                                            <Button
-                                              text={t("Reject")}
-                                              className={
-                                                styles["Reject-comment"]
-                                              }
-                                              onClick={() => {
-                                                dispatch(
-                                                  rejectCommentModal(true)
-                                                );
-                                                dispatch(
-                                                  RejectMinute(historyData)
-                                                );
-                                              }}
-                                            />
-                                          ) : historyData.actorBundleStatusID ===
-                                            4 ? (
-                                            <>
-                                              <Button
-                                                text={t("Rejected")}
-                                                className={
-                                                  styles["Rejected-comment"]
-                                                }
-                                              />
-
-                                              <Button
-                                                text={t("Hide-comment")}
-                                                className={
-                                                  styles["Reject-comment"]
-                                                }
-                                                onClick={() =>
-                                                  dispatch(
-                                                    rejectCommentModal(true)
-                                                  )
-                                                }
-                                              />
-                                            </>
-                                          ) : null}
+                                            </p>
+                                          </div>
                                         </Col>
-                                      ) : (
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={12}
-                                          className="d-grid justify-content-end p-0"
-                                        >
-                                          <Button
-                                            onClick={() =>
-                                              dispatch(editCommentModal(true))
-                                            }
-                                            text={t("Edit")}
-                                            className={styles["Reject-comment"]}
-                                          />
-                                          <Button
-                                            onClick={() =>
-                                              dispatch(deleteCommentModal(true))
-                                            }
-                                            text={t("Delete")}
-                                            className={styles["Reject-comment"]}
-                                          />
+                                      </Row>
+
+                                      <Row>
+                                        <Col lg={12} md={12} sm={12}>
+                                          <p
+                                            className={styles["time-uploader"]}
+                                          >
+                                            {convertToGMTMinuteTime(
+                                              historyData.lastUpdatedTime
+                                            )}
+                                            ,
+                                          </p>
+                                          <p
+                                            className={styles["date-uploader"]}
+                                          >
+                                            {convertDateToGMTMinute(
+                                              historyData.lastUpdatedDate
+                                            )}
+                                          </p>
                                         </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </Col>
+                            </Row>
+
+                            {historyData.declinedReviews.length > 0 ? (
+                              <Row className="mx-50">
+                                <Col lg={12} md={12} sm={12}>
+                                  <div className={styles["wrapper-userlist"]}>
+                                    <p>
+                                      {t("This minute is rejected by: ")}
+                                      {historyData.declinedReviews
+                                        .slice(0, 5)
+                                        .map((usersList, index) => (
+                                          <React.Fragment key={index}>
+                                            {usersList.actorName}
+                                            {index !== 4 &&
+                                              index <
+                                                historyData.declinedReviews
+                                                  .length -
+                                                  1 &&
+                                              ", "}
+                                          </React.Fragment>
+                                        ))}
+                                      {historyData.declinedReviews.length >
+                                        5 && (
+                                        <>
+                                          {" and "}
+                                          {historyData.declinedReviews.length -
+                                            5}{" "}
+                                          {historyData.declinedReviews.length -
+                                            5 ===
+                                          1
+                                            ? "more"
+                                            : "more"}
+                                        </>
                                       )}
-                                    </Row>
-
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <p className={styles["time-uploader"]}>
-                                          {convertToGMTMinuteTime(
-                                            historyData.lastUpdatedTime
+                                    </p>
+                                    <p
+                                      className="text-decoration-underline cursor-pointer"
+                                      onClick={() =>
+                                        toggleShowHide(historyData.minuteID)
+                                      }
+                                    >
+                                      {visibleParentMinuteIDs.includes(
+                                        historyData.minuteID
+                                      )
+                                        ? t("Hide-comments")
+                                        : t("Show-comments")}
+                                    </p>
+                                  </div>
+                                </Col>
+                              </Row>
+                            ) : null}
+                            {visibleParentMinuteIDs.includes(
+                              historyData.minuteID
+                            ) &&
+                              historyData.declinedReviews.map(
+                                (declinedDataHistory, index) => {
+                                  const isLastIndexx =
+                                    index ===
+                                    historyData.declinedReviews.length - 1;
+                                  return (
+                                    <>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="position-relative"
+                                        >
+                                          {declinedDataHistory.length === 0 ? (
+                                            <div
+                                              className={
+                                                !isLastIndexx
+                                                  ? styles[
+                                                      "version-control-wrapper-with-more"
+                                                    ]
+                                                  : styles[
+                                                      "version-control-wrapper-with-more-last"
+                                                    ]
+                                              }
+                                            ></div>
+                                          ) : (
+                                            <div
+                                              className={
+                                                !isLastIndexx
+                                                  ? styles[
+                                                      "version-control-wrapper"
+                                                    ]
+                                                  : styles[
+                                                      "version-control-wrapper-last"
+                                                    ]
+                                              }
+                                            ></div>
                                           )}
-                                          ,
-                                        </p>
-                                        <p className={styles["date-uploader"]}>
-                                          {convertDateToGMTMinute(
-                                            historyData.lastUpdatedDate
-                                          )}
-                                        </p>
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </Row>
-                              </div>
-                            </Col>
-                          </Row>
-                        </>
-                      );
-                    })}
+                                          <div
+                                            className={
+                                              styles["uploaded-details"]
+                                            }
+                                          >
+                                            <Row
+                                              className={
+                                                styles["inherit-height"]
+                                              }
+                                            >
+                                              <Col lg={8} md={8} sm={12}>
+                                                <p
+                                                  className={
+                                                    styles["minutes-text"]
+                                                  }
+                                                >
+                                                  {declinedDataHistory.reason}
+                                                </p>
+                                              </Col>
+                                              <Col
+                                                lg={4}
+                                                md={4}
+                                                sm={12}
+                                                className="position-relative"
+                                              >
+                                                <Row className="m-0">
+                                                  <Col
+                                                    lg={6}
+                                                    md={6}
+                                                    sm={12}
+                                                    className="p-0"
+                                                  >
+                                                    <span
+                                                      className={
+                                                        styles["bar-line"]
+                                                      }
+                                                    ></span>
+                                                    <p
+                                                      className={
+                                                        styles["uploadedbyuser"]
+                                                      }
+                                                    >
+                                                      {t("Reviewed-by")}
+                                                    </p>
+                                                    <div
+                                                      className={
+                                                        styles["gap-ti"]
+                                                      }
+                                                    >
+                                                      <img
+                                                        src={`data:image/jpeg;base64,${declinedDataHistory?.userProfilePicture?.displayProfilePictureName}`}
+                                                        className={
+                                                          styles["Image"]
+                                                        }
+                                                        alt=""
+                                                        draggable={false}
+                                                      />
+                                                      <p
+                                                        className={
+                                                          styles[
+                                                            "agendaCreater"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {
+                                                          declinedDataHistory.actorName
+                                                        }
+                                                      </p>
+                                                    </div>
+                                                  </Col>
+                                                  {declinedDataHistory.fK_WorkFlowActor_ID ===
+                                                  0 ? (
+                                                    <Col
+                                                      lg={6}
+                                                      md={6}
+                                                      sm={12}
+                                                      className="d-grid justify-content-end p-0"
+                                                    >
+                                                      <Button
+                                                        onClick={() => {
+                                                          dispatch(
+                                                            editCommentModal(
+                                                              true
+                                                            )
+                                                          );
+                                                          setEditCommentLocal(
+                                                            declinedDataHistory
+                                                          );
+                                                        }}
+                                                        text={t("Edit")}
+                                                        className={
+                                                          styles[
+                                                            "Reject-comment"
+                                                          ]
+                                                        }
+                                                      />
+                                                      <Button
+                                                        onClick={() => {
+                                                          dispatch(
+                                                            deleteCommentModal(
+                                                              true
+                                                            )
+                                                          );
+                                                          setDeleteCommentLocal(
+                                                            declinedDataHistory
+                                                          );
+                                                        }}
+                                                        text={t("Delete")}
+                                                        className={
+                                                          styles[
+                                                            "Reject-comment"
+                                                          ]
+                                                        }
+                                                      />
+                                                    </Col>
+                                                  ) : null}
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </div>
+                                        </Col>
+                                      </Row>
+                                    </>
+                                  );
+                                }
+                              )}
+                          </>
+                        );
+                      })}
+                  </>
                 </>
               );
             })}
@@ -1804,16 +3164,38 @@ const ReviewMinutes = () => {
         <RejectCommentModal
           minuteDataToReject={minuteDataToReject}
           setMinuteDataToReject={setMinuteDataToReject}
+          isAgenda={isAgenda}
+          setIsAgenda={setIsAgenda}
         />
       ) : null}
-      {MinutesReducer.editCommentModal ? <EditCommentModal /> : null}
-      {MinutesReducer.deleteCommentModal ? <DeleteCommentModal /> : null}
+      {MinutesReducer.editCommentModal ? (
+        <EditCommentModal
+          minutesAgenda={minutesAgenda}
+          setMinutesAgenda={setMinutesAgenda}
+          minutesGeneral={minutesGeneral}
+          setMinutesGeneral={setMinutesGeneral}
+          editCommentLocal={editCommentLocal}
+          setEditCommentLocal={setEditCommentLocal}
+        />
+      ) : null}
+      {MinutesReducer.deleteCommentModal ? (
+        <DeleteCommentModal
+          minutesAgenda={minutesAgenda}
+          setMinutesAgenda={setMinutesAgenda}
+          minutesGeneral={minutesGeneral}
+          setMinutesGeneral={setMinutesGeneral}
+          deleteCommentLocal={deleteCommentLocal}
+          setDeleteCommentLocal={setDeleteCommentLocal}
+        />
+      ) : null}
       {MinutesReducer.acceptCommentModal ? (
         <AcceptCommentModal
           minutesAgenda={minutesAgenda}
           setMinutesAgenda={setMinutesAgenda}
           minutesGeneral={minutesGeneral}
           setMinutesGeneral={setMinutesGeneral}
+          minutesToReview={minutesToReview}
+          setMinutesToReview={setMinutesToReview}
         />
       ) : null}
     </section>

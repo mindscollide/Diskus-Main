@@ -18,6 +18,8 @@ const AcceptCommentModal = ({
   setMinutesAgenda,
   minutesGeneral,
   setMinutesGeneral,
+  setMinutesToReview,
+  minutesToReview,
 }) => {
   const { t } = useTranslation(); // Translation hook
 
@@ -54,6 +56,7 @@ const AcceptCommentModal = ({
       // Set the updated states
       setMinutesAgenda(updatedState1);
       setMinutesGeneral(updatedState2);
+      setMinutesToReview(0);
       dispatch(acceptCommentModal(false));
     } catch (error) {
       console.log("Error", error);

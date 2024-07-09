@@ -13,10 +13,28 @@ import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing image
 
 // Functional component for deleting a comment
-const DeleteCommentModal = () => {
+const DeleteCommentModal = ({
+  minutesAgenda,
+  setMinutesAgenda,
+  minutesGeneral,
+  setMinutesGeneral,
+  deleteCommentLocal,
+  setDeleteCommentLocal,
+}) => {
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
+
+  // Example usage
+  const deleteComment = () => {
+
+
+    dispatch(deleteCommentModal(false));
+  };
+
+  console.log("Minute Data Agenda", minutesAgenda);
+  console.log("Minute Data General", minutesGeneral);
+  console.log("Delete Local Comment", deleteCommentLocal);
 
   return (
     <section>
@@ -31,15 +49,18 @@ const DeleteCommentModal = () => {
           dispatch(deleteCommentModal(false)); // Hide modal action
         }}
         size={"md"} // Modal size
-        ModalBody={ // Modal body section
+        ModalBody={
+          // Modal body section
           <>
             {/* Delete comment message */}
             <p className={styles["delete-comment-message"]}>
-              {t("Are-you-sure-you-want-to-delete-your-comment")} {/* Translation for delete comment message */}
+              {t("Are-you-sure-you-want-to-delete-your-comment")}{" "}
+              {/* Translation for delete comment message */}
             </p>
           </>
         }
-        ModalFooter={ // Modal footer section
+        ModalFooter={
+          // Modal footer section
           <>
             <Row>
               <Col
@@ -50,7 +71,7 @@ const DeleteCommentModal = () => {
               >
                 {/* Button for confirming deletion */}
                 <Button
-                  onClick={() => dispatch(deleteCommentModal(false))} // Click handler for confirming deletion and closing modal
+                  onClick={deleteComment} // Click handler for confirming deletion and closing modal
                   text={t("Yes")} // Translation for "Yes" button
                   className={styles["Yes_Modal"]} // CSS class for "Yes" button
                 />

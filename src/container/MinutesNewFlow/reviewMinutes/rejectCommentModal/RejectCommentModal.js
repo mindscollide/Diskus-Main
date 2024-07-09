@@ -77,7 +77,7 @@ const RejectCommentModal = ({ minuteDataToReject, setMinuteDataToReject }) => {
     setMinuteDataToReject(updatedMinuteData);
 
     dispatch(RejectMinute(updatedMinuteData));
-
+    dispatch(rejectCommentModal(false));
     console.log("Updated Minute Data to Reject:", MinutesReducer);
   };
 
@@ -151,6 +151,7 @@ const RejectCommentModal = ({ minuteDataToReject, setMinuteDataToReject }) => {
                   onClick={RejectButton}
                   text={t("Reject")} // Translation for button text
                   className={styles["Reject_Comment_Modal"]} // Styling for reject button
+                  disableBtn={commentText === ""}
                 />
               </Col>
             </Row>

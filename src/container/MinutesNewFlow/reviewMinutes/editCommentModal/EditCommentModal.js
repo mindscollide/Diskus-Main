@@ -13,10 +13,25 @@ import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing image
 
 // Functional component for editing a comment
-const EditCommentModal = () => {
+const EditCommentModal = ({
+  minutesAgenda,
+  setMinutesAgenda,
+  minutesGeneral,
+  setMinutesGeneral,
+  editCommentLocal,
+  setEditCommentLocal,
+}) => {
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
+
+  const handleCommentChange = (event) => {
+    const { value } = event.target;
+    setEditCommentLocal((prevState) => ({
+      ...prevState,
+      reason: value,
+    }));
+  };
 
   return (
     <section>
@@ -59,10 +74,12 @@ const EditCommentModal = () => {
               name="textField-RejectComment"
               className={styles["textField-RejectComment"]} // CSS class for text area
               type="text"
-              value={"Comment will come here"}
+              value={editCommentLocal.reason}
               placeholder={t("Write-a-comment")} // Placeholder text for text area
               labelClassName={"d-none"} // CSS class for label
               timeClass={"d-none"} // CSS class for time
+              onChange={handleCommentChange}
+              // onChange={(e) => setCommentText(e.target.value)}
             />
           </>
         }

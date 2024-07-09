@@ -576,3 +576,38 @@ body[dir="rtl"] .Cancel:is(:active, :hover, :focus, :focus-visible) {
   margin-bottom: 15px;
   font-weight: 600;
 }
+
+.wrapper-userlist {
+  background: #ffdede;
+  padding: 10px;
+  margin-bottom: 15px;
+  margin-right: -10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.wrapper-userlist p {
+  margin: 0 !important;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f16b6b !important;
+}
+
+.wrapper-userlist-subagenda {
+  background: #ffdede;
+  padding: 10px;
+  margin-bottom: 15px;
+  margin-right: 50px;
+  border-radius: 4px;
+  margin-left: 60px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.wrapper-userlist-subagenda p {
+  margin: 0 !important;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f16b6b !important;
+}

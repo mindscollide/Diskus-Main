@@ -51,7 +51,7 @@ const SendReviewers = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  console.log("sadasdasdasd", selectReviewers, )
   let createrID = localStorage.getItem("userID");
 
   const { MinutesReducer } = useSelector((state) => state);
