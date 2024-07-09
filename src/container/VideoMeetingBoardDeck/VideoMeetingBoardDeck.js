@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Header2 from "../../components/layout/header2/Header2";
+import TestVideo from "../../assets/Test Video/TestVideoBySaifUlislam.mp4";
 import { Col, Row } from "react-bootstrap";
 
 const VideoMeetingBoardDeck = () => {
@@ -36,10 +37,7 @@ const VideoMeetingBoardDeck = () => {
             controlsList="nodownload"
             onContextMenu={(e) => e.preventDefault()}
           >
-            <source
-              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-              type="video/mp4"
-            />
+            <source src={TestVideo} type="video/mp4" />
           </video>
         </Col>
       </Row>
