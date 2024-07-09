@@ -15,6 +15,7 @@ import {
   DeclineReason,
   DeleteSignatureDocumentRM,
   GetAllSignatoriesStatusRM,
+  updateActorBundleStatusRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -493,7 +494,8 @@ const addUpdateFieldValueApi = (
   addAnnoatationofFilesAttachment,
   saveSignatureDocument,
   status,
-  sendDocumentData
+  sendDocumentData,
+  UpdateActorBundle
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -521,7 +523,8 @@ const addUpdateFieldValueApi = (
               addAnnoatationofFilesAttachment,
               saveSignatureDocument,
               status,
-              sendDocumentData
+              sendDocumentData,
+              UpdateActorBundle
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -540,7 +543,8 @@ const addUpdateFieldValueApi = (
                   addAnnoatationofFilesAttachment,
                   saveSignatureDocument,
                   status,
-                  sendDocumentData
+                  sendDocumentData,
+                  UpdateActorBundle
                 )
               );
               dispatch(
@@ -844,8 +848,10 @@ const addAnnoationSignatrueFlow = (
   Data,
   saveSignatureDocument,
   status,
-  sendDocumentData
+  sendDocumentData,
+  UpdateActorBundle
 ) => {
+  console.log(status, "statusstatusstatus");
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(addAnnotationDataRoom_init());
@@ -873,7 +879,8 @@ const addAnnoationSignatrueFlow = (
               Data,
               saveSignatureDocument,
               status,
-              sendDocumentData
+              sendDocumentData,
+              UpdateActorBundle
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -885,15 +892,22 @@ const addAnnoationSignatrueFlow = (
                   "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                saveSignatureDocumentApi(
-                  saveSignatureDocument,
-                  navigate,
-                  t,
-                  status,
-                  sendDocumentData
-                )
-              );
+              if (Number(status) === 3) {
+                dispatch(
+                  UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle)
+                );
+              } else {
+                dispatch(
+                  saveSignatureDocumentApi(
+                    saveSignatureDocument,
+                    navigate,
+                    t,
+                    status,
+                    sendDocumentData
+                  )
+                );
+              }
+
               dispatch(
                 addAnnotationDataRoom_success(
                   response.data.responseResult,
@@ -908,22 +922,19 @@ const addAnnoationSignatrueFlow = (
                   "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                addAnnotationDataRoom_success(
-                  response.data.responseResult,
-                  t("Record-updated"),
-                  true
-                )
-              );
-              dispatch(
-                saveSignatureDocumentApi(
-                  saveSignatureDocument,
-                  navigate,
-                  t,
-                  status,
-                  sendDocumentData
-                )
-              );
+              if (Number(status) === 3) {
+                dispatch(
+                  UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle)
+                );
+              } else {
+                dispatch(
+                  addAnnotationDataRoom_success(
+                    response.data.responseResult,
+                    t("Record-updated"),
+                    true
+                  )
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1885,6 +1896,111 @@ const getAllSignatoriesStatusWise_Api = (
       });
   };
 };
+
+const UpdateActorBundleStatus_init = () => {
+  return {
+    type: actions.UPDATEACTORBUNDLESTATUS_INIT,
+  };
+};
+const UpdateActorBundleStatus_success = (response, message) => {
+  return {
+    type: actions.UPDATEACTORBUNDLESTATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const UpdateActorBundleStatus_fail = (message) => {
+  return {
+    type: actions.UPDATEACTORBUNDLESTATUS_FAIL,
+    message: message,
+  };
+};
+
+const UpdateActorBundleStatusApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(UpdateActorBundleStatus_init());
+    let form = new FormData();
+    form.append("RequestMethod", updateActorBundleStatusRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdateActorBundleStatusApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_UpdateActorBundleStatus_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                UpdateActorBundleStatus_success(
+                  response.data.responseResult,
+                  t("Updated-successfully")
+                )
+              );
+              window.close();
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_UpdateActorBundleStatus_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                UpdateActorBundleStatus_fail(
+                  t("Failed-to-update-actor-bundle-status")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_UpdateActorBundleStatus_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                UpdateActorBundleStatus_fail(
+                  t("Failed-to-update-bundle-status")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_UpdateActorBundleStatus_04".toLowerCase()
+                )
+            ) {
+              dispatch(UpdateActorBundleStatus_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(UpdateActorBundleStatus_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(UpdateActorBundleStatus_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(UpdateActorBundleStatus_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(UpdateActorBundleStatus_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 const clearWorkFlowResponseMessage = () => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER,
@@ -1892,6 +2008,7 @@ const clearWorkFlowResponseMessage = () => {
 };
 
 export {
+  UpdateActorBundleStatusApi,
   getAllSignatoriesStatusWise_Api,
   deleteSignatureFlowDocumentApi,
   getAllPendingApprovalStatusApi,
