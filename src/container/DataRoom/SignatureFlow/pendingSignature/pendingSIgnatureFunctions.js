@@ -1,3 +1,30 @@
+const xmljs = require("xml-js");
+const { Buffer } = require("buffer");
+
+// Polyfill Buffer for browser environment
+window.Buffer = Buffer;
+// Function to convert XML to JSON
+const xmlToJson = (xmlString) => {
+  try {
+    const options = { compact: true, ignoreComment: true, spaces: 4 };
+    const result = xmljs.xml2json(xmlString, options);
+    return JSON.parse(result);
+  } catch (error) {
+    console.error("Error converting XML to JSON:", error);
+  }
+};
+
+// Function to convert JSON to XML
+const jsonToXml = (jsonObject) => {
+  try {
+    const options = { compact: true, ignoreComment: true, spaces: 4 };
+    const xmlString = xmljs.json2xml(JSON.stringify(jsonObject), options);
+    return xmlString;
+  } catch (error) {
+    console.error("Error converting JSON to XML:", error);
+  }
+};
+
 // === used for read only Form Fields=== //
 
 export const processXmlForReadOnly = (xmlString, nameValues) => {
@@ -74,111 +101,127 @@ export const processXmlToHideFields = (xmlString, nameValues) => {
     nameValues,
     "processXmlToHideFieldsprocessXmlToHideFields"
   );
-  try {
-    // Parse the XML string
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+  let convertXmlToJson = xmlToJson(xmlString);
+  console.log("xml-js xmlToJson", convertXmlToJson);
+  const removedItems = {
+    fields: [],
+    ffields: [],
+    widgets: [],
+  };
 
-    // Array to store removed fields along with their parent nodes and siblings
-    const removedFields = [];
-
-    // Iterate over each name value in the array
-    nameValues.forEach((nameValue) => {
-      // Find the ffield with the specified name attribute
-      const ffields = xmlDoc.querySelectorAll(`ffield[name="${nameValue}"]`);
-      const widgets = xmlDoc.querySelectorAll(`widget[field="${nameValue}"]`);
-      console.log(
-        ffields,
-        widgets,
-        "processXmlToHideFieldsprocessXmlToHideFields"
-      );
-      // Iterate through each matching ffield
-      ffields.forEach((ffield) => {
-        // Find the associated widget element
-        const widget = ffield.nextElementSibling;
-
-        // Prepare the object to store removed fields
-        const removedField = {
-          parent: ffield.parentNode,
-          prevSibling: ffield.previousSibling,
-          ffield: ffield.cloneNode(true),
-        };
-
-        // If there is an associated widget, add it to the removedField object
-        if (
-          widget &&
-          widget.tagName.toLowerCase() === "widget" &&
-          widget.getAttribute("field") === nameValue
-        ) {
-          removedField.widget = widget.cloneNode(true);
-          // Remove the widget element
-          widget.parentNode.removeChild(widget);
-        }
-
-        // Remove the ffield element
-        ffield.parentNode.removeChild(ffield);
-
-        // Push the removed field object to the array
-        removedFields.push(removedField);
-      });
-      console.log(widgets, "processXmlToHideFieldsprocessXmlToHideFields");
-      // Iterate through each matching widget (in case widget exists without ffield)
-      widgets.forEach((widget) => {
-        // Prepare the object to store removed fields
-        const removedField = {
-          parent: widget.parentNode,
-          prevSibling: widget.previousSibling,
-          widget: widget.cloneNode(true),
-        };
-
-        // Remove the widget element
-        widget.parentNode.removeChild(widget);
-
-        // Push the removed field object to the array
-        removedFields.push(removedField);
-      });
+  // Helper function to remove matched items from an array and add to removedItems
+  function removeMatchedItems(array, attrName, location) {
+    const removed = [];
+    const filteredArray = array.filter((item, index) => {
+      const match = nameValues.includes(item._attributes[attrName]);
+      if (match) {
+        removed.push({ index, item });
+      }
+      return !match;
     });
-
-    // Serialize the updated XML back to string
-    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-
-    // Return the updated XML string and the removed fields
-    return { updatedXmlString, removedFields };
-  } catch (error) {
-    console.error(error);
+    removedItems[location] = removedItems[location].concat(removed);
+    return filteredArray;
   }
+
+  // Process xfdf.field
+  if (convertXmlToJson.xfdf.fields && convertXmlToJson.xfdf.fields.field) {
+    convertXmlToJson.xfdf.fields.field = removeMatchedItems(
+      convertXmlToJson.xfdf.fields.field,
+      "name",
+      "fields"
+    );
+  }
+
+  // Process xfdf.pdf-info.ffield
+  if (
+    convertXmlToJson.xfdf["pdf-info"] &&
+    convertXmlToJson.xfdf["pdf-info"].ffield
+  ) {
+    convertXmlToJson.xfdf["pdf-info"].ffield = removeMatchedItems(
+      convertXmlToJson.xfdf["pdf-info"].ffield,
+      "name",
+      "ffields"
+    );
+  }
+
+  // Process xfdf.pdf-info.widget
+  if (
+    convertXmlToJson.xfdf["pdf-info"] &&
+    convertXmlToJson.xfdf["pdf-info"].widget
+  ) {
+    convertXmlToJson.xfdf["pdf-info"].widget = removeMatchedItems(
+      convertXmlToJson.xfdf["pdf-info"].widget,
+      "field",
+      "widgets"
+    );
+  }
+  const updatedXmlString = new XMLSerializer().serializeToString(
+    new DOMParser().parseFromString(jsonToXml(convertXmlToJson), "text/xml")
+  );
+  console.log("xml-js xmlToJson", updatedXmlString);
+  console.log("xml-js xmlToJson", removedItems);
+
+  return {
+    updatedXmlString,
+    removedItems,
+  };
 };
 
-export const revertProcessXmlToHideFields = (xmlString, removedFields) => {
-  try {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    console.log("revertProcessXmlToHideFields removedFields", removedFields);
+export const revertProcessXmlToHideFields = (xml, removedItems) => {
+  // Convert the updated XML string back to JSON
+  let convertXmlToJson = xmlToJson(xml);
+  console.log("Reverting XML - Initial JSON", convertXmlToJson);
+  console.log("Reverting XML - Initial JSON", removedItems);
 
-    removedFields.forEach((removedField) => {
-      const parent = xmlDoc.querySelector(removedField.parent.nodeName);
-      const prevSibling = xmlDoc.querySelector(
-        removedField.prevSibling?.nodeName
-      );
-      const ffield = removedField.ffield;
-      const widget = removedField.widget;
-      console.log("Save Button Clicked parent", parent);
-      console.log("Save Button Clicked prevSibling", prevSibling);
-      console.log("Save Button Clicked ffield", ffield);
-      console.log("Save Button Clicked ffield", ffield);
-      // If there was a previous sibling, insert before it; otherwise, append to parent
-      if (prevSibling) {
-        parent.insertBefore(widget, prevSibling.nextSibling);
-      } else {
-        parent.appendChild(ffield);
-      }
+  // Helper function to reinsert removed items back to their original positions
+  function reinsertRemovedItems(array, removedArray) {
+    console.log(
+      { array, removedArray },
+      "reinsertRemovedItemsreinsertRemovedItems"
+    );
+    removedArray.forEach(({ index, item }) => {
+      array.splice(index, 0, item);
     });
-    // Serialize the updated XML back to string
-    const revertedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-    return revertedXmlString;
-  } catch (error) {
-    console.log(error);
+    return array;
   }
+
+  // Reinsert removed items for xfdf.field
+  if (convertXmlToJson.xfdf.fields && convertXmlToJson.xfdf.fields.field) {
+    convertXmlToJson.xfdf.fields.field = reinsertRemovedItems(
+      convertXmlToJson.xfdf.fields.field,
+      removedItems.fields
+    );
+  }
+
+  // Reinsert removed items for xfdf.pdf-info.ffield
+  if (
+    convertXmlToJson.xfdf["pdf-info"] &&
+    convertXmlToJson.xfdf["pdf-info"].ffield
+  ) {
+    convertXmlToJson.xfdf["pdf-info"].ffield = reinsertRemovedItems(
+      convertXmlToJson.xfdf["pdf-info"].ffield,
+      removedItems.ffields
+    );
+  }
+
+  // Reinsert removed items for xfdf.pdf-info.widget
+  if (
+    convertXmlToJson.xfdf["pdf-info"] &&
+    convertXmlToJson.xfdf["pdf-info"].widget
+  ) {
+    convertXmlToJson.xfdf["pdf-info"].widget = reinsertRemovedItems(
+      convertXmlToJson.xfdf["pdf-info"].widget,
+      removedItems.widgets
+    );
+  }
+  let newConvertXmlToJson = jsonToXml(convertXmlToJson);
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(newConvertXmlToJson, "text/xml");
+  console.log("xml-js xmlToJson", convertXmlToJson);
+  console.log("xml-js xmlToJson", removedItems);
+  const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
+  console.log("Reverted XML String", updatedXmlString);
+  return updatedXmlString;
 };
 // === End === //
 
@@ -242,56 +285,97 @@ export const revertReadOnlyFreetextElements = (xmlString, userDataRead) => {
 
 export const hideFreetextElements = (xmlString, userDataRead) => {
   try {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
+    // Convert the XML string to JSON
+    let convertXmlToJson = xmlToJson(xmlString);
+    console.log("xml-js xmlToJson", convertXmlToJson);
 
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.lastIndexOf("-");
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print,locked,lockedcontents");
-          freetextElement.setAttribute("opacity", "0");
+    const removedHideFreetextElements = [];
+
+    // Helper function to remove matched items from an array and add to removedItems
+    function removeMatchedItems(array, attrName) {
+      const removed = [];
+      const filteredArray = array.filter((item, index) => {
+        const subject = item._attributes[attrName];
+        const userIdIndex = subject.lastIndexOf("-");
+        if (userIdIndex !== -1) {
+          const userId = subject.substring(userIdIndex + 1);
+          const match = userDataRead.includes(Number(userId));
+          if (match) {
+            // User ID matches, add the annotation to removedItems
+            removed.push({ index, item });
+            return false; // Remove the item from the array
+          }
         }
-      }
-    });
+        return true;
+      });
+      removedHideFreetextElements.push(...removed);
+      return filteredArray;
+    }
 
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
+    // Process xfdf.annots.freetext
+    if (convertXmlToJson.xfdf.annots && convertXmlToJson.xfdf.annots.freetext) {
+      convertXmlToJson.xfdf.annots.freetext = removeMatchedItems(
+        convertXmlToJson.xfdf.annots.freetext,
+        "subject"
+      );
+    }
+
+    // Convert the updated JSON back to an XML string
+    const hideFreetextXmlString = new XMLSerializer().serializeToString(
+      new DOMParser().parseFromString(jsonToXml(convertXmlToJson), "text/xml")
+    );
+    console.log("xml-js updatedXmlString", hideFreetextXmlString);
+    console.log("xml-js removedItems", removedHideFreetextElements);
+
+    return {
+      hideFreetextXmlString,
+      removedHideFreetextElements,
+    };
   } catch (error) {
-    console.error(error);
+    console.error("Error in hideFreetextElements:", error);
+    // Ensure to return a consistent structure even in case of error
+    return {
+      hideFreetextXmlString: "", // or null, depending on how you handle errors
+      removedHideFreetextElements: [],
+    };
   }
 };
 
-export const revertHideFreetextElements = (xmlString, userDataRead) => {
+export const revertHideFreetextElements = (
+  originalXmlString,
+  removedItemsToRestore
+) => {
   try {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
+    // Convert the original XML string to JSON
+    let convertXmlToJson = xmlToJson(originalXmlString);
 
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.split("-")[1];
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print");
-          freetextElement.setAttribute("opacity", "10");
-        }
-      }
-    });
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
+    // Helper function to restore removed items back into the array
+    function restoreRemovedItems(array, removedItems) {
+      removedItems.forEach(({ index, item }) => {
+        array.splice(index, 0, item); // Insert item back at original index
+      });
+      return array;
+    }
+
+    // Restore removed items to xfdf.annots.freetext
+    if (convertXmlToJson.xfdf.annots && convertXmlToJson.xfdf.annots.freetext) {
+      convertXmlToJson.xfdf.annots.freetext = restoreRemovedItems(
+        convertXmlToJson.xfdf.annots.freetext,
+        removedItemsToRestore
+      );
+    }
+
+    // Convert the updated JSON back to an XML string
+    const restoredXmlString = new XMLSerializer().serializeToString(
+      new DOMParser().parseFromString(jsonToXml(convertXmlToJson), "text/xml")
+    );
+    console.log("xml-js restoredXmlString", restoredXmlString);
+
+    return restoredXmlString;
   } catch (error) {
-    console.error(error);
+    console.error("Error in revertHiddenFreetextElements:", error);
+    // Handle errors gracefully, return original XML string if revert fails
+    return originalXmlString;
   }
 };
 
