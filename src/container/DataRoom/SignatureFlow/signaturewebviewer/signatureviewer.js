@@ -280,6 +280,11 @@ const SignatureViewer = () => {
         if (bundleModels?.length > 0) {
           let listOfUsers = [];
           let signersData = [];
+          let isOrderChecked = bundleModels.some(
+            (bundleData, index) => bundleData.dependencies.length > 0
+          );
+          console.log(isOrderChecked, "isOrderCheckedisOrderChecked");
+          setOrderCheckbox(isOrderChecked)
           bundleModels.forEach((users, index) => {
             users.actors.forEach((usersData, index) => {
               listOfUsers.push({

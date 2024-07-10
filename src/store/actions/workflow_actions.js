@@ -1962,7 +1962,7 @@ const UpdateActorBundleStatusApi = (navigate, t, Data) => {
                   t("Updated-successfully")
                 )
               );
-              // window.close();
+              window.close();
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
