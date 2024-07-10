@@ -19,6 +19,7 @@ const initialState = {
   declineReason: null,
   deleteSignatureDocument: null,
   getAllSignatoriesStatusWise: null,
+  updateActorBundleStatus: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -377,6 +378,28 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getAllSignatoriesStatusWise: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPDATEACTORBUNDLESTATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.UPDATEACTORBUNDLESTATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        updateActorBundleStatus: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPDATEACTORBUNDLESTATUS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        updateActorBundleStatus: null,
         ResponseMessage: action.message,
       };
     }

@@ -566,7 +566,6 @@ const SignatureViewer = () => {
           licenseKey:
             "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
         },
-
         viewer.current
       ).then(async (instance) => {
         setInstance(instance);
@@ -635,55 +634,107 @@ const SignatureViewer = () => {
           setOpenAddParticipentModal(true); // Open the custom modal
         };
 
+        console.log("selectedUserRef.current", selectedUserRef.current);
         const handleClickTItle = () => {
-          const annotation = new Annotations.FreeTextAnnotation();
-          annotation.PageNumber = documentViewer.getCurrentPage();
-          annotation.X = 100;
-          annotation.Y = 100;
-          annotation.Width = 200;
-          annotation.Height = 50;
-          annotation.TextAlign = "center";
-          annotation.TextVerticalAlign = "center";
-          annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
-          annotation.Subject = `Title-${selectedUserRef.current}`;
+          try {
+            const letsGet = getActorColorByUserID(
+              selectedUserRef.current,
+              userAnnotationsRef
+            );
+            const { r, g, b } = letsGet;
 
-          // Add the annotation to the document
-          annotationManager.addAnnotation(annotation);
-          annotationManager.redrawAnnotation(annotation);
+            const annotation = new Annotations.FreeTextAnnotation();
+            annotation.PageNumber = documentViewer.getCurrentPage();
+            annotation.X = 100;
+            annotation.Y = 100;
+            annotation.Width = 200;
+            annotation.Height = 50;
+            annotation.TextAlign = "center";
+            annotation.TextVerticalAlign = "center";
+            annotation.setContents("Title");
+            annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
+            annotation.Subject = `Title-${selectedUserRef.current}`;
+            annotation.StrokeColor = new Annotations.Color(r, g, b);
+            annotation.StrokeThickness = 2; // Thickness of the border
+            annotation.StrokeStyle = "solid"; // Style of the border
+
+            // Log the annotation object for debugging
+            console.log("Annotation Object:", annotation);
+
+            // Add the annotation to the document
+            annotationManager.addAnnotation(annotation);
+            annotationManager.redrawAnnotation(annotation);
+          } catch (error) {
+            console.error("Error creating annotation:", error);
+          }
         };
 
         const handleClickName = () => {
-          const annotation = new Annotations.FreeTextAnnotation();
-          annotation.PageNumber = documentViewer.getCurrentPage();
-          annotation.X = 100;
-          annotation.Y = 100;
-          annotation.Width = 200;
-          annotation.Height = 50;
-          annotation.TextAlign = "center";
-          annotation.TextVerticalAlign = "center";
-          annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
-          annotation.Subject = `Name-${selectedUserRef.current}`;
+          try {
+            const letsGet = getActorColorByUserID(
+              selectedUserRef.current,
+              userAnnotationsRef
+            );
+            const { r, g, b } = letsGet;
 
-          // Add the annotation to the document
-          annotationManager.addAnnotation(annotation);
-          annotationManager.redrawAnnotation(annotation);
+            const annotation = new Annotations.FreeTextAnnotation();
+            annotation.PageNumber = documentViewer.getCurrentPage();
+            annotation.X = 100;
+            annotation.Y = 100;
+            annotation.Width = 200;
+            annotation.Height = 50;
+            annotation.TextAlign = "center";
+            annotation.TextVerticalAlign = "center";
+            annotation.setContents("Name");
+            annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
+            annotation.Subject = `Name-${selectedUserRef.current}`;
+            annotation.StrokeColor = new Annotations.Color(r, g, b);
+            annotation.StrokeThickness = 2; // Thickness of the border
+            annotation.StrokeStyle = "solid"; // Style of the border
+
+            // Log the annotation object for debugging
+            console.log("Annotation Object:", annotation);
+
+            // Add the annotation to the document
+            annotationManager.addAnnotation(annotation);
+            annotationManager.redrawAnnotation(annotation);
+          } catch (error) {
+            console.error("Error creating annotation:", error);
+          }
         };
 
         const handleClickEmail = () => {
-          const annotation = new Annotations.FreeTextAnnotation();
-          annotation.PageNumber = documentViewer.getCurrentPage();
-          annotation.X = 100;
-          annotation.Y = 100;
-          annotation.Width = 200;
-          annotation.Height = 50;
-          annotation.TextAlign = "center";
-          annotation.TextVerticalAlign = "center";
-          annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
-          annotation.Subject = `Email-${selectedUserRef.current}`;
+          try {
+            const letsGet = getActorColorByUserID(
+              selectedUserRef.current,
+              userAnnotationsRef
+            );
+            const { r, g, b } = letsGet;
 
-          // Add the annotation to the document
-          annotationManager.addAnnotation(annotation);
-          annotationManager.redrawAnnotation(annotation);
+            const annotation = new Annotations.FreeTextAnnotation();
+            annotation.PageNumber = documentViewer.getCurrentPage();
+            annotation.X = 100;
+            annotation.Y = 100;
+            annotation.Width = 200;
+            annotation.Height = 50;
+            annotation.TextAlign = "center";
+            annotation.TextVerticalAlign = "center";
+            annotation.setContents("Email");
+            annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
+            annotation.Subject = `Email-${selectedUserRef.current}`;
+            annotation.StrokeColor = new Annotations.Color(r, g, b);
+            annotation.StrokeThickness = 2; // Thickness of the border
+            annotation.StrokeStyle = "solid"; // Style of the border
+
+            // Log the annotation object for debugging
+            console.log("Annotation Object:", annotation);
+
+            // Add the annotation to the document
+            annotationManager.addAnnotation(annotation);
+            annotationManager.redrawAnnotation(annotation);
+          } catch (error) {
+            console.error("Error creating annotation:", error);
+          }
         };
 
         const handleClickCancelBtn = () => {
@@ -1101,9 +1152,63 @@ const SignatureViewer = () => {
   // ==== End ====//
 
   // ==== this is for remove specifi from Xfdf Main   === //
+  // function removeSignatureAnnotationsFromXFDF(xfdfString) {
+  //   const parser = new DOMParser();
+  //   const xmlDoc = parser.parseFromString(xfdfString, "text/xml");
+  //   deletedDataTem.forEach(({ xml, userID }) => {
+  //     xml.forEach(({ ffield }) => {
+  //       const regex = /name=\"([^\"]+)\"/;
+  //       const match = ffield.match(regex);
+  //       if (match && match[1]) {
+  //         const fieldName = match[1];
+
+  //         // Remove <ffield> element from main XML
+  //         const ffieldElements = xmlDoc.querySelectorAll(
+  //           `ffield[name="${fieldName}"]`
+  //         );
+  //         ffieldElements.forEach((ffieldElement) => {
+  //           ffieldElement.parentNode.removeChild(ffieldElement);
+  //         });
+
+  //         // Find and remove corresponding <widget> element
+  //         const widgetElement = xmlDoc.querySelector(
+  //           `widget[field="${fieldName}"]`
+  //         );
+  //         if (widgetElement) {
+  //           widgetElement.parentNode.removeChild(widgetElement);
+  //         }
+
+  //         // Find and remove corresponding <field> element from <fields>
+  //         const fieldElement = xmlDoc.querySelector(
+  //           `fields field[name="${fieldName}"]`
+  //         );
+  //         if (fieldElement) {
+  //           fieldElement.parentNode.removeChild(fieldElement);
+  //         }
+  //       }
+  //     });
+
+  //     // Remove <freetext> elements associated with the userID
+  //     const freetextElements = xmlDoc.querySelectorAll(
+  //       `freetext[subject*="-${userID}"]`
+  //     );
+  //     freetextElements.forEach((freetextElement) => {
+  //       freetextElement.parentNode.removeChild(freetextElement);
+  //     });
+  //   });
+  //   console.log("removeHandlerForPrticipantDelete", xmlDoc);
+
+  //   // Serialize the modified XML back to a string
+  //   const serializer = new XMLSerializer();
+  //   const modifiedXFDFString = serializer.serializeToString(xmlDoc);
+  //   console.log("removeHandlerForPrticipantDelete", modifiedXFDFString);
+
+  //   return modifiedXFDFString;
+  // }
   function removeSignatureAnnotationsFromXFDF(xfdfString) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xfdfString, "text/xml");
+
     deletedDataTem.forEach(({ xml, userID }) => {
       xml.forEach(({ ffield }) => {
         const regex = /name=\"([^\"]+)\"/;
@@ -1119,21 +1224,29 @@ const SignatureViewer = () => {
             ffieldElement.parentNode.removeChild(ffieldElement);
           });
 
-          // Find and remove corresponding <widget> element
-          const widgetElement = xmlDoc.querySelector(
+          // Remove corresponding <widget> elements
+          const widgetElements = xmlDoc.querySelectorAll(
             `widget[field="${fieldName}"]`
           );
-          if (widgetElement) {
+          widgetElements.forEach((widgetElement) => {
             widgetElement.parentNode.removeChild(widgetElement);
-          }
+          });
 
-          // Find and remove corresponding <field> element from <fields>
-          const fieldElement = xmlDoc.querySelector(
+          // Remove corresponding <field> elements from <fields>
+          const fieldElements = xmlDoc.querySelectorAll(
             `fields field[name="${fieldName}"]`
           );
-          if (fieldElement) {
+          fieldElements.forEach((fieldElement) => {
             fieldElement.parentNode.removeChild(fieldElement);
-          }
+          });
+
+          // Remove corresponding annotations with the subject matching the userID
+          const annotationElements = xmlDoc.querySelectorAll(
+            `annots [subject*="-${userID}"]`
+          );
+          annotationElements.forEach((annotationElement) => {
+            annotationElement.parentNode.removeChild(annotationElement);
+          });
         }
       });
 
@@ -1145,12 +1258,11 @@ const SignatureViewer = () => {
         freetextElement.parentNode.removeChild(freetextElement);
       });
     });
-    console.log("removeHandlerForPrticipantDelete",xmlDoc)
 
     // Serialize the modified XML back to a string
     const serializer = new XMLSerializer();
     const modifiedXFDFString = serializer.serializeToString(xmlDoc);
-    console.log("removeHandlerForPrticipantDelete",modifiedXFDFString)
+    console.log("Modified XFDF String:", modifiedXFDFString);
 
     return modifiedXFDFString;
   }
@@ -1166,7 +1278,7 @@ const SignatureViewer = () => {
         annotations,
         usersNotInParticipants
       );
-      console.log("removeHandlerForPrticipantDelete",modifiedXFDF)
+      console.log("removeHandlerForPrticipantDelete", modifiedXFDF);
 
       // Remove existing annotations
       const annots = annotationManager.getAnnotationsList();
@@ -1199,7 +1311,7 @@ const SignatureViewer = () => {
       if (usersNotInParticipants.length > 0) {
         setLastParticipants(participants);
         removeHandlerForPrticipantDelete(usersNotInParticipants);
-        console.log("removeHandlerForPrticipantDelete")
+        console.log("removeHandlerForPrticipantDelete");
       } else {
         setLastParticipants(participants);
       }
@@ -1422,8 +1534,8 @@ const SignatureViewer = () => {
             : pdfResponceData.deadlineDatetime,
         CreatorID: pdfResponceData.creatorID,
         ListOfActionAbleBundle: signerData.map((sendData, index) => {
-          return {
-            ID: `BundleID_# ${index + 1}`,
+          const bundle = {
+            ID: `BundleID_#${index + 1}`,
             Title: "",
             BundleDeadline: "",
             ListOfUsers: [sendData.userID],
@@ -1432,6 +1544,14 @@ const SignatureViewer = () => {
               EntityTypeID: 1,
             },
           };
+          if (orderCheckBox && index !== 0) {
+            bundle.Dependency = {
+              BundleID: `BundleID_#${index + 1}`,
+              DependencyIDs: [`BundleID_#${index}`],
+            };
+          }
+
+          return bundle;
         }),
       };
       setSingerUserData({
