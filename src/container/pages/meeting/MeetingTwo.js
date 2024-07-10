@@ -82,7 +82,6 @@ import {
   meetingParticipantAdded,
   meetingParticipantRemoved,
   boardDeckModal,
-  boardDeckShareModal,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -171,7 +170,18 @@ const NewMeeting = () => {
   const [searchMeeting, setSearchMeeting] = useState(false);
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
-
+  const [boarddeckOptions, setBoarddeckOptions] = useState({
+    selectall: false,
+    Organizer: false,
+    AgendaContributor: false,
+    Participants: false,
+    Minutes: false,
+    Task: false,
+    polls: false,
+    attendeceReport: false,
+    video: false,
+    Agenda: false,
+  });
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
@@ -207,7 +217,9 @@ const NewMeeting = () => {
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [responseByDate, setResponseByDate] = useState("");
-
+  const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
+  console.log(boardDeckMeetingID, "boardDeckMeetingIDboardDeckMeetingID");
+  const [radioValue, setRadioValue] = useState(1);
   const [editorRole, setEdiorRole] = useState({
     status: null,
     role: null,
@@ -1317,11 +1329,18 @@ const NewMeeting = () => {
           if (record.isOrganizer) {
           } else if (record.isParticipant) {
           }
+        } else if (Number(record.status) === 9) {
+          console.log(record, "recordrecordrecord");
+          return (
+            <>
+              <Button
+                text={t("Board-deck")}
+                className={styles["BoardDeckButton"]}
+                onClick={() => boardDeckOnClick(record)}
+              />
+            </>
+          );
         } else {
-          <Button
-            text={t("Board-deck")}
-            className={styles["BoardDeckButton"]}
-          />;
         }
       },
     },
@@ -1504,8 +1523,8 @@ const NewMeeting = () => {
   };
 
   //Board Deck Onclick function
-
-  const boardDeckOnClick = () => {
+  const boardDeckOnClick = (record) => {
+    setBoardDeckMeetingID(record.pK_MDID);
     dispatch(boardDeckModal(true));
   };
 
@@ -2555,9 +2574,27 @@ const NewMeeting = () => {
           </>
         )}
       </section>
-      {NewMeetingreducer.boardDeckModalData && <BoardDeckModal />}
-      {NewMeetingreducer.boarddeckShareModal && <ShareModalBoarddeck />}
-      {NewMeetingreducer.boardDeckEmailModal && <BoardDeckSendEmail />}
+
+      {NewMeetingreducer.boardDeckModalData && (
+        <BoardDeckModal
+          boardDeckMeetingID={boardDeckMeetingID}
+          boarddeckOptions={boarddeckOptions}
+          setBoarddeckOptions={setBoarddeckOptions}
+        />
+      )}
+      {NewMeetingreducer.boarddeckShareModal && (
+        <ShareModalBoarddeck
+          radioValue={radioValue}
+          setRadioValue={setRadioValue}
+        />
+      )}
+      {NewMeetingreducer.boardDeckEmailModal && (
+        <BoardDeckSendEmail
+          boardDeckMeetingID={boardDeckMeetingID}
+          boarddeckOptions={boarddeckOptions}
+          radioValue={radioValue}
+        />
+      )}
     </>
   );
 };

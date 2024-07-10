@@ -1603,6 +1603,13 @@ const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
 
+const BoardDeckSendEmail = {
+  RequestMethod: "ServiceManager.SendBoardDeckPDFAsEmail",
+};
+
+const DownloadBoarddeckPDF = {
+  RequestMethod: "ServiceManager.DownloadBoardDeckPDF",
+};
 const GetPendingApprovalStatusforSignatureFlowRM = {
   RequestMethod: "ServiceManager.GetPendingApprovalStatusesForSignatureFlow",
 };
@@ -2042,4 +2049,6 @@ export {
   downloadAttachmentTalk,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  BoardDeckSendEmail,
+  DownloadBoarddeckPDF,
 };
