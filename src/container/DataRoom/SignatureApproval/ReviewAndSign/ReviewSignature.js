@@ -43,6 +43,7 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
+  console.log(approvalStats, "approvalStatsapprovalStatsapprovalStats")
   const [reviewSignature, setReviewSignature] = useState([]);
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -88,6 +89,15 @@ const ReviewSignature = () => {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
         `/#/DisKus/signeddocument?documentID=${encodeURIComponent(
+          reponseData
+        )}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    } else {
+      let reponseData = JSON.stringify(record.fileID);
+      window.open(
+        `/#/DisKus/viewSignDocument?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",

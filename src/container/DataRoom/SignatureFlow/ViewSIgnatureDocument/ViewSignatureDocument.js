@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import WebViewer from "@pdftron/webviewer";
-import "./pendingSignature.css";
 import PlusSignSignatureFlow from "../../../../assets/images/plus-sign-signatureflow.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,10 +39,10 @@ import {
   revertProcessXmlForReadOnly,
   revertProcessXmlToHideFields,
   revertReadOnlyFreetextElements,
-} from "./pendingSIgnatureFunctions";
+} from "../pendingSignature/pendingSIgnatureFunctions.js";
 import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
 
-const SignatureViewer = () => {
+const ViewDocument = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -80,6 +79,7 @@ const SignatureViewer = () => {
     open: false,
     message: "",
   });
+
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -94,14 +94,13 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
+
   console.log(getAllFieldsByWorkflowID, "getAllFieldsByWorkflowID");
   // { userID: "user1", xml: [] }
   const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [hiddenUsers, setHiddenUsers] = useState([]);
   const [readOnlyUsers, setReadOnlyUsers] = useState([]);
-  const [removeXmlAfterFreetextHideDAta, setRemoveXmlAfterFreetextHideDAta] =
-    useState([]);
   const userAnnotationsCopyData = useRef(userAnnotationsCopy);
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
@@ -113,9 +112,6 @@ const SignatureViewer = () => {
   const removeXmlAfterHideDAtaRef = useRef(removeXmlAfterHideDAta);
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
-  const removeXmlAfterFreetextHideDAtaRef = useRef(
-    removeXmlAfterFreetextHideDAta
-  );
   console.log(
     userAnnotationsCopyData,
     "userAnnotationsCopyDatauserAnnotationsCopyDatauserAnnotationsCopyData"
@@ -140,10 +136,6 @@ const SignatureViewer = () => {
   useEffect(() => {
     userAnnotationsRef.current = userAnnotations;
   }, [userAnnotations]);
-
-  useEffect(() => {
-    removeXmlAfterFreetextHideDAtaRef.current = removeXmlAfterFreetextHideDAta;
-  }, [removeXmlAfterFreetextHideDAta]);
 
   useEffect(() => {
     pdfResponceDataRef.current = pdfResponceData.xfdfData;
@@ -416,34 +408,24 @@ const SignatureViewer = () => {
       );
 
       // Process the XML to hide fields
-      const { updatedXmlString, removedItems } = processXmlToHideFields(
+      const { updatedXmlString, removedFields } = processXmlToHideFields(
         newProcessXmlForReadOnly,
         HideArray
       );
       console.log(
-        "getDataroomAnnotation.annotationString removedItems",
-        removedItems
-      );
-      console.log(
         "getDataroomAnnotation.annotationString removedFields",
-        updatedXmlString
+        removedFields
       );
-      setRemoveXmlAfterHideDAta(removedItems);
+      setXmlAfterHideDAta(updatedXmlString);
+      setRemoveXmlAfterHideDAta(removedFields);
       const readonlyFreetextXmlString = readOnlyFreetextElements(
         updatedXmlString,
         readOnlyUsersRef.current
       );
-      const { hideFreetextXmlString, removedHideFreetextElements } =
-        hideFreetextElements(readonlyFreetextXmlString, hiddenUsersRef.current);
-      console.log(
-        "getDataroomAnnotation.annotationString hideFreetextXmlString",
-        hideFreetextXmlString
+      const hideFreetextXmlString = hideFreetextElements(
+        readonlyFreetextXmlString,
+        hiddenUsersRef.current
       );
-      console.log(
-        "getDataroomAnnotation.annotationString removedItemsOfHideFields",
-        removedHideFreetextElements
-      );
-      setRemoveXmlAfterFreetextHideDAta(removedHideFreetextElements);
       setPdfResponceData((prevData) => ({
         ...prevData,
         xfdfData: hideFreetextXmlString,
@@ -492,6 +474,14 @@ const SignatureViewer = () => {
               console.error("Error importing annotations:", error);
             }
           }
+
+          // Iterate through all annotations to lock them and set to read-only
+          const annotations = annotationManager.getAnnotationsList();
+          annotations.forEach((annotation) => {
+            console.log(annotation, "annotationsannotationsannotations")
+            annotation.Locked = true;
+            annotation.ReadOnly = true;
+          });
 
           // Refresh to apply the changes
           documentViewer.refreshAll();
@@ -545,268 +535,8 @@ const SignatureViewer = () => {
           "leftPanelButton",
           "zoomOverlayButton",
           "toolbarGroup-Forms",
+          "header",
         ]);
-
-        // Custom header buttons
-        const handleClickDeclineBtn = () => {
-          setReasonModal(true);
-          // alert("Decline Button Clicked");
-        };
-
-        const handleClickSaveBtn = async () => {
-          try {
-            const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
-            let currentUserID =
-              localStorage.getItem("userID") !== null
-                ? Number(localStorage.getItem("userID"))
-                : 0;
-            // this one sent do save signature document
-            let HideArray = [];
-            let ReadArray = [];
-
-            // Iterate over each object in the data array
-            await userAnnotationsRef.current.forEach((obj) => {
-              // Check if userID does not match currentID
-              if (obj.userID !== currentUserID) {
-                // Iterate over xml array in the current object
-                obj.xml.forEach((item) => {
-                  // Extract all 'name' attributes from ffield excluding font tag
-                  let ffield = item.ffield;
-                  let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
-                  if (matches) {
-                    matches.forEach((match) => {
-                      // Extract the name value and push into nameArray
-                      let name = match.match(/name="([^"]+)"/)[1];
-                      if (hiddenUsersRef.current.includes(obj.userID)) {
-                        HideArray.push(name);
-                      } else if (
-                        readOnlyUsersRef.current.includes(obj.userID)
-                      ) {
-                        ReadArray.push(name);
-                      }
-                    });
-                  }
-                });
-              }
-            });
-
-            let newProcessXmlForReadOnly = await revertProcessXmlForReadOnly(
-              xfdfString,
-              ReadArray
-            );
-            console.log(
-              newProcessXmlForReadOnly,
-              "userAnnotationsRefuserAnnotationsRef"
-            );
-            const revertedHideFieldsXml = await revertProcessXmlToHideFields(
-              newProcessXmlForReadOnly,
-              removeXmlAfterHideDAtaRef.current
-            );
-            console.log(
-              "getDataroomAnnotation.annotationString removeXmlAfterHideDAtaRef",
-              removeXmlAfterHideDAtaRef.current
-            );
-            console.log(
-              "getDataroomAnnotation.annotationString revertedHideFieldsXml",
-              revertedHideFieldsXml
-            );
-            const afterAddReadOnlyFreetextElements =
-              await revertReadOnlyFreetextElements(
-                revertedHideFieldsXml,
-                readOnlyUsersRef.current
-              );
-            console.log(
-              "getDataroomAnnotation.annotationString afterAddReadOnlyFreetextElements",
-              afterAddReadOnlyFreetextElements
-            );
-            const afterAddRevertHideFreetextElements =
-              await revertHideFreetextElements(
-                afterAddReadOnlyFreetextElements,
-                removeXmlAfterFreetextHideDAtaRef.current
-              );
-
-            console.log(
-              "getDataroomAnnotation.annotationString",
-              afterAddRevertHideFreetextElements
-            );
-
-            // status of 3 for Update Actor Bundle Status
-            const doc = documentViewer.getDocument();
-            const data = await doc.getFileData({}); // No xfdfString for annotations
-            const arr = new Uint8Array(data);
-            const blob = new Blob([arr], { type: "application/pdf" });
-            let getBase64 = await generateBase64FromBlob(blob)
-              .then(async (base64String) => {
-                return base64String;
-                // Here you can use the base64String as needed
-              })
-              .catch((error) => {
-                return null;
-              });
-            console.log("userAnnotationsRef", userAnnotationsRef);
-
-            const parser = new DOMParser();
-            const mainXmlDoc = parser.parseFromString(
-              afterAddRevertHideFreetextElements,
-              "text/xml"
-            );
-            console.log("userAnnotationsRef mainXmlDoc", mainXmlDoc);
-
-            function existsInMainXML(name, type, mainXmlDoc) {
-              const elements = mainXmlDoc.querySelectorAll(
-                `${type}[name="${name}"]`
-              );
-              return elements.length > 0;
-            }
-            console.log("userAnnotationsRef", userAnnotationsRef.current);
-            let covert = userAnnotationsRef.current.map((user) => {
-              let filteredXml = user.xml.filter((item) => {
-                const ffieldDoc = parser.parseFromString(
-                  item.ffield,
-                  "text/xml"
-                );
-                const widgetDoc = parser.parseFromString(
-                  item.widget,
-                  "text/xml"
-                );
-                const ffieldName =
-                  ffieldDoc.documentElement.getAttribute("name");
-                const widgetName =
-                  widgetDoc.documentElement.getAttribute("name");
-
-                return (
-                  existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
-                  existsInMainXML(widgetName, "widget", mainXmlDoc)
-                );
-              });
-              console.log(filteredXml, "userAnnotationsRefuserAnnotationsRef");
-
-              return { ...user, xml: filteredXml };
-            });
-            console.log(
-              userAnnotationsRef.current,
-              "userAnnotationsRefuserAnnotationsRef"
-            );
-            let convertData = [];
-            covert.forEach((data) => {
-              console.log(data, "userAnnotationsRefuserAnnotationsRef");
-
-              const xmlListStrings = data.xml.map((xmlObj) =>
-                JSON.stringify(xmlObj)
-              );
-              convertData.push({
-                ActorID: data.actorID,
-                xmlList: xmlListStrings,
-              });
-            });
-
-            // add annotation  of files attachment api
-            let addAnnoatationofFilesAttachment = {
-              FileID: Number(docWorkflowID),
-              AnnotationString: afterAddRevertHideFreetextElements,
-            };
-            let userID =
-              localStorage.getItem("userID") !== null
-                ? Number(localStorage.getItem("userID"))
-                : 0;
-            let findActionBundleID = FieldsData.find(
-              (actorData, index) => Number(actorData.userID) === userID
-            );
-            // Update Actor Bundle Status APi Call
-            let UpdateActorBundle = {
-              WorkFlowID: pdfResponceData.workFlowID,
-              UserID: userID,
-              WorkFlowActionableBundleID: findActionBundleID
-                ? findActionBundleID.pK_WorkFlowActionableBundle_ID
-                : 0,
-            };
-
-            console.log(FieldsData, "FieldsDataFieldsDataFieldsDataFieldsData");
-            let newData = { ActorsFieldValuesList: convertData };
-            console.log(newData, "FieldsDataFieldsDataFieldsDataFieldsData");
-
-            dispatch(
-              addUpdateFieldValueApi(
-                newData,
-                navigate,
-                t,
-                addAnnoatationofFilesAttachment,
-                "",
-                3,
-                "",
-                UpdateActorBundle
-              )
-            );
-          } catch (error) {
-            console.log(error, "handleClickSaveBtnhandleClickSaveBtn");
-          }
-
-          // try {
-          //   const annots = await annotationManager.getAnnotationsList();
-          //   if (annots && annots.length > 0) {
-          //     // Log the annotations before deletion
-          //     console.log("Annotations before deletion:", annots);
-
-          //     // Process and delete annotations
-          //     await annotationManager.deleteAnnotations(annots);
-
-          //     // Log the annotations after deletion attempt
-          //     console.log("Annotations after deletion:", annots);
-
-          //     // Import new annotations
-          //     await annotationManager.importAnnotations(
-          //       afterAddRevertHideFreetextElements
-          //     );
-
-          //     // Redraw annotations
-          //     annotationManager.redrawAnnotation(
-          //       afterAddRevertHideFreetextElements
-          //     );
-          //   } else {
-          //     console.error(
-          //       "No annotations found or annotations list is empty."
-          //     );
-          //   }
-          // } catch (error) {
-          //   console.error("Error importing or drawing annotations:", error);
-          //   // Handle
-          // }
-        };
-
-        instance.UI.setHeaderItems((header) => {
-          header.push({
-            type: "customElement",
-            render: () => {
-              const textBoxButton = document.createElement("button");
-              textBoxButton.textContent = "Decline";
-              textBoxButton.style.background = "#fff";
-              textBoxButton.style.border = "1px solid #e1e1e1";
-              textBoxButton.style.color = "#5a5a5a";
-              textBoxButton.style.padding = "8px 30px";
-              textBoxButton.style.cursor = "pointer";
-              textBoxButton.style.borderRadius = "4px";
-              textBoxButton.onclick = handleClickDeclineBtn;
-              return textBoxButton;
-            },
-          });
-
-          header.push({
-            type: "customElement",
-            render: () => {
-              const SaveButton = document.createElement("button");
-              SaveButton.textContent = "Save";
-              SaveButton.style.background = "#6172d6";
-              SaveButton.style.color = "#fff";
-              SaveButton.style.borderRadius = "4px";
-              SaveButton.style.cursor = "pointer";
-              SaveButton.style.padding = "8px 30px";
-              SaveButton.style.margin = "10px 0 10px 10px";
-              SaveButton.style.border = "1px solid #6172d6";
-              SaveButton.onclick = handleClickSaveBtn;
-              return SaveButton;
-            },
-          });
-        });
       });
     }
   }, [pdfResponceData.attachmentBlob]);
@@ -929,45 +659,6 @@ const SignatureViewer = () => {
   }, [Instance]);
   // === End ===//
 
-  // === these are the function which we are using in add signaturtires modal === //
-  //  its use for update dropdown display of signatries modal users list
-  useEffect(() => {
-    try {
-      if (Object.keys(assignees.user).length > 0) {
-        let usersDataArr = [];
-        assignees.user.forEach((allData, index) => {
-          usersDataArr.push({
-            label: (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
-                    <img
-                      src={`data:image/jpeg;base64,${allData?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
-                    />
-                    <span>{allData.name}</span>
-                  </Col>
-                </Row>
-              </>
-            ),
-            value: allData.pK_UID,
-            name: allData.name,
-            email: allData.emailAddress,
-          });
-        });
-        setUserList(usersDataArr);
-      }
-    } catch (error) {}
-  }, [assignees.user]);
-
   // === this is for Response Message===//
   useEffect(() => {
     if (ResponseMessage !== "" && ResponseMessage !== undefined) {
@@ -988,62 +679,16 @@ const SignatureViewer = () => {
   }, [ResponseMessage]);
   // === End ===//
 
-  const handleClickDeclineBtn = () => {
-    if (declineReasonMessage !== "") {
-      let userID = localStorage.getItem("userID");
-
-      let findActorID = userAnnotationsRef.current.find(
-        (data, index) => Number(data.userID) === Number(userID)
-      );
-      if (findActorID !== undefined) {
-        let Data = {
-          FK_WorkFlow_ID: pdfResponceData.workFlowID,
-          Reason: declineReasonMessage,
-          DeclinedById: Number(findActorID.actorID),
-        };
-        dispatch(
-          declineReasonApi(
-            navigate,
-            t,
-            Data,
-            setReasonModal,
-            setDeclineConfirmationModal
-          )
-        );
-      }
-
-      // setDeclineConfirmationModal
-    } else {
-      setDeclineErrorMessage(true);
-    }
-  };
   return (
     <>
       <div className="documnetviewer">
         <div className="webviewer" ref={viewer}></div>
       </div>
 
-      {reasonModal && (
-        <DeclineReasonModal
-          show={reasonModal}
-          setShow={setReasonModal}
-          declineReasonMessage={declineReasonMessage}
-          setDeclineReasonMessage={setDeclineReasonMessage}
-          handleClickDecline={handleClickDeclineBtn}
-          declineErrorMessage={declineErrorMessage}
-          setDeclineErrorMessage={setDeclineErrorMessage}
-        />
-      )}
-      {declineConfirmationModal && (
-        <DeclineReasonCloseModal
-          setShow={setDeclineConfirmationModal}
-          show={declineConfirmationModal}
-        />
-      )}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
       {Loading && <Loader />}
     </>
   );
 };
 
-export default SignatureViewer;
+export default ViewDocument;
