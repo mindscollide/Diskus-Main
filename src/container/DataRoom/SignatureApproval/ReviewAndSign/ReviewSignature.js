@@ -43,7 +43,10 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
-  console.log(approvalStats, "approvalStatsapprovalStatsapprovalStats")
+  console.log(
+    approvalStats.signedPercentage,
+    "approvalStatsapprovalStatsapprovalStats"
+  );
   const [reviewSignature, setReviewSignature] = useState([]);
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -321,7 +324,7 @@ const ReviewSignature = () => {
               <Col lg={6} md={6} sm={12}>
                 <div className="d-flex  position-relative">
                   {/* Progress bars with different colors and percentages */}
-                  {approvalStats.signedPercentage > 0 && (
+                  {approvalStats.signed > 0 && (
                     <ProgressBar
                       width={approvalStats.signedPercentage}
                       color="#F16B6B"
@@ -329,7 +332,7 @@ const ReviewSignature = () => {
                       percentageValue={`${approvalStats.signedPercentage}%`}
                     />
                   )}
-                  {approvalStats.pendingPercentage > 0 && (
+                  {approvalStats.pending > 0 && (
                     <ProgressBar
                       width={approvalStats.pendingPercentage}
                       color="#FFC300"
@@ -337,7 +340,7 @@ const ReviewSignature = () => {
                       percentageValue={`${approvalStats.pendingPercentage}%`}
                     />
                   )}
-                  {approvalStats.declinedPercentage > 0 && (
+                  {approvalStats.declined > 0 && (
                     <ProgressBar
                       width={approvalStats.declinedPercentage}
                       color="#55CE5C"
