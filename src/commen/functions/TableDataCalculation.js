@@ -70,3 +70,32 @@ export const calculateTotalsBillingStepper = (data) => {
     console.log(error, "errorerrorerror");
   }
 };
+
+//Totals Downgrade Subscription Table
+export const calculateTotalChargesDowngradeSubscription = (packages) => {
+  return packages.reduce((acc, pkg) => acc + pkg.price, 0);
+};
+
+export const calculateTotalHeadCountDowngradeSubscription = (packages) => {
+  return packages.reduce((acc, pkg) => acc + pkg.headCount, 0);
+};
+
+export const calculateTotalAllotedUsersDowngradeSubscription = (packages) => {
+  return packages.reduce((acc, pkg) => acc + pkg.allotedUsers, 0);
+};
+
+export const calculateTotalNotUtilizedDowngradeSubscription = (packages) => {
+  return packages.reduce(
+    (acc, pkg) => acc + (pkg.headCount - pkg.allotedUsers),
+    0
+  );
+};
+
+export const calculateTotalReductionDowngradeSubscription = (
+  textFieldValues
+) => {
+  return Object.values(textFieldValues).reduce(
+    (acc, value) => acc + (parseInt(value, 10) || 0),
+    0
+  );
+};

@@ -18,8 +18,11 @@ import {
   paymentStatus,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
-  BoardDeckSendEmail,
+  downgradeOrganizationSubscription,
+  cancelOrganizationSubscription,
+  getOrganizationWallet,
   DownloadBoarddeckPDF,
+  BoardDeckSendEmail,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -2370,6 +2373,198 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
   };
 };
 
+//DownGrade Organization Subscription
+const downgradeOrganizationSubscriptionInit = () => {
+  return {
+    type: actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_INIT,
+  };
+};
+
+const downgradeOrganizationSubscriptionSuccess = (response, message) => {
+  return {
+    type: actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const downgradeOrganizationSubscriptionFailed = (message) => {
+  return {
+    type: actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_SUCCESS,
+    message: message,
+  };
+};
+
+const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(downgradeOrganizationSubscriptionInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      downgradeOrganizationSubscription.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(downgradeOrganizationSubscriptionApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionSuccess(t("Data-available"))
+              );
+              navigate("/Admin/subscriptionDetailsUserManagement");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionFailed(
+                  t("Invalid-request-data")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionFailed(t("No-packages-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//Get Organization wallet
+const getOrganizationWalletInit = () => {
+  return {
+    type: actions.GET_ORGANIZATION_WALLET_INIT,
+  };
+};
+
+const getOrganizationWalletSuccess = (response, message) => {
+  return {
+    type: actions.GET_ORGANIZATION_WALLET_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getOrganizationWalletFailed = (message) => {
+  return {
+    type: actions.GET_ORGANIZATION_WALLET_FAILED,
+    message: message,
+  };
+};
+
+const getOrganizationWalletApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getOrganizationWalletInit());
+    let form = new FormData();
+    form.append("RequestMethod", getOrganizationWallet.RequestMethod);
+
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getOrganizationWalletApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationWallet_01".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationWalletSuccess(t("Records-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationWallet_02".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationWalletFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationWallet_03".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 //BoardDeck Send Email
 const BoardDeckSendEmail_init = () => {
   return {
@@ -2552,6 +2747,8 @@ export {
   requestOrganizationExtendApi,
   paymentStatusApi,
   cancelisTrailandSubscriptionApi,
-  BoardDeckSendEmailApi,
+  downgradeOrganizationSubscriptionApi,
+  getOrganizationWalletApi,
   BoardDeckPDFDownloadApi,
+  BoardDeckSendEmailApi,
 };

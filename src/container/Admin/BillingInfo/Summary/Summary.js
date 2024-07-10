@@ -25,8 +25,11 @@ import {
   _justShowDateformat,
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
+import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
+import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 const Summary = () => {
   const navigate = useNavigate();
+  let organizationID = localStorage.getItem("organizationID");
   const [activateBlur, setActivateBlur] = useState(false);
   const [rows, setRows] = useState([]);
   const [summary, setSummary] = useState({
@@ -68,14 +71,59 @@ const Summary = () => {
     }
   }, [Blur]);
 
-  const { Authreducer, OrganizationBillingReducer, LanguageReducer } =
-    useSelector((state) => state);
+  const {
+    Authreducer,
+    OrganizationBillingReducer,
+    LanguageReducer,
+    adminReducer,
+  } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
   const { t } = useTranslation();
+
+  //Open Invoice Table State
+
+  const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
+
+  //Invoice and payment History Api Call
+  useEffect(() => {
+    try {
+      let Data = {
+        OrganizationID: Number(organizationID),
+        InvoiceNo: "",
+        InvoiceStartDate: "",
+        InvoiceEndDate: "",
+        PaymentStartDate: "",
+        PaymentEndDate: "",
+        PaymentID: 1,
+        IsLateSurcharge: false,
+      };
+      dispatch(searchPaymentHistoryApi(navigate, Data, t, false, false));
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, []);
+
+  //Extracting the data of payment and Invoice Details
+  useEffect(() => {
+    try {
+      if (
+        adminReducer.searchPaymentHistory !== null &&
+        adminReducer.searchPaymentHistory !== undefined
+      ) {
+        console.log(
+          adminReducer.searchPaymentHistory,
+          "adminReduceradminReducer"
+        );
+        setOpenInvoiceRecords(adminReducer.searchPaymentHistory.paymentHistory);
+      }
+    } catch (error) {
+      console.log(error, "errorerror");
+    }
+  }, [adminReducer.searchPaymentHistory]);
 
   useEffect(() => {
     if (
@@ -215,58 +263,109 @@ const Summary = () => {
     navigate("/");
   };
 
+  //handle PayInvoice button
+  const handlePayInvoiceButton = () => {};
+
   const columns = [
     {
+      title: t("Subscription#"),
+      dataIndex: "subscriptionNumber",
+      key: "subscriptionNumber",
+      ellipsis: true,
+      align: "center",
+    },
+    {
       title: t("Invoice-number"),
-      dataIndex: "invoice",
-      key: "invoice",
+      dataIndex: "invoiceCustomerNumber",
+      key: "invoiceCustomerNumber",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Due-date"),
-      dataIndex: "duedate",
-      key: "duedate",
+      dataIndex: "invoiceDate",
+      key: "invoiceDate",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Invoice-amount"),
-      dataIndex: "invoiceamount",
-      key: "invoiceamount",
+      dataIndex: "paidAmount",
+      key: "paidAmount",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Balance-due"),
       dataIndex: "balancedue",
       key: "balancedue",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: t("Late-charges"),
       dataIndex: "latecharges",
       key: "latecharges",
+      ellipsis: true,
+      align: "center",
+    },
+    {
+      title: t("Pay"),
+      dataIndex: "Pay",
+      key: "Pay",
+      ellipsis: true,
+      align: "center",
     },
   ];
 
   const data = [
     {
       key: "1",
-      invoice: "John Brown",
-      duedate: 32,
-      invoiceamount: "New York No. 1 Lake Park",
-      balancedue: "York No. ",
-      latecharges: "Testttt",
-    },
-    {
-      key: "2",
-      invoice: "John Brown",
-      duedate: 32,
-      invoiceamount: "New York No. 1 Lake Park",
-      balancedue: "York No. ",
-      latecharges: "Testttt",
-    },
-    {
-      key: "3",
-      invoice: "John Brown",
-      duedate: 32,
-      invoiceamount: "New York No. 1 Lake Park",
-      balancedue: "York No. ",
-      latecharges: "Testttt",
+      Subscription: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>
+            2024-08-24-991-150
+          </span>
+        </>
+      ),
+      invoice: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>
+            "John Brown"
+          </span>
+        </>
+      ),
+      duedate: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>32</span>
+        </>
+      ),
+      invoiceamount: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>
+            New York No. 1 Lake Park
+          </span>
+        </>
+      ),
+      balancedue: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>York No.</span>
+        </>
+      ),
+      latecharges: (
+        <>
+          <span className={styles["SummarayOpenInvoiceRecords"]}>Testttt</span>
+        </>
+      ),
+      Pay: (
+        <>
+          <Button
+            text={t("Pay-Invoice")}
+            className={styles["Pay_invoice_button"]}
+            onClick={handlePayInvoiceButton}
+          />
+        </>
+      ),
     },
   ];
   useEffect(() => {
@@ -399,7 +498,7 @@ const Summary = () => {
                 lg={12}
                 className="Summary-Table-Invoice my-1"
               >
-                <Table rows={rows} column={columns} />
+                <Table rows={openInvoiceRecords} column={columns} />
               </Col>
             </Col>
           </Row>
@@ -469,7 +568,9 @@ const Summary = () => {
           message={open.message}
         />
       </Fragment>
-      {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
+      {OrganizationBillingReducer.Loading ||
+      LanguageReducer.Loading ||
+      adminReducer.Loading ? (
         <Loader />
       ) : null}
     </>

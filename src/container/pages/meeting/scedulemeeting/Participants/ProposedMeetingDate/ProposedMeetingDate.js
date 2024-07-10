@@ -504,7 +504,9 @@ const ProposedMeetingDate = ({
         return a.EndTime.localeCompare(b.EndTime);
       }
     });
+
     console.log(sortedDates, "newDatenewDatenewDatenewDate");
+
     if (sendResponseVal !== "") {
       let Data = {
         MeetingID: currentMeeting,
@@ -513,7 +515,7 @@ const ProposedMeetingDate = ({
       };
       console.log(Data, "newDatenewDatenewDatenewDate");
 
-      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
+      // dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
     } else {
       setOpen({
         flag: true,

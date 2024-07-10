@@ -27,6 +27,8 @@ const initialState = {
   paymentStatusModal: null,
   changeSelectedPackage: null,
   isFreeTrailCancelandUpgradeOrganization: null,
+  downgradeOrganizationSubscriptionData: null,
+  getOrganizationWallet: null,
   boardDeckSendEmailData: null,
   downloadBoardDeckPDF: null,
 };
@@ -529,6 +531,55 @@ const UserMangementReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        downgradeOrganizationSubscriptionData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        downgradeOrganizationSubscriptionData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ORGANIZATION_WALLET_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ORGANIZATION_WALLET_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationWallet: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ORGANIZATION_WALLET_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationWallet: null,
+        ResponseMessage: action.message,
+      };
+    }
     case actions.BOARD_DECK_SEND_EMAIL_INIT: {
       return {
         ...state,

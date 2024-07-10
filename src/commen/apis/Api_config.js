@@ -1603,6 +1603,14 @@ const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
 
+const downgradeOrganizationSubscription = {
+  RequestMethod: "ServiceManager.DowngradeOrganizationSubscription",
+};
+
+const getOrganizationWallet = {
+  RequestMethod: "ServiceManager.GetOrganizationWallet",
+};
+
 const BoardDeckSendEmail = {
   RequestMethod: "ServiceManager.SendBoardDeckPDFAsEmail",
 };
@@ -1610,6 +1618,7 @@ const BoardDeckSendEmail = {
 const DownloadBoarddeckPDF = {
   RequestMethod: "ServiceManager.DownloadBoardDeckPDF",
 };
+
 const GetPendingApprovalStatusforSignatureFlowRM = {
   RequestMethod: "ServiceManager.GetPendingApprovalStatusesForSignatureFlow",
 };
@@ -2049,6 +2058,8 @@ export {
   downloadAttachmentTalk,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  downgradeOrganizationSubscription,
+  getOrganizationWallet,
   BoardDeckSendEmail,
   DownloadBoarddeckPDF,
 };

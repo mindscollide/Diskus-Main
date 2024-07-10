@@ -950,6 +950,67 @@ export const formattedString = (dateString) => {
   return dateString.replace("T", "").replace(/:/g, "").replace(/-/g, "");
 };
 
+//Date formatter Subscription DownGrade
+export function formatDateDownGradeSubscription(dateString) {
+  if (!dateString || dateString.length < 8) {
+    return "Invalid date";
+  }
+
+  // Extract year, month, day from the input string
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+
+  // Create a new Date object
+  const date = new Date(`${year}-${month}-${day}`);
+
+  // Define an array of month names
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  // Get the formatted day, month, and year
+  const formattedDay = date.getDate();
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Return the formatted date string
+  return `${formattedDay} ${formattedMonth} ${formattedYear}`;
+}
+
+export function formatDateToDDMMYYYYDownGradeSubscription(dateString) {
+  if (!dateString || dateString.length < 8) {
+    return "Invalid date";
+  }
+
+  // Extract year, month, day from the input string
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+
+  // Create a new Date object
+  const date = new Date(`${year}-${month}-${day}`);
+
+  // Get the formatted day, month, and year
+  const formattedDay = String(date.getDate()).padStart(2, "0");
+  const formattedMonth = String(date.getMonth() + 1).padStart(2, "0");
+  const formattedYear = date.getFullYear();
+
+  // Return the formatted date string
+  return `${formattedYear}-${formattedMonth}-${formattedDay}`;
+}
+
 export const SignatureandPendingApprovalDateTIme = (dateTime) => {
   let fullDateyear =
     dateTime?.slice(0, 4) +
