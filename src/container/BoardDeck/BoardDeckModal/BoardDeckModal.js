@@ -28,6 +28,23 @@ const BoardDeckModal = ({
 
   const [radioValue, setRadioValue] = useState(1);
 
+  useEffect(() => {
+    return () => {
+      setBoarddeckOptions({
+        selectall: false,
+        Organizer: false,
+        AgendaContributor: false,
+        Participants: false,
+        Minutes: false,
+        Task: false,
+        polls: false,
+        attendeceReport: false,
+        video: false,
+        Agenda: false,
+      });
+    };
+  }, []);
+
   const onChangeSelectAll = (e) => {
     let value = e.target.checked;
     setBoarddeckOptions({

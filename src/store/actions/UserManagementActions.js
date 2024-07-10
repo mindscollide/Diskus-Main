@@ -2507,7 +2507,7 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
 
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "BoardDeckFile.pdf");
+          link.setAttribute("download", "BoardDeck.pdf");
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);

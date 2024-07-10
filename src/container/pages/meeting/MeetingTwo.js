@@ -82,7 +82,6 @@ import {
   meetingParticipantAdded,
   meetingParticipantRemoved,
   boardDeckModal,
-  boardDeckShareModal,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -2575,6 +2574,7 @@ const NewMeeting = () => {
           </>
         )}
       </section>
+
       {NewMeetingreducer.boardDeckModalData && (
         <BoardDeckModal
           boardDeckMeetingID={boardDeckMeetingID}
