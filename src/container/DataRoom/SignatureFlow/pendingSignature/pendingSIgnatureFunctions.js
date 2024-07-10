@@ -96,13 +96,7 @@ export const revertProcessXmlForReadOnly = (xmlString, nameValues) => {
 // === used for Hide Form Fields === //
 
 export const processXmlToHideFields = (xmlString, nameValues) => {
-  console.log(
-    xmlString,
-    nameValues,
-    "processXmlToHideFieldsprocessXmlToHideFields"
-  );
   let convertXmlToJson = xmlToJson(xmlString);
-  console.log("xml-js xmlToJson", convertXmlToJson);
   const removedItems = {
     fields: [],
     ffields: [],
@@ -158,9 +152,6 @@ export const processXmlToHideFields = (xmlString, nameValues) => {
   const updatedXmlString = new XMLSerializer().serializeToString(
     new DOMParser().parseFromString(jsonToXml(convertXmlToJson), "text/xml")
   );
-  console.log("xml-js xmlToJson", updatedXmlString);
-  console.log("xml-js xmlToJson", removedItems);
-
   return {
     updatedXmlString,
     removedItems,
@@ -170,15 +161,8 @@ export const processXmlToHideFields = (xmlString, nameValues) => {
 export const revertProcessXmlToHideFields = (xml, removedItems) => {
   // Convert the updated XML string back to JSON
   let convertXmlToJson = xmlToJson(xml);
-  console.log("Reverting XML - Initial JSON", convertXmlToJson);
-  console.log("Reverting XML - Initial JSON", removedItems);
-
   // Helper function to reinsert removed items back to their original positions
   function reinsertRemovedItems(array, removedArray) {
-    console.log(
-      { array, removedArray },
-      "reinsertRemovedItemsreinsertRemovedItems"
-    );
     removedArray.forEach(({ index, item }) => {
       array.splice(index, 0, item);
     });
@@ -217,10 +201,7 @@ export const revertProcessXmlToHideFields = (xml, removedItems) => {
   let newConvertXmlToJson = jsonToXml(convertXmlToJson);
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(newConvertXmlToJson, "text/xml");
-  console.log("xml-js xmlToJson", convertXmlToJson);
-  console.log("xml-js xmlToJson", removedItems);
   const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-  console.log("Reverted XML String", updatedXmlString);
   return updatedXmlString;
 };
 // === End === //
@@ -261,14 +242,8 @@ export const revertReadOnlyFreetextElements = (xmlString, userDataRead) => {
     const userIdIndex = subject.lastIndexOf("-");
     if (userIdIndex !== -1) {
       const userId = subject.substring(userIdIndex + 1);
-      console.log("revertReadOnlyFreetextElements", userId);
-      console.log(
-        "getDataroomAnnotation.annotationString  revertReadOnlyFreetextElements",
-        userDataRead.includes(Number(userId))
-      );
       if (userDataRead.includes(Number(userId))) {
         // User ID matches, set the annotation flags to "print"
-        console.log("revertReadOnlyFreetextElements");
         freetextElement.setAttribute("flags", "print");
       }
     }
@@ -287,8 +262,6 @@ export const hideFreetextElements = (xmlString, userDataRead) => {
   try {
     // Convert the XML string to JSON
     let convertXmlToJson = xmlToJson(xmlString);
-    console.log("xml-js xmlToJson", convertXmlToJson);
-
     const removedHideFreetextElements = [];
 
     // Helper function to remove matched items from an array and add to removedItems
@@ -324,9 +297,6 @@ export const hideFreetextElements = (xmlString, userDataRead) => {
     const hideFreetextXmlString = new XMLSerializer().serializeToString(
       new DOMParser().parseFromString(jsonToXml(convertXmlToJson), "text/xml")
     );
-    console.log("xml-js updatedXmlString", hideFreetextXmlString);
-    console.log("xml-js removedItems", removedHideFreetextElements);
-
     return {
       hideFreetextXmlString,
       removedHideFreetextElements,
@@ -369,8 +339,6 @@ export const revertHideFreetextElements = (
     const restoredXmlString = new XMLSerializer().serializeToString(
       new DOMParser().parseFromString(jsonToXml(convertXmlToJson), "text/xml")
     );
-    console.log("xml-js restoredXmlString", restoredXmlString);
-
     return restoredXmlString;
   } catch (error) {
     console.error("Error in revertHiddenFreetextElements:", error);
