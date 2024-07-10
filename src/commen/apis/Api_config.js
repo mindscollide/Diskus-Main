@@ -1611,6 +1611,14 @@ const getOrganizationWallet = {
   RequestMethod: "ServiceManager.GetOrganizationWallet",
 };
 
+const BoardDeckSendEmail = {
+  RequestMethod: "ServiceManager.SendBoardDeckPDFAsEmail",
+};
+
+const DownloadBoarddeckPDF = {
+  RequestMethod: "ServiceManager.DownloadBoardDeckPDF",
+};
+
 const GetPendingApprovalStatusforSignatureFlowRM = {
   RequestMethod: "ServiceManager.GetPendingApprovalStatusesForSignatureFlow",
 };
@@ -2052,4 +2060,6 @@ export {
   CancelTrailandUpdageOrganiztionRM,
   downgradeOrganizationSubscription,
   getOrganizationWallet,
+  BoardDeckSendEmail,
+  DownloadBoarddeckPDF,
 };

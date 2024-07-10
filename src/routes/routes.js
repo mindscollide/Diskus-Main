@@ -73,7 +73,8 @@ import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/Pendin
 import SubscriptionDetailsUserManagement from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement";
 import DowngradeSubscription from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription";
 import UpdatedCancelSubscription from "../container/pages/UserMangement/AdminUserManagement/UpdatedCancelSubscription/UpdatedCancelSubscription";
-
+import PrivateVideoMeeting from "./PrivateVideoMeetingRoute";
+import VideoMeetingBoardDeck from "../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck";
 import { DocumentViewer } from "../components/elements";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
@@ -81,6 +82,10 @@ const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
+      {/* Video Meeting Route */}
+      <Route element={<PrivateVideoMeeting />}>
+        <Route path="/Diskus/video" element={<VideoMeetingBoardDeck />} />
+      </Route>
       {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
 
