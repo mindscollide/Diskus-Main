@@ -42,7 +42,7 @@ import {
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 
-const Header2 = () => {
+const Header2 = ({ isVideo }) => {
   const location = useLocation();
   // const languageref = useRef()
   const state = useSelector((state) => state);
@@ -375,6 +375,7 @@ const Header2 = () => {
                     : "/Admin/ManageUsers"
                   : "/DisKus"
               }
+
               // onClick={homePageDashboardClick}
             >
               <img
@@ -623,7 +624,9 @@ const Header2 = () => {
             <Navbar.Brand
               as={Link}
               to={
-                location.pathname.includes("/Admin")
+                isVideo
+                  ? "/Diskus/video"
+                  : location.pathname.includes("/Admin")
                   ? roleRoute
                     ? "/Admin/PayOutstanding"
                     : TrialExpireSelectPac
@@ -654,400 +657,417 @@ const Header2 = () => {
                 draggable="false"
               />
             </Navbar.Brand>
-            <Row>
-              {!TrialExpireSelectPac && hasAdminRights ? (
-                <Col lg={12} md={12} sm={12} className="UpgradeButtonsClass">
-                  {JSON.parse(localStorage.getItem("isTrial")) && (
-                    <>
-                      {JSON.parse(localStorage.getItem("remainingDays")) >
-                        1 && (
+            {!isVideo && (
+              <>
+                <Row>
+                  {!TrialExpireSelectPac && hasAdminRights ? (
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="UpgradeButtonsClass"
+                    >
+                      {JSON.parse(localStorage.getItem("isTrial")) && (
                         <>
-                          {" "}
-                          <span className={"trialExpireButton"}>
-                            <span className="InnerText">
-                              {t(
-                                "Your-trial-will-expire-in-{{remainingDays}}-days",
-                                {
-                                  remainingDays:
-                                    localStorage.getItem("remainingDays"),
-                                }
+                          {JSON.parse(localStorage.getItem("remainingDays")) >
+                            1 && (
+                            <>
+                              {" "}
+                              <span className={"trialExpireButton"}>
+                                <span className="InnerText">
+                                  {t(
+                                    "Your-trial-will-expire-in-{{remainingDays}}-days",
+                                    {
+                                      remainingDays:
+                                        localStorage.getItem("remainingDays"),
+                                    }
+                                  )}
+                                </span>
+                              </span>
+                              <Button
+                                text={t("Upgrade-now")}
+                                className="UpgradeNowbutton"
+                                onClick={handleShowUpgradedNowModal}
+                              />
+                            </>
+                          )}
+                          {(JSON.parse(
+                            localStorage.getItem("remainingDays")
+                          ) === 1 ||
+                            JSON.parse(
+                              localStorage.getItem("remainingDays")
+                            ) === 0) && (
+                            <>
+                              {" "}
+                              <Button
+                                text={t("Upgrade-now")}
+                                className="UpgradeNowbutton"
+                                onClick={handleShowUpgradedNowModal}
+                              />
+                              {JSON.parse(
+                                localStorage.getItem("isExtensionAvailable")
+                              ) && (
+                                <Button
+                                  text={t("Request-an-extention")}
+                                  className="UpgradeNowbutton"
+                                  onClick={handleRequestExtentionModal}
+                                />
                               )}
-                            </span>
-                          </span>
-                          <Button
-                            text={t("Upgrade-now")}
-                            className="UpgradeNowbutton"
-                            onClick={handleShowUpgradedNowModal}
-                          />
-                        </>
-                      )}
-                      {(JSON.parse(localStorage.getItem("remainingDays")) ===
-                        1 ||
-                        JSON.parse(localStorage.getItem("remainingDays")) ===
-                          0) && (
-                        <>
-                          {" "}
-                          <Button
-                            text={t("Upgrade-now")}
-                            className="UpgradeNowbutton"
-                            onClick={handleShowUpgradedNowModal}
-                          />
-                          {JSON.parse(
-                            localStorage.getItem("isExtensionAvailable")
-                          ) && (
-                            <Button
-                              text={t("Request-an-extention")}
-                              className="UpgradeNowbutton"
-                              onClick={handleRequestExtentionModal}
-                            />
+                            </>
                           )}
                         </>
                       )}
-                    </>
-                  )}
-                </Col>
-              ) : null}
-            </Row>
-            <Nav className="ml-auto align-items-center">
-              <LanguageSelector />
+                    </Col>
+                  ) : null}
+                </Row>
+                <Nav className="ml-auto align-items-center">
+                  <LanguageSelector />
 
-              <Nav.Link className="me-2">
-                {checkFeatureIDAvailability(1) ||
-                checkFeatureIDAvailability(13) ? (
-                  <Tooltip placement="topRight" title={t("Shortcuts")}>
-                    <div className="dropdown-btn_dotted">
-                      {location.pathname.includes("/Admin") ||
-                      location.pathname.includes("/Admin") ? null : roleRoute ||
-                        TrialExpireSelectPac ? null : (
-                        <DropdownButton
-                          id="dropdown-btn_dotted"
-                          className="dropdown-btn_dotted"
-                          title={
-                            <img
-                              src={DiskusNotificationIcon}
-                              alt=""
-                              width={28}
-                              draggable="false"
-                            />
-                          }
-                          onClick={dropDownMenuFunction}
-                        >
-                          {checkFeatureIDAvailability(1) ? (
-                            <>
-                              <Dropdown.Item
-                                className="d-flex title-className"
-                                onClick={openMeetingModal}
-                              >
-                                {t("Quick-meeting")}
-                              </Dropdown.Item>
-                            </>
-                          ) : null}
-
-                          {checkFeatureIDAvailability(13) ? (
-                            <>
-                              <Dropdown.Item className="d-flex title-className">
-                                {/* {t("Upload-document")} */}
-                                {(NewMeetingreducer.scheduleMeetingPageFlag ===
-                                  true ||
-                                  NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                                    true ||
-                                  NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                                    true ||
-                                  NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                                    true ||
-                                  NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                    true ||
-                                  NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                    true) &&
-                                NewMeetingreducer.viewMeetingFlag === false ? (
-                                  <div
-                                    onClick={() => {
-                                      dispatch(
-                                        showCancelModalmeetingDeitals(true)
-                                      );
-                                      dispatch(uploadGlobalFlag(true));
-                                    }}
+                  <Nav.Link className="me-2">
+                    {checkFeatureIDAvailability(1) ||
+                    checkFeatureIDAvailability(13) ? (
+                      <Tooltip placement="topRight" title={t("Shortcuts")}>
+                        <div className="dropdown-btn_dotted">
+                          {location.pathname.includes("/Admin") ||
+                          location.pathname.includes(
+                            "/Admin"
+                          ) ? null : roleRoute ||
+                            TrialExpireSelectPac ? null : (
+                            <DropdownButton
+                              id="dropdown-btn_dotted"
+                              className="dropdown-btn_dotted"
+                              title={
+                                <img
+                                  src={DiskusNotificationIcon}
+                                  alt=""
+                                  width={28}
+                                  draggable="false"
+                                />
+                              }
+                              onClick={dropDownMenuFunction}
+                            >
+                              {checkFeatureIDAvailability(1) ? (
+                                <>
+                                  <Dropdown.Item
+                                    className="d-flex title-className"
+                                    onClick={openMeetingModal}
                                   >
-                                    {t("Upload-document")}
-                                  </div>
-                                ) : (
-                                  <UploadTextField
-                                    title={t("Upload-document")}
-                                    handleFileUploadRequest={handleUploadFile}
-                                    // setProgress={setProgress}
-                                  />
-                                )}
+                                    {t("Quick-meeting")}
+                                  </Dropdown.Item>
+                                </>
+                              ) : null}
 
-                                {/* <input type="file" /> */}
-                              </Dropdown.Item>
-                            </>
-                          ) : null}
+                              {checkFeatureIDAvailability(13) ? (
+                                <>
+                                  <Dropdown.Item className="d-flex title-className">
+                                    {/* {t("Upload-document")} */}
+                                    {(NewMeetingreducer.scheduleMeetingPageFlag ===
+                                      true ||
+                                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                        true ||
+                                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                        true ||
+                                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                        true ||
+                                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                        true ||
+                                      NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                        true) &&
+                                    NewMeetingreducer.viewMeetingFlag ===
+                                      false ? (
+                                      <div
+                                        onClick={() => {
+                                          dispatch(
+                                            showCancelModalmeetingDeitals(true)
+                                          );
+                                          dispatch(uploadGlobalFlag(true));
+                                        }}
+                                      >
+                                        {t("Upload-document")}
+                                      </div>
+                                    ) : (
+                                      <UploadTextField
+                                        title={t("Upload-document")}
+                                        handleFileUploadRequest={
+                                          handleUploadFile
+                                        }
+                                        // setProgress={setProgress}
+                                      />
+                                    )}
 
-                          {checkFeatureIDAvailability(13) ? (
-                            <>
-                              <Dropdown.Item
-                                className="d-flex title-className"
-                                onClick={RecentFilesTab}
-                              >
-                                {t("Recently-added-files")}
-                              </Dropdown.Item>
-                            </>
-                          ) : null}
-                        </DropdownButton>
-                      )}
-                    </div>
-                  </Tooltip>
-                ) : null}
-              </Nav.Link>
+                                    {/* <input type="file" /> */}
+                                  </Dropdown.Item>
+                                </>
+                              ) : null}
 
-              <Dropdown className="profilebtn-dropdown">
-                <Dropdown.Toggle className="dropdown-toggle">
-                  <img
-                    src={`data:image/jpeg;base64,${currentUserProfilePic}`}
-                    className="user-img me-3 "
-                    width={30}
-                    alt=""
-                    draggable="false"
-                  />
+                              {checkFeatureIDAvailability(13) ? (
+                                <>
+                                  <Dropdown.Item
+                                    className="d-flex title-className"
+                                    onClick={RecentFilesTab}
+                                  >
+                                    {t("Recently-added-files")}
+                                  </Dropdown.Item>
+                                </>
+                              ) : null}
+                            </DropdownButton>
+                          )}
+                        </div>
+                      </Tooltip>
+                    ) : null}
+                  </Nav.Link>
 
-                  <p className={`${"user-name me-2"} ${currentLanguage}`}>
-                    {currentUserName}
-                  </p>
-                </Dropdown.Toggle>
-                {location.pathname.includes("/Admin") ? (
-                  <Dropdown.Menu className="dropdown_menu_admin">
-                    {roleRoute || TrialExpireSelectPac || cancelSub ? (
-                      <Dropdown.Item
-                        // className={currentLanguage}
-                        onClick={modalLogoutHandler}
-                      >
-                        {/* Sign Out */}
-                        <Nav.Link className="SignOutOptionMenu text-black border-none">
-                          {t("Sign-out")}
-                        </Nav.Link>
-                      </Dropdown.Item>
-                    ) : (
-                      <>
-                        {" "}
-                        <Dropdown.Item
-                          // className={`${" text-black"} ${currentLanguage}`}
-                          // onClick={() => forgotPasswordCheck()}
-                          className={currentLanguage}
-                          onClick={openUserTab}
-                        >
-                          <Nav.Link
-                            as={Link}
-                            // to="CustomerInformation"
-                            disabled={true}
-                            className="text-black FontClass"
+                  <Dropdown className="profilebtn-dropdown">
+                    <Dropdown.Toggle className="dropdown-toggle">
+                      <img
+                        src={`data:image/jpeg;base64,${currentUserProfilePic}`}
+                        className="user-img me-3 "
+                        width={30}
+                        alt=""
+                        draggable="false"
+                      />
+
+                      <p className={`${"user-name me-2"} ${currentLanguage}`}>
+                        {currentUserName}
+                      </p>
+                    </Dropdown.Toggle>
+                    {location.pathname.includes("/Admin") ? (
+                      <Dropdown.Menu className="dropdown_menu_admin">
+                        {roleRoute || TrialExpireSelectPac || cancelSub ? (
+                          <Dropdown.Item
+                            // className={currentLanguage}
+                            onClick={modalLogoutHandler}
                           >
-                            {t("User-dashboard")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                        {checkFeatureIDAvailability(1) ? (
+                            {/* Sign Out */}
+                            <Nav.Link className="SignOutOptionMenu text-black border-none">
+                              {t("Sign-out")}
+                            </Nav.Link>
+                          </Dropdown.Item>
+                        ) : (
                           <>
+                            {" "}
                             <Dropdown.Item
-                              className={`${" text-black"} ${currentLanguage}`}
-                              onClick={handleModalCustomerInformation}
+                              // className={`${" text-black"} ${currentLanguage}`}
                               // onClick={() => forgotPasswordCheck()}
+                              className={currentLanguage}
+                              onClick={openUserTab}
                             >
                               <Nav.Link
                                 as={Link}
-                                to="CustomerInformation"
+                                // to="CustomerInformation"
+                                disabled={true}
                                 className="text-black FontClass"
                               >
+                                {t("User-dashboard")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                            {checkFeatureIDAvailability(1) ? (
+                              <>
+                                <Dropdown.Item
+                                  className={`${" text-black"} ${currentLanguage}`}
+                                  onClick={handleModalCustomerInformation}
+                                  // onClick={() => forgotPasswordCheck()}
+                                >
+                                  <Nav.Link
+                                    as={Link}
+                                    to="CustomerInformation"
+                                    className="text-black FontClass"
+                                  >
+                                    {/* Change Password */}
+                                    {t("Customer-information")}
+                                  </Nav.Link>
+                                </Dropdown.Item>
+                              </>
+                            ) : null}
+                            <Dropdown.Item
+                              className={currentLanguage}
+                              onClick={modalUserProfileHandler}
+                            >
+                              <Nav.Link className="d-flex text-black FontClass">
+                                {t("My-profile")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className={" text-black" + " " + currentLanguage}
+                              onClick={() => forgotPasswordCheck()}
+                            >
+                              <Nav.Link
+                                as={Link}
+                                to="changePassword"
+                                className="SignOutOptionMenu text-black FontClass"
+                              >
                                 {/* Change Password */}
-                                {t("Customer-information")}
+                                {t("Change-password")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              // className={currentLanguage}
+                              onClick={modalLogoutHandler}
+                            >
+                              {/* Sign Out */}
+                              <Nav.Link className="SignOutOptionMenu text-black border-none FontClass">
+                                {t("Sign-out")}
                               </Nav.Link>
                             </Dropdown.Item>
                           </>
-                        ) : null}
-                        <Dropdown.Item
-                          className={currentLanguage}
-                          onClick={modalUserProfileHandler}
-                        >
-                          <Nav.Link className="d-flex text-black FontClass">
-                            {t("My-profile")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className={" text-black" + " " + currentLanguage}
-                          onClick={() => forgotPasswordCheck()}
-                        >
-                          <Nav.Link
-                            as={Link}
-                            to="changePassword"
-                            className="SignOutOptionMenu text-black FontClass"
-                          >
-                            {/* Change Password */}
-                            {t("Change-password")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          // className={currentLanguage}
-                          onClick={modalLogoutHandler}
-                        >
-                          {/* Sign Out */}
-                          <Nav.Link className="SignOutOptionMenu text-black border-none FontClass">
-                            {t("Sign-out")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                      </>
-                    )}
-                  </Dropdown.Menu>
-                ) : (
-                  <Dropdown.Menu className="Profile_dropdown_menu">
-                    {roleRoute || TrialExpireSelectPac || cancelSub ? (
-                      <Dropdown.Item
-                        className={currentLanguage}
-                        onClick={modalLogoutHandler}
-                      >
-                        {/* Sign Out */}
-                        <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
-                          {t("Sign-out")}
-                        </Nav.Link>
-                      </Dropdown.Item>
+                        )}
+                      </Dropdown.Menu>
                     ) : (
-                      <>
-                        {hasAdminRights && (
+                      <Dropdown.Menu className="Profile_dropdown_menu">
+                        {roleRoute || TrialExpireSelectPac || cancelSub ? (
                           <Dropdown.Item
                             className={currentLanguage}
-                            onClick={openAdminTab}
+                            onClick={modalLogoutHandler}
                           >
-                            <Nav.Link className="d-flex text-black FontClass">
-                              {t("Organization-admin")}
+                            {/* Sign Out */}
+                            <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
+                              {t("Sign-out")}
                             </Nav.Link>
                           </Dropdown.Item>
+                        ) : (
+                          <>
+                            {hasAdminRights && (
+                              <Dropdown.Item
+                                className={currentLanguage}
+                                onClick={openAdminTab}
+                              >
+                                <Nav.Link className="d-flex text-black FontClass">
+                                  {t("Organization-admin")}
+                                </Nav.Link>
+                              </Dropdown.Item>
+                            )}
+                            <Dropdown.Item
+                              className={currentLanguage}
+                              onClick={modalUserProfileHandler}
+                            >
+                              <Nav.Link className="d-flex text-black FontClass">
+                                {t("My-profile")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className={" text-black" + " " + currentLanguage}
+                              onClick={() => forgotPasswordCheck()}
+                            >
+                              <Nav.Link
+                                as={Link}
+                                to={
+                                  (NewMeetingreducer.scheduleMeetingPageFlag ===
+                                    true ||
+                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                      true) &&
+                                  NewMeetingreducer.viewMeetingFlag === false
+                                    ? "/DisKus/Meeting"
+                                    : "/DisKus/setting"
+                                }
+                                className="d-flex text-black FontClass"
+                                onClick={handleMeetingSidebarSettings}
+                              >
+                                {/* Change Password */}
+                                {t("Settings")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className={" text-black" + " " + currentLanguage}
+                              onClick={() => forgotPasswordCheck()}
+                            >
+                              <Nav.Link
+                                as={Link}
+                                to={
+                                  (NewMeetingreducer.scheduleMeetingPageFlag ===
+                                    true ||
+                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                      true) &&
+                                  NewMeetingreducer.viewMeetingFlag === false
+                                    ? "/DisKus/Meeting"
+                                    : "/DisKus/faq's"
+                                }
+                                onClick={handleMeetingSidebarFAQ}
+                                className="d-flex text-black FontClass"
+                              >
+                                {/* Change Password */}
+                                {t("Help")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className={" text-black" + " " + currentLanguage}
+                              onClick={() => forgotPasswordCheck()}
+                            >
+                              <Nav.Link
+                                as={Link}
+                                to="changePassword"
+                                className="SignOutOptionMenu d-flex text-black FontClass"
+                              >
+                                {t("Change-password")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className={currentLanguage}
+                              onClick={modalLogoutHandler}
+                            >
+                              {/* Sign Out */}
+                              <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
+                                {t("Sign-out")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                          </>
                         )}
-                        <Dropdown.Item
-                          className={currentLanguage}
-                          onClick={modalUserProfileHandler}
-                        >
-                          <Nav.Link className="d-flex text-black FontClass">
-                            {t("My-profile")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className={" text-black" + " " + currentLanguage}
-                          onClick={() => forgotPasswordCheck()}
-                        >
-                          <Nav.Link
-                            as={Link}
-                            to={
-                              (NewMeetingreducer.scheduleMeetingPageFlag ===
-                                true ||
-                                NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                  true ||
-                                NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                  true) &&
-                              NewMeetingreducer.viewMeetingFlag === false
-                                ? "/DisKus/Meeting"
-                                : "/DisKus/setting"
-                            }
-                            className="d-flex text-black FontClass"
-                            onClick={handleMeetingSidebarSettings}
-                          >
-                            {/* Change Password */}
-                            {t("Settings")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className={" text-black" + " " + currentLanguage}
-                          onClick={() => forgotPasswordCheck()}
-                        >
-                          <Nav.Link
-                            as={Link}
-                            to={
-                              (NewMeetingreducer.scheduleMeetingPageFlag ===
-                                true ||
-                                NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                  true ||
-                                NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                  true) &&
-                              NewMeetingreducer.viewMeetingFlag === false
-                                ? "/DisKus/Meeting"
-                                : "/DisKus/faq's"
-                            }
-                            onClick={handleMeetingSidebarFAQ}
-                            className="d-flex text-black FontClass"
-                          >
-                            {/* Change Password */}
-                            {t("Help")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className={" text-black" + " " + currentLanguage}
-                          onClick={() => forgotPasswordCheck()}
-                        >
-                          <Nav.Link
-                            as={Link}
-                            to="changePassword"
-                            className="SignOutOptionMenu d-flex text-black FontClass"
-                          >
-                            {t("Change-password")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className={currentLanguage}
-                          onClick={modalLogoutHandler}
-                        >
-                          {/* Sign Out */}
-                          <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
-                            {t("Sign-out")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                      </>
+                      </Dropdown.Menu>
                     )}
-                  </Dropdown.Menu>
-                )}
-              </Dropdown>
-              {roleRoute || TrialExpireSelectPac || cancelSub ? null : (
-                <Nav.Link
-                  as={Link}
-                  to={
-                    location.pathname.includes("/Admin")
-                      ? "/Admin/faq's"
-                      : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                          NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                            true ||
-                          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                            true ||
-                          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                            true ||
-                          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                            true ||
-                          NewMeetingreducer.proposeNewMeetingPageFlag ===
-                            true) &&
-                        NewMeetingreducer.viewMeetingFlag === false
-                      ? "/DisKus/Meeting"
-                      : "/DisKus/faq's"
-                  }
-                  className="mx-3"
-                  onClick={handleMeetingSidebarFAQ}
-                >
-                  <Tooltip placement="topRight" title={t("FAQs")}>
-                    <img
-                      src={DiskusHeaderInfo}
-                      alt=""
-                      width={28}
-                      draggable="false"
-                    />
-                  </Tooltip>
-                </Nav.Link>
-              )}
-            </Nav>
+                  </Dropdown>
+                  {roleRoute || TrialExpireSelectPac || cancelSub ? null : (
+                    <Nav.Link
+                      as={Link}
+                      to={
+                        location.pathname.includes("/Admin")
+                          ? "/Admin/faq's"
+                          : (NewMeetingreducer.scheduleMeetingPageFlag ===
+                              true ||
+                              NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                true ||
+                              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                true ||
+                              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                true ||
+                              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                true ||
+                              NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                true) &&
+                            NewMeetingreducer.viewMeetingFlag === false
+                          ? "/DisKus/Meeting"
+                          : "/DisKus/faq's"
+                      }
+                      className="mx-3"
+                      onClick={handleMeetingSidebarFAQ}
+                    >
+                      <Tooltip placement="topRight" title={t("FAQs")}>
+                        <img
+                          src={DiskusHeaderInfo}
+                          alt=""
+                          width={28}
+                          draggable="false"
+                        />
+                      </Tooltip>
+                    </Nav.Link>
+                  )}
+                </Nav>
+              </>
+            )}
           </section>
           {/* </Container> */}
         </Navbar>

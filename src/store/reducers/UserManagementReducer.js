@@ -27,6 +27,10 @@ const initialState = {
   paymentStatusModal: null,
   changeSelectedPackage: null,
   isFreeTrailCancelandUpgradeOrganization: null,
+  downgradeOrganizationSubscriptionData: null,
+  getOrganizationWallet: null,
+  boardDeckSendEmailData: null,
+  downloadBoardDeckPDF: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -526,6 +530,113 @@ const UserMangementReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        downgradeOrganizationSubscriptionData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        downgradeOrganizationSubscriptionData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ORGANIZATION_WALLET_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ORGANIZATION_WALLET_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationWallet: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ORGANIZATION_WALLET_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationWallet: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.BOARD_DECK_SEND_EMAIL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.BOARD_DECK_SEND_EMAIL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        boardDeckSendEmailData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.BOARD_DECK_SEND_EMAIL_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        boardDeckSendEmailData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DOWNLOAD__BOARDDECKPDF_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DOWNLOAD_BOARDDECKPDF_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        downloadBoardDeckPDF: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DOWNLOAD_BOARDDECKPDF_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        downloadBoardDeckPDF: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DOWNLOAD_BOARDDECKPDF_LOADER_FALSE: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
     case actions.CLEAR_MESSEGES_USER_MANAGEMENT:
       return {
         ...state,

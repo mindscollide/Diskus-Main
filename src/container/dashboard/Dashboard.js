@@ -2220,7 +2220,7 @@ const Dashboard = () => {
       window.removeEventListener("offline", handleOffline);
     };
   }, []);
- 
+
   localStorage.setItem("MqttConnectionState", isOnline);
 
   useEffect(() => {
