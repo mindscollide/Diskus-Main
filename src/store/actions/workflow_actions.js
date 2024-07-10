@@ -1291,11 +1291,12 @@ const getAllPendingApprovalsStats_init = () => {
     type: actions.GETALLPENDINGAPPROVALSTATS_INIT,
   };
 };
-const getAllPendingApprovalsStats_success = (response, message) => {
+const getAllPendingApprovalsStats_success = (response, message, loader) => {
   return {
     type: actions.GETALLPENDINGAPPROVALSTATS_SUCCESS,
     response: response,
     message: message,
+    loader: loader
   };
 };
 
@@ -1337,7 +1338,8 @@ const getAllPendingApprovalsStatsApi = (navigate, t) => {
               dispatch(
                 getAllPendingApprovalsStats_success(
                   response.data.responseResult,
-                  ""
+                  "",
+                  true
                 )
               );
             } else if (
@@ -1488,11 +1490,12 @@ const getAllPendingApprovalStatus_init = () => {
   };
 };
 
-const getAllPendingApprovalStatus_success = (response, message) => {
+const getAllPendingApprovalStatus_success = (response, message, loader) => {
   return {
     type: actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_SUCCESS,
     response: response,
     message: message,
+    loader: loader
   };
 };
 
@@ -1538,7 +1541,8 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data) => {
               dispatch(
                 getAllPendingApprovalStatus_success(
                   response.data.responseResult,
-                  ""
+                  "",
+                  true
                 )
               );
             } else if (
