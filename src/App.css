@@ -7977,3 +7977,19 @@ body[dir="rtl"]
   border-bottom-right-radius: 4px !important;
   border-left: 0px !important;
 }
+
+.SignatoriesList .ant-table-thead > tr > th:nth-child(1) span {
+  color: #55ce5c !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
+.SignatoriesList .ant-table-thead > tr > th:nth-child(2) span {
+  color: #f16b6b !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
+.SignatoriesList .ant-table-thead > tr > th:nth-child(3) span {
+  color: #d8a709 !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}

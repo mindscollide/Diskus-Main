@@ -437,7 +437,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
             <Col lg={12} md={12} sm={12}>
               <TextField
                 labelClass={"d-none"}
-                maxLength={490}
+                maxLength={140}
                 value={updatePolls.Title}
                 name={"UpdatePollsTitle"}
                 change={HandleChangeUpdatePolls}
@@ -475,7 +475,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                   labelClass="d-none"
                                   name={data.name}
                                   disable={checkForPollStatus}
-                                  maxLength={490}
+                                  maxLength={100}
                                   value={data.value}
                                   change={(e) => HandleOptionChange(e)}
                                 />

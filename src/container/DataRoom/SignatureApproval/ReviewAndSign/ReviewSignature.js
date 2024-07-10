@@ -9,22 +9,31 @@ import {
   reviewMinutesPage,
 } from "../../../../store/actions/Minutes_action";
 import { ChevronDown } from "react-bootstrap-icons";
-import { TableToDo } from "../../../../components/elements";
+import { Notification, TableToDo } from "../../../../components/elements";
 import {
   getFileExtension,
   getIconSource,
 } from "../../SearchFunctionality/option";
 import { useNavigate } from "react-router-dom";
 import {
+  clearWorkFlowResponseMessage,
+  getAllPendingApprovalStatusApi,
   getAllPendingApprovalsSignaturesApi,
   getAllPendingApprovalsStatsApi,
 } from "../../../../store/actions/workflow_actions";
 import { useSelector } from "react-redux";
+import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
+import { set } from "lodash";
+import InfiniteScroll from "react-infinite-scroll-component";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { getAllPendingForApprovalStats, listOfPendingForApprovalSignatures } =
-    useSelector((state) => state.SignatureWorkFlowReducer);
+  const {
+    getAllPendingForApprovalStats,
+    listOfPendingForApprovalSignatures,
+    getAllPendingApprovalStatuses,
+    ResponseMessage,
+  } = useSelector((state) => state.SignatureWorkFlowReducer);
   const navigate = useNavigate();
   const [approvalStats, setApprovalStats] = useState({
     declined: 0,
@@ -34,9 +43,20 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
-
+  const [reviewSignature, setReviewSignature] = useState([]);
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const [isOpen, setIsOpen] = useState({
+    open: true,
+    message: "",
+  });
+  const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
+  const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
+    useState([]);
+
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [totalDataLnegth, setTotalDataLength] = useState(0);
+  const [isScrollling, setIsScrolling] = useState(false);
 
   // ProgressBar component for visualizing progress
   const ProgressBar = ({ width, color, indexValue, percentageValue }) => {
@@ -62,27 +82,33 @@ const ReviewSignature = () => {
     return <span style={barStyle}>{percentageValue}</span>; // Display progress bar with percentage
   };
 
+  const handleClickOpenSigatureDoc = (record) => {
+    console.log(record, "signeddocumentsigneddocument");
+    if (Number(record.workFlowStatusID) === 1) {
+      let reponseData = JSON.stringify(record.fileID);
+      window.open(
+        `/#/DisKus/signeddocument?documentID=${encodeURIComponent(
+          reponseData
+        )}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
+
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
       title: t("Document-name"),
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "fileName",
+      key: "fileName",
       className: "nameParticipant",
       width: "300px",
       ellipsis: true,
       render: (text, record) => (
         <p
-          //   onClick={() => {
-          //     dispatch(reviewMinutesPage(true));
-          //     dispatch(pendingApprovalPage(false));
-          //   }}
-          //   className={
-          //     record.status === "Expired"
-          //       ? "cursor-pointer opacity-25 m-0 text-truncate"
-          //       : "cursor-pointer m-0 text-truncate"
-          //   }
           className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center"
+          onClick={() => handleClickOpenSigatureDoc(record)}
         >
           <img src={getIconSource(getFileExtension(text))} />
           <span>{text}</span>
@@ -91,8 +117,8 @@ const ReviewSignature = () => {
     },
     {
       title: t("Requested-by"),
-      dataIndex: "RequestedUser",
-      key: "RequestedUser",
+      dataIndex: "creatorName",
+      key: "creatorName",
       className: "emailParticipant",
       width: "180px",
       ellipsis: true,
@@ -103,7 +129,7 @@ const ReviewSignature = () => {
           }
         >
           <img
-            src={UserImage}
+            src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
             height={22}
             className="rounded-circle "
@@ -114,12 +140,14 @@ const ReviewSignature = () => {
     },
     {
       title: t("Date-and-time"),
-      dataIndex: "dateTime",
-      key: "dateTime",
+      dataIndex: "createdOn",
+      key: "createdOn",
       className: "leaveTimeParticipant",
       width: "180px",
       ellipsis: true,
-      render: (text, record) => <p className={"m-0"}>{text}</p>,
+      render: (text, record) => (
+        <p className={"m-0"}>{SignatureandPendingApprovalDateTIme(text)}</p>
+      ),
       // render: (text, record) => convertAndFormatDateTimeGMT(text),
     },
     {
@@ -129,93 +157,149 @@ const ReviewSignature = () => {
       align: "center",
       className: "statusParticipant",
       width: "150px",
-      filters: [
-        { text: t("Pending"), value: "Pending" },
-        { text: t("Signed"), value: "Signed" },
-        { text: t("Decline"), value: "Decline" },
-      ],
-      onFilter: (value, record) => record.status === value,
+      filters: reviewAndSignatureStatus,
+      // filters: [
+      //   { text: t("Pending"), value: "Pending" },
+      //   { text: t("Signed"), value: "Signed" },
+      //   { text: t("Decline"), value: "Decline" },
+      // ],
+      onFilter: (value, record) => Number(record.workFlowStatusID) === value,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
-      render: (text, record) => (
-        <p
-          className={
-            text === "Pending"
-              ? styles["pendingStatus"]
-              : text === "Signed"
-              ? styles["signedStatus"]
-              : styles["declineStatus"]
-          }
-        >
-          {text}
-        </p>
-      ),
+      render: (text, record) => {
+        const { workFlowStatusID, status } = record;
+        return (
+          <p
+            className={
+              workFlowStatusID === 1
+                ? styles["pendingStatus"]
+                : workFlowStatusID === 2
+                ? styles["signedStatus"]
+                : workFlowStatusID === 3
+                ? styles["declineStatus"]
+                : styles["draftStatus"]
+            }
+          >
+            {status}
+          </p>
+        );
+      },
     },
   ];
 
-  // Data for rows of the pending approval table
-  const rowsPendingApproval = [
-    {
-      key: "1",
-      name: "TestDocument123123123.pdf",
-      RequestedUser: "john",
-      status: "Pending",
-      dateTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "2",
-      name: "TestDocument1215345342234.pdf",
-      RequestedUser: "john",
-      status: "Decline",
-      dateTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "3",
-      name: "TestDocument12234234234.pdf",
-      RequestedUser: "john",
-      status: "Signed",
-      dateTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "3",
-      name: "TestDocument11231232.pdf",
-      RequestedUser: "janem",
-      status: "Signed",
-      dateTime: "11-01-2024 | 04:30 PM",
-    },
-    {
-      key: "4",
-      name: "TestDocument11231232.pdf",
-      RequestedUser: "michael",
-      status: "Signed",
-      dateTime: "11-01-2024 | 05:15 PM",
-    },
-    {
-      key: "5",
-      name: "TestDocument12123123.pdf",
-      RequestedUser: "emily",
-      status: "Decline",
-      dateTime: "11-01-2024 | 05:45 PM",
-    },
-    // Add more data as needed
-  ];
+  const callingApi = async () => {
+    let newData = { IsCreator: false };
+    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
+    await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
+    let Data = { sRow: 0, Length: 10 };
+    dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+  };
+  useEffect(() => {
+    callingApi();
+  }, []);
+
+  const handleScroll = async () => {
+    console.log(
+      totalDataLnegth <= totalRecords,
+      totalDataLnegth,
+      totalRecords,
+      "handleScrollhandleScroll"
+    );
+    if (totalDataLnegth <= totalRecords) {
+      setIsScrolling(true);
+      let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+      console.log(Data, "handleScrollhandleScrollhandleScroll");
+      await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+    }
+  };
 
   useEffect(() => {
-    dispatch(getAllPendingApprovalsStatsApi(navigate, t));
-    let Data = { pageNo: 1, pageSize: 10 };
-    dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
-  }, []);
+    if (
+      getAllPendingApprovalStatuses !== null &&
+      getAllPendingApprovalStatuses !== undefined
+    ) {
+      try {
+        const { statusList } = getAllPendingApprovalStatuses;
+        let statusValues = [];
+        let defaultStatus = [];
+        if (statusList.length > 0) {
+          statusList.forEach((statusData, index) => {
+            statusValues.push({
+              text: statusData.statusName,
+              value: Number(statusData.statusID),
+            });
+            defaultStatus.push(Number(statusData.statusID));
+          });
+          setReviewAndSignatureStatus(statusValues);
+          setDefaultReviewAndSignatureStatus(defaultStatus);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [getAllPendingApprovalStatuses]);
+
+  console.log(
+    { reviewAndSignatureStatus, defaultreviewAndSignatureStatus },
+    "reviewAndSignatureStatusreviewAndSignatureStatusreviewAndSignatureStatus"
+  );
 
   useEffect(() => {
     if (getAllPendingForApprovalStats !== null) {
       try {
         let { data } = getAllPendingForApprovalStats;
-   
+
         setApprovalStats(data);
       } catch {}
     }
   }, [getAllPendingForApprovalStats]);
+
+  useEffect(() => {
+    if (listOfPendingForApprovalSignatures !== null) {
+      try {
+        let { pendingApprovals, totalCount } =
+          listOfPendingForApprovalSignatures;
+        if (Array.isArray(pendingApprovals) && pendingApprovals.length > 0) {
+          if (isScrollling) {
+            setIsScrolling(false)
+            setReviewSignature([...pendingApprovals, ...reviewSignature]);
+            setTotalRecords(totalCount);
+            setTotalDataLength((prev) => prev + pendingApprovals.length);
+          } else {
+            setTotalRecords(totalCount);
+            setTotalDataLength(pendingApprovals.length);
+
+            setReviewSignature(pendingApprovals);
+          }
+        }
+      } catch (error) {}
+    }
+  }, [listOfPendingForApprovalSignatures]);
+
+  useEffect(() => {
+    if (
+      ResponseMessage !== "" &&
+      ResponseMessage !== null &&
+      ResponseMessage !== undefined
+    ) {
+      setIsOpen({
+        message: ResponseMessage,
+        open: true,
+      });
+      setTimeout(() => {
+        setIsOpen({
+          message: "",
+          open: false,
+        });
+      }, 4000);
+      dispatch(clearWorkFlowResponseMessage());
+      console.log(
+        ResponseMessage,
+        "ResponseMessageResponseMessageResponseMessage"
+      );
+    }
+  }, [ResponseMessage]);
 
   const formatValue = (value) => (value < 9 ? `0${value}` : value);
   return (
@@ -276,20 +360,36 @@ const ReviewSignature = () => {
       </Row>
       <Row>
         <Col>
-          <TableToDo
-            sortDirections={["descend", "ascend"]}
-            column={pendingApprovalColumns}
-            className={"PendingApprovalsTable"}
-            rows={rowsPendingApproval}
-            // scroll={scroll}
-            pagination={false}
-            scroll={rowsPendingApproval.length > 10 ? { y: 385 } : undefined}
-            id={(record, index) =>
-              index === rowsPendingApproval.length - 1 ? "last-row-class" : ""
-            }
-          />
+          {reviewAndSignatureStatus.length > 0 && (
+            <InfiniteScroll
+              dataLength={reviewSignature.length}
+              next={handleScroll}
+              hasMore={reviewSignature.length === totalRecords ? false : true}
+              style={{
+                overflowX: "hidden",
+              }}
+              height={"50vh"}
+            >
+              <TableToDo
+                sortDirections={["descend", "ascend"]}
+                column={pendingApprovalColumns}
+                className={"PendingApprovalsTable"}
+                rows={reviewSignature}
+                // scroll={scroll}
+                pagination={false}
+                id={(record, index) =>
+                  index === reviewSignature.length - 1 ? "last-row-class" : ""
+                }
+              />
+            </InfiniteScroll>
+          )}
         </Col>
       </Row>{" "}
+      <Notification
+        open={isOpen.open}
+        message={isOpen.message}
+        setOpen={setIsOpen}
+      />
     </>
   );
 };

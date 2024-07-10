@@ -1,0 +1,23 @@
+.declineReasonModal2 {
+    font-weight: 600;
+    font-size: 20px;
+    color: #6172d6;
+    margin-left: 25px;
+}
+
+.declineReasoSubLine {
+    font-weight: 500;
+    font-size: 16px;
+    color: #5a5a5a;
+    margin-left: 25px;
+
+}
+.declineReasonCancelBtn {
+    padding: 12px 30px !important;
+    background-color: #fff !important;
+    color: #5a5a5a !important;
+    border: 1px solid #e1e1e1 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+}

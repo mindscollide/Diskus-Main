@@ -263,7 +263,7 @@ export async function handleLoginResponse(response) {
           { name: "CustomerInformation", id: 208 },
           { name: "AddUsers", id: 26 },
           { name: "loginreport", id: 35 },
-          { name: "PaymentFormUserManagement", id: 209 }
+          { name: "PaymentFormUserManagement", id: 222 }
         );
       }
     } else {

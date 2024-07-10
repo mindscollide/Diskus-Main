@@ -532,7 +532,7 @@ const Createpolls = ({ setCreatepoll }) => {
                     <TextField
                       labelClass={"d-none"}
                       name={"TitlePolls"}
-                      maxLength={490}
+                      maxLength={140}
                       value={pollsData.Title}
                       change={HandleChange}
                       applyClass={"pollingCreateTitle"}
@@ -571,7 +571,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                         applyClass={"pollingCreateTitle"}
                                         labelClass="d-none"
                                         name={data.name}
-                                        maxLength={490}
+                                        maxLength={100}
                                         value={data.value}
                                         change={(e) => HandleOptionChange(e)}
                                       />

@@ -1602,6 +1602,7 @@ const LoginHistoryReportExporttoExcel = {
 const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
+
 const downgradeOrganizationSubscription = {
   RequestMethod: "ServiceManager.DowngradeOrganizationSubscription",
 };
@@ -1609,7 +1610,21 @@ const downgradeOrganizationSubscription = {
 const getOrganizationWallet = {
   RequestMethod: "ServiceManager.GetOrganizationWallet",
 };
+
+const GetPendingApprovalStatusforSignatureFlowRM = {
+  RequestMethod: "ServiceManager.GetPendingApprovalStatusesForSignatureFlow",
+};
+const DeleteSignatureDocumentRM = {
+  RequestMethod: "ServiceManager.DeleteSignatureFlowByWorkFlowId",
+};
+
+const GetAllSignatoriesStatusRM = {
+  RequestMethod: "ServiceManager.GetAllSignatoriesStatus",
+};
 export {
+  GetAllSignatoriesStatusRM,
+  DeleteSignatureDocumentRM,
+  GetPendingApprovalStatusforSignatureFlowRM,
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
   LoginHistoryReportExporttoExcel,
