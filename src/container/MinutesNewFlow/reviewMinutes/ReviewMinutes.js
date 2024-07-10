@@ -54,6 +54,7 @@ const ReviewMinutes = () => {
   const [visibleParentMinuteIDs, setVisibleParentMinuteIDs] = useState([]);
   const [deleteCommentLocal, setDeleteCommentLocal] = useState(null);
   const [editCommentLocal, setEditCommentLocal] = useState(null);
+  const [parentMinuteID, setParentMinuteID] = useState(0);
   const [isAgenda, setIsAgenda] = useState(false);
 
   const divRef = useRef(null);
@@ -139,6 +140,7 @@ const ReviewMinutes = () => {
 
     let Data = {
       WorkFlowID: workflowID,
+      MeetingID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
       ActorMinuteReviews,
     };
 
@@ -323,6 +325,15 @@ const ReviewMinutes = () => {
     }
   };
 
+  const rejectGeneralComment = (data) => {
+    dispatch(rejectCommentModal(true));
+    // setMinuteDataToReject(
+    //   JSON.parse(JSON.stringify(data))
+    // );
+    setMinuteDataToReject(data);
+    // dispatch(RejectMinute(data));
+  };
+
   useEffect(() => {
     const div = divRef.current;
 
@@ -351,46 +362,198 @@ const ReviewMinutes = () => {
     } catch {}
   }, []);
 
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       MinutesReducer.GetMinutesForReviewerByMeetingIdData !== null &&
+  //       MinutesReducer.GetMinutesForReviewerByMeetingIdData !== undefined
+  //     ) {
+  //       let reducerData = MinutesReducer.GetMinutesForReviewerByMeetingIdData;
+  //       setMinutesAgenda(reducerData.agendaMinutes);
+  //       setMinutesAgendaHierarchy(reducerData.agendaHierarchyList);
+  //       setMinutesGeneral(reducerData.generalMinutes);
+  //       setMinutesToReview(countActorBundleStatusID2(reducerData));
+  //       setWorkflowID(reducerData.workFlowID);
+  //       // Initialize an empty array to hold the transformed data
+  //       let transformedData = [];
+  //       console.log("transformedDatatransformedData", transformedData);
+  //       // Iterate through each parent agenda in the agenda hierarchy list
+  //       minutesAgendaHierarchy.forEach((parentAgenda) => {
+  //         // Find the parent agenda details in the agendaWiseMinutes array
+  //         let parentAgendaMinutes = reducerData.agendaMinutes.filter(
+  //           (minute) => minute.agendaID === parentAgenda.pK_MAID
+  //         );
+
+  //         // Initialize an array to hold sub-minutes of the parent agenda
+  //         let subMinutes = [];
+  //         // Iterate through each child agenda of the parent agenda
+  //         parentAgenda.childAgendas.forEach((childAgenda) => {
+  //           // Filter the minutes that match the child agenda ID and push to subMinutes
+  //           let childMinutes = reducerData.agendaMinutes.filter(
+  //             (minute) => minute.agendaID === childAgenda.pK_MAID
+  //           );
+  //           subMinutes.push(...childMinutes);
+  //         });
+
+  //         // Check if parent agenda details exist to determine if it's parent data
+  //         let isParentData = parentAgendaMinutes.length > 0;
+
+  //         // If there are parent agenda details or sub-minutes, create a parent agenda object
+  //         if (isParentData || subMinutes.length > 0) {
+  //           // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
+  //           let agendaTitle = isParentData
+  //             ? parentAgendaMinutes[0].agendaTitle
+  //             : parentAgenda.childAgendas.find((childAgenda) =>
+  //                 subMinutes.some(
+  //                   (minute) => minute.agendaID === childAgenda.pK_MAID
+  //                 )
+  //               )?.parentTitle || "";
+
+  //           let parentAgendaObj = {
+  //             agendaID: parentAgenda.pK_MAID,
+  //             agendaTitle: agendaTitle,
+  //             minuteData: parentAgendaMinutes.map((minute) => ({
+  //               agendaMinutesVersionHistory: minute.agendaMinutesVersionHistory,
+  //               versionNumber: minute.versionNumber,
+  //               minuteID: minute.minuteID,
+  //               actionableBundleID: minute.actionableBundleID,
+  //               minutesDetails: minute.minutesDetails,
+  //               actorBundleStatusID: minute.actorBundleStatusID,
+  //               reason: minute.reason,
+  //               userID: minute.userID,
+  //               userName: minute.userName,
+  //               lastUpdatedDate: minute.lastUpdatedDate,
+  //               lastUpdatedTime: minute.lastUpdatedTime,
+  //               userProfilePicture: minute.userProfilePicture,
+  //               minuteAttachmentFiles: minute.minuteAttachmentFiles,
+  //               declinedReviews: minute.declinedReviews,
+  //             })),
+  //             subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+  //               let childMinutes = subMinutes.filter(
+  //                 (minute) => minute.agendaID === childAgenda.pK_MAID
+  //               );
+  //               return {
+  //                 agendaID: childAgenda.pK_MAID,
+  //                 agendaTitle: childMinutes[0]?.agendaTitle || "",
+  //                 minuteData: childMinutes.map((minute) => ({
+  //                   agendaMinutesVersionHistory:
+  //                     minute.agendaMinutesVersionHistory,
+  //                   versionNumber: minute.versionNumber,
+  //                   minuteID: minute.minuteID,
+  //                   actionableBundleID: minute.actionableBundleID,
+  //                   minutesDetails: minute.minutesDetails,
+  //                   actorBundleStatusID: minute.actorBundleStatusID,
+  //                   reason: minute.reason,
+  //                   userID: minute.userID,
+  //                   userName: minute.userName,
+  //                   lastUpdatedDate: minute.lastUpdatedDate,
+  //                   lastUpdatedTime: minute.lastUpdatedTime,
+  //                   userProfilePicture: minute.userProfilePicture,
+  //                   minuteAttachmentFiles: minute.minuteAttachmentFiles,
+  //                   declinedReviews: minute.declinedReviews,
+  //                 })),
+  //               };
+  //             }),
+  //           };
+
+  //           // Push the parent agenda object to the transformed data array
+  //           transformedData.push(parentAgendaObj);
+  //         }
+  //       });
+  //       console.log("transformedDatatransformedData", transformedData);
+
+  //       // Update attachments in transformedData based on data state
+  //       console.log("transformedDatatransformedData", transformedData);
+
+  //       transformedData.forEach((agenda) => {
+  //         agenda.minuteData.forEach((minute) => {
+  //           // Find matching entry in data state by pK_MeetingAgendaMinutesID
+  //           let matchingData =
+  //             NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+  //               (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+  //             );
+
+  //           // If matchingData found, update attachments in minuteData
+  //           if (matchingData) {
+  //             minute.attachments = matchingData.files || [];
+  //           }
+  //         });
+
+  //         agenda.subMinutes.forEach((subAgenda) => {
+  //           subAgenda.minuteData.forEach((minute) => {
+  //             // Find matching entry in data state by pK_MeetingAgendaMinutesID
+  //             let matchingData =
+  //               NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+  //                 (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+  //               );
+
+  //             // If matchingData found, update attachments in minuteData
+  //             if (matchingData) {
+  //               minute.attachments = matchingData.files || [];
+  //             }
+  //           });
+  //         });
+  //       });
+  //       console.log("transformedDatatransformedData", transformedData);
+
+  //       // Log the transformed data to the console
+  //       setMinutesAgenda(transformedData);
+  //       console.log("transformedDatatransformedData", transformedData);
+  //     } else {
+  //       setMinutesAgenda([]);
+  //       setMinutesAgendaHierarchy([]);
+  //       setMinutesGeneral([]);
+  //       setMinutesToReview([]);
+  //       console.log("transformedDatatransformedData");
+  //     }
+  //   } catch (error) {
+  //     console.log("transformedDatatransformedData", error);
+  //   }
+  // }, [
+  //   MinutesReducer.GetMinutesForReviewerByMeetingIdData,
+  //   minutesAgenda.length,
+  //   minutesGeneral.length,
+  // ]);
+
   useEffect(() => {
     try {
-      if (
-        MinutesReducer.GetMinutesForReviewerByMeetingIdData !== null &&
-        MinutesReducer.GetMinutesForReviewerByMeetingIdData !== undefined
-      ) {
-        let reducerData = MinutesReducer.GetMinutesForReviewerByMeetingIdData;
+      const reducerData = MinutesReducer.GetMinutesForReviewerByMeetingIdData;
+      if (reducerData !== null && reducerData !== undefined) {
         setMinutesAgenda(reducerData.agendaMinutes);
         setMinutesAgendaHierarchy(reducerData.agendaHierarchyList);
-        setMinutesGeneral(reducerData.generalMinutes);
+        console.log(reducerData.generalMinutes, "reducerDatareducerData");
+        let newGeneralMeetingData = reducerData.generalMinutes.map(
+          (generalMinteData, index) => {
+            return {
+              ...generalMinteData,
+              declinedReviews: [...generalMinteData.declinedReviews],
+            };
+          }
+        );
+        setMinutesGeneral(newGeneralMeetingData);
         setMinutesToReview(countActorBundleStatusID2(reducerData));
         setWorkflowID(reducerData.workFlowID);
-        // Initialize an empty array to hold the transformed data
-        let transformedData = [];
-        console.log("transformedDatatransformedData", transformedData);
-        // Iterate through each parent agenda in the agenda hierarchy list
-        minutesAgendaHierarchy.forEach((parentAgenda) => {
-          // Find the parent agenda details in the agendaWiseMinutes array
+
+        let transformedData = minutesAgendaHierarchy.map((parentAgenda) => {
           let parentAgendaMinutes = reducerData.agendaMinutes.filter(
             (minute) => minute.agendaID === parentAgenda.pK_MAID
           );
 
-          // Initialize an array to hold sub-minutes of the parent agenda
-          let subMinutes = [];
-          // Iterate through each child agenda of the parent agenda
-          parentAgenda.childAgendas.forEach((childAgenda) => {
-            // Filter the minutes that match the child agenda ID and push to subMinutes
-            let childMinutes = reducerData.agendaMinutes.filter(
-              (minute) => minute.agendaID === childAgenda.pK_MAID
-            );
-            subMinutes.push(...childMinutes);
+          let subMinutes = parentAgenda.childAgendas.flatMap((childAgenda) => {
+            return reducerData.agendaMinutes
+              .filter((minute) => minute.agendaID === childAgenda.pK_MAID)
+              .map((minute) => ({
+                ...minute,
+                attachments:
+                  NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+                    (entry) =>
+                      entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                  )?.files || [],
+              }));
           });
 
-          // Check if parent agenda details exist to determine if it's parent data
-          let isParentData = parentAgendaMinutes.length > 0;
-
-          // If there are parent agenda details or sub-minutes, create a parent agenda object
-          if (isParentData || subMinutes.length > 0) {
-            // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
-            let agendaTitle = isParentData
+          let agendaTitle =
+            parentAgendaMinutes.length > 0
               ? parentAgendaMinutes[0].agendaTitle
               : parentAgenda.childAgendas.find((childAgenda) =>
                   subMinutes.some(
@@ -398,105 +561,41 @@ const ReviewMinutes = () => {
                   )
                 )?.parentTitle || "";
 
-            let parentAgendaObj = {
-              agendaID: parentAgenda.pK_MAID,
-              agendaTitle: agendaTitle,
-              minuteData: parentAgendaMinutes.map((minute) => ({
-                agendaMinutesVersionHistory: minute.agendaMinutesVersionHistory,
-                versionNumber: minute.versionNumber,
-                minuteID: minute.minuteID,
-                actionableBundleID: minute.actionableBundleID,
-                minutesDetails: minute.minutesDetails,
-                actorBundleStatusID: minute.actorBundleStatusID,
-                reason: minute.reason,
-                userID: minute.userID,
-                userName: minute.userName,
-                lastUpdatedDate: minute.lastUpdatedDate,
-                lastUpdatedTime: minute.lastUpdatedTime,
-                userProfilePicture: minute.userProfilePicture,
-                minuteAttachmentFiles: minute.minuteAttachmentFiles,
-                declinedReviews: minute.declinedReviews,
-              })),
-              subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
-                let childMinutes = subMinutes.filter(
-                  (minute) => minute.agendaID === childAgenda.pK_MAID
-                );
-                return {
-                  agendaID: childAgenda.pK_MAID,
-                  agendaTitle: childMinutes[0]?.agendaTitle || "",
-                  minuteData: childMinutes.map((minute) => ({
-                    agendaMinutesVersionHistory:
-                      minute.agendaMinutesVersionHistory,
-                    versionNumber: minute.versionNumber,
-                    minuteID: minute.minuteID,
-                    actionableBundleID: minute.actionableBundleID,
-                    minutesDetails: minute.minutesDetails,
-                    actorBundleStatusID: minute.actorBundleStatusID,
-                    reason: minute.reason,
-                    userID: minute.userID,
-                    userName: minute.userName,
-                    lastUpdatedDate: minute.lastUpdatedDate,
-                    lastUpdatedTime: minute.lastUpdatedTime,
-                    userProfilePicture: minute.userProfilePicture,
-                    minuteAttachmentFiles: minute.minuteAttachmentFiles,
-                    declinedReviews: minute.declinedReviews,
-                  })),
-                };
-              }),
-            };
-
-            // Push the parent agenda object to the transformed data array
-            transformedData.push(parentAgendaObj);
-          }
-        });
-        console.log("transformedDatatransformedData", transformedData);
-
-        // Update attachments in transformedData based on data state
-        console.log("transformedDatatransformedData", transformedData);
-
-        transformedData.forEach((agenda) => {
-          agenda.minuteData.forEach((minute) => {
-            // Find matching entry in data state by pK_MeetingAgendaMinutesID
-            let matchingData =
-              NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
-                (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
-              );
-
-            // If matchingData found, update attachments in minuteData
-            if (matchingData) {
-              minute.attachments = matchingData.files || [];
-            }
-          });
-
-          agenda.subMinutes.forEach((subAgenda) => {
-            subAgenda.minuteData.forEach((minute) => {
-              // Find matching entry in data state by pK_MeetingAgendaMinutesID
-              let matchingData =
+          let parentAgendaObj = {
+            agendaID: parentAgenda.pK_MAID,
+            agendaTitle: agendaTitle,
+            minuteData: parentAgendaMinutes.map((minute) => ({
+              ...minute,
+              attachments:
                 NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
                   (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
-                );
+                )?.files || [],
+            })),
+            subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+              let childMinutes = subMinutes.filter(
+                (minute) => minute.agendaID === childAgenda.pK_MAID
+              );
+              return {
+                agendaID: childAgenda.pK_MAID,
+                agendaTitle: childMinutes[0]?.agendaTitle || "",
+                minuteData: childMinutes,
+              };
+            }),
+          };
 
-              // If matchingData found, update attachments in minuteData
-              if (matchingData) {
-                minute.attachments = matchingData.files || [];
-              }
-            });
-          });
+          return parentAgendaObj;
         });
-        console.log("transformedDatatransformedData", transformedData);
 
-        // Log the transformed data to the console
         setMinutesAgenda(transformedData);
-        console.log("transformedDatatransformedData", transformedData);
+        console.log("transformedData", transformedData);
       } else {
         setMinutesAgenda([]);
         setMinutesAgendaHierarchy([]);
         setMinutesGeneral([]);
         setMinutesToReview([]);
-        console.log("transformedDatatransformedData");
       }
     } catch (error) {
-      console.log("transformedDatatransformedData", error);
+      console.error("Error transforming data", error);
     }
   }, [
     MinutesReducer.GetMinutesForReviewerByMeetingIdData,
@@ -543,8 +642,8 @@ const ReviewMinutes = () => {
 
   useEffect(() => {
     try {
-      if (MinutesReducer.RejectMinuteData) {
-        const rejectMinuteData = MinutesReducer.RejectMinuteData;
+      if (minuteDataToReject) {
+        const rejectMinuteData = minuteDataToReject;
 
         // Update MinutesAgenda
         let updatedMinutesAgenda = updateRejectMinutes(
@@ -560,16 +659,18 @@ const ReviewMinutes = () => {
           rejectMinuteData
         );
 
-        updatedMinutesData = filterEmptyReasonsForStateGeneral(updatedMinutesData);
+        updatedMinutesData =
+          filterEmptyReasonsForStateGeneral(updatedMinutesData);
         console.log("Updated MinutesAgenda:", updatedMinutesAgenda);
-        // console.log("Updated MinutesGeneral:", updatedMinutesGeneral);
+        console.log("Updated MinutesGeneral:", updatedMinutesData);
 
         setMinutesAgenda(updatedMinutesAgenda);
         setMinutesGeneral(updatedMinutesData);
-        setMinutesToReview(minutesToReview - 1);
       }
     } catch {}
-  }, [MinutesReducer.RejectMinuteData]);
+  }, [minuteDataToReject]);
+
+  console.log("GeneralMinutesGeneralMinutes", minutesGeneral);
 
   return (
     <section className={styles["pendingApprovalContainer"]}>
@@ -771,12 +872,15 @@ const ReviewMinutes = () => {
                                                   dispatch(
                                                     rejectCommentModal(true)
                                                   );
-                                                  setIsAgenda(true);
-                                                  dispatch(
-                                                    RejectMinute(
-                                                      parentMinutedata
-                                                    )
+                                                  setMinuteDataToReject(
+                                                    parentMinutedata
                                                   );
+
+                                                  // dispatch(
+                                                  //   RejectMinute(
+                                                  //     parentMinutedata
+                                                  //   )
+                                                  // );
                                                 }}
                                               />
                                             ) : parentMinutedata.actorBundleStatusID ===
@@ -1001,6 +1105,16 @@ const ReviewMinutes = () => {
                                                         className="d-grid justify-content-end p-0"
                                                       >
                                                         <Button
+                                                          // onClick={() => {
+                                                          //   dispatch(
+                                                          //     editCommentModal(
+                                                          //       true
+                                                          //     )
+                                                          //   );
+                                                          //   setEditCommentLocal(
+                                                          //     declinedData
+                                                          //   );
+                                                          // }}
                                                           onClick={() => {
                                                             dispatch(
                                                               editCommentModal(
@@ -1010,6 +1124,10 @@ const ReviewMinutes = () => {
                                                             setEditCommentLocal(
                                                               declinedData
                                                             );
+                                                            setParentMinuteID(
+                                                              parentMinutedata
+                                                            );
+                                                            setIsAgenda(true);
                                                           }}
                                                           text={t("Edit")}
                                                           className={
@@ -1019,6 +1137,16 @@ const ReviewMinutes = () => {
                                                           }
                                                         />
                                                         <Button
+                                                          // onClick={() => {
+                                                          //   dispatch(
+                                                          //     deleteCommentModal(
+                                                          //       true
+                                                          //     )
+                                                          //   );
+                                                          //   setDeleteCommentLocal(
+                                                          //     declinedData
+                                                          //   );
+                                                          // }}
                                                           onClick={() => {
                                                             dispatch(
                                                               deleteCommentModal(
@@ -1028,6 +1156,10 @@ const ReviewMinutes = () => {
                                                             setDeleteCommentLocal(
                                                               declinedData
                                                             );
+                                                            setParentMinuteID(
+                                                              parentMinutedata
+                                                            );
+                                                            setIsAgenda(true);
                                                           }}
                                                           text={t("Delete")}
                                                           className={
@@ -1430,6 +1562,16 @@ const ReviewMinutes = () => {
                                                                   }
                                                                 />
                                                                 <Button
+                                                                  // onClick={() => {
+                                                                  //   dispatch(
+                                                                  //     deleteCommentModal(
+                                                                  //       true
+                                                                  //     )
+                                                                  //   );
+                                                                  //   setDeleteCommentLocal(
+                                                                  //     declinedDataHistory
+                                                                  //   );
+                                                                  // }}
                                                                   onClick={() => {
                                                                     dispatch(
                                                                       deleteCommentModal(
@@ -1438,6 +1580,12 @@ const ReviewMinutes = () => {
                                                                     );
                                                                     setDeleteCommentLocal(
                                                                       declinedDataHistory
+                                                                    );
+                                                                    setParentMinuteID(
+                                                                      historyData
+                                                                    );
+                                                                    setIsAgenda(
+                                                                      true
                                                                     );
                                                                   }}
                                                                   text={t(
@@ -1676,12 +1824,15 @@ const ReviewMinutes = () => {
                                                               true
                                                             )
                                                           );
-                                                          setIsAgenda(true);
-                                                          dispatch(
-                                                            RejectMinute(
-                                                              minuteDataSubminute
-                                                            )
+                                                          setMinuteDataToReject(
+                                                            minuteDataSubminute
                                                           );
+
+                                                          // dispatch(
+                                                          //   RejectMinute(
+                                                          //     minuteDataSubminute
+                                                          //   )
+                                                          // );
                                                         }}
                                                       />
                                                     ) : minuteDataSubminute.actorBundleStatusID ===
@@ -1944,6 +2095,16 @@ const ReviewMinutes = () => {
                                                                 className="d-grid justify-content-end p-0"
                                                               >
                                                                 <Button
+                                                                  // onClick={() => {
+                                                                  //   dispatch(
+                                                                  //     editCommentModal(
+                                                                  //       true
+                                                                  //     )
+                                                                  //   );
+                                                                  //   setEditCommentLocal(
+                                                                  //     declinedData
+                                                                  //   );
+                                                                  // }}
                                                                   onClick={() => {
                                                                     dispatch(
                                                                       editCommentModal(
@@ -1952,6 +2113,12 @@ const ReviewMinutes = () => {
                                                                     );
                                                                     setEditCommentLocal(
                                                                       declinedData
+                                                                    );
+                                                                    setParentMinuteID(
+                                                                      minuteDataSubminute
+                                                                    );
+                                                                    setIsAgenda(
+                                                                      true
                                                                     );
                                                                   }}
                                                                   text={t(
@@ -1964,6 +2131,16 @@ const ReviewMinutes = () => {
                                                                   }
                                                                 />
                                                                 <Button
+                                                                  // onClick={() => {
+                                                                  //   dispatch(
+                                                                  //     deleteCommentModal(
+                                                                  //       true
+                                                                  //     )
+                                                                  //   );
+                                                                  //   setDeleteCommentLocal(
+                                                                  //     declinedData
+                                                                  //   );
+                                                                  // }}
                                                                   onClick={() => {
                                                                     dispatch(
                                                                       deleteCommentModal(
@@ -1972,6 +2149,12 @@ const ReviewMinutes = () => {
                                                                     );
                                                                     setDeleteCommentLocal(
                                                                       declinedData
+                                                                    );
+                                                                    setParentMinuteID(
+                                                                      minuteDataSubminute
+                                                                    );
+                                                                    setIsAgenda(
+                                                                      true
                                                                     );
                                                                   }}
                                                                   text={t(
@@ -2414,6 +2597,16 @@ const ReviewMinutes = () => {
                                                                         className="d-grid justify-content-end p-0"
                                                                       >
                                                                         <Button
+                                                                          // onClick={() => {
+                                                                          //   dispatch(
+                                                                          //     editCommentModal(
+                                                                          //       true
+                                                                          //     )
+                                                                          //   );
+                                                                          //   setEditCommentLocal(
+                                                                          //     declinedDataHistory
+                                                                          //   );
+                                                                          // }}
                                                                           onClick={() => {
                                                                             dispatch(
                                                                               editCommentModal(
@@ -2422,6 +2615,12 @@ const ReviewMinutes = () => {
                                                                             );
                                                                             setEditCommentLocal(
                                                                               declinedDataHistory
+                                                                            );
+                                                                            setParentMinuteID(
+                                                                              minuteDataSubminute
+                                                                            );
+                                                                            setIsAgenda(
+                                                                              true
                                                                             );
                                                                           }}
                                                                           text={t(
@@ -2586,11 +2785,7 @@ const ReviewMinutes = () => {
                                     <Button
                                       text={t("Reject")}
                                       className={styles["Reject-comment"]}
-                                      onClick={() => {
-                                        dispatch(rejectCommentModal(true));
-                                        setIsAgenda(false);
-                                        dispatch(RejectMinute(data));
-                                      }}
+                                      onClick={() => rejectGeneralComment(data)}
                                     />
                                   ) : data.actorBundleStatusID === 4 ? (
                                     <>
@@ -2758,6 +2953,8 @@ const ReviewMinutes = () => {
                                                 setEditCommentLocal(
                                                   declinedData
                                                 );
+                                                setParentMinuteID(data);
+                                                setIsAgenda(false);
                                               }}
                                               text={t("Edit")}
                                               className={
@@ -2765,6 +2962,14 @@ const ReviewMinutes = () => {
                                               }
                                             />
                                             <Button
+                                              // onClick={() => {
+                                              //   dispatch(
+                                              //     deleteCommentModal(true)
+                                              //   );
+                                              //   setDeleteCommentLocal(
+                                              //     declinedData
+                                              //   );
+                                              // }}
                                               onClick={() => {
                                                 dispatch(
                                                   deleteCommentModal(true)
@@ -2772,6 +2977,8 @@ const ReviewMinutes = () => {
                                                 setDeleteCommentLocal(
                                                   declinedData
                                                 );
+                                                setParentMinuteID(data);
+                                                setIsAgenda(false);
                                               }}
                                               text={t("Delete")}
                                               className={
@@ -3089,6 +3296,10 @@ const ReviewMinutes = () => {
                                                           setEditCommentLocal(
                                                             declinedDataHistory
                                                           );
+                                                          setParentMinuteID(
+                                                            data
+                                                          );
+                                                          setIsAgenda(false);
                                                         }}
                                                         text={t("Edit")}
                                                         className={
@@ -3107,6 +3318,10 @@ const ReviewMinutes = () => {
                                                           setDeleteCommentLocal(
                                                             declinedDataHistory
                                                           );
+                                                          setParentMinuteID(
+                                                            historyData
+                                                          );
+                                                          setIsAgenda(false);
                                                         }}
                                                         text={t("Delete")}
                                                         className={
@@ -3166,6 +3381,8 @@ const ReviewMinutes = () => {
           setMinuteDataToReject={setMinuteDataToReject}
           isAgenda={isAgenda}
           setIsAgenda={setIsAgenda}
+          setMinutesToReview={setMinutesToReview}
+          minutesToReview={minutesToReview}
         />
       ) : null}
       {MinutesReducer.editCommentModal ? (
@@ -3176,6 +3393,11 @@ const ReviewMinutes = () => {
           setMinutesGeneral={setMinutesGeneral}
           editCommentLocal={editCommentLocal}
           setEditCommentLocal={setEditCommentLocal}
+          parentMinuteID={parentMinuteID}
+          setParentMinuteID={setParentMinuteID}
+          currentUserID={currentUserID}
+          currentUserName={currentUserName}
+          isAgenda={isAgenda}
         />
       ) : null}
       {MinutesReducer.deleteCommentModal ? (
@@ -3186,6 +3408,15 @@ const ReviewMinutes = () => {
           setMinutesGeneral={setMinutesGeneral}
           deleteCommentLocal={deleteCommentLocal}
           setDeleteCommentLocal={setDeleteCommentLocal}
+          editCommentLocal={editCommentLocal}
+          setEditCommentLocal={setEditCommentLocal}
+          parentMinuteID={parentMinuteID}
+          setParentMinuteID={setParentMinuteID}
+          currentUserID={currentUserID}
+          currentUserName={currentUserName}
+          isAgenda={isAgenda}
+          minutesToReview={minutesToReview}
+          setMinutesToReview={setMinutesToReview}
         />
       ) : null}
       {MinutesReducer.acceptCommentModal ? (

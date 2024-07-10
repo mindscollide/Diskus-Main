@@ -592,6 +592,8 @@ const AddReviewers = ({
   }, [
     NewMeetingreducer.agendaWiseMinutesReducer,
     NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
+    minuteDataAgenda.lenght,
+    minuteDataGeneral.length,
   ]);
 
   // useEffect(() => {

@@ -189,7 +189,7 @@ p.agendaCreater {
   border-radius: 9px !important;
 }
 
-.version-control-wrapper-with-more::after {
+/* .version-control-wrapper-with-more::after {
   content: "";
   position: absolute;
   width: 1px;
@@ -197,7 +197,7 @@ p.agendaCreater {
   left: 50%;
   top: 16px;
   height: 100%;
-}
+} */
 
 .version-control-wrapper {
   width: 18px;
@@ -247,7 +247,7 @@ p.agendaCreater {
   border-radius: 9px !important;
 }
 
-.version-control-wrapper::after {
+/* .version-control-wrapper::after {
   content: "";
   position: absolute;
   width: 1px;
@@ -255,7 +255,7 @@ p.agendaCreater {
   left: 50%;
   top: 10px;
   height: 184px;
-}
+} */
 
 p.uploadedbyuser {
   font-size: 12px;
