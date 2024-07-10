@@ -31,6 +31,7 @@ const initialState = {
   RejectMinuteData: null,
   PublishedMinutes: null,
   GetPublishedMinutes: null,
+  CurrentUserPicture: null
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -464,6 +465,13 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         RejectMinuteData: action.response,
+      };
+    }
+
+    case actions.CURRENT_USER_PICTURE: {
+      return {
+        ...state,
+        CurrentUserPicture: action.response,
       };
     }
 

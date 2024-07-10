@@ -32,7 +32,13 @@ const EditCommentModal = ({
 
   // const [editComment, setEditComment] = useState("")
 
-  const updateRejectMinutesAgenda = (minutesData, updateData, parentMinuteID) => {
+  const { MinutesReducer } = useSelector((state) => state);
+
+  const updateRejectMinutesAgenda = (
+    minutesData,
+    updateData,
+    parentMinuteID
+  ) => {
     return minutesData.map((agenda) => {
       // Update main minuteData
       const updatedMinuteData = agenda.minuteData.map((minute) => {
@@ -56,7 +62,9 @@ const EditCommentModal = ({
                   userProfilePicture: {
                     userID: currentUserID,
                     orignalProfilePictureName: "",
-                    displayProfilePictureName: "",
+                    displayProfilePictureName:
+                      MinutesReducer?.CurrentUserPicture
+                        ?.displayProfilePictureName,
                   },
                 };
               }
@@ -97,7 +105,9 @@ const EditCommentModal = ({
                     userProfilePicture: {
                       userID: currentUserID,
                       orignalProfilePictureName: "",
-                      displayProfilePictureName: "",
+                      displayProfilePictureName:
+                        MinutesReducer?.CurrentUserPicture
+                          ?.displayProfilePictureName,
                     },
                   };
                 }
@@ -150,7 +160,8 @@ const EditCommentModal = ({
               userProfilePicture: {
                 userID: currentUserID,
                 orignalProfilePictureName: "",
-                displayProfilePictureName: "",
+                displayProfilePictureName:
+                  MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
               },
             };
           }

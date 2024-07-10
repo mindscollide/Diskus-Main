@@ -103,6 +103,14 @@ const pendingApprovalGraph = (response) => {
   };
 };
 
+//Current User Profile Picture
+const currentUserPicture = (response) => {
+  return {
+    type: actions.CURRENT_USER_PICTURE,
+    response: response,
+  };
+};
+
 const getListOfDefaultRejectionComments_Init = () => {
   return {
     type: actions.GET_LISTOFDEFAULTREJECTIONCOMMENTS_INIT,
@@ -1838,5 +1846,5 @@ export {
   CleareMessegeMinutes,
   acceptCommentModal,
   AcceptRejectMinuteReview,
-  RejectMinute,
+  RejectMinute,currentUserPicture
 };
