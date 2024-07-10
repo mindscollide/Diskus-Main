@@ -6,19 +6,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragIcon from "../../../../assets/images/DragIcon_SignatureFlow.png";
-import {
-  ClearMessageAnnotations,
-  GetAnnotationsOfToDoAttachementMessageCleare,
-  addAnnotationsOnDataroomAttachement,
-  addAnnotationsOnNotesAttachement,
-  addAnnotationsOnResolutionAttachement,
-  addAnnotationsOnToDoAttachement,
-  getAnnotationsOfDataroomAttachement,
-  getAnnotationsOfNotesAttachement,
-  getAnnotationsOfResolutionAttachement,
-  getAnnotationsOfToDoAttachement,
-  setUserAnnotation,
-} from "../../../../store/actions/webVieverApi_actions";
 
 import { useTranslation } from "react-i18next";
 import {
@@ -39,7 +26,9 @@ import {
 } from "../../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
-import { debounce } from "lodash";
+import SendDocumentModal from "../SendDocumentModal/SendDocumentModal";
+import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
+
 const SignatureViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -55,6 +44,7 @@ const SignatureViewer = () => {
     getDataroomAnnotation,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   // Parse the URL parameters to get the data
+
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
   const { assignees } = useSelector((state) => state);
   const [Instance, setInstance] = useState(null);
@@ -67,6 +57,15 @@ const SignatureViewer = () => {
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [orderCheckBox, setOrderCheckbox] = useState(false);
+
+  // Document Send Modal Work
+  // Start From there
+  const [sendModal, setSendModal] = useState(false);
+  const [mailers, setMailers] = useState([]);
+  const [mailerInput, setMailerInput] = useState("");
+  const [sendMessage, setSendMessage] = useState("");
+  // End There
+
   const [signers, setSigners] = useState({
     Name: "",
     EmailAddress: "",
@@ -95,6 +94,7 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
+
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
@@ -105,6 +105,8 @@ const SignatureViewer = () => {
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const participantsRef = useRef(participants);
   const annotationsColorRecordRef = useRef(annotationsColorRecord);
+  const orderButtonChecked = useRef(orderCheckBox);
+  console.log(orderButtonChecked, "orderButtonCheckedorderButtonChecked");
 
   // ===== this use for current state update get =====//
   // Ensure the ref stays in sync with the state
@@ -793,20 +795,26 @@ const SignatureViewer = () => {
                 ? ""
                 : pdfResponceData.deadlineDatetime,
             CreatorID: pdfResponceData.creatorID,
-            ListOfActionAbleBundle: signerDataRef.current.map(
-              (sendData, index) => {
-                return {
-                  ID: `BundleID_# ${index + 1}`,
-                  Title: "",
-                  BundleDeadline: "",
-                  ListOfUsers: [sendData.userID],
-                  Entity: {
-                    EntityID: pdfResponceData.documentID,
-                    EntityTypeID: 1,
-                  },
+            ListOfActionAbleBundle: signerData.map((sendData, index) => {
+              const bundle = {
+                ID: `BundleID_#${index + 1}`,
+                Title: "",
+                BundleDeadline: "",
+                ListOfUsers: [sendData.userID],
+                Entity: {
+                  EntityID: pdfResponceData.documentID,
+                  EntityTypeID: 1,
+                },
+              };
+              if (orderButtonChecked.current && index !== 0) {
+                bundle.Dependency = {
+                  BundleID: `BundleID_#${index + 1}`,
+                  DependencyIDs: [`BundleID_#${index}`],
                 };
               }
-            ),
+
+              return bundle;
+            }),
           };
 
           let convertData = [];
@@ -847,116 +855,7 @@ const SignatureViewer = () => {
         };
 
         const handleClickPublishBtn = async () => {
-          // status of 1 for save button
-          const doc = documentViewer.getDocument();
-          const data = await doc.getFileData({}); // No xfdfString for annotations
-          const arr = new Uint8Array(data);
-          const blob = new Blob([arr], { type: "application/pdf" });
-          let getBase64 = await generateBase64FromBlob(blob)
-            .then(async (base64String) => {
-              return base64String;
-              // Here you can use the base64String as needed
-            })
-            .catch((error) => {
-              return null;
-            });
-
-          // this one sent do save signature document
-          const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
-          const parser = new DOMParser();
-          const mainXmlDoc = parser.parseFromString(xfdfString, "text/xml");
-          const existsInMainXML = (name, type, mainXmlDoc) => {
-            const elements = mainXmlDoc.querySelectorAll(
-              `${type}[name="${name}"]`
-            );
-            return elements.length > 0;
-          };
-
-          let covert = userAnnotationsRef.current.map((user) => {
-            let filteredXml = user.xml.filter((item) => {
-              const ffieldDoc = parser.parseFromString(item.ffield, "text/xml");
-              const widgetDoc = parser.parseFromString(item.widget, "text/xml");
-              const ffieldName = ffieldDoc.documentElement.getAttribute("name");
-              const widgetName = widgetDoc.documentElement.getAttribute("name");
-
-              return (
-                existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
-                existsInMainXML(widgetName, "widget", mainXmlDoc)
-              );
-            });
-            return { ...user, xml: filteredXml };
-          });
-          // for Save workFlow Api
-          let saveWorkFlowData = {
-            PK_WorkFlow_ID: pdfResponceData.workFlowID,
-            WorkFlowTitle: pdfResponceData.title,
-            Description: pdfResponceData.description,
-            isDeadline: pdfResponceData.isDeadline,
-            DeadlineDateTime:
-              pdfResponceData.isDeadline === false
-                ? ""
-                : pdfResponceData.deadlineDatetime,
-            CreatorID: pdfResponceData.creatorID,
-            ListOfActionAbleBundle: signerDataRef.current.map(
-              (sendData, index) => {
-                return {
-                  ID: `BundleID_# ${index + 1}`,
-                  Title: "",
-                  BundleDeadline: "",
-                  ListOfUsers: [sendData.userID],
-                  Entity: {
-                    EntityID: pdfResponceData.documentID,
-                    EntityTypeID: 1,
-                  },
-                };
-              }
-            ),
-          };
-
-          let convertData = [];
-          covert.forEach((data) => {
-            const xmlListStrings = data.xml.map((xmlObj) => {
-              return JSON.stringify(xmlObj);
-            });
-            convertData.push({
-              ActorID: data.actorID,
-              xmlList: xmlListStrings,
-            });
-          });
-
-          // save signature document api
-          let saveSignatureDocument = {
-            FileID: Number(docWorkflowID),
-            base64File: getBase64,
-          };
-          // add annotation  of files attachment api
-          let addAnnoatationofFilesAttachment = {
-            FileID: Number(docWorkflowID),
-            AnnotationString: xfdfString,
-          };
-          // send document api data
-          let sendDocumentData = {
-            PK_WorkFlow_ID: pdfResponceData.workFlowID,
-            FinalDocumentName: pdfResponceData.title,
-            Message: "",
-            ListOfViewers: [],
-          };
-
-          let newData = { ActorsFieldValuesList: convertData };
-          dispatch(
-            saveWorkflowApi(
-              saveWorkFlowData,
-              navigate,
-              t,
-              setOpenAddParticipentModal,
-              1,
-              newData,
-              addAnnoatationofFilesAttachment,
-              saveSignatureDocument,
-              2,
-              sendDocumentData
-            )
-          );
+          setSendModal(true);
         };
 
         // Create a render function for the custom panel
@@ -1062,22 +961,22 @@ const SignatureViewer = () => {
         //======================================== for cutome side bar =====================================//
 
         //======================================== header save button =====================================//
-        async function generateBase64FromBlob(blob) {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
+        // async function generateBase64FromBlob(blob) {
+        //   return new Promise((resolve, reject) => {
+        //     const reader = new FileReader();
 
-            reader.onload = function () {
-              const base64String = reader.result.split(",")[1];
-              resolve(base64String);
-            };
+        //     reader.onload = function () {
+        //       const base64String = reader.result.split(",")[1];
+        //       resolve(base64String);
+        //     };
 
-            reader.onerror = function (error) {
-              reject(error);
-            };
+        //     reader.onerror = function (error) {
+        //       reject(error);
+        //     };
 
-            reader.readAsDataURL(blob);
-          });
-        }
+        //     reader.readAsDataURL(blob);
+        //   });
+        // }
         const { WidgetFlags } = Annotations;
         instance.UI.setHeaderItems((header) => {
           header.push({
@@ -1564,6 +1463,124 @@ const SignatureViewer = () => {
   };
   // === End === //
 
+  const handleClickPubslihBtn = async () => {
+    const { annotationManager, documentViewer } = Instance.Core;
+    // status of 1 for save button
+    const doc = documentViewer.getDocument();
+    const data = await doc.getFileData({}); // No xfdfString for annotations
+    const arr = new Uint8Array(data);
+    const blob = new Blob([arr], { type: "application/pdf" });
+    let getBase64 = await generateBase64FromBlob(blob)
+      .then(async (base64String) => {
+        return base64String;
+        // Here you can use the base64String as needed
+      })
+      .catch((error) => {
+        return null;
+      });
+
+    // this one sent do save signature document
+    const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
+    const parser = new DOMParser();
+    const mainXmlDoc = parser.parseFromString(xfdfString, "text/xml");
+    const existsInMainXML = (name, type, mainXmlDoc) => {
+      const elements = mainXmlDoc.querySelectorAll(`${type}[name="${name}"]`);
+      return elements.length > 0;
+    };
+
+    let covert = userAnnotationsRef.current.map((user) => {
+      let filteredXml = user.xml.filter((item) => {
+        const ffieldDoc = parser.parseFromString(item.ffield, "text/xml");
+        const widgetDoc = parser.parseFromString(item.widget, "text/xml");
+        const ffieldName = ffieldDoc.documentElement.getAttribute("name");
+        const widgetName = widgetDoc.documentElement.getAttribute("name");
+
+        return (
+          existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
+          existsInMainXML(widgetName, "widget", mainXmlDoc)
+        );
+      });
+      return { ...user, xml: filteredXml };
+    });
+    // for Save workFlow Api
+    let saveWorkFlowData = {
+      PK_WorkFlow_ID: pdfResponceData.workFlowID,
+      WorkFlowTitle: pdfResponceData.title,
+      Description: pdfResponceData.description,
+      isDeadline: pdfResponceData.isDeadline,
+      DeadlineDateTime:
+        pdfResponceData.isDeadline === false
+          ? ""
+          : pdfResponceData.deadlineDatetime,
+      CreatorID: pdfResponceData.creatorID,
+      ListOfActionAbleBundle: signerData.map((sendData, index) => {
+        const bundle = {
+          ID: `BundleID_#${index + 1}`,
+          Title: "",
+          BundleDeadline: "",
+          ListOfUsers: [sendData.userID],
+          Entity: {
+            EntityID: pdfResponceData.documentID,
+            EntityTypeID: 1,
+          },
+        };
+        if (orderButtonChecked.current && index !== 0) {
+          bundle.Dependency = {
+            BundleID: `BundleID_#${index + 1}`,
+            DependencyIDs: [`BundleID_#${index}`],
+          };
+        }
+
+        return bundle;
+      }),
+    };
+
+    let convertData = [];
+    covert.forEach((data) => {
+      const xmlListStrings = data.xml.map((xmlObj) => {
+        return JSON.stringify(xmlObj);
+      });
+      convertData.push({
+        ActorID: data.actorID,
+        xmlList: xmlListStrings,
+      });
+    });
+
+    // save signature document api
+    let saveSignatureDocument = {
+      FileID: Number(docWorkflowID),
+      base64File: getBase64,
+    };
+    // add annotation  of files attachment api
+    let addAnnoatationofFilesAttachment = {
+      FileID: Number(docWorkflowID),
+      AnnotationString: xfdfString,
+    };
+    // send document api data
+    let sendDocumentData = {
+      PK_WorkFlow_ID: pdfResponceData.workFlowID,
+      FinalDocumentName: pdfResponceData.title,
+      Message: sendMessage,
+      ListOfViewers: [],
+    };
+
+    let newData = { ActorsFieldValuesList: convertData };
+    dispatch(
+      saveWorkflowApi(
+        saveWorkFlowData,
+        navigate,
+        t,
+        setOpenAddParticipentModal,
+        1,
+        newData,
+        addAnnoatationofFilesAttachment,
+        saveSignatureDocument,
+        2,
+        sendDocumentData
+      )
+    );
+  };
+
   // === this is for Response Message===//
   useEffect(() => {
     if (ResponseMessage !== "" && ResponseMessage !== undefined) {
@@ -1592,6 +1609,11 @@ const SignatureViewer = () => {
     items.splice(result.destination.index, 0, reorderedItem);
 
     setSignerData(items);
+  };
+
+  const handleCheckOrderButton = (event) => {
+    setOrderCheckbox(event.target.checked);
+    orderButtonChecked.current = event.target.checked;
   };
 
   return (
@@ -1784,7 +1806,7 @@ const SignatureViewer = () => {
                 <Checkbox
                   label2={t("Set-signer-order")}
                   checked={orderCheckBox}
-                  onChange={(event) => setOrderCheckbox(event.target.checked)}
+                  onChange={handleCheckOrderButton}
                   classNameDiv={"d-flex gap-2"}
                 />
               </Col>
@@ -1810,6 +1832,20 @@ const SignatureViewer = () => {
         }
       />
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      {sendModal && (
+        <SendDocumentModal
+          sendDocumentModal={sendModal}
+          setSendDocumentModal={setSendModal}
+          handleClickSendDocument={handleClickPubslihBtn}
+          signersData={signerDataRef}
+          setMailerInput={setMailerInput}
+          mailerInput={mailerInput}
+          setSendMessage={setSendMessage}
+          sendMessage={sendMessage}
+          pdfResponceData={pdfResponceData}
+          setPdfResponceData={setPdfResponceData}
+        />
+      )}
       {Loading && <Loader />}
     </>
   );

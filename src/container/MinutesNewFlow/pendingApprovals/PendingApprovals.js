@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom"; // Importing navigation hook
 import { Button, Paper, TableToDo } from "../../../components/elements"; // Importing custom components
 import { ChevronDown } from "react-bootstrap-icons"; //Bootstrap Icon
 import ReviewSignature from "../../DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -223,15 +224,18 @@ const PendingApproval = () => {
                   onClick={handleReviewMinutesClick} // Attach click handler
                 />
                 {/* Review & Sign button */}
-                <Button
-                  text="Review & Sign"
-                  className={
-                    reviewAndSignActive
-                      ? styles.activeMinutes
-                      : styles.inActiveMinutes
-                  } // Apply active or inactive styles based on state
-                  onClick={handleReviewAndSignClick} // Attach click handler
-                />
+                {(checkFeatureIDAvailability(19) ||
+                  checkFeatureIDAvailability(21)) && (
+                  <Button
+                    text="Review & Sign"
+                    className={
+                      reviewAndSignActive
+                        ? styles.activeMinutes
+                        : styles.inActiveMinutes
+                    } // Apply active or inactive styles based on state
+                    onClick={handleReviewAndSignClick} // Attach click handler
+                  />
+                )}
               </div>
             </Col>
           </Row>

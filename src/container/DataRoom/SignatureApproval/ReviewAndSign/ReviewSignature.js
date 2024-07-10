@@ -262,7 +262,7 @@ const ReviewSignature = () => {
           listOfPendingForApprovalSignatures;
         if (Array.isArray(pendingApprovals) && pendingApprovals.length > 0) {
           if (isScrollling) {
-            setIsScrolling(false)
+            setIsScrolling(false);
             setReviewSignature([...pendingApprovals, ...reviewSignature]);
             setTotalRecords(totalCount);
             setTotalDataLength((prev) => prev + pendingApprovals.length);
@@ -311,24 +311,30 @@ const ReviewSignature = () => {
               <Col lg={6} md={6} sm={12}>
                 <div className="d-flex  position-relative">
                   {/* Progress bars with different colors and percentages */}
-                  <ProgressBar
-                    width={approvalStats.signedPercentage}
-                    color="#F16B6B"
-                    indexValue="0"
-                    percentageValue={`${approvalStats.signedPercentage}%`}
-                  />
-                  <ProgressBar
-                    width={approvalStats.pendingPercentage}
-                    color="#FFC300"
-                    indexValue="1"
-                    percentageValue={`${approvalStats.pendingPercentage}%`}
-                  />
-                  <ProgressBar
-                    width={approvalStats.declinedPercentage}
-                    color="#55CE5C"
-                    indexValue="2"
-                    percentageValue={`${approvalStats.declinedPercentage}%`}
-                  />
+                  {approvalStats.signedPercentage > 0 && (
+                    <ProgressBar
+                      width={approvalStats.signedPercentage}
+                      color="#F16B6B"
+                      indexValue="0"
+                      percentageValue={`${approvalStats.signedPercentage}%`}
+                    />
+                  )}
+                  {approvalStats.pendingPercentage > 0 && (
+                    <ProgressBar
+                      width={approvalStats.pendingPercentage}
+                      color="#FFC300"
+                      indexValue="1"
+                      percentageValue={`${approvalStats.pendingPercentage}%`}
+                    />
+                  )}
+                  {approvalStats.declinedPercentage > 0 && (
+                    <ProgressBar
+                      width={approvalStats.declinedPercentage}
+                      color="#55CE5C"
+                      indexValue="2"
+                      percentageValue={`${approvalStats.declinedPercentage}%`}
+                    />
+                  )}
                 </div>
               </Col>
               <Col lg={6} md={6} sm={12} className="d-flex">

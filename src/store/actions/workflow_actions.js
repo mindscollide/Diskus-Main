@@ -418,7 +418,7 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
               dispatch(
                 getWorkFlowByFlodID_success(
                   response.data.responseResult,
-                  t("Data-available"),
+                  "",
                   false
                 )
               );
@@ -927,14 +927,24 @@ const addAnnoationSignatrueFlow = (
                   UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle)
                 );
               } else {
+                console.log(status, "statusstatusstatusstatusstatusstatus");
                 dispatch(
-                  addAnnotationDataRoom_success(
-                    response.data.responseResult,
-                    t("Record-updated"),
-                    true
+                  saveSignatureDocumentApi(
+                    saveSignatureDocument,
+                    navigate,
+                    t,
+                    status,
+                    sendDocumentData
                   )
                 );
               }
+              dispatch(
+                addAnnotationDataRoom_success(
+                  response.data.responseResult,
+                  t("Record-updated"),
+                  true
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1029,7 +1039,7 @@ const getAllFieldsByWorkflowIdApi = (newData, navigate, t, Data) => {
               dispatch(
                 getAllFieldsByWorkflowId_success(
                   response.data.responseResult,
-                  t("Data-available"),
+                  "",
                   false
                 )
               );
@@ -1052,7 +1062,7 @@ const getAllFieldsByWorkflowIdApi = (newData, navigate, t, Data) => {
                 OrganizationID: Number(localStorage.getItem("organizationID")),
               };
               dispatch(getAnnoationSignatrueFlow(navigate, t, Data2));
-              dispatch(getAllFieldsByWorkflowId_fail(t("No-data-available")));
+              dispatch(getAllFieldsByWorkflowId_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1952,7 +1962,7 @@ const UpdateActorBundleStatusApi = (navigate, t, Data) => {
                   t("Updated-successfully")
                 )
               );
-              window.close();
+              // window.close();
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

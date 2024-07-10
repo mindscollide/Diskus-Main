@@ -30,6 +30,18 @@ import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignee
 import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
 import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
 import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/DeclineReasonCloseModal";
+import {
+  handleBlobFiles,
+  hideFreetextElements,
+  processXmlForReadOnly,
+  processXmlToHideFields,
+  readOnlyFreetextElements,
+  revertHideFreetextElements,
+  revertProcessXmlForReadOnly,
+  revertProcessXmlToHideFields,
+  revertReadOnlyFreetextElements,
+} from "./pendingSIgnatureFunctions";
+
 const SignatureViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -83,10 +95,11 @@ const SignatureViewer = () => {
   });
   console.log(getAllFieldsByWorkflowID, "getAllFieldsByWorkflowID");
   // { userID: "user1", xml: [] }
+  const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [hiddenUsers, setHiddenUsers] = useState([]);
   const [readOnlyUsers, setReadOnlyUsers] = useState([]);
-
+  const userAnnotationsCopyData = useRef(userAnnotationsCopy);
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
@@ -97,9 +110,17 @@ const SignatureViewer = () => {
   const removeXmlAfterHideDAtaRef = useRef(removeXmlAfterHideDAta);
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
-  console.log(userAnnotationsRef.current, "userAnnotationsuserAnnotations");
+  console.log(
+    userAnnotationsCopyData,
+    "userAnnotationsCopyDatauserAnnotationsCopyDatauserAnnotationsCopyData"
+  );
 
   // ===== this use for current state update get =====//
+
+  useEffect(() => {
+    userAnnotationsCopyData.current = userAnnotationsCopy;
+  }, [userAnnotationsCopy]);
+
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
@@ -251,6 +272,7 @@ const SignatureViewer = () => {
                 .listOfFields
             );
             setUserAnnotations(revertedData);
+            setUserAnnotationsCopy(revertedData);
           }
           setFieldsData(newFieldsData);
         }
@@ -339,245 +361,6 @@ const SignatureViewer = () => {
   }, [getWorkfFlowByFileId, FieldsData]);
   // === End === //
 
-  // === used for read only Form Fields=== //
-
-  function processXmlForReadOnly(xmlString, nameValues) {
-    // Parse the XML string
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-
-    // Iterate through each name value
-    nameValues.forEach((nameValue) => {
-      // Find the ffield with the specified name attribute value
-      const ffield = xmlDoc.querySelector(`ffield[name="${nameValue}"]`);
-
-      if (ffield) {
-        // Check if the ffield already has a flags attribute
-        const flagsAttribute = ffield.getAttribute("flags");
-
-        if (!flagsAttribute) {
-          // If flags attribute does not exist, add it with value "ReadOnly"
-          ffield.setAttribute("flags", "ReadOnly");
-        } else {
-          // If flags attribute exists, update its value to "ReadOnly"
-          ffield.setAttribute("flags", "ReadOnly");
-        }
-      }
-    });
-
-    // Serialize the updated XML back to string
-    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-    return updatedXmlString;
-  }
-  function revertProcessXmlForReadOnly(xmlString, nameValues) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-
-    nameValues.forEach((nameValue) => {
-      const ffield = xmlDoc.querySelector(`ffield[name="${nameValue}"]`);
-      if (ffield) {
-        ffield.removeAttribute("flags");
-      }
-    });
-
-    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-    return updatedXmlString;
-  }
-  // === End === //
-
-  // === used for Hide Form Fields === //
-
-  function processXmlToHideFields(xmlString, nameValues) {
-    // Parse the XML string
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-
-    // Array to store removed fields along with their parent nodes and siblings
-    const removedFields = [];
-
-    // Iterate over each name value in the array
-    nameValues.forEach((nameValue) => {
-      // Find the ffield with the specified name attribute
-      const ffields = xmlDoc.querySelectorAll(`ffield[name="${nameValue}"]`);
-      const widgets = xmlDoc.querySelectorAll(`widget[field="${nameValue}"]`);
-
-      // Iterate through each matching ffield
-      ffields.forEach((ffield) => {
-        // Find the associated widget element
-        const widget = ffield.nextElementSibling;
-
-        // Prepare the object to store removed fields
-        const removedField = {
-          parent: ffield.parentNode,
-          prevSibling: ffield.previousSibling,
-          ffield: ffield.cloneNode(true),
-        };
-
-        // If there is an associated widget, add it to the removedField object
-        if (
-          widget &&
-          widget.tagName.toLowerCase() === "widget" &&
-          widget.getAttribute("field") === nameValue
-        ) {
-          removedField.widget = widget.cloneNode(true);
-          // Remove the widget element
-          widget.parentNode.removeChild(widget);
-        }
-
-        // Remove the ffield element
-        ffield.parentNode.removeChild(ffield);
-
-        // Push the removed field object to the array
-        removedFields.push(removedField);
-      });
-
-      // Iterate through each matching widget (in case widget exists without ffield)
-      widgets.forEach((widget) => {
-        // Prepare the object to store removed fields
-        const removedField = {
-          parent: widget.parentNode,
-          prevSibling: widget.previousSibling,
-          widget: widget.cloneNode(true),
-        };
-
-        // Remove the widget element
-        widget.parentNode.removeChild(widget);
-
-        // Push the removed field object to the array
-        removedFields.push(removedField);
-      });
-    });
-
-    // Serialize the updated XML back to string
-    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-
-    // Return the updated XML string and the removed fields
-    return { updatedXmlString, removedFields };
-  }
-
-  function revertProcessXmlToHideFields(xmlString, removedFields) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    console.log("revertProcessXmlToHideFields removedFields", removedFields);
-
-    removedFields.forEach((removedField) => {
-      const parent = xmlDoc.querySelector(removedField.parent.nodeName);
-      const prevSibling = xmlDoc.querySelector(
-        removedField.prevSibling?.nodeName
-      );
-      const ffield = removedField.ffield;
-      const widget = removedField.widget;
-      console.log("Save Button Clicked parent", parent);
-      console.log("Save Button Clicked prevSibling", prevSibling);
-      console.log("Save Button Clicked ffield", ffield);
-      console.log("Save Button Clicked ffield", ffield);
-      // If there was a previous sibling, insert before it; otherwise, append to parent
-      if (prevSibling) {
-        parent.insertBefore(widget, prevSibling.nextSibling);
-      } else {
-        parent.appendChild(ffield);
-      }
-    });
-    // Serialize the updated XML back to string
-    const revertedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-    return revertedXmlString;
-  }
-  // === End === //
-
-  // === used for hide and readOnly free text  === //
-
-  const readOnlyFreetextElements = (xmlString, userDataRead) => {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
-
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.lastIndexOf("-");
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print,locked,lockedcontents");
-        }
-      }
-    });
-
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
-  };
-  const revertReadOnlyFreetextElements = (xmlString, userDataRead) => {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
-
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.split("-")[1];
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print");
-        }
-      }
-    });
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
-  };
-
-  const hideFreetextElements = (xmlString, userDataRead) => {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
-
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.lastIndexOf("-");
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print,locked,lockedcontents");
-          freetextElement.setAttribute("opacity", "0");
-        }
-      }
-    });
-
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
-  };
-  const revertHideFreetextElements = (xmlString, userDataRead) => {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
-
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.split("-")[1];
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print");
-          freetextElement.setAttribute("opacity", "10");
-        }
-      }
-    });
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
-  };
-
-  // === End === //
-
   // === Get  the file details by Id from API and Set it === //
   useEffect(() => {
     if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
@@ -612,6 +395,7 @@ const SignatureViewer = () => {
           });
         }
       });
+      console.log({ HideArray, ReadArray }, "ReadArrayReadArray");
       console.log(
         "getDataroomAnnotation.annotationString getDataroomAnnotation",
         getDataroomAnnotation.annotationString
@@ -995,19 +779,6 @@ const SignatureViewer = () => {
   }, [pdfResponceData.attachmentBlob]);
 
   // ==== End ====//
-
-  //===  this is for covert blob file ===//
-  function handleBlobFiles(base64) {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; ++i) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    return new Blob([bytes], { type: "application/pdf" });
-  }
-  // ==== End ===//
 
   // this will generate my xfdf files for user base and send into AddUpdateFieldValue
   const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
