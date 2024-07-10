@@ -135,14 +135,12 @@ const Polls = ({ committeeStatus }) => {
   const handleClickonTitle = (record) => {
     // navigate("/DisKus/polling", { state: { record, isVote: false } });
     // if (Object.keys(record).length > 0) {
-    if (
-      record.pollStatus.pollStatusId === 1 ||
-      record.pollStatus.pollStatusId === 3
-    ) {
-      let data = {
-        PollID: record.pollID,
-        UserID: parseInt(userID),
-      };
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    if (record.pollStatus.pollStatusId === 1) {
+      // UnPublished Poll
       dispatch(
         getPollsByPollIdforCommitteeApi(
           navigate,
@@ -156,10 +154,7 @@ const Polls = ({ committeeStatus }) => {
         )
       );
     } else if (record.pollStatus.pollStatusId === 2) {
-      let data = {
-        PollID: record.pollID,
-        UserID: parseInt(userID),
-      };
+      // Poll Published
       dispatch(
         getPollsByPollIdforCommitteeApi(
           navigate,
@@ -172,7 +167,39 @@ const Polls = ({ committeeStatus }) => {
           setViewPublishedPoll
         )
       );
+    } else if (record.pollStatus.pollStatusId === 3) {
+      // Expired Poll
+      if (Number(record?.pollCreatorID) === Number(userID)) {
+        // if User is Poll Creator then poll should modal should open same like published view poll with View Votes Button
+        dispatch(
+          getPollsByPollIdforCommitteeApi(
+            navigate,
+            data,
+            4,
+            t,
+            setEditPolls,
+            setvotePolls,
+            setUnPublished,
+            setViewPublishedPoll
+          )
+        );
+      } else {
+        // If User is just a Participant then modal should open like Unpublished Poll
+        dispatch(
+          getPollsByPollIdforCommitteeApi(
+            navigate,
+            data,
+            3,
+            t,
+            setEditPolls,
+            setvotePolls,
+            setUnPublished,
+            setViewPublishedPoll
+          )
+        );
+      }
     }
+
     // }
     // if (Object.keys(record).length > 0) {
     //   let data = {

@@ -118,6 +118,7 @@ import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
 import {
   createWorkflowApi,
+  getAllPendingApprovalStatusApi,
   getAllSignaturesDocumentsforCreatorApi,
 } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
@@ -186,7 +187,8 @@ const DataRoom = () => {
   const [filterValue, setFilterValue] = useState(0);
   const [getAllData, setGetAllData] = useState([]);
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
-
+  const [sortValue, setSortValue] = useState(1);
+  const [isAscending, setIsAscending] = useState(true);
   const [currentSort, setCurrentSort] = useState("descend"); // Initial sort order
   const [currentFilter, setCurrentFilter] = useState(t("Last-modified"));
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
@@ -344,6 +346,14 @@ const DataRoom = () => {
         };
         dispatch(getRecentDocumentsApi(navigate, t, Data));
       } else if (currentView === 5) {
+        let Data = { pageNo: 1, pageSize: 10 };
+        dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+        setGetAllData([]);
+        setSharedwithmebtn(true);
+        localStorage.removeItem("folderID");
+        if (searchoptions) {
+          setSearchoptions(false);
+        }
       } else {
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
         localStorage.removeItem("folderID");
@@ -545,7 +555,10 @@ const DataRoom = () => {
     setSRowsData(0);
 
     localStorage.setItem("setTableView", 5);
-    let Data = { pageNo: 1, pageSize: 10 };
+    // getAllPendingApprovalStatusApi
+    let newData = { IsCreator: true };
+    dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
+    let Data = { sRow: 0, Length: 10 };
     await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     //  localStorage.set
     setGetAllData([]);
@@ -750,10 +763,14 @@ const DataRoom = () => {
   const handleSortChange = (pagination, filters, sorter) => {
     if (sorter.field === "sharedDate") {
       if (sorter.order === "ascend") {
+        setIsAscending(false);
+
         dispatch(
           getDocumentsAndFolderApi(navigate, currentView, t, 1, 2, false)
         );
       } else {
+        setIsAscending(true);
+
         dispatch(
           getDocumentsAndFolderApi(navigate, currentView, t, 1, 2, true)
         );
@@ -769,7 +786,9 @@ const DataRoom = () => {
       "handleSortMyDocumentshandleSortMyDocuments"
     );
     if (sorter.field === "name") {
+      setSortValue(1);
       if (sorter.order === "ascend") {
+        setIsAscending(false);
         dispatch(
           getDocumentsAndFolderApi(
             navigate,
@@ -781,6 +800,8 @@ const DataRoom = () => {
           )
         );
       } else {
+        setIsAscending(true);
+
         dispatch(
           getDocumentsAndFolderApi(navigate, Number(currentView), t, 1, 1, true)
         );
@@ -799,6 +820,7 @@ const DataRoom = () => {
           setFilterValue(4);
           setCurrentFilter(t("Last-open-by-me"));
         }
+        setSortValue(getFilterValue);
         dispatch(
           getDocumentsAndFolderApi(
             navigate,
@@ -806,7 +828,7 @@ const DataRoom = () => {
             t,
             1,
             Number(getFilterValue),
-            true
+            isAscending
           )
         );
       } else {
@@ -817,14 +839,17 @@ const DataRoom = () => {
             t,
             1,
             Number(2),
-            true
+            isAscending
           )
         );
       }
     }
 
     if (sorter.field === "owner") {
+      setSortValue(5);
+
       if (sorter.order === "descend" || sorter.order === undefined) {
+        setIsAscending(true);
         dispatch(
           getDocumentsAndFolderApi(
             navigate,
@@ -836,6 +861,8 @@ const DataRoom = () => {
           )
         );
       } else if (sorter.order === "ascend") {
+        setIsAscending(false);
+
         dispatch(
           getDocumentsAndFolderApi(
             navigate,
@@ -855,8 +882,12 @@ const DataRoom = () => {
   const handleSortMyRecentTab = (pagination, filters, sorter) => {
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
+        setIsAscending(false);
+
         dispatch(getDocumentsAndFolderApi(navigate, 5, t, 1, 1, false));
       } else {
+        setIsAscending(true);
+
         dispatch(getDocumentsAndFolderApi(navigate, 5, t, 1, 1, true));
       }
     }
@@ -880,7 +911,7 @@ const DataRoom = () => {
             t,
             1,
             Number(getFilterValue),
-            true
+            isAscending
           )
         );
       } else {
@@ -888,8 +919,6 @@ const DataRoom = () => {
       }
     }
 
-    if (sorter.field === "owner") {
-    }
     setFilteredInfo(filters);
     setSortedInfo(sorter);
   };
@@ -3178,7 +3207,8 @@ const DataRoom = () => {
             currentView,
             t,
             Number(sRowsData),
-            Number(filterValue)
+            Number(sortValue),
+            isAscending
           )
         );
       }
@@ -3273,7 +3303,9 @@ const DataRoom = () => {
   ]);
 
   const handleClickDeleteFolder = () => {
-    dispatch(deleteFolder(navigate, Number(isFolderDeleteId), t,setIsFolderDelete));
+    dispatch(
+      deleteFolder(navigate, Number(isFolderDeleteId), t, setIsFolderDelete)
+    );
   };
   const handleCancelDeleteFolder = () => {
     setIsFolderDeleteId(0);
@@ -3284,7 +3316,9 @@ const DataRoom = () => {
     setIsFileDelete(false);
   };
   const handleClickDeleteFile = () => {
-    dispatch(deleteFileDataroom(navigate, Number(isFileDeleteId), t,setIsFileDelete));
+    dispatch(
+      deleteFileDataroom(navigate, Number(isFileDeleteId), t, setIsFileDelete)
+    );
   };
   return (
     <>
