@@ -1,0 +1,101 @@
+.Resend_Button,
+.Resend_Button:is(:hover, :active, :focus, :focus-visible, :target) {
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  width: 92px !important;
+  height: 39px !important;
+  border-color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
+
+img.image-close {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  cursor: pointer;
+}
+
+body[dir="rtl"] img.image-close {
+  position: absolute;
+  right: auto;
+  top: 0px;
+  cursor: pointer;
+  left: 10px;
+}
+
+h1.Edit-Heading {
+  font-weight: 600;
+  font-size: 30px;
+  color: #6172d6;
+}
+
+.image-profile-wrapper {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 10px;
+}
+
+.image-profile-wrapper span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #5a5a5a;
+}
+
+img.image-style {
+  border-radius: 100%;
+}
+
+.profile-wrapper {
+  margin: 10px 0px;
+  border: 1px solid #e1e1e1;
+  /* padding: 10px; */
+  border-radius: 4px;
+  margin-right: 10px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+label.label-style {
+  font-size: 10px;
+  font-weight: 600;
+  color: #6172d6 !important;
+  margin-bottom: -5px;
+}
+
+p.delete-comment-message {
+  /* margin: 0; */
+  font-weight: 600;
+  font-size: 16px;
+  color: #5a5a5a;
+  text-align: center;
+  margin-top: -20px;
+  max-width: 290px;
+}
+
+.Yes_Modal,
+.Yes_Modal:is(:hover, :active, :focus, :focus-visible, :target) {
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  width: 87px !important;
+  height: 39px !important;
+  border-color: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
+
+.No_Modal,
+.No_Modal:is(:hover, :active, :focus, :focus-visible, :target) {
+  background: #fff !important;
+  border-radius: 4px !important;
+  width: 83px !important;
+  height: 39px !important;
+  border-color: #e1e1e1 !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}

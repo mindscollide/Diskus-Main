@@ -7204,6 +7204,10 @@ span.billing-contactActive {
   font-size: 16px !important;
 }
 
+.no-padding-top {
+  padding-top: 0 !important;
+}
+
 span.billing-address {
   color: #5a5a5a !important;
   font-weight: 600 !important;
@@ -7479,7 +7483,7 @@ a.pendingApprovalsNav.nav-link {
 
 .PendingApprovalsTable .ant-table-thead > tr * {
   font-weight: 700 !important;
-  border-bottom: 1px solid #5a5a5a !important;
+  /* border-bottom: 1px solid #5a5a5a !important; */
   padding-bottom: 5px !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
@@ -7493,7 +7497,7 @@ a.pendingApprovalsNav.nav-link {
 .PendingApprovalsTable
   tr.ant-table-row.ant-table-row-level-0
   td.ant-table-cell {
-  padding: 7px 16px !important;
+  padding: 10px 16px !important;
   border-bottom: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
   font-style: normal;
@@ -7590,6 +7594,23 @@ th.ant-table-cell.statusParticipant
   z-index: 99999999999 !important;
 }
 
+.PendingApprovalsTable .ant-table-thead > tr > th {
+  border-bottom: 1px solid #5a5a5a !important;
+}
+
+.ant-table-wrapper.PendingApprovalsTable
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th
+  .ant-table-column-sorter {
+  display: none;
+}
+
+.fade.DeleteCommentModal.modal.show .modal-content {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 3px;
+}
 .ApprovalsTable .ant-table-thead > tr * {
   font-weight: 700 !important;
   /* border-bottom: 1px solid #5a5a5a !important; */
@@ -7597,6 +7618,19 @@ th.ant-table-cell.statusParticipant
   font-size: 16px !important;
   color: #5f78d6 !important;
   padding: 2px 8px;
+}
+.ApprovalsTable {
+  margin-bottom: 50px;
+  overflow-y: auto;
+}
+
+.ApprovalsTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+  padding: 10px 16px !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px !important;
 }
 
 .ApprovalsTable {
@@ -7755,6 +7789,82 @@ body[dir="rtl"]
   /* display: block; */
 }
 
+th.ant-table-cell.leaveTimeParticipant.ant-table-cell-ellipsis.ant-table-column-has-sorters {
+  display: flex !important;
+  margin-top: 1px !important;
+}
+
+.w-91 {
+  width: 91%;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.mr-20 {
+  margin-right: 20px !important;
+}
+
+.ml-25 {
+  margin-left: 25px !important;
+}
+
+.mb-25 {
+  margin-bottom: 25px !important;
+}
+
+.scrollStyle::-webkit-scrollbar {
+  width: 5px !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
+}
+.scrollStyle::-webkit-scrollbar-thumb {
+  border-radius: 20px !important;
+  background: #a2a2a2 !important;
+  margin-left: -15px !important;
+}
+
+.mt-16p {
+  margin-top: 16px !important;
+}
+
+.mt-16n {
+  margin-top: -16px !important;
+}
+
+/* Responsiveness CancelSubscription Ends*/
+.ant-table-thead th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* display: block; */
+}
+
+.datepickerlength .rmdp-container {
+  width: 96%;
+}
+
+.datepickerlength .rmdp-container svg {
+  color: #f16b6b !important;
+}
+
+span.text-truncate.description {
+  font-weight: 500;
+  font-size: 12px;
+  color: #5a5a5a;
+}
+
+span.text-truncate.description p {
+  margin: 0 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 /* SubscriptionExpiry Table Styles */
 tr.ant-table-row.ant-table-row-level-0.SubscriptionExpiry {
   border-radius: 4px !important;

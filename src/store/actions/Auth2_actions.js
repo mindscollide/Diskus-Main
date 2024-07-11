@@ -18,6 +18,7 @@ import {
   passswordUpdationOnForgetPassword,
   UserLogout,
   GetInvoiceHTMLByOrganizatonID,
+  DownloadInvoiceRM,
 } from "../../commen/apis/Api_config";
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
@@ -3374,10 +3375,7 @@ const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getInvocieHTMLApi(navigate, t, Data, setInvoiceModal));
         } else if (response.data.responseCode === 200) {
-
           if (response.data.responseResult.isExecuted === true) {
-        
-
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3385,7 +3383,6 @@ const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
                   "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_01".toLowerCase()
                 )
             ) {
-
               setInvoiceModal(true);
               dispatch(
                 getInvoiceHTML_Success(
@@ -3424,6 +3421,70 @@ const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
       });
   };
 };
+
+const DownlaodInvoice_Init = () => {
+  return {
+    type: actions.DOWNLOADINVOICE_INIT,
+  };
+};
+const DownlaodInvoice_Success = (response, message) => {
+  return {
+    type: actions.DOWNLOADINVOICE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const DownlaodInvoice_Fail = (message) => {
+  return {
+    type: actions.DOWNLOADINVOICE_FAIL,
+    message: message,
+  };
+};
+
+const DownlaodInvoiceLApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(DownlaodInvoice_Init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DownloadInvoiceRM.RequestMethod);
+    let contentType = "application/pdf";
+    let ext = "pdf";
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+        "Content-Disposition": "attachment; filename=template." + ext,
+        "Content-Type": contentType,
+      },
+      responseType: "blob",
+    })
+      .then(async (response) => {
+        console.log("DownloadInvoice", response);
+
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DownlaodInvoiceLApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", ext);
+          document.body.appendChild(link);
+          link.click();
+          dispatch(DownlaodInvoice_Success(response, ""));
+        } else {
+          dispatch(DownlaodInvoice_Fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(DownlaodInvoice_Fail(t("Something-went-wrong")));
+      });
+  };
+};
 const setClient = (response) => {
   return {
     type: actions.SET_MQTT_CLIENT,
@@ -3432,6 +3493,7 @@ const setClient = (response) => {
 };
 
 export {
+  DownlaodInvoiceLApi,
   getInvocieHTMLApi,
   setClient,
   setLoader,

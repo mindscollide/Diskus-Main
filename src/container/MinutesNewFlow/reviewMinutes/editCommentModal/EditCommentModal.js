@@ -13,10 +13,202 @@ import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing image
 
 // Functional component for editing a comment
-const EditCommentModal = () => {
+const EditCommentModal = ({
+  minutesAgenda,
+  setMinutesAgenda,
+  minutesGeneral,
+  setMinutesGeneral,
+  editCommentLocal,
+  setEditCommentLocal,
+  parentMinuteID,
+  setParentMinuteID,
+  currentUserID,
+  currentUserName,
+  isAgenda,
+}) => {
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
+
+  // const [editComment, setEditComment] = useState("")
+
+  const { MinutesReducer } = useSelector((state) => state);
+
+  const updateRejectMinutesAgenda = (
+    minutesData,
+    updateData,
+    parentMinuteID
+  ) => {
+    return minutesData.map((agenda) => {
+      // Update main minuteData
+      const updatedMinuteData = agenda.minuteData.map((minute) => {
+        if (minute.minuteID === parentMinuteID.minuteID) {
+          const updatedDeclinedReviews = minute.declinedReviews.map(
+            (review) => {
+              if (review.fK_WorkFlowActor_ID === 0) {
+                return {
+                  ...review,
+                  fK_ActorBundlesStatus_ID: 0,
+                  fK_UID: currentUserID,
+                  fK_WorkFlowActor_ID: 0,
+                  fK_WorkFlowActionableBundle_ID: 0,
+                  fK_ActorBundlesStatusState_ID: 2,
+                  actorName: currentUserName,
+                  reason: updateData.reason,
+                  modifiedOn: new Date()
+                    .toISOString()
+                    .replace(/[-:T.]/g, "")
+                    .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
+                  userProfilePicture: {
+                    userID: currentUserID,
+                    orignalProfilePictureName: "",
+                    displayProfilePictureName:
+                      MinutesReducer?.CurrentUserPicture
+                        ?.displayProfilePictureName,
+                  },
+                };
+              }
+              return review;
+            }
+          );
+
+          return {
+            ...minute,
+            reason: updateData.reason,
+            actorBundleStatusID: 2,
+            declinedReviews: updatedDeclinedReviews,
+          };
+        }
+        return minute;
+      });
+
+      // Update subMinutes if they exist
+      const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
+        const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
+          if (subMinute.minuteID === parentMinuteID.minuteID) {
+            const updatedDeclinedReviews = subMinute.declinedReviews.map(
+              (review) => {
+                if (review.fK_WorkFlowActor_ID === 0) {
+                  return {
+                    ...review,
+                    fK_ActorBundlesStatus_ID: 0,
+                    fK_UID: currentUserID,
+                    fK_WorkFlowActor_ID: 0,
+                    fK_WorkFlowActionableBundle_ID: 0,
+                    fK_ActorBundlesStatusState_ID: 2,
+                    actorName: currentUserName,
+                    reason: updateData.reason,
+                    modifiedOn: new Date()
+                      .toISOString()
+                      .replace(/[-:T.]/g, "")
+                      .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
+                    userProfilePicture: {
+                      userID: currentUserID,
+                      orignalProfilePictureName: "",
+                      displayProfilePictureName:
+                        MinutesReducer?.CurrentUserPicture
+                          ?.displayProfilePictureName,
+                    },
+                  };
+                }
+                return review;
+              }
+            );
+
+            return {
+              ...subMinute,
+              reason: updateData.reason,
+              actorBundleStatusID: 2,
+              declinedReviews: updatedDeclinedReviews,
+            };
+          }
+          return subMinute;
+        });
+        return { ...subAgenda, minuteData: updatedSubMinuteData };
+      });
+
+      return {
+        ...agenda,
+        minuteData: updatedMinuteData,
+        subMinutes: updatedSubMinutes,
+      };
+    });
+  };
+
+  const updateCommentMinutesGeneral = (
+    minutesData,
+    updateData,
+    parentMinuteID
+  ) => {
+    return minutesData.map((minute) => {
+      if (minute.minuteID === parentMinuteID.minuteID) {
+        const updatedDeclinedReviews = minute.declinedReviews.map((review) => {
+          if (review.fK_WorkFlowActor_ID === 0) {
+            return {
+              ...review,
+              fK_ActorBundlesStatus_ID: 0,
+              fK_UID: currentUserID,
+              fK_WorkFlowActor_ID: 0,
+              fK_WorkFlowActionableBundle_ID: 0,
+              fK_ActorBundlesStatusState_ID: 2,
+              actorName: currentUserName,
+              reason: updateData.reason,
+              modifiedOn: new Date()
+                .toISOString()
+                .replace(/[-:T.]/g, "")
+                .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
+              userProfilePicture: {
+                userID: currentUserID,
+                orignalProfilePictureName: "",
+                displayProfilePictureName:
+                  MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
+              },
+            };
+          }
+          return review;
+        });
+
+        return {
+          ...minute,
+          reason: updateData.reason,
+          actorBundleStatusID: 2,
+          declinedReviews: updatedDeclinedReviews,
+        };
+      }
+      return minute;
+    });
+  };
+
+  const handleCommentChange = (event) => {
+    const { value } = event.target;
+    setEditCommentLocal((prevState) => ({
+      ...prevState,
+      reason: value,
+    }));
+  };
+
+  const editComment = () => {
+    console.log("editCommentLocaleditCommentLocal", editCommentLocal);
+    if (isAgenda === false) {
+      const updatedMinutesData = updateCommentMinutesGeneral(
+        minutesGeneral,
+        editCommentLocal,
+        parentMinuteID
+      );
+      console.log("Updated minutes data:", updatedMinutesData);
+      setMinutesGeneral(updatedMinutesData);
+      dispatch(editCommentModal(false));
+    } else {
+      const updatedMinutesData = updateRejectMinutesAgenda(
+        minutesAgenda,
+        editCommentLocal,
+        parentMinuteID
+      );
+      console.log("Updated minutes data:", updatedMinutesData);
+      setMinutesAgenda(updatedMinutesData);
+      dispatch(editCommentModal(false));
+    }
+  };
 
   return (
     <section>
@@ -59,10 +251,12 @@ const EditCommentModal = () => {
               name="textField-RejectComment"
               className={styles["textField-RejectComment"]} // CSS class for text area
               type="text"
-              value={"Comment will come here"}
+              value={editCommentLocal.reason}
               placeholder={t("Write-a-comment")} // Placeholder text for text area
               labelClassName={"d-none"} // CSS class for label
               timeClass={"d-none"} // CSS class for time
+              onChange={handleCommentChange}
+              // onChange={(e) => setCommentText(e.target.value)}
             />
           </>
         }
@@ -78,7 +272,7 @@ const EditCommentModal = () => {
               >
                 {/* Button for saving changes */}
                 <Button
-                  onClick={() => dispatch(editCommentModal(false))} // Click handler for saving changes and closing modal
+                  onClick={editComment} // Click handler for saving changes and closing modal
                   text={t("Save-changes")} // Translation for button text
                   className={styles["Edit_Comment_Modal"]} // CSS class for button
                 />
