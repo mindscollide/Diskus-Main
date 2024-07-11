@@ -234,6 +234,23 @@ const NewMeeting = () => {
   const [dashboardEventData, setDashboardEventData] = useState(null);
 
   useEffect(() => {
+    return () => {
+      setBoarddeckOptions({
+        selectall: false,
+        Organizer: false,
+        AgendaContributor: false,
+        Participants: false,
+        Minutes: false,
+        Task: false,
+        polls: false,
+        attendeceReport: false,
+        video: false,
+        Agenda: false,
+      });
+    };
+  }, []);
+
+  useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
@@ -1334,11 +1351,20 @@ const NewMeeting = () => {
           console.log(record, "recordrecordrecord");
           return (
             <>
-              <Button
-                text={t("Board-deck")}
-                className={styles["BoardDeckButton"]}
-                onClick={() => boardDeckOnClick(record)}
-              />
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <Button
+                    text={t("Board-deck")}
+                    className={styles["BoardDeckButton"]}
+                    onClick={() => boardDeckOnClick(record)}
+                  />
+                </Col>
+              </Row>
             </>
           );
         } else {
