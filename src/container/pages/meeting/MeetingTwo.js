@@ -182,6 +182,7 @@ const NewMeeting = () => {
     video: false,
     Agenda: false,
   });
+  console.log(boarddeckOptions, "boarddeckOptions");
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
