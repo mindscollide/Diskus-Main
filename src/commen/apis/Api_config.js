@@ -1670,6 +1670,22 @@ const deleteMinuteReviewByReviewer = {
   RequestMethod: "ServiceManager.DeleteMinuteReviewByReviewer",
 };
 
+const downgradeOrganizationSubscription = {
+  RequestMethod: "ServiceManager.DowngradeOrganizationSubscription",
+};
+
+const getOrganizationWallet = {
+  RequestMethod: "ServiceManager.GetOrganizationWallet",
+};
+
+const BoardDeckSendEmail = {
+  RequestMethod: "ServiceManager.SendBoardDeckPDFAsEmail",
+};
+
+const DownloadBoarddeckPDF = {
+  RequestMethod: "ServiceManager.DownloadBoardDeckPDF",
+};
+
 const GetPendingApprovalStatusforSignatureFlowRM = {
   RequestMethod: "ServiceManager.GetPendingApprovalStatusesForSignatureFlow",
 };
@@ -2139,4 +2155,8 @@ export {
   updateCommentForRejectedMinute,
   getMinuteReviewDetailsForOrganizerByMinuteId,
   deleteMinuteReviewByReviewer,
+  downgradeOrganizationSubscription,
+  getOrganizationWallet,
+  BoardDeckSendEmail,
+  DownloadBoarddeckPDF,
 };

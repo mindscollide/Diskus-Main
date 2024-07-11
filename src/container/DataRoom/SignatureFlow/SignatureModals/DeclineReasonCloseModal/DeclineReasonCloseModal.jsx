@@ -5,6 +5,7 @@ import styles from "./DeclineReasonCloseModal.module.css";
 const DeclineReasonCloseModal = ({ show, setShow }) => {
   const handleClose = () => {
     setShow(false);
+    window.close();
   };
   return (
     <Modal

@@ -29,6 +29,7 @@ import {
   getAllPendingApprovalsSignaturesApi,
   getAllPendingApprovalsStatsApi,
 } from "../../../store/actions/workflow_actions";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -377,15 +378,18 @@ const PendingApproval = () => {
                   onClick={handleReviewMinutesClick} // Attach click handler
                 />
                 {/* Review & Sign button */}
-                <Button
-                  text="Review & Sign"
-                  className={
-                    reviewAndSignActive
-                      ? styles.activeMinutes
-                      : styles.inActiveMinutes
-                  } // Apply active or inactive styles based on state
-                  onClick={handleReviewAndSignClick} // Attach click handler
-                />
+                {(checkFeatureIDAvailability(19) ||
+                  checkFeatureIDAvailability(21)) && (
+                  <Button
+                    text="Review & Sign"
+                    className={
+                      reviewAndSignActive
+                        ? styles.activeMinutes
+                        : styles.inActiveMinutes
+                    } // Apply active or inactive styles based on state
+                    onClick={handleReviewAndSignClick} // Attach click handler
+                  />
+                )}
               </div>
             </Col>
           </Row>

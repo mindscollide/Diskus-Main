@@ -90,13 +90,16 @@ const ApprovalSend = () => {
           record,
           "numberOfSignatoriesnumberOfSignatoriesnumberOfSignatories"
         );
-        return (
-          <span
-            // onClick={() => setSignatoriesList(true)}
-            onClick={() => handleClickSignatoriesList(record)}
-            className={styles["signatories_vale"]}
-          >{` ${text} Signatories`}</span>
-        );
+        if (record.workFlowStatusID === 4) {
+          return <span className={styles["status_draft_signatoriesList"]}></span>;
+        } else {
+          return (
+            <span
+              onClick={() => handleClickSignatoriesList(record)}
+              className={styles["signatories_vale"]}
+            >{` ${text} Signatories`}</span>
+          );
+        }
       },
     },
     {

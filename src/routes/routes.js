@@ -64,16 +64,30 @@ import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateRoutes from "./private_routes";
 import SignatureViewer from "../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer";
 import PendingSignature from "../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue";
+import ViewSignatureDocument from "../container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument";
 import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
+//import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
+import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
+import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
+import SubscriptionDetailsUserManagement from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement";
+import DowngradeSubscription from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription";
+import UpdatedCancelSubscription from "../container/pages/UserMangement/AdminUserManagement/UpdatedCancelSubscription/UpdatedCancelSubscription";
+import PrivateVideoMeeting from "./PrivateVideoMeetingRoute";
+import VideoMeetingBoardDeck from "../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck";
 import { DocumentViewer } from "../components/elements";
+
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
+      {/* Video Meeting Route */}
+      <Route element={<PrivateVideoMeeting />}>
+        <Route path="/Diskus/video" element={<VideoMeetingBoardDeck />} />
+      </Route>
       {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
 
@@ -177,6 +191,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="signatureviewer">
                 <PendingSignature />
+              </RouteWrapperUser>
+            }
+          />
+             <Route
+            path="viewSignDocument"
+            element={
+              <RouteWrapperUser name="signatureviewer">
+                <ViewSignatureDocument />
               </RouteWrapperUser>
             }
           />
@@ -478,6 +500,30 @@ export const router = createHashRouter(
             element={
               <RouteWrapperAdmin name="PackageDetailsUserManagement">
                 <PakageDetailsAdmin />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="subscriptionDetailsUserManagement"
+            element={
+              <RouteWrapperAdmin name="subscriptionDetailsUserManagement">
+                <SubscriptionDetailsUserManagement />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="downgradeSubscription"
+            element={
+              <RouteWrapperAdmin name="downgradeSubscription">
+                <DowngradeSubscription />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="updatedCancelSubscription"
+            element={
+              <RouteWrapperAdmin name="updatedCancelSubscription">
+                <UpdatedCancelSubscription />
               </RouteWrapperAdmin>
             }
           />
