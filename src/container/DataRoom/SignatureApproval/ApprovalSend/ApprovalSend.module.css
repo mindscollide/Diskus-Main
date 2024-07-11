@@ -46,6 +46,13 @@ p.draftStatus {
   font-size: 12px;
   font-weight: 600;
 }
+.status_draft_signatoriesList {
+  height: 1px;
+  background-color: #000;
+  width: 10px;
+  display: inline-block;
+  text-align: center;
+}
 .Sort_icon_descend {
   user-select: none;
 }

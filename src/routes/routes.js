@@ -64,6 +64,7 @@ import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateRoutes from "./private_routes";
 import SignatureViewer from "../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer";
 import PendingSignature from "../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue";
+import ViewSignatureDocument from "../container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument";
 import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
@@ -78,6 +79,7 @@ import VideoMeetingBoardDeck from "../container/VideoMeetingBoardDeck/VideoMeeti
 import { DocumentViewer } from "../components/elements";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -137,6 +139,14 @@ export const router = createHashRouter(
             }
           />
           <Route
+            path="Minutes"
+            element={
+              <RouteWrapperUser name="Minutes">
+                <MinutesFlow />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
             path="home"
             element={
               <RouteWrapperUser name="home">
@@ -181,6 +191,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="signatureviewer">
                 <PendingSignature />
+              </RouteWrapperUser>
+            }
+          />
+             <Route
+            path="viewSignDocument"
+            element={
+              <RouteWrapperUser name="signatureviewer">
+                <ViewSignatureDocument />
               </RouteWrapperUser>
             }
           />

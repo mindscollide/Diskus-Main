@@ -79,19 +79,7 @@ const AllFilesModal = ({
         "noopener noreferrer"
       );
     }
-    // else {
-    //   let data = {
-    //     FileID: Number(record.originalAttachmentName),
-    //   };
-    //   dispatch(
-    //     DataRoomDownloadFileApiFunc(
-    //       navigate,
-    //       data,
-    //       t,
-    //       record.displayAttachmentName
-    //     )
-    //   );
-    // }
+
   };
 
   console.log("File Data", agendaName, fileDataAgenda);

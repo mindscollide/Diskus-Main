@@ -1,35 +1,33 @@
 import React, { useRef, useEffect, useState } from "react";
 import WebViewer from "@pdftron/webviewer";
 import "./pendingSignature.css";
-import PlusSignSignatureFlow from "../../../../assets/images/plus-sign-signatureflow.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import DragIcon from "../../../../assets/images/DragIcon_SignatureFlow.png";
 import { ClearMessageAnnotations } from "../../../../store/actions/webVieverApi_actions";
-import { xml2json, json2xml } from "xml-js";
-import buffer from "buffer";
 import { useTranslation } from "react-i18next";
-import {
-  Notification,
-  Loader,
-  Modal,
-  Button,
-  TextField,
-} from "../../../../components/elements/index";
+import { Notification, Loader } from "../../../../components/elements/index";
 import { Col, Row } from "react-bootstrap";
-import DeleteIcon from "../../../../assets/images/Icon material-delete.svg";
-import Select from "react-select";
 import {
   addUpdateFieldValueApi,
   declineReasonApi,
   getWorkFlowByWorkFlowIdwApi,
-  saveWorkflowApi,
 } from "../../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
-import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
 import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
 import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/DeclineReasonCloseModal";
+import {
+  handleBlobFiles,
+  hideFreetextElements,
+  processXmlForReadOnly,
+  processXmlToHideFields,
+  readOnlyFreetextElements,
+  revertHideFreetextElements,
+  revertProcessXmlForReadOnly,
+  revertProcessXmlToHideFields,
+  revertReadOnlyFreetextElements,
+} from "./pendingSIgnatureFunctions";
+import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
+
 const SignatureViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -38,7 +36,6 @@ const SignatureViewer = () => {
   const { webViewer } = useSelector((state) => state);
   const {
     getAllFieldsByWorkflowID,
-    saveWorkFlowResponse,
     getWorkfFlowByFileId,
     Loading,
     getDataroomAnnotation,
@@ -46,10 +43,8 @@ const SignatureViewer = () => {
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
-  const { assignees } = useSelector((state) => state);
   const [Instance, setInstance] = useState(null);
   const viewer = useRef(null);
-  const [userList, setUserList] = useState([]);
   const [signerData, setSignerData] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
@@ -60,7 +55,6 @@ const SignatureViewer = () => {
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
-  const [xmlAfterHideDAta, setXmlAfterHideDAta] = useState("");
   const [removeXmlAfterHideDAta, setRemoveXmlAfterHideDAta] = useState("");
 
   const [open, setOpen] = useState({
@@ -81,25 +75,31 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
-  console.log(getAllFieldsByWorkflowID, "getAllFieldsByWorkflowID");
-  // { userID: "user1", xml: [] }
+  const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [hiddenUsers, setHiddenUsers] = useState([]);
   const [readOnlyUsers, setReadOnlyUsers] = useState([]);
-
+  const [removeXmlAfterFreetextHideDAta, setRemoveXmlAfterFreetextHideDAta] =
+    useState([]);
+  const userAnnotationsCopyData = useRef(userAnnotationsCopy);
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
   const participantsRef = useRef(participants);
-  const xmlAfterHideDAtaRef = useRef(xmlAfterHideDAta);
   const removeXmlAfterHideDAtaRef = useRef(removeXmlAfterHideDAta);
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
-  console.log(userAnnotationsRef.current, "userAnnotationsuserAnnotations");
-
+  const removeXmlAfterFreetextHideDAtaRef = useRef(
+    removeXmlAfterFreetextHideDAta
+  );
   // ===== this use for current state update get =====//
+
+  useEffect(() => {
+    userAnnotationsCopyData.current = userAnnotationsCopy;
+  }, [userAnnotationsCopy]);
+
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
@@ -113,6 +113,10 @@ const SignatureViewer = () => {
   useEffect(() => {
     userAnnotationsRef.current = userAnnotations;
   }, [userAnnotations]);
+
+  useEffect(() => {
+    removeXmlAfterFreetextHideDAtaRef.current = removeXmlAfterFreetextHideDAta;
+  }, [removeXmlAfterFreetextHideDAta]);
 
   useEffect(() => {
     pdfResponceDataRef.current = pdfResponceData.xfdfData;
@@ -129,10 +133,6 @@ const SignatureViewer = () => {
   useEffect(() => {
     signerDataRef.current = signerData;
   }, [signerData]);
-
-  useEffect(() => {
-    xmlAfterHideDAtaRef.current = xmlAfterHideDAta;
-  }, [xmlAfterHideDAta]);
 
   useEffect(() => {
     removeXmlAfterHideDAtaRef.current = removeXmlAfterHideDAta;
@@ -251,6 +251,7 @@ const SignatureViewer = () => {
                 .listOfFields
             );
             setUserAnnotations(revertedData);
+            setUserAnnotationsCopy(revertedData);
           }
           setFieldsData(newFieldsData);
         }
@@ -339,245 +340,6 @@ const SignatureViewer = () => {
   }, [getWorkfFlowByFileId, FieldsData]);
   // === End === //
 
-  // === used for read only Form Fields=== //
-
-  function processXmlForReadOnly(xmlString, nameValues) {
-    // Parse the XML string
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-
-    // Iterate through each name value
-    nameValues.forEach((nameValue) => {
-      // Find the ffield with the specified name attribute value
-      const ffield = xmlDoc.querySelector(`ffield[name="${nameValue}"]`);
-
-      if (ffield) {
-        // Check if the ffield already has a flags attribute
-        const flagsAttribute = ffield.getAttribute("flags");
-
-        if (!flagsAttribute) {
-          // If flags attribute does not exist, add it with value "ReadOnly"
-          ffield.setAttribute("flags", "ReadOnly");
-        } else {
-          // If flags attribute exists, update its value to "ReadOnly"
-          ffield.setAttribute("flags", "ReadOnly");
-        }
-      }
-    });
-
-    // Serialize the updated XML back to string
-    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-    return updatedXmlString;
-  }
-  function revertProcessXmlForReadOnly(xmlString, nameValues) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-
-    nameValues.forEach((nameValue) => {
-      const ffield = xmlDoc.querySelector(`ffield[name="${nameValue}"]`);
-      if (ffield) {
-        ffield.removeAttribute("flags");
-      }
-    });
-
-    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-    return updatedXmlString;
-  }
-  // === End === //
-
-  // === used for Hide Form Fields === //
-
-  function processXmlToHideFields(xmlString, nameValues) {
-    // Parse the XML string
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-
-    // Array to store removed fields along with their parent nodes and siblings
-    const removedFields = [];
-
-    // Iterate over each name value in the array
-    nameValues.forEach((nameValue) => {
-      // Find the ffield with the specified name attribute
-      const ffields = xmlDoc.querySelectorAll(`ffield[name="${nameValue}"]`);
-      const widgets = xmlDoc.querySelectorAll(`widget[field="${nameValue}"]`);
-
-      // Iterate through each matching ffield
-      ffields.forEach((ffield) => {
-        // Find the associated widget element
-        const widget = ffield.nextElementSibling;
-
-        // Prepare the object to store removed fields
-        const removedField = {
-          parent: ffield.parentNode,
-          prevSibling: ffield.previousSibling,
-          ffield: ffield.cloneNode(true),
-        };
-
-        // If there is an associated widget, add it to the removedField object
-        if (
-          widget &&
-          widget.tagName.toLowerCase() === "widget" &&
-          widget.getAttribute("field") === nameValue
-        ) {
-          removedField.widget = widget.cloneNode(true);
-          // Remove the widget element
-          widget.parentNode.removeChild(widget);
-        }
-
-        // Remove the ffield element
-        ffield.parentNode.removeChild(ffield);
-
-        // Push the removed field object to the array
-        removedFields.push(removedField);
-      });
-
-      // Iterate through each matching widget (in case widget exists without ffield)
-      widgets.forEach((widget) => {
-        // Prepare the object to store removed fields
-        const removedField = {
-          parent: widget.parentNode,
-          prevSibling: widget.previousSibling,
-          widget: widget.cloneNode(true),
-        };
-
-        // Remove the widget element
-        widget.parentNode.removeChild(widget);
-
-        // Push the removed field object to the array
-        removedFields.push(removedField);
-      });
-    });
-
-    // Serialize the updated XML back to string
-    const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-
-    // Return the updated XML string and the removed fields
-    return { updatedXmlString, removedFields };
-  }
-
-  function revertProcessXmlToHideFields(xmlString, removedFields) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    console.log("revertProcessXmlToHideFields removedFields", removedFields);
-
-    removedFields.forEach((removedField) => {
-      const parent = xmlDoc.querySelector(removedField.parent.nodeName);
-      const prevSibling = xmlDoc.querySelector(
-        removedField.prevSibling?.nodeName
-      );
-      const ffield = removedField.ffield;
-      const widget = removedField.widget;
-      console.log("Save Button Clicked parent", parent);
-      console.log("Save Button Clicked prevSibling", prevSibling);
-      console.log("Save Button Clicked ffield", ffield);
-      console.log("Save Button Clicked ffield", ffield);
-      // If there was a previous sibling, insert before it; otherwise, append to parent
-      if (prevSibling) {
-        parent.insertBefore(widget, prevSibling.nextSibling);
-      } else {
-        parent.appendChild(ffield);
-      }
-    });
-    // Serialize the updated XML back to string
-    const revertedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-    return revertedXmlString;
-  }
-  // === End === //
-
-  // === used for hide and readOnly free text  === //
-
-  const readOnlyFreetextElements = (xmlString, userDataRead) => {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
-
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.lastIndexOf("-");
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print,locked,lockedcontents");
-        }
-      }
-    });
-
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
-  };
-  const revertReadOnlyFreetextElements = (xmlString, userDataRead) => {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
-
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.split("-")[1];
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print");
-        }
-      }
-    });
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
-  };
-
-  const hideFreetextElements = (xmlString, userDataRead) => {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
-
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.lastIndexOf("-");
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print,locked,lockedcontents");
-          freetextElement.setAttribute("opacity", "0");
-        }
-      }
-    });
-
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
-  };
-  const revertHideFreetextElements = (xmlString, userDataRead) => {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const freetextElements = xmlDoc.querySelectorAll("freetext");
-    const serializer = new XMLSerializer();
-
-    freetextElements.forEach((freetextElement) => {
-      const subject = freetextElement.getAttribute("subject");
-      const userIdIndex = subject.split("-")[1];
-      if (userIdIndex !== -1) {
-        const userId = subject.substring(userIdIndex + 1);
-        if (userDataRead.includes(Number(userId))) {
-          // User ID matches, set the annotation as read-only
-          freetextElement.setAttribute("flags", "print");
-          freetextElement.setAttribute("opacity", "10");
-        }
-      }
-    });
-    // Serialize the modified XML back to a string
-    const filteredXmlString = serializer.serializeToString(xmlDoc);
-    return filteredXmlString;
-  };
-
-  // === End === //
-
   // === Get  the file details by Id from API and Set it === //
   useEffect(() => {
     if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
@@ -612,39 +374,29 @@ const SignatureViewer = () => {
           });
         }
       });
-      console.log(
-        "getDataroomAnnotation.annotationString getDataroomAnnotation",
-        getDataroomAnnotation.annotationString
-      );
       let newProcessXmlForReadOnly = processXmlForReadOnly(
         getDataroomAnnotation.annotationString,
         ReadArray
       );
 
       // Process the XML to hide fields
-      const { updatedXmlString, removedFields } = processXmlToHideFields(
+      const { updatedXmlString, removedItems } = processXmlToHideFields(
         newProcessXmlForReadOnly,
         HideArray
       );
-      console.log(
-        "getDataroomAnnotation.annotationString removedFields",
-        removedFields
-      );
-      setXmlAfterHideDAta(updatedXmlString);
-      setRemoveXmlAfterHideDAta(removedFields);
+
+      setRemoveXmlAfterHideDAta(removedItems);
       const readonlyFreetextXmlString = readOnlyFreetextElements(
         updatedXmlString,
         readOnlyUsersRef.current
       );
-      const hideFreetextXmlString = hideFreetextElements(
-        readonlyFreetextXmlString,
-        hiddenUsersRef.current
-      );
+      const { hideFreetextXmlString, removedHideFreetextElements } =
+        hideFreetextElements(readonlyFreetextXmlString, hiddenUsersRef.current);
+      setRemoveXmlAfterFreetextHideDAta(removedHideFreetextElements);
       setPdfResponceData((prevData) => ({
         ...prevData,
         xfdfData: hideFreetextXmlString,
         attachmentBlob: getDataroomAnnotation.attachmentBlob,
-        removedAnnotations: "",
       }));
     }
   }, [getDataroomAnnotation]);
@@ -697,6 +449,7 @@ const SignatureViewer = () => {
         // Disable header tools and elements
         instance.UI.disableTools([Tools.disableTextSelection]);
         instance.UI.disableElements([
+          "colorPalette",
           "underlineToolGroupButton",
           "textSelectButton",
           "textSelectButtonGroup",
@@ -750,163 +503,149 @@ const SignatureViewer = () => {
         };
 
         const handleClickSaveBtn = async () => {
-          const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
-          let currentUserID =
-            localStorage.getItem("userID") !== null
-              ? Number(localStorage.getItem("userID"))
-              : 0;
-          // this one sent do save signature document
-          let HideArray = [];
-          let ReadArray = [];
+          try {
+            const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
+            let currentUserID =
+              localStorage.getItem("userID") !== null
+                ? Number(localStorage.getItem("userID"))
+                : 0;
+            // this one sent do save signature document
+            let HideArray = [];
+            let ReadArray = [];
 
-          // Iterate over each object in the data array
-          await userAnnotationsRef.current.forEach((obj) => {
-            // Check if userID does not match currentID
-            if (obj.userID !== currentUserID) {
-              // Iterate over xml array in the current object
-              obj.xml.forEach((item) => {
-                // Extract all 'name' attributes from ffield excluding font tag
-                let ffield = item.ffield;
-                let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
-                if (matches) {
-                  matches.forEach((match) => {
-                    // Extract the name value and push into nameArray
-                    let name = match.match(/name="([^"]+)"/)[1];
-                    if (hiddenUsersRef.current.includes(obj.userID)) {
-                      HideArray.push(name);
-                    } else if (readOnlyUsersRef.current.includes(obj.userID)) {
-                      ReadArray.push(name);
-                    }
-                  });
-                }
-              });
-            }
-          });
-
-          let newProcessXmlForReadOnly = await revertProcessXmlForReadOnly(
-            xfdfString,
-            ReadArray
-          );
-
-          const revertedHideFieldsXml = await revertProcessXmlToHideFields(
-            newProcessXmlForReadOnly,
-            removeXmlAfterHideDAtaRef.current
-          );
-          console.log(
-            "getDataroomAnnotation.annotationString removeXmlAfterHideDAtaRef",
-            removeXmlAfterHideDAtaRef.current
-          );
-          console.log(
-            "getDataroomAnnotation.annotationString revertedHideFieldsXml",
-            revertedHideFieldsXml
-          );
-          const afterAddReadOnlyFreetextElements =
-            await revertReadOnlyFreetextElements(
-              revertedHideFieldsXml,
-              readOnlyUsersRef.current
-            );
-          console.log(
-            "getDataroomAnnotation.annotationString afterAddReadOnlyFreetextElements",
-            afterAddReadOnlyFreetextElements
-          );
-          const afterAddRevertHideFreetextElements =
-            await revertHideFreetextElements(
-              afterAddReadOnlyFreetextElements,
-              hiddenUsersRef.current
-            );
-
-          console.log(
-            "getDataroomAnnotation.annotationString",
-            afterAddRevertHideFreetextElements
-          );
-
-          // status of 3 for Update Actor Bundle Status
-          const doc = documentViewer.getDocument();
-          const data = await doc.getFileData({}); // No xfdfString for annotations
-          const arr = new Uint8Array(data);
-          const blob = new Blob([arr], { type: "application/pdf" });
-          let getBase64 = await generateBase64FromBlob(blob)
-            .then(async (base64String) => {
-              return base64String;
-              // Here you can use the base64String as needed
-            })
-            .catch((error) => {
-              return null;
+            // Iterate over each object in the data array
+            await userAnnotationsRef.current.forEach((obj) => {
+              // Check if userID does not match currentID
+              if (obj.userID !== currentUserID) {
+                // Iterate over xml array in the current object
+                obj.xml.forEach((item) => {
+                  // Extract all 'name' attributes from ffield excluding font tag
+                  let ffield = item.ffield;
+                  let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
+                  if (matches) {
+                    matches.forEach((match) => {
+                      // Extract the name value and push into nameArray
+                      let name = match.match(/name="([^"]+)"/)[1];
+                      if (hiddenUsersRef.current.includes(obj.userID)) {
+                        HideArray.push(name);
+                      } else if (
+                        readOnlyUsersRef.current.includes(obj.userID)
+                      ) {
+                        ReadArray.push(name);
+                      }
+                    });
+                  }
+                });
+              }
             });
 
-          const parser = new DOMParser();
-          const mainXmlDoc = parser.parseFromString(
-            afterAddRevertHideFreetextElements,
-            "text/xml"
-          );
-          function existsInMainXML(name, type, mainXmlDoc) {
-            const elements = mainXmlDoc.querySelectorAll(
-              `${type}[name="${name}"]`
+            let newProcessXmlForReadOnly = await revertProcessXmlForReadOnly(
+              xfdfString,
+              ReadArray
             );
-            return elements.length > 0;
-          }
-          console.log("userAnnotationsRef", userAnnotationsRef.current);
-          let covert = userAnnotationsRef.current.map((user) => {
-            let filteredXml = user.xml.filter((item) => {
-              const ffieldDoc = parser.parseFromString(item.ffield, "text/xml");
-              const widgetDoc = parser.parseFromString(item.widget, "text/xml");
-              const ffieldName = ffieldDoc.documentElement.getAttribute("name");
-              const widgetName = widgetDoc.documentElement.getAttribute("name");
 
-              return (
-                existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
-                existsInMainXML(widgetName, "widget", mainXmlDoc)
+            const revertedHideFieldsXml = await revertProcessXmlToHideFields(
+              newProcessXmlForReadOnly,
+              removeXmlAfterHideDAtaRef.current
+            );
+            
+            const afterAddReadOnlyFreetextElements =
+              await revertReadOnlyFreetextElements(
+                revertedHideFieldsXml,
+                readOnlyUsersRef.current
               );
-            });
 
-            return { ...user, xml: filteredXml };
-          });
-          let convertData = [];
-          covert.forEach((data) => {
-            const xmlListStrings = data.xml.map((xmlObj) =>
-              JSON.stringify(xmlObj)
+            const afterAddRevertHideFreetextElements =
+              await revertHideFreetextElements(
+                afterAddReadOnlyFreetextElements,
+                removeXmlAfterFreetextHideDAtaRef.current
+              );
+
+            const parser = new DOMParser();
+            const mainXmlDoc = parser.parseFromString(
+              afterAddRevertHideFreetextElements,
+              "text/xml"
             );
-            convertData.push({
-              ActorID: data.actorID,
-              xmlList: xmlListStrings,
+
+            function existsInMainXML(name, type, mainXmlDoc) {
+              const elements = mainXmlDoc.querySelectorAll(
+                `${type}[name="${name}"]`
+              );
+              return elements.length > 0;
+            }
+            let covert = userAnnotationsRef.current.map((user) => {
+              let filteredXml = user.xml.filter((item) => {
+                const ffieldDoc = parser.parseFromString(
+                  item.ffield,
+                  "text/xml"
+                );
+                const widgetDoc = parser.parseFromString(
+                  item.widget,
+                  "text/xml"
+                );
+                const ffieldName =
+                  ffieldDoc.documentElement.getAttribute("name");
+                const widgetName =
+                  widgetDoc.documentElement.getAttribute("name");
+
+                return (
+                  existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
+                  existsInMainXML(widgetName, "widget", mainXmlDoc)
+                );
+              });
+
+              return { ...user, xml: filteredXml };
             });
-          });
+            let convertData = [];
+            covert.forEach((data) => {
+              const xmlListStrings = data.xml.map((xmlObj) =>
+                JSON.stringify(xmlObj)
+              );
+              convertData.push({
+                ActorID: data.actorID,
+                xmlList: xmlListStrings,
+              });
+            });
 
-          // add annotation  of files attachment api
-          let addAnnoatationofFilesAttachment = {
-            FileID: Number(docWorkflowID),
-            AnnotationString: xfdfString,
-          };
-          let userID =
-            localStorage.getItem("userID") !== null
-              ? Number(localStorage.getItem("userID"))
-              : 0;
-          let findActionBundleID = FieldsData.find(
-            (actorData, index) => Number(actorData.userID) === userID
-          );
-          // Update Actor Bundle Status APi Call
-          let UpdateActorBundle = {
-            WorkFlowID: pdfResponceData.workFlowID,
-            UserID: userID,
-            WorkFlowActionableBundleID: findActionBundleID
-              ? findActionBundleID.pK_WorkFlowActionableBundle_ID
-              : 0,
-          };
+            // add annotation  of files attachment api
+            let addAnnoatationofFilesAttachment = {
+              FileID: Number(docWorkflowID),
+              AnnotationString: afterAddRevertHideFreetextElements,
+            };
+            let userID =
+              localStorage.getItem("userID") !== null
+                ? Number(localStorage.getItem("userID"))
+                : 0;
+            let findActionBundleID = FieldsData.find(
+              (actorData, index) => Number(actorData.userID) === userID
+            );
+            // Update Actor Bundle Status APi Call
+            let UpdateActorBundle = {
+              WorkFlowID: pdfResponceData.workFlowID,
+              UserID: userID,
+              WorkFlowActionableBundleID: findActionBundleID
+                ? findActionBundleID.pK_WorkFlowActionableBundle_ID
+                : 0,
+            };
 
-          console.log(FieldsData, "FieldsDataFieldsDataFieldsDataFieldsData");
-          let newData = { ActorsFieldValuesList: convertData };
-          dispatch(
-            addUpdateFieldValueApi(
-              newData,
-              navigate,
-              t,
-              addAnnoatationofFilesAttachment,
-              "",
-              3,
-              "",
-              UpdateActorBundle
-            )
-          );
+            let newData = { ActorsFieldValuesList: convertData };
+
+            dispatch(
+              addUpdateFieldValueApi(
+                newData,
+                navigate,
+                t,
+                addAnnoatationofFilesAttachment,
+                "",
+                3,
+                "",
+                UpdateActorBundle
+              )
+            );
+          } catch (error) {
+            console.log(error, "handleClickSaveBtnhandleClickSaveBtn");
+          }
+
           // try {
           //   const annots = await annotationManager.getAnnotationsList();
           //   if (annots && annots.length > 0) {
@@ -938,23 +677,6 @@ const SignatureViewer = () => {
           //   // Handle
           // }
         };
-
-        async function generateBase64FromBlob(blob) {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onload = function () {
-              const base64String = reader.result.split(",")[1];
-              resolve(base64String);
-            };
-
-            reader.onerror = function (error) {
-              reject(error);
-            };
-
-            reader.readAsDataURL(blob);
-          });
-        }
 
         instance.UI.setHeaderItems((header) => {
           header.push({
@@ -996,28 +718,8 @@ const SignatureViewer = () => {
 
   // ==== End ====//
 
-  //===  this is for covert blob file ===//
-  function handleBlobFiles(base64) {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; ++i) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    return new Blob([bytes], { type: "application/pdf" });
-  }
-  // ==== End ===//
-
   // this will generate my xfdf files for user base and send into AddUpdateFieldValue
   const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
-    console.log(
-      "userAnnotations updateXFDF",
-      action,
-      xmlString,
-      userSelectID,
-      userAnnotations
-    );
     try {
       let userSelect = parseInt(userSelectID);
       // Iterate over each user's annotations
@@ -1063,14 +765,12 @@ const SignatureViewer = () => {
         }
       });
       // Update the state with the modified userAnnotations
-      console.log("userAnnotations userAnnotations in", userAnnotations);
       setUserAnnotations(userAnnotations);
       // }
     } catch (error) {
       console.log(error);
     }
   };
-  console.log("saveWorkFlowData", userAnnotations);
 
   // ==== this is use for add participants in side bar ====//
   useEffect(() => {
@@ -1124,45 +824,6 @@ const SignatureViewer = () => {
     }
   }, [Instance]);
   // === End ===//
-
-  // === these are the function which we are using in add signaturtires modal === //
-  //  its use for update dropdown display of signatries modal users list
-  useEffect(() => {
-    try {
-      if (Object.keys(assignees.user).length > 0) {
-        let usersDataArr = [];
-        assignees.user.forEach((allData, index) => {
-          usersDataArr.push({
-            label: (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
-                    <img
-                      src={`data:image/jpeg;base64,${allData?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
-                    />
-                    <span>{allData.name}</span>
-                  </Col>
-                </Row>
-              </>
-            ),
-            value: allData.pK_UID,
-            name: allData.name,
-            email: allData.emailAddress,
-          });
-        });
-        setUserList(usersDataArr);
-      }
-    } catch (error) {}
-  }, [assignees.user]);
 
   // === this is for Response Message===//
   useEffect(() => {

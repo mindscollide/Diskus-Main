@@ -8,28 +8,15 @@ import {
   Button,
   Notification,
 } from "../../../../../../components/elements";
+import DeleteCommentAgenda from "../deleteCommentModal/DeleteCommentModalAgendaWise";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../../assets/images/featherupload.svg";
 import ReactQuill, { Quill } from "react-quill";
-import Leftploygon from "../../../../../../assets/images/Polygon 3.svg";
-import PlusExpand from "../../../../../../assets/images/Plus-notesExpand.svg";
-import MinusExpand from "../../../../../../assets/images/close-accordion.svg";
-import file_image from "../../../../../../assets/images/file_image.svg";
-import { Accordion, AccordionSummary } from "@material-ui/core";
-import { AccordionDetails } from "@mui/material";
-import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
-import Rightploygon from "../../../../../../assets/images/Polygon right.svg";
-import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
-import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
+// import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
-import { newTimeFormaterAsPerUTCFullDate } from "../../../../../../commen/functions/date_formater";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../../DataRoom/SearchFunctionality/option";
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
@@ -42,7 +29,30 @@ import {
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
-import ViewAgendaFilesMinutes from "./ViewAgendaFilesMinutes";
+import AttachmentIcon from "./../Images/Attachment-Icon.png";
+import ArrowDown from "./../Images/Arrow-Down.png";
+import DropdownPurple from "./../Images/Dropdown-Purple.png";
+import DefaultAvatar from "./../Images/avatar.png";
+import EditIcon from "./../Images/Edit-Icon.png";
+import MenuIcon from "./../Images/MenuIcon.png";
+import DeleteIcon from "./../Images/DeleteIcon.png";
+import {
+  GetMinuteReviewDetailsByOrganizerByMinuteId_Api,
+  GetMinutesVersionHistoryWithCommentsApi,
+  deleteCommentModalAgenda,
+} from "../../../../../../store/actions/Minutes_action";
+import VersionHistory from "./VersionHistoryModal/VersionHistory";
+import RevisionHistory from "./RevisionHistoryModal/RevisionHistory";
+import {
+  GetMinuteReviewStatsForOrganizerByMeetingId,
+  DeleteMinuteReducer,
+} from "../../../../../../store/actions/Minutes_action";
+import { transform } from "lodash";
+import {
+  convertToGMTMinuteTime,
+  convertDateToGMTMinute,
+} from "../../../../../../commen/functions/time_formatter";
+
 const AgendaWise = ({
   advanceMeetingModalID,
   editorRole,
@@ -52,6 +62,8 @@ const AgendaWise = ({
   setAddNoteFields,
   fileAttachments,
   setFileAttachments,
+  addReviewers,
+  setAddReviewers,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -66,9 +78,8 @@ const AgendaWise = ({
   const [isEdit, setisEdit] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { NewMeetingreducer, AgendaWiseAgendaListReducer } = useSelector(
-    (state) => state
-  );
+  const { NewMeetingreducer, AgendaWiseAgendaListReducer, MinutesReducer } =
+    useSelector((state) => state);
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
@@ -93,26 +104,6 @@ const AgendaWise = ({
       title: "",
     },
   });
-
-  useEffect(() => {
-    let Data = {
-      MeetingID: Number(advanceMeetingModalID),
-    };
-    dispatch(
-      GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
-        Data,
-        navigate,
-        t,
-        advanceMeetingModalID
-      )
-    );
-    return () => {
-      setMessages([]);
-      setFileAttachments([]);
-      setPreviousFileIDs([]);
-      dispatch(cleareAllState());
-    };
-  }, []);
 
   console.log(
     AgendaWiseAgendaListReducer.AllAgendas,
@@ -151,45 +142,6 @@ const AgendaWise = ({
       }
     } catch {}
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
-
-  // Combined Data for both Documents and Minutes Agenda Wise
-  useEffect(() => {
-    try {
-      if (
-        NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-        NewMeetingreducer.agendaWiseMinutesReducer &&
-        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
-        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
-      ) {
-        const minutesData =
-          NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
-        const documentsData =
-          NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
-        setOrganizerID(NewMeetingreducer.agendaWiseMinutesReducer.organizerID);
-        const combinedData = minutesData.map((item1) => {
-          const matchingItem = documentsData.find(
-            (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
-          );
-          if (matchingItem) {
-            return {
-              ...item1,
-              minutesAttachmets: matchingItem.files,
-            };
-          }
-          return item1;
-        });
-        setMessages(combinedData);
-      } else {
-        setMessages([]);
-      }
-    } catch (error) {
-      // Handle any errors here
-      console.error(error);
-    }
-  }, [
-    NewMeetingreducer.agendaWiseMinutesReducer,
-    NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
-  ]);
 
   // Grouping the messages by agendaID while maintaining the unique titles
   const groupedMessages = messages.reduce((acc, curr) => {
@@ -551,14 +503,14 @@ const AgendaWise = ({
   //handle Edit functionality
   const handleEditFunc = (data) => {
     setupdateData(data);
-    if (data.minutesDetails !== "") {
+    if (data.description !== "") {
       let findOptionValue = agendaOptions.filter(
         (agendaOption, index) => agendaOption.label === data.agendaTitle
       );
       console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
-          value: data.minutesDetails,
+          value: data.description,
           errorMessage: "",
           errorStatus: false,
         },
@@ -788,8 +740,423 @@ const AgendaWise = ({
     }
   }, [NewMeetingreducer.ResponseMessage]);
 
+  useEffect(() => {
+    let Data = {
+      isAgenda: true,
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    let Data2 = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t));
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
+        Data2,
+        navigate,
+        t,
+        advanceMeetingModalID,
+        setAddReviewers,
+        false
+      )
+    );
+    return () => {
+      setMessages([]);
+      setFileAttachments([]);
+      setPreviousFileIDs([]);
+      // dispatch(cleareAllState());
+    };
+  }, []);
+
+  // NEW WORK OWAIS!!!!!!!!! ->>>> cxxx|::::::::::::::>
+
+  const [openMenuId, setOpenMenuId] = useState(null);
+
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [showRevisionHistory, setShowRevisionHistory] = useState(false);
+
+  const [minutesData, setMinutesData] = useState([]);
+
+  const [openIndices, setOpenIndices] = useState([]);
+
+  const [openReviewerDetail, setOpenReviewerDetail] = useState([]);
+  const [openReviewerDetailSubminute, setOpenReviewerDetailSubminute] =
+    useState([]);
+
+  const [isOpenDrawerMinute, setIsOpenDrawerMinute] = useState(null);
+  const [isOpenDrawerSubMinute, setIsOpenDrawerSubMinute] = useState(null);
+
+  const [menuMinute, setMenuMinute] = useState(false);
+
+  const [minuteReviewData, setMinuteReviewData] = useState(null);
+
+  const closeMenuMinute = useRef(null);
+
+  const menuPopupMinute = (id) => {
+    setOpenMenuId(openMenuId === id ? null : id); // Toggle the menu for the clicked item
+  };
+
+  const handleOutsideClick = (event) => {
+    if (
+      closeMenuMinute.current &&
+      !closeMenuMinute.current.contains(event.target) &&
+      menuMinute
+    ) {
+      setMenuMinute(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [menuMinute]);
+
+  const accordianClick = (data, id, index) => {
+    setOpenIndices((prevIndices) =>
+      prevIndices.includes(index)
+        ? prevIndices.filter((i) => i !== index)
+        : [...prevIndices, index]
+    );
+    console.log("openIndices", openIndices);
+  };
+
+  const openMinuteDrawer = (minuteID) => {
+    if (isOpenDrawerMinute === minuteID) {
+      setIsOpenDrawerMinute(null);
+    } else {
+      setIsOpenDrawerMinute(minuteID);
+    }
+  };
+  const openSubMinuteDrawer = (subMinuteID) => {
+    if (isOpenDrawerSubMinute === subMinuteID) {
+      setIsOpenDrawerSubMinute(null);
+    } else {
+      setIsOpenDrawerSubMinute(subMinuteID);
+    }
+  };
+
+  const openCloseReviewerDetail = (index) => {
+    setOpenReviewerDetail((prevIndices) =>
+      prevIndices.includes(index)
+        ? prevIndices.filter((i) => i !== index)
+        : [...prevIndices, index]
+    );
+  };
+
+  const openCloseReviewerDetailSubminute = (index) => {
+    setOpenReviewerDetailSubminute((prevIndices) =>
+      prevIndices.includes(index)
+        ? prevIndices.filter((i) => i !== index)
+        : [...prevIndices, index]
+    );
+  };
+
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
+
+  // useEffect(() => {
+  //   // Check if agendaWiseMinutesReducer is not null, undefined, and has at least one key
+  //   if (
+  //     NewMeetingreducer.agendaWiseMinutesReducer !== null &&
+  //     NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
+  //     Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
+  //   ) {
+  //     // Store agendaWiseMinutesReducer in a local variable
+  //     let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
+  //     // Initialize an empty array to hold the transformed data
+  //     let transformedData = [];
+
+  //     // Iterate through each parent agenda in the agenda hierarchy list
+  //     reducerData.agendaHierarchyList.forEach((parentAgenda) => {
+  //       // Find the parent agenda details in the agendaWiseMinutes array
+  //       let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
+  //         (minute) => minute.agendaID === parentAgenda.pK_MAID
+  //       );
+
+  //       // Initialize an array to hold sub-minutes of the parent agenda
+  //       let subMinutes = [];
+  //       // Iterate through each child agenda of the parent agenda
+  //       parentAgenda.childAgendas.forEach((childAgenda) => {
+  //         // Filter the minutes that match the child agenda ID and push to subMinutes
+  //         let childMinutes = reducerData.agendaWiseMinutes.filter(
+  //           (minute) => minute.agendaID === childAgenda.pK_MAID
+  //         );
+  //         subMinutes.push(...childMinutes);
+  //       });
+
+  //       // Check if parent agenda details exist to determine if it's parent data
+  //       let isParentData = parentAgendaMinutes.length > 0;
+
+  //       // If there are parent agenda details or sub-minutes, create a parent agenda object
+  //       if (isParentData || subMinutes.length > 0) {
+  //         // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
+  //         let agendaTitle = isParentData
+  //           ? parentAgendaMinutes[0].agendaTitle
+  //           : parentAgenda.childAgendas.find((childAgenda) =>
+  //               subMinutes.some(
+  //                 (minute) => minute.agendaID === childAgenda.pK_MAID
+  //               )
+  //             )?.parentTitle || "";
+
+  //         let parentAgendaObj = {
+  //           agendaID: parentAgenda.pK_MAID,
+  //           agendaTitle: agendaTitle,
+  //           isParentData: isParentData,
+  //           minuteData: parentAgendaMinutes.map((minute) => ({
+  //             minuteID: minute.minuteID,
+  //             description: minute.minutesDetails,
+  //             attachments: minute.minutesAttachmets,
+  //             uploader: minute.userProfilePicture,
+  //             lastUpdatedDate: minute.lastUpdatedDate,
+  //             lastUpdatedTime: minute.lastUpdatedTime,
+  //             userID: minute.userID,
+  //             userName: minute.userName,
+  //           })),
+  //           subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+  //             let childMinutes = subMinutes.filter(
+  //               (minute) => minute.agendaID === childAgenda.pK_MAID
+  //             );
+  //             return {
+  //               agendaID: childAgenda.pK_MAID,
+  //               agendaTitle: childMinutes[0]?.agendaTitle || "",
+  //               minuteData: childMinutes.map((minute) => ({
+  //                 minuteID: minute.minuteID,
+  //                 description: minute.minutesDetails,
+  //                 attachments: minute.minutesAttachmets,
+  //                 uploader: minute.userProfilePicture,
+  //                 lastUpdatedDate: minute.lastUpdatedDate,
+  //                 lastUpdatedTime: minute.lastUpdatedTime,
+  //                 userID: minute.userID,
+  //                 userName: minute.userName,
+  //               })),
+  //             };
+  //           }),
+  //         };
+
+  //         // Push the parent agenda object to the transformed data array
+  //         transformedData.push(parentAgendaObj);
+  //       }
+  //     });
+
+  //     // Log the transformed data to the console
+  //     setMinutesData(transformedData);
+  //     console.log("transformedData", transformedData);
+  //   }
+  // }, [NewMeetingreducer.agendaWiseMinutesReducer]);
+
+  useEffect(() => {
+    try {
+      const reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
+      if (reducerData && Object.keys(reducerData).length > 0) {
+        let transformedData = [];
+
+        console.log("Initial transformedData:", transformedData);
+
+        reducerData.agendaHierarchyList.forEach((parentAgenda) => {
+          let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
+            (minute) => minute.agendaID === parentAgenda.pK_MAID
+          );
+
+          let subMinutes = [];
+          parentAgenda.childAgendas.forEach((childAgenda) => {
+            let childMinutes = reducerData.agendaWiseMinutes.filter(
+              (minute) => minute.agendaID === childAgenda.pK_MAID
+            );
+            subMinutes.push(...childMinutes);
+          });
+
+          let isParentData = parentAgendaMinutes.length > 0;
+          if (isParentData || subMinutes.length > 0) {
+            let agendaTitle = isParentData
+              ? parentAgendaMinutes[0].agendaTitle
+              : parentAgenda.childAgendas.find((childAgenda) =>
+                  subMinutes.some(
+                    (minute) => minute.agendaID === childAgenda.pK_MAID
+                  )
+                )?.parentTitle || "";
+
+            let parentAgendaObj = {
+              agendaID: parentAgenda.pK_MAID,
+              agendaTitle: agendaTitle,
+              isParentData: isParentData,
+              minuteData: parentAgendaMinutes.map((minute) => ({
+                minuteID: minute.minuteID,
+                description: minute.minutesDetails,
+                attachments: minute.minutesAttachmets,
+                uploader: minute.userProfilePicture,
+                lastUpdatedDate: minute.lastUpdatedDate,
+                lastUpdatedTime: minute.lastUpdatedTime,
+                userID: minute.userID,
+                userName: minute.userName,
+              })),
+              subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+                let childMinutes = subMinutes.filter(
+                  (minute) => minute.agendaID === childAgenda.pK_MAID
+                );
+                return {
+                  agendaID: childAgenda.pK_MAID,
+                  agendaTitle: childMinutes[0]?.agendaTitle || "",
+                  minuteData: childMinutes.map((minute) => ({
+                    minuteID: minute.minuteID,
+                    description: minute.minutesDetails,
+                    attachments: minute.minutesAttachmets,
+                    uploader: minute.userProfilePicture,
+                    lastUpdatedDate: minute.lastUpdatedDate,
+                    lastUpdatedTime: minute.lastUpdatedTime,
+                    userID: minute.userID,
+                    userName: minute.userName,
+                  })),
+                };
+              }),
+            };
+
+            transformedData.push(parentAgendaObj);
+          }
+        });
+
+        console.log(
+          "Transformed Data before attachment update:",
+          transformedData
+        );
+
+        transformedData.forEach((agenda) => {
+          agenda.minuteData.forEach((minute) => {
+            let matchingData =
+              NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+                (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+              );
+            if (matchingData) {
+              minute.attachments = matchingData.files || [];
+            }
+          });
+
+          agenda.subMinutes.forEach((subAgenda) => {
+            subAgenda.minuteData.forEach((minute) => {
+              let matchingData =
+                NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+                  (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                );
+              if (matchingData) {
+                minute.attachments = matchingData.files || [];
+              }
+            });
+          });
+        });
+
+        console.log(
+          "Transformed Data after attachment update:",
+          transformedData
+        );
+
+        if (
+          MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData &&
+          MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
+            .minuteReviewStatsModelList.length > 0
+        ) {
+          const { minuteReviewStatsModelList } =
+            MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData;
+
+          let newTransformedData = transformedData.map((agenda) => {
+            agenda.minuteData = agenda.minuteData.map((minute) => {
+              let matchedStats = minuteReviewStatsModelList.find(
+                (stats) => minute.minuteID === stats.minuteID
+              );
+              return matchedStats
+                ? { ...minute, MinuteStats: matchedStats }
+                : minute;
+            });
+
+            agenda.subMinutes = agenda.subMinutes.map((subAgenda) => {
+              subAgenda.minuteData = subAgenda.minuteData.map((minute) => {
+                let matchedStats = minuteReviewStatsModelList.find(
+                  (stats) => minute.minuteID === stats.minuteID
+                );
+                return matchedStats
+                  ? { ...minute, MinuteStats: matchedStats }
+                  : minute;
+              });
+              return subAgenda;
+            });
+
+            return agenda;
+          });
+          console.log(
+            newTransformedData,
+            "newTransformedDatanewTransformedData"
+          );
+          setMinutesData(newTransformedData);
+        } else {
+          setMinutesData(transformedData);
+        }
+
+        console.log("Final transformedData:", transformedData);
+      }
+    } catch (error) {
+      console.error("Error transforming data:", error);
+      setMinutesData([]);
+    }
+  }, [
+    NewMeetingreducer.agendaWiseMinutesReducer,
+    NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
+    MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData,
+  ]);
+
+  useEffect(() => {
+    if (
+      MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !== null &&
+      MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !==
+        undefined
+    ) {
+      setMinuteReviewData(
+        MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
+      );
+    } else {
+      setMinuteReviewData(null);
+    }
+  }, [MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData]);
+  console.log(
+    "GetMinuteReviewStatsForOrganizerByMeetingIdData",
+    MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
+  );
+  console.log("minutesDataminutesData", minutesData);
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
+
+  // When you click on Revision History Button then the api will hit and If minute has revison then open a modal
+  const handleClickShowRevision = (data, MinuteID) => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+      MinuteID: Number(MinuteID),
+      IsAgendaMinute: true,
+    };
+    dispatch(
+      GetMinuteReviewDetailsByOrganizerByMinuteId_Api(
+        Data,
+        navigate,
+        t,
+        setShowRevisionHistory
+      )
+    );
+  };
+
+  // When you click on Show Verison History Button then the api will hit and If minute has Version History then open a modal
+  const handleClickShowVersionHistory = (data, MinuteID) => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+      MinuteID: Number(MinuteID),
+      IsAgendaMinute: true,
+    };
+    dispatch(
+      GetMinutesVersionHistoryWithCommentsApi(
+        Data,
+        navigate,
+        t,
+        setShowVersionHistory
+      )
+    );
+  };
+
   return (
-    <section>
+    <section className={styles["agenda-wise-minutes"]}>
       {Number(editorRole.status) === 1 ||
       Number(editorRole.status) === 11 ||
       Number(editorRole.status) === 12 ? null : (editorRole.role ===
@@ -800,20 +1167,6 @@ const AgendaWise = ({
         <>
           <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
-              <Select
-                options={agendaOptions}
-                maxMenuHeight={140}
-                value={{
-                  value: agendaOptionvalue.value,
-                  label: agendaOptionvalue.label,
-                }}
-                onChange={handleAgendaSelect}
-                isSearchable={false}
-              />
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col lg={6} md={6} sm={6}>
               <Row className={styles["Add-note-QuillRow"]}>
                 <Col
                   lg={12}
@@ -822,6 +1175,17 @@ const AgendaWise = ({
                   xs={12}
                   className={styles["Arabic_font_Applied"]}
                 >
+                  <Select
+                    options={agendaOptions}
+                    maxMenuHeight={140}
+                    value={{
+                      value: agendaOptionvalue.value,
+                      label: agendaOptionvalue.label,
+                    }}
+                    placeholder={t("Select-agenda")}
+                    onChange={handleAgendaSelect}
+                    isSearchable={false}
+                  />
                   <ReactQuill
                     ref={editorRef}
                     theme="snow"
@@ -944,337 +1308,851 @@ const AgendaWise = ({
           </Row>
         </>
       ) : null}
-
-      {/* Mapping of The Create Minutes */}
-      <Row className="mt-2">
-        <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
-          {Object.values(groupedMessages).map((data, index) => {
-            console.log(data, "groupedMessagesgroupedMessages");
-            return (
+      {minutesData.map((data, index) => {
+        console.log(data, "minutesDataminutesDataminutesData");
+        const isOpen = openIndices.includes(index);
+        const isOpenReviewer = openReviewerDetail.includes(index);
+        return (
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
               <>
-                <div key={data.agendaID}>
-                  {/* Display agendaTitle once */}
-
-                  {/* Map associated minutes within AccordionDetails */}
-                  <Row key={index}>
+                <div>
+                  <Row>
                     <Col lg={12} md={12} sm={12} className="mt-2">
-                      <Accordion
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                        className={styles["notes_accordion"]}
-                        key={data.agendaID}
-                        // onChange={handleChangeExpanded(data?.pK_NotesID)}
+                      <div
+                        onClick={() =>
+                          accordianClick(data, data.minuteID, index)
+                        }
+                        className={
+                          isOpen
+                            ? styles["agenda-wrapper-closed"]
+                            : styles["agenda-wrapper-open"]
+                        }
                       >
-                        <AccordionSummary
-                          disableRipple={true}
-                          disableTouchRipple={true}
-                          focusRipple={false}
-                          radioGroup={false}
-                          IconButtonProps={{
-                            onClick: () =>
-                              toggleAcordion(JSON.parse(data?.agendaID)),
-                          }}
-                          expandIcon={
-                            accordianExpand === JSON.parse(data?.agendaID) ? (
-                              <img
-                                draggable="false"
-                                src={MinusExpand}
-                                className={styles["MinusIcon"]}
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                draggable="false"
-                                src={PlusExpand}
-                                alt=""
-                                className={styles["PlusIcon"]}
-                              />
-                            )
-                          }
-                          aria-controls="panel1a-content"
-                          className="TestAccordian position-relative"
-                        >
-                          <Row>
-                            <Col lg={12} md={12} sm={12} className="mt-2">
-                              <span className={styles["AgendaTitleClass"]}>
-                                {data.agendaTitle.slice(0, 100)}
-                              </span>
-                            </Col>
-                          </Row>
-                        </AccordionSummary>
-
-                        <AccordionDetails key={index}>
-                          <Row>
-                            <Col
-                              sm={12}
-                              lg={12}
-                              md={12}
-                              className={styles["NotesAttachments"]}
-                            >
-                              <section
-                                className={styles["Sizing_Saved_Minutes"]}
-                              >
-                                {data.items.map((Itemsdata, detailIndex) => {
-                                  console.log(
-                                    data,
-                                    "groupedMessagesgroupedMessages"
-                                  );
-                                  return (
-                                    <>
-                                      <div key={detailIndex}>
-                                        <Row className="mt-2">
-                                          <Col
-                                            lg={12}
-                                            md={12}
-                                            sm={12}
-                                            className={styles["Box_Minutes"]}
+                        <p className={styles["agenda-title"]}>
+                          {index + 1 + "." + " " + data.agendaTitle}
+                        </p>
+                        <span>
+                          {data.minuteData.length > 0 &&
+                          data?.minuteData[0]?.attachments.length > 0 ? (
+                            <img
+                              className={styles["Attachment"]}
+                              alt=""
+                              src={AttachmentIcon}
+                            />
+                          ) : null}
+                          <img
+                            alt=""
+                            src={ArrowDown}
+                            className={
+                              isOpen
+                                ? styles["Arrow"]
+                                : styles["Arrow_Expanded"]
+                            }
+                          />
+                        </span>
+                      </div>
+                    </Col>
+                  </Row>
+                  {isOpen ? (
+                    <>
+                      {data.isParentData ? (
+                        <>
+                          {data.minuteData.map((parentMinutedata, index) => {
+                            console.log(
+                              { parentMinutedata },
+                              "parentMinutedataparentMinutedata"
+                            );
+                            return (
+                              <>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <div
+                                      className={
+                                        styles["reviewer-progress-wrapper"]
+                                      }
+                                    >
+                                      <Row>
+                                        <Col lg={11} md={11} sm={12}>
+                                          <div
+                                            className={
+                                              styles["reviewer-progress-text"]
+                                            }
                                           >
+                                            <p className="m-0">
+                                              {t("Total")}{" "}
+                                              {
+                                                parentMinutedata?.MinuteStats
+                                                  ?.totalReviews
+                                              }
+                                            </p>
+                                            <span>|</span>
+                                            <p className="m-0">
+                                              {t("Accepted")}{" "}
+                                              {
+                                                parentMinutedata?.MinuteStats
+                                                  ?.accepted
+                                              }
+                                            </p>
+                                            <span>|</span>
+                                            <p className="m-0">
+                                              {t("Rejected")}{" "}
+                                              {
+                                                parentMinutedata?.MinuteStats
+                                                  ?.rejected
+                                              }
+                                            </p>
+                                            <span>|</span>
+                                            <p className="m-0">
+                                              {t("Pending")}{" "}
+                                              {
+                                                parentMinutedata?.MinuteStats
+                                                  ?.pending
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={12}
+                                          className="text-end"
+                                        >
+                                          <img
+                                            alt=""
+                                            src={DropdownPurple}
+                                            className={
+                                              isOpenDrawerMinute ===
+                                              parentMinutedata.minuteID
+                                                ? `${styles["Arrow"]} cursor-pointer`
+                                                : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                            }
+                                            onClick={() =>
+                                              openMinuteDrawer(
+                                                parentMinutedata.minuteID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={
+                                            isOpenDrawerMinute ===
+                                            parentMinutedata.minuteID
+                                              ? styles["ParentMinuteExtend"]
+                                              : styles["ParentMinuteNotExtend"]
+                                          }
+                                        >
+                                          <p
+                                            className={`${styles["text-wrapper-review"]}`}
+                                          >
+                                            <span
+                                              className={
+                                                styles["Review-accepted"]
+                                              }
+                                            >
+                                              Review Accepted:
+                                            </span>{" "}
+                                            {parentMinutedata?.MinuteStats
+                                              ?.acceptedByUsers?.length > 0 &&
+                                              parentMinutedata?.MinuteStats?.acceptedByUsers?.map(
+                                                (acceptedUser, index) =>
+                                                  `${acceptedUser}, `
+                                              )}
+                                          </p>
+                                          <p
+                                            className={`${styles["text-wrapper-review"]}`}
+                                          >
+                                            <span
+                                              className={
+                                                styles["Review-declined"]
+                                              }
+                                            >
+                                              Review Rejected:
+                                            </span>{" "}
+                                            {parentMinutedata?.MinuteStats
+                                              ?.rejectedByUsers?.length > 0 &&
+                                              parentMinutedata?.MinuteStats?.rejectedByUsers?.map(
+                                                (rejectedUser, index) =>
+                                                  `${rejectedUser}, `
+                                              )}
+                                          </p>
+                                          <p
+                                            className={`${styles["text-wrapper-review"]}`}
+                                          >
+                                            <span
+                                              className={
+                                                styles["Review-pending"]
+                                              }
+                                            >
+                                              Review Pending:
+                                            </span>{" "}
+                                            {parentMinutedata?.MinuteStats
+                                              ?.pendingUsers?.length > 0 &&
+                                              parentMinutedata?.MinuteStats?.pendingUsers?.map(
+                                                (pendingUserData, index) =>
+                                                  `${pendingUserData}, `
+                                              )}
+                                          </p>
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  </Col>
+                                </Row>
+                                <Row key={index}>
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className="position-relative"
+                                  >
+                                    <div className={styles["uploaded-details"]}>
+                                      <img
+                                        className={styles["delete-icon"]}
+                                        src={DeleteIcon}
+                                        alt=""
+                                        onClick={() => {
+                                          dispatch(
+                                            deleteCommentModalAgenda(true)
+                                          );
+                                          dispatch(
+                                            DeleteMinuteReducer(
+                                              parentMinutedata
+                                            )
+                                          );
+                                        }}
+                                      />
+                                      <Row className={styles["inherit-height"]}>
+                                        <Col lg={9} md={9} sm={12}>
+                                          <p
+                                            dangerouslySetInnerHTML={{
+                                              __html:
+                                                parentMinutedata?.description,
+                                            }}
+                                            className={styles["minutes-text"]}
+                                          ></p>
+                                          {parentMinutedata?.attachments
+                                            ?.length > 0 ? (
                                             <Row>
-                                              <Col lg={8} md={8} sm={8}>
-                                                <Row className="mt-3">
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles["Title_File"]
+                                              {parentMinutedata.attachments.map(
+                                                (fileData, index) => (
+                                                  <Col lg={3} md={3} sm={12}>
+                                                    <AttachmentViewer
+                                                      name={
+                                                        fileData?.displayFileName
                                                       }
-                                                    >
-                                                      {expanded ? (
-                                                        <>
-                                                          <span
-                                                            dangerouslySetInnerHTML={{
-                                                              __html:
-                                                                Itemsdata.minutesDetails.substring(
-                                                                  0,
-                                                                  120
-                                                                ),
-                                                            }}
-                                                          ></span>
-                                                          ...
-                                                        </>
-                                                      ) : (
-                                                        <span
-                                                          dangerouslySetInnerHTML={{
-                                                            __html:
-                                                              Itemsdata.minutesDetails,
-                                                          }}
-                                                        ></span>
-                                                      )}
-
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Show_more_Styles"
-                                                          ]
-                                                        }
-                                                        onClick={
-                                                          toggleExpansion
-                                                        }
-                                                      >
-                                                        {expanded &&
-                                                        Itemsdata.minutesDetails.substring(
-                                                          0,
-                                                          120
-                                                        )
-                                                          ? t("See-more")
-                                                          : ""}
-                                                      </span>
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles[
-                                                          "Date_Minutes_And_time"
-                                                        ]
-                                                      }
-                                                    >
-                                                      {newTimeFormaterAsPerUTCFullDate(
-                                                        Itemsdata.lastUpdatedDate +
-                                                          Itemsdata.lastUpdatedTime
-                                                      ).toString()}
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <Row className="mt-2">
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles["Show_more"]
-                                                      }
-                                                      onClick={() =>
-                                                        handleshowMore(
-                                                          detailIndex
-                                                        )
-                                                      }
-                                                    >
-                                                      {showMoreIndex ===
-                                                      detailIndex
-                                                        ? t("Hide-details")
-                                                        : t("Show-more")}
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <ViewAgendaFilesMinutes
-                                                  showMoreIndex={showMoreIndex}
-                                                  Itemsdata={Itemsdata}
-                                                  showMore={showMore}
-                                                  detailIndex={detailIndex}
-                                                />
-                                              </Col>
-                                              <Col
-                                                lg={3}
-                                                md={3}
-                                                sm={3}
-                                                className="mt-4"
-                                              >
-                                                <Row className="d-flex justify-content-end">
-                                                  <Col lg={2} md={2} sm={2}>
-                                                    <img
-                                                      draggable={false}
-                                                      src={`data:image/jpeg;base64,${Itemsdata?.userProfilePicture?.displayProfilePictureName}`}
-                                                      height="39px"
-                                                      width="39px"
-                                                      alt=""
-                                                      className={
-                                                        styles[
-                                                          "Profile_minutes"
-                                                        ]
-                                                      }
+                                                      id={fileData.pK_FileID}
                                                     />
                                                   </Col>
-                                                  <Col
-                                                    lg={6}
-                                                    md={6}
-                                                    sm={6}
+                                                )
+                                              )}
+                                            </Row>
+                                          ) : null}
+                                        </Col>
+                                        <Col
+                                          lg={3}
+                                          md={3}
+                                          sm={12}
+                                          className="position-relative"
+                                        >
+                                          <Row className="m-0">
+                                            <Col
+                                              lg={9}
+                                              md={9}
+                                              sm={12}
+                                              className="p-0"
+                                            >
+                                              <span
+                                                className={styles["bar-line"]}
+                                              ></span>
+                                              <p
+                                                className={
+                                                  styles["uploadedbyuser"]
+                                                }
+                                              >
+                                                {t("Uploaded-by")}
+                                              </p>
+                                              <div className={styles["gap-ti"]}>
+                                                <img
+                                                  src={`data:image/jpeg;base64,${parentMinutedata.uploader.displayProfilePictureName}`}
+                                                  className={styles["Image"]}
+                                                  alt=""
+                                                  draggable={false}
+                                                />
+                                                <p
+                                                  className={
+                                                    styles["agendaCreater"]
+                                                  }
+                                                >
+                                                  {parentMinutedata.userName}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              lg={3}
+                                              md={3}
+                                              sm={12}
+                                              className="d-grid justify-content-end p-0"
+                                            >
+                                              <div className="d-flex justify-content-center align-items-center">
+                                                <img
+                                                  className="cursor-pointer mx-2"
+                                                  src={EditIcon}
+                                                  alt=""
+                                                  onClick={() =>
+                                                    handleEditFunc(
+                                                      parentMinutedata
+                                                    )
+                                                  }
+                                                />
+                                                <div
+                                                  onClick={() =>
+                                                    menuPopupMinute(
+                                                      parentMinutedata.minuteID
+                                                    )
+                                                  }
+                                                  className={
+                                                    styles["box-agendas"]
+                                                  }
+                                                  ref={closeMenuMinute}
+                                                >
+                                                  <img
+                                                    className="cursor-pointer"
+                                                    src={MenuIcon}
+                                                    alt=""
+                                                  />
+                                                  <div
                                                     className={
-                                                      styles["Line_heigh"]
+                                                      openMenuId ===
+                                                      parentMinutedata.minuteID
+                                                        ? `${
+                                                            styles[
+                                                              "popup-agenda-menu"
+                                                            ]
+                                                          } ${"opacity-1 pe-auto"}`
+                                                        : `${
+                                                            styles[
+                                                              "popup-agenda-menu"
+                                                            ]
+                                                          } ${"opacity-0 pe-none"}`
                                                     }
                                                   >
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "Uploaded_heading"
-                                                            ]
-                                                          }
-                                                        >
-                                                          {t("Uploaded-by")}
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles["Name"]
-                                                          }
-                                                        >
-                                                          {Itemsdata.userName}
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                  </Col>
-                                                  <Col
-                                                    lg={4}
-                                                    md={4}
-                                                    sm={4}
-                                                    className="d-flex justify-content-start align-items-center"
-                                                  >
-                                                    {Number(
-                                                      editorRole.status
-                                                    ) === 1 ||
-                                                    Number(
-                                                      editorRole.status
-                                                    ) === 11 ||
-                                                    Number(
-                                                      editorRole.status
-                                                    ) ===
-                                                      12 ? null : (editorRole.role ===
-                                                        "Organizer" &&
-                                                        Number(
-                                                          editorRole.status
-                                                        ) === 9) ||
-                                                      (Number(
-                                                        editorRole.status
-                                                      ) === 10 &&
-                                                        editorRole.role ===
-                                                          "Organizer") ? (
-                                                      <img
-                                                        draggable={false}
-                                                        src={EditIcon}
-                                                        alt=""
-                                                        height="21.55px"
-                                                        width="21.55px"
-                                                        className="cursor-pointer"
-                                                        onClick={() =>
-                                                          handleEditFunc(
-                                                            Itemsdata
+                                                    <span
+                                                      onClick={
+                                                        () =>
+                                                          handleClickShowRevision(
+                                                            data,
+                                                            parentMinutedata.minuteID
                                                           )
-                                                        }
-                                                      />
-                                                    ) : null}
-                                                  </Col>
-                                                </Row>
-                                              </Col>
-                                            </Row>
-                                            {Number(editorRole.status) === 1 ||
-                                            Number(editorRole.status) === 11 ||
-                                            Number(editorRole.status) ===
-                                              12 ? null : (editorRole.role ===
-                                                "Organizer" &&
-                                                Number(editorRole.status) ===
-                                                  9) ||
-                                              (Number(editorRole.status) ===
-                                                10 &&
-                                                editorRole.role ===
-                                                  "Organizer") ||
-                                              userID === organizerID ? (
-                                              <img
-                                                draggable={false}
-                                                src={RedCroseeIcon}
-                                                height="20.76px"
-                                                alt=""
-                                                width="20.76px"
+                                                        // setShowRevisionHistory(true)
+                                                      }
+                                                    >
+                                                      {t("Revisions")}
+                                                      <p className="m-0"> 3 </p>
+                                                    </span>
+                                                    <span
+                                                      onClick={
+                                                        () =>
+                                                          handleClickShowVersionHistory(
+                                                            data,
+                                                            parentMinutedata.minuteID
+                                                          )
+                                                        // setShowVersionHistory(true)
+                                                      }
+                                                      className="border-0"
+                                                    >
+                                                      {t("Version-history")}
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <p
                                                 className={
-                                                  styles["RedCrossClass"]
+                                                  styles["time-uploader"]
+                                                }
+                                              >
+                                                {convertToGMTMinuteTime(
+                                                  parentMinutedata.lastUpdatedDate +
+                                                    parentMinutedata.lastUpdatedTime
+                                                ) + ","}
+                                              </p>
+                                              <p
+                                                className={
+                                                  styles["date-uploader"]
+                                                }
+                                              >
+                                                {convertDateToGMTMinute(
+                                                  parentMinutedata.lastUpdatedDate +
+                                                    parentMinutedata.lastUpdatedTime
+                                                )}
+                                              </p>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </>
+                            );
+                          })}
+                        </>
+                      ) : null}
+                      {data.subMinutes.map((subMinuteData, subMinuteIndex) => {
+                        console.log(
+                          { subMinuteData },
+                          "parentMinutedataparentMinutedata"
+                        );
+                        const isOpenReviewerSubminute =
+                          openReviewerDetailSubminute.includes(subMinuteIndex);
+                        return (
+                          <div>
+                            {subMinuteData.minuteData.length === 0 ? null : (
+                              <Row className="mx-50">
+                                <Col lg={12} md={12} sm={12}>
+                                  <p className={styles["Parent-title-heading"]}>
+                                    {index +
+                                      1 +
+                                      "." +
+                                      subMinuteIndex +
+                                      1 +
+                                      " " +
+                                      subMinuteData.agendaTitle}
+                                  </p>
+                                </Col>
+                              </Row>
+                            )}
+                            {/* {isOpenReviewerSubminute === false &&
+                            minuteReviewData !== null ? ( */}
+                            <>
+                              {subMinuteData.minuteData.map(
+                                (minuteDataSubminute) => (
+                                  <>
+                                    <Row className="mxl-50">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <div
+                                          className={
+                                            styles["reviewer-progress-wrapper"]
+                                          }
+                                        >
+                                          <Row>
+                                            <Col lg={11} md={11} sm={12}>
+                                              <div
+                                                className={
+                                                  styles[
+                                                    "reviewer-progress-text"
+                                                  ]
+                                                }
+                                              >
+                                                <p className="m-0">
+                                                  {t("Total")}{" "}
+                                                  {
+                                                    minuteDataSubminute
+                                                      ?.MinuteStats
+                                                      ?.totalReviews
+                                                  }
+                                                </p>
+                                                <span>|</span>
+                                                <p className="m-0">
+                                                  {t("Accepted")}{" "}
+                                                  {
+                                                    minuteDataSubminute
+                                                      ?.MinuteStats?.accepted
+                                                  }
+                                                </p>
+                                                <span>|</span>
+                                                <p className="m-0">
+                                                  {t("Rejected")}{" "}
+                                                  {
+                                                    minuteDataSubminute
+                                                      ?.MinuteStats?.rejected
+                                                  }
+                                                </p>
+                                                <span>|</span>
+                                                <p className="m-0">
+                                                  {t("Pending")}{" "}
+                                                  {
+                                                    minuteDataSubminute
+                                                      ?.MinuteStats?.pending
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              lg={1}
+                                              md={1}
+                                              sm={12}
+                                              className="text-end"
+                                            >
+                                              <img
+                                                alt=""
+                                                src={DropdownPurple}
+                                                className={
+                                                  minuteDataSubminute.minuteID ===
+                                                  isOpenDrawerSubMinute
+                                                    ? `${styles["Arrow"]} cursor-pointer`
+                                                    : `${styles["Arrow_Expanded"]} cursor-pointer`
                                                 }
                                                 onClick={() =>
-                                                  handleRemovingTheMinutesAgendaWise(
-                                                    data
+                                                  openSubMinuteDrawer(
+                                                    minuteDataSubminute.minuteID
                                                   )
                                                 }
                                               />
-                                            ) : null}
-                                          </Col>
-                                        </Row>
-                                      </div>
-                                    </>
-                                  );
-                                })}
-                              </section>
-                            </Col>
-                          </Row>
-                        </AccordionDetails>
-                      </Accordion>
-                    </Col>
-                  </Row>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className={
+                                                minuteDataSubminute.minuteID ===
+                                                isOpenDrawerSubMinute
+                                                  ? styles["subMinuteExtend"]
+                                                  : styles["subMinuteNotExtend"]
+                                              }
+                                            >
+                                              <p
+                                                className={`${styles["text-wrapper-review"]}`}
+                                              >
+                                                <span
+                                                  className={
+                                                    styles["Review-accepted"]
+                                                  }
+                                                >
+                                                  Review Accepted:
+                                                </span>{" "}
+                                                {minuteDataSubminute
+                                                  ?.MinuteStats?.acceptedByUsers
+                                                  ?.length > 0 &&
+                                                  minuteDataSubminute?.MinuteStats?.acceptedByUsers?.map(
+                                                    (acceptedUserData) =>
+                                                      `${acceptedUserData}, `
+                                                  )}
+                                              </p>
+                                              <p
+                                                className={`${styles["text-wrapper-review"]}`}
+                                              >
+                                                <span
+                                                  className={
+                                                    styles["Review-declined"]
+                                                  }
+                                                >
+                                                  Review Rejected:
+                                                </span>{" "}
+                                                {minuteDataSubminute
+                                                  ?.MinuteStats?.rejectedByUsers
+                                                  ?.length > 0 &&
+                                                  minuteDataSubminute?.MinuteStats?.rejectedByUsers?.map(
+                                                    (rejectedUserData) =>
+                                                      `${rejectedUserData}, `
+                                                  )}
+                                              </p>
+                                              <p
+                                                className={`${styles["text-wrapper-review"]}`}
+                                              >
+                                                <span
+                                                  className={
+                                                    styles["Review-pending"]
+                                                  }
+                                                >
+                                                  Review Pending:
+                                                </span>{" "}
+                                                {minuteDataSubminute
+                                                  ?.MinuteStats?.pendingUsers
+                                                  ?.length > 0 &&
+                                                  minuteDataSubminute?.MinuteStats?.pendingUsers?.map(
+                                                    (pendingUserData) =>
+                                                      `${pendingUserData}, `
+                                                  )}
+                                              </p>
+                                            </Col>
+                                          </Row>
+                                        </div>
+                                      </Col>
+                                    </Row>
+
+                                    <Row className="mxl-50">
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className="position-relative"
+                                      >
+                                        <div
+                                          className={
+                                            styles["version-control-wrapper"]
+                                          }
+                                        >
+                                          <span></span>
+                                        </div>
+                                        <div
+                                          className={styles["uploaded-details"]}
+                                        >
+                                          <Row
+                                            className={styles["inherit-height"]}
+                                          >
+                                            <Col lg={9} md={9} sm={12}>
+                                              <p
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    minuteDataSubminute.description,
+                                                }}
+                                                className={
+                                                  styles["minutes-text"]
+                                                }
+                                              ></p>
+                                              {minuteDataSubminute.attachments
+                                                .length > 0 ? (
+                                                <Row>
+                                                  {minuteDataSubminute.attachments.map(
+                                                    (
+                                                      subFileData,
+                                                      subFileIndex
+                                                    ) => (
+                                                      <Col
+                                                        lg={3}
+                                                        md={3}
+                                                        sm={12}
+                                                      >
+                                                        <AttachmentViewer
+                                                          name={
+                                                            subFileData.displayFileName
+                                                          }
+                                                          id={
+                                                            subFileData.pK_FileID
+                                                          }
+                                                        />
+                                                      </Col>
+                                                    )
+                                                  )}
+                                                </Row>
+                                              ) : null}
+                                            </Col>
+                                            <Col
+                                              lg={3}
+                                              md={3}
+                                              sm={12}
+                                              className="position-relative"
+                                            >
+                                              <Row className="m-0">
+                                                <Col
+                                                  lg={9}
+                                                  md={9}
+                                                  sm={12}
+                                                  className="p-0"
+                                                >
+                                                  <span
+                                                    className={
+                                                      styles["bar-line"]
+                                                    }
+                                                  ></span>
+                                                  <p
+                                                    className={
+                                                      styles["uploadedbyuser"]
+                                                    }
+                                                  >
+                                                    {t("Uploaded-by")}
+                                                  </p>
+                                                  <div
+                                                    className={styles["gap-ti"]}
+                                                  >
+                                                    <img
+                                                      src={`data:image/jpeg;base64,${minuteDataSubminute.uploader.displayProfilePictureName}`}
+                                                      className={
+                                                        styles["Image"]
+                                                      }
+                                                      alt=""
+                                                      draggable={false}
+                                                    />
+                                                    <p
+                                                      className={
+                                                        styles["agendaCreater"]
+                                                      }
+                                                    >
+                                                      {
+                                                        minuteDataSubminute.userName
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                                <Col
+                                                  lg={3}
+                                                  md={3}
+                                                  sm={12}
+                                                  className="d-grid justify-content-end p-0"
+                                                >
+                                                  <div className="d-flex justify-content-center align-items-center">
+                                                    <img
+                                                      className="cursor-pointer mx-2"
+                                                      src={EditIcon}
+                                                      alt=""
+                                                      onClick={() =>
+                                                        handleEditFunc(
+                                                          minuteDataSubminute
+                                                        )
+                                                      }
+                                                    />
+                                                    <div
+                                                      onClick={() =>
+                                                        menuPopupMinute(
+                                                          minuteDataSubminute.minuteID
+                                                        )
+                                                      }
+                                                      className={
+                                                        styles["box-agendas"]
+                                                      }
+                                                      ref={closeMenuMinute}
+                                                    >
+                                                      <img
+                                                        className="cursor-pointer"
+                                                        src={MenuIcon}
+                                                        alt=""
+                                                      />
+                                                      <div
+                                                        className={
+                                                          openMenuId ===
+                                                          minuteDataSubminute.minuteID
+                                                            ? `${
+                                                                styles[
+                                                                  "popup-agenda-menu"
+                                                                ]
+                                                              } ${"opacity-1 pe-auto"}`
+                                                            : `${
+                                                                styles[
+                                                                  "popup-agenda-menu"
+                                                                ]
+                                                              } ${"opacity-0 pe-none"}`
+                                                        }
+                                                      >
+                                                        <span
+                                                          onClick={() =>
+                                                            // handleClickShowRevision(
+                                                            //   data,
+                                                            //   minuteDataSubminute.minuteID
+                                                            // )
+                                                            setShowRevisionHistory(
+                                                              true
+                                                            )
+                                                          }
+                                                        >
+                                                          {t("Revisions")}
+                                                          <p className="m-0">
+                                                            {" "}
+                                                            3{" "}
+                                                          </p>
+                                                        </span>
+                                                        <span
+                                                          onClick={() =>
+                                                            // handleClickShowVersionHistory(
+                                                            //   data,
+                                                            //   minuteDataSubminute.minuteID
+                                                            // )
+                                                            setShowVersionHistory(
+                                                              true
+                                                            )
+                                                          }
+                                                          className="border-0"
+                                                        >
+                                                          {t("Version-history")}
+                                                        </span>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <p
+                                                    className={
+                                                      styles["time-uploader"]
+                                                    }
+                                                  >
+                                                    {convertToGMTMinuteTime(
+                                                      minuteDataSubminute.lastUpdatedDate +
+                                                        minuteDataSubminute.lastUpdatedTime
+                                                    ) + ","}
+                                                  </p>
+                                                  <p
+                                                    className={
+                                                      styles["date-uploader"]
+                                                    }
+                                                  >
+                                                    {convertDateToGMTMinute(
+                                                      minuteDataSubminute.lastUpdatedDate +
+                                                        minuteDataSubminute.lastUpdatedTime
+                                                    )}
+                                                  </p>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                          </Row>
+                                        </div>
+                                        <img
+                                          className={styles["delete-icon"]}
+                                          src={DeleteIcon}
+                                          alt=""
+                                          onClick={() => {
+                                            dispatch(
+                                              deleteCommentModalAgenda(true)
+                                            );
+                                            dispatch(
+                                              DeleteMinuteReducer(
+                                                minuteDataSubminute
+                                              )
+                                            );
+                                          }}
+                                        />
+                                      </Col>
+                                    </Row>
+                                  </>
+                                )
+                              )}
+                            </>
+                            {/* ) : null} */}
+                          </div>
+                        );
+                      })}
+                    </>
+                  ) : null}
                 </div>
               </>
-            );
-          })}
-        </Col>
-      </Row>
+            </Col>
+          </Row>
+        );
+      })}
+
+      {MinutesReducer.deleteMinuteAgenda ? (
+        <DeleteCommentAgenda
+          advanceMeetingModalID={advanceMeetingModalID}
+          setAddNoteFields={setAddNoteFields}
+          addNoteFields={addNoteFields}
+          setFileAttachments={setFileAttachments}
+        />
+      ) : null}
+
+      {showVersionHistory ? (
+        <VersionHistory
+          showVersionHistory={showVersionHistory}
+          setShowVersionHistory={setShowVersionHistory}
+        />
+      ) : null}
+
+      {showRevisionHistory ? (
+        <RevisionHistory
+          showRevisionHistory={showRevisionHistory}
+          setShowRevisionHistory={setShowRevisionHistory}
+        />
+      ) : null}
 
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>

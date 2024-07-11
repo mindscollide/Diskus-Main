@@ -1603,6 +1603,73 @@ const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
 
+//Minutes APIs
+
+const listOfDefaultRejectionComments = {
+  RequestMethod: "ServiceManager.ListOfDefaultRejectionComments",
+};
+
+const pendingApprovalsCount = {
+  RequestMethod: "ServiceManager.PendingApprovalsCount",
+};
+
+const getMinuteReviewStatsForOrganizerByMeetingId = {
+  RequestMethod: "ServiceManager.GetMinuteReviewStatsForOrganizerByMeetingId",
+};
+
+const getAllOrganizationUsersForReview = {
+  RequestMethod: "ServiceManager.GetAllOrganizationUsersForReview",
+};
+
+const getMinutesForReviewerByMeetingId = {
+  RequestMethod: "ServiceManager.GetMinutesForReviewerByMeetingId",
+};
+
+const getMinuteReviewPendingApprovalsStatsByReviewerId = {
+  RequestMethod:
+    "ServiceManager.GetMinuteReviewPendingApprovalsStatsByReviewerId",
+};
+
+const getMinuteReviewPendingApprovalsByReviewerId = {
+  RequestMethod: "ServiceManager.GetMinuteReviewPendingApprovalsByReviewerId",
+};
+
+const saveMinutesReviewFlow = {
+  RequestMethod: "ServiceManager.SaveMinutesReviewFlow",
+};
+
+const getPendingApprovalStatusesForMinuteReview = {
+  RequestMethod: "ServiceManager.GetPendingApprovalStatusesForMinuteReview",
+};
+
+const acceptRejectMinuteReview = {
+  RequestMethod: "ServiceManager.AcceptRejectMinuteReview",
+};
+
+const resendUpdatedMinuteForReview = {
+  RequestMethod: "ServiceManager.ResendUpdatedMinuteForReview",
+};
+
+const getMinuteVersionHistoryWithComments = {
+  RequestMethod: "ServiceManager.GetMinuteVersionHistoryWithComments",
+};
+
+const getMinuteReviewFlowByMeetingId = {
+  RequestMethod: "ServiceManager.GetMinuteReviewFlowByMeetingId",
+};
+
+const updateCommentForRejectedMinute = {
+  RequestMethod: "ServiceManager.UpdateCommentForRejectedMinute",
+};
+
+const getMinuteReviewDetailsForOrganizerByMinuteId = {
+  RequestMethod: "ServiceManager.GetMinuteReviewDetailsForOrganizerByMinuteId",
+};
+
+const deleteMinuteReviewByReviewer = {
+  RequestMethod: "ServiceManager.DeleteMinuteReviewByReviewer",
+};
+
 const downgradeOrganizationSubscription = {
   RequestMethod: "ServiceManager.DowngradeOrganizationSubscription",
 };
@@ -1629,7 +1696,20 @@ const DeleteSignatureDocumentRM = {
 const GetAllSignatoriesStatusRM = {
   RequestMethod: "ServiceManager.GetAllSignatoriesStatus",
 };
+
+const PublishMeetingMinutesRM = {
+  RequestMethod: "ServiceManager.PublishMeetingMinutes",
+};
+const GetAllPublishedMeetingMinutesRM = {
+  RequestMethod: "ServiceManager.GetAllPublishedMinutes",
+};
+const DownloadInvoiceRM = {
+  RequestMethod: "ServiceManager.DownloadInvoice",
+};
 export {
+  DownloadInvoiceRM,
+  GetAllPublishedMeetingMinutesRM,
+  PublishMeetingMinutesRM,
   GetAllSignatoriesStatusRM,
   DeleteSignatureDocumentRM,
   GetPendingApprovalStatusforSignatureFlowRM,
@@ -2058,6 +2138,23 @@ export {
   downloadAttachmentTalk,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  //Minutes Flow
+  listOfDefaultRejectionComments,
+  pendingApprovalsCount,
+  getMinuteReviewStatsForOrganizerByMeetingId,
+  getAllOrganizationUsersForReview,
+  getMinutesForReviewerByMeetingId,
+  getMinuteReviewPendingApprovalsStatsByReviewerId,
+  getMinuteReviewPendingApprovalsByReviewerId,
+  saveMinutesReviewFlow,
+  getPendingApprovalStatusesForMinuteReview,
+  acceptRejectMinuteReview,
+  resendUpdatedMinuteForReview,
+  getMinuteVersionHistoryWithComments,
+  getMinuteReviewFlowByMeetingId,
+  updateCommentForRejectedMinute,
+  getMinuteReviewDetailsForOrganizerByMinuteId,
+  deleteMinuteReviewByReviewer,
   downgradeOrganizationSubscription,
   getOrganizationWallet,
   BoardDeckSendEmail,

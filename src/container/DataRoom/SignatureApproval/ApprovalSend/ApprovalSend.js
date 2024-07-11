@@ -90,13 +90,16 @@ const ApprovalSend = () => {
           record,
           "numberOfSignatoriesnumberOfSignatoriesnumberOfSignatories"
         );
-        return (
-          <span
-            // onClick={() => setSignatoriesList(true)}
-            onClick={() => handleClickSignatoriesList(record)}
-            className={styles["signatories_vale"]}
-          >{` ${text} Signatories`}</span>
-        );
+        if (record.workFlowStatusID === 4) {
+          return <span className={styles["status_draft_signatoriesList"]}></span>;
+        } else {
+          return (
+            <span
+              onClick={() => handleClickSignatoriesList(record)}
+              className={styles["signatories_vale"]}
+            >{` ${text} Signatories`}</span>
+          );
+        }
       },
     },
     {
@@ -294,23 +297,11 @@ const ApprovalSend = () => {
       spin
     />
   );
-  console.log(
-    rowsDataLength <= totalRecords,
-    rowsDataLength,
-    totalRecords,
-    "handleScrollhandleScroll"
-  );
+
   const handleScroll = async () => {
-    console.log(
-      rowsDataLength <= totalRecords,
-      rowsDataLength,
-      totalRecords,
-      "handleScrollhandleScroll"
-    );
     if (rowsDataLength <= totalRecords) {
       setIsScrolling(true);
       let Data = { sRow: Number(rowsDataLength), Length: 10 };
-      console.log(Data, "handleScrollhandleScrollhandleScroll");
       await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     }
   };
@@ -373,11 +364,12 @@ const ApprovalSend = () => {
             <section className={styles["ApprovalSend_emptyContainer"]}>
               <img className="d-flex justify-content-center" src={EmtpyImage} />
               <span className={styles["emptyState_title"]}>
-                Submit Document for Approval
+                {t("Submit-document-for-approval")}
               </span>
               <span className={styles["emptyState_tagline"]}>
-                Ready to send a document for approval? This tab awaits your next
-                submission!
+              {t("Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission")}!
+                {/* {t("Ready-to-send-a-document-for-approval? This tab awaits your next
+                submission")}! */}
               </span>
             </section>
           </Col>

@@ -629,8 +629,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           modalFooterClassName="footertodoCreateModal"
           modalHeaderClassName="headertodoCreateModal"
           ButtonTitle={ModalTitle}
-          // size={closeConfirmationBox ? null : "md"}
-          // ModalTitle={"Modal Header"}
           ModalBody={
             isCreateTodo ? (
               <>
