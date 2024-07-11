@@ -69,7 +69,7 @@ import {
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 import VerificationFailedIcon from "../../assets/images/failed.png";
-
+import { GetPendingApprovalsCount } from "../../store/actions/Minutes_action";
 // import io from "socket.io-client";
 import {
   createTaskCommitteeMQTT,
@@ -193,6 +193,7 @@ const Dashboard = () => {
     SignatureWorkFlowReducer,
     UserMangementReducer,
     UserManagementModals,
+    MinutesReducer,
   } = useSelector((state) => state);
 
   console.log(
@@ -2143,23 +2144,23 @@ const Dashboard = () => {
           dispatch(userLogOutApiFunc(navigate, t));
         }
       }
-      if (data.action.toLowerCase() === "Login".toLowerCase()) {
-        if (
-          data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()
-        ) {
-          let getToken =
-            localStorage.getItem("token") !== null &&
-            localStorage.getItem("token");
-          console.log(
-            getToken,
-            data.payload.authToken.token,
-            "USER_LOGIN_ACTIVITYUSER_LOGIN_ACTIVITY"
-          );
-          if (getToken !== data?.payload?.authToken?.token) {
-            dispatch(userLogOutApiFunc(navigate, t));
-          }
-        }
-      }
+      // if (data.action.toLowerCase() === "Login".toLowerCase()) {
+      //   if (
+      //     data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()
+      //   ) {
+      //     let getToken =
+      //       localStorage.getItem("token") !== null &&
+      //       localStorage.getItem("token");
+      //     console.log(
+      //       getToken,
+      //       data.payload.authToken.token,
+      //       "USER_LOGIN_ACTIVITYUSER_LOGIN_ACTIVITY"
+      //     );
+      //     if (getToken !== data?.payload?.authToken?.token) {
+      //       dispatch(userLogOutApiFunc(navigate, t));
+      //     }
+      //   }
+      // }
     } catch (error) {}
   };
 
@@ -2226,6 +2227,8 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(GetAllUserChats(navigate, createrID, currentOrganization, t));
     dispatch(GetUserMissedCallCount(navigate, t));
+    //Owais Pending APproval Count
+    dispatch(GetPendingApprovalsCount(navigate, t));
     localStorage.setItem("activeOtoChatID", 0);
   }, []);
 
@@ -2365,6 +2368,7 @@ const Dashboard = () => {
             RealtimeNotification.Loading ||
             OrganizationBillingReducer.Loading ||
             DataRoomReducer.Loading ||
+            MinutesReducer.Loading ||
             DataRoomFileAndFoldersDetailsReducer.Loading ||
             SignatureWorkFlowReducer.Loading ||
             UserMangementReducer.Loading ? (

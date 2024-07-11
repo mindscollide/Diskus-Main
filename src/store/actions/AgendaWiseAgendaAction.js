@@ -25,7 +25,8 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
   Data,
   navigate,
   t,
-  currentMeeting
+  currentMeeting,
+  setAddReviewers
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -75,16 +76,14 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
                 newData,
                 t,
                 currentMeeting,
-                false
+                false,
+                setAddReviewers
               )
             );
 
             // Dispatch success after GetAllAgendaWiseMinutesApiFunc has completed
             await dispatch(
-              getAllAgendaForAgendaWiseSuccess(
-                response.data.responseResult,
-                ""
-              )
+              getAllAgendaForAgendaWiseSuccess(response.data.responseResult, "")
             );
           } else if (
             response.data.responseResult.responseMessage

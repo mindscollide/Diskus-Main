@@ -80,6 +80,7 @@ import { DocumentViewer } from "../components/elements";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
+
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -134,6 +135,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="">
                 <Home />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="Minutes"
+            element={
+              <RouteWrapperUser name="Minutes">
+                <MinutesFlow />
               </RouteWrapperUser>
             }
           />
