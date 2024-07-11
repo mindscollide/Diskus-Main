@@ -11,42 +11,28 @@ import {
 } from "../../../../../../../components/elements";
 import AttachmentIcon from "./../../../../../../../assets/images/AttachmentIcon.png";
 import { useTranslation } from "react-i18next";
+import {
+  findUserProfileImg,
+  handleCheck,
+  checkReviewersListAgenda,
+  checkReviewersListGeneral,
+} from "../functionsAddReviewers";
+import Avatar from "./../../../../../../../assets/images/avatar.png";
+import EditMinute from "./../../Images/Edit-Minute.png";
 
 const SelectMinutes = ({
-  selectMinutes,
-  setSelectMinutes,
-  selectReviewers,
-  setSelectReviewers,
-  sendReviewers,
-  setSendReviewers,
-  editReviewer,
-  setEditReviewer,
-  setMinuteDataAgenda,
   minuteDataAgenda,
-  setMinuteDataGeneral,
   minuteDataGeneral,
   selectedMinuteIDs,
   setSelectedMinuteIDs,
-  selectReviewersArray,
-  setSelectReviewersArray,
   allReviewers,
-  setAllReviewers,
-  isAgendaMinute,
-  setIsAgendaMinute,
-  moreMinutes,
-  setMoreMinutes,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const { MinutesReducer } = useSelector((state) => state);
-
-  // const [minutesDataAgenda, setMinutesDataAgenda] = useState([]);
-  // const [minutesDataGeneral, setMinutesDataGeneral] = useState([]);
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
   const [expandedItems, setExpandedItems] = useState({});
+  const [totalIds, setTotalIds] = useState([]);
 
   useEffect(() => {
     const checkIfTruncated = () => {
@@ -71,8 +57,6 @@ const SelectMinutes = ({
       [id]: !prev[id],
     }));
   };
-
-  const [totalIds, setTotalIds] = useState([]);
 
   const handleSelectAll = (checked) => {
     try {
@@ -108,105 +92,17 @@ const SelectMinutes = ({
     }
   };
 
-  const handleParentCheckboxChangeAgenda = (checked, agendaID) => {
-    if (checked) {
-      // Add all minute IDs from minuteData for the given agendaID to selectedMinuteIDs
-      const agenda = minuteDataAgenda.find(
-        (item) => item.agendaID === agendaID
-      );
-      if (agenda) {
-        const allMinuteIDs = agenda.minuteData.map((item) => item.minuteID);
-        setSelectedMinuteIDs([...selectedMinuteIDs, ...allMinuteIDs]);
-      }
-    } else {
-      // Remove all minute IDs from minuteData for the given agendaID from selectedMinuteIDs
-      const agenda = minuteDataAgenda.find(
-        (item) => item.agendaID === agendaID
-      );
-      if (agenda) {
-        const filteredIDs = selectedMinuteIDs.filter(
-          (id) => !agenda.minuteData.some((item) => item.minuteID === id)
-        );
-        setSelectedMinuteIDs(filteredIDs);
-      }
-    }
-  };
-
-  const handleParentCheckboxChangeSubMinutes = (checked, subAgendaID) => {
-    // Flatten all subMinutes across all agendas
-    const allSubMinutes = minuteDataAgenda.flatMap(
-      (agenda) => agenda.subMinutes
+  const handleCheckboxChange = (checked, ID, flag) => {
+    handleCheck(
+      checked,
+      ID,
+      flag,
+      minuteDataAgenda,
+      minuteDataGeneral,
+      selectedMinuteIDs,
+      setSelectedMinuteIDs
     );
-
-    // Find the specific sub-agenda using the subAgendaID
-    const targetSubAgenda = allSubMinutes.find(
-      (item) => item.agendaID === subAgendaID
-    );
-
-    if (targetSubAgenda) {
-      const subAgendaMinuteIDs = targetSubAgenda.minuteData.map(
-        (minute) => minute.minuteID
-      );
-
-      if (checked) {
-        // Add only the minute IDs from sub-agenda minuteData to selectedMinuteIDs
-        setSelectedMinuteIDs((prevSelected) => [
-          ...prevSelected,
-          ...subAgendaMinuteIDs.filter((id) => !prevSelected.includes(id)),
-        ]);
-      } else {
-        // Remove only the minute IDs from sub-agenda minuteData from selectedMinuteIDs
-        setSelectedMinuteIDs((prevSelected) =>
-          prevSelected.filter((id) => !subAgendaMinuteIDs.includes(id))
-        );
-      }
-    }
   };
-
-  const handleChildCheckboxChangeAgenda = (checked, minuteID) => {
-    if (checked) {
-      setSelectedMinuteIDs([...selectedMinuteIDs, minuteID]);
-    } else {
-      setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== minuteID));
-    }
-  };
-
-  const handleChildCheckboxChangeSubMinutes = (checked, minuteID) => {
-    if (checked) {
-      setSelectedMinuteIDs([...selectedMinuteIDs, minuteID]);
-    } else {
-      setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== minuteID));
-    }
-  };
-
-  const handleParentCheckboxChange = (checked) => {
-    try {
-      if (checked) {
-        // Add all minute IDs from minuteDataGeneral to selectedMinuteIDs
-        const allMinuteIDs = minuteDataGeneral.map((item) => item.minuteID);
-        setSelectedMinuteIDs([...selectedMinuteIDs, ...allMinuteIDs]);
-      } else {
-        // Remove all minute IDs from minuteDataGeneral from selectedMinuteIDs
-        const filteredIDs = selectedMinuteIDs.filter(
-          (id) => !minuteDataGeneral.some((item) => item.minuteID === id)
-        );
-        setSelectedMinuteIDs(filteredIDs);
-      }
-    } catch {}
-  };
-
-  const handleChildCheckboxChange = (checked, minuteID) => {
-    try {
-      if (checked) {
-        setSelectedMinuteIDs([...selectedMinuteIDs, minuteID]);
-      } else {
-        setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== minuteID));
-      }
-    } catch {}
-  };
-
-  console.log("Minute Data General Select Minutes", minuteDataGeneral);
-  console.log("Minute Data Agenda Select MInutes", minuteDataAgenda);
 
   return (
     <>
@@ -242,14 +138,20 @@ const SelectMinutes = ({
                   <Col lg={12} md={12} sm={12}>
                     <Checkbox
                       label2Class={styles["agenda-title"]}
+                      disabled={
+                        checkReviewersListAgenda(minuteDataAgenda)
+                          ? true
+                          : false
+                      }
                       label2={data.agendaTitle}
                       className="SearchCheckbox"
                       name="IsChat"
                       classNameDiv={styles["agendaTitleCheckbox"]}
                       onChange={(e) =>
-                        handleParentCheckboxChangeAgenda(
+                        handleCheckboxChange(
                           e.target.checked,
-                          data.agendaID
+                          data.agendaID,
+                          "ParentCheckboxAgenda"
                         )
                       }
                       checked={data.minuteData.every((item) =>
@@ -258,116 +160,177 @@ const SelectMinutes = ({
                     />
                   </Col>
                 </Row>
-                {data.isParentData === false ? null : (
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      {data.minuteData.map((parentMinutedata, index) => {
-                        const isTruncated =
-                          !expandedItems[parentMinutedata.minuteID];
-                        return (
-                          <Checkbox
-                            label2Class={styles["minuteParentLabel"]}
-                            label2={
-                              <>
-                                <div className={styles["minuteWrapper"]}>
-                                  <Row>
-                                    <Col
-                                      className="pr-0"
-                                      lg={10}
-                                      md={10}
-                                      sm={12}
-                                    >
-                                      <span
-                                        ref={textRef}
-                                        className={
-                                          isTruncated
-                                            ? "m-0 text-truncate description"
-                                            : "m-0"
-                                        }
-                                        dangerouslySetInnerHTML={{
-                                          __html: parentMinutedata.description,
-                                        }}
-                                      ></span>
-                                      <Row>
-                                        {(isTruncated &&
-                                          parentMinutedata.attachments
-                                            .length === 0) ||
-                                        (isTruncated &&
-                                          parentMinutedata.attachments.length >
-                                            0)
-                                          ? null
-                                          : parentMinutedata.attachments.map(
-                                              (filesData, index) => {
-                                                return (
-                                                  <Col
-                                                    lg={2}
-                                                    md={2}
-                                                    sm={12}
-                                                    className="mx-2"
-                                                  >
-                                                    <AttachmentViewer
-                                                      id={filesData.pK_FileID}
-                                                      name={
-                                                        filesData.displayFileName
-                                                      }
-                                                    />
-                                                  </Col>
-                                                );
-                                              }
-                                            )}
-                                      </Row>
-                                    </Col>
-                                    <Col
-                                      className="d-flex justify-content-end align-items-end gap-2"
-                                      lg={2}
-                                      md={2}
-                                      sm={12}
-                                    >
-                                      <span
-                                        onClick={() =>
-                                          showHideDetails(
-                                            parentMinutedata.minuteID
-                                          )
-                                        }
-                                        className={styles["view-details"]}
+                {data.isParentData === false
+                  ? null
+                  : data.minuteData.map((parentMinutedata, index) => {
+                      const isTruncated =
+                        !expandedItems[parentMinutedata.minuteID];
+                      const reviewerId =
+                        parentMinutedata?.reviewersList?.[0] ?? null;
+                      const profileImg = findUserProfileImg(
+                        reviewerId,
+                        allReviewers
+                      );
+                      return (
+                        <Row>
+                          <Col
+                            lg={
+                              parentMinutedata.reviewersList.length > 0
+                                ? 11
+                                : 12
+                            }
+                            md={
+                              parentMinutedata.reviewersList.length > 0
+                                ? 11
+                                : 12
+                            }
+                            sm={12}
+                          >
+                            <Checkbox
+                              disabled={
+                                parentMinutedata.reviewersList.length > 0
+                                  ? true
+                                  : false
+                              }
+                              label2Class={styles["minuteParentLabel"]}
+                              label2={
+                                <>
+                                  <div className={styles["minuteWrapper"]}>
+                                    <Row>
+                                      <Col
+                                        className="pr-0"
+                                        lg={10}
+                                        md={10}
+                                        sm={12}
                                       >
-                                        {isTruncated
-                                          ? t("View-details")
-                                          : t("Hide-details")}
-                                      </span>
-                                      {parentMinutedata.attachments &&
-                                        parentMinutedata.attachments.length >
-                                          0 && (
-                                          <img
-                                            width={17}
-                                            height={16}
-                                            src={AttachmentIcon}
-                                            alt=""
-                                          />
-                                        )}
-                                    </Col>
-                                  </Row>
-                                </div>
-                              </>
-                            }
-                            className="SearchCheckbox"
-                            name={`minute-${parentMinutedata.minuteID}`}
-                            onChange={(e) =>
-                              handleChildCheckboxChangeAgenda(
-                                e.target.checked,
+                                        <span
+                                          ref={textRef}
+                                          className={
+                                            isTruncated
+                                              ? "m-0 text-truncate description"
+                                              : "m-0"
+                                          }
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              parentMinutedata.description,
+                                          }}
+                                        ></span>
+                                        <Row>
+                                          {(isTruncated &&
+                                            parentMinutedata.attachments
+                                              .length === 0) ||
+                                          (isTruncated &&
+                                            parentMinutedata.attachments
+                                              .length > 0)
+                                            ? null
+                                            : parentMinutedata.attachments.map(
+                                                (filesData, index) => {
+                                                  return (
+                                                    <Col
+                                                      lg={2}
+                                                      md={2}
+                                                      sm={12}
+                                                      className="mx-2"
+                                                    >
+                                                      <AttachmentViewer
+                                                        id={filesData.pK_FileID}
+                                                        name={
+                                                          filesData.displayFileName
+                                                        }
+                                                      />
+                                                    </Col>
+                                                  );
+                                                }
+                                              )}
+                                        </Row>
+                                      </Col>
+                                      <Col
+                                        className="d-flex justify-content-end align-items-end gap-2"
+                                        lg={2}
+                                        md={2}
+                                        sm={12}
+                                      >
+                                        <span
+                                          onClick={() =>
+                                            showHideDetails(
+                                              parentMinutedata.minuteID
+                                            )
+                                          }
+                                          className={styles["view-details"]}
+                                        >
+                                          {isTruncated
+                                            ? t("View-details")
+                                            : t("Hide-details")}
+                                        </span>
+                                        {parentMinutedata.attachments &&
+                                          parentMinutedata.attachments.length >
+                                            0 && (
+                                            <img
+                                              width={17}
+                                              height={16}
+                                              src={AttachmentIcon}
+                                              alt=""
+                                            />
+                                          )}
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </>
+                              }
+                              className="SearchCheckbox"
+                              name={`minute-${parentMinutedata.minuteID}`}
+                              onChange={(e) =>
+                                handleCheckboxChange(
+                                  e.target.checked,
+                                  parentMinutedata.minuteID,
+                                  "ParentMinuteCheckbox"
+                                )
+                              }
+                              checked={selectedMinuteIDs.includes(
                                 parentMinutedata.minuteID
-                              )
-                            }
-                            checked={selectedMinuteIDs.includes(
-                              parentMinutedata.minuteID
-                            )}
-                            classNameDiv={styles["agendaTitleCheckbox"]}
-                          />
-                        );
-                      })}
-                    </Col>
-                  </Row>
-                )}
+                              )}
+                              classNameDiv={styles["agendaTitleCheckbox"]}
+                            />
+                          </Col>
+                          {parentMinutedata.reviewersList.length > 0 ? (
+                            <Col lg={1} md={1} sm={12}>
+                              <div className={styles["image-profile-wrapper"]}>
+                                <div className="position-relative">
+                                  <img
+                                    height={32}
+                                    width={32}
+                                    className={styles["image-style"]}
+                                    src={
+                                      profileImg
+                                        ? `data:image/jpeg;base64,${profileImg}`
+                                        : Avatar
+                                    }
+                                    alt=""
+                                  />
+                                  {parentMinutedata.reviewersList.length > 1 ? (
+                                    <span className={styles["reviewer-count"]}>
+                                      {"+" +
+                                        parentMinutedata.reviewersList.length}
+                                    </span>
+                                  ) : null}
+                                </div>
+                                <img
+                                  height={32}
+                                  width={32}
+                                  className={"cursor-pointer"}
+                                  src={EditMinute}
+                                  // onClick={() => {
+                                  //   editMinuteFunction(parentMinutedata, data);
+                                  //   setIsAgendaMinute(true);
+                                  // }}
+                                  alt=""
+                                />
+                              </div>
+                            </Col>
+                          ) : null}
+                        </Row>
+                      );
+                    })}
                 {data.subMinutes && data.subMinutes.length > 0
                   ? data.subMinutes.map((subagendaMinuteData, index) => {
                       return (
@@ -376,13 +339,19 @@ const SelectMinutes = ({
                             {subagendaMinuteData.minuteData.length > 0 ? (
                               <Checkbox
                                 label2Class={styles["agenda-title"]}
+                                disabled={
+                                  checkReviewersListAgenda(subagendaMinuteData)
+                                    ? true
+                                    : false
+                                }
                                 label2={subagendaMinuteData.agendaTitle}
                                 className="SearchCheckbox"
                                 name="IsChat"
                                 onChange={(e) =>
-                                  handleParentCheckboxChangeSubMinutes(
+                                  handleCheckboxChange(
                                     e.target.checked,
-                                    subagendaMinuteData.agendaID
+                                    subagendaMinuteData.agendaID,
+                                    "SubAgendaTitleCheckbox"
                                   )
                                 }
                                 checked={subagendaMinuteData.minuteData.every(
@@ -399,27 +368,56 @@ const SelectMinutes = ({
                                       !expandedItems[
                                         minuteDataSubminute.minuteID
                                       ];
+                                    const reviewerId =
+                                      minuteDataSubminute?.reviewersList?.[0] ??
+                                      null;
+                                    const profileImg = findUserProfileImg(
+                                      reviewerId,
+                                      allReviewers
+                                    );
                                     return (
-                                      <Checkbox
-                                        key={minuteDataSubminute.minuteID}
-                                        label2Class={
-                                          styles["minuteParentLabel"]
-                                        }
-                                        label2={
-                                          <>
-                                            <div
-                                              className={
-                                                styles["minuteWrapper"]
-                                              }
-                                            >
-                                              <Row>
-                                                <Col
-                                                  className="pr-0"
-                                                  lg={10}
-                                                  md={10}
-                                                  sm={12}
+                                      <Row>
+                                        <Col
+                                          lg={
+                                            minuteDataSubminute.reviewersList
+                                              .length > 0
+                                              ? 11
+                                              : 12
+                                          }
+                                          md={
+                                            minuteDataSubminute.reviewersList
+                                              .length > 0
+                                              ? 11
+                                              : 12
+                                          }
+                                          sm={12}
+                                        >
+                                          <Checkbox
+                                            key={minuteDataSubminute.minuteID}
+                                            disabled={
+                                              minuteDataSubminute.reviewersList
+                                                .length > 0
+                                                ? true
+                                                : false
+                                            }
+                                            label2Class={
+                                              styles["minuteParentLabel"]
+                                            }
+                                            label2={
+                                              <>
+                                                <div
+                                                  className={
+                                                    styles["minuteWrapper"]
+                                                  }
                                                 >
-                                                  {/* <p
+                                                  <Row>
+                                                    <Col
+                                                      className="pr-0"
+                                                      lg={10}
+                                                      md={10}
+                                                      sm={12}
+                                                    >
+                                                      {/* <p
                                                   ref={textRef}
                                                   className={
                                                     isTruncated
@@ -431,104 +429,158 @@ const SelectMinutes = ({
                                                     minuteDataSubminute.description
                                                   }
                                                 </p> */}
-                                                  <span
-                                                    ref={textRef}
-                                                    className={
-                                                      isTruncated
-                                                        ? "m-0 text-truncate description"
-                                                        : "m-0"
-                                                    }
-                                                    dangerouslySetInnerHTML={{
-                                                      __html:
-                                                        minuteDataSubminute.description,
-                                                    }}
-                                                  ></span>
-                                                  <Row>
-                                                    {(isTruncated &&
-                                                      minuteDataSubminute
-                                                        .attachments.length ===
-                                                        0) ||
-                                                    (isTruncated &&
-                                                      minuteDataSubminute
-                                                        .attachments.length > 0)
-                                                      ? null
-                                                      : minuteDataSubminute.attachments.map(
-                                                          (
-                                                            filesData,
-                                                            index
-                                                          ) => {
-                                                            return (
-                                                              <Col
-                                                                lg={2}
-                                                                md={2}
-                                                                sm={12}
-                                                                className="mx-2"
-                                                              >
-                                                                <AttachmentViewer
-                                                                  id={
-                                                                    filesData.pK_FileID
-                                                                  }
-                                                                  name={
-                                                                    filesData.displayFileName
-                                                                  }
-                                                                />
-                                                              </Col>
-                                                            );
-                                                          }
+                                                      <span
+                                                        ref={textRef}
+                                                        className={
+                                                          isTruncated
+                                                            ? "m-0 text-truncate description"
+                                                            : "m-0"
+                                                        }
+                                                        dangerouslySetInnerHTML={{
+                                                          __html:
+                                                            minuteDataSubminute.description,
+                                                        }}
+                                                      ></span>
+                                                      <Row>
+                                                        {(isTruncated &&
+                                                          minuteDataSubminute
+                                                            .attachments
+                                                            .length === 0) ||
+                                                        (isTruncated &&
+                                                          minuteDataSubminute
+                                                            .attachments
+                                                            .length > 0)
+                                                          ? null
+                                                          : minuteDataSubminute.attachments.map(
+                                                              (
+                                                                filesData,
+                                                                index
+                                                              ) => {
+                                                                return (
+                                                                  <Col
+                                                                    lg={2}
+                                                                    md={2}
+                                                                    sm={12}
+                                                                    className="mx-2"
+                                                                  >
+                                                                    <AttachmentViewer
+                                                                      id={
+                                                                        filesData.pK_FileID
+                                                                      }
+                                                                      name={
+                                                                        filesData.displayFileName
+                                                                      }
+                                                                    />
+                                                                  </Col>
+                                                                );
+                                                              }
+                                                            )}
+                                                      </Row>
+                                                    </Col>
+                                                    <Col
+                                                      className="d-flex justify-content-end align-items-end gap-2"
+                                                      lg={2}
+                                                      md={2}
+                                                      sm={12}
+                                                    >
+                                                      <span
+                                                        onClick={() =>
+                                                          showHideDetails(
+                                                            minuteDataSubminute.minuteID
+                                                          )
+                                                        }
+                                                        className={
+                                                          styles["view-details"]
+                                                        }
+                                                      >
+                                                        {isTruncated
+                                                          ? t("View-details")
+                                                          : t("Hide-details")}
+                                                      </span>
+                                                      {minuteDataSubminute.attachments &&
+                                                        minuteDataSubminute
+                                                          .attachments.length >
+                                                          0 && (
+                                                          <img
+                                                            width={17}
+                                                            height={16}
+                                                            src={AttachmentIcon}
+                                                            alt=""
+                                                          />
                                                         )}
+                                                    </Col>
                                                   </Row>
-                                                </Col>
-                                                <Col
-                                                  className="d-flex justify-content-end align-items-end gap-2"
-                                                  lg={2}
-                                                  md={2}
-                                                  sm={12}
-                                                >
+                                                </div>
+                                              </>
+                                            }
+                                            className="SearchCheckbox"
+                                            name={`minute-${minuteDataSubminute.minuteID}`}
+                                            onChange={(e) =>
+                                              handleCheckboxChange(
+                                                e.target.checked,
+                                                minuteDataSubminute.minuteID,
+                                                "SubAgendaMinuteCheckbox"
+                                              )
+                                            }
+                                            checked={selectedMinuteIDs.includes(
+                                              minuteDataSubminute.minuteID
+                                            )}
+                                            classNameDiv={
+                                              styles["agendaTitleCheckbox"]
+                                            }
+                                          />
+                                        </Col>
+                                        {minuteDataSubminute.reviewersList
+                                          .length > 0 ? (
+                                          <Col lg={1} md={1} sm={12}>
+                                            <div
+                                              className={
+                                                styles["image-profile-wrapper"]
+                                              }
+                                            >
+                                              <div className="position-relative">
+                                                <img
+                                                  height={32}
+                                                  width={32}
+                                                  className={
+                                                    styles["image-style"]
+                                                  }
+                                                  src={
+                                                    profileImg
+                                                      ? `data:image/jpeg;base64,${profileImg}`
+                                                      : Avatar
+                                                  }
+                                                  // src={Avatar}
+                                                  alt=""
+                                                />
+                                                {minuteDataSubminute
+                                                  .reviewersList.length > 1 ? (
                                                   <span
-                                                    onClick={() =>
-                                                      showHideDetails(
-                                                        minuteDataSubminute.minuteID
-                                                      )
-                                                    }
                                                     className={
-                                                      styles["view-details"]
+                                                      styles["reviewer-count"]
                                                     }
                                                   >
-                                                    {isTruncated
-                                                      ? t("View-details")
-                                                      : t("Hide-details")}
+                                                    {"+" +
+                                                      minuteDataSubminute
+                                                        .reviewersList.length}
                                                   </span>
-                                                  {minuteDataSubminute.attachments &&
-                                                    minuteDataSubminute
-                                                      .attachments.length >
-                                                      0 && (
-                                                      <img
-                                                        width={17}
-                                                        height={16}
-                                                        src={AttachmentIcon}
-                                                        alt=""
-                                                      />
-                                                    )}
-                                                </Col>
-                                              </Row>
+                                                ) : null}
+                                              </div>
+                                              <img
+                                                height={32}
+                                                width={32}
+                                                className={"cursor-pointer"}
+                                                src={EditMinute}
+                                                // onClick={() => {
+                                                //   editMinuteFunction(parentMinutedata, data);
+                                                //   setIsAgendaMinute(true);
+                                                // }}
+                                                alt=""
+                                              />
                                             </div>
-                                          </>
-                                        }
-                                        className="SearchCheckbox"
-                                        name={`minute-${minuteDataSubminute.minuteID}`}
-                                        onChange={(e) =>
-                                          handleChildCheckboxChangeSubMinutes(
-                                            e.target.checked,
-                                            minuteDataSubminute.minuteID
-                                          )
-                                        }
-                                        checked={selectedMinuteIDs.includes(
-                                          minuteDataSubminute.minuteID
-                                        )}
-                                        classNameDiv={
-                                          styles["agendaTitleCheckbox"]
-                                        }
-                                      />
+                                          </Col>
+                                        ) : null}
+                                      </Row>
                                     );
                                   }
                                 )
@@ -551,10 +603,19 @@ const SelectMinutes = ({
             <Col lg={12} md={12} sm={12}>
               <Checkbox
                 label2Class={styles["agenda-title"]}
+                disabled={
+                  checkReviewersListGeneral(minuteDataGeneral) ? true : false
+                }
                 label2={t("General-minutes")}
                 className="SearchCheckbox "
                 name="IsChat"
-                onChange={(e) => handleParentCheckboxChange(e.target.checked)}
+                onChange={(e) =>
+                  handleCheckboxChange(
+                    e.target.checked,
+                    0,
+                    "GeneralTitleCheckbox"
+                  )
+                }
                 checked={minuteDataGeneral.every((item) =>
                   selectedMinuteIDs.includes(item.minuteID)
                 )}
@@ -564,11 +625,18 @@ const SelectMinutes = ({
           </Row>
           {minuteDataGeneral.map((data, index) => {
             const isTruncated = !expandedItems[data.minuteID];
+            const reviewerId = data?.reviewersList?.[0] ?? null;
+            const profileImg = findUserProfileImg(reviewerId, allReviewers);
             return (
               <Row>
-                <Col lg={12} md={12} sm={12}>
+                <Col
+                  lg={data.reviewersList.length > 0 ? 11 : 12}
+                  md={data.reviewersList.length > 0 ? 11 : 12}
+                  sm={12}
+                >
                   <Checkbox
                     label2Class={styles["minuteParentLabel"]}
+                    disabled={data.reviewersList.length > 0 ? true : false}
                     label2={
                       <>
                         <div className={styles["minuteWrapper"]}>
@@ -661,12 +729,52 @@ const SelectMinutes = ({
                     className="SearchCheckbox "
                     name={`minute-${data.minuteID}`}
                     onChange={(e) =>
-                      handleChildCheckboxChange(e.target.checked, data.minuteID)
+                      handleCheckboxChange(
+                        e.target.checked,
+                        data.minuteID,
+                        "GeneralMinuteCheckbox"
+                      )
                     }
                     checked={selectedMinuteIDs.includes(data.minuteID)}
                     classNameDiv={styles["agendaTitleCheckbox"]}
                   />
                 </Col>
+                {data.reviewersList.length > 0 ? (
+                  <Col lg={1} md={1} sm={12}>
+                    <div className={styles["image-profile-wrapper"]}>
+                      <div className="position-relative">
+                        <img
+                          height={32}
+                          width={32}
+                          className={styles["image-style"]}
+                          src={
+                            profileImg
+                              ? `data:image/jpeg;base64,${profileImg}`
+                              : Avatar
+                          }
+                          // src={Avatar}
+                          alt=""
+                        />
+                        {data.reviewersList.length > 1 ? (
+                          <span className={styles["reviewer-count"]}>
+                            {"+" + data.reviewersList.length}
+                          </span>
+                        ) : null}
+                      </div>
+                      <img
+                        height={32}
+                        width={32}
+                        className={"cursor-pointer"}
+                        src={EditMinute}
+                        // onClick={() => {
+                        //   editMinuteFunction(parentMinutedata, data);
+                        //   setIsAgendaMinute(true);
+                        // }}
+                        alt=""
+                      />
+                    </div>
+                  </Col>
+                ) : null}
               </Row>
             );
           })}
