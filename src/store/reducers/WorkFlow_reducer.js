@@ -280,7 +280,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.GETALLPENDINGAPPROVALSTATS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         getAllPendingForApprovalStats: action.response,
         ResponseMessage: action.message,
       };
@@ -302,7 +302,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         getAllPendingApprovalStatuses: action.response,
         ResponseMessage: action.message,
       };

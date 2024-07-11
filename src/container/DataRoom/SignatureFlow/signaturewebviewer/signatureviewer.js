@@ -1851,7 +1851,7 @@ const SignatureViewer = () => {
           setPdfResponceData={setPdfResponceData}
         />
       )}
-      {Loading && <Loader />}
+      {/* {Loading && <Loader />} */}
     </>
   );
 };

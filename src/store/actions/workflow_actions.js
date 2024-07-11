@@ -252,11 +252,7 @@ const saveWorkflowApi = (
             ) {
               if (value === 1) {
                 dispatch(
-                  saveWorkflow_success(
-                    response.data.responseResult,
-                    "",
-                    true
-                  )
+                  saveWorkflow_success(response.data.responseResult, "", true)
                 );
                 dispatch(
                   addUpdateFieldValueApi(
@@ -272,11 +268,7 @@ const saveWorkflowApi = (
               } else {
                 setOpenAddParticipentModal(false);
                 dispatch(
-                  saveWorkflow_success(
-                    response.data.responseResult,
-                    "",
-                    false
-                  )
+                  saveWorkflow_success(response.data.responseResult, "", false)
                 );
               }
 
@@ -315,20 +307,12 @@ const saveWorkflowApi = (
                   )
                 );
                 dispatch(
-                  saveWorkflow_success(
-                    response.data.responseResult,
-                    "",
-                    true
-                  )
+                  saveWorkflow_success(response.data.responseResult, "", true)
                 );
               } else {
                 setOpenAddParticipentModal(false);
                 dispatch(
-                  saveWorkflow_success(
-                    response.data.responseResult,
-                    "",
-                    false
-                  )
+                  saveWorkflow_success(response.data.responseResult, "", false)
                 );
               }
             } else if (
@@ -784,10 +768,7 @@ const getAnnoationSignatrueFlow = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                getAnnotationDataRoom_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getAnnotationDataRoom_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1291,11 +1272,12 @@ const getAllPendingApprovalsStats_init = () => {
     type: actions.GETALLPENDINGAPPROVALSTATS_INIT,
   };
 };
-const getAllPendingApprovalsStats_success = (response, message) => {
+const getAllPendingApprovalsStats_success = (response, message, loader) => {
   return {
     type: actions.GETALLPENDINGAPPROVALSTATS_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -1337,7 +1319,8 @@ const getAllPendingApprovalsStatsApi = (navigate, t) => {
               dispatch(
                 getAllPendingApprovalsStats_success(
                   response.data.responseResult,
-                  ""
+                  "",
+                  true
                 )
               );
             } else if (
@@ -1488,11 +1471,12 @@ const getAllPendingApprovalStatus_init = () => {
   };
 };
 
-const getAllPendingApprovalStatus_success = (response, message) => {
+const getAllPendingApprovalStatus_success = (response, message, loader) => {
   return {
     type: actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -1503,7 +1487,7 @@ const getAllPendingApprovalStatus_fail = (message) => {
   };
 };
 
-const getAllPendingApprovalStatusApi = (navigate, t, Data) => {
+const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllPendingApprovalStatus_init());
@@ -1525,7 +1509,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllPendingApprovalStatusApi(navigate, t, Data));
+          dispatch(getAllPendingApprovalStatusApi(navigate, t, Data, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1535,10 +1519,12 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data) => {
                   "WorkFlow_WorkFlowServiceManager_GetPendingApprovalStatusesForSignatureFlow_01".toLowerCase()
                 )
             ) {
+              let loaderFlag = Number(flag) === 1 ? false : true;
               dispatch(
                 getAllPendingApprovalStatus_success(
                   response.data.responseResult,
-                  ""
+                  "",
+                  loaderFlag
                 )
               );
             } else if (

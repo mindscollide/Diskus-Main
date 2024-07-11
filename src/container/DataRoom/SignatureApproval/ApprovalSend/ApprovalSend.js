@@ -91,7 +91,9 @@ const ApprovalSend = () => {
           "numberOfSignatoriesnumberOfSignatoriesnumberOfSignatories"
         );
         if (record.workFlowStatusID === 4) {
-          return <span className={styles["status_draft_signatoriesList"]}></span>;
+          return (
+            <span className={styles["status_draft_signatoriesList"]}></span>
+          );
         } else {
           return (
             <span
@@ -199,9 +201,18 @@ const ApprovalSend = () => {
         "_blank",
         "noopener noreferrer"
       );
-    } else {
+    } else if (Number(record.workFlowStatusID) === 1) {
       window.open(
         `/#/DisKus/signeddocument?documentID=${encodeURIComponent(
+          reponseData
+        )}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    } else {
+      let reponseData = JSON.stringify(record.fileID);
+      window.open(
+        `/#/DisKus/viewSignDocument?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",
@@ -367,7 +378,10 @@ const ApprovalSend = () => {
                 {t("Submit-document-for-approval")}
               </span>
               <span className={styles["emptyState_tagline"]}>
-              {t("Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission")}!
+                {t(
+                  "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission"
+                )}
+                !
                 {/* {t("Ready-to-send-a-document-for-approval? This tab awaits your next
                 submission")}! */}
               </span>
