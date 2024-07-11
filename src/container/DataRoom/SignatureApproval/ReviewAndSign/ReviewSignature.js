@@ -81,6 +81,7 @@ const ReviewSignature = () => {
       paddingTop: "5px",
       paddingRight: currentLanguage === "en" ? "10px" : "auto",
       paddingLeft: currentLanguage === "en" ? "auto" : "10px",
+      minWidth: `${indexValue  === "0" ? "100%"  : "auto" }`
     };
 
     return <span style={barStyle}>{percentageValue}</span>; // Display progress bar with percentage
