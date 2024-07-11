@@ -525,7 +525,7 @@ const ViewSignatureDocument = () => {
         />
       )}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
-      {Loading && <Loader />}
+      {/* {Loading && <Loader />} */}
     </>
   );
 };

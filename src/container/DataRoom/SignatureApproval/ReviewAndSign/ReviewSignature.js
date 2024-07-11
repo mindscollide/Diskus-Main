@@ -81,7 +81,7 @@ const ReviewSignature = () => {
       paddingTop: "5px",
       paddingRight: currentLanguage === "en" ? "10px" : "auto",
       paddingLeft: currentLanguage === "en" ? "auto" : "10px",
-      minWidth: `${indexValue  === "0" ? "100%"  : "auto" }`
+      minWidth: `${indexValue === "0" ? "100%" : "auto"}`,
     };
 
     return <span style={barStyle}>{percentageValue}</span>; // Display progress bar with percentage
@@ -89,7 +89,7 @@ const ReviewSignature = () => {
 
   const handleClickOpenSigatureDoc = (record) => {
     console.log(record, "signeddocumentsigneddocument");
-    if (Number(record.workFlowStatusID) === 1) {
+    if (record.status === "Pending Signature") {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
         `/#/DisKus/signeddocument?documentID=${encodeURIComponent(

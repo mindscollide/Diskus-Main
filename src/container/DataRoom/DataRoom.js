@@ -312,12 +312,36 @@ const DataRoom = () => {
       localStorage.removeItem("DataRoomEmail");
     };
   }, [DataRoomString]);
+  const apiCalling = async () => {
+    if (currentView === 4) {
+      let Data = {
+        UserID: Number(userID),
+        OrganizationID: Number(organizationID),
+      };
+      dispatch(getRecentDocumentsApi(navigate, t, Data));
+    } else if (currentView === 5) {
+
+      let Data = { pageNo: 1, pageSize: 10 };
+      dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      let newData = { IsCreator: true };
+      await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+      setGetAllData([]);
+      setSharedwithmebtn(true);
+      localStorage.removeItem("folderID");
+      if (searchoptions) {
+        setSearchoptions(false);
+      }
+    } else {
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
+      localStorage.removeItem("folderID");
+    }
+  };
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {
         // dispatch(allAssignessList(navigate, t));
       }
-      window.addEventListener("click", function (e) {
+      window.addEventListener("click", async function (e) {
         let clsname = e.target.className;
         if (typeof clsname === "string") {
           let arr = clsname && clsname.split("_");
@@ -339,25 +363,28 @@ const DataRoom = () => {
       });
     } catch {}
     if (currentView !== null) {
-      if (currentView === 4) {
-        let Data = {
-          UserID: Number(userID),
-          OrganizationID: Number(organizationID),
-        };
-        dispatch(getRecentDocumentsApi(navigate, t, Data));
-      } else if (currentView === 5) {
-        let Data = { pageNo: 1, pageSize: 10 };
-        dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
-        setGetAllData([]);
-        setSharedwithmebtn(true);
-        localStorage.removeItem("folderID");
-        if (searchoptions) {
-          setSearchoptions(false);
-        }
-      } else {
-        dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
-        localStorage.removeItem("folderID");
-      }
+      apiCalling();
+      // if (currentView === 4) {
+      //   let Data = {
+      //     UserID: Number(userID),
+      //     OrganizationID: Number(organizationID),
+      //   };
+      //   dispatch(getRecentDocumentsApi(navigate, t, Data));
+      // } else if (currentView === 5) {
+      //   let newData = { IsCreator: true };
+      //   dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
+      //   let Data = { pageNo: 1, pageSize: 10 };
+      //   dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      //   setGetAllData([]);
+      //   setSharedwithmebtn(true);
+      //   localStorage.removeItem("folderID");
+      //   if (searchoptions) {
+      //     setSearchoptions(false);
+      //   }
+      // } else {
+      //   dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
+      //   localStorage.removeItem("folderID");
+      // }
     } else {
       localStorage.setItem("setTableView", 3);
       dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
@@ -556,10 +583,11 @@ const DataRoom = () => {
 
     localStorage.setItem("setTableView", 5);
     // getAllPendingApprovalStatusApi
-    let newData = { IsCreator: true };
-    dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
+
     let Data = { sRow: 0, Length: 10 };
     await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    let newData = { IsCreator: true };
+    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
     //  localStorage.set
     setGetAllData([]);
     setSharedwithmebtn(true);
