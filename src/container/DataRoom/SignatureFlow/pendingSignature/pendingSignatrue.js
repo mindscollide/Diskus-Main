@@ -449,6 +449,7 @@ const SignatureViewer = () => {
         // Disable header tools and elements
         instance.UI.disableTools([Tools.disableTextSelection]);
         instance.UI.disableElements([
+          "colorPalette",
           "underlineToolGroupButton",
           "textSelectButton",
           "textSelectButtonGroup",
@@ -547,6 +548,7 @@ const SignatureViewer = () => {
               newProcessXmlForReadOnly,
               removeXmlAfterHideDAtaRef.current
             );
+            
             const afterAddReadOnlyFreetextElements =
               await revertReadOnlyFreetextElements(
                 revertedHideFieldsXml,

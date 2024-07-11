@@ -106,6 +106,9 @@ export const processXmlToHideFields = (xmlString, nameValues) => {
   // Helper function to remove matched items from an array and add to removedItems
   function removeMatchedItems(array, attrName, location) {
     const removed = [];
+    if (!Array.isArray(array)) {
+      array = [array];
+    }
     const filteredArray = array.filter((item, index) => {
       const match = nameValues.includes(item._attributes[attrName]);
       if (match) {
@@ -163,6 +166,9 @@ export const revertProcessXmlToHideFields = (xml, removedItems) => {
   let convertXmlToJson = xmlToJson(xml);
   // Helper function to reinsert removed items back to their original positions
   function reinsertRemovedItems(array, removedArray) {
+    if (!Array.isArray(array)) {
+      array = [array];
+    }
     removedArray.forEach(({ index, item }) => {
       array.splice(index, 0, item);
     });
@@ -184,7 +190,7 @@ export const revertProcessXmlToHideFields = (xml, removedItems) => {
   ) {
     convertXmlToJson.xfdf["pdf-info"].ffield = reinsertRemovedItems(
       convertXmlToJson.xfdf["pdf-info"].ffield,
-      removedItems.ffields
+      removedItems.ffields || []
     );
   }
 
@@ -195,7 +201,7 @@ export const revertProcessXmlToHideFields = (xml, removedItems) => {
   ) {
     convertXmlToJson.xfdf["pdf-info"].widget = reinsertRemovedItems(
       convertXmlToJson.xfdf["pdf-info"].widget,
-      removedItems.widgets
+      removedItems.widgets || []
     );
   }
   let newConvertXmlToJson = jsonToXml(convertXmlToJson);
@@ -263,7 +269,6 @@ export const hideFreetextElements = (xmlString, userDataRead) => {
     // Convert the XML string to JSON
     let convertXmlToJson = xmlToJson(xmlString);
     const removedHideFreetextElements = [];
-
     // Helper function to remove matched items from an array and add to removedItems
     function removeMatchedItems(array, attrName) {
       const removed = [];
@@ -286,7 +291,16 @@ export const hideFreetextElements = (xmlString, userDataRead) => {
     }
 
     // Process xfdf.annots.freetext
-    if (convertXmlToJson.xfdf.annots && convertXmlToJson.xfdf.annots.freetext) {
+    if (
+      convertXmlToJson.xfdf &&
+      convertXmlToJson.xfdf.annots &&
+      convertXmlToJson.xfdf.annots.freetext
+    ) {
+      const freetext = convertXmlToJson.xfdf.annots.freetext;
+      if (!Array.isArray(freetext)) {
+        // If freetext is not an array, convert it to an array
+        convertXmlToJson.xfdf.annots.freetext = [freetext];
+      }
       convertXmlToJson.xfdf.annots.freetext = removeMatchedItems(
         convertXmlToJson.xfdf.annots.freetext,
         "subject"
@@ -305,7 +319,7 @@ export const hideFreetextElements = (xmlString, userDataRead) => {
     console.error("Error in hideFreetextElements:", error);
     // Ensure to return a consistent structure even in case of error
     return {
-      hideFreetextXmlString: "", // or null, depending on how you handle errors
+      hideFreetextXmlString: xmlString, // or null, depending on how you handle errors
       removedHideFreetextElements: [],
     };
   }
@@ -328,7 +342,13 @@ export const revertHideFreetextElements = (
     }
 
     // Restore removed items to xfdf.annots.freetext
+    // Ensure xfdf.annots.freetext is an array
     if (convertXmlToJson.xfdf.annots && convertXmlToJson.xfdf.annots.freetext) {
+      if (!Array.isArray(convertXmlToJson.xfdf.annots.freetext)) {
+        convertXmlToJson.xfdf.annots.freetext = [
+          convertXmlToJson.xfdf.annots.freetext,
+        ];
+      }
       convertXmlToJson.xfdf.annots.freetext = restoreRemovedItems(
         convertXmlToJson.xfdf.annots.freetext,
         removedItemsToRestore
