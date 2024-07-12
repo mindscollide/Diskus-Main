@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./SelectReviewers.module.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import {
   AttachmentViewer,
   Checkbox,
@@ -10,34 +10,21 @@ import {
 import AttachmentIcon from "./../../../../../../../assets/images/AttachmentIcon.png";
 import TickIcon from "./../../../../../../../assets/images/Tick-Icon.png";
 import { useTranslation } from "react-i18next";
-import { GetAllOrganizationUsersForReview } from "../../../../../../../store/actions/Minutes_action";
 import {
   filterDataByIDs,
   filterMinutes,
   hasMinuteData,
-  updateUsers,
 } from "../functionsAddReviewers";
 
 const SelectReviewers = ({
-  setMinuteDataAgenda,
   minuteDataAgenda,
-  setMinuteDataGeneral,
   minuteDataGeneral,
   selectedMinuteIDs,
-  setSelectedMinuteIDs,
   selectReviewersArray,
   setSelectReviewersArray,
   allReviewers,
-  setAllReviewers,
-  moreMinutes,
-  newSelectedMinutes,
-  setNewSelectedMinutes,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const { MinutesReducer } = useSelector((state) => state);
 
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
@@ -60,14 +47,16 @@ const SelectReviewers = ({
     checkIfTruncated();
     window.addEventListener("resize", checkIfTruncated);
 
-    dispatch(GetAllOrganizationUsersForReview(navigate, t));
+    let dummyMinuteDataAgenda = [...minuteDataAgenda];
     const filteredDataAgenda = filterMinutes(
-      minuteDataAgenda,
+      dummyMinuteDataAgenda,
       selectedMinuteIDs
     );
 
+    let dummyMinuteDataGeneral = [...minuteDataGeneral];
+
     const filteredDataGeneral = filterDataByIDs(
-      minuteDataGeneral,
+      dummyMinuteDataGeneral,
       selectedMinuteIDs
     );
 
@@ -80,7 +69,6 @@ const SelectReviewers = ({
       setCurrentReviewers([]);
       setSelectReviewersArray([]);
       // setSelectedMinuteIDs([]);
-      console.log("minuteDataAgenda");
     };
   }, []);
 
@@ -115,9 +103,6 @@ const SelectReviewers = ({
     });
   };
 
-  console.log("Current ReviewersCurrent currentReviewers", currentReviewers);
-  console.log("minuteDataAgenda selectedMinuteIDs", selectedMinuteIDs);
-
   const showHideDetails = (id) => {
     setExpandedItems((prev) => ({
       ...prev,
@@ -125,19 +110,9 @@ const SelectReviewers = ({
     }));
   };
 
-  useEffect(() => {
-    if (
-      MinutesReducer.GetAllOrganizationUsersForReviewData !== null &&
-      MinutesReducer.GetAllOrganizationUsersForReviewData !== undefined &&
-      MinutesReducer.GetAllOrganizationUsersForReviewData.length !== 0 &&
-      Object.keys(MinutesReducer.GetAllOrganizationUsersForReviewData)
-        .length !== 0
-    ) {
-      setAllReviewers(
-        MinutesReducer.GetAllOrganizationUsersForReviewData.organizationUsers
-      );
-    }
-  }, [MinutesReducer.GetAllOrganizationUsersForReviewData]);
+  console.log("Data of Minutes General", reviewersGeneral);
+
+  console.log("ReviewersReviewers", selectReviewersArray, currentReviewers);
 
   return (
     <>
@@ -414,103 +389,114 @@ const SelectReviewers = ({
                 );
               })}
             </>
-            {/* // )} */}
 
-            {/* {minuteDataGeneral !== null ? (
-              <> */}
             {reviewersGeneral.length > 0 && (
-              <Row>
-                <Col lg={12} md={12} sm={12} className="position-relative">
-                  <div className={styles["agendaTitleCheckbox"]}>
-                    <img
-                      className={styles["titleTick"]}
-                      src={TickIcon}
-                      alt=""
-                    />
-                    <p className={styles["agenda-title"]}>
-                      {t("General-Minutes")}
-                    </p>
-                  </div>
-                </Col>
-              </Row>
-            )}
-            {reviewersGeneral.map((data, index) => {
-              const isTruncated = !expandedItems[data.minuteID];
-              return (
-                <div className={styles["agendaTitleCheckbox"]}>
-                  <Row key={data.id}>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className="position-relative">
+                    <div className={styles["agendaTitleCheckbox"]}>
                       <img
-                        className={styles["minuteTick"]}
+                        className={styles["titleTick"]}
                         src={TickIcon}
                         alt=""
                       />
-                      <div className={styles["minuteWrapper"]}>
-                        <Row>
-                          <Col className="pr-0" lg={10} md={10} sm={12}>
-                            <span
-                              ref={textRef}
-                              className={
-                                isTruncated
-                                  ? "m-0 text-truncate description"
-                                  : "m-0"
-                              }
-                              dangerouslySetInnerHTML={{
-                                __html: data.description,
-                              }}
-                            ></span>
+                      <p className={styles["agenda-title"]}>
+                        {t("General-Minutes")}
+                      </p>
+                    </div>
+                  </Col>
+                </Row>
+                {reviewersGeneral.map((data, index) => {
+                  console.log(
+                    "reviewersGeneralreviewersGeneral",
+                    reviewersGeneral
+                  );
+                  const isTruncated = !expandedItems[data.minuteID];
+                  return (
+                    <div className={styles["agendaTitleCheckbox"]}>
+                      <Row key={data.id}>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="position-relative"
+                        >
+                          <img
+                            className={styles["minuteTick"]}
+                            src={TickIcon}
+                            alt=""
+                          />
+                          <div className={styles["minuteWrapper"]}>
                             <Row>
-                              {(isTruncated && data.attachments.length === 0) ||
-                              (isTruncated && data.attachments.length > 0)
-                                ? null
-                                : data.attachments.map((filesData, index) => {
-                                    return (
-                                      <Col
-                                        lg={3}
-                                        md={3}
-                                        sm={12}
-                                        className="mx-2"
-                                      >
-                                        <AttachmentViewer
-                                          id={filesData.pK_FileID}
-                                          name={filesData.displayFileName}
-                                        />
-                                      </Col>
-                                    );
-                                  })}
+                              <Col className="pr-0" lg={10} md={10} sm={12}>
+                                <span
+                                  ref={textRef}
+                                  className={
+                                    isTruncated
+                                      ? "m-0 text-truncate description"
+                                      : "m-0"
+                                  }
+                                  dangerouslySetInnerHTML={{
+                                    __html: data.description,
+                                  }}
+                                ></span>
+                                <Row>
+                                  {(isTruncated &&
+                                    data.attachments.length === 0) ||
+                                  (isTruncated && data.attachments.length > 0)
+                                    ? null
+                                    : data.attachments.map(
+                                        (filesData, index) => {
+                                          return (
+                                            <Col
+                                              lg={3}
+                                              md={3}
+                                              sm={12}
+                                              className="mx-2"
+                                            >
+                                              <AttachmentViewer
+                                                id={filesData.pK_FileID}
+                                                name={filesData.displayFileName}
+                                              />
+                                            </Col>
+                                          );
+                                        }
+                                      )}
+                                </Row>
+                              </Col>
+                              <Col
+                                className="d-flex justify-content-end align-items-end gap-2"
+                                lg={2}
+                                md={2}
+                                sm={12}
+                              >
+                                <span
+                                  onClick={() => showHideDetails(data.minuteID)}
+                                  className={styles["view-details"]}
+                                >
+                                  {isTruncated
+                                    ? t("View-details")
+                                    : t("Hide-details")}
+                                </span>
+                                {data.attachments &&
+                                  data.attachments.length > 0 && (
+                                    <img
+                                      width={17}
+                                      height={16}
+                                      src={AttachmentIcon}
+                                      alt=""
+                                    />
+                                  )}
+                              </Col>
                             </Row>
-                          </Col>
-                          <Col
-                            className="d-flex justify-content-end align-items-end gap-2"
-                            lg={2}
-                            md={2}
-                            sm={12}
-                          >
-                            <span
-                              onClick={() => showHideDetails(data.minuteID)}
-                              className={styles["view-details"]}
-                            >
-                              {isTruncated
-                                ? t("View-details")
-                                : t("Hide-details")}
-                            </span>
-                            {data.attachments &&
-                              data.attachments.length > 0 && (
-                                <img
-                                  width={17}
-                                  height={16}
-                                  src={AttachmentIcon}
-                                  alt=""
-                                />
-                              )}
-                          </Col>
-                        </Row>
-                      </div>
-                    </Col>
-                  </Row>
-                </div>
-              );
-            })}
+                          </div>
+                        </Col>
+                      </Row>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
         </Col>
         <Col lg={3} md={3} sm={12} className={`${styles["leftBorder"]} mt-16n`}>

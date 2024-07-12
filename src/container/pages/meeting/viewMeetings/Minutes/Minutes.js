@@ -16,17 +16,11 @@ import { Upload } from "antd";
 import featherupload from "../../../../../assets/images/featherupload.svg";
 import DropdownPurple from "./Images/Dropdown-Purple.png";
 import MenuIcon from "./Images/MenuIcon.png";
-import Leftploygon from "../../../../../assets/images/Polygon 3.svg";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
-import file_image from "../../../../../assets/images/file_image.svg";
-import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
-import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
-import Rightploygon from "../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import {
   ADDGeneralMinutesApiFunc,
   CleareMessegeNewMeeting,
-  DeleteGeneralMinuteDocumentsApiFunc,
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
@@ -38,12 +32,10 @@ import {
   InviteToCollaborateMinutesApiFunc,
   saveFilesMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
-import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
 import AddReviewers from "./AddReviewersModal/AddReviewers";
 import AttachmentIcon from "./Images/Attachment-Icon.png";
 import ArrowDown from "./Images/Arrow-Down.png";
-import DefaultAvatar from "./Images/avatar.png";
 import EditIcon from "./Images/Edit-Icon.png";
 import {
   convertToGMTMinuteTime,
@@ -58,8 +50,8 @@ import {
   deleteCommentModalGeneral,
   GetMinuteReviewStatsForOrganizerByMeetingId,
   CleareMessegeMinutes,
-  MeetingPublishedMinutesApi,
   GetPublishedMeetingMinutesApi,
+  GetAllOrganizationUsersForReview,
 } from "../../../../../store/actions/Minutes_action";
 
 const Minutes = ({
@@ -74,7 +66,6 @@ const Minutes = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const Delta = Quill.import("delta");
   let userID = localStorage.getItem("userID");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -83,6 +74,8 @@ const Minutes = ({
 
   const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
 
+  //All REviewers List
+  const [allReviewers, setAllReviewers] = useState([]);
   const generalMinutes = useSelector(
     (state) => state.NewMeetingreducer.generalMinutes
   );
@@ -105,6 +98,8 @@ const Minutes = ({
   const ResponseMessageMinute = useSelector(
     (state) => state.MinutesReducer.ResponseMessage
   );
+  // Initialize previousFileList to an empty array
+  let previousFileList = [];
   const [fileSize, setFileSize] = useState(0);
   const [useCase, setUseCase] = useState(null);
 
@@ -149,14 +144,10 @@ const Minutes = ({
     localStorage.getItem("isMinutePublished") !== null
       ? localStorage.getItem("isMinutePublished")
       : false;
-  console.log(
-    isMinutePublished,
-    "isMinutePublishedisMinutePublishedisMinutePublished"
-  );
+
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
-  console.log("fileSizefileSize", fileSize);
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -193,16 +184,8 @@ const Minutes = ({
     };
 
     if (Boolean(isMinutePublished) === false) {
-      console.log(
-        isMinutePublished,
-        "isMinutePublishedisMinutePublishedisMinutePublished"
-      );
       dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
     } else {
-      console.log(
-        isMinutePublished,
-        "isMinutePublishedisMinutePublishedisMinutePublished"
-      );
       dispatch(
         GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
       );
@@ -226,12 +209,6 @@ const Minutes = ({
         (Object.keys(generalminutesDocumentForMeeting).length > 0 ||
           generalminutesDocumentForMeeting.length > 0)
       ) {
-        console.log(
-          generalMinutes.organizerID,
-          "generalMinutesgeneralMinutesgeneralMinutes"
-        );
-
-        console.log("generalMinutesgeneralMinutes", generalMinutes);
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
         setOrganizerID(generalMinutes.organizerID);
@@ -362,16 +339,13 @@ const Minutes = ({
     onDrop(e) {},
     customRequest() {},
   };
-  // Initialize previousFileList to an empty array
-  let previousFileList = [];
+
+  console.log("minuteDataAgenda");
 
   //Edit Button Function
   const handleEditFunc = async (data) => {
     setupdateData(data);
-    console.log(data, "handleEditFunccalled");
-    console.log(data, "dataminutesDetails");
     if (data.description !== "") {
-      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
           value: data.description,
@@ -763,10 +737,13 @@ const Minutes = ({
 
   const closeMenuMinute = useRef(null);
 
-  const addReviewersModal = () => {
+  const addReviewersModal = async () => {
     let newData = {
       MeetingID: Number(advanceMeetingModalID),
     };
+    await dispatch(
+      GetAllOrganizationUsersForReview(navigate, t, setAllReviewers)
+    );
 
     dispatch(
       GetAllAgendaWiseMinutesApiFunc(
@@ -779,15 +756,6 @@ const Minutes = ({
         true
       )
     );
-
-    dispatch(
-      GetAllGeneralMinutesApiFunc(
-        navigate,
-        t,
-        newData,
-        Number(advanceMeetingModalID)
-      )
-    );
   };
 
   const accordianClick = (data, id, index) => {
@@ -796,7 +764,6 @@ const Minutes = ({
         ? prevIndices.filter((i) => i !== index)
         : [...prevIndices, index]
     );
-    console.log("openIndices", openIndices);
   };
 
   const openCloseReviewerDetail = (index) => {
@@ -868,24 +835,12 @@ const Minutes = ({
 
   useEffect(() => {
     try {
-      console.log(
-        "NewMeetingreducer.generalMinutes:",
-        NewMeetingreducer.generalMinutes
-      );
-      console.log(
-        "MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData:",
-        MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
-      );
-
       const generalMinutes = NewMeetingreducer.generalMinutes;
 
       if (generalMinutes && Object.keys(generalMinutes).length > 0) {
         const minutesData = generalMinutes.meetingMinutes;
         // Ensure generalMinutesDocumentForMeeting is defined
         const documentsData = generalminutesDocumentForMeeting.data;
-        console.log("minutesData:", minutesData);
-        console.log("documentsData:", documentsData);
-
         const combinedData = transformData(minutesData, documentsData);
 
         if (
@@ -907,14 +862,11 @@ const Minutes = ({
               ? { ...combinData, MinuteStats: matchedStats }
               : combinData;
           });
-          console.log("combinedData updatedCombinedData:", updatedCombinedData);
 
           setMinutesData(updatedCombinedData);
         } else {
           setMinutesData(combinedData);
         }
-
-        console.log("combinedData:", combinedData);
       } else {
         setMinutesData([]);
       }
@@ -930,15 +882,6 @@ const Minutes = ({
     NewMeetingreducer.generalMinutes,
     MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData,
   ]);
-
-  useEffect(() => {
-    console.log();
-  }, [
-    NewMeetingreducer.generalMinutes,
-    NewMeetingreducer.GetMinuteReviewStatsForOrganizerByMeetingIdData,
-  ]);
-
-  console.log("minutesDataminutesDataminutesData", minutesData);
 
   // useEffect(() => {
   //   if (
@@ -956,8 +899,6 @@ const Minutes = ({
   //     setMinutesData([]);
   //   };
   // }, [NewMeetingreducer.generalMinutes]);
-
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   useEffect(() => {
     if (
@@ -1011,7 +952,6 @@ const Minutes = ({
     <>
       {minutesData.map((data, index) => {
         const isOpen = openIndices.includes(index);
-        console.log(isOpen, "isOpenisOpenisOpenisOpen");
         // return (
         //   <Row className="mt-2">
         //     <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
@@ -1439,10 +1379,6 @@ const Minutes = ({
                           <Row>
                             {fileAttachments.length > 0
                               ? fileAttachments.map((data, index) => {
-                                  console.log(
-                                    fileAttachments,
-                                    "fileAttachmentsfileAttachments"
-                                  );
                                   return (
                                     <>
                                       <Col lg={4} md={4} sm={4}>
@@ -1505,7 +1441,6 @@ const Minutes = ({
             ) : null}
             {/* Mapping of The Create Minutes */}
             {minutesData.map((data, index) => {
-              console.log(data, "datadatadataminutesData");
               const isOpen = openIndices.includes(index);
               const isOpenReviewer = openReviewerDetail.includes(index);
               return (
@@ -2176,36 +2111,37 @@ const Minutes = ({
           />
         )}
 
-        {addReviewers ? (
+        {addReviewers && (
           <AddReviewers
             addReviewers={addReviewers}
+            allReviewers={allReviewers}
             setAddReviewers={setAddReviewers}
             advanceMeetingModalID={advanceMeetingModalID}
           />
-        ) : null}
+        )}
 
-        {showVersionHistory ? (
+        {showVersionHistory && (
           <VersionHistory
             showVersionHistory={showVersionHistory}
             setShowVersionHistory={setShowVersionHistory}
           />
-        ) : null}
+        )}
 
-        {showRevisionHistory ? (
+        {showRevisionHistory && (
           <RevisionHistory
             showRevisionHistory={showRevisionHistory}
             setShowRevisionHistory={setShowRevisionHistory}
           />
-        ) : null}
+        )}
 
-        {MinutesReducer.deleteMinuteGeneral ? (
+        {MinutesReducer.deleteMinuteGeneral && (
           <DeleteCommentGeneral
             advanceMeetingModalID={advanceMeetingModalID}
             setAddNoteFields={setAddNoteFields}
             addNoteFields={addNoteFields}
             setFileAttachments={setFileAttachments}
           />
-        ) : null}
+        )}
 
         <Notification
           setOpen={setOpen}

@@ -16,6 +16,7 @@ import {
   handleCheck,
   checkReviewersListAgenda,
   checkReviewersListGeneral,
+  updateMinutesData,
 } from "../functionsAddReviewers";
 import Avatar from "./../../../../../../../assets/images/avatar.png";
 import EditMinute from "./../../Images/Edit-Minute.png";
@@ -26,6 +27,13 @@ const SelectMinutes = ({
   selectedMinuteIDs,
   setSelectedMinuteIDs,
   allReviewers,
+  setMinuteDataAgenda,
+  setMinuteDataGeneral,
+  setSelectReviewersArray,
+  setSelectMinutes,
+  setSendReviewers,
+  setEditReviewer,
+  setSelectReviewers,
 }) => {
   const { t } = useTranslation();
 
@@ -47,7 +55,6 @@ const SelectMinutes = ({
 
     return () => {
       window.removeEventListener("resize", checkIfTruncated);
-      setSelectedMinuteIDs([]);
     };
   }, []);
 
@@ -103,6 +110,16 @@ const SelectMinutes = ({
       setSelectedMinuteIDs
     );
   };
+
+  const editSingleMinute = (data) => {
+    setSelectMinutes(false);
+    setSendReviewers(false);
+    setEditReviewer(false);
+    setSelectReviewers(true);
+    setSelectedMinuteIDs([data.minuteID]);
+  };
+
+  console.log("Data After Update: ", minuteDataAgenda, minuteDataGeneral);
 
   return (
     <>
@@ -327,10 +344,9 @@ const SelectMinutes = ({
                                   width={32}
                                   className={"cursor-pointer"}
                                   src={EditMinute}
-                                  // onClick={() => {
-                                  //   editMinuteFunction(parentMinutedata, data);
-                                  //   setIsAgendaMinute(true);
-                                  // }}
+                                  onClick={() => {
+                                    editSingleMinute(parentMinutedata);
+                                  }}
                                   alt=""
                                 />
                               </div>
@@ -578,10 +594,11 @@ const SelectMinutes = ({
                                                 width={32}
                                                 className={"cursor-pointer"}
                                                 src={EditMinute}
-                                                // onClick={() => {
-                                                //   editMinuteFunction(parentMinutedata, data);
-                                                //   setIsAgendaMinute(true);
-                                                // }}
+                                                onClick={() => {
+                                                  editSingleMinute(
+                                                    minuteDataSubminute
+                                                  );
+                                                }}
                                                 alt=""
                                               />
                                             </div>
@@ -746,7 +763,11 @@ const SelectMinutes = ({
                         "GeneralMinuteCheckbox"
                       )
                     }
-                    checked={data.reviewersList.length > 0 ? true : selectedMinuteIDs.includes(data.minuteID)}
+                    checked={
+                      data.reviewersList.length > 0
+                        ? true
+                        : selectedMinuteIDs.includes(data.minuteID)
+                    }
                     classNameDiv={styles["agendaTitleCheckbox"]}
                   />
                 </Col>
@@ -777,10 +798,9 @@ const SelectMinutes = ({
                         width={32}
                         className={"cursor-pointer"}
                         src={EditMinute}
-                        // onClick={() => {
-                        //   editMinuteFunction(parentMinutedata, data);
-                        //   setIsAgendaMinute(true);
-                        // }}
+                        onClick={() => {
+                          editSingleMinute(data);
+                        }}
                         alt=""
                       />
                     </div>

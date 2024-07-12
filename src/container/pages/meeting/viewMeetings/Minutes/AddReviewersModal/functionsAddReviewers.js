@@ -216,3 +216,82 @@ export function updateUsers(agenda, users) {
 export const matchDataByMinuteID = (item, stateMinuteIDs) => {
   return stateMinuteIDs.includes(item.minuteID);
 };
+
+export const updateMinutesData = (
+  minuteDataAgenda,
+  minuteDataGeneral,
+  reviewersList,
+  selectedMinuteIDs,
+  setMinuteDataAgenda,
+  setMinuteDataGeneral,
+  setSelectedMinuteIDs,
+  setSelectReviewersArray
+) => {
+  try {
+    // Helper function to update minuteData with reviewersList based on isChecked value
+    const updateMinuteData = (minuteData) => {
+      return minuteData.map((minute) => {
+        console.log("minuteDataAgenda", minute);
+        console.log("minuteDataAgenda", selectedMinuteIDs);
+        console.log(
+          "minuteDataAgenda",
+          matchDataByMinuteID(minute, selectedMinuteIDs)
+        );
+        if (matchDataByMinuteID(minute, selectedMinuteIDs)) {
+          return {
+            ...minute,
+            reviewersList: reviewersList,
+          };
+        } else {
+          return {
+            ...minute,
+          };
+        }
+      });
+    };
+    // Process the first state
+    const updatedState1 = minuteDataAgenda.map((agenda) => {
+      console.log("minuteDataAgenda", agenda);
+      console.log("minuteDataAgenda", agenda.minuteData);
+      // Update minuteData at the top level
+      let updatedAgenda = {
+        ...agenda,
+        minuteData: updateMinuteData(agenda.minuteData),
+      };
+
+      // Update subMinutes if they exist
+      if (agenda.subMinutes) {
+        updatedAgenda.subMinutes = agenda.subMinutes.map((subAgenda) => ({
+          ...subAgenda,
+          minuteData: updateMinuteData(subAgenda.minuteData),
+        }));
+      }
+
+      return updatedAgenda;
+    });
+
+    // Process the second state
+    let filteredGeneralData = filterDataByIDs(
+      minuteDataGeneral,
+      selectedMinuteIDs
+    );
+    const updatedState2 = minuteDataGeneral.map((minute) => {
+      if (filteredGeneralData.includes(minute)) {
+        // Update reviewersList for filtered objects
+        return {
+          ...minute,
+          reviewersList: reviewersList,
+        };
+      }
+      // Return unchanged objects for non-filtered items
+      return minute;
+    });
+
+    setMinuteDataAgenda(updatedState1);
+    setMinuteDataGeneral(updatedState2);
+    setSelectedMinuteIDs([]);
+    setSelectReviewersArray([]);
+  } catch (error) {
+    console.error("Error updating minutes data:", error);
+  }
+};

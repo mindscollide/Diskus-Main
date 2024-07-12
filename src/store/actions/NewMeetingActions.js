@@ -3627,11 +3627,12 @@ const showAllGeneralMinutesInit = () => {
   };
 };
 
-const showAllGeneralMinutesSuccess = (response, message) => {
+const showAllGeneralMinutesSuccess = (response, message, flag) => {
   return {
     type: actions.GET_GENERAL_MINTES_SUCCESS,
     response: response,
     message: message,
+    flag: flag,
   };
 };
 
@@ -3643,7 +3644,13 @@ const showAllGeneralMinutesFailed = (message) => {
 };
 
 // Api Function For General Minutes
-const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
+const GetAllGeneralMinutesApiFunc = (
+  navigate,
+  t,
+  Data,
+  currentMeeting,
+  flag
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
@@ -3663,7 +3670,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
-          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
+          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting,flag)
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -3680,9 +3687,23 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
             );
 
             // After DocumentsOfMeetingGenralMinutesApiFunc is done, call showAllGeneralMinutesSuccess
-            dispatch(
-              showAllGeneralMinutesSuccess(response.data.responseResult, "")
-            );
+            if (flag) {
+              dispatch(
+                showAllGeneralMinutesSuccess(
+                  response.data.responseResult,
+                  "",
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                showAllGeneralMinutesSuccess(
+                  response.data.responseResult,
+                  "",
+                  false
+                )
+              );
+            }
           } else if (
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
@@ -4305,6 +4326,15 @@ const GetAllAgendaWiseMinutesApiFunc = (
                 "Meeting_MeetingServiceManager_GetAllMeetingAgendaWiseMinutes_01".toLowerCase()
               )
           ) {
+            await dispatch(
+              GetAllGeneralMinutesApiFunc(
+                navigate,
+                t,
+                Data,
+                Number(currentMeeting),
+                true
+              )
+            );
             let allAgendaWiseDocs = {
               MDID: Number(currentMeeting),
             };
