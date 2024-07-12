@@ -123,18 +123,10 @@ const AddReviewers = ({
         setMinuteDataAgenda,
         setMinuteDataGeneral,
         setSelectedMinuteIDs,
-        setSelectReviewersArray
+        setSelectReviewersArray,
       );
       setSelectReviewers(false);
       setSelectMinutes(true);
-    } else if (data === "sendReviewers") {
-      setSelectMinutes(false);
-      setSelectReviewers(false);
-      dispatch(UpdateMinuteFlag(false));
-    } else if (data === "editReviewer") {
-      setSelectMinutes(false);
-      setSelectReviewers(false);
-      dispatch(UpdateMinuteFlag(true));
     }
   };
 

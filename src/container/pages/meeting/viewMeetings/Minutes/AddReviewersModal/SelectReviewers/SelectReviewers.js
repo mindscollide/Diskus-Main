@@ -23,6 +23,7 @@ const SelectReviewers = ({
   selectReviewersArray,
   setSelectReviewersArray,
   allReviewers,
+  
 }) => {
   const { t } = useTranslation();
 
@@ -109,10 +110,6 @@ const SelectReviewers = ({
       [id]: !prev[id],
     }));
   };
-
-  console.log("Data of Minutes General", reviewersGeneral);
-
-  console.log("ReviewersReviewers", selectReviewersArray, currentReviewers);
 
   return (
     <>
