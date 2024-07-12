@@ -154,9 +154,13 @@ const SelectMinutes = ({
                           "ParentCheckboxAgenda"
                         )
                       }
-                      checked={data.minuteData.every((item) =>
-                        selectedMinuteIDs.includes(item.minuteID)
-                      )}
+                      checked={
+                        checkReviewersListAgenda(minuteDataAgenda)
+                          ? true
+                          : data.minuteData.every((item) =>
+                              selectedMinuteIDs.includes(item.minuteID)
+                            )
+                      }
                     />
                   </Col>
                 </Row>
@@ -286,9 +290,13 @@ const SelectMinutes = ({
                                   "ParentMinuteCheckbox"
                                 )
                               }
-                              checked={selectedMinuteIDs.includes(
-                                parentMinutedata.minuteID
-                              )}
+                              checked={
+                                parentMinutedata.reviewersList.length > 0
+                                  ? true
+                                  : selectedMinuteIDs.includes(
+                                      parentMinutedata.minuteID
+                                    )
+                              }
                               classNameDiv={styles["agendaTitleCheckbox"]}
                             />
                           </Col>
@@ -354,10 +362,16 @@ const SelectMinutes = ({
                                     "SubAgendaTitleCheckbox"
                                   )
                                 }
-                                checked={subagendaMinuteData.minuteData.every(
-                                  (item) =>
-                                    selectedMinuteIDs.includes(item.minuteID)
-                                )}
+                                checked={
+                                  checkReviewersListAgenda(subagendaMinuteData)
+                                    ? true
+                                    : subagendaMinuteData.minuteData.every(
+                                        (item) =>
+                                          selectedMinuteIDs.includes(
+                                            item.minuteID
+                                          )
+                                      )
+                                }
                                 classNameDiv={styles["agendaTitleCheckbox"]}
                               />
                             ) : null}
@@ -417,18 +431,6 @@ const SelectMinutes = ({
                                                       md={10}
                                                       sm={12}
                                                     >
-                                                      {/* <p
-                                                  ref={textRef}
-                                                  className={
-                                                    isTruncated
-                                                      ? "m-0 text-truncate"
-                                                      : "m-0"
-                                                  }
-                                                >
-                                                  {
-                                                    minuteDataSubminute.description
-                                                  }
-                                                </p> */}
                                                       <span
                                                         ref={textRef}
                                                         className={
@@ -522,9 +524,14 @@ const SelectMinutes = ({
                                                 "SubAgendaMinuteCheckbox"
                                               )
                                             }
-                                            checked={selectedMinuteIDs.includes(
-                                              minuteDataSubminute.minuteID
-                                            )}
+                                            checked={
+                                              minuteDataSubminute.reviewersList
+                                                .length > 0
+                                                ? true
+                                                : selectedMinuteIDs.includes(
+                                                    minuteDataSubminute.minuteID
+                                                  )
+                                            }
                                             classNameDiv={
                                               styles["agendaTitleCheckbox"]
                                             }
@@ -616,9 +623,13 @@ const SelectMinutes = ({
                     "GeneralTitleCheckbox"
                   )
                 }
-                checked={minuteDataGeneral.every((item) =>
-                  selectedMinuteIDs.includes(item.minuteID)
-                )}
+                checked={
+                  checkReviewersListGeneral(minuteDataGeneral)
+                    ? true
+                    : minuteDataGeneral.every((item) =>
+                        selectedMinuteIDs.includes(item.minuteID)
+                      )
+                }
                 classNameDiv={styles["agendaTitleCheckbox"]}
               />
             </Col>
@@ -735,7 +746,7 @@ const SelectMinutes = ({
                         "GeneralMinuteCheckbox"
                       )
                     }
-                    checked={selectedMinuteIDs.includes(data.minuteID)}
+                    checked={data.reviewersList.length > 0 ? true : selectedMinuteIDs.includes(data.minuteID)}
                     classNameDiv={styles["agendaTitleCheckbox"]}
                   />
                 </Col>

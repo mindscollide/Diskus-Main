@@ -26,6 +26,12 @@ import SelectReviewers from "./SelectReviewers/SelectReviewers";
 import SendReviewers from "./SendReviewers/SendReviewers";
 import EditReviewers from "./EditReviewers/EditReviewers";
 import AddDateModal from "./AddDateModal/AddDateModal";
+import {
+  hasMinuteData,
+  filterMinutes,
+  filterDataByIDs,
+  matchDataByMinuteID,
+} from "./functionsAddReviewers";
 
 const AddReviewers = ({
   addReviewers,
@@ -112,7 +118,8 @@ const AddReviewers = ({
   };
 
   async function backFunctionMinutes() {
-    setSelectedMinuteIDs(selectedMinuteIDs);
+    console.log("minuteDataAgenda");
+    setSelectedMinuteIDs([]);
     setSelectReviewersArray([]);
     setSelectMinutes(true);
     setSelectReviewers(false);
@@ -120,30 +127,36 @@ const AddReviewers = ({
     setEditReviewer(false);
   }
 
-  const addReviewerScreen = () => {
+  const addReviewerScreen = async () => {
+    console.log("minuteDataAgenda");
+    console.log("minuteDataAgenda selectReviewers", selectReviewers);
     if (selectMinutes) {
+      console.log("minuteDataAgenda");
       setSelectMinutes(false);
       setSelectReviewers(true);
       setSendReviewers(false);
       setEditReviewer(false);
     } else if (selectReviewers) {
-      setSelectMinutes(true);
-      setSelectReviewers(false);
-      setSendReviewers(false);
-      setEditReviewer(false);
-      updateMinutesData(
+      console.log("minuteDataAgenda");
+      await updateMinutesData(
         minuteDataAgenda,
         minuteDataGeneral,
         selectReviewersArray
       );
       setMoreMinutes(false);
+      // setSelectMinutes(true);
+      // setSelectReviewers(false);
+      setSendReviewers(false);
+      setEditReviewer(false);
     } else if (sendReviewers) {
+      console.log("minuteDataAgenda");
       setSelectMinutes(false);
       setSelectReviewers(false);
       setSendReviewers(true);
       setEditReviewer(false);
       dispatch(UpdateMinuteFlag(false));
     } else if (editReviewer) {
+      console.log("minuteDataAgenda");
       setSelectMinutes(false);
       setSelectReviewers(false);
       setSendReviewers(true);
@@ -153,6 +166,7 @@ const AddReviewers = ({
   };
 
   const addMoreMinutesForReview = () => {
+    console.log("minuteDataAgenda");
     setMoreMinutes(true);
     setSelectMinutes(false);
     setSelectReviewers(true);
@@ -312,15 +326,24 @@ const AddReviewers = ({
       // Helper function to update minuteData with reviewersList based on isChecked value
       const updateMinuteData = (minuteData) => {
         return minuteData.map((minute) => {
-          return {
-            ...minute,
-            reviewersList: minute.isChecked ? reviewersList : [],
-          };
+          console.log("minuteDataAgenda", minute);
+          console.log("minuteDataAgenda", selectedMinuteIDs);
+          console.log(
+            "minuteDataAgenda",
+            matchDataByMinuteID(minute, selectedMinuteIDs)
+          );
+          if (matchDataByMinuteID(minute, selectedMinuteIDs)) {
+            return {
+              ...minute,
+              reviewersList: reviewersList,
+            };
+          }
         });
       };
-
       // Process the first state
       const updatedState1 = minuteDataAgenda.map((agenda) => {
+        console.log("minuteDataAgenda", agenda);
+        console.log("minuteDataAgenda", agenda.minuteData);
         // Update minuteData at the top level
         let updatedAgenda = {
           ...agenda,
@@ -339,10 +362,14 @@ const AddReviewers = ({
       });
 
       // Process the second state
-      const updatedState2 = minuteDataGeneral.map((minute) => {
+      let filteredGeneralData = filterDataByIDs(
+        minuteDataGeneral,
+        selectedMinuteIDs
+      );
+      const updatedState2 = filteredGeneralData.map((minute) => {
         return {
           ...minute,
-          reviewersList: minute.isChecked ? reviewersList : [],
+          reviewersList: reviewersList,
         };
       });
 
@@ -514,7 +541,6 @@ const AddReviewers = ({
             let parentAgendaObj = {
               agendaID: parentAgenda.pK_MAID,
               agendaTitle: agendaTitle,
-              isParentData: isParentData,
               apiCheck: false,
               minuteData: parentAgendaMinutes.map((minute) => ({
                 minuteID: minute.minuteID,
@@ -758,112 +784,120 @@ const AddReviewers = ({
       //   />
       // }
       ModalBody={
-        selectMinutes === true &&
-        selectReviewers === false &&
-        sendReviewers === false &&
-        editReviewer === false &&
-        (minuteDataAgenda !== null || minuteDataGeneral !== null) ? (
-          <SelectMinutes
-            minuteDataAgenda={minuteDataAgenda}
-            minuteDataGeneral={minuteDataGeneral}
-            selectedMinuteIDs={selectedMinuteIDs}
-            setSelectedMinuteIDs={setSelectedMinuteIDs}
-            allReviewers={allReviewers}
-          />
-        ) : selectMinutes === false &&
-          selectReviewers === true &&
-          sendReviewers === false &&
-          editReviewer === false &&
-          (minuteDataAgenda !== null || minuteDataGeneral !== null) ? (
-          <SelectReviewers
-            selectMinutes={selectMinutes}
-            setSelectMinutes={setSelectMinutes}
-            setSelectReviewers={setSelectReviewers}
-            selectReviewers={selectReviewers}
-            sendReviewers={sendReviewers}
-            setSendReviewers={setSendReviewers}
-            setEditReviewer={setEditReviewer}
-            editReviewer={editReviewer}
-            setMinuteDataAgenda={setMinuteDataAgenda}
-            minuteDataAgenda={minuteDataAgenda}
-            setMinuteDataGeneral={setMinuteDataGeneral}
-            minuteDataGeneral={minuteDataGeneral}
-            selectedMinuteIDs={selectedMinuteIDs}
-            setSelectedMinuteIDs={setSelectedMinuteIDs}
-            selectReviewersArray={selectReviewersArray}
-            setSelectReviewersArray={setSelectReviewersArray}
-            allReviewers={allReviewers}
-            setAllReviewers={setAllReviewers}
-            isAgendaMinute={isAgendaMinute}
-            setIsAgendaMinute={setIsAgendaMinute}
-            moreMinutes={moreMinutes}
-            setMoreMinutes={setMoreMinutes}
-            newSelectedMinutes={newSelectedMinutes}
-            setNewSelectedMinutes={setNewSelectedMinutes}
-          />
-        ) : selectMinutes === false &&
-          selectReviewers === false &&
-          sendReviewers === true &&
-          editReviewer === false &&
-          (minuteDataAgenda !== null || minuteDataGeneral !== null) ? (
-          <SendReviewers
-            selectMinutes={selectMinutes}
-            setSelectMinutes={setSelectMinutes}
-            setSelectReviewers={setSelectReviewers}
-            selectReviewers={selectReviewers}
-            sendReviewers={sendReviewers}
-            setSendReviewers={setSendReviewers}
-            setEditReviewer={setEditReviewer}
-            editReviewer={editReviewer}
-            setMinuteDataAgenda={setMinuteDataAgenda}
-            minuteDataAgenda={minuteDataAgenda}
-            setMinuteDataGeneral={setMinuteDataGeneral}
-            minuteDataGeneral={minuteDataGeneral}
-            selectedMinuteIDs={selectedMinuteIDs}
-            setSelectedMinuteIDs={setSelectedMinuteIDs}
-            selectReviewersArray={selectReviewersArray}
-            setSelectReviewersArray={setSelectReviewersArray}
-            setMinuteToEdit={setMinuteToEdit}
-            minuteToEdit={minuteToEdit}
-            allReviewers={allReviewers}
-            setAllReviewers={setAllReviewers}
-            isAgendaMinute={isAgendaMinute}
-            setIsAgendaMinute={setIsAgendaMinute}
-            moreMinutes={moreMinutes}
-            setMoreMinutes={setMoreMinutes}
-            checkIsCheckAll={checkIsCheckAll}
-            setCheckIsCheckAll={setCheckIsCheckAll}
-            newSelectedMinutes={newSelectedMinutes}
-            setNewSelectedMinutes={setNewSelectedMinutes}
-          />
-        ) : selectMinutes === false &&
-          selectReviewers === false &&
-          sendReviewers === false &&
-          editReviewer === true &&
-          (minuteDataAgenda !== null || minuteDataGeneral !== null) ? (
-          <EditReviewers
-            selectMinutes={selectMinutes}
-            setSelectMinutes={setSelectMinutes}
-            setSelectReviewers={setSelectReviewers}
-            selectReviewers={selectReviewers}
-            sendReviewers={sendReviewers}
-            setSendReviewers={setSendReviewers}
-            setEditReviewer={setEditReviewer}
-            editReviewer={editReviewer}
-            setMinuteToEdit={setMinuteToEdit}
-            minuteToEdit={minuteToEdit}
-            allReviewers={allReviewers}
-            setAllReviewers={setAllReviewers}
-            isAgendaMinute={isAgendaMinute}
-            setIsAgendaMinute={setIsAgendaMinute}
-            moreMinutes={moreMinutes}
-            setMoreMinutes={setMoreMinutes}
-            selectedReviewersToEdit={selectedReviewersToEdit}
-            setSelectedReviewersToEdit={setSelectedReviewersToEdit}
-          />
-        ) : (
-          <p>No minutes to send for review</p>
-        )
+        <>
+          {selectMinutes === true &&
+            selectReviewers === false &&
+            sendReviewers === false &&
+            editReviewer === false &&
+            (minuteDataAgenda !== null || minuteDataGeneral !== null) && (
+              <SelectMinutes
+                minuteDataAgenda={minuteDataAgenda}
+                minuteDataGeneral={minuteDataGeneral}
+                selectedMinuteIDs={selectedMinuteIDs}
+                setSelectedMinuteIDs={setSelectedMinuteIDs}
+                allReviewers={allReviewers}
+              />
+            )}
+          {selectMinutes === false &&
+            selectReviewers === true &&
+            sendReviewers === false &&
+            editReviewer === false &&
+            (minuteDataAgenda !== null || minuteDataGeneral !== null) && (
+              <SelectReviewers
+                selectMinutes={selectMinutes}
+                setSelectMinutes={setSelectMinutes}
+                setSelectReviewers={setSelectReviewers}
+                selectReviewers={selectReviewers}
+                sendReviewers={sendReviewers}
+                setSendReviewers={setSendReviewers}
+                setEditReviewer={setEditReviewer}
+                editReviewer={editReviewer}
+                setMinuteDataAgenda={setMinuteDataAgenda}
+                minuteDataAgenda={minuteDataAgenda}
+                setMinuteDataGeneral={setMinuteDataGeneral}
+                minuteDataGeneral={minuteDataGeneral}
+                selectedMinuteIDs={selectedMinuteIDs}
+                setSelectedMinuteIDs={setSelectedMinuteIDs}
+                selectReviewersArray={selectReviewersArray}
+                setSelectReviewersArray={setSelectReviewersArray}
+                allReviewers={allReviewers}
+                setAllReviewers={setAllReviewers}
+                isAgendaMinute={isAgendaMinute}
+                setIsAgendaMinute={setIsAgendaMinute}
+                moreMinutes={moreMinutes}
+                setMoreMinutes={setMoreMinutes}
+                newSelectedMinutes={newSelectedMinutes}
+                setNewSelectedMinutes={setNewSelectedMinutes}
+              />
+            )}{" "}
+          {selectMinutes === false &&
+            selectReviewers === false &&
+            sendReviewers === true &&
+            editReviewer === false &&
+            (minuteDataAgenda !== null || minuteDataGeneral !== null) && (
+              <SendReviewers
+                selectMinutes={selectMinutes}
+                setSelectMinutes={setSelectMinutes}
+                setSelectReviewers={setSelectReviewers}
+                selectReviewers={selectReviewers}
+                sendReviewers={sendReviewers}
+                setSendReviewers={setSendReviewers}
+                setEditReviewer={setEditReviewer}
+                editReviewer={editReviewer}
+                setMinuteDataAgenda={setMinuteDataAgenda}
+                minuteDataAgenda={minuteDataAgenda}
+                setMinuteDataGeneral={setMinuteDataGeneral}
+                minuteDataGeneral={minuteDataGeneral}
+                selectedMinuteIDs={selectedMinuteIDs}
+                setSelectedMinuteIDs={setSelectedMinuteIDs}
+                selectReviewersArray={selectReviewersArray}
+                setSelectReviewersArray={setSelectReviewersArray}
+                setMinuteToEdit={setMinuteToEdit}
+                minuteToEdit={minuteToEdit}
+                allReviewers={allReviewers}
+                setAllReviewers={setAllReviewers}
+                isAgendaMinute={isAgendaMinute}
+                setIsAgendaMinute={setIsAgendaMinute}
+                moreMinutes={moreMinutes}
+                setMoreMinutes={setMoreMinutes}
+                checkIsCheckAll={checkIsCheckAll}
+                setCheckIsCheckAll={setCheckIsCheckAll}
+                newSelectedMinutes={newSelectedMinutes}
+                setNewSelectedMinutes={setNewSelectedMinutes}
+              />
+            )}
+          {selectMinutes === false &&
+            selectReviewers === false &&
+            sendReviewers === false &&
+            editReviewer === true &&
+            (minuteDataAgenda !== null || minuteDataGeneral !== null) && (
+              <EditReviewers
+                selectMinutes={selectMinutes}
+                setSelectMinutes={setSelectMinutes}
+                setSelectReviewers={setSelectReviewers}
+                selectReviewers={selectReviewers}
+                sendReviewers={sendReviewers}
+                setSendReviewers={setSendReviewers}
+                setEditReviewer={setEditReviewer}
+                editReviewer={editReviewer}
+                setMinuteToEdit={setMinuteToEdit}
+                minuteToEdit={minuteToEdit}
+                allReviewers={allReviewers}
+                setAllReviewers={setAllReviewers}
+                isAgendaMinute={isAgendaMinute}
+                setIsAgendaMinute={setIsAgendaMinute}
+                moreMinutes={moreMinutes}
+                setMoreMinutes={setMoreMinutes}
+                selectedReviewersToEdit={selectedReviewersToEdit}
+                setSelectedReviewersToEdit={setSelectedReviewersToEdit}
+              />
+            )}
+        </>
+        // {
+
+        // <p>No minutes to send for review</p>
+
+        // }
       }
       ModalFooter={
         <>
@@ -886,7 +920,7 @@ const AddReviewers = ({
                 <Button
                   className={styles["Add-Button"]}
                   text={t("Add-reviewers")}
-                  onClick={addReviewerScreen}
+                  onClick={() => addReviewerScreen()}
                   disableBtn={selectedMinuteIDs.length === 0 ? true : false}
                 />
               </Col>
@@ -910,7 +944,7 @@ const AddReviewers = ({
                 <Button
                   className={styles["Add-Button-Reviewers"]}
                   text={t("Add")}
-                  onClick={addReviewerScreen}
+                  onClick={() => addReviewerScreen()}
                   disableBtn={selectReviewersArray.length > 0 ? false : true}
                 />
               </Col>
@@ -993,7 +1027,7 @@ const AddReviewers = ({
                 <Button
                   className={styles["Add-Button-Reviewers"]}
                   text={t("Update")}
-                  onClick={addReviewerScreen}
+                  onClick={() => addReviewerScreen()}
                   disableBtn={
                     selectedReviewersToEdit.length === 0 ? true : false
                   }

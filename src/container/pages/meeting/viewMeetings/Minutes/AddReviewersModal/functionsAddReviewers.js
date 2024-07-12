@@ -143,25 +143,76 @@ export const checkReviewersListAgenda = (dataArray) => {
 };
 
 export const filterDataByIDs = (data, stateMinuteIDs) => {
-    return data.filter(item => stateMinuteIDs.includes(item.minuteID));
+  return data.filter((item) => stateMinuteIDs.includes(item.minuteID));
 };
 
 export function filterMinutes(data, minuteIDs) {
-    return data.map(agenda => {
-        const filteredMinuteData = agenda.minuteData.filter(minute => minuteIDs.includes(minute.minuteID));
-        
-        const filteredSubMinutes = agenda.subMinutes.map(subAgenda => {
-            const filteredSubMinuteData = subAgenda.minuteData.filter(minute => minuteIDs.includes(minute.minuteID));
-            return {
-                ...subAgenda,
-                minuteData: filteredSubMinuteData
-            };
-        }).filter(subAgenda => subAgenda.minuteData.length > 0);
+  return data
+    .map((agenda) => {
+      const filteredMinuteData = agenda.minuteData.filter((minute) =>
+        minuteIDs.includes(minute.minuteID)
+      );
 
-        return {
-            ...agenda,
-            minuteData: filteredMinuteData,
-            subMinutes: filteredSubMinutes
-        };
-    }).filter(agenda => agenda.minuteData.length > 0 || agenda.subMinutes.length > 0);
+      const filteredSubMinutes = agenda.subMinutes
+        .map((subAgenda) => {
+          const filteredSubMinuteData = subAgenda.minuteData.filter((minute) =>
+            minuteIDs.includes(minute.minuteID)
+          );
+          return {
+            ...subAgenda,
+            minuteData: filteredSubMinuteData,
+          };
+        })
+        .filter((subAgenda) => subAgenda.minuteData.length > 0);
+
+      return {
+        ...agenda,
+        minuteData: filteredMinuteData,
+        subMinutes: filteredSubMinutes,
+      };
+    })
+    .filter(
+      (agenda) => agenda.minuteData.length > 0 || agenda.subMinutes.length > 0
+    );
 }
+
+export function hasMinuteData(obj) {
+  // Check if the parent object's minuteData array has a length greater than 0
+  if (obj.minuteData.length > 0) {
+    return true;
+  }
+
+  // Check if any subMinutes item has a minuteData array with a length greater than 0
+  const hasSubMinutesData = obj.subMinutes.find(
+    (subMinute) => subMinute.minuteData.length > 0
+  );
+
+  return !!hasSubMinutesData;
+}
+
+export function updateUsers(agenda, users) {
+  // Helper function to process minuteData
+  const processMinuteData = (minuteData) => {
+    minuteData.find((minute) => {
+      if (minute.reviewersList) {
+        minute.reviewersList.find((reviewer) => {
+          if (!users.includes(reviewer)) {
+            users.push(reviewer);
+          }
+        });
+      }
+    });
+  };
+
+  // Process main minuteData
+  processMinuteData(agenda.minuteData);
+
+  // Process subMinutes
+  agenda.subMinutes.find((subMinute) => {
+    processMinuteData(subMinute.minuteData);
+  });
+}
+
+export const matchDataByMinuteID = (item, stateMinuteIDs) => {
+  return stateMinuteIDs.includes(item.minuteID);
+};
