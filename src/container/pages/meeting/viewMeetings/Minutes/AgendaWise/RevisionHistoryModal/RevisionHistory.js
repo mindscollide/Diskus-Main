@@ -86,7 +86,11 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
   const [confirmationEdit, setConfirmationEdit] = useState(false);
   const [resendMinuteForReview, setResendMinuteForReview] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(null);
-
+  const [revisionHistoryData, setRevisionHistoryData] = useState({
+    mainMinute: null,
+    minuteVersionHistory: [],
+  });
+  console.log(revisionHistoryData, "revisionHistoryDatarevisionHistoryData");
   const editMinuteFunction = () => {
     if (editMinute === false) {
       setEditMinute(true);
@@ -107,10 +111,11 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
     if (GetMinuteReviewDetailsForOrganizerbyMinuteId !== null) {
       try {
         // if(GetMinuteReviewDetailsForOrganizerbyMinuteId.)
-        console.log(
-          GetMinuteReviewDetailsForOrganizerbyMinuteId,
-          "GetMinuteReviewDetailsForOrganizerbyMinuteIdGetMinuteReviewDetailsForOrganizerbyMinuteId"
-        );
+        setRevisionHistoryData({
+          mainMinute: GetMinuteReviewDetailsForOrganizerbyMinuteId.mainMinute,
+          minuteVersionHistory:
+            GetMinuteReviewDetailsForOrganizerbyMinuteId.minuteVersionHistory,
+        });
       } catch (error) {}
     }
   }, [GetMinuteReviewDetailsForOrganizerbyMinuteId]);
@@ -184,394 +189,775 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                       </p>
                     </Col>
                   </Row>
-                  <div className={`${styles["barline"]} position-relative`}>
-                    <span className={styles["barlinespan"]}></span>
-                    {reviewHistory
-                      .sort((a, b) => b.versionNumber - a.versionNumber)
-                      .map((reviewData, index) => {
-                        console.log(reviewData, "reviewDatareviewData");
-                        return (
-                          <>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <div
-                                  className={
-                                    styles["reviewer-progress-wrapper"]
-                                  }
-                                >
-                                  <Row>
-                                    <Col lg={11} md={11} sm={12}>
-                                      <div
-                                        className={
-                                          styles["reviewer-progress-text"]
-                                        }
+                  {revisionHistoryData.mainMinute !== null && (
+                    <div>
+                      <>
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <div
+                              className={styles["reviewer-progress-wrapper"]}
+                            >
+                              <Row>
+                                <Col lg={11} md={11} sm={12}>
+                                  <div
+                                    className={styles["reviewer-progress-text"]}
+                                  >
+                                    <p>
+                                      Total:{" "}
+                                      {
+                                        revisionHistoryData?.mainMinute
+                                          ?.reviewStats?.totalReviews
+                                      }
+                                    </p>
+                                    <span>|</span>
+                                    <p>
+                                      Accepted:{" "}
+                                      {
+                                        revisionHistoryData?.mainMinute
+                                          ?.reviewStats?.accepted
+                                      }
+                                    </p>
+                                    <span>|</span>
+                                    <p>
+                                      Rejected:{" "}
+                                      {
+                                        revisionHistoryData?.mainMinute
+                                          ?.reviewStats?.rejected
+                                      }
+                                    </p>
+                                    <span>|</span>
+                                    <p>
+                                      Pending:{" "}
+                                      {
+                                        revisionHistoryData?.mainMinute
+                                          ?.reviewStats?.pending
+                                      }
+                                    </p>
+                                  </div>
+                                </Col>
+                                <Col lg={1} md={1} sm={12} className="text-end">
+                                  <img
+                                    alt=""
+                                    src={DropdownPurple}
+                                    className={
+                                      isDrawerOpen === "main"
+                                        ? `${styles["Arrow"]} cursor-pointer`
+                                        : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                    }
+                                    onClick={() =>
+                                      openCloseReviewerDetail("main")
+                                    }
+                                  />
+                                </Col>
+                              </Row>
+                              {isDrawerOpen === "main" && (
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <p
+                                      className={`${styles["text-wrapper-review"]}`}
+                                    >
+                                      <span
+                                        className={styles["Review-accepted"]}
                                       >
-                                        <p>
-                                          Total:{" "}
-                                          {reviewData.reviewStats.totalReviews}
-                                        </p>
-                                        <span>|</span>
-                                        <p>
-                                          Accepted:{" "}
-                                          {reviewData.reviewStats.accepted}
-                                        </p>
-                                        <span>|</span>
-                                        <p>
-                                          Rejected:{" "}
-                                          {reviewData.reviewStats.rejected}
-                                        </p>
-                                        <span>|</span>
-                                        <p>
-                                          Pending:{" "}
-                                          {reviewData.reviewStats.pending}
+                                        Review Accepted:
+                                      </span>{" "}
+                                      {revisionHistoryData?.mainMinute
+                                        .reviewStats?.acceptedByUsers.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.acceptedByUsers?.map(
+                                          (userName) => `${userName}  ,`
+                                        )}
+                                    </p>
+                                    <p
+                                      className={`${styles["text-wrapper-review"]}`}
+                                    >
+                                      <span
+                                        className={styles["Review-declined"]}
+                                      >
+                                        Review Rejected:
+                                      </span>{" "}
+                                      {revisionHistoryData?.mainMinute
+                                        ?.reviewStats?.rejectedByUsers.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.rejectedByUsers.map(
+                                          (userName) => `${userName} ,`
+                                        )}
+                                    </p>
+                                    <p
+                                      className={`${styles["text-wrapper-review"]}`}
+                                    >
+                                      <span
+                                        className={styles["Review-pending"]}
+                                      >
+                                        Review Pending:
+                                      </span>{" "}
+                                      {revisionHistoryData?.mainMinute
+                                        ?.reviewStats?.pendingUsers.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.pendingUsers.map(
+                                          (userName) => `${userName} ,`
+                                        )}
+                                    </p>
+                                  </Col>
+                                </Row>
+                              )}
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="position-relative"
+                          >
+                            {/* First */}
+
+                            <div
+                              className={
+                                styles["version-control-wrapper-with-more"]
+                              }
+                            >
+                              <span className={styles["with-text"]}>
+                                V
+                                {revisionHistoryData?.mainMinute?.versionNumber}
+                              </span>
+                            </div>
+
+                            <div className={styles["uploaded-details"]}>
+                              <Row className={styles["inherit-height"]}>
+                                <Col lg={9} md={9} sm={12}>
+                                  <p
+                                    className={styles["minutes-text"]}
+                                    dangerouslySetInnerHTML={{
+                                      __html:
+                                        revisionHistoryData?.mainMinute
+                                          ?.minutesDetails,
+                                    }}
+                                  ></p>
+                                  <Row className="mt-1">
+                                    {revisionHistoryData?.mainMinute
+                                      ?.minuteAttachmentFiles.length > 0
+                                      ? revisionHistoryData?.mainMinute?.minuteAttachmentFiles.map(
+                                          (data, index) => {
+                                            console.log(data, "datadatadata");
+                                            return (
+                                              <>
+                                                <Col lg={3} md={3} sm={3}>
+                                                  <AttachmentViewer
+                                                    data={data}
+                                                    id={data.pK_FileID}
+                                                    name={data.displayFileName}
+                                                    fk_UID={data.fK_UserID}
+                                                    // handleClickRemove={() => handleRemoveFile(data)}
+                                                  />
+                                                </Col>
+                                              </>
+                                            );
+                                          }
+                                        )
+                                      : null}
+                                  </Row>
+                                </Col>
+                                <Col
+                                  lg={3}
+                                  md={3}
+                                  sm={12}
+                                  className="position-relative"
+                                >
+                                  <Row className="m-0">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="p-0"
+                                    >
+                                      <span
+                                        className={styles["bar-line"]}
+                                      ></span>
+                                      <p className={styles["uploadedbyuser"]}>
+                                        Uploaded By
+                                      </p>{" "}
+                                      {/* {index === 0 && (
+                                        <img
+                                          className={styles["edit-icon"]}
+                                          src={EditIcon}
+                                          alt=""
+                                          onClick={editMinuteFunction}
+                                        />
+                                      )} */}
+                                      <div className={styles["gap-ti"]}>
+                                        <img
+                                          src={DefaultAvatar}
+                                          className={styles["Image"]}
+                                          alt=""
+                                          draggable={false}
+                                        />
+                                        <p className={styles["agendaCreater"]}>
+                                          {
+                                            revisionHistoryData?.mainMinute
+                                              ?.userName
+                                          }
                                         </p>
                                       </div>
                                     </Col>
-                                    <Col
-                                      lg={1}
-                                      md={1}
-                                      sm={12}
-                                      className="text-end"
-                                    >
-                                      <img
-                                        alt=""
-                                        src={DropdownPurple}
-                                        className={
-                                          isDrawerOpen === index
-                                            ? `${styles["Arrow"]} cursor-pointer`
-                                            : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                  </Row>
+                                  <Row
+                                    className={`${styles["positioning-tb"]} m-0`}
+                                  >
+                                    <Col lg={12} md={12} sm={12}>
+                                      <p className={styles["time-uploader"]}>
+                                        {
+                                          newDateFormatForMinutes(
+                                            revisionHistoryData.mainMinute
+                                              ?.lastUpdatedDate +
+                                              revisionHistoryData.mainMinute
+                                                ?.lastUpdatedTime
+                                          )?.TimeVal
                                         }
-                                        onClick={() =>
-                                          openCloseReviewerDetail(index)
+                                        ,
+                                      </p>
+                                      <p className={styles["date-uploader"]}>
+                                        {
+                                          newDateFormatForMinutes(
+                                            revisionHistoryData.mainMinute
+                                              ?.lastUpdatedDate +
+                                              revisionHistoryData.mainMinute
+                                                ?.lastUpdatedTime
+                                          )?.DateVal
                                         }
-                                      />
+                                      </p>
                                     </Col>
                                   </Row>
-                                  {isDrawerOpen === index && (
+                                </Col>
+                              </Row>
+                            </div>
+                          </Col>
+                        </Row>
+                        {revisionHistoryData.mainMinute.declinedReviews.length >
+                          0 &&
+                          revisionHistoryData.mainMinute.declinedReviews.map(
+                            (declineReviewData, index) => {
+                              return (
+                                <Row>
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className="position-relative"
+                                  >
+                                    <div
+                                      className={
+                                        styles["version-control-wrapper"]
+                                      }
+                                    >
+                                      <span></span>
+                                    </div>
+                                    <div
+                                      className={
+                                        styles["uploaded-details-rejected"]
+                                      }
+                                    >
+                                      <Row className={styles["inherit-height"]}>
+                                        <Col lg={9} md={9} sm={12}>
+                                          <p
+                                            className={styles["minutes-text"]}
+                                            dangerouslySetInnerHTML={{
+                                              __html: declineReviewData.reason,
+                                            }}
+                                          ></p>
+                                        </Col>
+                                        <Col
+                                          lg={3}
+                                          md={3}
+                                          sm={12}
+                                          className="position-relative"
+                                        >
+                                          <Row className="m-0">
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="p-0"
+                                            >
+                                              <span
+                                                className={styles["bar-line"]}
+                                              ></span>
+                                              <p
+                                                className={
+                                                  styles["uploadedbyuser"]
+                                                }
+                                              >
+                                                Reviewed by
+                                              </p>
+                                              <div className={styles["gap-ti"]}>
+                                                <img
+                                                  src={DefaultAvatar}
+                                                  className={styles["Image"]}
+                                                  alt=""
+                                                  draggable={false}
+                                                />
+                                                <p
+                                                  className={
+                                                    styles["agendaCreater"]
+                                                  }
+                                                >
+                                                  {declineReviewData?.actorName}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                          </Row>
+                                          <Row
+                                            className={`${styles["positioning-tb"]} m-0`}
+                                          >
+                                            <Col lg={12} md={12} sm={12}>
+                                              <p
+                                                className={
+                                                  styles["time-uploader"]
+                                                }
+                                              >
+                                                {
+                                                  newDateFormatForMinutes(
+                                                    declineReviewData.modifiedOn
+                                                  )?.TimeVal
+                                                }
+                                                ,
+                                              </p>
+                                              <p
+                                                className={
+                                                  styles["date-uploader"]
+                                                }
+                                              >
+                                                {
+                                                  newDateFormatForMinutes(
+                                                    declineReviewData.modifiedOn
+                                                  )?.DateVal
+                                                }
+                                              </p>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              );
+                            }
+                          )}
+                      </>
+                    </div>
+                  )}
+
+                  <div className={`${styles["barline"]} position-relative`}>
+                    <span className={styles["barlinespan"]}></span>
+                    {revisionHistoryData.minuteVersionHistory?.length > 0 &&
+                      revisionHistoryData.minuteVersionHistory
+                        ?.sort((a, b) => b.versionNumber - a.versionNumber)
+                        .map((reviewData, index) => {
+                          console.log(reviewData, "reviewDatareviewData");
+                          return (
+                            <>
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <div
+                                    className={
+                                      styles["reviewer-progress-wrapper"]
+                                    }
+                                  >
                                     <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <p
-                                          className={`${styles["text-wrapper-review"]}`}
+                                      <Col lg={11} md={11} sm={12}>
+                                        <div
+                                          className={
+                                            styles["reviewer-progress-text"]
+                                          }
                                         >
-                                          <span
-                                            className={
-                                              styles["Review-accepted"]
+                                          <p>
+                                            Total:{" "}
+                                            {
+                                              reviewData.reviewStats
+                                                .totalReviews
                                             }
-                                          >
-                                            Review Accepted:
-                                          </span>{" "}
-                                          {reviewData.reviewStats
-                                            .acceptedByUsers.length > 0 &&
-                                            reviewData.reviewStats.acceptedByUsers.map(
-                                              (userName) => userName
-                                            )}
-                                        </p>
-                                        <p
-                                          className={`${styles["text-wrapper-review"]}`}
-                                        >
-                                          <span
-                                            className={
-                                              styles["Review-declined"]
-                                            }
-                                          >
-                                            Review Rejected:
-                                          </span>{" "}
-                                          {reviewData.reviewStats
-                                            .rejectedByUsers.length > 0 &&
-                                            reviewData.reviewStats.rejectedByUsers.map(
-                                              (userName) => userName
-                                            )}
-                                        </p>
-                                        <p
-                                          className={`${styles["text-wrapper-review"]}`}
-                                        >
-                                          <span
-                                            className={styles["Review-pending"]}
-                                          >
-                                            Review Pending:
-                                          </span>{" "}
-                                          {reviewData.reviewStats.pendingUsers
-                                            .length > 0 &&
-                                            reviewData.reviewStats.pendingUsers.map(
-                                              (userName) => userName
-                                            )}
-                                        </p>
+                                          </p>
+                                          <span>|</span>
+                                          <p>
+                                            Accepted:{" "}
+                                            {reviewData.reviewStats.accepted}
+                                          </p>
+                                          <span>|</span>
+                                          <p>
+                                            Rejected:{" "}
+                                            {reviewData.reviewStats.rejected}
+                                          </p>
+                                          <span>|</span>
+                                          <p>
+                                            Pending:{" "}
+                                            {reviewData.reviewStats.pending}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col
+                                        lg={1}
+                                        md={1}
+                                        sm={12}
+                                        className="text-end"
+                                      >
+                                        <img
+                                          alt=""
+                                          src={DropdownPurple}
+                                          className={
+                                            isDrawerOpen === index
+                                              ? `${styles["Arrow"]} cursor-pointer`
+                                              : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                          }
+                                          onClick={() =>
+                                            openCloseReviewerDetail(index)
+                                          }
+                                        />
                                       </Col>
                                     </Row>
-                                  )}
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="position-relative"
-                              >
-                                {/* First */}
-
-                                <div
-                                  className={
-                                    styles["version-control-wrapper-with-more"]
-                                  }
+                                    {isDrawerOpen === index && (
+                                      <Row>
+                                        <Col lg={12} md={12} sm={12}>
+                                          <p
+                                            className={`${styles["text-wrapper-review"]}`}
+                                          >
+                                            <span
+                                              className={
+                                                styles["Review-accepted"]
+                                              }
+                                            >
+                                              Review Accepted:
+                                            </span>{" "}
+                                            {reviewData.reviewStats
+                                              .acceptedByUsers.length > 0 &&
+                                              reviewData.reviewStats.acceptedByUsers.map(
+                                                (userName) => userName
+                                              )}
+                                          </p>
+                                          <p
+                                            className={`${styles["text-wrapper-review"]}`}
+                                          >
+                                            <span
+                                              className={
+                                                styles["Review-declined"]
+                                              }
+                                            >
+                                              Review Rejected:
+                                            </span>{" "}
+                                            {reviewData.reviewStats
+                                              .rejectedByUsers.length > 0 &&
+                                              reviewData.reviewStats.rejectedByUsers.map(
+                                                (userName) => userName
+                                              )}
+                                          </p>
+                                          <p
+                                            className={`${styles["text-wrapper-review"]}`}
+                                          >
+                                            <span
+                                              className={
+                                                styles["Review-pending"]
+                                              }
+                                            >
+                                              Review Pending:
+                                            </span>{" "}
+                                            {reviewData.reviewStats.pendingUsers
+                                              .length > 0 &&
+                                              reviewData.reviewStats.pendingUsers.map(
+                                                (userName) => userName
+                                              )}
+                                          </p>
+                                        </Col>
+                                      </Row>
+                                    )}
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="position-relative"
                                 >
-                                  <span className={styles["with-text"]}>
-                                    V{reviewData.versionNumber}
-                                  </span>
-                                </div>
+                                  {/* First */}
 
-                                <div className={styles["uploaded-details"]}>
-                                  <Row className={styles["inherit-height"]}>
-                                    <Col lg={9} md={9} sm={12}>
-                                      <p
-                                        className={styles["minutes-text"]}
-                                        dangerouslySetInnerHTML={{
-                                          __html: reviewData.minutesDetails,
-                                        }}
-                                      ></p>
-                                      <Row className="mt-1">
-                                        {/* {fileAttachments.length > 0
+                                  <div
+                                    className={
+                                      styles[
+                                        "version-control-wrapper-with-more"
+                                      ]
+                                    }
+                                  >
+                                    <span className={styles["with-text"]}>
+                                      V{reviewData.versionNumber}
+                                    </span>
+                                  </div>
+
+                                  <div className={styles["uploaded-details"]}>
+                                    <Row className={styles["inherit-height"]}>
+                                      <Col lg={9} md={9} sm={12}>
+                                        <p
+                                          className={styles["minutes-text"]}
+                                          dangerouslySetInnerHTML={{
+                                            __html: reviewData.minutesDetails,
+                                          }}
+                                        ></p>
+                                        <Row className="mt-1">
+                                          {/* {fileAttachments.length > 0
                         ? fileAttachments.map((data, index) => {
                             console.log(data, "datadatadata");
                             return (
                               <> */}
-                                        <Col lg={3} md={3} sm={3}>
-                                          <AttachmentViewer
-                                            // data={data}
-                                            id={0}
-                                            name={"DummyFile.pdf"}
-                                            fk_UID={"1233"}
-                                            // handleClickRemove={() => handleRemoveFile(data)}
-                                          />
-                                        </Col>
-                                        <Col lg={3} md={3} sm={3}>
-                                          <AttachmentViewer
-                                            // data={data}
-                                            id={0}
-                                            name={"DummyFile.xls"}
-                                            fk_UID={"1233"}
-                                            // handleClickRemove={() => handleRemoveFile(data)}
-                                          />
-                                        </Col>
-                                        <Col lg={3} md={3} sm={3}>
-                                          <AttachmentViewer
-                                            // data={data}
-                                            id={0}
-                                            name={"DummyFile.doc"}
-                                            fk_UID={"1233"}
-                                            // handleClickRemove={() => handleRemoveFile(data)}
-                                          />
-                                        </Col>
-                                        {/* </>
+                                          <Col lg={3} md={3} sm={3}>
+                                            <AttachmentViewer
+                                              // data={data}
+                                              id={0}
+                                              name={"DummyFile.pdf"}
+                                              fk_UID={"1233"}
+                                              // handleClickRemove={() => handleRemoveFile(data)}
+                                            />
+                                          </Col>
+                                          <Col lg={3} md={3} sm={3}>
+                                            <AttachmentViewer
+                                              // data={data}
+                                              id={0}
+                                              name={"DummyFile.xls"}
+                                              fk_UID={"1233"}
+                                              // handleClickRemove={() => handleRemoveFile(data)}
+                                            />
+                                          </Col>
+                                          <Col lg={3} md={3} sm={3}>
+                                            <AttachmentViewer
+                                              // data={data}
+                                              id={0}
+                                              name={"DummyFile.doc"}
+                                              fk_UID={"1233"}
+                                              // handleClickRemove={() => handleRemoveFile(data)}
+                                            />
+                                          </Col>
+                                          {/* </>
                             );
                           })
                         : null} */}
-                                      </Row>
-                                    </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={12}
-                                      className="position-relative"
-                                    >
-                                      <Row className="m-0">
+                                        </Row>
+                                      </Col>
+                                      <Col
+                                        lg={3}
+                                        md={3}
+                                        sm={12}
+                                        className="position-relative"
+                                      >
+                                        <Row className="m-0">
+                                          <Col
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
+                                            className="p-0"
+                                          >
+                                            <span
+                                              className={styles["bar-line"]}
+                                            ></span>
+                                            <p
+                                              className={
+                                                styles["uploadedbyuser"]
+                                              }
+                                            >
+                                              Uploaded By
+                                            </p>{" "}
+                                            {index === 0 && (
+                                              <img
+                                                className={styles["edit-icon"]}
+                                                src={EditIcon}
+                                                alt=""
+                                                onClick={editMinuteFunction}
+                                              />
+                                            )}
+                                            <div className={styles["gap-ti"]}>
+                                              <img
+                                                src={DefaultAvatar}
+                                                className={styles["Image"]}
+                                                alt=""
+                                                draggable={false}
+                                              />
+                                              <p
+                                                className={
+                                                  styles["agendaCreater"]
+                                                }
+                                              >
+                                                Alex Rodriguez
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        </Row>
+                                        <Row
+                                          className={`${styles["positioning-tb"]} m-0`}
+                                        >
+                                          <Col lg={12} md={12} sm={12}>
+                                            <p
+                                              className={
+                                                styles["time-uploader"]
+                                              }
+                                            >
+                                              {
+                                                newDateFormatForMinutes(
+                                                  reviewData.lastUpdatedDate +
+                                                    reviewData.lastUpdatedTime
+                                                )?.TimeVal
+                                              }
+                                              ,
+                                            </p>
+                                            <p
+                                              className={
+                                                styles["date-uploader"]
+                                              }
+                                            >
+                                              {
+                                                newDateFormatForMinutes(
+                                                  reviewData.lastUpdatedDate +
+                                                    reviewData.lastUpdatedTime
+                                                )?.DateVal
+                                              }
+                                            </p>
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+                              {reviewData.declinedReviews.length > 0 &&
+                                reviewData.declinedReviews.map(
+                                  (declineReviewData, index) => {
+                                    return (
+                                      <Row>
                                         <Col
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className="p-0"
+                                          className="position-relative"
                                         >
-                                          <span
-                                            className={styles["bar-line"]}
-                                          ></span>
-                                          <p
-                                            className={styles["uploadedbyuser"]}
+                                          <div
+                                            className={
+                                              styles["version-control-wrapper"]
+                                            }
                                           >
-                                            Uploaded By
-                                          </p>{" "}
-                                          {index === 0 && (
-                                            <img
-                                              className={styles["edit-icon"]}
-                                              src={EditIcon}
-                                              alt=""
-                                              onClick={editMinuteFunction}
-                                            />
-                                          )}
-                                          <div className={styles["gap-ti"]}>
-                                            <img
-                                              src={DefaultAvatar}
-                                              className={styles["Image"]}
-                                              alt=""
-                                              draggable={false}
-                                            />
-                                            <p
+                                            <span></span>
+                                          </div>
+                                          <div
+                                            className={
+                                              styles[
+                                                "uploaded-details-rejected"
+                                              ]
+                                            }
+                                          >
+                                            <Row
                                               className={
-                                                styles["agendaCreater"]
+                                                styles["inherit-height"]
                                               }
                                             >
-                                              Alex Rodriguez
-                                            </p>
-                                          </div>
-                                        </Col>
-                                      </Row>
-                                      <Row
-                                        className={`${styles["positioning-tb"]} m-0`}
-                                      >
-                                        <Col lg={12} md={12} sm={12}>
-                                          <p
-                                            className={styles["time-uploader"]}
-                                          >
-                                            {
-                                              newDateFormatForMinutes(
-                                                reviewData.lastUpdatedDate +
-                                                  reviewData.lastUpdatedTime
-                                              )?.TimeVal
-                                            }
-                                            ,
-                                          </p>
-                                          <p
-                                            className={styles["date-uploader"]}
-                                          >
-                                            {
-                                              newDateFormatForMinutes(
-                                                reviewData.lastUpdatedDate +
-                                                  reviewData.lastUpdatedTime
-                                              )?.DateVal
-                                            }
-                                          </p>
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </div>
-                              </Col>
-                            </Row>
-                            {reviewData.declinedReviews.length > 0 &&
-                              reviewData.declinedReviews.map(
-                                (declineReviewData, index) => {
-                                  return (
-                                    <Row>
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className="position-relative"
-                                      >
-                                        <div
-                                          className={
-                                            styles["version-control-wrapper"]
-                                          }
-                                        >
-                                          <span></span>
-                                        </div>
-                                        <div
-                                          className={
-                                            styles["uploaded-details-rejected"]
-                                          }
-                                        >
-                                          <Row
-                                            className={styles["inherit-height"]}
-                                          >
-                                            <Col lg={9} md={9} sm={12}>
-                                              <p
-                                                className={
-                                                  styles["minutes-text"]
-                                                }
-                                                dangerouslySetInnerHTML={{
-                                                  __html:
-                                                    declineReviewData.reason,
-                                                }}
-                                              ></p>
-                                            </Col>
-                                            <Col
-                                              lg={3}
-                                              md={3}
-                                              sm={12}
-                                              className="position-relative"
-                                            >
-                                              <Row className="m-0">
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className="p-0"
-                                                >
-                                                  <span
-                                                    className={
-                                                      styles["bar-line"]
-                                                    }
-                                                  ></span>
-                                                  <p
-                                                    className={
-                                                      styles["uploadedbyuser"]
-                                                    }
+                                              <Col lg={9} md={9} sm={12}>
+                                                <p
+                                                  className={
+                                                    styles["minutes-text"]
+                                                  }
+                                                  dangerouslySetInnerHTML={{
+                                                    __html:
+                                                      declineReviewData.reason,
+                                                  }}
+                                                ></p>
+                                              </Col>
+                                              <Col
+                                                lg={3}
+                                                md={3}
+                                                sm={12}
+                                                className="position-relative"
+                                              >
+                                                <Row className="m-0">
+                                                  <Col
+                                                    lg={12}
+                                                    md={12}
+                                                    sm={12}
+                                                    className="p-0"
                                                   >
-                                                    Reviewed by
-                                                  </p>
-                                                  <div
-                                                    className={styles["gap-ti"]}
-                                                  >
-                                                    <img
-                                                      src={DefaultAvatar}
+                                                    <span
                                                       className={
-                                                        styles["Image"]
+                                                        styles["bar-line"]
                                                       }
-                                                      alt=""
-                                                      draggable={false}
-                                                    />
+                                                    ></span>
                                                     <p
                                                       className={
-                                                        styles["agendaCreater"]
+                                                        styles["uploadedbyuser"]
+                                                      }
+                                                    >
+                                                      Reviewed by
+                                                    </p>
+                                                    <div
+                                                      className={
+                                                        styles["gap-ti"]
+                                                      }
+                                                    >
+                                                      <img
+                                                        src={DefaultAvatar}
+                                                        className={
+                                                          styles["Image"]
+                                                        }
+                                                        alt=""
+                                                        draggable={false}
+                                                      />
+                                                      <p
+                                                        className={
+                                                          styles[
+                                                            "agendaCreater"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {
+                                                          declineReviewData?.actorName
+                                                        }
+                                                      </p>
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+                                                <Row
+                                                  className={`${styles["positioning-tb"]} m-0`}
+                                                >
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <p
+                                                      className={
+                                                        styles["time-uploader"]
                                                       }
                                                     >
                                                       {
-                                                        declineReviewData?.actorName
+                                                        newDateFormatForMinutes(
+                                                          declineReviewData.modifiedOn
+                                                        )?.TimeVal
+                                                      }
+                                                      ,
+                                                    </p>
+                                                    <p
+                                                      className={
+                                                        styles["date-uploader"]
+                                                      }
+                                                    >
+                                                      {
+                                                        newDateFormatForMinutes(
+                                                          declineReviewData.modifiedOn
+                                                        )?.DateVal
                                                       }
                                                     </p>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                              <Row
-                                                className={`${styles["positioning-tb"]} m-0`}
-                                              >
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <p
-                                                    className={
-                                                      styles["time-uploader"]
-                                                    }
-                                                  >
-                                                    {
-                                                      newDateFormatForMinutes(
-                                                        declineReviewData.modifiedOn
-                                                      )?.TimeVal
-                                                    }
-                                                    ,
-                                                  </p>
-                                                  <p
-                                                    className={
-                                                      styles["date-uploader"]
-                                                    }
-                                                  >
-                                                    {
-                                                      newDateFormatForMinutes(
-                                                        declineReviewData.modifiedOn
-                                                      )?.DateVal
-                                                    }
-                                                  </p>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </div>
-                                      </Col>
-                                    </Row>
-                                  );
-                                }
-                              )}
-                          </>
-                        );
-                      })}
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </div>
+                                        </Col>
+                                      </Row>
+                                    );
+                                  }
+                                )}
+                            </>
+                          );
+                        })}
 
                     {/* {openReviewerDetail === false ? (
                       <Row>
