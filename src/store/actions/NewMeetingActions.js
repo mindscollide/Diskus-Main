@@ -4461,7 +4461,7 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_UpdateAgendaWiseMinute_03".toLowerCase()
                 )
             ) {
               dispatch(
@@ -4476,7 +4476,20 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
             ) {
               dispatch(
                 showUpdateAgendaWiseMinutesFailed(
-                  t("Only-a-organizer-can-perform-this-operation")
+                  t("Only-minute-creator-can-update")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateAgendaWiseMinute_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showUpdateMinutesSuccess(
+                  response.data.responseResult,
+                  t("Record-updated-and-is-a-review-minute")
                 )
               );
             }
@@ -5033,6 +5046,29 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
               )
           ) {
             dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_UpdateGeneralMinute_04".toLowerCase()
+              )
+          ) {
+            dispatch(
+              showUpdateMinutesFailed(t("Only-minute-creator-can-update"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_UpdateGeneralMinute_05".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              showUpdateMinutesSuccess(
+                response.data.responseResult,
+                t("Record-updated-and-is-a-review-minute")
+              )
+            );
           }
         } else {
           dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));

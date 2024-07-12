@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"; // Importing translation hook
 import styles from "./ReviewMinutes.module.css"; // Importing CSS module
 import { useDispatch } from "react-redux"; // Importing Redux hook
 import { useNavigate } from "react-router-dom"; // Importing navigation hook
-import { Paper, Button } from "../../../components/elements";
+import { Paper, Button, AttachmentViewer } from "../../../components/elements";
 import {
   reviewMinutesPage,
   pendingApprovalPage,
@@ -56,6 +56,13 @@ const ReviewMinutes = () => {
   const [editCommentLocal, setEditCommentLocal] = useState(null);
   const [parentMinuteID, setParentMinuteID] = useState(0);
   const [isAgenda, setIsAgenda] = useState(false);
+  console.log(minutesAgenda, "minutesAgendaminutesAgenda");
+  console.log(
+    minutesAgendaHierarchy,
+    "minutesAgendaHierarchyminutesAgendaHierarchy"
+  );
+
+  console.log(minutesGeneral, "minutesGeneralminutesGeneral");
 
   const divRef = useRef(null);
 
@@ -576,6 +583,10 @@ const ReviewMinutes = () => {
                       </Row>
                       <>
                         {data?.minuteData?.map((parentMinutedata, index) => {
+                          console.log(
+                            parentMinutedata,
+                            "parentMinutedataparentMinutedata"
+                          );
                           return (
                             <>
                               <Row>
@@ -620,6 +631,29 @@ const ReviewMinutes = () => {
                                           }}
                                           className={styles["minutes-text"]}
                                         ></p>
+                                        <Row>
+                                          {parentMinutedata
+                                            .minuteAttachmentFiles.length > 0 &&
+                                            parentMinutedata.minuteAttachmentFiles.map(
+                                              (filesData, index) => {
+                                                return (
+                                                  <Col sm={3} md={3} lg={3}>
+                                                    <AttachmentViewer
+                                                      name={
+                                                        filesData.displayFileName
+                                                      }
+                                                      
+                                                      id={filesData.pK_FileID}
+                                                      fk_UID={
+                                                        filesData.fK_UserID
+                                                      }
+                                                      data={filesData}
+                                                    />
+                                                  </Col>
+                                                );
+                                              }
+                                            )}
+                                        </Row>
                                       </Col>
                                       <Col
                                         lg={4}
