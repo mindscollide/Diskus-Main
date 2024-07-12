@@ -479,6 +479,7 @@ const ProposedMeetingDate = ({
   };
   // Function to handle the save Proposed button click
   const handleSave = () => {
+    console.log("Clicked");
     let newArr = [];
     rows.forEach((data) => {
       newArr.push({
@@ -515,7 +516,7 @@ const ProposedMeetingDate = ({
       };
       console.log(Data, "newDatenewDatenewDatenewDate");
 
-      // dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
+      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
     } else {
       setOpen({
         flag: true,
