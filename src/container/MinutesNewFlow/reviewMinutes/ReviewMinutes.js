@@ -394,6 +394,11 @@ const ReviewMinutes = () => {
           );
 
           let subMinutes = parentAgenda.childAgendas.flatMap((childAgenda) => {
+            console.log(
+              reducerData,
+              childAgenda,
+              "subMinutessubMinutessubMinutessubMinutes"
+            );
             return reducerData.agendaMinutes
               .filter((minute) => minute.agendaID === childAgenda.pK_MAID)
               .map((minute) => ({
@@ -642,7 +647,6 @@ const ReviewMinutes = () => {
                                                       name={
                                                         filesData.displayFileName
                                                       }
-                                                      
                                                       id={filesData.pK_FileID}
                                                       fk_UID={
                                                         filesData.fK_UserID
@@ -3312,6 +3316,6 @@ const ReviewMinutes = () => {
       ) : null}
     </section>
   );
-};
 
+};
 export default ReviewMinutes; // Exporting pending approval component
