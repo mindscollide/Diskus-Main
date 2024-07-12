@@ -1,3 +1,5 @@
+import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+
 export const handleCheck = (
   checked,
   ID,
@@ -298,14 +300,16 @@ export const updateMinutesData = (
 
 export function hasNonEmptyReviewersAgenda(jsonData) {
   // Check if any minuteData has non-empty reviewersList
-  const hasNonEmptyInMinutes = jsonData.find(item =>
-      item.minuteData.some(minute => minute.reviewersList.length > 0)
+  const hasNonEmptyInMinutes = jsonData.find((item) =>
+    item.minuteData.some((minute) => minute.reviewersList.length > 0)
   );
 
   // Check if any subMinutes' minuteData has non-empty reviewersList
-  const hasNonEmptyInSubMinutes = jsonData.find(item =>
-      item.subMinutes && item.subMinutes.some(sub =>
-          sub.minuteData.some(minute => minute.reviewersList.length > 0)
+  const hasNonEmptyInSubMinutes = jsonData.find(
+    (item) =>
+      item.subMinutes &&
+      item.subMinutes.some((sub) =>
+        sub.minuteData.some((minute) => minute.reviewersList.length > 0)
       )
   );
 
@@ -314,5 +318,151 @@ export function hasNonEmptyReviewersAgenda(jsonData) {
 }
 
 export function allReviewersListsNonEmptyGeneral(data) {
-  return !data.find(item => item.reviewersList.length === 0);
+  return !data.find((item) => item.reviewersList.length === 0);
+}
+
+export const checkReviewersListSubAgenda = (dataArray) => {
+  console.log("DataArrayDataArray", dataArray);
+  try {
+    if (!Array.isArray(dataArray)) {
+      dataArray = [dataArray];
+    }
+    // Use find method to check if any subMinutes item has a non-empty reviewersList in its minuteData
+    return (
+      dataArray.find(
+        (obj) =>
+          obj.subMinutes &&
+          obj.subMinutes.find(
+            (minute) =>
+              minute.minuteData &&
+              minute.minuteData.find(
+                (subMinute) =>
+                  subMinute.reviewersList && subMinute.reviewersList.length > 0
+              ) !== undefined
+          ) !== undefined
+      ) !== undefined
+    );
+  } catch {
+    return false; // Returning false in case of an error
+  }
+};
+
+export function createListOfActionAbleBundle(
+  minuteDataAgenda,
+  minuteDataGeneral,
+  minuteDate
+) {
+  let resultList = [];
+
+  // Process minuteDataAgenda
+  minuteDataAgenda.forEach((parentAgenda) => {
+    console.log("createListOfActionAbleBundle", parentAgenda);
+    // Check if the parent agenda is checked
+    // if (parentAgenda.isChecked) {
+    // Process minuteData within parent agenda
+    parentAgenda.minuteData.forEach((minute) => {
+      console.log("createListOfActionAbleBundle minute", minute);
+      // Check if minute is checked
+      if (minute.reviewersList.length > 0 && minute.apiCheck === false) {
+        resultList.push({
+          // ID: minute.minuteID.toString(),
+          ID: "0",
+          Title: "", // Set title as needed
+          BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+          ListOfUsers: minute.reviewersList,
+          Entity: {
+            EntityID: minute.minuteID,
+            EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+          },
+        });
+      } else if (minute.reviewersList.length > 0 && minute.apiCheck) {
+        if (minute.isEdit) {
+          resultList.push({
+            // ID: minute.minuteID.toString(),
+            ID: "0",
+            Title: "", // Set title as needed
+            BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+            ListOfUsers: minute.reviewersList,
+            Entity: {
+              EntityID: minute.minuteID,
+              EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+            },
+          });
+        }
+      }
+    });
+
+    // Process subMinutes within parent agenda
+    parentAgenda.subMinutes.forEach((subAgenda) => {
+      console.log("createListOfActionAbleBundle subAgenda", subAgenda);
+      // Check if sub agenda is checked
+      subAgenda.minuteData.forEach((minute) => {
+        console.log("createListOfActionAbleBundle minute", minute);
+        // Check if minute is checked
+        if (minute.reviewersList.length > 0 && minute.apiCheck === false) {
+          resultList.push({
+            // ID: minute.minuteID.toString(),
+            ID: "0",
+            Title: "", // Set title as needed
+            BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+            ListOfUsers: minute.reviewersList,
+            Entity: {
+              EntityID: minute.minuteID,
+              EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+            },
+          });
+        } else if (minute.reviewersList.length > 0 && minute.apiCheck) {
+          if (minute.isEdit) {
+            resultList.push({
+              // ID: minute.minuteID.toString(),
+              ID: "0",
+              Title: "", // Set title as needed
+              BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+              ListOfUsers: minute.reviewersList,
+              Entity: {
+                EntityID: minute.minuteID,
+                EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+              },
+            });
+          }
+        }
+      });
+    });
+    // }
+  });
+
+  // Process minuteDataGeneral
+  minuteDataGeneral.forEach((minute) => {
+    console.log("createListOfActionAbleBundle minute", minute);
+    // Check if minute is checked
+    if (minute.reviewersList.length > 0 && minute.apiCheck === false) {
+      resultList.push({
+        // ID: minute.minuteID.toString(),
+        ID: "0",
+        Title: "", // Set title as needed
+        BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+        ListOfUsers: minute.reviewersList,
+        Entity: {
+          EntityID: minute.minuteID,
+          EntityTypeID: 2, // Assuming EntityTypeID for minuteDataGeneral is 2
+        },
+      });
+    } else if (minute.reviewersList.length > 0 && minute.apiCheck) {
+      if (minute.isEdit) {
+        resultList.push({
+          // ID: minute.minuteID.toString(),
+          ID: "0",
+          Title: "", // Set title as needed
+          BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+          ListOfUsers: minute.reviewersList,
+          Entity: {
+            EntityID: minute.minuteID,
+            EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+          },
+        });
+      }
+    }
+  });
+
+  return resultList;
 }

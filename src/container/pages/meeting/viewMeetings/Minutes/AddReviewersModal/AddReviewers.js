@@ -7,7 +7,6 @@ import { Button, Modal } from "./../../../../../../components/elements";
 import {
   SaveMinutesReviewFlow,
   UpdateMinuteFlag,
-  GetMinuteReviewFlowByMeetingId,
 } from "../../../../../../store/actions/Minutes_action";
 import { ChevronDown } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -32,6 +31,10 @@ import {
   filterDataByIDs,
   matchDataByMinuteID,
   updateMinutesData,
+  checkReviewersListAgenda,
+  checkReviewersListGeneral,
+  createListOfActionAbleBundle,
+  checkReviewersListSubAgenda,
 } from "./functionsAddReviewers";
 
 const AddReviewers = ({
@@ -62,12 +65,6 @@ const AddReviewers = ({
   //Select Reviewers Checkboxes
   const [selectReviewers, setSelectReviewers] = useState(false);
 
-  //Send Reviewers
-  const [sendReviewers, setSendReviewers] = useState(false);
-
-  //Edit Reviewer
-  const [editReviewer, setEditReviewer] = useState(false);
-
   //Add Date
   const [addDateModal, setAddDateModal] = useState(false);
 
@@ -92,19 +89,7 @@ const AddReviewers = ({
   //All general minutes
   const [minuteDataGeneral, setMinuteDataGeneral] = useState([]);
 
-  //Is agenda minute or not check
-  const [isAgendaMinute, setIsAgendaMinute] = useState(false);
-
-  //More Reviewers to add to other minutes
-  const [moreMinutes, setMoreMinutes] = useState(false);
-
-  //Check if All Minutes Are selected or not
-  const [checkIsCheckAll, setCheckIsCheckAll] = useState(false);
-
-  //Edit Reviewer
-  const [selectedReviewersToEdit, setSelectedReviewersToEdit] = useState(
-    minuteToEdit?.reviewersList || []
-  );
+  const [minuteReviewData, setMinuteReviewData] = useState([]);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -112,8 +97,7 @@ const AddReviewers = ({
   const calendRef = useRef();
 
   const handleClose = () => {
-    // setAddReviewers(false);
-    // dispatch(UpdateMinuteFlag(false));
+    setAddReviewers(false);
   };
 
   async function backFunctionMinutes() {
@@ -121,16 +105,12 @@ const AddReviewers = ({
     setSelectedMinuteIDs([]);
     setSelectReviewersArray([]);
     setSelectReviewers(false);
-    setSendReviewers(false);
-    setEditReviewer(false);
     setSelectMinutes(true);
   }
 
   const addReviewerScreen = async (data) => {
     if (data === "selectMinutes") {
       setSelectMinutes(false);
-      setSendReviewers(false);
-      setEditReviewer(false);
       setSelectReviewers(true);
     } else if (data === "selectReviewers") {
       await updateMinutesData(
@@ -143,125 +123,34 @@ const AddReviewers = ({
         setSelectedMinuteIDs,
         setSelectReviewersArray
       );
-      setSendReviewers(false);
-      setEditReviewer(false);
       setSelectReviewers(false);
       setSelectMinutes(true);
     } else if (data === "sendReviewers") {
       setSelectMinutes(false);
       setSelectReviewers(false);
-      setSendReviewers(true);
-      setEditReviewer(false);
       dispatch(UpdateMinuteFlag(false));
     } else if (data === "editReviewer") {
       setSelectMinutes(false);
       setSelectReviewers(false);
-      setSendReviewers(true);
-      setEditReviewer(false);
       dispatch(UpdateMinuteFlag(true));
     }
   };
 
-  const addMoreMinutesForReview = () => {
-    console.log("minuteDataAgenda");
-    setMoreMinutes(true);
-    setSelectMinutes(false);
-    setSelectReviewers(true);
-    setSendReviewers(false);
-    setEditReviewer(false);
-    updateMinutesData(
-      minuteDataAgenda,
-      minuteDataGeneral,
-      selectReviewersArray,
-      selectedMinuteIDs,
-      setMinuteDataAgenda,
-      setMinuteDataGeneral,
-      setSelectedMinuteIDs,
-      setSelectReviewersArray
-    );
+  const minuteDateHandler = (date, format = "YYYYMMDD") => {
+    let minuteDateValueFormat = new Date(date);
+    setMinuteDate(minuteDateValueFormat);
+    if (calendRef.current.isOpen) {
+      calendRef.current.closeCalendar();
+    }
   };
-
-  // Assuming minuteDataAgenda and minuteDataGeneral are your existing states
-
-  // Function to create the desired data format
-  function createListOfActionAbleBundle(minuteDataAgenda, minuteDataGeneral) {
-    let resultList = [];
-
-    // Process minuteDataAgenda
-    minuteDataAgenda.forEach((parentAgenda) => {
-      // Check if the parent agenda is checked
-      if (parentAgenda.isChecked) {
-        // Process minuteData within parent agenda
-        parentAgenda.minuteData.forEach((minute) => {
-          // Check if minute is checked
-          if (minute.isChecked) {
-            resultList.push({
-              // ID: minute.minuteID.toString(),
-              ID: "0",
-              Title: "", // Set title as needed
-              BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
-              ListOfUsers: minute.reviewersList,
-              Entity: {
-                EntityID: minute.minuteID,
-                EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
-              },
-            });
-          }
-        });
-
-        // Process subMinutes within parent agenda
-        parentAgenda.subMinutes.forEach((subAgenda) => {
-          // Check if sub agenda is checked
-          if (subAgenda.isChecked) {
-            subAgenda.minuteData.forEach((minute) => {
-              // Check if minute is checked
-              if (minute.isChecked) {
-                resultList.push({
-                  // ID: minute.minuteID.toString(),
-                  ID: "0",
-                  Title: "", // Set title as needed
-                  BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
-                  ListOfUsers: minute.reviewersList,
-                  Entity: {
-                    EntityID: minute.minuteID,
-                    EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
-                  },
-                });
-              }
-            });
-          }
-        });
-      }
-    });
-
-    // Process minuteDataGeneral
-    minuteDataGeneral.forEach((minute) => {
-      // Check if minute is checked
-      if (minute.isChecked) {
-        resultList.push({
-          // ID: minute.minuteID.toString(),
-          ID: "0",
-          Title: "", // Set title as needed
-          BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
-          ListOfUsers: minute.reviewersList,
-          Entity: {
-            EntityID: minute.minuteID,
-            EntityTypeID: 2, // Assuming EntityTypeID for minuteDataGeneral is 2
-          },
-        });
-      }
-    });
-
-    return resultList;
-  }
-
   const sendReviewerScreen = () => {
     if (minuteDate === "") {
       setAddDateModal(true);
     } else {
       let resultedActionableBundle = createListOfActionAbleBundle(
         minuteDataAgenda,
-        minuteDataGeneral
+        minuteDataGeneral,
+        minuteDate
       );
       let Data = {
         MeetingID: Number(advanceMeetingModalID),
@@ -272,95 +161,9 @@ const AddReviewers = ({
         ListOfActionAbleBundle: resultedActionableBundle,
       };
 
+      console.log("Save Data", Data);
+
       dispatch(SaveMinutesReviewFlow(Data, navigate, t, setAddReviewers));
-      // setSelectMinutes(false);
-      // setSelectReviewers(false);
-      // setSendReviewers(true);
-      // setEditReviewer(false);
-    }
-  };
-
-  const cancelEditScreen = () => {
-    setSelectMinutes(false);
-    setSelectReviewers(false);
-    setSendReviewers(true);
-    setEditReviewer(false);
-    dispatch(UpdateMinuteFlag(false));
-  };
-
-  //DatePicker Stuff
-  const minuteDateHandler = (date, format = "YYYYMMDD") => {
-    let minuteDateValueFormat = new Date(date);
-    setMinuteDate(minuteDateValueFormat);
-    if (calendRef.current.isOpen) {
-      calendRef.current.closeCalendar();
-    }
-  };
-
-  // const transformDataGeneral = (data) => {
-  //   try {
-  //     return data.map((item) => ({
-  //       minuteID: item.minuteID,
-  //       description: item.minutesDetails,
-  //       attachments: item.minutesAttachmets,
-  //       uploader: {
-  //         userID: item.userID,
-  //         orignalProfilePictureName:
-  //           item.userProfilePicture.orignalProfilePictureName,
-  //         displayProfilePictureName:
-  //           item.userProfilePicture.displayProfilePictureName,
-  //       },
-  //       lastUpdatedDate: item.lastUpdatedDate,
-  //       lastUpdatedTime: item.lastUpdatedTime,
-  //       userID: item.userID,
-  //       userName: item.userName,
-  //       reviewersList: [],
-  //     }));
-  //   } catch {}
-  // };
-
-  const allUnchecked = (data) => {
-    try {
-      return data.every((item) => !item.isChecked);
-    } catch {
-      return false; // Return false in case of any error
-    }
-  };
-
-  const allUncheckedReviewers = (data, reviewers) => {
-    try {
-      return reviewers.length === 0 && data.every((item) => !item.isChecked);
-    } catch {
-      return false; // Return false in case of any error
-    }
-  };
-
-  const allUncheckedReviewersMinuteDataAgenda = (minuteDataAgenda) => {
-    try {
-      return minuteDataAgenda.every((minuteDataItem) => {
-        const { minuteData, subMinutes } = minuteDataItem;
-        const allMinuteDataUnchecked = minuteData.every(
-          (item) =>
-            !item.isChecked ||
-            (item.isChecked && item.reviewersList.length === 0)
-        );
-        const allSubMinutesUnchecked = subMinutes.every((subMinute) => {
-          const { minuteData: subMinuteData } = subMinute;
-          return (
-            !subMinute.isChecked ||
-            (subMinute.isChecked &&
-              subMinuteData.every(
-                (item) =>
-                  !item.isChecked ||
-                  (item.isChecked && item.reviewersList.length === 0)
-              ))
-          );
-        });
-        return allMinuteDataUnchecked && allSubMinutesUnchecked;
-      });
-    } catch (error) {
-      console.error("Error checking allUncheckedReviewers:", error);
-      return false; // Return false in case of any error
     }
   };
 
@@ -441,6 +244,131 @@ const AddReviewers = ({
         NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
         Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
       ) {
+        // if (
+        //   NewMeetingreducer.GetMinuteReviewFlowByMeetingIdData !== null &&
+        //   NewMeetingreducer.GetMinuteReviewFlowByMeetingIdData !== undefined &&
+        //   Object.keys(MinutesReducer.GetMinuteReviewFlowByMeetingIdData)
+        //     .length > 0
+        // ) {
+        //   // Store agendaWiseMinutesReducer in a local variable
+        //   let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
+        //   // Initialize an empty array to hold the transformed data
+        //   let transformedData = [];
+        //   // Iterate through each parent agenda in the agenda hierarchy list
+        //   reducerData.agendaHierarchyList.forEach((parentAgenda) => {
+        //     // Find the parent agenda details in the agendaWiseMinutes array
+        //     let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
+        //       (minute) => minute.agendaID === parentAgenda.pK_MAID
+        //     );
+
+        //     // Initialize an array to hold sub-minutes of the parent agenda
+        //     let subMinutes = [];
+        //     // Iterate through each child agenda of the parent agenda
+        //     parentAgenda.childAgendas.forEach((childAgenda) => {
+        //       // Filter the minutes that match the child agenda ID and push to subMinutes
+        //       let childMinutes = reducerData.agendaWiseMinutes.filter(
+        //         (minute) => minute.agendaID === childAgenda.pK_MAID
+        //       );
+        //       subMinutes.push(...childMinutes);
+        //     });
+
+        //     // Check if parent agenda details exist to determine if it's parent data
+        //     let isParentData = parentAgendaMinutes.length > 0;
+
+        //     // If there are parent agenda details or sub-minutes, create a parent agenda object
+        //     if (isParentData || subMinutes.length > 0) {
+        //       // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
+        //       let agendaTitle = isParentData
+        //         ? parentAgendaMinutes[0].agendaTitle
+        //         : parentAgenda.childAgendas.find((childAgenda) =>
+        //             subMinutes.some(
+        //               (minute) => minute.agendaID === childAgenda.pK_MAID
+        //             )
+        //           )?.parentTitle || "";
+
+        //       let parentAgendaObj = {
+        //         agendaID: parentAgenda.pK_MAID,
+        //         agendaTitle: agendaTitle,
+        //         apiCheck: false,
+        //         minuteData: parentAgendaMinutes.map((minute) => ({
+        //           minuteID: minute.minuteID,
+        //           description: minute.minutesDetails,
+        //           attachments: minute.minutesAttachmets,
+        //           uploader: minute.userProfilePicture,
+        //           lastUpdatedDate: minute.lastUpdatedDate,
+        //           lastUpdatedTime: minute.lastUpdatedTime,
+        //           userID: minute.userID,
+        //           apiCheck: false,
+        //           userName: minute.userName,
+        //           isEdit: false,
+        //           reviewersList: [],
+        //         })),
+        //         subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+        //           let childMinutes = subMinutes.filter(
+        //             (minute) => minute.agendaID === childAgenda.pK_MAID
+        //           );
+        //           return {
+        //             agendaID: childAgenda.pK_MAID,
+        //             agendaTitle: childMinutes[0]?.agendaTitle || "",
+        //             apiCheck: false,
+        //             minuteData: childMinutes.map((minute) => ({
+        //               minuteID: minute.minuteID,
+        //               description: minute.minutesDetails,
+        //               attachments: minute.minutesAttachmets,
+        //               uploader: minute.userProfilePicture,
+        //               lastUpdatedDate: minute.lastUpdatedDate,
+        //               lastUpdatedTime: minute.lastUpdatedTime,
+        //               userID: minute.userID,
+        //               userName: minute.userName,
+        //               apiCheck: false,
+        //               isEdit: false,
+        //               reviewersList: [],
+        //             })),
+        //           };
+        //         }),
+        //       };
+
+        //       // Push the parent agenda object to the transformed data array
+        //       transformedData.push(parentAgendaObj);
+        //     }
+        //   });
+
+        //   // Update attachments in transformedData based on data state
+
+        //   transformedData.forEach((agenda) => {
+        //     agenda.minuteData.forEach((minute) => {
+        //       // Find matching entry in data state by pK_MeetingAgendaMinutesID
+        //       let matchingData =
+        //         NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+        //           (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+        //         );
+
+        //       // If matchingData found, update attachments in minuteData
+        //       if (matchingData) {
+        //         minute.attachments = matchingData.files || [];
+        //       }
+        //     });
+
+        //     agenda.subMinutes.forEach((subAgenda) => {
+        //       subAgenda.minuteData.forEach((minute) => {
+        //         // Find matching entry in data state by pK_MeetingAgendaMinutesID
+        //         let matchingData =
+        //           NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+        //             (entry) =>
+        //               entry.pK_MeetingAgendaMinutesID === minute.minuteID
+        //           );
+
+        //         // If matchingData found, update attachments in minuteData
+        //         if (matchingData) {
+        //           minute.attachments = matchingData.files || [];
+        //         }
+        //       });
+        //     });
+        //   });
+
+        //   // Log the transformed data to the console
+        //   setMinuteDataAgenda(transformedData);
+        // } else {
         // Store agendaWiseMinutesReducer in a local variable
         let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
         // Initialize an empty array to hold the transformed data
@@ -558,6 +486,7 @@ const AddReviewers = ({
 
         // Log the transformed data to the console
         setMinuteDataAgenda(transformedData);
+        // }
       }
     } catch (error) {
       console.error("Error transforming data:", error);
@@ -566,7 +495,27 @@ const AddReviewers = ({
   }, [
     NewMeetingreducer.agendaWiseMinutesReducer,
     NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
+    NewMeetingreducer.GetMinuteReviewFlowByMeetingIdData,
   ]);
+
+  useEffect(() => {
+    if (
+      MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null &&
+      MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== undefined
+    ) {
+      setMinuteReviewData(MinutesReducer.GetMinuteReviewFlowByMeetingIdData);
+      if (
+        Object.keys(MinutesReducer.GetMinuteReviewFlowByMeetingIdData).length >
+        0
+      ) {
+      }
+    } else {
+      setMinuteReviewData([]);
+    }
+    return () => {
+      setMinuteReviewData([]);
+    };
+  }, []);
 
   console.log("Data being passed minuteDataAgenda", minuteDataAgenda);
   console.log("Data being passed minuteDataGeneral", minuteDataGeneral);
@@ -587,8 +536,6 @@ const AddReviewers = ({
         <>
           {selectMinutes === true &&
             selectReviewers === false &&
-            sendReviewers === false &&
-            editReviewer === false &&
             (minuteDataAgenda !== null || minuteDataGeneral !== null) && (
               <SelectMinutes
                 minuteDataAgenda={minuteDataAgenda}
@@ -600,12 +547,10 @@ const AddReviewers = ({
                 setMinuteDataGeneral={setMinuteDataGeneral}
                 setSelectReviewersArray={setSelectReviewersArray}
                 setSelectMinutes={setSelectMinutes}
-                setSendReviewers={setSendReviewers}
-                setEditReviewer={setEditReviewer}
                 setSelectReviewers={setSelectReviewers}
               />
             )}
-          {selectReviewers === true && (
+          {selectReviewers === true && selectMinutes === false && (
             <SelectReviewers
               minuteDataAgenda={minuteDataAgenda}
               minuteDataGeneral={minuteDataGeneral}
@@ -614,83 +559,64 @@ const AddReviewers = ({
               setSelectReviewersArray={setSelectReviewersArray}
               allReviewers={allReviewers}
               setSelectMinutes={setSelectMinutes}
-              setSendReviewers={setSendReviewers}
-              setEditReviewer={setEditReviewer}
               setSelectReviewers={setSelectReviewers}
             />
-          )}{" "}
-          {selectMinutes === false &&
-            selectReviewers === false &&
-            sendReviewers === true &&
-            editReviewer === false &&
-            (minuteDataAgenda !== null || minuteDataGeneral !== null) && (
-              <SendReviewers
-                selectMinutes={selectMinutes}
-                setSelectMinutes={setSelectMinutes}
-                setSelectReviewers={setSelectReviewers}
-                selectReviewers={selectReviewers}
-                sendReviewers={sendReviewers}
-                setSendReviewers={setSendReviewers}
-                setEditReviewer={setEditReviewer}
-                editReviewer={editReviewer}
-                setMinuteDataAgenda={setMinuteDataAgenda}
-                minuteDataAgenda={minuteDataAgenda}
-                setMinuteDataGeneral={setMinuteDataGeneral}
-                minuteDataGeneral={minuteDataGeneral}
-                selectedMinuteIDs={selectedMinuteIDs}
-                setSelectedMinuteIDs={setSelectedMinuteIDs}
-                selectReviewersArray={selectReviewersArray}
-                setSelectReviewersArray={setSelectReviewersArray}
-                setMinuteToEdit={setMinuteToEdit}
-                minuteToEdit={minuteToEdit}
-                allReviewers={allReviewers}
-                isAgendaMinute={isAgendaMinute}
-                setIsAgendaMinute={setIsAgendaMinute}
-                moreMinutes={moreMinutes}
-                setMoreMinutes={setMoreMinutes}
-                checkIsCheckAll={checkIsCheckAll}
-                setCheckIsCheckAll={setCheckIsCheckAll}
-                newSelectedMinutes={newSelectedMinutes}
-                setNewSelectedMinutes={setNewSelectedMinutes}
-              />
-            )}
-          {selectMinutes === false &&
-            selectReviewers === false &&
-            sendReviewers === false &&
-            editReviewer === true &&
-            (minuteDataAgenda !== null || minuteDataGeneral !== null) && (
-              <EditReviewers
-                selectMinutes={selectMinutes}
-                setSelectMinutes={setSelectMinutes}
-                setSelectReviewers={setSelectReviewers}
-                selectReviewers={selectReviewers}
-                sendReviewers={sendReviewers}
-                setSendReviewers={setSendReviewers}
-                setEditReviewer={setEditReviewer}
-                editReviewer={editReviewer}
-                setMinuteToEdit={setMinuteToEdit}
-                minuteToEdit={minuteToEdit}
-                allReviewers={allReviewers}
-                isAgendaMinute={isAgendaMinute}
-                setIsAgendaMinute={setIsAgendaMinute}
-                moreMinutes={moreMinutes}
-                setMoreMinutes={setMoreMinutes}
-                selectedReviewersToEdit={selectedReviewersToEdit}
-                setSelectedReviewersToEdit={setSelectedReviewersToEdit}
-              />
-            )}
+          )}
         </>
       }
       ModalFooter={
         <>
-          {selectMinutes === true &&
-          selectReviewers === false &&
-          sendReviewers === false &&
-          editReviewer === false ? (
+          {selectMinutes === true && selectReviewers === false ? (
             <Row>
+              {checkReviewersListAgenda(minuteDataAgenda) ||
+              checkReviewersListSubAgenda(minuteDataAgenda) ||
+              checkReviewersListGeneral(minuteDataGeneral) ? (
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  className="position-relative d-flex gap-3 justify-content-start"
+                >
+                  <label className={styles["label-datePicker"]}>
+                    {t("Deadline")} <span className="text-danger">*</span>
+                  </label>
+                  <DatePicker
+                    onFocusedDateChange={minuteDateHandler}
+                    format={"DD MMMM YYYY"}
+                    value={minuteDate}
+                    minDate={moment().toDate()}
+                    placeholder={t("Select-date")}
+                    editable={false}
+                    className="datePickerTodoCreate2"
+                    onOpenPickNewDate={true}
+                    inputMode=""
+                    calendar={calendarValue}
+                    locale={localValue}
+                    ref={calendRef}
+                    render={
+                      <InputIcon
+                        placeholder={t("Select-date")}
+                        className="datepicker_input_minute"
+                      />
+                    }
+                  />
+                </Col>
+              ) : null}
               <Col
-                lg={12}
-                md={12}
+                lg={
+                  checkReviewersListAgenda(minuteDataAgenda) ||
+                  checkReviewersListSubAgenda(minuteDataAgenda) ||
+                  checkReviewersListGeneral(minuteDataGeneral)
+                    ? 6
+                    : 12
+                }
+                md={
+                  checkReviewersListAgenda(minuteDataAgenda) ||
+                  checkReviewersListSubAgenda(minuteDataAgenda) ||
+                  checkReviewersListGeneral(minuteDataGeneral)
+                    ? 6
+                    : 12
+                }
                 sm={12}
                 className="d-flex gap-3 justify-content-end"
               >
@@ -705,12 +631,19 @@ const AddReviewers = ({
                   onClick={() => addReviewerScreen("selectMinutes")}
                   disableBtn={selectedMinuteIDs.length === 0 ? true : false}
                 />
+
+                {checkReviewersListAgenda(minuteDataAgenda) ||
+                checkReviewersListSubAgenda(minuteDataAgenda) ||
+                checkReviewersListGeneral(minuteDataGeneral) ? (
+                  <Button
+                    className={styles["Add-Button-Reviewers"]}
+                    text={t("Send")}
+                    onClick={sendReviewerScreen}
+                  />
+                ) : null}
               </Col>
             </Row>
-          ) : selectMinutes === false &&
-            selectReviewers === true &&
-            sendReviewers === false &&
-            editReviewer === false ? (
+          ) : selectMinutes === false && selectReviewers === true ? (
             <Row>
               <Col
                 lg={12}
@@ -731,98 +664,11 @@ const AddReviewers = ({
                 />
               </Col>
             </Row>
-          ) : selectMinutes === false &&
-            selectReviewers === false &&
-            sendReviewers === true &&
-            editReviewer === false ? (
-            <Row>
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                className="position-relative d-flex gap-3 justify-content-start"
-              >
-                <label className={styles["label-datePicker"]}>
-                  {t("Deadline")} <span className="text-danger">*</span>
-                </label>
-                <DatePicker
-                  onFocusedDateChange={minuteDateHandler}
-                  format={"DD MMMM YYYY"}
-                  value={minuteDate}
-                  minDate={moment().toDate()}
-                  placeholder={t("Select-date")}
-                  editable={false}
-                  className="datePickerTodoCreate2"
-                  onOpenPickNewDate={true}
-                  inputMode=""
-                  calendar={calendarValue}
-                  locale={localValue}
-                  ref={calendRef}
-                  render={
-                    <InputIcon
-                      placeholder={t("Select-date")}
-                      className="datepicker_input_minute"
-                    />
-                  }
-                />
-              </Col>
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                className="d-flex gap-3 justify-content-end"
-              >
-                <Button
-                  onClick={() => setAddReviewers(false)}
-                  className={styles["Cancel-Button"]}
-                  text={t("Cancel")}
-                />
-                <Button
-                  className={styles["Add-Button-Reviewerss"]}
-                  text={t("Add-reviewers")}
-                  onClick={addMoreMinutesForReview}
-                  disableBtn={newSelectedMinutes.length === 0 ? true : false}
-                />
-                <Button
-                  className={styles["Add-Button-Reviewers"]}
-                  text={t("Send")}
-                  onClick={sendReviewerScreen}
-                />
-              </Col>
-            </Row>
-          ) : selectMinutes === false &&
-            selectReviewers === false &&
-            sendReviewers === false &&
-            editReviewer === true ? (
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex gap-3 justify-content-end"
-              >
-                <Button
-                  onClick={cancelEditScreen}
-                  className={styles["Cancel-Button"]}
-                  text={t("Cancel")}
-                />
-                <Button
-                  className={styles["Add-Button-Reviewers"]}
-                  text={t("Update")}
-                  onClick={() => addReviewerScreen()}
-                  disableBtn={
-                    selectedReviewersToEdit.length === 0 ? true : false
-                  }
-                />
-              </Col>
-            </Row>
           ) : null}
           {addDateModal ? (
             <AddDateModal
               addDateModal={addDateModal}
               setAddDateModal={setAddDateModal}
-              sendReviewers={sendReviewers}
-              setSendReviewers={setSendReviewers}
             />
           ) : null}
         </>
