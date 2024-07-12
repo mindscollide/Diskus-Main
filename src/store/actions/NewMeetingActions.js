@@ -4288,7 +4288,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
-    // dispatch(showGetAllAgendaWiseMinutesInit());
+    dispatch(showGetAllAgendaWiseMinutesInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllAgendaWiseMinutes.RequestMethod);

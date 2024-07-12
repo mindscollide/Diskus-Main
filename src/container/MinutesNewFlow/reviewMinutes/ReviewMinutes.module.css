@@ -460,6 +460,7 @@ body[dir="rtl"] .gap-subcomments {
   overflow: hidden auto;
   padding-right: 15px;
   margin-bottom: 15px;
+  margin-right: 10px;
 }
 
 body[dir="rtl"] .review-minutes-wrapper-scroll {
