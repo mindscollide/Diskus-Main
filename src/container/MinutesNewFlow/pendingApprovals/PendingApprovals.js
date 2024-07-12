@@ -64,11 +64,11 @@ const PendingApproval = () => {
 
   // Click handler for Review & Sign button
   const handleReviewAndSignClick = async () => {
-    let newData = { IsCreator: false };
-    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
     await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
     let Data = { sRow: 0, Length: 10 };
     dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+    let newData = { IsCreator: false };
+    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
     setReviewMinutesActive(false); // Set Review Minutes button to inactive
     setReviewAndSignActive(true); // Set Review & Sign button to active
     // Your functionality for Review & Sign button

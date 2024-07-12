@@ -182,6 +182,7 @@ const NewMeeting = () => {
     video: false,
     Agenda: false,
   });
+  console.log(boarddeckOptions, "boarddeckOptions");
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
@@ -231,6 +232,23 @@ const NewMeeting = () => {
   ] = useState(false);
 
   const [dashboardEventData, setDashboardEventData] = useState(null);
+
+  useEffect(() => {
+    return () => {
+      setBoarddeckOptions({
+        selectall: false,
+        Organizer: false,
+        AgendaContributor: false,
+        Participants: false,
+        Minutes: false,
+        Task: false,
+        polls: false,
+        attendeceReport: false,
+        video: false,
+        Agenda: false,
+      });
+    };
+  }, []);
 
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
@@ -1333,11 +1351,20 @@ const NewMeeting = () => {
           console.log(record, "recordrecordrecord");
           return (
             <>
-              <Button
-                text={t("Board-deck")}
-                className={styles["BoardDeckButton"]}
-                onClick={() => boardDeckOnClick(record)}
-              />
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <Button
+                    text={t("Board-deck")}
+                    className={styles["BoardDeckButton"]}
+                    onClick={() => boardDeckOnClick(record)}
+                  />
+                </Col>
+              </Row>
             </>
           );
         } else {

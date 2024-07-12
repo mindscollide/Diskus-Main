@@ -132,7 +132,7 @@ const BoardDeckSendEmail = ({
           fetchAdvanceMeetingDetails: true,
         },
       };
-
+      console.log(data, "datadatadatadatadata");
       dispatch(BoardDeckSendEmailApi(navigate, t, data));
     } else {
       setTimeout(

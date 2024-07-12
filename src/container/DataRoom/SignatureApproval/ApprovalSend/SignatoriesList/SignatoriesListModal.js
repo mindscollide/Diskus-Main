@@ -21,7 +21,7 @@ const SignatoriesList = ({
   const [pendingSignatories, setPendingSignatories] = useState(0);
   const [comments, setComments] = useState([]);
   const [combinedData, setCombinedData] = useState([]);
-
+  console.log(comments, "commentscomments")
   useEffect(() => {
     if (SignatureWorkFlowReducer.getAllSignatoriesStatusWise !== null) {
       try {
