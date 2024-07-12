@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { GetAllAssigneesToDoList } from "../../../../../../../store/actions/ToDoList_action";
 import Avatar from "./../../../../../../../assets/images/avatar.png";
 import EditMinute from "./../../Images/Edit-Minute.png";
+import { findUserProfileImg } from "../functionsAddReviewers";
 
 const SendReviewers = ({
   selectMinutes,
@@ -51,7 +52,7 @@ const SendReviewers = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("sadasdasdasd", selectReviewers, )
+  console.log("sadasdasdasd", selectReviewers);
   let createrID = localStorage.getItem("userID");
 
   const { MinutesReducer } = useSelector((state) => state);
@@ -77,11 +78,6 @@ const SendReviewers = ({
     setMinuteToEdit(record);
     dispatch(EditSingleMinute(data));
     dispatch(UpdateMinuteFlag(true));
-  };
-
-  const findUserProfileImg = (userId, users) => {
-    const user = users.find((user) => user.userID === userId);
-    return user ? user.userProfileImg : "";
   };
 
   function updateReviewersList(state, updatedMinute) {
