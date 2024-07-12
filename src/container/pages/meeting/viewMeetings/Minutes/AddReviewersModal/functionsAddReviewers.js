@@ -379,7 +379,7 @@ export function createListOfActionAbleBundle(
         if (minute.isEdit) {
           resultList.push({
             // ID: minute.minuteID.toString(),
-            ID: "0",
+            ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
             Title: "", // Set title as needed
             BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
             ListOfUsers: minute.reviewersList,
@@ -415,7 +415,7 @@ export function createListOfActionAbleBundle(
           if (minute.isEdit) {
             resultList.push({
               // ID: minute.minuteID.toString(),
-              ID: "0",
+              ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
               Title: "", // Set title as needed
               BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
               ListOfUsers: minute.reviewersList,
@@ -451,7 +451,7 @@ export function createListOfActionAbleBundle(
       if (minute.isEdit) {
         resultList.push({
           // ID: minute.minuteID.toString(),
-          ID: "0",
+          ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
           Title: "", // Set title as needed
           BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
           ListOfUsers: minute.reviewersList,
@@ -465,4 +465,25 @@ export function createListOfActionAbleBundle(
   });
 
   return resultList;
+}
+
+export function extractPKUIDsFromActors(obj) {
+  return obj.actors.map((actor) => actor.pK_UID);
+}
+// Find matching entry in data state by pK_MeetingAgendaMinutesID
+export function findEntityIndexByMinuteID(convertData, minuteID) {
+  // Access the entities array within bundleModels
+  let entities = convertData.bundleModels;
+
+  // Find the index of the entity that matches the minuteID
+  let index = entities.findIndex((bundle) => {
+    return bundle.entities.some((entity) => entity.entityID === minuteID);
+  });
+  // Create an object to return the index and flag
+  let result = {
+    index: index,
+    found: index !== -1, // true if index is found, false otherwise
+  };
+
+  return result;
 }
