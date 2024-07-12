@@ -615,14 +615,14 @@ span.Review-pending {
   transform: rotate(180deg);
 }
 
-span.barlinespan {
+/* span.barlinespan {
   position: absolute;
   width: 1px;
   background: #e1e1e1;
   left: 27px;
   top: 17px;
   height: 100%;
-}
+} */
 
 img.edit-icon {
   position: absolute;
