@@ -387,66 +387,79 @@ const ReviewMinutes = () => {
         setMinutesGeneral(newGeneralMeetingData);
         setMinutesToReview(countActorBundleStatusID2(reducerData));
         setWorkflowID(reducerData.workFlowID);
-
-        let transformedData = minutesAgendaHierarchy.map((parentAgenda) => {
-          let parentAgendaMinutes = reducerData.agendaMinutes.filter(
-            (minute) => minute.agendaID === parentAgenda.pK_MAID
-          );
-
-          let subMinutes = parentAgenda.childAgendas.flatMap((childAgenda) => {
-            console.log(
-              reducerData,
-              childAgenda,
-              "subMinutessubMinutessubMinutessubMinutes"
+        try {
+          let transformedData = minutesAgendaHierarchy.map((parentAgenda) => {
+            let parentAgendaMinutes = reducerData.agendaMinutes.filter(
+              (minute) => minute.agendaID === parentAgenda.pK_MAID
             );
-            return reducerData.agendaMinutes
-              .filter((minute) => minute.agendaID === childAgenda.pK_MAID)
-              .map((minute) => ({
+
+            let subMinutes = parentAgenda.childAgendas.flatMap(
+              (childAgenda) => {
+                console.log(
+                  reducerData,
+                  childAgenda,
+                  NewMeetingreducer,
+                  "subMinutessubMinutessubMinutessubMinutes"
+                );
+
+                return reducerData.agendaMinutes
+                  .filter((minute) => minute.agendaID === childAgenda.pK_MAID)
+                  .map((minute) => {
+                    const foundEntry =
+                      NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes?.data?.find(
+                        (entry) =>
+                          entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                      );
+
+                    return {
+                      ...minute,
+                      attachments: foundEntry?.files || [],
+                    };
+                  });
+              }
+            );
+
+            console.log(subMinutes, "subMinutessubMinutessubMinutessubMinutes");
+            let agendaTitle =
+              parentAgendaMinutes.length > 0
+                ? parentAgendaMinutes[0].agendaTitle
+                : parentAgenda.childAgendas.find((childAgenda) =>
+                    subMinutes.some(
+                      (minute) => minute.agendaID === childAgenda.pK_MAID
+                    )
+                  )?.parentTitle || "";
+
+            let parentAgendaObj = {
+              agendaID: parentAgenda.pK_MAID,
+              agendaTitle: agendaTitle,
+              minuteData: parentAgendaMinutes.map((minute) => ({
                 ...minute,
                 attachments:
                   NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
                     (entry) =>
                       entry.pK_MeetingAgendaMinutesID === minute.minuteID
                   )?.files || [],
-              }));
+              })),
+              subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
+                let childMinutes = subMinutes.filter(
+                  (minute) => minute.agendaID === childAgenda.pK_MAID
+                );
+                return {
+                  agendaID: childAgenda.pK_MAID,
+                  agendaTitle: childMinutes[0]?.agendaTitle || "",
+                  minuteData: childMinutes,
+                };
+              }),
+            };
+
+            return parentAgendaObj;
           });
+          setMinutesAgenda(transformedData);
+        } catch (error) {
+          console.log(error, "transformedData error");
+        }
 
-          let agendaTitle =
-            parentAgendaMinutes.length > 0
-              ? parentAgendaMinutes[0].agendaTitle
-              : parentAgenda.childAgendas.find((childAgenda) =>
-                  subMinutes.some(
-                    (minute) => minute.agendaID === childAgenda.pK_MAID
-                  )
-                )?.parentTitle || "";
-
-          let parentAgendaObj = {
-            agendaID: parentAgenda.pK_MAID,
-            agendaTitle: agendaTitle,
-            minuteData: parentAgendaMinutes.map((minute) => ({
-              ...minute,
-              attachments:
-                NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
-                  (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
-                )?.files || [],
-            })),
-            subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
-              let childMinutes = subMinutes.filter(
-                (minute) => minute.agendaID === childAgenda.pK_MAID
-              );
-              return {
-                agendaID: childAgenda.pK_MAID,
-                agendaTitle: childMinutes[0]?.agendaTitle || "",
-                minuteData: childMinutes,
-              };
-            }),
-          };
-
-          return parentAgendaObj;
-        });
-
-        setMinutesAgenda(transformedData);
-        console.log("transformedData", transformedData);
+        // console.log("transformedData", transformedData);
       } else {
         setMinutesAgenda([]);
         setMinutesAgendaHierarchy([]);
@@ -562,6 +575,7 @@ const ReviewMinutes = () => {
               <Button
                 onClick={() => dispatch(acceptCommentModal(true))}
                 text={t("Accept All")}
+                disableBtn={minutesToReview === 0 ? true : false}
                 className={styles["Accept-all"]}
               />
             </Col>
@@ -1237,7 +1251,7 @@ const ReviewMinutes = () => {
                                                 )}
                                                 {historyData.declinedReviews
                                                   .slice(0, 5)
-                                                  .map((usersList, index) => (
+                                                  ?.map((usersList, index) => (
                                                     <React.Fragment key={index}>
                                                       {usersList.actorName}
                                                       {index !== 4 &&
@@ -1285,7 +1299,7 @@ const ReviewMinutes = () => {
                                       {visibleParentMinuteIDs.includes(
                                         historyData.minuteID
                                       ) &&
-                                        historyData.declinedReviews.map(
+                                        historyData?.declinedReviews?.map(
                                           (declinedDataHistory, index) => {
                                             const isLastIndexx =
                                               index ===
@@ -1501,7 +1515,7 @@ const ReviewMinutes = () => {
                           );
                         })}
 
-                        {data?.subMinutes.map((subMinuteData, index) => {
+                        {data?.subMinutes?.map((subMinuteData, index) => {
                           return (
                             <>
                               {subMinuteData.minuteData.length === 0 ? null : (
@@ -1519,7 +1533,7 @@ const ReviewMinutes = () => {
                                   </Col>
                                 </Row>
                               )}
-                              {subMinuteData?.minuteData.map(
+                              {subMinuteData?.minuteData?.map(
                                 (minuteDataSubminute, index) => {
                                   return (
                                     <>
@@ -3316,6 +3330,5 @@ const ReviewMinutes = () => {
       ) : null}
     </section>
   );
-
 };
 export default ReviewMinutes; // Exporting pending approval component
