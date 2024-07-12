@@ -1070,3 +1070,8 @@ export function formatDateToDDMMYYYYDownGradeSubscription(dateString) {
   // Return the formatted date string
   return `${formattedYear}-${formattedMonth}-${formattedDay}`;
 }
+
+export const newTimeFormaterViewPoll = (dateTime) => {
+  let _dateTime = new Date(dateTime).toString("YYYYMMDDHHmmss");
+  return moment(_dateTime).format("h:mm A, Do MMM, YYYY");
+};
