@@ -47,6 +47,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   );
 
   const [organizerRows, setOrganizerRows] = useState([]);
+  console.log(organizerRows, "newDatanewDatasnewDatanewDatas");
   const [initialOrganizerRows, setInitialOrganizerRows] = useState([]);
   const [proposedDates, setProposedDates] = useState([]);
 
@@ -219,6 +220,8 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
             <SceduleProposedmeeting
               organizerRows={organizerRows}
               proposedDates={proposedDates}
+              setOrganizerRows={setOrganizerRows}
+              setProposedDates={setProposedDates}
               currentMeeting={viewProposeDatePollMeetingID}
             />
           ) : null}
