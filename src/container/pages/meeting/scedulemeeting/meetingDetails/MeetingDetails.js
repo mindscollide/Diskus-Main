@@ -132,7 +132,9 @@ const MeetingDetails = ({
 
   const calendRef = useRef();
   const [error, seterror] = useState(false);
-  const [publishedFlag, setPublishedFlag] = useState(null);
+  const [publishedFlag, setPublishedFlag] = useState(false);
+
+  console.log(publishedFlag, "publishedFlagpublishedFlag");
 
   const [open, setOpen] = useState({
     flag: false,
@@ -614,8 +616,7 @@ const MeetingDetails = ({
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
           ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
-          MeetingStatusID:
-            publishedFlag !== null && publishedFlag === true ? 1 : 11,
+          MeetingStatusID: publishedFlag ? 1 : 11,
         },
       };
       console.log(data, "newArrnewArrnewArrnewArr");
@@ -719,7 +720,7 @@ const MeetingDetails = ({
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
           ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
-          MeetingStatusID: 11,
+          MeetingStatusID: publishedFlag ? 1 : 11,
         },
       };
       dispatch(
@@ -1009,7 +1010,9 @@ const MeetingDetails = ({
         getAllMeetingDetails !== undefined
       ) {
         // setEditMeeting(true);
+        let PublishedMeetingStatus = getAllMeetingDetails.isPublished;
         let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
+        console.log(MeetingData, "MeetingDataMeetingData");
         let isPublishedState = getAllMeetingDetails.isPublished;
         let getmeetingDates = MeetingData.meetingDates;
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
@@ -1094,7 +1097,7 @@ const MeetingDetails = ({
           });
         }
         setRows(newDateTimeData);
-        setPublishedFlag(wasPublishedFlag);
+        setPublishedFlag(PublishedMeetingStatus);
       } else {
       }
     } catch {}
