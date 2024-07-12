@@ -17,6 +17,8 @@ import {
   checkReviewersListAgenda,
   checkReviewersListGeneral,
   updateMinutesData,
+  hasNonEmptyReviewersAgenda,
+  allReviewersListsNonEmptyGeneral,
 } from "../functionsAddReviewers";
 import Avatar from "./../../../../../../../assets/images/avatar.png";
 import EditMinute from "./../../Images/Edit-Minute.png";
@@ -40,7 +42,6 @@ const SelectMinutes = ({
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
   const [expandedItems, setExpandedItems] = useState({});
-  const [totalIds, setTotalIds] = useState([]);
 
   useEffect(() => {
     const checkIfTruncated = () => {
@@ -79,17 +80,7 @@ const SelectMinutes = ({
         const generalMinuteIDs = minuteDataGeneral.map((item) => item.minuteID);
 
         const allMinuteIDs = [...agendaMinuteIDs, ...generalMinuteIDs];
-        setTotalIds(
-          minuteDataAgenda.reduce((acc, item) => {
-            const agendaMinuteIDs = [
-              ...item.minuteData.map((subItem) => subItem.minuteID),
-              ...item.subMinutes.flatMap((subItem) =>
-                subItem.minuteData.map((subSubItem) => subSubItem.minuteID)
-              ),
-            ];
-            return acc + agendaMinuteIDs.length;
-          }, 0) + minuteDataGeneral.length
-        );
+
         setSelectedMinuteIDs(allMinuteIDs);
       } else {
         setSelectedMinuteIDs([]);
@@ -117,6 +108,7 @@ const SelectMinutes = ({
     setEditReviewer(false);
     setSelectReviewers(true);
     setSelectedMinuteIDs([data.minuteID]);
+    setSelectReviewersArray(data.reviewersList);
   };
 
   console.log("Data After Update: ", minuteDataAgenda, minuteDataGeneral);
@@ -137,10 +129,18 @@ const SelectMinutes = ({
             name="IsChat"
             onChange={(e) => handleSelectAll(e.target.checked)}
             checked={
-              selectedMinuteIDs.length > 0 &&
-              selectedMinuteIDs.length === totalIds
+              hasNonEmptyReviewersAgenda(minuteDataAgenda) &&
+              allReviewersListsNonEmptyGeneral(minuteDataGeneral)
+                ? true
+                : false
             }
             classNameDiv={styles["addReviewersCheckbox"]}
+            disabled={
+              checkReviewersListGeneral(minuteDataGeneral) ||
+              checkReviewersListAgenda(minuteDataAgenda)
+                ? true
+                : false
+            }
           />
         </Col>
       </Row>

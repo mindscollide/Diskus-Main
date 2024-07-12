@@ -295,3 +295,24 @@ export const updateMinutesData = (
     console.error("Error updating minutes data:", error);
   }
 };
+
+export function hasNonEmptyReviewersAgenda(jsonData) {
+  // Check if any minuteData has non-empty reviewersList
+  const hasNonEmptyInMinutes = jsonData.find(item =>
+      item.minuteData.some(minute => minute.reviewersList.length > 0)
+  );
+
+  // Check if any subMinutes' minuteData has non-empty reviewersList
+  const hasNonEmptyInSubMinutes = jsonData.find(item =>
+      item.subMinutes && item.subMinutes.some(sub =>
+          sub.minuteData.some(minute => minute.reviewersList.length > 0)
+      )
+  );
+
+  // Return true if any reviewersList is non-empty, otherwise false
+  return !!hasNonEmptyInMinutes || !!hasNonEmptyInSubMinutes;
+}
+
+export function allReviewersListsNonEmptyGeneral(data) {
+  return !data.find(item => item.reviewersList.length === 0);
+}
