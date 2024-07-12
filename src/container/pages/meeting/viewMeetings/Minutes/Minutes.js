@@ -759,7 +759,7 @@ const Minutes = ({
       )
     );
 
-    dispatch(GetMinuteReviewFlowByMeetingId(newData, navigate, t))
+    dispatch(GetMinuteReviewFlowByMeetingId(newData, navigate, t));
   };
 
   const accordianClick = (data, id, index) => {
