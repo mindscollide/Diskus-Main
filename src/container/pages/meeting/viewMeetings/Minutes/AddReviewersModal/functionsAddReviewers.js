@@ -219,6 +219,16 @@ export const matchDataByMinuteID = (item, stateMinuteIDs) => {
   return stateMinuteIDs.includes(item.minuteID);
 };
 
+export const checkForEdit = (oldData, newData) => {
+  // Check if lengths are different
+  if (oldData.length !== newData.length) {
+    return false;
+  }
+
+  // Check each element using `every`
+  return oldData.every((value, index) => value === newData[index]);
+};
+
 export const updateMinutesData = (
   minuteDataAgenda,
   minuteDataGeneral,
@@ -240,10 +250,25 @@ export const updateMinutesData = (
           matchDataByMinuteID(minute, selectedMinuteIDs)
         );
         if (matchDataByMinuteID(minute, selectedMinuteIDs)) {
-          return {
-            ...minute,
-            reviewersList: reviewersList,
-          };
+          if (minute.apiCheck) {
+            if (checkForEdit(minute.reviewersList, reviewersList)) {
+              return {
+                ...minute,
+                reviewersList: reviewersList,
+                isEdit: true,
+              };
+            } else {
+              return {
+                ...minute,
+                reviewersList: reviewersList,
+              };
+            }
+          } else {
+            return {
+              ...minute,
+              reviewersList: reviewersList,
+            };
+          }
         } else {
           return {
             ...minute,
