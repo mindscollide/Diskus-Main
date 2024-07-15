@@ -716,7 +716,7 @@ const AddReviewers = ({
                   className={styles["Add-Button-Reviewers"]}
                   text={t("Add")}
                   onClick={() => addReviewerScreen("selectReviewers")}
-                  disableBtn={selectReviewersArray.length > 0 ? false : true}
+                  // disableBtn={selectReviewersArray.length > 0 ? false : true}
                 />
               </Col>
             </Row>
