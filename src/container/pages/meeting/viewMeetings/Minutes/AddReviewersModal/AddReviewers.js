@@ -91,7 +91,7 @@ const AddReviewers = ({
   //All general minutes
   const [minuteDataGeneral, setMinuteDataGeneral] = useState([]);
 
-  const [minuteReviewData, setMinuteReviewData] = useState([]);
+  const [minuteReviewDataCheckForEdit, setMinuteReviewDataCheckForEdit] = useState([]);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -124,6 +124,8 @@ const AddReviewers = ({
         setMinuteDataGeneral,
         setSelectedMinuteIDs,
         setSelectReviewersArray,
+        minuteReviewDataCheckForEdit,
+        setMinuteReviewDataCheckForEdit
       );
       setSelectReviewers(false);
       setSelectMinutes(true);
@@ -156,6 +158,7 @@ const AddReviewers = ({
       };
 
       console.log("Save Data", Data);
+      console.log("Save Data", setAddReviewers);
 
       dispatch(SaveMinutesReviewFlow(Data, navigate, t, setAddReviewers));
     }
@@ -612,6 +615,7 @@ const AddReviewers = ({
               allReviewers={allReviewers}
               setSelectMinutes={setSelectMinutes}
               setSelectReviewers={setSelectReviewers}
+              setMinuteReviewDataCheckForEdit={setMinuteReviewDataCheckForEdit}
             />
           )}
         </>
@@ -712,7 +716,7 @@ const AddReviewers = ({
                   className={styles["Add-Button-Reviewers"]}
                   text={t("Add")}
                   onClick={() => addReviewerScreen("selectReviewers")}
-                  disableBtn={selectReviewersArray.length > 0 ? false : true}
+                  // disableBtn={selectReviewersArray.length > 0 ? false : true}
                 />
               </Col>
             </Row>
