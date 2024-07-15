@@ -219,14 +219,19 @@ export const matchDataByMinuteID = (item, stateMinuteIDs) => {
   return stateMinuteIDs.includes(item.minuteID);
 };
 
-export const checkForEdit = (oldData, newData) => {
-  // Check if lengths are different
-  if (oldData.length !== newData.length) {
-    return false;
+export const checkForEdit = (oldArray, newArray) => {
+  console.log("minuteReviewDataCheckForEdit ", oldArray, newArray);
+  if (oldArray.length !== newArray.length) {
+    return true;
   }
 
-  // Check each element using `every`
-  return oldData.every((value, index) => value === newData[index]);
+  for (let i = 0; i < oldArray.length; i++) {
+    if (oldArray[i] !== newArray[i]) {
+      return true;
+    }
+  }
+
+  return false;
 };
 
 export const updateMinutesData = (
@@ -237,21 +242,17 @@ export const updateMinutesData = (
   setMinuteDataAgenda,
   setMinuteDataGeneral,
   setSelectedMinuteIDs,
-  setSelectReviewersArray
+  setSelectReviewersArray,
+  minuteReviewDataCheckForEdit,
+  setMinuteReviewDataCheckForEdit
 ) => {
   try {
     // Helper function to update minuteData with reviewersList based on isChecked value
     const updateMinuteData = (minuteData) => {
       return minuteData.map((minute) => {
-        console.log("minuteDataAgenda", minute);
-        console.log("minuteDataAgenda", selectedMinuteIDs);
-        console.log(
-          "minuteDataAgenda",
-          matchDataByMinuteID(minute, selectedMinuteIDs)
-        );
         if (matchDataByMinuteID(minute, selectedMinuteIDs)) {
           if (minute.apiCheck) {
-            if (checkForEdit(minute.reviewersList, reviewersList)) {
+            if (checkForEdit(minuteReviewDataCheckForEdit, reviewersList)) {
               return {
                 ...minute,
                 reviewersList: reviewersList,
@@ -278,8 +279,6 @@ export const updateMinutesData = (
     };
     // Process the first state
     const updatedState1 = minuteDataAgenda.map((agenda) => {
-      console.log("minuteDataAgenda", agenda);
-      console.log("minuteDataAgenda", agenda.minuteData);
       // Update minuteData at the top level
       let updatedAgenda = {
         ...agenda,
@@ -302,6 +301,7 @@ export const updateMinutesData = (
       minuteDataGeneral,
       selectedMinuteIDs
     );
+
     const updatedState2 = minuteDataGeneral.map((minute) => {
       if (filteredGeneralData.includes(minute)) {
         // Update reviewersList for filtered objects
@@ -313,11 +313,11 @@ export const updateMinutesData = (
       // Return unchanged objects for non-filtered items
       return minute;
     });
-
     setMinuteDataAgenda(updatedState1);
     setMinuteDataGeneral(updatedState2);
     setSelectedMinuteIDs([]);
     setSelectReviewersArray([]);
+    setMinuteReviewDataCheckForEdit([]);
   } catch (error) {
     console.error("Error updating minutes data:", error);
   }
@@ -381,12 +381,8 @@ export function createListOfActionAbleBundle(
 
   // Process minuteDataAgenda
   minuteDataAgenda.forEach((parentAgenda) => {
-    console.log("createListOfActionAbleBundle", parentAgenda);
-    // Check if the parent agenda is checked
-    // if (parentAgenda.isChecked) {
     // Process minuteData within parent agenda
     parentAgenda.minuteData.forEach((minute) => {
-      console.log("createListOfActionAbleBundle minute", minute);
       // Check if minute is checked
       if (minute.reviewersList.length > 0 && minute.apiCheck === false) {
         resultList.push({
@@ -401,28 +397,23 @@ export function createListOfActionAbleBundle(
           },
         });
       } else if (minute.reviewersList.length > 0 && minute.apiCheck) {
-        if (minute.isEdit) {
-          resultList.push({
-            // ID: minute.minuteID.toString(),
-            ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
-            Title: "", // Set title as needed
-            BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
-            ListOfUsers: minute.reviewersList,
-            Entity: {
-              EntityID: minute.minuteID,
-              EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
-            },
-          });
-        }
+        resultList.push({
+          ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
+          Title: "", // Set title as needed
+          BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+          ListOfUsers: minute.reviewersList,
+          Entity: {
+            EntityID: minute.minuteID,
+            EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+          },
+        });
       }
     });
 
     // Process subMinutes within parent agenda
     parentAgenda.subMinutes.forEach((subAgenda) => {
-      console.log("createListOfActionAbleBundle subAgenda", subAgenda);
       // Check if sub agenda is checked
       subAgenda.minuteData.forEach((minute) => {
-        console.log("createListOfActionAbleBundle minute", minute);
         // Check if minute is checked
         if (minute.reviewersList.length > 0 && minute.apiCheck === false) {
           resultList.push({
@@ -437,19 +428,17 @@ export function createListOfActionAbleBundle(
             },
           });
         } else if (minute.reviewersList.length > 0 && minute.apiCheck) {
-          if (minute.isEdit) {
-            resultList.push({
-              // ID: minute.minuteID.toString(),
-              ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
-              Title: "", // Set title as needed
-              BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
-              ListOfUsers: minute.reviewersList,
-              Entity: {
-                EntityID: minute.minuteID,
-                EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
-              },
-            });
-          }
+          resultList.push({
+            // ID: minute.minuteID.toString(),
+            ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
+            Title: "", // Set title as needed
+            BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+            ListOfUsers: minute.reviewersList,
+            Entity: {
+              EntityID: minute.minuteID,
+              EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+            },
+          });
         }
       });
     });
@@ -458,7 +447,6 @@ export function createListOfActionAbleBundle(
 
   // Process minuteDataGeneral
   minuteDataGeneral.forEach((minute) => {
-    console.log("createListOfActionAbleBundle minute", minute);
     // Check if minute is checked
     if (minute.reviewersList.length > 0 && minute.apiCheck === false) {
       resultList.push({
@@ -473,19 +461,17 @@ export function createListOfActionAbleBundle(
         },
       });
     } else if (minute.reviewersList.length > 0 && minute.apiCheck) {
-      if (minute.isEdit) {
-        resultList.push({
-          // ID: minute.minuteID.toString(),
-          ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
-          Title: "", // Set title as needed
-          BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
-          ListOfUsers: minute.reviewersList,
-          Entity: {
-            EntityID: minute.minuteID,
-            EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
-          },
-        });
-      }
+      resultList.push({
+        // ID: minute.minuteID.toString(),
+        ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
+        Title: "", // Set title as needed
+        BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+        ListOfUsers: minute.reviewersList,
+        Entity: {
+          EntityID: minute.minuteID,
+          EntityTypeID: 3, // Assuming EntityTypeID for minuteDataAgenda is 3
+        },
+      });
     }
   });
 
