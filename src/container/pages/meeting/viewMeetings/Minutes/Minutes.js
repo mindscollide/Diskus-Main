@@ -41,6 +41,7 @@ import DefaultAvatar from "./Images/avatar.png";
 import {
   convertToGMTMinuteTime,
   convertDateToGMTMinute,
+  getCurrentDateTimeUTC,
 } from "../../../../../commen/functions/time_formatter";
 import VersionHistory from "./AgendaWise/VersionHistoryModal/VersionHistory";
 import RevisionHistory from "./AgendaWise/RevisionHistoryModal/RevisionHistory";
@@ -195,6 +196,7 @@ const Minutes = ({
       dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
     }
 
+    dispatch(GetMinuteReviewFlowByMeetingId(Data, navigate, t));
     return () => {
       setUseCase(null);
       setMessages([]);
@@ -697,8 +699,8 @@ const Minutes = ({
       ResponseMessageMinute !== t("No-record-found") &&
       ResponseMessageMinute !== t("List-updated-successfully") &&
       ResponseMessageMinute !== t("No-data-available") &&
-      ResponseMessageMinute !== t("Minute-review-flow-not-found") &&
-      ResponseMessageMinute !== t("Data-available")
+      ResponseMessageMinute !== t("Data-available") &&
+      ResponseMessageMinute !== t("Minute-review-flow-stats-not-available")
     ) {
       setOpen({
         ...open,
@@ -782,25 +784,6 @@ const Minutes = ({
     setOpenMenuId(openMenuId === id ? null : id); // Toggle the menu for the clicked item
   };
 
-  // const transformData = (data) => {
-  //   return data.map((item) => ({
-  //     minuteID: item.minuteID,
-  //     description: item.minutesDetails,
-  //     attachments: item.minutesAttachmets,
-  //     uploader: {
-  //       userID: item.userID,
-  //       orignalProfilePictureName:
-  //         item.userProfilePicture.orignalProfilePictureName,
-  //       displayProfilePictureName:
-  //         item.userProfilePicture.displayProfilePictureName,
-  //     },
-  //     lastUpdatedDate: item.lastUpdatedDate,
-  //     lastUpdatedTime: item.lastUpdatedTime,
-  //     userID: item.userID,
-  //     userName: item.userName,
-  //   }));
-  // };
-
   const transformData = (data, generalMinutesData) => {
     if (!data || !generalMinutesData) return [];
 
@@ -833,6 +816,7 @@ const Minutes = ({
         lastUpdatedTime: item.lastUpdatedTime || "",
         userID: item.userID || null,
         userName: item.userName || "",
+        isEditable: item.isEditable,
       };
     });
   };
@@ -886,23 +870,6 @@ const Minutes = ({
     NewMeetingreducer.generalMinutes,
     MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData,
   ]);
-
-  // useEffect(() => {
-  //   if (
-  //     NewMeetingreducer.generalMinutes !== undefined &&
-  //     NewMeetingreducer.generalMinutes !== null &&
-  //     NewMeetingreducer.generalMinutes.length !== 0
-  //   ) {
-  //     let data = NewMeetingreducer.generalMinutes.meetingMinutes;
-  //     const transformedData = transformData(data);
-  //     setMinutesData(transformedData);
-  //   } else {
-  //     setMinutesData([]);
-  //   }
-  //   return () => {
-  //     setMinutesData([]);
-  //   };
-  // }, [NewMeetingreducer.generalMinutes]);
 
   useEffect(() => {
     if (
@@ -1266,7 +1233,17 @@ const Minutes = ({
             sm={12}
             className="d-flex justify-content-between align-items-center"
           >
-            <p className={styles["Attachments"]}>{t("Attachments")}</p>
+            {Number(editorRole.status) === 1 ||
+            Number(editorRole.status) === 11 ||
+            Number(editorRole.status) === 12 ? null : (editorRole.role ===
+                "Organizer" &&
+                Number(editorRole.status) === 9) ||
+              (Number(editorRole.status) === 10 &&
+                editorRole.role === "Organizer") ? (
+              <p className={styles["Attachments"]}>{t("Attachments")}</p>
+            ) : (
+              <p></p>
+            )}
             <div className={styles["button-block"]}>
               <Button
                 text={t("Publish-minutes")}
@@ -1628,9 +1605,14 @@ const Minutes = ({
                                           </span>{" "}
                                           {data?.MinuteStats?.acceptedByUsers
                                             ?.length > 0 &&
-                                            data?.MinuteStats?.acceptedByUsers?.map(
+                                            data?.MinuteStats?.acceptedByUsers.map(
                                               (minuteAcceptedUser, index) =>
-                                                `${minuteAcceptedUser}, `
+                                                index ===
+                                                data.MinuteStats.acceptedByUsers
+                                                  .length -
+                                                  1
+                                                  ? `${minuteAcceptedUser}`
+                                                  : `${minuteAcceptedUser}, `
                                             )}
                                         </p>
                                         <p
@@ -1643,11 +1625,22 @@ const Minutes = ({
                                           >
                                             Review Rejected:
                                           </span>{" "}
-                                          {data?.MinuteStats?.rejectedByUsers
+                                          {/* {data?.MinuteStats?.rejectedByUsers
                                             ?.length > 0 &&
                                             data?.MinuteStats?.rejectedByUsers?.map(
                                               (minuteRejectedUser, index) =>
                                                 `${minuteRejectedUser}, `
+                                            )} */}
+                                          {data?.MinuteStats?.rejectedByUsers
+                                            ?.length > 0 &&
+                                            data?.MinuteStats?.rejectedByUsers.map(
+                                              (minuteRejectedUser, index) =>
+                                                index ===
+                                                data.MinuteStats.rejectedByUsers
+                                                  .length -
+                                                  1
+                                                  ? `${minuteRejectedUser}`
+                                                  : `${minuteRejectedUser}, `
                                             )}
                                         </p>
                                         <p
@@ -1658,11 +1651,22 @@ const Minutes = ({
                                           >
                                             Review Pending:
                                           </span>{" "}
-                                          {data?.MinuteStats?.pendingUsers
+                                          {/* {data?.MinuteStats?.pendingUsers
                                             ?.length > 0 &&
                                             data?.MinuteStats?.pendingUsers?.map(
                                               (minutePendingUser, index) =>
                                                 `${minutePendingUser}, `
+                                            )} */}
+                                          {data?.MinuteStats?.pendingUsers
+                                            ?.length > 0 &&
+                                            data?.MinuteStats?.pendingUsers.map(
+                                              (minutePendingUser, index) =>
+                                                index ===
+                                                data.MinuteStats.pendingUsers
+                                                  .length -
+                                                  1
+                                                  ? `${minutePendingUser}`
+                                                  : `${minutePendingUser}, `
                                             )}
                                         </p>
                                       </Col>
@@ -1679,18 +1683,30 @@ const Minutes = ({
                                 className="position-relative"
                               >
                                 <div className={styles["uploaded-details"]}>
-                                  <img
-                                    draggable={false}
-                                    src={RedCroseeIcon}
-                                    height="20.76px"
-                                    width="20.76px"
-                                    className={styles["RedCrossClass"]}
-                                    onClick={() => {
-                                      dispatch(deleteCommentModalGeneral(true));
-                                      dispatch(DeleteMinuteReducer(data));
-                                    }}
-                                    alt=""
-                                  />
+                                  {(data.isEditable &&
+                                    Number(editorRole.status) === 1) ||
+                                  Number(editorRole.status) === 11 ||
+                                  Number(editorRole.status) ===
+                                    12 ? null : (editorRole.role ===
+                                      "Organizer" &&
+                                      Number(editorRole.status) === 9) ||
+                                    (Number(editorRole.status) === 10 &&
+                                      editorRole.role === "Organizer") ? (
+                                    <img
+                                      draggable={false}
+                                      src={RedCroseeIcon}
+                                      height="20.76px"
+                                      width="20.76px"
+                                      className={styles["RedCrossClass"]}
+                                      onClick={() => {
+                                        dispatch(
+                                          deleteCommentModalGeneral(true)
+                                        );
+                                        dispatch(DeleteMinuteReducer(data));
+                                      }}
+                                      alt=""
+                                    />
+                                  ) : null}
                                   <Row className={styles["inherit-height"]}>
                                     <Col lg={9} md={9} sm={12}>
                                       <p
@@ -1760,14 +1776,28 @@ const Minutes = ({
                                           className="d-grid justify-content-end p-0"
                                         >
                                           <div>
-                                            <img
-                                              className="cursor-pointer mx-2"
-                                              src={EditIcon}
-                                              onClick={() =>
-                                                handleEditFunc(data)
-                                              }
-                                              alt=""
-                                            />
+                                            {(data.isEditable &&
+                                              Number(editorRole.status) ===
+                                                1) ||
+                                            Number(editorRole.status) === 11 ||
+                                            Number(editorRole.status) ===
+                                              12 ? null : (editorRole.role ===
+                                                "Organizer" &&
+                                                Number(editorRole.status) ===
+                                                  9) ||
+                                              (Number(editorRole.status) ===
+                                                10 &&
+                                                editorRole.role ===
+                                                  "Organizer") ? (
+                                              <img
+                                                className="cursor-pointer mx-2"
+                                                src={EditIcon}
+                                                onClick={() =>
+                                                  handleEditFunc(data)
+                                                }
+                                                alt=""
+                                              />
+                                            ) : null}
                                             <div
                                               onClick={() =>
                                                 menuPopupMinute(data.minuteID)
@@ -1860,220 +1890,6 @@ const Minutes = ({
                 </Row>
               );
             })}
-
-            {/* <Row className="mt-2">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["ScrollerMinutes"]}
-              >
-                {messages.length > 0
-                  ? messages.map((data, index) => {
-                      console.log("className", data);
-                      return (
-                        <>
-                          <section className={styles["Sizing_Saved_Minutes"]}>
-                            <Row className="mt-3">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={styles["Box_Minutes"]}
-                              >
-                                <Row>
-                                  <Col lg={8} md={8} sm={8}>
-                                    <Row className="mt-3">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span className={styles["Title_File"]}>
-                                          {expanded ? (
-                                            <>
-                                              <span
-                                                dangerouslySetInnerHTML={{
-                                                  __html:
-                                                    data.minutesDetails.substring(
-                                                      0,
-                                                      120
-                                                    ),
-                                                }}
-                                              ></span>
-                                              ...
-                                            </>
-                                          ) : (
-                                            <span
-                                              dangerouslySetInnerHTML={{
-                                                __html: data.minutesDetails,
-                                              }}
-                                            ></span>
-                                          )}
-
-                                          <span
-                                            className={
-                                              styles["Show_more_Styles"]
-                                            }
-                                            onClick={toggleExpansion}
-                                          >
-                                            {expanded &&
-                                            data.minutesDetails.substring(
-                                              0,
-                                              120
-                                            )
-                                              ? t("See-more")
-                                              : ""}
-                                          </span>
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span
-                                          className={
-                                            styles["Date_Minutes_And_time"]
-                                          }
-                                        >
-                                          {newTimeFormaterAsPerUTCFullDate(
-                                            data.lastUpdatedDate +
-                                              data.lastUpdatedTime
-                                          )}
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                  <Col lg={4} md={4} sm={4} className="mt-4">
-                                    <Row className="d-flex justify-content-end">
-                                      <Col lg={2} md={2} sm={2}>
-                                        <img
-                                          draggable={false}
-                                          src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                          height="39px"
-                                          width="39px"
-                                          className={styles["Profile_minutes"]}
-                                          alt=""
-                                        />
-                                      </Col>
-                                      <Col
-                                        lg={6}
-                                        md={6}
-                                        sm={6}
-                                        className={styles["Line_heigh"]}
-                                      >
-                                        <Row>
-                                          <Col lg={12} md={12} sm={12}>
-                                            <span
-                                              className={
-                                                styles["Uploaded_heading"]
-                                              }
-                                            >
-                                              {t("Uploaded-by")}
-                                            </span>
-                                          </Col>
-                                        </Row>
-                                        <Row>
-                                          <Col lg={12} md={12} sm={12}>
-                                            <span className={styles["Name"]}>
-                                              {data.userName}
-                                            </span>
-                                          </Col>
-                                        </Row>
-                                      </Col>
-                                      <Col
-                                        lg={3}
-                                        md={3}
-                                        sm={3}
-                                        className="d-flex justify-content-start align-items-center"
-                                      >
-                                        {Number(editorRole.status) === 1 ||
-                                        Number(editorRole.status) === 11 ||
-                                        Number(editorRole.status) ===
-                                          12 ? null : (editorRole.role ===
-                                            "Organizer" &&
-                                            Number(editorRole.status) === 9) ||
-                                          (Number(editorRole.status) === 10 &&
-                                            editorRole.role === "Organizer") ? (
-                                          <img
-                                            draggable={false}
-                                            src={EditIcon}
-                                            height="21.55px"
-                                            width="21.55px"
-                                            className="cursor-pointer"
-                                            onClick={() => handleEditFunc(data)}
-                                            alt=""
-                                          />
-                                        ) : null}
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </Row>
-                                <Row className="mt-2">
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span
-                                      className={styles["Show_more"]}
-                                      onClick={() => handleshowMore(index)}
-                                    >
-                                      {generalShowMore === index
-                                        ? t("Hide-details")
-                                        : t("Show-more")}
-                                    </span>
-                                  </Col>
-                                </Row>
-                                {generalShowMore === index &&
-                                showMore === true ? (
-                                  <>
-                                    <Row>
-                                      {data.minutesAttachmets.map(
-                                        (filesname, index) => {
-                                          console.log(
-                                            filesname,
-                                            "filesnamefilesname"
-                                          );
-                                          return (
-                                            <>
-                                              <Col lg={3} md={3} sm={3}>
-                                                <AttachmentViewer
-                                                  name={
-                                                    filesname.displayFileName
-                                                  }
-                                                  data={filesname}
-                                                  id={0}
-                                                />
-                                              </Col>
-                                            </>
-                                          );
-                                        }
-                                      )}
-                                    </Row>
-                                  </>
-                                ) : null}
-                                {Number(editorRole.status) === 1 ||
-                                Number(editorRole.status) === 11 ||
-                                Number(editorRole.status) ===
-                                  12 ? null : (editorRole.role ===
-                                    "Organizer" &&
-                                    Number(editorRole.status) === 9) ||
-                                  (Number(editorRole.status) === 10 &&
-                                    editorRole.role === "Organizer") ||
-                                  userID === organizerID ? (
-                                  <img
-                                    draggable={false}
-                                    src={RedCroseeIcon}
-                                    height="20.76px"
-                                    width="20.76px"
-                                    className={styles["RedCrossClass"]}
-                                    onClick={() =>
-                                      handleRemovingTheMinutes(data)
-                                    }
-                                    alt=""
-                                  />
-                                ) : null}
-                              </Col>
-                            </Row>
-                          </section>
-                        </>
-                      );
-                    })
-                  : null}
-              </Col>
-            </Row> */}
           </>
         ) : null}
         <Row className="mt-5">

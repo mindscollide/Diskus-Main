@@ -20,6 +20,7 @@ import {
   deleteMinuteReviewByReviewer,
   PublishMeetingMinutesRM,
   GetAllPublishedMeetingMinutesRM,
+  publishMeetingMinutes,
 } from "../../commen/apis/Api_config";
 import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
 
@@ -506,9 +507,7 @@ const GetAllOrganizationUsersForReview = (navigate, t, setAllReviewers) => {
                   "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_01".toLowerCase()
                 )
             ) {
-              setAllReviewers(
-                response.data.responseResult.organizationUsers
-              );
+              setAllReviewers(response.data.responseResult.organizationUsers);
               dispatch(
                 getAllOrganizationUsersForReview_Success(
                   response.data.responseResult,
@@ -1820,6 +1819,99 @@ const RejectMinute = (response) => {
   };
 };
 
+const publishMeetingMinutes_Init = () => {
+  return {
+    type: actions.PUBLISH_MEETINGMINUTES_INIT,
+  };
+};
+
+const publishMeetingMinutes_Success = (response, message) => {
+  return {
+    type: actions.PUBLISH_MEETINGMINUTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const publishMeetingMinutes_Fail = (message, response) => {
+  return {
+    type: actions.PUBLISH_MEETINGMINUTES_FAIL,
+    message: message,
+    response: response,
+  };
+};
+
+//publishMeetingMinutes
+const PublishMeetingMinutes = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(publishMeetingMinutes_Init());
+    let form = new FormData();
+    form.append("RequestMethod", publishMeetingMinutes.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(PublishMeetingMinutes(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                publishMeetingMinutes_Success(
+                  response.data.responseResult,
+                  t("Publish-successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                publishMeetingMinutes_Fail(t("Publish-unsuccessful", data))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_03".toLowerCase()
+                )
+            ) {
+              dispatch(publishMeetingMinutes_Fail(t("Something-went-wrong")));
+            } else {
+              dispatch(publishMeetingMinutes_Fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(publishMeetingMinutes_Fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(publishMeetingMinutes_Fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(publishMeetingMinutes_Fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetPublishedMeetingMinutesApi,
   MeetingPublishedMinutesApi,
@@ -1852,4 +1944,5 @@ export {
   AcceptRejectMinuteReview,
   RejectMinute,
   currentUserPicture,
+  PublishMeetingMinutes,
 };

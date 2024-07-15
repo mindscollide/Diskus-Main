@@ -116,6 +116,7 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
       show={true}
       className={"FullScreenModal"}
       fullscreen={true}
+      closeButton={true}
       ModalBody={
         <>
           <Row>

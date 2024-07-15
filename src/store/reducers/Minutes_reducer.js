@@ -31,7 +31,8 @@ const initialState = {
   RejectMinuteData: null,
   PublishedMinutes: null,
   GetPublishedMinutes: null,
-  CurrentUserPicture: null
+  CurrentUserPicture: null,
+  PublishMeetingMinutesData: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -472,6 +473,31 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         CurrentUserPicture: action.response,
+      };
+    }
+
+    case actions.PUBLISH_MEETINGMINUTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.PUBLISH_MEETINGMINUTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        PublishMeetingMinutesData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.PUBLISH_MEETINGMINUTES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        PublishMeetingMinutesData: null,
+        ResponseMessage: action.message,
       };
     }
 
