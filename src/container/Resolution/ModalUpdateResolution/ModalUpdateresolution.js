@@ -3,13 +3,13 @@ import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalUpdateresolution.module.css";
 import { useTranslation } from "react-i18next";
 
-import { Button, InputSearchFilter, Modal } from "../../components/elements";
+import { Button, InputSearchFilter, Modal } from "../../../components/elements";
 import { style } from "@mui/system";
 const ModalUpdateresolution = ({
   ModalTitle,
   updateresolution,
   setUpdateresolution,
-  handleUpdateResolution
+  handleUpdateResolution,
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
