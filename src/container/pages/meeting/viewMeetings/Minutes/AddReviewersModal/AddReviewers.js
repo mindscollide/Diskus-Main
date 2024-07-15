@@ -156,8 +156,9 @@ const AddReviewers = ({
       };
 
       console.log("Save Data", Data);
+      console.log("Save Data", setAddReviewers);
 
-      dispatch(SaveMinutesReviewFlow(Data, navigate, t, setAddReviewers));
+      // dispatch(SaveMinutesReviewFlow(Data, navigate, t, setAddReviewers));
     }
   };
 
