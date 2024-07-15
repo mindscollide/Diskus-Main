@@ -474,7 +474,7 @@ const getAllOrganizationUsersForReview_Fail = (message, response) => {
 };
 
 //GetAllOrganizationUsersForReview
-const GetAllOrganizationUsersForReview = (navigate, t) => {
+const GetAllOrganizationUsersForReview = (navigate, t, setAllReviewers) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllOrganizationUsersForReview_Init());
@@ -494,7 +494,9 @@ const GetAllOrganizationUsersForReview = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllOrganizationUsersForReview(navigate, t));
+          dispatch(
+            GetAllOrganizationUsersForReview(navigate, t, setAllReviewers)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -504,6 +506,9 @@ const GetAllOrganizationUsersForReview = (navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_01".toLowerCase()
                 )
             ) {
+              setAllReviewers(
+                response.data.responseResult.organizationUsers
+              );
               dispatch(
                 getAllOrganizationUsersForReview_Success(
                   response.data.responseResult,
@@ -1592,7 +1597,6 @@ const MeetingPublishedMinutesApi = (Data, navigate, t) => {
           }
         } else {
           dispatch(MeetingPublishedMinutes_fail(t("Something-went-wrong")));
-
         }
       })
       .catch((response) => {
@@ -1846,5 +1850,6 @@ export {
   CleareMessegeMinutes,
   acceptCommentModal,
   AcceptRejectMinuteReview,
-  RejectMinute,currentUserPicture
+  RejectMinute,
+  currentUserPicture,
 };

@@ -15,7 +15,6 @@ const AddDateModal = ({
   const { t } = useTranslation();
 
   const closeModal = () => {
-    setSendReviewers(true);
     setAddDateModal(false);
   };
 

@@ -57,3 +57,36 @@ span.view-details {
   display: flex;
   align-items: end;
 }
+span.reviewer-count {
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  background: linear-gradient(270deg, #4adede -6.12%, #6172d6 100.01%);
+  border-radius: 100%;
+  top: -7px;
+  right: -7px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-wrapper {
+  margin: 15px 0px;
+  border: 1px solid #e1e1e1;
+  padding: 10px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.image-profile-wrapper {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 10px;
+}
+
+img.image-style {
+  border-radius: 100%;
+}

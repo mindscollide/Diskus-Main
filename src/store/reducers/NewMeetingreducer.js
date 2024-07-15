@@ -1113,7 +1113,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_GENERAL_MINTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.flag,
         generalMinutes: action.response,
         ResponseMessage: action.message,
       };

@@ -3627,11 +3627,12 @@ const showAllGeneralMinutesInit = () => {
   };
 };
 
-const showAllGeneralMinutesSuccess = (response, message) => {
+const showAllGeneralMinutesSuccess = (response, message, flag) => {
   return {
     type: actions.GET_GENERAL_MINTES_SUCCESS,
     response: response,
     message: message,
+    flag: flag,
   };
 };
 
@@ -3643,7 +3644,13 @@ const showAllGeneralMinutesFailed = (message) => {
 };
 
 // Api Function For General Minutes
-const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
+const GetAllGeneralMinutesApiFunc = (
+  navigate,
+  t,
+  Data,
+  currentMeeting,
+  flag
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
@@ -3663,7 +3670,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
-          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
+          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting,flag)
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -3680,9 +3687,23 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
             );
 
             // After DocumentsOfMeetingGenralMinutesApiFunc is done, call showAllGeneralMinutesSuccess
-            dispatch(
-              showAllGeneralMinutesSuccess(response.data.responseResult, "")
-            );
+            if (flag) {
+              dispatch(
+                showAllGeneralMinutesSuccess(
+                  response.data.responseResult,
+                  "",
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                showAllGeneralMinutesSuccess(
+                  response.data.responseResult,
+                  "",
+                  false
+                )
+              );
+            }
           } else if (
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
@@ -4267,7 +4288,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
-    // dispatch(showGetAllAgendaWiseMinutesInit());
+    dispatch(showGetAllAgendaWiseMinutesInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllAgendaWiseMinutes.RequestMethod);
@@ -4305,6 +4326,15 @@ const GetAllAgendaWiseMinutesApiFunc = (
                 "Meeting_MeetingServiceManager_GetAllMeetingAgendaWiseMinutes_01".toLowerCase()
               )
           ) {
+            await dispatch(
+              GetAllGeneralMinutesApiFunc(
+                navigate,
+                t,
+                Data,
+                Number(currentMeeting),
+                true
+              )
+            );
             let allAgendaWiseDocs = {
               MDID: Number(currentMeeting),
             };
@@ -4431,7 +4461,7 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_UpdateAgendaWiseMinute_03".toLowerCase()
                 )
             ) {
               dispatch(
@@ -4446,7 +4476,20 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
             ) {
               dispatch(
                 showUpdateAgendaWiseMinutesFailed(
-                  t("Only-a-organizer-can-perform-this-operation")
+                  t("Only-minute-creator-can-update")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateAgendaWiseMinute_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showUpdateMinutesSuccess(
+                  response.data.responseResult,
+                  t("Record-updated-and-is-a-review-minute")
                 )
               );
             }
@@ -5003,6 +5046,29 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
               )
           ) {
             dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_UpdateGeneralMinute_04".toLowerCase()
+              )
+          ) {
+            dispatch(
+              showUpdateMinutesFailed(t("Only-minute-creator-can-update"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_UpdateGeneralMinute_05".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              showUpdateMinutesSuccess(
+                response.data.responseResult,
+                t("Record-updated-and-is-a-review-minute")
+              )
+            );
           }
         } else {
           dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));

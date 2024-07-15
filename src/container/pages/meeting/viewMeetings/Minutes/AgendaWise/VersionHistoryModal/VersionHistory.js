@@ -18,6 +18,10 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
     (state) => state.MinutesReducer
   );
   const dispatch = useDispatch();
+  const [newVersionHistoryData, setNewVersionHistoryData] = useState({
+    mainVersionHistory: null,
+    minuteVersionHistory: [],
+  });
   const [verionHistoryData, setVersionHistoryData] = useState([
     {
       versionNumber: 1,
@@ -83,6 +87,14 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
 
   useEffect(() => {
     if (GetMinutesVersionHistorywithCommentsData !== null) {
+      try {
+        setNewVersionHistoryData({
+          mainVersionHistory:
+            GetMinutesVersionHistorywithCommentsData.mainMinute,
+          minuteVersionHistory:
+            GetMinutesVersionHistorywithCommentsData.minuteVersionHistory,
+        });
+      } catch (error) {}
       console.log(
         GetMinutesVersionHistorywithCommentsData,
         "GetMinutesVersionHistorywithCommentsDataGetMinutesVersionHistorywithCommentsData"
@@ -117,8 +129,220 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                     </p>
                   </Col>
                 </Row>
-                {verionHistoryData.length > 0 &&
-                  verionHistoryData
+                {newVersionHistoryData.mainVersionHistory !== null && (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="position-relative"
+                      >
+                        <div
+                          className={
+                            styles["version-control-wrapper-with-more"]
+                          }
+                        >
+                          <span className={styles["with-text"]}>
+                            V
+                            {
+                              newVersionHistoryData?.mainVersionHistory
+                                ?.versionNumber
+                            }
+                          </span>
+                        </div>
+                        <div className={styles["uploaded-details"]}>
+                          <Row>
+                            <Col lg={9} md={9} sm={12}>
+                              <p
+                                className={styles["minutes-text"]}
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    newVersionHistoryData?.mainVersionHistory
+                                      ?.minutesDetails,
+                                }}
+                              ></p>
+                              <Row className="mt-1">
+                                {newVersionHistoryData?.mainVersionHistory
+                                  ?.minuteAttachmentFiles.length > 0
+                                  ? newVersionHistoryData?.mainVersionHistory?.minuteAttachmentFiles.map(
+                                      (data, index) => {
+                                        console.log(data, "datadatadata");
+                                        return (
+                                          <>
+                                            <Col lg={3} md={3} sm={3}>
+                                              <AttachmentViewer
+                                                name={data?.displayFileName}
+                                                id={data?.pK_FileID}
+                                                fk_UID={data?.fK_UserID}
+                                                data={data}
+                                              />
+                                            </Col>
+                                          </>
+                                        );
+                                      }
+                                    )
+                                  : null}
+                              </Row>
+                            </Col>
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={12}
+                              className="position-relative"
+                            >
+                              <Row className="m-0">
+                                <Col lg={12} md={12} sm={12} className="p-0">
+                                  <span className={styles["bar-line"]}></span>
+                                  <p className={styles["uploadedbyuser"]}>
+                                    Uploaded By
+                                  </p>
+                                  <div className={styles["gap-ti"]}>
+                                    <img
+                                      src={DefaultAvatar}
+                                      className={styles["Image"]}
+                                      alt=""
+                                      draggable={false}
+                                    />
+                                    <p className={styles["agendaCreater"]}>
+                                      {newVersionHistoryData?.mainVersionHistory?.userName}
+                                    </p>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row
+                                className={`${styles["positioning-tb"]} m-0`}
+                              >
+                                <Col lg={12} md={12} sm={12}>
+                                  <p className={styles["time-uploader"]}>
+                                    {newTimeFormaterForImportMeetingAgenda(
+                                      newVersionHistoryData?.mainVersionHistory
+                                        ?.lastUpdatedDate +
+                                        newVersionHistoryData
+                                          ?.mainVersionHistory?.lastUpdatedTime
+                                    )}
+                                  </p>
+                                  {newVersionHistoryData?.mainVersionHistory
+                                    ?.declinedReviews.length > 0 && (
+                                    <Button
+                                      text={
+                                        showComments
+                                          ? t("Hide-comment")
+                                          : t("Show-comment")
+                                      }
+                                      className={styles["Reject-comment"]}
+                                      onClick={moreComments}
+                                    />
+                                  )}
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </div>
+                      </Col>
+                    </Row>
+
+                    {newVersionHistoryData?.mainVersionHistory?.declinedReviews
+                      .length > 0 && showComments
+                      ? newVersionHistoryData?.mainVersionHistory?.declinedReviews.map(
+                          (declineReviewData, index) => {
+                            return (
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="position-relative"
+                                >
+                                  <div
+                                    className={
+                                      styles["version-control-wrapper"]
+                                    }
+                                  >
+                                    <span></span>
+                                  </div>
+                                  <div
+                                    className={
+                                      styles["uploaded-details-rejected"]
+                                    }
+                                  >
+                                    <Row>
+                                      <Col lg={9} md={9} sm={12}>
+                                        <p
+                                          className={styles["minutes-text"]}
+                                          dangerouslySetInnerHTML={{
+                                            __html: declineReviewData.reason,
+                                          }}
+                                        ></p>
+                                      </Col>
+                                      <Col
+                                        lg={3}
+                                        md={3}
+                                        sm={12}
+                                        className="position-relative"
+                                      >
+                                        <Row className="m-0">
+                                          <Col
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
+                                            className="p-0"
+                                          >
+                                            <span
+                                              className={styles["bar-line"]}
+                                            ></span>
+                                            <p
+                                              className={
+                                                styles["uploadedbyuser"]
+                                              }
+                                            >
+                                              Commented by
+                                            </p>
+                                            <div className={styles["gap-ti"]}>
+                                              <img
+                                                src={DefaultAvatar}
+                                                className={styles["Image"]}
+                                                alt=""
+                                                draggable={false}
+                                              />
+                                              <p
+                                                className={
+                                                  styles["agendaCreater"]
+                                                }
+                                              >
+                                                {declineReviewData.actorName}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        </Row>
+                                        <Row
+                                          className={`${styles["positioning-tb"]} m-0`}
+                                        >
+                                          <Col lg={12} md={12} sm={12}>
+                                            <p
+                                              className={
+                                                styles["time-uploader"]
+                                              }
+                                            >
+                                              {newTimeFormaterForImportMeetingAgenda(
+                                                declineReviewData.modifiedOn
+                                              )}
+                                            </p>
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+                            );
+                          }
+                        )
+                      : null}
+                  </>
+                )}
+                {newVersionHistoryData?.minuteVersionHistory?.length > 0 &&
+                  newVersionHistoryData?.minuteVersionHistory
                     .sort((a, b) => b.versionNumber - a.versionNumber)
                     .map((versionData, index) => {
                       return (

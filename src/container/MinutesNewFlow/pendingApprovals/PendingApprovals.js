@@ -45,8 +45,11 @@ const PendingApproval = () => {
   // State for tracking the active state of each button
   const [reviewMinutesActive, setReviewMinutesActive] = useState(true); // Default Review Minutes button to active
   const [reviewAndSignActive, setReviewAndSignActive] = useState(false);
-
   const [progress, setProgress] = useState([]);
+  const [sortOrderMeetingTitle, setSortOrderMeetingTitle] = useState(null);
+  const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
+  const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
+  const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
 
   // Click handler for Review Minutes button
   const handleReviewMinutesClick = async () => {
@@ -93,14 +96,11 @@ const PendingApproval = () => {
       paddingTop: "5px",
       paddingRight: currentLanguage === "en" ? "10px" : "auto",
       paddingLeft: currentLanguage === "en" ? "auto" : "10px",
+      minWidth: `${indexValue === "0" ? "100%" : "auto"}`,
     };
 
     return <span style={barStyle}>{percentageValue}</span>; // Display progress bar with percentage
   };
-
-  const [sortOrderMeetingTitle, setSortOrderMeetingTitle] = useState(null);
-  const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
-  const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
@@ -257,60 +257,11 @@ const PendingApproval = () => {
     },
   ];
 
-  const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
-
   useEffect(() => {
     let Data = { sRow: 0, Length: 10 };
     dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
     dispatch(GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t));
   }, []);
-
-  // Data for rows of the pending approval table
-  // const rowsPendingApproval = [
-  //   {
-  //     key: "1",
-  //     name: "Board Member Executive Meeting from Boss's and hahahahahaha",
-  //     userEmail: "john.doe@example.com",
-  //     status: "Pending",
-  //     leaveTime: "11-01-2024 | 05:00 PM",
-  //   },
-  //   {
-  //     key: "2",
-  //     name: "IT Departmental Meeting",
-  //     userEmail: "john.doe@example.com",
-  //     status: "Pending",
-  //     leaveTime: "11-01-2024 | 05:00 PM",
-  //   },
-  //   {
-  //     key: "3",
-  //     name: "John Doe",
-  //     userEmail: "john.doe@example.com",
-  //     status: "Reviewed",
-  //     leaveTime: "11-01-2024 | 05:00 PM",
-  //   },
-  //   {
-  //     key: "4",
-  //     name: "Stock and Shareholders Meeting",
-  //     userEmail: "jane.smith@example.com",
-  //     status: "Expired",
-  //     leaveTime: "11-01-2024 | 04:30 PM",
-  //   },
-  //   {
-  //     key: "5",
-  //     name: "Board Member Executive Meeting from Boss's",
-  //     userEmail: "michael.johnson@example.com",
-  //     status: "Expired",
-  //     leaveTime: "11-01-2024 | 05:15 PM",
-  //   },
-  //   {
-  //     key: "6",
-  //     name: "Board Member Executive Meeting from Boss's",
-  //     userEmail: "emily.brown@example.com",
-  //     status: "Reviewed",
-  //     leaveTime: "11-01-2024 | 05:45 PM",
-  //   },
-  //   // // Add more data as needed
-  // ];
 
   useEffect(() => {
     if (
@@ -347,7 +298,7 @@ const PendingApproval = () => {
     }
   }, [MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData]);
 
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
+  console.log("progressprogress", progress);
 
   return (
     <section className={styles["pendingApprovalContainer"]}>
@@ -408,7 +359,7 @@ const PendingApproval = () => {
                               {progress.reviewed === 0 ? null : (
                                 <ProgressBar
                                   width={progress.reviewedPercentage}
-                                  color="#F16B6B"
+                                  color="#6172d6"
                                   indexValue="0"
                                   percentageValue={
                                     progress.reviewedPercentage + "%"
@@ -425,10 +376,10 @@ const PendingApproval = () => {
                                   }
                                 />
                               )}
-                              {progress.expired === 0 ? null : (
+                              {progress.expiredPercentage === 0 ? null : (
                                 <ProgressBar
                                   width={progress.expiredPercentage}
-                                  color="#6172D6"
+                                  color="#f16b6b"
                                   indexValue="2"
                                   percentageValue={
                                     progress.expiredPercentage + "%"
