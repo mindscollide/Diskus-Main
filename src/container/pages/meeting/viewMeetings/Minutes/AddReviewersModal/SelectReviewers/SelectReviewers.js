@@ -23,7 +23,7 @@ const SelectReviewers = ({
   selectReviewersArray,
   setSelectReviewersArray,
   allReviewers,
-  
+  setMinuteReviewDataCheckForEdit,
 }) => {
   const { t } = useTranslation();
 
@@ -63,6 +63,7 @@ const SelectReviewers = ({
 
     setReviewersAgenda(filteredDataAgenda);
     setReviewersGeneral(filteredDataGeneral);
+    setMinuteReviewDataCheckForEdit(selectReviewersArray);
     return () => {
       window.removeEventListener("resize", checkIfTruncated);
       setReviewersAgenda([]);
@@ -81,7 +82,8 @@ const SelectReviewers = ({
     setSelectReviewersArray(newCheckedList);
     setCheckAll(e.target.checked);
   };
-
+  console.log("selectReviewersArray ", selectReviewersArray);
+  console.log("selectReviewersArray currentReviewers", currentReviewers);
   const handleCheckboxChange = (userID) => {
     const newCheckedList = selectReviewersArray.includes(userID)
       ? selectReviewersArray.filter((id) => id !== userID)
