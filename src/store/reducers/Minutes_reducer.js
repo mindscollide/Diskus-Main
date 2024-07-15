@@ -33,6 +33,7 @@ const initialState = {
   GetPublishedMinutes: null,
   CurrentUserPicture: null,
   PublishMeetingMinutesData: null,
+  GetDataForResendMinuteReviewData: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -497,6 +498,31 @@ const MinutesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         PublishMeetingMinutesData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_DATAFORRESENDMINUTEREVIEW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_DATAFORRESENDMINUTEREVIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetDataForResendMinuteReviewData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_DATAFORRESENDMINUTEREVIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetDataForResendMinuteReviewData: null,
         ResponseMessage: action.message,
       };
     }

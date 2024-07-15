@@ -1233,7 +1233,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.DELETE_GENERAL_MINUTES_METHOD_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
@@ -1241,7 +1241,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.DELETE_GENERAL_MINUTES_METHOD_FAILED: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }

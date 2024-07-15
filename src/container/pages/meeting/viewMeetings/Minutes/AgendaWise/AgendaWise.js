@@ -1391,6 +1391,16 @@ const AgendaWise = ({
                                                 }
                                               </p>
                                               <span>|</span>
+
+                                              <p className="m-0">
+                                                {t("Pending")}{" "}
+                                                {
+                                                  parentMinutedata?.MinuteStats
+                                                    ?.pending
+                                                }
+                                              </p>
+                                              <span>|</span>
+
                                               <p className="m-0">
                                                 {t("Accepted")}{" "}
                                                 {
@@ -1404,14 +1414,6 @@ const AgendaWise = ({
                                                 {
                                                   parentMinutedata?.MinuteStats
                                                     ?.rejected
-                                                }
-                                              </p>
-                                              <span>|</span>
-                                              <p className="m-0">
-                                                {t("Pending")}{" "}
-                                                {
-                                                  parentMinutedata?.MinuteStats
-                                                    ?.pending
                                                 }
                                               </p>
                                             </div>
@@ -1453,6 +1455,34 @@ const AgendaWise = ({
                                                   ]
                                             }
                                           >
+                                            <p
+                                              className={`${styles["text-wrapper-review"]}`}
+                                            >
+                                              <span
+                                                className={
+                                                  styles["Review-pending"]
+                                                }
+                                              >
+                                                Review Pending:
+                                              </span>{" "}
+                                              {/* {parentMinutedata?.MinuteStats
+                                                ?.pendingUsers?.length > 0 &&
+                                                parentMinutedata?.MinuteStats?.pendingUsers?.map(
+                                                  (pendingUserData, index) =>
+                                                    `${pendingUserData}, `
+                                                )} */}
+                                              {parentMinutedata?.MinuteStats
+                                                ?.pendingUsers?.length > 0 &&
+                                                parentMinutedata?.MinuteStats?.pendingUsers.map(
+                                                  (pendingUserData, index) =>
+                                                    index ===
+                                                    parentMinutedata.MinuteStats
+                                                      .pendingUsers.length -
+                                                      1
+                                                      ? `${pendingUserData}`
+                                                      : `${pendingUserData}, `
+                                                )}
+                                            </p>
                                             <p
                                               className={`${styles["text-wrapper-review"]}`}
                                             >
@@ -1509,34 +1539,6 @@ const AgendaWise = ({
                                                       : `${rejectedUser}, `
                                                 )}
                                             </p>
-                                            <p
-                                              className={`${styles["text-wrapper-review"]}`}
-                                            >
-                                              <span
-                                                className={
-                                                  styles["Review-pending"]
-                                                }
-                                              >
-                                                Review Pending:
-                                              </span>{" "}
-                                              {/* {parentMinutedata?.MinuteStats
-                                                ?.pendingUsers?.length > 0 &&
-                                                parentMinutedata?.MinuteStats?.pendingUsers?.map(
-                                                  (pendingUserData, index) =>
-                                                    `${pendingUserData}, `
-                                                )} */}
-                                              {parentMinutedata?.MinuteStats
-                                                ?.pendingUsers?.length > 0 &&
-                                                parentMinutedata?.MinuteStats?.pendingUsers.map(
-                                                  (pendingUserData, index) =>
-                                                    index ===
-                                                    parentMinutedata.MinuteStats
-                                                      .pendingUsers.length -
-                                                      1
-                                                      ? `${pendingUserData}`
-                                                      : `${pendingUserData}, `
-                                                )}
-                                            </p>
                                           </Col>
                                         </Row>
                                       </div>
@@ -1555,10 +1557,11 @@ const AgendaWise = ({
                                         Number(editorRole.status) === 1) ||
                                       Number(editorRole.status) === 11 ||
                                       Number(editorRole.status) ===
-                                        12 ? null : (editorRole.role ===
-                                          "Organizer" &&
+                                        12 ? null : (parentMinutedata.isEditable &&
+                                          editorRole.role === "Organizer" &&
                                           Number(editorRole.status) === 9) ||
-                                        (Number(editorRole.status) === 10 &&
+                                        (parentMinutedata.isEditable &&
+                                          Number(editorRole.status) === 10 &&
                                           editorRole.role === "Organizer") ? (
                                         <img
                                           className={styles["delete-icon"]}
@@ -1655,13 +1658,16 @@ const AgendaWise = ({
                                                 Number(editorRole.status) ===
                                                   11 ||
                                                 Number(editorRole.status) ===
-                                                  12 ? null : (editorRole.role ===
-                                                    "Organizer" &&
+                                                  12 ? null : (parentMinutedata.isEditable &&
+                                                    editorRole.role ===
+                                                      "Organizer" &&
                                                     Number(
                                                       editorRole.status
                                                     ) === 9) ||
-                                                  (Number(editorRole.status) ===
-                                                    10 &&
+                                                  (parentMinutedata.isEditable &&
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 10 &&
                                                     editorRole.role ===
                                                       "Organizer") ? (
                                                   <img
@@ -1832,6 +1838,14 @@ const AgendaWise = ({
                                                   </p>
                                                   <span>|</span>
                                                   <p className="m-0">
+                                                    {t("Pending")}{" "}
+                                                    {
+                                                      minuteDataSubminute
+                                                        ?.MinuteStats?.pending
+                                                    }
+                                                  </p>
+                                                  <span>|</span>
+                                                  <p className="m-0">
                                                     {t("Accepted")}{" "}
                                                     {
                                                       minuteDataSubminute
@@ -1844,14 +1858,6 @@ const AgendaWise = ({
                                                     {
                                                       minuteDataSubminute
                                                         ?.MinuteStats?.rejected
-                                                    }
-                                                  </p>
-                                                  <span>|</span>
-                                                  <p className="m-0">
-                                                    {t("Pending")}{" "}
-                                                    {
-                                                      minuteDataSubminute
-                                                        ?.MinuteStats?.pending
                                                     }
                                                   </p>
                                                 </div>
@@ -1893,6 +1899,40 @@ const AgendaWise = ({
                                                       ]
                                                 }
                                               >
+                                                <p
+                                                  className={`${styles["text-wrapper-review"]}`}
+                                                >
+                                                  <span
+                                                    className={
+                                                      styles["Review-pending"]
+                                                    }
+                                                  >
+                                                    Review Pending:
+                                                  </span>{" "}
+                                                  {/* {minuteDataSubminute
+                                                    ?.MinuteStats?.pendingUsers
+                                                    ?.length > 0 &&
+                                                    minuteDataSubminute?.MinuteStats?.pendingUsers?.map(
+                                                      (pendingUserData) =>
+                                                        `${pendingUserData}, `
+                                                    )} */}
+                                                  {minuteDataSubminute
+                                                    ?.MinuteStats?.pendingUsers
+                                                    ?.length > 0 &&
+                                                    minuteDataSubminute?.MinuteStats?.pendingUsers.map(
+                                                      (
+                                                        pendingUserData,
+                                                        index
+                                                      ) =>
+                                                        index ===
+                                                        minuteDataSubminute
+                                                          .MinuteStats
+                                                          .pendingUsers.length -
+                                                          1
+                                                          ? `${pendingUserData}`
+                                                          : `${pendingUserData}, `
+                                                    )}
+                                                </p>
                                                 <p
                                                   className={`${styles["text-wrapper-review"]}`}
                                                 >
@@ -1965,40 +2005,6 @@ const AgendaWise = ({
                                                           1
                                                           ? `${rejectedUserData}`
                                                           : `${rejectedUserData}, `
-                                                    )}
-                                                </p>
-                                                <p
-                                                  className={`${styles["text-wrapper-review"]}`}
-                                                >
-                                                  <span
-                                                    className={
-                                                      styles["Review-pending"]
-                                                    }
-                                                  >
-                                                    Review Pending:
-                                                  </span>{" "}
-                                                  {/* {minuteDataSubminute
-                                                    ?.MinuteStats?.pendingUsers
-                                                    ?.length > 0 &&
-                                                    minuteDataSubminute?.MinuteStats?.pendingUsers?.map(
-                                                      (pendingUserData) =>
-                                                        `${pendingUserData}, `
-                                                    )} */}
-                                                  {minuteDataSubminute
-                                                    ?.MinuteStats?.pendingUsers
-                                                    ?.length > 0 &&
-                                                    minuteDataSubminute?.MinuteStats?.pendingUsers.map(
-                                                      (
-                                                        pendingUserData,
-                                                        index
-                                                      ) =>
-                                                        index ===
-                                                        minuteDataSubminute
-                                                          .MinuteStats
-                                                          .pendingUsers.length -
-                                                          1
-                                                          ? `${pendingUserData}`
-                                                          : `${pendingUserData}, `
                                                     )}
                                                 </p>
                                               </Col>
@@ -2129,14 +2135,16 @@ const AgendaWise = ({
                                                     Number(
                                                       editorRole.status
                                                     ) ===
-                                                      12 ? null : (editorRole.role ===
-                                                        "Organizer" &&
+                                                      12 ? null : (minuteDataSubminute.isEditable &&
+                                                        editorRole.role ===
+                                                          "Organizer" &&
                                                         Number(
                                                           editorRole.status
                                                         ) === 9) ||
-                                                      (Number(
-                                                        editorRole.status
-                                                      ) === 10 &&
+                                                      (minuteDataSubminute.isEditable &&
+                                                        Number(
+                                                          editorRole.status
+                                                        ) === 10 &&
                                                         editorRole.role ===
                                                           "Organizer") ? (
                                                       <img
@@ -2249,10 +2257,11 @@ const AgendaWise = ({
                                           Number(editorRole.status) === 1) ||
                                         Number(editorRole.status) === 11 ||
                                         Number(editorRole.status) ===
-                                          12 ? null : (editorRole.role ===
-                                            "Organizer" &&
+                                          12 ? null : (minuteDataSubminute.isEditable &&
+                                            editorRole.role === "Organizer" &&
                                             Number(editorRole.status) === 9) ||
-                                          (Number(editorRole.status) === 10 &&
+                                          (minuteDataSubminute.isEditable &&
+                                            Number(editorRole.status) === 10 &&
                                             editorRole.role === "Organizer") ? (
                                           <img
                                             className={styles["delete-icon"]}

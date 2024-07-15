@@ -206,7 +206,10 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                       draggable={false}
                                     />
                                     <p className={styles["agendaCreater"]}>
-                                      {newVersionHistoryData?.mainVersionHistory?.userName}
+                                      {
+                                        newVersionHistoryData
+                                          ?.mainVersionHistory?.userName
+                                      }
                                     </p>
                                   </div>
                                 </Col>
@@ -228,8 +231,8 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                     <Button
                                       text={
                                         showComments
-                                          ? t("Hide-comment")
-                                          : t("Show-comment")
+                                          ? t("Hide-comments")
+                                          : t("Show-comments")
                                       }
                                       className={styles["Reject-comment"]}
                                       onClick={moreComments}
@@ -461,8 +464,8 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                           <Button
                                             text={
                                               showComments
-                                                ? t("Hide-comment")
-                                                : t("Show-comment")
+                                                ? t("Hide-comments")
+                                                : t("Show-comments")
                                             }
                                             className={styles["Reject-comment"]}
                                             onClick={moreComments}

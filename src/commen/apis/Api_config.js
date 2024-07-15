@@ -1711,6 +1711,10 @@ const publishMeetingMinutes = {
   RequestMethod: "ServiceManager.PublishMeetingMinutes",
 };
 
+const getDataForResendMinuteReview = {
+  RequestMethod: "ServiceManager.GetDataForResendMinuteReview",
+};
+
 export {
   DownloadInvoiceRM,
   GetAllPublishedMeetingMinutesRM,
@@ -2165,4 +2169,5 @@ export {
   BoardDeckSendEmail,
   DownloadBoarddeckPDF,
   publishMeetingMinutes,
+  getDataForResendMinuteReview,
 };

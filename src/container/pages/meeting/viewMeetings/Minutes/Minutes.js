@@ -41,7 +41,6 @@ import DefaultAvatar from "./Images/avatar.png";
 import {
   convertToGMTMinuteTime,
   convertDateToGMTMinute,
-  getCurrentDateTimeUTC,
 } from "../../../../../commen/functions/time_formatter";
 import VersionHistory from "./AgendaWise/VersionHistoryModal/VersionHistory";
 import RevisionHistory from "./AgendaWise/RevisionHistoryModal/RevisionHistory";
@@ -56,6 +55,7 @@ import {
   GetAllOrganizationUsersForReview,
   GetMinuteReviewFlowByMeetingId,
 } from "../../../../../store/actions/Minutes_action";
+import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 
 const Minutes = ({
   setMinutes,
@@ -72,6 +72,8 @@ const Minutes = ({
   let userID = localStorage.getItem("userID");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let currentDate = getCurrentDateTimeUTC();
+  let currentDateOnly = currentDate.slice(0, 8);
   const editorRef = useRef(null);
   const { Dragger } = Upload;
 
@@ -737,7 +739,9 @@ const Minutes = ({
 
   const [addReviewers, setAddReviewers] = useState(false);
 
-  const [showPublishMinutes, setShowPublishMinutes] = useState(false);
+  const [showPublishButton, setShowPublishButton] = useState(false);
+
+  const [deadLineDate, setDeadLineDate] = useState(null);
 
   const closeMenuMinute = useRef(null);
 
@@ -885,6 +889,20 @@ const Minutes = ({
     }
   }, [MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData]);
 
+  useEffect(() => {
+    if (
+      MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null &&
+      MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== undefined
+    ) {
+      setDeadLineDate(
+        MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow.workFlow
+          .deadlineDatetime
+      );
+    } else {
+      setDeadLineDate(null);
+    }
+  }, [MinutesReducer.GetMinuteReviewFlowByMeetingIdData]);
+
   // When you click on Show Verison History Button then the api will hit and If minute has Version History then open a modal
   const handleClickShowVersionHistory = (data, MinuteID) => {
     let Data = {
@@ -918,6 +936,8 @@ const Minutes = ({
       )
     );
   };
+
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   return !isMinutePublished ? (
     <>
@@ -1245,11 +1265,17 @@ const Minutes = ({
               <p></p>
             )}
             <div className={styles["button-block"]}>
-              <Button
-                text={t("Publish-minutes")}
-                className={styles["PublishMinutes"]}
-                onClick={() => setShowPublishMinutes(true)}
-              />
+              {(editorRole.role === "Organizer" &&
+                Number(editorRole.status) === 9 &&
+                deadLineDate === currentDateOnly) ||
+              (Number(editorRole.status) === 10 &&
+                editorRole.role === "Organizer" &&
+                deadLineDate === currentDateOnly) ? (
+                <Button
+                  text={t("Publish-minutes")}
+                  className={styles["PublishMinutes"]}
+                />
+              ) : null}
               <Button
                 text={t("Add-reviewers")}
                 className={styles["Add_Reviewers"]}
@@ -1495,6 +1521,11 @@ const Minutes = ({
                                           </p>
                                           <span>|</span>
                                           <p className="m-0">
+                                            {t("Pending")}{" "}
+                                            {data?.MinuteStats?.pending}
+                                          </p>
+                                          <span>|</span>
+                                          <p className="m-0">
                                             {t("Accepted")}{" "}
                                             {data?.MinuteStats?.accepted}
                                           </p>
@@ -1502,11 +1533,6 @@ const Minutes = ({
                                           <p className="m-0">
                                             {t("Rejected")}{" "}
                                             {data?.MinuteStats?.rejected}
-                                          </p>
-                                          <span>|</span>
-                                          <p className="m-0">
-                                            {t("Pending")}{" "}
-                                            {data?.MinuteStats?.pending}
                                           </p>
                                         </div>
                                       </Col>
@@ -1556,6 +1582,11 @@ const Minutes = ({
                                           </p>
                                           <span>|</span>
                                           <p className="m-0">
+                                            {t("Pending")}{" "}
+                                            {data?.MinuteStats?.pending}
+                                          </p>
+                                          <span>|</span>
+                                          <p className="m-0">
                                             {t("Accepted")}{" "}
                                             {data?.MinuteStats?.accepted}
                                           </p>
@@ -1563,11 +1594,6 @@ const Minutes = ({
                                           <p className="m-0">
                                             {t("Rejected")}{" "}
                                             {data?.MinuteStats?.rejected}
-                                          </p>
-                                          <span>|</span>
-                                          <p className="m-0">
-                                            {t("Pending")}{" "}
-                                            {data?.MinuteStats?.pending}
                                           </p>
                                         </div>
                                       </Col>
@@ -1593,6 +1619,26 @@ const Minutes = ({
                                     </Row>
                                     <Row>
                                       <Col lg={12} md={12} sm={12}>
+                                        <p
+                                          className={`${styles["text-wrapper-review"]}`}
+                                        >
+                                          <span
+                                            className={styles["Review-pending"]}
+                                          >
+                                            Review Pending:
+                                          </span>
+                                          {data?.MinuteStats?.pendingUsers
+                                            ?.length > 0 &&
+                                            data?.MinuteStats?.pendingUsers.map(
+                                              (minutePendingUser, index) =>
+                                                index ===
+                                                data.MinuteStats.pendingUsers
+                                                  .length -
+                                                  1
+                                                  ? `${minutePendingUser}`
+                                                  : `${minutePendingUser}, `
+                                            )}
+                                        </p>
                                         <p
                                           className={`${styles["text-wrapper-review"]}`}
                                         >
@@ -1643,32 +1689,6 @@ const Minutes = ({
                                                   : `${minuteRejectedUser}, `
                                             )}
                                         </p>
-                                        <p
-                                          className={`${styles["text-wrapper-review"]}`}
-                                        >
-                                          <span
-                                            className={styles["Review-pending"]}
-                                          >
-                                            Review Pending:
-                                          </span>{" "}
-                                          {/* {data?.MinuteStats?.pendingUsers
-                                            ?.length > 0 &&
-                                            data?.MinuteStats?.pendingUsers?.map(
-                                              (minutePendingUser, index) =>
-                                                `${minutePendingUser}, `
-                                            )} */}
-                                          {data?.MinuteStats?.pendingUsers
-                                            ?.length > 0 &&
-                                            data?.MinuteStats?.pendingUsers.map(
-                                              (minutePendingUser, index) =>
-                                                index ===
-                                                data.MinuteStats.pendingUsers
-                                                  .length -
-                                                  1
-                                                  ? `${minutePendingUser}`
-                                                  : `${minutePendingUser}, `
-                                            )}
-                                        </p>
                                       </Col>
                                     </Row>
                                   </div>
@@ -1683,12 +1703,12 @@ const Minutes = ({
                                 className="position-relative"
                               >
                                 <div className={styles["uploaded-details"]}>
-                                  {(data.isEditable &&
+                                  {(data.isEditable === true &&
                                     Number(editorRole.status) === 1) ||
                                   Number(editorRole.status) === 11 ||
                                   Number(editorRole.status) ===
-                                    12 ? null : (editorRole.role ===
-                                      "Organizer" &&
+                                    12 ? null : (data.isEditable === true &&
+                                      editorRole.role === "Organizer" &&
                                       Number(editorRole.status) === 9) ||
                                     (Number(editorRole.status) === 10 &&
                                       editorRole.role === "Organizer") ? (
@@ -1776,19 +1796,25 @@ const Minutes = ({
                                           className="d-grid justify-content-end p-0"
                                         >
                                           <div>
-                                            {(data.isEditable &&
-                                              Number(editorRole.status) ===
-                                                1) ||
-                                            Number(editorRole.status) === 11 ||
-                                            Number(editorRole.status) ===
-                                              12 ? null : (editorRole.role ===
-                                                "Organizer" &&
+                                            {(
+                                              (data.isEditable === true &&
                                                 Number(editorRole.status) ===
-                                                  9) ||
-                                              (Number(editorRole.status) ===
-                                                10 &&
-                                                editorRole.role ===
-                                                  "Organizer") ? (
+                                                  1) ||
+                                              Number(editorRole.status) ===
+                                                11 ||
+                                              Number(editorRole.status) === 12
+                                                ? null
+                                                : (data.isEditable === true &&
+                                                    editorRole.role ===
+                                                      "Organizer" &&
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 9) ||
+                                                  (Number(editorRole.status) ===
+                                                    10 &&
+                                                    editorRole.role ===
+                                                      "Organizer")
+                                            ) ? (
                                               <img
                                                 className="cursor-pointer mx-2"
                                                 src={EditIcon}

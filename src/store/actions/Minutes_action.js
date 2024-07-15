@@ -21,6 +21,7 @@ import {
   PublishMeetingMinutesRM,
   GetAllPublishedMeetingMinutesRM,
   publishMeetingMinutes,
+  getDataForResendMinuteReview,
 } from "../../commen/apis/Api_config";
 import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
 
@@ -1010,6 +1011,20 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
                   t("Minutes-review-flow-inserted-successfully")
                 )
               );
+              let Data2 = {
+                isAgenda: false,
+                MeetingID: Data.MeetingID,
+              };
+              let Data3 = {
+                isAgenda: true,
+                MeetingID: Data.MeetingID,
+              };
+              dispatch(
+                GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t)
+              );
+              dispatch(
+                GetMinuteReviewStatsForOrganizerByMeetingId(Data3, navigate, t)
+              );
               setAddReviewers(false);
             } else if (
               response.data.responseResult.responseMessage
@@ -1040,6 +1055,20 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
                   response.data.responseResult,
                   t("Minutes-review-flow-edited-successfully")
                 )
+              );
+              let Data2 = {
+                isAgenda: false,
+                MeetingID: Data.MeetingID,
+              };
+              let Data3 = {
+                isAgenda: true,
+                MeetingID: Data.MeetingID,
+              };
+              dispatch(
+                GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t)
+              );
+              dispatch(
+                GetMinuteReviewStatsForOrganizerByMeetingId(Data3, navigate, t)
               );
               setAddReviewers(false);
             } else if (
@@ -1908,6 +1937,121 @@ const PublishMeetingMinutes = (Data, navigate, t) => {
       })
       .catch((response) => {
         dispatch(publishMeetingMinutes_Fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const getDataForResendMinuteReview_Init = () => {
+  return {
+    type: actions.GET_DATAFORRESENDMINUTEREVIEW_INIT,
+  };
+};
+
+const getDataForResendMinuteReview_Success = (response, message) => {
+  return {
+    type: actions.GET_DATAFORRESENDMINUTEREVIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getDataForResendMinuteReview_Fail = (message, response) => {
+  return {
+    type: actions.GET_DATAFORRESENDMINUTEREVIEW_FAIL,
+    message: message,
+    response: response,
+  };
+};
+
+//GetDataForResendMinuteReview
+const GetDataForResendMinuteReview = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getDataForResendMinuteReview_Init());
+    let form = new FormData();
+    form.append("RequestMethod", getDataForResendMinuteReview.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetDataForResendMinuteReview(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getDataForResendMinuteReview_Success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(
+                getDataForResendMinuteReview_Fail(
+                  t("No-review-flow-in-this-meeting", data)
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getDataForResendMinuteReview_Fail(
+                  t("This-minute-has-not-been-sent-for-review")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getDataForResendMinuteReview_Fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getDataForResendMinuteReview_Fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getDataForResendMinuteReview_Fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getDataForResendMinuteReview_Fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(getDataForResendMinuteReview_Fail(t("Something-went-wrong")));
       });
   };
 };
