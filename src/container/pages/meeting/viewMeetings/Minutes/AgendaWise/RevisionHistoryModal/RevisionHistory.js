@@ -211,6 +211,14 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                     </p>
                                     <span>|</span>
                                     <p>
+                                      Pending:{" "}
+                                      {
+                                        revisionHistoryData?.mainMinute
+                                          ?.reviewStats?.pending
+                                      }
+                                    </p>
+                                    <span>|</span>
+                                    <p>
                                       Accepted:{" "}
                                       {
                                         revisionHistoryData?.mainMinute
@@ -223,14 +231,6 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                       {
                                         revisionHistoryData?.mainMinute
                                           ?.reviewStats?.rejected
-                                      }
-                                    </p>
-                                    <span>|</span>
-                                    <p>
-                                      Pending:{" "}
-                                      {
-                                        revisionHistoryData?.mainMinute
-                                          ?.reviewStats?.pending
                                       }
                                     </p>
                                   </div>
@@ -257,15 +257,56 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                       className={`${styles["text-wrapper-review"]}`}
                                     >
                                       <span
+                                        className={styles["Review-pending"]}
+                                      >
+                                        Review Pending:
+                                      </span>{" "}
+                                      {revisionHistoryData?.mainMinute
+                                        ?.reviewStats?.pendingUsers?.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.pendingUsers.map(
+                                          (userName, index) =>
+                                            index ===
+                                            revisionHistoryData?.mainMinute
+                                              ?.reviewStats?.pendingUsers
+                                              ?.length -
+                                              1
+                                              ? `${userName}`
+                                              : `${userName}, `
+                                        )}
+                                      {/* {revisionHistoryData?.mainMinute
+                                        ?.reviewStats?.pendingUsers.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.pendingUsers.map(
+                                          (userName) => `${userName} ,`
+                                        )} */}
+                                    </p>
+                                    <p
+                                      className={`${styles["text-wrapper-review"]}`}
+                                    >
+                                      <span
                                         className={styles["Review-accepted"]}
                                       >
                                         Review Accepted:
                                       </span>{" "}
-                                      {revisionHistoryData?.mainMinute
+                                      {/* {revisionHistoryData?.mainMinute
                                         .reviewStats?.acceptedByUsers.length >
                                         0 &&
                                         revisionHistoryData?.mainMinute?.reviewStats?.acceptedByUsers?.map(
                                           (userName) => `${userName}  ,`
+                                        )} */}
+                                      {revisionHistoryData?.mainMinute
+                                        ?.reviewStats?.acceptedByUsers?.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.acceptedByUsers.map(
+                                          (userName, index) =>
+                                            index ===
+                                            revisionHistoryData?.mainMinute
+                                              ?.reviewStats?.acceptedByUsers
+                                              ?.length -
+                                              1
+                                              ? `${userName}`
+                                              : `${userName}, `
                                         )}
                                     </p>
                                     <p
@@ -277,26 +318,24 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                         Review Rejected:
                                       </span>{" "}
                                       {revisionHistoryData?.mainMinute
+                                        ?.reviewStats?.rejectedByUsers?.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.rejectedByUsers.map(
+                                          (userName, index) =>
+                                            index ===
+                                            revisionHistoryData?.mainMinute
+                                              ?.reviewStats?.rejectedByUsers
+                                              ?.length -
+                                              1
+                                              ? `${userName}`
+                                              : `${userName}, `
+                                        )}
+                                      {/* {revisionHistoryData?.mainMinute
                                         ?.reviewStats?.rejectedByUsers.length >
                                         0 &&
                                         revisionHistoryData?.mainMinute?.reviewStats?.rejectedByUsers.map(
                                           (userName) => `${userName} ,`
-                                        )}
-                                    </p>
-                                    <p
-                                      className={`${styles["text-wrapper-review"]}`}
-                                    >
-                                      <span
-                                        className={styles["Review-pending"]}
-                                      >
-                                        Review Pending:
-                                      </span>{" "}
-                                      {revisionHistoryData?.mainMinute
-                                        ?.reviewStats?.pendingUsers.length >
-                                        0 &&
-                                        revisionHistoryData?.mainMinute?.reviewStats?.pendingUsers.map(
-                                          (userName) => `${userName} ,`
-                                        )}
+                                        )} */}
                                     </p>
                                   </Col>
                                 </Row>
@@ -376,16 +415,16 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                         className={styles["bar-line"]}
                                       ></span>
                                       <p className={styles["uploadedbyuser"]}>
-                                        Uploaded By
+                                        {t("Uploaded-by")}
                                       </p>{" "}
-                                      {/* {index === 0 && (
-                                        <img
-                                          className={styles["edit-icon"]}
-                                          src={EditIcon}
-                                          alt=""
-                                          onClick={editMinuteFunction}
-                                        />
-                                      )} */}
+                                      {/* {index === 0 && ( */}
+                                      <img
+                                        className={styles["edit-icon"]}
+                                        src={EditIcon}
+                                        alt=""
+                                        onClick={editMinuteFunction}
+                                      />
+                                      {/* )} */}
                                       <div className={styles["gap-ti"]}>
                                         <img
                                           src={DefaultAvatar}
@@ -580,6 +619,11 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                           </p>
                                           <span>|</span>
                                           <p>
+                                            Pending:{" "}
+                                            {reviewData.reviewStats.pending}
+                                          </p>
+                                          <span>|</span>
+                                          <p>
                                             Accepted:{" "}
                                             {reviewData.reviewStats.accepted}
                                           </p>
@@ -587,11 +631,6 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                           <p>
                                             Rejected:{" "}
                                             {reviewData.reviewStats.rejected}
-                                          </p>
-                                          <span>|</span>
-                                          <p>
-                                            Pending:{" "}
-                                            {reviewData.reviewStats.pending}
                                           </p>
                                         </div>
                                       </Col>
@@ -623,6 +662,22 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                           >
                                             <span
                                               className={
+                                                styles["Review-pending"]
+                                              }
+                                            >
+                                              Review Pending:
+                                            </span>{" "}
+                                            {reviewData.reviewStats.pendingUsers
+                                              .length > 0 &&
+                                              reviewData.reviewStats.pendingUsers.map(
+                                                (userName) => userName
+                                              )}
+                                          </p>
+                                          <p
+                                            className={`${styles["text-wrapper-review"]}`}
+                                          >
+                                            <span
+                                              className={
                                                 styles["Review-accepted"]
                                               }
                                             >
@@ -647,22 +702,6 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                             {reviewData.reviewStats
                                               .rejectedByUsers.length > 0 &&
                                               reviewData.reviewStats.rejectedByUsers.map(
-                                                (userName) => userName
-                                              )}
-                                          </p>
-                                          <p
-                                            className={`${styles["text-wrapper-review"]}`}
-                                          >
-                                            <span
-                                              className={
-                                                styles["Review-pending"]
-                                              }
-                                            >
-                                              Review Pending:
-                                            </span>{" "}
-                                            {reviewData.reviewStats.pendingUsers
-                                              .length > 0 &&
-                                              reviewData.reviewStats.pendingUsers.map(
                                                 (userName) => userName
                                               )}
                                           </p>
@@ -958,366 +997,6 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                             </>
                           );
                         })}
-
-                    {/* {openReviewerDetail === false ? (
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <div className={styles["reviewer-progress-wrapper"]}>
-                            <Row>
-                              <Col lg={11} md={11} sm={12}>
-                                <div
-                                  className={styles["reviewer-progress-text"]}
-                                >
-                                  <p className="m-0">Total: 03</p>
-                                  <span>|</span>
-                                  <p className="m-0">Accepted: 01</p>
-                                  <span>|</span>
-                                  <p className="m-0">Rejected: 01</p>
-                                  <span>|</span>
-                                  <p className="m-0">Pending: 01</p>
-                                </div>
-                              </Col>
-                              <Col lg={1} md={1} sm={12} className="text-end">
-                                <img
-                                  alt=""
-                                  src={DropdownPurple}
-                                  className={
-                                    openReviewerDetail
-                                      ? `${styles["Arrow"]} cursor-pointer`
-                                      : `${styles["Arrow_Expanded"]} cursor-pointer`
-                                  }
-                                  onClick={openCloseReviewerDetail}
-                                />
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <div className={styles["reviewer-progress-wrapper"]}>
-                            <Row>
-                              <Col lg={11} md={11} sm={12}>
-                                <div
-                                  className={styles["reviewer-progress-text"]}
-                                >
-                                  <p>Total: 03</p>
-                                  <span>|</span>
-                                  <p>Accepted: 01</p>
-                                  <span>|</span>
-                                  <p>Rejected: 01</p>
-                                  <span>|</span>
-                                  <p>Pending: 01</p>
-                                </div>
-                              </Col>
-                              <Col lg={1} md={1} sm={12} className="text-end">
-                                <img
-                                  alt=""
-                                  src={DropdownPurple}
-                                  className={
-                                    openReviewerDetail
-                                      ? `${styles["Arrow"]} cursor-pointer`
-                                      : `${styles["Arrow_Expanded"]} cursor-pointer`
-                                  }
-                                  onClick={openCloseReviewerDetail}
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p
-                                  className={`${styles["text-wrapper-review"]}`}
-                                >
-                                  <span className={styles["Review-accepted"]}>
-                                    Review Accepted:
-                                  </span>{" "}
-                                  Alessandra Costa, Emily Davis, Matthew Jones,
-                                  Christopher Martinez, Elizabeth Garcia, Olivia
-                                  Nguyen, Ethan Patel, Madison Kim, Tyler Chen,
-                                  Sophia Gupta, Mason Kumar, Ava Wong, Logan
-                                  Singh, Jackson Li, Chloe Patel, Noah Patel,
-                                  Lily Chang, Lucas Patel, Amelia Tran.
-                                </p>
-                                <p
-                                  className={`${styles["text-wrapper-review"]}`}
-                                >
-                                  <span className={styles["Review-declined"]}>
-                                    Review Rejected:
-                                  </span>{" "}
-                                  Alex Rodriguez, Samantha Lee.
-                                </p>
-                                <p
-                                  className={`${styles["text-wrapper-review"]}`}
-                                >
-                                  <span className={styles["Review-pending"]}>
-                                    Review Pending:
-                                  </span>{" "}
-                                  Sarah Jenkins, Joshua Clark, Megan Rodriguez,
-                                  Brandon Young.
-                                </p>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </Row>
-                    )}
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="position-relative"
-                      >
-                        <div
-                          className={
-                            styles["version-control-wrapper-with-more"]
-                          }
-                        >
-                          <span className={styles["with-text"]}>V2.0</span>
-                        </div>
-                        <div className={styles["uploaded-details"]}>
-                          <Row className={styles["inherit-height"]}>
-                            <Col lg={9} md={9} sm={12}>
-                              <p className={styles["minutes-text"]}>
-                                Task updates: Design phase completed, moving to
-                                development, discussed resource reallocation to
-                                address delays and decided unknown unknown
-                                printer took a galley of type a printer took a
-                                galley of type a to hold daily check-ins for
-                                quicker progress Design phase completed, moving
-                                to development, discussed resource reallocation
-                                to address delays and decided unknown unknown
-                                printer took a galley of type a printer took a
-                                galley of type a to hold daily check-ins for
-                                quicker progress Design phase completed, moving
-                                to development, discussed resource reallocation
-                                to address delays and decided unknown unknown
-                                printer took a galley of type a printer took a
-                                galley of type a to update.
-                              </p>
-                            </Col>
-                            <Col
-                              lg={3}
-                              md={3}
-                              sm={12}
-                              className="position-relative"
-                            >
-                              <Row className="m-0">
-                                <Col lg={12} md={12} sm={12} className="p-0">
-                                  <span className={styles["bar-line"]}></span>
-                                  <p className={styles["uploadedbyuser"]}>
-                                    Uploaded By
-                                  </p>
-                                  <img
-                                    className={styles["edit-icon"]}
-                                    src={EditIcon}
-                                    alt=""
-                                    onClick={editMinuteFunction}
-                                  />
-                                  <div className={styles["gap-ti"]}>
-                                    <img
-                                      src={DefaultAvatar}
-                                      className={styles["Image"]}
-                                      alt=""
-                                      draggable={false}
-                                    />
-                                    <p className={styles["agendaCreater"]}>
-                                      Alex Rodriguez
-                                    </p>
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row
-                                className={`${styles["positioning-tb"]} m-0`}
-                              >
-                                <Col lg={12} md={12} sm={12}>
-                                  <p className={styles["time-uploader"]}>
-                                    4:00pm,
-                                  </p>
-                                  <p className={styles["date-uploader"]}>
-                                    18th May, 2024
-                                  </p>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        </div>
-                      </Col>
-                    </Row>
-                    {openReviewerDetail === false ? (
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <div className={styles["reviewer-progress-wrapper"]}>
-                            <Row>
-                              <Col lg={11} md={11} sm={12}>
-                                <div
-                                  className={styles["reviewer-progress-text"]}
-                                >
-                                  <p className="m-0">Total: 03</p>
-                                  <span>|</span>
-                                  <p className="m-0">Accepted: 01</p>
-                                  <span>|</span>
-                                  <p className="m-0">Rejected: 01</p>
-                                  <span>|</span>
-                                  <p className="m-0">Pending: 01</p>
-                                </div>
-                              </Col>
-                              <Col lg={1} md={1} sm={12} className="text-end">
-                                <img
-                                  alt=""
-                                  src={DropdownPurple}
-                                  className={
-                                    openReviewerDetail
-                                      ? `${styles["Arrow"]} cursor-pointer`
-                                      : `${styles["Arrow_Expanded"]} cursor-pointer`
-                                  }
-                                  onClick={openCloseReviewerDetail}
-                                />
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <div className={styles["reviewer-progress-wrapper"]}>
-                            <Row>
-                              <Col lg={11} md={11} sm={12}>
-                                <div
-                                  className={styles["reviewer-progress-text"]}
-                                >
-                                  <p>Total: 03</p>
-                                  <span>|</span>
-                                  <p>Accepted: 01</p>
-                                  <span>|</span>
-                                  <p>Rejected: 01</p>
-                                  <span>|</span>
-                                  <p>Pending: 01</p>
-                                </div>
-                              </Col>
-                              <Col lg={1} md={1} sm={12} className="text-end">
-                                <img
-                                  alt=""
-                                  src={DropdownPurple}
-                                  className={
-                                    openReviewerDetail
-                                      ? `${styles["Arrow"]} cursor-pointer`
-                                      : `${styles["Arrow_Expanded"]} cursor-pointer`
-                                  }
-                                  onClick={openCloseReviewerDetail}
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p
-                                  className={`${styles["text-wrapper-review"]}`}
-                                >
-                                  <span className={styles["Review-accepted"]}>
-                                    Review Accepted:
-                                  </span>{" "}
-                                  Alessandra Costa, Emily Davis, Matthew Jones,
-                                  Christopher Martinez, Elizabeth Garcia, Olivia
-                                  Nguyen, Ethan Patel, Madison Kim, Tyler Chen,
-                                  Sophia Gupta, Mason Kumar, Ava Wong, Logan
-                                  Singh, Jackson Li, Chloe Patel, Noah Patel,
-                                  Lily Chang, Lucas Patel, Amelia Tran.
-                                </p>
-                                <p
-                                  className={`${styles["text-wrapper-review"]}`}
-                                >
-                                  <span className={styles["Review-declined"]}>
-                                    Review Rejected:
-                                  </span>{" "}
-                                  Alex Rodriguez, Samantha Lee.
-                                </p>
-                                <p
-                                  className={`${styles["text-wrapper-review"]}`}
-                                >
-                                  <span className={styles["Review-pending"]}>
-                                    Review Pending:
-                                  </span>{" "}
-                                  Sarah Jenkins, Joshua Clark, Megan Rodriguez,
-                                  Brandon Young.
-                                </p>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </Row>
-                    )}
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="position-relative"
-                      >
-                        <div
-                          className={
-                            styles["version-control-wrapper"]
-                          }
-                        >
-                          <span className={styles["with-text"]}>V1.0</span>
-                        </div>
-                        <div className={styles["uploaded-details"]}>
-                          <Row className={styles["inherit-height"]}>
-                            <Col lg={9} md={9} sm={12}>
-                              <p className={styles["minutes-text"]}>
-                                Task updates: Design phase completed, moving to
-                                development, discussed resource reallocation
-                              </p>
-                            </Col>
-                            <Col
-                              lg={3}
-                              md={3}
-                              sm={12}
-                              className="position-relative"
-                            >
-                              <Row className="m-0">
-                                <Col lg={12} md={12} sm={12} className="p-0">
-                                  <span className={styles["bar-line"]}></span>
-                                  <p className={styles["uploadedbyuser"]}>
-                                    Uploaded By
-                                  </p>
-                                  <img
-                                    className={styles["edit-icon"]}
-                                    src={EditIcon}
-                                    alt=""
-                                    onClick={editMinuteFunction}
-                                  />
-                                  <div className={styles["gap-ti"]}>
-                                    <img
-                                      src={DefaultAvatar}
-                                      className={styles["Image"]}
-                                      alt=""
-                                      draggable={false}
-                                    />
-                                    <p className={styles["agendaCreater"]}>
-                                      Alex Rodriguez
-                                    </p>
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row
-                                className={`${styles["positioning-tb"]} m-0`}
-                              >
-                                <Col lg={12} md={12} sm={12}>
-                                  <p className={styles["time-uploader"]}>
-                                    4:00pm,
-                                  </p>
-                                  <p className={styles["date-uploader"]}>
-                                    18th May, 2024
-                                  </p>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        </div>
-                      </Col>
-                    </Row> */}
                   </div>
                 </div>
               </Col>
