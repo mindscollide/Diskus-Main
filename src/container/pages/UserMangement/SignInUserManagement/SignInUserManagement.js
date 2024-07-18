@@ -154,6 +154,10 @@ const SignInUserManagement = () => {
       );
       let AdOrg = localStorage.getItem("AdOrg");
       let AgCont = localStorage.getItem("AgCont");
+      let MeetingStr = localStorage.getItem("meetingStr");
+      let MeetinUpd = localStorage.getItem("meetingUpd");
+      let MeetingMin = localStorage.getItem("meetingMin");
+      let Meetingprop = localStorage.getItem("meetingprop");
       let poPub = localStorage.getItem("poPub");
       if (RememberEmailLocal === true && RememberPasswordLocal === true) {
         let RememberEmailLocalValue =
@@ -176,6 +180,18 @@ const SignInUserManagement = () => {
         }
         if (RSVP) {
           localStorage.setItem("RSVP", RSVP);
+        }
+        if(MeetingStr) {
+          localStorage.setItem("meetingStr",MeetingStr)
+        }
+        if(MeetinUpd) {
+          localStorage.setItem("meetingUpd",MeetinUpd)
+        }
+        if(Meetingprop) {
+          localStorage.setItem("meetingprop",Meetingprop)
+        }
+        if(MeetingMin) {
+          localStorage.setItem("meetingMin",MeetingMin)
         }
         if (AgCont) {
           localStorage.setItem("AgCont", AgCont);
@@ -217,6 +233,18 @@ const SignInUserManagement = () => {
         if (RSVP) {
           localStorage.setItem("RSVP", RSVP);
         }
+        if(MeetingStr) {
+          localStorage.setItem("meetingStr",MeetingStr)
+        }
+        if(MeetinUpd) {
+          localStorage.setItem("meetingUpd",MeetinUpd)
+        }
+        if(Meetingprop) {
+          localStorage.setItem("meetingprop",Meetingprop)
+        }
+        if(MeetingMin) {
+          localStorage.setItem("meetingMin",MeetingMin)
+        }
         if (AgCont) {
           localStorage.setItem("AgCont", AgCont);
         }
@@ -257,6 +285,18 @@ const SignInUserManagement = () => {
         if (AgCont) {
           localStorage.setItem("AgCont", AgCont);
         }
+        if(MeetingStr) {
+          localStorage.setItem("meetingStr",MeetingStr)
+        }
+        if(MeetinUpd) {
+          localStorage.setItem("meetingUpd",MeetinUpd)
+        }
+        if(Meetingprop) {
+          localStorage.setItem("meetingprop",Meetingprop)
+        }
+        if(MeetingMin) {
+          localStorage.setItem("meetingMin",MeetingMin)
+        }
         if (poPub) {
           localStorage.setItem("poPub", poPub);
         }
@@ -282,12 +322,32 @@ const SignInUserManagement = () => {
           dispatch(LoginFlowRoutes(LoginFlowPageRoute));
           // }
         } catch {}
-
         if (reLang != undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
         }
         if (RSVP) {
           localStorage.setItem("RSVP", RSVP);
+        }
+        if (AgCont) {
+          localStorage.setItem("AgCont", AgCont);
+        }
+        if(MeetingStr) {
+          localStorage.setItem("meetingStr",MeetingStr)
+        }
+        if(MeetinUpd) {
+          localStorage.setItem("meetingUpd",MeetinUpd)
+        }
+        if(Meetingprop) {
+          localStorage.setItem("meetingprop",Meetingprop)
+        }
+        if(MeetingMin) {
+          localStorage.setItem("meetingMin",MeetingMin)
+        }
+        if (poPub) {
+          localStorage.setItem("poPub", poPub);
+        }
+        if (AdOrg) {
+          localStorage.setItem("AdOrg", AdOrg);
         }
         if (DataRoomEmailValue) {
           localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
