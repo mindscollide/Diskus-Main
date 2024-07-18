@@ -988,6 +988,7 @@ const AgendaWise = ({
                 lastUpdatedTime: minute.lastUpdatedTime,
                 userID: minute.userID,
                 userName: minute.userName,
+                isEditable: minute.isEditable,
               })),
               subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
                 let childMinutes = subMinutes.filter(
@@ -1005,6 +1006,7 @@ const AgendaWise = ({
                     lastUpdatedTime: minute.lastUpdatedTime,
                     userID: minute.userID,
                     userName: minute.userName,
+                    isEditable: minute.isEditable,
                   })),
                 };
               }),
@@ -1365,144 +1367,184 @@ const AgendaWise = ({
                             );
                             return (
                               <>
-                                <Row>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <div
-                                      className={
-                                        styles["reviewer-progress-wrapper"]
-                                      }
-                                    >
-                                      <Row>
-                                        <Col lg={11} md={11} sm={12}>
-                                          <div
-                                            className={
-                                              styles["reviewer-progress-text"]
-                                            }
+                                {minuteReviewData !== null &&
+                                parentMinutedata?.MinuteStats ? (
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <div
+                                        className={
+                                          styles["reviewer-progress-wrapper"]
+                                        }
+                                      >
+                                        <Row>
+                                          <Col lg={11} md={11} sm={12}>
+                                            <div
+                                              className={
+                                                styles["reviewer-progress-text"]
+                                              }
+                                            >
+                                              <p className="m-0">
+                                                {t("Total")}{" "}
+                                                {
+                                                  parentMinutedata?.MinuteStats
+                                                    ?.totalReviews
+                                                }
+                                              </p>
+                                              <span>|</span>
+
+                                              <p className="m-0">
+                                                {t("Pending")}{" "}
+                                                {
+                                                  parentMinutedata?.MinuteStats
+                                                    ?.pending
+                                                }
+                                              </p>
+                                              <span>|</span>
+
+                                              <p className="m-0">
+                                                {t("Accepted")}{" "}
+                                                {
+                                                  parentMinutedata?.MinuteStats
+                                                    ?.accepted
+                                                }
+                                              </p>
+                                              <span>|</span>
+                                              <p className="m-0">
+                                                {t("Rejected")}{" "}
+                                                {
+                                                  parentMinutedata?.MinuteStats
+                                                    ?.rejected
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                          <Col
+                                            lg={1}
+                                            md={1}
+                                            sm={12}
+                                            className="text-end"
                                           >
-                                            <p className="m-0">
-                                              {t("Total")}{" "}
-                                              {
-                                                parentMinutedata?.MinuteStats
-                                                  ?.totalReviews
+                                            <img
+                                              alt=""
+                                              src={DropdownPurple}
+                                              className={
+                                                isOpenDrawerMinute ===
+                                                parentMinutedata.minuteID
+                                                  ? `${styles["Arrow"]} cursor-pointer`
+                                                  : `${styles["Arrow_Expanded"]} cursor-pointer`
                                               }
-                                            </p>
-                                            <span>|</span>
-                                            <p className="m-0">
-                                              {t("Accepted")}{" "}
-                                              {
-                                                parentMinutedata?.MinuteStats
-                                                  ?.accepted
+                                              onClick={() =>
+                                                openMinuteDrawer(
+                                                  parentMinutedata.minuteID
+                                                )
                                               }
-                                            </p>
-                                            <span>|</span>
-                                            <p className="m-0">
-                                              {t("Rejected")}{" "}
-                                              {
-                                                parentMinutedata?.MinuteStats
-                                                  ?.rejected
-                                              }
-                                            </p>
-                                            <span>|</span>
-                                            <p className="m-0">
-                                              {t("Pending")}{" "}
-                                              {
-                                                parentMinutedata?.MinuteStats
-                                                  ?.pending
-                                              }
-                                            </p>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={12}
-                                          className="text-end"
-                                        >
-                                          <img
-                                            alt=""
-                                            src={DropdownPurple}
+                                            />
+                                          </Col>
+                                        </Row>
+                                        <Row>
+                                          <Col
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
                                             className={
                                               isOpenDrawerMinute ===
                                               parentMinutedata.minuteID
-                                                ? `${styles["Arrow"]} cursor-pointer`
-                                                : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                                ? styles["ParentMinuteExtend"]
+                                                : styles[
+                                                    "ParentMinuteNotExtend"
+                                                  ]
                                             }
-                                            onClick={() =>
-                                              openMinuteDrawer(
-                                                parentMinutedata.minuteID
-                                              )
-                                            }
-                                          />
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={
-                                            isOpenDrawerMinute ===
-                                            parentMinutedata.minuteID
-                                              ? styles["ParentMinuteExtend"]
-                                              : styles["ParentMinuteNotExtend"]
-                                          }
-                                        >
-                                          <p
-                                            className={`${styles["text-wrapper-review"]}`}
                                           >
-                                            <span
-                                              className={
-                                                styles["Review-accepted"]
-                                              }
+                                            <p
+                                              className={`${styles["text-wrapper-review"]}`}
                                             >
-                                              Review Accepted:
-                                            </span>{" "}
-                                            {parentMinutedata?.MinuteStats
-                                              ?.acceptedByUsers?.length > 0 &&
-                                              parentMinutedata?.MinuteStats?.acceptedByUsers?.map(
-                                                (acceptedUser, index) =>
-                                                  `${acceptedUser}, `
-                                              )}
-                                          </p>
-                                          <p
-                                            className={`${styles["text-wrapper-review"]}`}
-                                          >
-                                            <span
-                                              className={
-                                                styles["Review-declined"]
-                                              }
+                                              <span
+                                                className={
+                                                  styles["Review-pending"]
+                                                }
+                                              >
+                                                Review Pending:
+                                              </span>{" "}
+                                              {/* {parentMinutedata?.MinuteStats
+                                                ?.pendingUsers?.length > 0 &&
+                                                parentMinutedata?.MinuteStats?.pendingUsers?.map(
+                                                  (pendingUserData, index) =>
+                                                    `${pendingUserData}, `
+                                                )} */}
+                                              {parentMinutedata?.MinuteStats
+                                                ?.pendingUsers?.length > 0 &&
+                                                parentMinutedata?.MinuteStats?.pendingUsers.map(
+                                                  (pendingUserData, index) =>
+                                                    index ===
+                                                    parentMinutedata.MinuteStats
+                                                      .pendingUsers.length -
+                                                      1
+                                                      ? `${pendingUserData}`
+                                                      : `${pendingUserData}, `
+                                                )}
+                                            </p>
+                                            <p
+                                              className={`${styles["text-wrapper-review"]}`}
                                             >
-                                              Review Rejected:
-                                            </span>{" "}
-                                            {parentMinutedata?.MinuteStats
-                                              ?.rejectedByUsers?.length > 0 &&
-                                              parentMinutedata?.MinuteStats?.rejectedByUsers?.map(
-                                                (rejectedUser, index) =>
-                                                  `${rejectedUser}, `
-                                              )}
-                                          </p>
-                                          <p
-                                            className={`${styles["text-wrapper-review"]}`}
-                                          >
-                                            <span
-                                              className={
-                                                styles["Review-pending"]
-                                              }
+                                              <span
+                                                className={
+                                                  styles["Review-accepted"]
+                                                }
+                                              >
+                                                Review Accepted:
+                                              </span>{" "}
+                                              {/* {parentMinutedata?.MinuteStats
+                                                ?.acceptedByUsers?.length > 0 &&
+                                                parentMinutedata?.MinuteStats?.acceptedByUsers?.map(
+                                                  (acceptedUser, index) =>
+                                                    `${acceptedUser}, `
+                                                )} */}
+                                              {parentMinutedata?.MinuteStats
+                                                ?.acceptedByUsers?.length > 0 &&
+                                                parentMinutedata?.MinuteStats?.acceptedByUsers.map(
+                                                  (acceptedUser, index) =>
+                                                    index ===
+                                                    parentMinutedata.MinuteStats
+                                                      .acceptedByUsers.length -
+                                                      1
+                                                      ? `${acceptedUser}`
+                                                      : `${acceptedUser}, `
+                                                )}
+                                            </p>
+                                            <p
+                                              className={`${styles["text-wrapper-review"]}`}
                                             >
-                                              Review Pending:
-                                            </span>{" "}
-                                            {parentMinutedata?.MinuteStats
-                                              ?.pendingUsers?.length > 0 &&
-                                              parentMinutedata?.MinuteStats?.pendingUsers?.map(
-                                                (pendingUserData, index) =>
-                                                  `${pendingUserData}, `
-                                              )}
-                                          </p>
-                                        </Col>
-                                      </Row>
-                                    </div>
-                                  </Col>
-                                </Row>
+                                              <span
+                                                className={
+                                                  styles["Review-declined"]
+                                                }
+                                              >
+                                                Review Rejected:
+                                              </span>{" "}
+                                              {/* {parentMinutedata?.MinuteStats
+                                                ?.rejectedByUsers?.length > 0 &&
+                                                parentMinutedata?.MinuteStats?.rejectedByUsers?.map(
+                                                  (rejectedUser, index) =>
+                                                    `${rejectedUser}, `
+                                                )} */}
+                                              {parentMinutedata?.MinuteStats
+                                                ?.rejectedByUsers?.length > 0 &&
+                                                parentMinutedata?.MinuteStats?.rejectedByUsers.map(
+                                                  (rejectedUser, index) =>
+                                                    index ===
+                                                    parentMinutedata.MinuteStats
+                                                      .rejectedByUsers.length -
+                                                      1
+                                                      ? `${rejectedUser}`
+                                                      : `${rejectedUser}, `
+                                                )}
+                                            </p>
+                                          </Col>
+                                        </Row>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                ) : null}
                                 <Row key={index}>
                                   <Col
                                     lg={12}
@@ -1511,21 +1553,32 @@ const AgendaWise = ({
                                     className="position-relative"
                                   >
                                     <div className={styles["uploaded-details"]}>
-                                      <img
-                                        className={styles["delete-icon"]}
-                                        src={DeleteIcon}
-                                        alt=""
-                                        onClick={() => {
-                                          dispatch(
-                                            deleteCommentModalAgenda(true)
-                                          );
-                                          dispatch(
-                                            DeleteMinuteReducer(
-                                              parentMinutedata
-                                            )
-                                          );
-                                        }}
-                                      />
+                                      {(parentMinutedata.isEditable &&
+                                        Number(editorRole.status) === 1) ||
+                                      Number(editorRole.status) === 11 ||
+                                      Number(editorRole.status) ===
+                                        12 ? null : (parentMinutedata.isEditable &&
+                                          editorRole.role === "Organizer" &&
+                                          Number(editorRole.status) === 9) ||
+                                        (parentMinutedata.isEditable &&
+                                          Number(editorRole.status) === 10 &&
+                                          editorRole.role === "Organizer") ? (
+                                        <img
+                                          className={styles["delete-icon"]}
+                                          src={DeleteIcon}
+                                          alt=""
+                                          onClick={() => {
+                                            dispatch(
+                                              deleteCommentModalAgenda(true)
+                                            );
+                                            dispatch(
+                                              DeleteMinuteReducer(
+                                                parentMinutedata
+                                              )
+                                            );
+                                          }}
+                                        />
+                                      ) : null}
                                       <Row className={styles["inherit-height"]}>
                                         <Col lg={9} md={9} sm={12}>
                                           <p
@@ -1599,16 +1652,35 @@ const AgendaWise = ({
                                               className="d-grid justify-content-end p-0"
                                             >
                                               <div className="d-flex justify-content-center align-items-center">
-                                                <img
-                                                  className="cursor-pointer mx-2"
-                                                  src={EditIcon}
-                                                  alt=""
-                                                  onClick={() =>
-                                                    handleEditFunc(
-                                                      parentMinutedata
-                                                    )
-                                                  }
-                                                />
+                                                {(parentMinutedata.isEditable &&
+                                                  Number(editorRole.status) ===
+                                                    1) ||
+                                                Number(editorRole.status) ===
+                                                  11 ||
+                                                Number(editorRole.status) ===
+                                                  12 ? null : (parentMinutedata.isEditable &&
+                                                    editorRole.role ===
+                                                      "Organizer" &&
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 9) ||
+                                                  (parentMinutedata.isEditable &&
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 10 &&
+                                                    editorRole.role ===
+                                                      "Organizer") ? (
+                                                  <img
+                                                    className="cursor-pointer mx-2"
+                                                    src={EditIcon}
+                                                    alt=""
+                                                    onClick={() =>
+                                                      handleEditFunc(
+                                                        parentMinutedata
+                                                      )
+                                                    }
+                                                  />
+                                                ) : null}
                                                 <div
                                                   onClick={() =>
                                                     menuPopupMinute(
@@ -1736,150 +1808,211 @@ const AgendaWise = ({
                               {subMinuteData.minuteData.map(
                                 (minuteDataSubminute) => (
                                   <>
-                                    <Row className="mxl-50">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <div
-                                          className={
-                                            styles["reviewer-progress-wrapper"]
-                                          }
-                                        >
-                                          <Row>
-                                            <Col lg={11} md={11} sm={12}>
-                                              <div
-                                                className={
-                                                  styles[
-                                                    "reviewer-progress-text"
-                                                  ]
-                                                }
+                                    {minuteReviewData !== null &&
+                                    minuteDataSubminute?.MinuteStats ? (
+                                      <Row className="mxl-50">
+                                        <Col lg={12} md={12} sm={12}>
+                                          <div
+                                            className={
+                                              styles[
+                                                "reviewer-progress-wrapper"
+                                              ]
+                                            }
+                                          >
+                                            <Row>
+                                              <Col lg={11} md={11} sm={12}>
+                                                <div
+                                                  className={
+                                                    styles[
+                                                      "reviewer-progress-text"
+                                                    ]
+                                                  }
+                                                >
+                                                  <p className="m-0">
+                                                    {t("Total")}{" "}
+                                                    {
+                                                      minuteDataSubminute
+                                                        ?.MinuteStats
+                                                        ?.totalReviews
+                                                    }
+                                                  </p>
+                                                  <span>|</span>
+                                                  <p className="m-0">
+                                                    {t("Pending")}{" "}
+                                                    {
+                                                      minuteDataSubminute
+                                                        ?.MinuteStats?.pending
+                                                    }
+                                                  </p>
+                                                  <span>|</span>
+                                                  <p className="m-0">
+                                                    {t("Accepted")}{" "}
+                                                    {
+                                                      minuteDataSubminute
+                                                        ?.MinuteStats?.accepted
+                                                    }
+                                                  </p>
+                                                  <span>|</span>
+                                                  <p className="m-0">
+                                                    {t("Rejected")}{" "}
+                                                    {
+                                                      minuteDataSubminute
+                                                        ?.MinuteStats?.rejected
+                                                    }
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                              <Col
+                                                lg={1}
+                                                md={1}
+                                                sm={12}
+                                                className="text-end"
                                               >
-                                                <p className="m-0">
-                                                  {t("Total")}{" "}
-                                                  {
-                                                    minuteDataSubminute
-                                                      ?.MinuteStats
-                                                      ?.totalReviews
+                                                <img
+                                                  alt=""
+                                                  src={DropdownPurple}
+                                                  className={
+                                                    minuteDataSubminute.minuteID ===
+                                                    isOpenDrawerSubMinute
+                                                      ? `${styles["Arrow"]} cursor-pointer`
+                                                      : `${styles["Arrow_Expanded"]} cursor-pointer`
                                                   }
-                                                </p>
-                                                <span>|</span>
-                                                <p className="m-0">
-                                                  {t("Accepted")}{" "}
-                                                  {
-                                                    minuteDataSubminute
-                                                      ?.MinuteStats?.accepted
+                                                  onClick={() =>
+                                                    openSubMinuteDrawer(
+                                                      minuteDataSubminute.minuteID
+                                                    )
                                                   }
-                                                </p>
-                                                <span>|</span>
-                                                <p className="m-0">
-                                                  {t("Rejected")}{" "}
-                                                  {
-                                                    minuteDataSubminute
-                                                      ?.MinuteStats?.rejected
-                                                  }
-                                                </p>
-                                                <span>|</span>
-                                                <p className="m-0">
-                                                  {t("Pending")}{" "}
-                                                  {
-                                                    minuteDataSubminute
-                                                      ?.MinuteStats?.pending
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col
-                                              lg={1}
-                                              md={1}
-                                              sm={12}
-                                              className="text-end"
-                                            >
-                                              <img
-                                                alt=""
-                                                src={DropdownPurple}
+                                                />
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
                                                 className={
                                                   minuteDataSubminute.minuteID ===
                                                   isOpenDrawerSubMinute
-                                                    ? `${styles["Arrow"]} cursor-pointer`
-                                                    : `${styles["Arrow_Expanded"]} cursor-pointer`
+                                                    ? styles["subMinuteExtend"]
+                                                    : styles[
+                                                        "subMinuteNotExtend"
+                                                      ]
                                                 }
-                                                onClick={() =>
-                                                  openSubMinuteDrawer(
-                                                    minuteDataSubminute.minuteID
-                                                  )
-                                                }
-                                              />
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className={
-                                                minuteDataSubminute.minuteID ===
-                                                isOpenDrawerSubMinute
-                                                  ? styles["subMinuteExtend"]
-                                                  : styles["subMinuteNotExtend"]
-                                              }
-                                            >
-                                              <p
-                                                className={`${styles["text-wrapper-review"]}`}
                                               >
-                                                <span
-                                                  className={
-                                                    styles["Review-accepted"]
-                                                  }
+                                                <p
+                                                  className={`${styles["text-wrapper-review"]}`}
                                                 >
-                                                  Review Accepted:
-                                                </span>{" "}
-                                                {minuteDataSubminute
-                                                  ?.MinuteStats?.acceptedByUsers
-                                                  ?.length > 0 &&
-                                                  minuteDataSubminute?.MinuteStats?.acceptedByUsers?.map(
-                                                    (acceptedUserData) =>
-                                                      `${acceptedUserData}, `
-                                                  )}
-                                              </p>
-                                              <p
-                                                className={`${styles["text-wrapper-review"]}`}
-                                              >
-                                                <span
-                                                  className={
-                                                    styles["Review-declined"]
-                                                  }
+                                                  <span
+                                                    className={
+                                                      styles["Review-pending"]
+                                                    }
+                                                  >
+                                                    Review Pending:
+                                                  </span>{" "}
+                                                  {/* {minuteDataSubminute
+                                                    ?.MinuteStats?.pendingUsers
+                                                    ?.length > 0 &&
+                                                    minuteDataSubminute?.MinuteStats?.pendingUsers?.map(
+                                                      (pendingUserData) =>
+                                                        `${pendingUserData}, `
+                                                    )} */}
+                                                  {minuteDataSubminute
+                                                    ?.MinuteStats?.pendingUsers
+                                                    ?.length > 0 &&
+                                                    minuteDataSubminute?.MinuteStats?.pendingUsers.map(
+                                                      (
+                                                        pendingUserData,
+                                                        index
+                                                      ) =>
+                                                        index ===
+                                                        minuteDataSubminute
+                                                          .MinuteStats
+                                                          .pendingUsers.length -
+                                                          1
+                                                          ? `${pendingUserData}`
+                                                          : `${pendingUserData}, `
+                                                    )}
+                                                </p>
+                                                <p
+                                                  className={`${styles["text-wrapper-review"]}`}
                                                 >
-                                                  Review Rejected:
-                                                </span>{" "}
-                                                {minuteDataSubminute
-                                                  ?.MinuteStats?.rejectedByUsers
-                                                  ?.length > 0 &&
-                                                  minuteDataSubminute?.MinuteStats?.rejectedByUsers?.map(
-                                                    (rejectedUserData) =>
-                                                      `${rejectedUserData}, `
-                                                  )}
-                                              </p>
-                                              <p
-                                                className={`${styles["text-wrapper-review"]}`}
-                                              >
-                                                <span
-                                                  className={
-                                                    styles["Review-pending"]
-                                                  }
+                                                  <span
+                                                    className={
+                                                      styles["Review-accepted"]
+                                                    }
+                                                  >
+                                                    Review Accepted:
+                                                  </span>{" "}
+                                                  {/* {minuteDataSubminute
+                                                    ?.MinuteStats
+                                                    ?.acceptedByUsers?.length >
+                                                    0 &&
+                                                    minuteDataSubminute?.MinuteStats?.acceptedByUsers?.map(
+                                                      (acceptedUserData) =>
+                                                        `${acceptedUserData}, `
+                                                    )} */}
+                                                  {minuteDataSubminute
+                                                    ?.MinuteStats
+                                                    ?.acceptedByUsers?.length >
+                                                    0 &&
+                                                    minuteDataSubminute?.MinuteStats?.acceptedByUsers.map(
+                                                      (
+                                                        acceptedUserData,
+                                                        index
+                                                      ) =>
+                                                        index ===
+                                                        minuteDataSubminute
+                                                          .MinuteStats
+                                                          .acceptedByUsers
+                                                          .length -
+                                                          1
+                                                          ? `${acceptedUserData}`
+                                                          : `${acceptedUserData}, `
+                                                    )}
+                                                </p>
+                                                <p
+                                                  className={`${styles["text-wrapper-review"]}`}
                                                 >
-                                                  Review Pending:
-                                                </span>{" "}
-                                                {minuteDataSubminute
-                                                  ?.MinuteStats?.pendingUsers
-                                                  ?.length > 0 &&
-                                                  minuteDataSubminute?.MinuteStats?.pendingUsers?.map(
-                                                    (pendingUserData) =>
-                                                      `${pendingUserData}, `
-                                                  )}
-                                              </p>
-                                            </Col>
-                                          </Row>
-                                        </div>
-                                      </Col>
-                                    </Row>
+                                                  <span
+                                                    className={
+                                                      styles["Review-declined"]
+                                                    }
+                                                  >
+                                                    Review Rejected:
+                                                  </span>{" "}
+                                                  {/* {minuteDataSubminute
+                                                    ?.MinuteStats
+                                                    ?.rejectedByUsers?.length >
+                                                    0 &&
+                                                    minuteDataSubminute?.MinuteStats?.rejectedByUsers?.map(
+                                                      (rejectedUserData) =>
+                                                        `${rejectedUserData}, `
+                                                    )} */}
+                                                  {minuteDataSubminute
+                                                    ?.MinuteStats
+                                                    ?.rejectedByUsers?.length >
+                                                    0 &&
+                                                    minuteDataSubminute?.MinuteStats?.rejectedByUsers.map(
+                                                      (
+                                                        rejectedUserData,
+                                                        index
+                                                      ) =>
+                                                        index ===
+                                                        minuteDataSubminute
+                                                          .MinuteStats
+                                                          .rejectedByUsers
+                                                          .length -
+                                                          1
+                                                          ? `${rejectedUserData}`
+                                                          : `${rejectedUserData}, `
+                                                    )}
+                                                </p>
+                                              </Col>
+                                            </Row>
+                                          </div>
+                                        </Col>
+                                      </Row>
+                                    ) : null}
 
                                     <Row className="mxl-50">
                                       <Col
@@ -1992,16 +2125,39 @@ const AgendaWise = ({
                                                   className="d-grid justify-content-end p-0"
                                                 >
                                                   <div className="d-flex justify-content-center align-items-center">
-                                                    <img
-                                                      className="cursor-pointer mx-2"
-                                                      src={EditIcon}
-                                                      alt=""
-                                                      onClick={() =>
-                                                        handleEditFunc(
-                                                          minuteDataSubminute
-                                                        )
-                                                      }
-                                                    />
+                                                    {(minuteDataSubminute.isEditable &&
+                                                      Number(
+                                                        editorRole.status
+                                                      ) === 1) ||
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 11 ||
+                                                    Number(
+                                                      editorRole.status
+                                                    ) ===
+                                                      12 ? null : (minuteDataSubminute.isEditable &&
+                                                        editorRole.role ===
+                                                          "Organizer" &&
+                                                        Number(
+                                                          editorRole.status
+                                                        ) === 9) ||
+                                                      (minuteDataSubminute.isEditable &&
+                                                        Number(
+                                                          editorRole.status
+                                                        ) === 10 &&
+                                                        editorRole.role ===
+                                                          "Organizer") ? (
+                                                      <img
+                                                        className="cursor-pointer mx-2"
+                                                        src={EditIcon}
+                                                        alt=""
+                                                        onClick={() =>
+                                                          handleEditFunc(
+                                                            minuteDataSubminute
+                                                          )
+                                                        }
+                                                      />
+                                                    ) : null}
                                                     <div
                                                       onClick={() =>
                                                         menuPopupMinute(
@@ -2097,21 +2253,32 @@ const AgendaWise = ({
                                             </Col>
                                           </Row>
                                         </div>
-                                        <img
-                                          className={styles["delete-icon"]}
-                                          src={DeleteIcon}
-                                          alt=""
-                                          onClick={() => {
-                                            dispatch(
-                                              deleteCommentModalAgenda(true)
-                                            );
-                                            dispatch(
-                                              DeleteMinuteReducer(
-                                                minuteDataSubminute
-                                              )
-                                            );
-                                          }}
-                                        />
+                                        {(minuteDataSubminute.isEditable &&
+                                          Number(editorRole.status) === 1) ||
+                                        Number(editorRole.status) === 11 ||
+                                        Number(editorRole.status) ===
+                                          12 ? null : (minuteDataSubminute.isEditable &&
+                                            editorRole.role === "Organizer" &&
+                                            Number(editorRole.status) === 9) ||
+                                          (minuteDataSubminute.isEditable &&
+                                            Number(editorRole.status) === 10 &&
+                                            editorRole.role === "Organizer") ? (
+                                          <img
+                                            className={styles["delete-icon"]}
+                                            src={DeleteIcon}
+                                            alt=""
+                                            onClick={() => {
+                                              dispatch(
+                                                deleteCommentModalAgenda(true)
+                                              );
+                                              dispatch(
+                                                DeleteMinuteReducer(
+                                                  minuteDataSubminute
+                                                )
+                                              );
+                                            }}
+                                          />
+                                        ) : null}
                                       </Col>
                                     </Row>
                                   </>

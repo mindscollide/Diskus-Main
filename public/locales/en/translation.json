@@ -1582,7 +1582,8 @@
   "List-updated-successfully": "List Updated Successfully",
   "RSVP-allowed-and-notify": "RSVP allowed and notify meeting organizer when members RSVP",
   "RSVP-not-allowed": "RSVP not allowed ",
-  "Only-minute-creator-can-delete": "Only Minute creator Can Delete",
+  "Only-minute-creator-can-delete": "Only minute creator can delete the minute",
+  "Only-minute-creator-can-update": "Only minute creator can update the minute",
   "Record-deleted": "Record Deleted",
   "No-record-deleted": "No Record Deleted",
   "View-not-available": "View Not Available",
@@ -2114,5 +2115,11 @@
   "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task",
   "Set-signer-order": "Set signer order",
   "No-comments": "No comments",
-  "If-you-accept-all-minutes": "If you accept all minutes, previous comments will be discarded. Would you like to proceed with accepting all?"
+  "If-you-accept-all-minutes": "If you accept all minutes, previous comments will be discarded. Would you like to proceed with accepting all?",
+  "Minute-review-flow-not-found": "Minute review flow not found",
+  "Revision-history": "Revision history",
+  "Version-history": "Version history",
+  "Minutes-review-flow-edited-successfully": "Minutes review flow edited successfully",
+  "Show-comments": "Show comments",
+  "Hide-comments": "Hide comments"
 }
