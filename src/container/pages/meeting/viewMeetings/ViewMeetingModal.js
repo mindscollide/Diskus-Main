@@ -99,6 +99,12 @@ const ViewMeetingModal = ({
       } else if (Number(routeID) === 2) {
         setorganizers(true);
         setmeetingDetails(false);
+      } else if (Number(routeID) === 3) {
+        setAgenda(true);
+        setmeetingDetails(false);
+      } else if (Number(routeID) === 5) {
+        setmeetingDetails(false);
+        setMinutes(true);
       }
     }
   }, [routeID]);

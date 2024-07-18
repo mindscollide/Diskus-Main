@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
+  const navigate = useNavigate()
 
   // Effect hook to perform actions based on the current URL
   useEffect(() => {
@@ -40,11 +41,15 @@ const PrivateRoutes = () => {
       currentUrl.includes("DisKus/Meeting/Meetingminutecollaborate?action=")
     ) {
       // Add action-specific logic here if needed
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("meetingMin", parts);
     }
 
     // Action: Meeting Proposed
     if (currentUrl.includes("DisKus/Meeting/Meetingproposed?action=")) {
       // Add action-specific logic here if needed
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("meetingprop", parts);
     }
 
     // Action: Add Agenda Contributor
@@ -58,7 +63,9 @@ const PrivateRoutes = () => {
     // Action: Update Agenda Contributor
     if (currentUrl.includes("DisKus/Meeting?Updateagendacontributor_action=")) {
       // Add action-specific logic here if needed
-      // const parts = currentUrl.split("Updateagendacontributor_action=")[1];
+      const parts = currentUrl.split("Updateagendacontributor_action=")[1];
+      localStorage.setItem("UpCont", parts);
+
     }
 
     // Action: Add Organizer
@@ -72,30 +79,41 @@ const PrivateRoutes = () => {
     // Action: Update Organizer
     if (currentUrl.includes("DisKus/Meeting?Updateorganizer_action=")) {
       // Add action-specific logic here if needed
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("AdOrg", parts);
     }
 
     // Action: Cancel Meeting
     if (currentUrl.includes("DisKus/Meeting?Cancelmeeting_action=")) {
       // Add action-specific logic here if needed
+      navigate("/Diskus/Meeting")
+
     }
 
     // Action: Delete Meeting
     if (currentUrl.includes("DisKus/Meeting?Deletemeeting_action=")) {
       // Add action-specific logic here if needed
+      navigate("/Diskus/Meeting")
+      
     }
 
     // Action: Update Meeting
     if (currentUrl.includes("DisKus/Meeting?Updatemeeting_action=")) {
       // Add action-specific logic here if needed
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("meetingUpd", parts);
     }
 
     // Action: Start Meeting
     if (currentUrl.includes("DisKus/Meeting?Startmeeting_action=")) {
       // Add action-specific logic here if needed
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("meetingStr", parts);
     }
 
     // Action: Poll Expire
     if (currentUrl.includes("DisKus/polling?Pollexpire_action=")) {
+      console.log();
       // Add action-specific logic here if needed
     }
     // Action: Poll Expire

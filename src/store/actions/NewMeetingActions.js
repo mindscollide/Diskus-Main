@@ -7708,7 +7708,7 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
                 )
             ) {
-              dispatch(
+              await dispatch(
                 joinMeetingSuccess(
                   response.data.responseResult,
                   t("Successful")
@@ -7730,8 +7730,8 @@ const JoinCurrentMeeting = (
               } else {
                 setAdvanceMeetingModalID(Data.FK_MDID);
                 setViewAdvanceMeetingModal(true);
-                dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                dispatch(scheduleMeetingPageFlag(false));
+                await dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                await dispatch(scheduleMeetingPageFlag(false));
                 localStorage.setItem("currentMeetingID", Data.FK_MDID);
               }
               dispatch(currentMeetingStatus(10));
@@ -8180,7 +8180,7 @@ const validateStringEmailApi = (
                 )
             ) {
               dispatch(validateStringEmail_fail(t("Unsuccessful")));
-              resolve("Unsuccessful");
+              reject("Unsuccessful");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -8189,15 +8189,15 @@ const validateStringEmailApi = (
                 )
             ) {
               dispatch(validateStringEmail_fail(t("Something-went-wrong")));
-              resolve("Something-went-wrong");
+              reject("Something-went-wrong");
             }
           } else {
             dispatch(validateStringEmail_fail(t("Something-went-wrong")));
-            resolve("Something-went-wrong");
+            reject("Something-went-wrong");
           }
         } else {
           dispatch(validateStringEmail_fail(t("Something-went-wrong")));
-          resolve("Something-went-wrong");
+          reject("Something-went-wrong");
         }
       })
       .catch((error) => {
