@@ -43,6 +43,7 @@ import {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
+  validateStringEmailApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -110,6 +111,8 @@ const UnpublishedProposedMeeting = ({
   const [rows, setRow] = useState([]);
   const [publishState, setPublishState] = useState(null);
   const [organizerViewModal, setOrganizerViewModal] = useState(false);
+  let Meetingprop = localStorage.getItem("meetingprop");
+
   const handleDeleteMeetingModal = () => {
     dispatch(showDeleteMeetingModal(true));
   };
@@ -735,6 +738,35 @@ const UnpublishedProposedMeeting = ({
   //     setRow(updatedRows);
   //   }
   // }, [NewMeetingreducer.meetingStatusProposedMqttData]);
+  useEffect(() => {
+    if (Meetingprop !== null) {
+      // Route for Meeting props
+      validateStringEmailApi(Meetingprop, navigate, t, 6, dispatch)
+        .then(async (result) => {
+          console.log("Result:", result);
+          if (Number(result.attendeeId) === 2) {
+            // Particpant
+            viewProposeDatePollHandler(
+              true,
+              false,
+              false,
+              result.pK_MDID,
+              result.responseDeadLine
+            );
+          } else if (Number(result.attendeeId) === 3) {
+            viewProposeDatePollHandler(false, false, true, result.meetingID);
+          }
+          // Handle the result here
+
+          localStorage.removeItem("meetingprop");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          //
+        });
+      localStorage.removeItem("meetingprop");
+    }
+  }, [Meetingprop]);
 
   useEffect(() => {
     if (

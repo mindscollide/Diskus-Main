@@ -147,6 +147,10 @@ const NewMeeting = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
   let AdOrg = localStorage.getItem("AdOrg");
+  let MeetingStr = localStorage.getItem("meetingStr");
+  let MeetinUpd = localStorage.getItem("meetingUpd");
+  let MeetingMin = localStorage.getItem("meetingMin");
+  let Meetingprop = localStorage.getItem("meetingprop");
   // let AdCont
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
@@ -458,6 +462,128 @@ const NewMeeting = () => {
         });
     }
   }, [AdOrg]);
+
+  useEffect(() => {
+    if (MeetingStr !== null) {
+      // Meeting Start Route 3
+      validateStringEmailApi(MeetingStr, navigate, t, 3, dispatch)
+        .then(async (result) => {
+          console.log("Result:", result);
+          // Handle the result here
+          let Data = {
+            FK_MDID: Number(result.meetingID),
+            DateTime: getCurrentDateTimeUTC(),
+          };
+          // if (result.isQuickMeeting === true) {
+          await dispatch(
+            JoinCurrentMeeting(
+              true,
+              navigate,
+              t,
+              Data,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              1,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
+          );
+
+          localStorage.removeItem("meetingStr");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          //
+        });
+    }
+  }, [MeetingStr]);
+
+  useEffect(() => {
+    if (MeetinUpd !== null) {
+      // Meeting Update Route 4
+      validateStringEmailApi(MeetinUpd, navigate, t, 4, dispatch)
+        .then(async (result) => {
+          console.log("Result:", result);
+          // Handle the result here
+          if (result.isQuickMeeting === true) {
+            let requestDataForMeetingDetails = {
+              MeetingID: Number(result.MeetingID),
+            };
+            await dispatch(
+              ViewMeeting(
+                navigate,
+                requestDataForMeetingDetails,
+                t,
+                setViewFlag,
+                setEditFlag,
+                "",
+                1
+              )
+            );
+          } else {
+            await setAdvanceMeetingModalID(Number(result.meetingID));
+            await setViewAdvanceMeetingModalUnpublish(true);
+            await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            setEdiorRole({
+              ...editorRole,
+              isPrimaryOrganizer: false,
+              role:
+                Number(result.attendeeId) === 2
+                  ? "Participant"
+                  : Number(result.attendeeId) === 4
+                  ? "Agenda Contributor"
+                  : "Organizer",
+              status: Number(result.meetingStatusId),
+            });
+          }
+          localStorage.removeItem("meetingUpd");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          //
+        });
+    }
+  }, [MeetinUpd]);
+  useEffect(() => {
+    if (Meetingprop !== null) {
+      localStorage.setItem("MeetingCurrentView", 2);
+      localStorage.setItem("MeetingPageRows", 50);
+      localStorage.setItem("MeetingPageCurrent", 1);
+    }
+  }, [Meetingprop]);
+
+  useEffect(() => {
+    if (MeetingMin !== null) {
+      // Email Route 5
+      validateStringEmailApi(MeetingMin, navigate, t, 5, dispatch)
+        .then(async (result) => {
+          console.log("Result:", result);
+          // Handle the result here
+
+          await setAdvanceMeetingModalID(Number(result.meetingID));
+          await setViewAdvanceMeetingModalUnpublish(true);
+          await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setEdiorRole({
+            ...editorRole,
+            isPrimaryOrganizer: false,
+            role:
+              Number(result.attendeeId) === 2
+                ? "Participant"
+                : Number(result.attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            status: Number(result.meetingStatusId),
+          });
+          localStorage.removeItem("meetingMin");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          //
+        });
+      localStorage.removeItem("meetingMin");
+    }
+  }, [MeetingMin]);
 
   //  Call all search meetings api
   useEffect(() => {
