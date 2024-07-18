@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Button,
@@ -20,10 +20,17 @@ const EditCommentModal = ({
   setConfirmationEdit,
   resendMinuteForReview,
   setResendMinuteForReview,
+  editMinuteData,
+  updateMinuteData,
+  setUpdateMinutedata,
 }) => {
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
+
+  const { currentMeetingMinutesToReviewData } = useSelector(
+    (state) => state.MinutesReducer
+  );
 
   const cancelEditMinute = () => {
     if (confirmationEdit === false) {
@@ -39,6 +46,29 @@ const EditCommentModal = ({
     setResendMinuteForReview(true);
   };
 
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setUpdateMinutedata((prevState) => ({
+      ...prevState,
+      minuteText: value,
+    }));
+  };
+
+  useEffect(() => {
+    setUpdateMinutedata((prevState) => ({
+      ...prevState,
+      minuteText: currentMeetingMinutesToReviewData.minutesDetails,
+      minuteID: currentMeetingMinutesToReviewData.minuteID,
+    }));
+  }, []);
+
+  console.log("EditMinuteDataEditMinuteData", editMinuteData, updateMinuteData);
+
+  console.log(
+    "currentMeetingMinutesToReviewData",
+    currentMeetingMinutesToReviewData
+  );
+
   return (
     <>
       <h1 className={styles["Edit-Heading"]}>{t("Edit-minute")}</h1>
@@ -47,20 +77,24 @@ const EditCommentModal = ({
         name="textField-RejectComment"
         applyClass={"textField-RejectComment"} // CSS class for text area
         type="text"
-        value={"CEO Speech"}
+        value={
+          currentMeetingMinutesToReviewData.agendaDetails !== null
+            ? currentMeetingMinutesToReviewData.agendaDetails.agendaTitle
+            : t("General-minute")
+        }
         placeholder={t("Write-a-comment")} // Placeholder text for text area
+        disable={true}
       />
+
       <TextArea
         name="textField-RejectComment"
         className={styles["textField-RejectComment"]} // CSS class for text area
         type="text"
-        // value={"I reject this minute as it appears to be a repetitive copy-and-paste error, with the same text repeated three times. It lacks clarity and coherence, and it does not provide any meaningful information or updates on the task. Additionally, the reference to the "unknown unknown printer took a galley of type a printer took a galley of type a" seems to be a nonsensical placeholder or mistake. Please provide a revised and accurate update for the task."}
-        value={
-          "I reject this minute as it appears to be a repetitive copy-and-paste error, with the same text repeated three times. It lacks clarity and coherence, and it does not provide any meaningful information or updates on the task. Additionally, the reference to the unknown unknown printer took a galley of type a printer took a galley of type a seems to be a nonsensical placeholder or mistake. Please provide a revised and accurate update for the task."
-        }
+        value={updateMinuteData.minuteText}
         placeholder={t("Write-a-comment")} // Placeholder text for text area
         labelClassName={"d-none"} // CSS class for label
         timeClass={"d-none"} // CSS class for time
+        onChange={handleChange}
       />
 
       <Row className="mt-4">

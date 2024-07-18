@@ -54,6 +54,7 @@ import {
   GetPublishedMeetingMinutesApi,
   GetAllOrganizationUsersForReview,
   GetMinuteReviewFlowByMeetingId,
+  GetDataForResendMinuteReview,
 } from "../../../../../store/actions/Minutes_action";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 
@@ -76,6 +77,8 @@ const Minutes = ({
   let currentDateOnly = currentDate.slice(0, 8);
   const editorRef = useRef(null);
   const { Dragger } = Upload;
+
+  let isAgenda = false;
 
   const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
 
@@ -559,7 +562,7 @@ const Minutes = ({
       MinuteID: updateData.minuteID,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
+    dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t, false));
 
     let newfile = [...previousFileIDs];
     let fileObj = [];
@@ -698,7 +701,7 @@ const Minutes = ({
       ResponseMessageMinute !== t("No-record-found") &&
       ResponseMessageMinute !== t("No-records-found") &&
       ResponseMessageMinute !== "" &&
-      ResponseMessageMinute !== t("No-record-found") &&
+      ResponseMessageMinute !== t("Record-found") &&
       ResponseMessageMinute !== t("List-updated-successfully") &&
       ResponseMessageMinute !== t("No-data-available") &&
       ResponseMessageMinute !== t("Data-available") &&
@@ -1703,15 +1706,21 @@ const Minutes = ({
                                 className="position-relative"
                               >
                                 <div className={styles["uploaded-details"]}>
-                                  {(data.isEditable === true &&
-                                    Number(editorRole.status) === 1) ||
-                                  Number(editorRole.status) === 11 ||
-                                  Number(editorRole.status) ===
-                                    12 ? null : (data.isEditable === true &&
-                                      editorRole.role === "Organizer" &&
-                                      Number(editorRole.status) === 9) ||
-                                    (Number(editorRole.status) === 10 &&
-                                      editorRole.role === "Organizer") ? (
+                                  {(
+                                    (data.isEditable === true &&
+                                      Number(editorRole.status) === 1) ||
+                                    (data.isEditable === true &&
+                                      Number(editorRole.status) === 11) ||
+                                    (data.isEditable === true &&
+                                      Number(editorRole.status) === 12)
+                                      ? null
+                                      : (data.isEditable === true &&
+                                          editorRole.role === "Organizer" &&
+                                          Number(editorRole.status) === 9) ||
+                                        (data.isEditable === true &&
+                                          Number(editorRole.status) === 10 &&
+                                          editorRole.role === "Organizer")
+                                  ) ? (
                                     <img
                                       draggable={false}
                                       src={RedCroseeIcon}
@@ -1800,9 +1809,12 @@ const Minutes = ({
                                               (data.isEditable === true &&
                                                 Number(editorRole.status) ===
                                                   1) ||
-                                              Number(editorRole.status) ===
-                                                11 ||
-                                              Number(editorRole.status) === 12
+                                              (data.isEditable === true &&
+                                                Number(editorRole.status) ===
+                                                  11) ||
+                                              (data.isEditable === true &&
+                                                Number(editorRole.status) ===
+                                                  12)
                                                 ? null
                                                 : (data.isEditable === true &&
                                                     editorRole.role ===
@@ -1810,8 +1822,10 @@ const Minutes = ({
                                                     Number(
                                                       editorRole.status
                                                     ) === 9) ||
-                                                  (Number(editorRole.status) ===
-                                                    10 &&
+                                                  (data.isEditable === true &&
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 10 &&
                                                     editorRole.role ===
                                                       "Organizer")
                                             ) ? (
@@ -1863,7 +1877,6 @@ const Minutes = ({
                                                   }
                                                 >
                                                   {t("Revisions")}
-                                                  <p className="m-0"> 3 </p>
                                                 </span>
                                                 <span
                                                   onClick={
@@ -1977,6 +1990,8 @@ const Minutes = ({
           <RevisionHistory
             showRevisionHistory={showRevisionHistory}
             setShowRevisionHistory={setShowRevisionHistory}
+            isAgenda={isAgenda}
+            advanceMeetingModalID={advanceMeetingModalID}
           />
         )}
 

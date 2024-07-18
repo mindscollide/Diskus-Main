@@ -138,9 +138,11 @@ const PendingApproval = () => {
       render: (text, record) => (
         <p
           onClick={() => {
-            dispatch(reviewMinutesPage(true));
-            dispatch(pendingApprovalPage(false));
-            dispatch(currentMeetingMinutesToReview(record));
+            if (record.status !== "Expired") {
+              dispatch(reviewMinutesPage(true));
+              dispatch(pendingApprovalPage(false));
+              dispatch(currentMeetingMinutesToReview(record));
+            }
           }}
           className={
             record.status === "Expired"
@@ -356,16 +358,6 @@ const PendingApproval = () => {
                           <Col lg={6} md={6} sm={12}>
                             <div className="d-flex positionRelative">
                               {/* Progress bars with different colors and percentages */}
-                              {progress.reviewed === 0 ? null : (
-                                <ProgressBar
-                                  width={progress.reviewedPercentage}
-                                  color="#6172d6"
-                                  indexValue="0"
-                                  percentageValue={
-                                    progress.reviewedPercentage + "%"
-                                  }
-                                />
-                              )}
                               {progress.pendingPercentage === 0 ? null : (
                                 <ProgressBar
                                   width={progress.pendingPercentage}
@@ -376,11 +368,21 @@ const PendingApproval = () => {
                                   }
                                 />
                               )}
+                              {progress.reviewed === 0 ? null : (
+                                <ProgressBar
+                                  width={progress.reviewedPercentage}
+                                  color="#6172d6"
+                                  indexValue="2"
+                                  percentageValue={
+                                    progress.reviewedPercentage + "%"
+                                  }
+                                />
+                              )}{" "}
                               {progress.expiredPercentage === 0 ? null : (
                                 <ProgressBar
                                   width={progress.expiredPercentage}
                                   color="#f16b6b"
-                                  indexValue="2"
+                                  indexValue="0"
                                   percentageValue={
                                     progress.expiredPercentage + "%"
                                   }
