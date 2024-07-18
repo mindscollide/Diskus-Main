@@ -1059,7 +1059,7 @@ const NewMeeting = () => {
     {
       dataIndex: "Chat",
       key: "Chat",
-      width: "36px",
+      width: "45px",
       render: (text, record) => {
         return (
           <>
@@ -1168,7 +1168,8 @@ const NewMeeting = () => {
     {
       dataIndex: "Join",
       key: "Join",
-      width: "75px",
+      width: "80px",
+      align: "center",
       render: (text, record) => {
         const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
@@ -1351,20 +1352,11 @@ const NewMeeting = () => {
           console.log(record, "recordrecordrecord");
           return (
             <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <Button
-                    text={t("Board-deck")}
-                    className={styles["BoardDeckButton"]}
-                    onClick={() => boardDeckOnClick(record)}
-                  />
-                </Col>
-              </Row>
+              <Button
+                text={t("Board-deck")}
+                className={styles["Board-Deck"]}
+                onClick={() => boardDeckOnClick(record)}
+              />
             </>
           );
         } else {
