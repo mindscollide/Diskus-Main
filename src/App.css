@@ -1727,6 +1727,9 @@ i.icon-add-square.uploadfile {
 .ant-table-wrapper.ToDo .ant-table {
   background: none !important;
 }
+.ant-table-column-sorters {
+  display: contents !important;
+}
 
 .ant-table-wrapper.Billing_TablePakageSelection .ant-table {
   background: none !important;
