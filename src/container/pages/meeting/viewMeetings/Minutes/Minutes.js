@@ -55,6 +55,7 @@ import {
   GetAllOrganizationUsersForReview,
   GetMinuteReviewFlowByMeetingId,
   GetDataForResendMinuteReview,
+  MeetingPublishedMinutesApi,
 } from "../../../../../store/actions/Minutes_action";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 
@@ -940,6 +941,11 @@ const Minutes = ({
     );
   };
 
+  const publishMeetingMinutes = () => {
+    let Data = { MeetingID: Number(advanceMeetingModalID) };
+    dispatch(MeetingPublishedMinutesApi(Data, navigate, t));
+  };
+
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   return !isMinutePublished ? (
@@ -1277,6 +1283,7 @@ const Minutes = ({
                 <Button
                   text={t("Publish-minutes")}
                   className={styles["PublishMinutes"]}
+                  onClick={publishMeetingMinutes}
                 />
               ) : null}
               <Button
