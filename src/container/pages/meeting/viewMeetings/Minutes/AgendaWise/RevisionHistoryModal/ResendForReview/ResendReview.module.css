@@ -99,3 +99,11 @@ p.delete-comment-message {
   font-weight: 600 !important;
   font-size: 12px !important;
 }
+
+.users-wrapper {
+  min-height: 180px !important;
+  overflow: hidden auto;
+  height: 180px;
+  display: flex;
+  flex-wrap: wrap;
+}

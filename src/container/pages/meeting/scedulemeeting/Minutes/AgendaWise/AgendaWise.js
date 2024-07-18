@@ -5,7 +5,11 @@ import { useTranslation } from "react-i18next";
 import PlusExpand from "../../../../../../assets/images/Plus-notesExpand.svg";
 import MinusExpand from "../../../../../../assets/images/close-accordion.svg";
 import { useDispatch } from "react-redux";
-import { AttachmentViewer, Button, Notification } from "../../../../../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Notification,
+} from "../../../../../../components/elements";
 import { Accordion, AccordionSummary } from "@material-ui/core";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
@@ -631,7 +635,9 @@ const AgendaWise = ({
       MinuteID: Number(updateData.MinutesID),
       MinuteText: addAgendaWiseFields.Description.value,
     };
-    dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, UpdateDataAgendaWise, t));
+    dispatch(
+      UpdateAgendaWiseMinutesApiFunc(navigate, UpdateDataAgendaWise, t, false)
+    );
 
     let newfile = [...previousFileIDs];
     let fileObj = [];
@@ -878,7 +884,7 @@ const AgendaWise = ({
               </Row>
             </Col>
             <Col lg={6} md={6} sm={6}>
-            <section className={styles["viewAgendaWiseAttachments"]}>
+              <section className={styles["viewAgendaWiseAttachments"]}>
                 {fileAttachments.length > 0 ? (
                   <>
                     <Row className="mt-1">

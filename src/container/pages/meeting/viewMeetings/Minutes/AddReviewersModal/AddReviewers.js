@@ -18,6 +18,7 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
   get_CurrentDateTime,
   multiDatePickerDateChangIntoUTC,
+  utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
 import SelectMinutes from "./SelectMinutes/SelectMinutes";
@@ -91,7 +92,8 @@ const AddReviewers = ({
   //All general minutes
   const [minuteDataGeneral, setMinuteDataGeneral] = useState([]);
 
-  const [minuteReviewDataCheckForEdit, setMinuteReviewDataCheckForEdit] = useState([]);
+  const [minuteReviewDataCheckForEdit, setMinuteReviewDataCheckForEdit] =
+    useState([]);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -230,6 +232,12 @@ const AddReviewers = ({
           Object.keys(MinutesReducer.GetMinuteReviewFlowByMeetingIdData)
             .length > 0
         ) {
+          let date = utcConvertintoGMT(
+            MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
+              ?.workFlow?.deadlineDatetime + "000000"
+          );
+          setMinuteDate(date);
+
           let convertFinalData = combinedData;
 
           // Update attachments in transformedData based on data state
@@ -579,6 +587,7 @@ const AddReviewers = ({
   return (
     <Modal
       show={true}
+      closeButton={true}
       modalBodyClassName={
         selectMinutes ? "scrollStyle mr-20 mt-16p" : "scrollStyle mr-20 "
       }

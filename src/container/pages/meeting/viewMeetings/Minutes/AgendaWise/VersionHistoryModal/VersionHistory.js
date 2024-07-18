@@ -196,11 +196,12 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                 <Col lg={12} md={12} sm={12} className="p-0">
                                   <span className={styles["bar-line"]}></span>
                                   <p className={styles["uploadedbyuser"]}>
-                                    Uploaded By
+                                    {t("Uploaded-by")}
                                   </p>
                                   <div className={styles["gap-ti"]}>
                                     <img
-                                      src={DefaultAvatar}
+                                      // src={DefaultAvatar}
+                                      src={`data:image/jpeg;base64,${newVersionHistoryData?.mainVersionHistory?.userProfilePicture?.displayProfilePictureName}`}
                                       className={styles["Image"]}
                                       alt=""
                                       draggable={false}
@@ -300,11 +301,12 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                                 styles["uploadedbyuser"]
                                               }
                                             >
-                                              Commented by
+                                              {t("Commented-by")}
                                             </p>
                                             <div className={styles["gap-ti"]}>
                                               <img
-                                                src={DefaultAvatar}
+                                                // src={DefaultAvatar}
+                                                src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                 className={styles["Image"]}
                                                 alt=""
                                                 draggable={false}
@@ -432,11 +434,12 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                           className={styles["bar-line"]}
                                         ></span>
                                         <p className={styles["uploadedbyuser"]}>
-                                          Uploaded By
+                                          {t("Uploaded-by")}
                                         </p>
                                         <div className={styles["gap-ti"]}>
                                           <img
-                                            src={DefaultAvatar}
+                                            // src={DefaultAvatar}
+                                            src={`data:image/jpeg;base64,${versionData?.userProfilePicture?.displayProfilePictureName}`}
                                             className={styles["Image"]}
                                             alt=""
                                             draggable={false}
@@ -444,7 +447,7 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                           <p
                                             className={styles["agendaCreater"]}
                                           >
-                                            Alex Rodriguez
+                                            {versionData.userName}
                                           </p>
                                         </div>
                                       </Col>
@@ -538,13 +541,14 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                                       styles["uploadedbyuser"]
                                                     }
                                                   >
-                                                    Commented by
+                                                    {t("Commented-by")}
                                                   </p>
                                                   <div
                                                     className={styles["gap-ti"]}
                                                   >
                                                     <img
-                                                      src={DefaultAvatar}
+                                                      // src={DefaultAvatar}
+                                                      src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                       className={
                                                         styles["Image"]
                                                       }

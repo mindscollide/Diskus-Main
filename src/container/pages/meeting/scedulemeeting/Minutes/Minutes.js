@@ -547,7 +547,7 @@ const Minutes = ({
       MinuteID: updateData.minuteID,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
+    dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t, false));
 
     let newfile = [...previousFileIDs];
     let fileObj = [];
@@ -1152,7 +1152,7 @@ const Minutes = ({
                               {generalShowMore === index &&
                               showMore === true ? (
                                 <>
-                                   <Row>
+                                  <Row>
                                     {data.minutesAttachmets.map(
                                       (filesname, index) => {
                                         console.log(

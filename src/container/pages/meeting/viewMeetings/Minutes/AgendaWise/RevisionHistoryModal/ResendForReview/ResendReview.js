@@ -9,6 +9,7 @@ import {
 import styles from "./ResendReview.module.css"; // Importing CSS styles
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import CrossIcon from "./../../../../../../../MinutesNewFlow/Images/avatar.png";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -17,6 +18,14 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import {
+  multiDatePickerDateChangIntoUTC,
+  utcConvertintoGMT,
+} from "../../../../../../../../commen/functions/date_formater";
+import {
+  UpdateAgendaWiseMinutesApiFunc,
+  UpdateMinutesGeneralApiFunc,
+} from "../../../../../../../../store/actions/NewMeetingActions";
 
 // Functional component for editing a comment
 const ResendMinuteReviewModal = ({
@@ -26,15 +35,23 @@ const ResendMinuteReviewModal = ({
   setConfirmationEdit,
   resendMinuteForReview,
   setResendMinuteForReview,
+  editMinuteData,
+  updateMinuteData,
+  setUpdateMinutedata,
+  minuteDate,
+  setMinuteDate,
+  advanceMeetingModalID,
+  isAgenda,
 }) => {
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
+
+  const navigate = useNavigate();
+
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const [reviewConfirmation, setReviewConfirmation] = useState(false);
-
-  const [minuteDate, setMinuteDate] = useState("");
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -43,11 +60,67 @@ const ResendMinuteReviewModal = ({
 
   //DatePicker Stuff
   const minuteDateHandler = (date, format = "YYYYMMDD") => {
-    let minuteDateValueFormat = new DateObject(date).format("DD MMMM YYYY");
+    let minuteDateValueFormat = new Date(date);
     setMinuteDate(minuteDateValueFormat);
     if (calendRef.current.isOpen) {
       calendRef.current.closeCalendar();
     }
+  };
+
+  const resendForReview = () => {
+    // let updateMinuteData;
+
+    let resendReviewData = {
+      MeetingID: Number(advanceMeetingModalID),
+      Bundle: {
+        ID: editMinuteData.entity.fK_WorkFlowActionableBundle_ID,
+        Title: updateMinuteData.minuteText,
+        BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate),
+        ListOfUsers: editMinuteData.actors.map((item) => item.pK_UID),
+        Entity: {
+          EntityID: editMinuteData.entity.entityID,
+          EntityTypeID: editMinuteData.entity.fK_EntityType_ID,
+        },
+      },
+    };
+
+    //The true in the below api stands for resend review is true or not
+    if (isAgenda === false) {
+      dispatch(
+        UpdateMinutesGeneralApiFunc(
+          navigate,
+          updateMinuteData,
+          t,
+          true,
+          resendReviewData,
+          setEditMinute,
+          setConfirmationEdit,
+          setResendMinuteForReview
+        )
+      );
+    } else {
+      dispatch(
+        UpdateAgendaWiseMinutesApiFunc(
+          navigate,
+          updateMinuteData,
+          t,
+          true,
+          resendReviewData,
+          setEditMinute,
+          setConfirmationEdit,
+          setResendMinuteForReview
+        )
+      );
+    }
+
+    console.log(
+      "resendForReviewresendForReview",
+      updateMinuteData,
+      resendReviewData
+    );
+    // setEditMinute(false);
+    // setConfirmationEdit(false);
+    // setResendMinuteForReview(false);
   };
 
   useEffect(() => {
@@ -61,6 +134,11 @@ const ResendMinuteReviewModal = ({
       }
     }
   }, [currentLanguage]);
+
+  useEffect(() => {
+    let date = utcConvertintoGMT(editMinuteData.bundleDeadline + "000000");
+    setMinuteDate(date);
+  }, []);
 
   return (
     <>
@@ -85,11 +163,7 @@ const ResendMinuteReviewModal = ({
               <Button
                 text={t("Yes")} // Translation for "Yes" button
                 className={styles["No_Modal"]} // CSS class for "Yes" button
-                onClick={() => {
-                  setEditMinute(false);
-                  setConfirmationEdit(false);
-                  setResendMinuteForReview(false);
-                }}
+                onClick={resendForReview}
               />
               {/* Button for canceling deletion */}
               <Button
@@ -106,21 +180,29 @@ const ResendMinuteReviewModal = ({
           <h1 className={styles["Edit-Heading"]}>{t("Resend")}</h1>
           <Row>
             <label className={styles["label-style"]}>{t("Reviewers")}</label>
-            <Col lg={6} md={6} sm={12}>
-              <div className={styles["profile-wrapper"]}>
-                <div className={styles["image-profile-wrapper"]}>
-                  <img
-                    height={32}
-                    width={32}
-                    className={styles["image-style"]}
-                    src={CrossIcon}
-                    alt=""
-                  />
-                  <span>Alexis Martinez</span>
-                </div>
-              </div>
-            </Col>
-            <Col lg={6} md={6} sm={12}>
+            <div className={styles["users-wrapper"]}>
+              {editMinuteData.actors.map((users) => {
+                return (
+                  <>
+                    <Col lg={6} md={6} sm={12}>
+                      <div className={styles["profile-wrapper"]}>
+                        <div className={styles["image-profile-wrapper"]}>
+                          <img
+                            height={32}
+                            width={32}
+                            className={styles["image-style"]}
+                            src={`data:image/jpeg;base64,${users?.profilePicture.displayProfilePictureName}`}
+                            alt=""
+                          />
+                          <span>{users.name}</span>
+                        </div>
+                      </div>
+                    </Col>
+                  </>
+                );
+              })}
+            </div>
+            {/* <Col lg={6} md={6} sm={12}>
               <div className={styles["profile-wrapper"]}>
                 <div className={styles["image-profile-wrapper"]}>
                   <img
@@ -133,9 +215,9 @@ const ResendMinuteReviewModal = ({
                   <span>Alexandar Johnson</span>
                 </div>
               </div>
-            </Col>
+            </Col> */}
           </Row>
-          <Row>
+          {/* <Row>
             <Col lg={6} md={6} sm={12}>
               <div className={styles["profile-wrapper"]}>
                 <div className={styles["image-profile-wrapper"]}>
@@ -164,7 +246,7 @@ const ResendMinuteReviewModal = ({
                 </div>
               </div>
             </Col>
-          </Row>
+          </Row> */}
           <Row className="mt-3">
             <label className={styles["label-style"]}>{t("Deadline")}</label>
             <Col lg={6} md={6} sm={12} className="datepickerlength mt-2">

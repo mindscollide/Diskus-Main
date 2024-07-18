@@ -138,9 +138,11 @@ const PendingApproval = () => {
       render: (text, record) => (
         <p
           onClick={() => {
-            dispatch(reviewMinutesPage(true));
-            dispatch(pendingApprovalPage(false));
-            dispatch(currentMeetingMinutesToReview(record));
+            if (record.status !== "Expired") {
+              dispatch(reviewMinutesPage(true));
+              dispatch(pendingApprovalPage(false));
+              dispatch(currentMeetingMinutesToReview(record));
+            }
           }}
           className={
             record.status === "Expired"
@@ -365,7 +367,7 @@ const PendingApproval = () => {
                                     progress.reviewedPercentage + "%"
                                   }
                                 />
-                              )}
+                              )}{" "}
                               {progress.pendingPercentage === 0 ? null : (
                                 <ProgressBar
                                   width={progress.pendingPercentage}
