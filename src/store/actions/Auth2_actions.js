@@ -515,7 +515,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
   let dataroomValue = localStorage.getItem("DataRoomEmail");
   let AgCont = localStorage.getItem("AgCont");
   let AdOrg = localStorage.getItem("AdOrg");
-
+  let MeetingStr = localStorage.getItem("meetingStr");
+  let MeetinUpd = localStorage.getItem("meetingUpd");
+  let MeetingMin = localStorage.getItem("meetingMin");
+  let Meetingprop = localStorage.getItem("meetingprop");
   return async (dispatch) => {
     dispatch(enterPasswordInit());
     const formData = getFormData(data, userPasswordVerify);
@@ -651,10 +654,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              } else if (AgCont !== null) {
-                navigate("/DisKus/Meeting");
-              } else if (AdOrg !== null) {
-                navigate("/DisKus/Meeting");
+              } else if (
+                MeetingStr !== null ||
+                MeetinUpd !== null ||
+                MeetingMin !== null ||
+                Meetingprop !== null ||
+                AgCont !== null ||
+                AdOrg !== null
+              ) {
+                navigate("/Diskus/Meeting");
               } else {
                 navigate("/onboard");
               }
@@ -666,10 +674,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              } else if (AgCont !== null) {
-                navigate("/DisKus/Meeting");
-              } else if (AdOrg !== null) {
-                navigate("/DisKus/Meeting");
+              }  else if (
+                MeetingStr !== null ||
+                MeetinUpd !== null ||
+                MeetingMin !== null ||
+                Meetingprop !== null ||
+                AgCont !== null ||
+                AdOrg !== null
+              ) {
+                navigate("/Diskus/Meeting");
               } else {
                 navigate("/DisKus/");
               }
@@ -709,10 +722,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              } else if (AgCont !== null) {
-                navigate("/DisKus/Meeting");
-              } else if (AdOrg !== null) {
-                navigate("/DisKus/Meeting");
+              }  else if (
+                MeetingStr !== null ||
+                MeetinUpd !== null ||
+                MeetingMin !== null ||
+                Meetingprop !== null ||
+                AgCont !== null ||
+                AdOrg !== null
+              ) {
+                navigate("/Diskus/Meeting");
               } else {
                 navigate("/onboard/");
               }
@@ -724,10 +742,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              } else if (AgCont !== null) {
-                navigate("/DisKus/Meeting");
-              } else if (AdOrg !== null) {
-                navigate("/DisKus/Meeting");
+              }  else if (
+                MeetingStr !== null ||
+                MeetinUpd !== null ||
+                MeetingMin !== null ||
+                Meetingprop !== null ||
+                AgCont !== null ||
+                AdOrg !== null
+              ) {
+                navigate("/Diskus/Meeting");
               } else {
                 navigate("/Diskus/");
               }
@@ -1803,8 +1826,12 @@ const createPasswordAction = (value, navigate, t) => {
   let data = { UserID: JSON.parse(userID), Password: value };
   let RSVP = localStorage.getItem("RSVP");
   let dataroomValue = localStorage.getItem("DataRoomEmail");
+  let MeetingStr = localStorage.getItem("meetingStr");
+  let MeetinUpd = localStorage.getItem("meetingUpd");
+  let MeetingMin = localStorage.getItem("meetingMin");
+  let Meetingprop = localStorage.getItem("meetingprop"); 
   let AgCont = localStorage.getItem("AgCont");
-  let AdOrg = localStorage.getItem("AdOrg");
+let AdOrg = localStorage.getItem("AdOrg");
   return async (dispatch) => {
     dispatch(createPasswordInit());
     const formData = getFormData(data, userPasswordCreation);
