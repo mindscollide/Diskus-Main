@@ -3,6 +3,8 @@ import { Col, Row } from "react-bootstrap";
 import styles from "./ReviewSignature.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import DescendIcon from "../../../MinutesNewFlow/Images/SorterIconDescend.png";
+import AscendIcon from "../../../MinutesNewFlow/Images/SorterIconAscend.png";
 import UserImage from "../../../../assets/images/Userprofile-1.png";
 import {
   pendingApprovalPage,
@@ -22,7 +24,10 @@ import {
   getAllPendingApprovalsStatsApi,
 } from "../../../../store/actions/workflow_actions";
 import { useSelector } from "react-redux";
-import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
+import {
+  SignatureandPendingApprovalDateTIme,
+  utcConvertintoGMT,
+} from "../../../../commen/functions/date_formater";
 import { set } from "lodash";
 import InfiniteScroll from "react-infinite-scroll-component";
 const ReviewSignature = () => {
@@ -61,7 +66,8 @@ const ReviewSignature = () => {
   const [totalRecords, setTotalRecords] = useState(null);
   const [totalDataLnegth, setTotalDataLength] = useState(0);
   const [isScrollling, setIsScrolling] = useState(false);
-
+  const [sortOrderRequestBy, setSortOrderRequestBy] = useState(null);
+  const [sortOrderDateTime, setSortOrderDateTime] = useState(null);
   // ProgressBar component for visualizing progress
   const ProgressBar = ({ width, color, indexValue, percentageValue }) => {
     const barStyle = {
@@ -130,12 +136,32 @@ const ReviewSignature = () => {
       ),
     },
     {
-      title: t("Requested-by"),
+      title: (
+        <>
+          {t("Requested-by")}{" "}
+          {sortOrderRequestBy === "descend" ? (
+            <img src={DescendIcon} alt="" />
+          ) : (
+            <img src={AscendIcon} alt="" />
+          )}
+        </>
+      ),
       dataIndex: "creatorName",
       key: "creatorName",
       className: "emailParticipant",
       width: "180px",
       ellipsis: true,
+      sorter: (a, b) =>
+        a.creatorName.toLowerCase().localeCompare(b.creatorName.toLowerCase()),
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderRequestBy((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p
           className={
@@ -153,16 +179,35 @@ const ReviewSignature = () => {
       ),
     },
     {
-      title: t("Date-and-time"),
+      title: (
+        <>
+          {t("Date-and-time")}{" "}
+          {sortOrderDateTime === "descend" ? (
+            <img src={DescendIcon} alt="" />
+          ) : (
+            <img src={AscendIcon} alt="" />
+          )}
+        </>
+      ),
       dataIndex: "createdOn",
       key: "createdOn",
       className: "leaveTimeParticipant",
       width: "180px",
       ellipsis: true,
+      sorter: (a, b) =>
+        utcConvertintoGMT(a.deadline) - utcConvertintoGMT(b.deadline),
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderDateTime((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p className={"m-0"}>{SignatureandPendingApprovalDateTIme(text)}</p>
       ),
-      // render: (text, record) => convertAndFormatDateTimeGMT(text),
     },
     {
       title: t("Status"),
@@ -172,11 +217,7 @@ const ReviewSignature = () => {
       className: "statusParticipant",
       width: "150px",
       filters: reviewAndSignatureStatus,
-      // filters: [
-      //   { text: t("Pending"), value: "Pending" },
-      //   { text: t("Signed"), value: "Signed" },
-      //   { text: t("Decline"), value: "Decline" },
-      // ],
+    
       onFilter: (value, record) => Number(record.workFlowStatusID) === value,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
@@ -380,29 +421,29 @@ const ReviewSignature = () => {
       </Row>
       <Row>
         <Col>
-          {reviewAndSignatureStatus.length > 0 && (
-            <InfiniteScroll
-              dataLength={reviewSignature.length}
-              next={handleScroll}
-              hasMore={reviewSignature.length === totalRecords ? false : true}
-              style={{
-                overflowX: "hidden",
-              }}
-              height={"50vh"}
-            >
-              <TableToDo
-                sortDirections={["descend", "ascend"]}
-                column={pendingApprovalColumns}
-                className={"PendingApprovalsTable"}
-                rows={reviewSignature}
-                // scroll={scroll}
-                pagination={false}
-                id={(record, index) =>
-                  index === reviewSignature.length - 1 ? "last-row-class" : ""
-                }
-              />
-            </InfiniteScroll>
-          )}
+          {/* {reviewAndSignatureStatus.length > 0 && ( */}
+          <InfiniteScroll
+            dataLength={reviewSignature.length}
+            next={handleScroll}
+            hasMore={reviewSignature.length === totalRecords ? false : true}
+            style={{
+              overflowX: "hidden",
+            }}
+            height={"50vh"}
+          >
+            <TableToDo
+              sortDirections={["descend", "ascend"]}
+              column={pendingApprovalColumns}
+              className={"PendingApprovalsTable"}
+              rows={reviewSignature}
+              // scroll={scroll}
+              pagination={false}
+              id={(record, index) =>
+                index === reviewSignature.length - 1 ? "last-row-class" : ""
+              }
+            />
+          </InfiniteScroll>
+          {/* )} */}
         </Col>
       </Row>{" "}
       <Notification

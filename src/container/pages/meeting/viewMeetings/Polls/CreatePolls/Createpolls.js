@@ -178,6 +178,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const changeDateStartHandler = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
+    DateDate.setHours(23, 59, 0, 0);
     setMeetingDate(meetingDateValueFormat);
     setPollsData({
       ...pollsData,
@@ -739,7 +740,9 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
-                      onFocusedDateChange={(value) => changeDateStartHandler(value)}
+                      onFocusedDateChange={(value) =>
+                        changeDateStartHandler(value)
+                      }
                     />
                   </Col>
                   <Col
