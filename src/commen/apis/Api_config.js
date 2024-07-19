@@ -1715,6 +1715,10 @@ const getDataForResendMinuteReview = {
   RequestMethod: "ServiceManager.GetDataForResendMinuteReview",
 };
 
+const validateVideoRecordingURL = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringVideoURlBoardDeck",
+};
+
 export {
   DownloadInvoiceRM,
   GetAllPublishedMeetingMinutesRM,
@@ -2170,4 +2174,5 @@ export {
   DownloadBoarddeckPDF,
   publishMeetingMinutes,
   getDataForResendMinuteReview,
+  validateVideoRecordingURL,
 };
