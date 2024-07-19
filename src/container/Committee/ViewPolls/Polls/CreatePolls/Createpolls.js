@@ -54,8 +54,7 @@ const Createpolls = ({ setCreatepoll }) => {
   const [meetingDate, setMeetingDate] = useState("");
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [memberSelect, setmemberSelect] = useState([]);
-  console.log(memberSelect, "memberSelectmemberSelectmemberSelect");
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+
   const [pollsData, setPollsData] = useState({
     Title: "",
     AllowMultipleAnswer: false,
@@ -179,6 +178,7 @@ const Createpolls = ({ setCreatepoll }) => {
     console.log(newDate, "newDatenewDatenewDatenewDatenewDate");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
+    DateDate.setHours(23, 59, 0, 0);
     setMeetingDate(meetingDateValueFormat);
     setPollsData({
       ...pollsData,
@@ -228,143 +228,6 @@ const Createpolls = ({ setCreatepoll }) => {
       setmemberSelect(newArr);
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID]);
-
-  // useEffect(() => {
-
-  //     // let Data = {
-  //     //   MeetingID: currentMeetingID,
-  //     // };
-  //     // dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-  // }, []);
-
-  // useEffect(() => {
-  //   let pollMeetingData = NewMeetingreducer.getMeetingusers;
-  //   if (view !== 2) {
-  //     if (pollMeetingData !== undefined && pollMeetingData !== null) {
-  //       let newmembersArray = [];
-  //       // if (Object.keys(pollMeetingData).length > 0) {
-  //       if (pollMeetingData.meetingOrganizers.length > 0) {
-  //         pollMeetingData.meetingOrganizers.map(
-  //           (MorganizerData, MorganizerIndex) => {
-  //             let MeetingOrganizerData = {
-  //               value: MorganizerData.userID,
-  //               label: (
-  //                 <>
-  //                   <>
-  //                     <Row>
-  //                       <Col
-  //                         lg={12}
-  //                         md={12}
-  //                         sm={12}
-  //                         className="d-flex gap-2 align-items-center"
-  //                       >
-  //                         <img
-  //                           src={GroupIcon}
-  //                           height="16.45px"
-  //                           width="18.32px"
-  //                           draggable="false"
-  //                           alt=""
-  //                         />
-  //                         <span className={styles["NameDropDown"]}>
-  //                           {MorganizerData.userName}
-  //                         </span>
-  //                       </Col>
-  //                     </Row>
-  //                   </>
-  //                 </>
-  //               ),
-  //               type: 1,
-  //             };
-  //             newmembersArray.push(MeetingOrganizerData);
-  //           }
-  //         );
-  //       }
-  //       if (pollMeetingData.meetingAgendaContributors.length > 0) {
-  //         pollMeetingData.meetingAgendaContributors.map(
-  //           (meetAgendaContributor, meetAgendaContributorIndex) => {
-  //             let MeetingAgendaContributorData = {
-  //               value: meetAgendaContributor.userID,
-  //               label: (
-  //                 <>
-  //                   <>
-  //                     <Row>
-  //                       <Col
-  //                         lg={12}
-  //                         md={12}
-  //                         sm={12}
-  //                         className="d-flex gap-2 align-items-center"
-  //                       >
-  //                         <img
-  //                           src={GroupIcon}
-  //                           height="16.45px"
-  //                           alt=""
-  //                           width="18.32px"
-  //                           draggable="false"
-  //                         />
-  //                         <span className={styles["NameDropDown"]}>
-  //                           {meetAgendaContributor.userName}
-  //                         </span>
-  //                       </Col>
-  //                     </Row>
-  //                   </>
-  //                 </>
-  //               ),
-  //               type: 2,
-  //             };
-  //             newmembersArray.push(MeetingAgendaContributorData);
-  //           }
-  //         );
-  //       }
-  //       if (pollMeetingData.meetingParticipants.length > 0) {
-  //         pollMeetingData.meetingParticipants.map(
-  //           (meetParticipants, meetParticipantsIndex) => {
-  //             let MeetingParticipantsData = {
-  //               value: meetParticipants.userID,
-  //               label: (
-  //                 <>
-  //                   <>
-  //                     <Row>
-  //                       <Col
-  //                         lg={12}
-  //                         md={12}
-  //                         sm={12}
-  //                         className="d-flex gap-2 align-items-center"
-  //                       >
-  //                         <img
-  //                           src={GroupIcon}
-  //                           height="16.45px"
-  //                           width="18.32px"
-  //                           alt=""
-  //                           draggable="false"
-  //                         />
-  //                         <span className={styles["NameDropDown"]}>
-  //                           {meetParticipants.userName}
-  //                         </span>
-  //                       </Col>
-  //                     </Row>
-  //                   </>
-  //                 </>
-  //               ),
-  //               type: 3,
-  //             };
-  //             newmembersArray.push(MeetingParticipantsData);
-  //           }
-  //         );
-  //       }
-  //       // }
-  //       console.log(newmembersArray, "pollMeetingDatapollMeetingData");
-
-  //       setmemberSelect(newmembersArray);
-  //     }
-  //   }
-
-  //   //  else {
-  //   //   if (view === 2 && view !== undefined && view !== null) {
-  //   //   } else {
-  //   //     setmemberSelect([]);
-  //   //   }
-  //   // }
-  // }, [NewMeetingreducer.getMeetingusers, view]);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -682,7 +545,9 @@ const Createpolls = ({ setCreatepoll }) => {
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
-                      onFocusedDateChange={(value) => changeDateStartHandler(value)}
+                      onFocusedDateChange={(value) =>
+                        changeDateStartHandler(value)
+                      }
                     />
                   </Col>
                   <Col

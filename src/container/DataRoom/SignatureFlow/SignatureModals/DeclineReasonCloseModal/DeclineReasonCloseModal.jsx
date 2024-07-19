@@ -2,7 +2,9 @@ import React from "react";
 import { Button, Modal } from "../../../../../components/elements";
 import { Row, Col } from "react-bootstrap";
 import styles from "./DeclineReasonCloseModal.module.css";
+import { useTranslation } from "react-i18next";
 const DeclineReasonCloseModal = ({ show, setShow }) => {
+  const { t } = useTranslation();
   const handleClose = () => {
     setShow(false);
     window.close();
@@ -25,7 +27,7 @@ const DeclineReasonCloseModal = ({ show, setShow }) => {
               lg={12}
               className={styles["declineReasonModal2"]}
             >
-              This document is now closed
+              {t("This-document-is-now-closed")}
             </Col>
           </Row>
           <Row>
@@ -35,7 +37,7 @@ const DeclineReasonCloseModal = ({ show, setShow }) => {
               lg={12}
               className={styles["declineReasoSubLine"]}
             >
-              You'll receive an email confirmation shortly
+              {t("You-ill-receive-an-email-confirmation-shortly")}
             </Col>
           </Row>
         </>

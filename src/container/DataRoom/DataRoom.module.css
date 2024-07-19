@@ -1309,3 +1309,13 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 .dataroom_dropdown_item {
   line-height: 30px;
 }
+.Recently_Added {
+  color: #5a5a5a;
+  font-weight: 600;
+  font-size: 30px;
+}
+.Recently_Added_tagLine {
+  color: #5a5a5a;
+  font-weight: 500;
+  font-size: 12px;
+}

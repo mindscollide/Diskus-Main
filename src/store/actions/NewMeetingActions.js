@@ -86,6 +86,7 @@ import {
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
+import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 
 const boardDeckModal = (response) => {
   return {
@@ -3670,7 +3671,7 @@ const GetAllGeneralMinutesApiFunc = (
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
-          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting,flag)
+          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting, flag)
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -4412,7 +4413,16 @@ const showUpdateAgendaWiseMinutesFailed = (message) => {
   };
 };
 
-const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+const UpdateAgendaWiseMinutesApiFunc = (
+  navigate,
+  Data,
+  t,
+  resendFlag,
+  resendData,
+  setEditMinute,
+  setConfirmationEdit,
+  setResendMinuteForReview
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -4447,6 +4457,18 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                   t("Record-updated")
                 )
               );
+              if (resendFlag === true) {
+                dispatch(
+                  ResendUpdatedMinuteForReview(
+                    resendData,
+                    navigate,
+                    t,
+                    setEditMinute,
+                    setConfirmationEdit,
+                    setResendMinuteForReview
+                  )
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4492,6 +4514,18 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                   t("Record-updated-and-is-a-review-minute")
                 )
               );
+              if (resendFlag === true) {
+                dispatch(
+                  ResendUpdatedMinuteForReview(
+                    resendData,
+                    navigate,
+                    t,
+                    setEditMinute,
+                    setConfirmationEdit,
+                    setResendMinuteForReview
+                  )
+                );
+              }
             }
           } else {
             dispatch(
@@ -4992,7 +5026,16 @@ const showUpdateMinutesFailed = (message) => {
   };
 };
 
-const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
+const UpdateMinutesGeneralApiFunc = (
+  navigate,
+  Data,
+  t,
+  resendFlag,
+  resendData,
+  setEditMinute,
+  setConfirmationEdit,
+  setResendMinuteForReview
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return async (dispatch) => {
@@ -5014,7 +5057,16 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         // Retry the API request
-        await dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
+        await dispatch(
+          UpdateMinutesGeneralApiFunc(
+            navigate,
+            Data,
+            t,
+            setEditMinute,
+            setConfirmationEdit,
+            setResendMinuteForReview
+          )
+        );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
           if (
@@ -5030,6 +5082,18 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
                 t("Record-updated")
               )
             );
+            if (resendFlag === true) {
+              dispatch(
+                ResendUpdatedMinuteForReview(
+                  resendData,
+                  navigate,
+                  t,
+                  setEditMinute,
+                  setConfirmationEdit,
+                  setResendMinuteForReview
+                )
+              );
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -5069,6 +5133,18 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
                 t("Record-updated-and-is-a-review-minute")
               )
             );
+            if (resendFlag === true) {
+              dispatch(
+                ResendUpdatedMinuteForReview(
+                  resendData,
+                  navigate,
+                  t,
+                  setEditMinute,
+                  setConfirmationEdit,
+                  setResendMinuteForReview
+                )
+              );
+            }
           }
         } else {
           dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));

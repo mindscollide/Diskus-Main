@@ -382,8 +382,6 @@ const ApprovalSend = () => {
                   "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission"
                 )}
                 !
-                {/* {t("Ready-to-send-a-document-for-approval? This tab awaits your next
-                submission")}! */}
               </span>
             </section>
           </Col>

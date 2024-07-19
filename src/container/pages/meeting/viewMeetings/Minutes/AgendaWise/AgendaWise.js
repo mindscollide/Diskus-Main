@@ -69,6 +69,9 @@ const AgendaWise = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let folderID = localStorage.getItem("folderDataRoomMeeting");
+
+  let isAgenda = true;
+
   const Delta = Quill.import("delta");
 
   const [open, setOpen] = useState({
@@ -1116,12 +1119,6 @@ const AgendaWise = ({
       setMinuteReviewData(null);
     }
   }, [MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData]);
-  console.log(
-    "GetMinuteReviewStatsForOrganizerByMeetingIdData",
-    MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
-  );
-  console.log("minutesDataminutesData", minutesData);
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   // When you click on Revision History Button then the api will hit and If minute has revison then open a modal
   const handleClickShowRevision = (data, MinuteID) => {
@@ -1553,16 +1550,25 @@ const AgendaWise = ({
                                     className="position-relative"
                                   >
                                     <div className={styles["uploaded-details"]}>
-                                      {(parentMinutedata.isEditable &&
-                                        Number(editorRole.status) === 1) ||
-                                      Number(editorRole.status) === 11 ||
-                                      Number(editorRole.status) ===
-                                        12 ? null : (parentMinutedata.isEditable &&
-                                          editorRole.role === "Organizer" &&
-                                          Number(editorRole.status) === 9) ||
-                                        (parentMinutedata.isEditable &&
-                                          Number(editorRole.status) === 10 &&
-                                          editorRole.role === "Organizer") ? (
+                                      {(
+                                        (parentMinutedata.isEditable === true &&
+                                          Number(editorRole.status) === 1) ||
+                                        (parentMinutedata.isEditable === true &&
+                                          Number(editorRole.status) === 11) ||
+                                        (parentMinutedata.isEditable === true &&
+                                          Number(editorRole.status) === 12)
+                                          ? null
+                                          : (parentMinutedata.isEditable ===
+                                              true &&
+                                              editorRole.role === "Organizer" &&
+                                              Number(editorRole.status) ===
+                                                9) ||
+                                            (parentMinutedata.isEditable ===
+                                              true &&
+                                              Number(editorRole.status) ===
+                                                10 &&
+                                              editorRole.role === "Organizer")
+                                      ) ? (
                                         <img
                                           className={styles["delete-icon"]}
                                           src={DeleteIcon}
@@ -1652,24 +1658,38 @@ const AgendaWise = ({
                                               className="d-grid justify-content-end p-0"
                                             >
                                               <div className="d-flex justify-content-center align-items-center">
-                                                {(parentMinutedata.isEditable &&
-                                                  Number(editorRole.status) ===
-                                                    1) ||
-                                                Number(editorRole.status) ===
-                                                  11 ||
-                                                Number(editorRole.status) ===
-                                                  12 ? null : (parentMinutedata.isEditable &&
-                                                    editorRole.role ===
-                                                      "Organizer" &&
+                                                {(
+                                                  (parentMinutedata.isEditable ===
+                                                    true &&
                                                     Number(
                                                       editorRole.status
-                                                    ) === 9) ||
-                                                  (parentMinutedata.isEditable &&
+                                                    ) === 1) ||
+                                                  (parentMinutedata.isEditable ===
+                                                    true &&
                                                     Number(
                                                       editorRole.status
-                                                    ) === 10 &&
-                                                    editorRole.role ===
-                                                      "Organizer") ? (
+                                                    ) === 11) ||
+                                                  (parentMinutedata.isEditable ===
+                                                    true &&
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 12)
+                                                    ? null
+                                                    : (parentMinutedata.isEditable ===
+                                                        true &&
+                                                        editorRole.role ===
+                                                          "Organizer" &&
+                                                        Number(
+                                                          editorRole.status
+                                                        ) === 9) ||
+                                                      (parentMinutedata.isEditable ===
+                                                        true &&
+                                                        Number(
+                                                          editorRole.status
+                                                        ) === 10 &&
+                                                        editorRole.role ===
+                                                          "Organizer")
+                                                ) ? (
                                                   <img
                                                     className="cursor-pointer mx-2"
                                                     src={EditIcon}
@@ -1724,7 +1744,6 @@ const AgendaWise = ({
                                                       }
                                                     >
                                                       {t("Revisions")}
-                                                      <p className="m-0"> 3 </p>
                                                     </span>
                                                     <span
                                                       onClick={
@@ -2125,28 +2144,38 @@ const AgendaWise = ({
                                                   className="d-grid justify-content-end p-0"
                                                 >
                                                   <div className="d-flex justify-content-center align-items-center">
-                                                    {(minuteDataSubminute.isEditable &&
-                                                      Number(
-                                                        editorRole.status
-                                                      ) === 1) ||
-                                                    Number(
-                                                      editorRole.status
-                                                    ) === 11 ||
-                                                    Number(
-                                                      editorRole.status
-                                                    ) ===
-                                                      12 ? null : (minuteDataSubminute.isEditable &&
-                                                        editorRole.role ===
-                                                          "Organizer" &&
+                                                    {(
+                                                      (minuteDataSubminute.isEditable ===
+                                                        true &&
                                                         Number(
                                                           editorRole.status
-                                                        ) === 9) ||
-                                                      (minuteDataSubminute.isEditable &&
+                                                        ) === 1) ||
+                                                      (minuteDataSubminute.isEditable ===
+                                                        true &&
                                                         Number(
                                                           editorRole.status
-                                                        ) === 10 &&
-                                                        editorRole.role ===
-                                                          "Organizer") ? (
+                                                        ) === 11) ||
+                                                      (minuteDataSubminute.isEditable ===
+                                                        true &&
+                                                        Number(
+                                                          editorRole.status
+                                                        ) === 12)
+                                                        ? null
+                                                        : (minuteDataSubminute.isEditable ===
+                                                            true &&
+                                                            editorRole.role ===
+                                                              "Organizer" &&
+                                                            Number(
+                                                              editorRole.status
+                                                            ) === 9) ||
+                                                          (minuteDataSubminute.isEditable ===
+                                                            true &&
+                                                            Number(
+                                                              editorRole.status
+                                                            ) === 10 &&
+                                                            editorRole.role ===
+                                                              "Organizer")
+                                                    ) ? (
                                                       <img
                                                         className="cursor-pointer mx-2"
                                                         src={EditIcon}
@@ -2191,31 +2220,27 @@ const AgendaWise = ({
                                                         }
                                                       >
                                                         <span
-                                                          onClick={() =>
-                                                            // handleClickShowRevision(
-                                                            //   data,
-                                                            //   minuteDataSubminute.minuteID
-                                                            // )
-                                                            setShowRevisionHistory(
-                                                              true
-                                                            )
+                                                          onClick={
+                                                            () =>
+                                                              handleClickShowRevision(
+                                                                minuteDataSubminute,
+                                                                minuteDataSubminute.minuteID
+                                                              )
+                                                            // setShowRevisionHistory(true)
                                                           }
                                                         >
                                                           {t("Revisions")}
-                                                          <p className="m-0">
-                                                            {" "}
-                                                            3{" "}
-                                                          </p>
                                                         </span>
                                                         <span
-                                                          onClick={() =>
-                                                            // handleClickShowVersionHistory(
-                                                            //   data,
-                                                            //   minuteDataSubminute.minuteID
+                                                          onClick={
+                                                            () =>
+                                                              handleClickShowVersionHistory(
+                                                                data,
+                                                                minuteDataSubminute.minuteID
+                                                              )
+                                                            // setShowVersionHistory(
+                                                            //   true
                                                             // )
-                                                            setShowVersionHistory(
-                                                              true
-                                                            )
                                                           }
                                                           className="border-0"
                                                         >
@@ -2318,6 +2343,8 @@ const AgendaWise = ({
         <RevisionHistory
           showRevisionHistory={showRevisionHistory}
           setShowRevisionHistory={setShowRevisionHistory}
+          isAgenda={isAgenda}
+          advanceMeetingModalID={advanceMeetingModalID}
         />
       ) : null}
 

@@ -368,6 +368,8 @@ const TodoList = () => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
+      width: "220px",
+
       align: "center",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>

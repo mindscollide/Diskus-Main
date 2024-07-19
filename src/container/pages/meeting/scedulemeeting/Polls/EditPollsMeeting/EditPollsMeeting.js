@@ -176,7 +176,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     setMeetingDate(meetingDateValueFormat);
     let newDate = new Date(date);
-
+    newDate.setHours(23, 59, 0, 0);
     setupdatePolls({
       ...updatePolls,
       date: newDate,
@@ -373,7 +373,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
           Title: pollsDetailsData.pollDetails.pollTitle,
           AllowMultipleAnswers:
             pollsDetailsData.pollDetails.allowMultipleAnswers,
-          date: resolutionResultTable(pollsDetailsData?.pollDetails?.dueDate),
+          date: utcConvertintoGMT(newDateGmt, 1),
           PollID: pollsDetailsData.pollDetails.pollID,
         });
 
@@ -591,7 +591,9 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                 calendar={calendarValue}
                 locale={localValue}
                 ref={calendRef}
-                onFocusedDateChange={(value) => changeDateStartHandlerUpdatePolls(value)}
+                onFocusedDateChange={(value) =>
+                  changeDateStartHandlerUpdatePolls(value)
+                }
               />
             </Col>
             <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
