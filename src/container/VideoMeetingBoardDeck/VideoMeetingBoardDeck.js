@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import Header2 from "../../components/layout/header2/Header2";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { BoardDeckValidateURLAPI } from "../../store/actions/UserManagementActions";
+import {
+  BoardDeckValidateURLAPI,
+  clearMessegesUserManagement,
+} from "../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { Notification } from "../../components/elements";
 
 const VideoMeetingBoardDeck = () => {
   const dispatch = useDispatch();
@@ -29,6 +33,11 @@ const VideoMeetingBoardDeck = () => {
 
   //State for Link of Videos
   const [videoLink, setVideoLink] = useState(null);
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
 
   console.log(videoLink, "videoLinkvideoLinkvideoLink");
 
@@ -93,6 +102,33 @@ const VideoMeetingBoardDeck = () => {
     console.log(typeof videoLink, "current videoLink");
   }, [videoLink]);
 
+  //Response meesege
+
+  useEffect(() => {
+    if (
+      UserMangementReducer.ResponseMessage !== "" &&
+      UserMangementReducer.ResponseMessage !== t("Data-available") &&
+      UserMangementReducer.ResponseMessage !== t("No-data-available") &&
+      UserMangementReducer.ResponseMessage !== t("Record-available")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: UserMangementReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(clearMessegesUserManagement());
+    } else {
+      dispatch(clearMessegesUserManagement());
+    }
+  }, [UserMangementReducer.ResponseMessage]);
+
   return (
     <>
       <Header2 isVideo={true} />
@@ -118,6 +154,7 @@ const VideoMeetingBoardDeck = () => {
           </Col>
         </Row>
       )}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };
