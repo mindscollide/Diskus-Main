@@ -17,6 +17,7 @@ import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected
 import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
 import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
 import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
+import Recentadded_emptyIcon from "../../assets/images/Recentadded_emptyIcon.png";
 import start from "../../assets/images/Icon feather-star.svg";
 import plus from "../../assets/images/Icon feather-folder.svg";
 import fileupload from "../../assets/images/Group 2891.svg";
@@ -320,7 +321,6 @@ const DataRoom = () => {
       };
       dispatch(getRecentDocumentsApi(navigate, t, Data));
     } else if (currentView === 5) {
-
       let Data = { pageNo: 1, pageSize: 10 };
       dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
       let newData = { IsCreator: true };
@@ -3765,56 +3765,78 @@ const DataRoom = () => {
                         <>
                           <Row className="mt-3">
                             <Col lg={12} sm={12} md={12}>
-                              {gridbtnactive ? (
+                              {getAllData.length > 0 ? (
                                 <>
-                                  <GridViewDataRoom
-                                    data={getAllData}
-                                    optionsforFolder={optionsforFolder(t)}
-                                    optionsforFile={optionsforFile(t)}
-                                    sRowsData={sRowsData}
-                                    totalRecords={totalRecords}
-                                    filter_Value={filterValue}
-                                    setSearchTabOpen={setSearchTabOpen}
-                                    setDetailView={setDetailView}
-                                    setFileDataforAnalyticsCount={
-                                      setFileDataforAnalyticsCount
-                                    }
-                                  />
+                                  {gridbtnactive ? (
+                                    <>
+                                      <GridViewDataRoom
+                                        data={getAllData}
+                                        optionsforFolder={optionsforFolder(t)}
+                                        optionsforFile={optionsforFile(t)}
+                                        sRowsData={sRowsData}
+                                        totalRecords={totalRecords}
+                                        filter_Value={filterValue}
+                                        setSearchTabOpen={setSearchTabOpen}
+                                        setDetailView={setDetailView}
+                                        setFileDataforAnalyticsCount={
+                                          setFileDataforAnalyticsCount
+                                        }
+                                      />
+                                    </>
+                                  ) : listviewactive === true ? (
+                                    <TableToDo
+                                      sortDirections={["descend", "ascend"]}
+                                      column={MyRecentTab}
+                                      className={"DataRoom_Table"}
+                                      rows={getAllData}
+                                      pagination={false}
+                                      locale={{
+                                        emptyText: (
+                                          <span className="vh-100 text-center">
+                                            <p>
+                                              {/* <Icon type="like" /> */}
+                                              No Recent Data Found
+                                            </p>
+                                          </span>
+                                        ),
+                                      }}
+                                      onChange={handleSortMyRecentTab}
+                                      // rowSelection={rowSelection}
+                                      size={"middle"}
+                                    />
+                                  ) : (
+                                    <>
+                                      <Row className="mt-2">
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="d-flex justify-content-center h-100 align-items-center"
+                                        >
+                                          <span
+                                            className={
+                                              styles["Messege_nofiles"]
+                                            }
+                                          >
+                                            {t("There-are-no-items-here")}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </>
+                                  )}
                                 </>
-                              ) : listviewactive === true ? (
-                                <TableToDo
-                                  sortDirections={["descend", "ascend"]}
-                                  column={MyRecentTab}
-                                  className={"DataRoom_Table"}
-                                  rows={getAllData}
-                                  pagination={false}
-                                  locale={{
-                                    emptyText: (
-                                      <span className="vh-100 text-center">
-                                        <p>
-                                          {/* <Icon type="like" /> */}
-                                          No Recent Data Found
-                                        </p>
-                                      </span>
-                                    ),
-                                  }}
-                                  onChange={handleSortMyRecentTab}
-                                  // rowSelection={rowSelection}
-                                  size={"middle"}
-                                />
                               ) : (
                                 <>
-                                  <Row className="mt-2">
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className="d-flex justify-content-center h-100 align-items-center"
-                                    >
-                                      <span
-                                        className={styles["Messege_nofiles"]}
-                                      >
-                                        {t("There-are-no-items-here")}
+                                  <Row className="text-center mt-4">
+                                    <Col lg={12} sm={12} md={12}>
+                                      <img src={Recentadded_emptyIcon} />
+                                    </Col>
+                                    <Col lg={12} sm={12} md={12}>
+                                      <p className={styles["Recently_Added"]}>Recently Added</p>
+                                      <span  className={styles["Recently_Added_tagLine"]}>
+                                        This space is ready to showcase your
+                                        latest additions. What will you add
+                                        next?
                                       </span>
                                     </Col>
                                   </Row>

@@ -70,10 +70,10 @@ const SendDocumentModal = ({
               lg={12}
               className={styles["sendDocument_Heading"]}
             >
-              Send Data Storage & Retention Policy
+              {t("Send-data-storage-retention-policy")}
             </Col>
             <Col sm={12} md={12} lg={12} className={styles["Email_Heading"]}>
-              Email to signer
+              {t("Email-to-signer")}
             </Col>{" "}
             <Col
               sm={12}
@@ -83,7 +83,6 @@ const SendDocumentModal = ({
             >
               {signersData.current.length > 0 &&
                 signersData.current.map((signerData, index) => {
-                  console.log(signerData, "signerData");
                   return (
                     <span className={styles["signerEmail_box"]}>
                       <p className={styles["signerEmail"]}>
