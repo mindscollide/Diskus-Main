@@ -4421,7 +4421,9 @@ const UpdateAgendaWiseMinutesApiFunc = (
   resendData,
   setEditMinute,
   setConfirmationEdit,
-  setResendMinuteForReview
+  setResendMinuteForReview,
+  setShowRevisionHistory,
+  isAgenda
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
@@ -4465,7 +4467,9 @@ const UpdateAgendaWiseMinutesApiFunc = (
                     t,
                     setEditMinute,
                     setConfirmationEdit,
-                    setResendMinuteForReview
+                    setResendMinuteForReview,
+                    setShowRevisionHistory,
+                    isAgenda
                   )
                 );
               }
@@ -4522,7 +4526,9 @@ const UpdateAgendaWiseMinutesApiFunc = (
                     t,
                     setEditMinute,
                     setConfirmationEdit,
-                    setResendMinuteForReview
+                    setResendMinuteForReview,
+                    setShowRevisionHistory,
+                    isAgenda
                   )
                 );
               }
@@ -5034,7 +5040,9 @@ const UpdateMinutesGeneralApiFunc = (
   resendData,
   setEditMinute,
   setConfirmationEdit,
-  setResendMinuteForReview
+  setResendMinuteForReview,
+  setShowRevisionHistory,
+  isAgenda
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
@@ -5090,7 +5098,9 @@ const UpdateMinutesGeneralApiFunc = (
                   t,
                   setEditMinute,
                   setConfirmationEdit,
-                  setResendMinuteForReview
+                  setResendMinuteForReview,
+                  setShowRevisionHistory,
+                  isAgenda
                 )
               );
             }
@@ -5141,7 +5151,9 @@ const UpdateMinutesGeneralApiFunc = (
                   t,
                   setEditMinute,
                   setConfirmationEdit,
-                  setResendMinuteForReview
+                  setResendMinuteForReview,
+                  setShowRevisionHistory,
+                  isAgenda
                 )
               );
             }

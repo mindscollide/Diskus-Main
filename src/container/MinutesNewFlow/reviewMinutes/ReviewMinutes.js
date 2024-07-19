@@ -316,7 +316,9 @@ const ReviewMinutes = () => {
 
     setMinutesAgenda(updatedMinutesAgenda);
     setMinutesGeneral(updatedMinutesGeneral);
-    setMinutesToReview(minutesToReview - 1);
+    if (minutesToReview !== 0) {
+      setMinutesToReview(minutesToReview - 1);
+    }
   };
 
   const toggleShowHide = (parentMinuteID) => {
@@ -351,6 +353,14 @@ const ReviewMinutes = () => {
       console.log("Div doesn't have scroll");
       setReviewWrapperScroll(false);
     }
+    return () => {
+      dispatch(reviewMinutesPage(false));
+      dispatch(pendingApprovalPage(true));
+      setMinutesAgenda([]);
+      setMinutesAgendaHierarchy([]);
+      setMinutesGeneral([]);
+      setMinutesToReview([]);
+    };
   }, []); // This effect runs once after the component mounts
 
   useEffect(() => {
@@ -460,20 +470,17 @@ const ReviewMinutes = () => {
         }
 
         // console.log("transformedData", transformedData);
-      } else {
-        setMinutesAgenda([]);
-        setMinutesAgendaHierarchy([]);
-        setMinutesGeneral([]);
-        setMinutesToReview([]);
-      }
+      } 
+      // else {
+      //   setMinutesAgenda([]);
+      //   setMinutesAgendaHierarchy([]);
+      //   setMinutesGeneral([]);
+      //   setMinutesToReview(0);
+      // }
     } catch (error) {
       console.error("Error transforming data", error);
     }
-  }, [
-    MinutesReducer.GetMinutesForReviewerByMeetingIdData,
-    minutesAgenda.length,
-    minutesGeneral.length,
-  ]);
+  }, [MinutesReducer.GetMinutesForReviewerByMeetingIdData]);
 
   function filterEmptyReasons(state) {
     // Iterate through the main state
@@ -661,11 +668,11 @@ const ReviewMinutes = () => {
                                                       name={
                                                         filesData.displayFileName
                                                       }
-                                                      id={filesData.pK_FileID}
-                                                      fk_UID={
-                                                        filesData.fK_UserID
-                                                      }
-                                                      data={filesData}
+                                                      // id={filesData.pK_FileID}
+                                                      // fk_UID={
+                                                      //   filesData.fK_UserID
+                                                      // }
+                                                      // data={filesData}
                                                     />
                                                   </Col>
                                                 );
@@ -1537,7 +1544,13 @@ const ReviewMinutes = () => {
                                 (minuteDataSubminute, index) => {
                                   return (
                                     <>
-                                      <Row className="mxl-50">
+                                      <Row
+                                        className={
+                                          currentLanguage === "ar"
+                                            ? "mxr-50"
+                                            : "mxl-50"
+                                        }
+                                      >
                                         <Col
                                           lg={12}
                                           md={12}
@@ -1780,7 +1793,13 @@ const ReviewMinutes = () => {
                                       </Row>
                                       {minuteDataSubminute.declinedReviews
                                         .length > 0 ? (
-                                        <Row className="mxl-50">
+                                        <Row
+                                          className={
+                                            currentLanguage === "ar"
+                                              ? "mxr-50"
+                                              : "mxl-50"
+                                          }
+                                        >
                                           <Col lg={12} md={12} sm={12}>
                                             <div
                                               className={
@@ -1855,7 +1874,13 @@ const ReviewMinutes = () => {
                                                 1;
                                             return (
                                               <>
-                                                <Row className="mxl-50">
+                                                <Row
+                                                  className={
+                                                    currentLanguage === "ar"
+                                                      ? "mxr-50"
+                                                      : "mxl-50"
+                                                  }
+                                                >
                                                   <Col
                                                     lg={12}
                                                     md={12}
@@ -2089,7 +2114,13 @@ const ReviewMinutes = () => {
                                               1;
                                           return (
                                             <>
-                                              <Row className="mxl-50">
+                                              <Row
+                                                className={
+                                                  currentLanguage === "ar"
+                                                    ? "mxr-50"
+                                                    : "mxl-50"
+                                                }
+                                              >
                                                 <Col
                                                   lg={12}
                                                   md={12}
@@ -2360,7 +2391,14 @@ const ReviewMinutes = () => {
                                                         1;
                                                     return (
                                                       <>
-                                                        <Row className="mxl-50">
+                                                        <Row
+                                                          className={
+                                                            currentLanguage ===
+                                                            "ar"
+                                                              ? "mxr-50"
+                                                              : "mxl-50"
+                                                          }
+                                                        >
                                                           <Col
                                                             lg={12}
                                                             md={12}

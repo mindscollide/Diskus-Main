@@ -164,6 +164,19 @@ p.agendaCreater {
   border: none !important;
 }
 
+body[dir="rtl"] .version-control-wrapper-with-more {
+  width: 35px;
+  height: 100%;
+  background: #fff;
+  border-radius: 9px;
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: auto;
+  right: 21px;
+  border: none !important;
+}
+
 .version-control-wrapper-with-more span.with-text {
   font-style: normal;
   font-weight: 600;
@@ -197,6 +210,18 @@ p.agendaCreater {
   position: absolute;
   top: 60px;
   left: 30px;
+}
+
+body[dir="rtl"] .version-control-wrapper {
+  width: 18px;
+  height: 18px;
+  background: #f16b6b;
+  border-radius: 9px;
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: auto;
+  right: 30px;
 }
 
 .version-control-wrapper-last {

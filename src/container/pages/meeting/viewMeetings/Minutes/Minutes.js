@@ -149,10 +149,7 @@ const Minutes = ({
     value: 0,
   });
 
-  let isMinutePublished =
-    localStorage.getItem("isMinutePublished") !== null
-      ? localStorage.getItem("isMinutePublished")
-      : false;
+  let isMinutePublished = localStorage.getItem("isMinutePublished");
 
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -192,7 +189,7 @@ const Minutes = ({
       MeetingID: Number(advanceMeetingModalID),
     };
 
-    if (Boolean(isMinutePublished) === false) {
+    if (JSON.parse(isMinutePublished) === true) {
       dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
     } else {
       dispatch(
@@ -739,7 +736,13 @@ const Minutes = ({
 
   const [minutesData, setMinutesData] = useState([]);
 
+  const [publishMinutesDataAgenda, setPublishMinutesDataAgenda] = useState([]);
+  const [publishMinutesDataGeneral, setPublishMinutesDataGeneral] = useState(
+    []
+  );
+
   const [openIndices, setOpenIndices] = useState([]);
+  const [openIndicesGeneral, setOpenIndicesGeneral] = useState([]);
 
   const [addReviewers, setAddReviewers] = useState(false);
 
@@ -774,6 +777,14 @@ const Minutes = ({
 
   const accordianClick = (data, id, index) => {
     setOpenIndices((prevIndices) =>
+      prevIndices.includes(index)
+        ? prevIndices.filter((i) => i !== index)
+        : [...prevIndices, index]
+    );
+  };
+
+  const accordianClickGeneral = (data, id, index) => {
+    setOpenIndicesGeneral((prevIndices) =>
       prevIndices.includes(index)
         ? prevIndices.filter((i) => i !== index)
         : [...prevIndices, index]
@@ -899,8 +910,10 @@ const Minutes = ({
       MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== undefined
     ) {
       setDeadLineDate(
-        MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow.workFlow
-          .deadlineDatetime
+        MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow.workFlow.deadlineDatetime.slice(
+          0,
+          8
+        )
       );
     } else {
       setDeadLineDate(null);
@@ -948,9 +961,23 @@ const Minutes = ({
 
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
-  return !isMinutePublished ? (
+  useEffect(() => {
+    if (
+      MinutesReducer.GetPublishedMinutes !== null &&
+      MinutesReducer.GetPublishedMinutes !== undefined
+    ) {
+      setPublishMinutesDataAgenda(
+        MinutesReducer?.GetPublishedMinutes?.agendaWisePublishedMinutes
+      );
+      setPublishMinutesDataGeneral(
+        MinutesReducer?.GetPublishedMinutes?.generalPublishedMinutes
+      );
+    }
+  }, [MinutesReducer.GetPublishedMinutes]);
+
+  return JSON.parse(isMinutePublished) ? (
     <>
-      {minutesData.map((data, index) => {
+      {publishMinutesDataAgenda.map((data, index) => {
         const isOpen = openIndices.includes(index);
         return (
           <Row className="mt-2">
@@ -961,7 +988,7 @@ const Minutes = ({
                     <Col lg={12} md={12} sm={12} className="mt-2">
                       <div
                         onClick={() =>
-                          accordianClick(data, data.minuteID, index)
+                          accordianClick(data, data.agendaID, index)
                         }
                         className={
                           isOpen
@@ -970,16 +997,9 @@ const Minutes = ({
                         }
                       >
                         <p className={styles["agenda-title"]}>
-                          {index + 1 + "." + " " + data.title}
+                          {index + 1 + "." + " " + data.agendaTitle}
                         </p>
                         <span>
-                          {data.attachments.length > 0 ? (
-                            <img
-                              className={styles["Attachment"]}
-                              alt=""
-                              src={AttachmentIcon}
-                            />
-                          ) : null}
                           <img
                             alt=""
                             src={ArrowDown}
@@ -995,234 +1015,474 @@ const Minutes = ({
                   </Row>
                   {isOpen ? (
                     <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="position-relative"
-                        >
-                          <div className={styles["uploaded-details"]}>
-                            <Row className={styles["inherit-height"]}>
-                              <Col lg={10} md={10} sm={12}>
-                                <p className={styles["minutes-text"]}>
-                                  {data.description}
-                                </p>
-                                {data.attachments.length > 0 ? (
-                                  <Row>
-                                    {data.attachments.map((fileData, index) => (
-                                      <Col lg={3} md={3} sm={12}>
-                                        <AttachmentViewer
-                                          fk_UID={fileData.fK_UserID}
-                                          handleClickRemove={() =>
-                                            handleRemoveFile(fileData)
-                                          }
-                                          data={fileData}
-                                          id={0}
-                                          name={fileData.displayFileName}
-                                        />
-                                      </Col>
-                                    ))}
-                                  </Row>
-                                ) : null}
-                              </Col>
-                              <Col
-                                lg={2}
-                                md={2}
-                                sm={12}
-                                className="position-relative p-0"
-                              >
-                                <Row className="m-0">
-                                  <Col lg={12} md={12} sm={12} className="p-0">
-                                    <span className={styles["bar-line"]}></span>
-                                    <p
-                                      className={`${styles["uploadedbyuser"]} m-0`}
-                                    >
-                                      Uploaded By
-                                    </p>
-                                    <div className={styles["gap-ti"]}>
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />
-                                      <p className={styles["agendaCreater"]}>
-                                        {data.uploader.name}
-                                      </p>
-                                    </div>
-                                    <p
-                                      className={`${styles["uploadedbyuser"]} mt-3`}
-                                    >
-                                      Uploaded By
-                                    </p>
-                                    <div className={styles["gap-ti"]}>
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />{" "}
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />
-                                      <img
-                                        src={DefaultAvatar}
-                                        className={styles["Image"]}
-                                        alt=""
-                                        draggable={false}
-                                      />
-                                      <span
-                                        className={styles["reviewer-count"]}
-                                      >
-                                        +9
-                                      </span>
-                                    </div>
-                                  </Col>
-                                </Row>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </Row>
-                      {data.subMinutes.map((subMinuteData, subMinuteIndex) => (
-                        <div>
-                          <Row className="mx-50">
-                            <Col lg={12} md={12} sm={12}>
-                              <p className={styles["Parent-title-heading"]}>
-                                {index +
-                                  1 +
-                                  "." +
-                                  subMinuteIndex +
-                                  1 +
-                                  " " +
-                                  subMinuteData.title}
-                              </p>
-                            </Col>
-                          </Row>
-                          <Row className="mxl-50">
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="position-relative"
-                            >
-                              <div
-                                className={styles["version-control-wrapper"]}
-                              >
-                                <span></span>
-                              </div>
-                              <div className={styles["uploaded-details"]}>
-                                <Row className={styles["inherit-height"]}>
-                                  <Col lg={10} md={10} sm={12}>
-                                    <p className={styles["minutes-text"]}>
-                                      {subMinuteData.description}
-                                    </p>
-                                    {subMinuteData.attachments.length > 0 ? (
-                                      <Row>
-                                        {subMinuteData.attachments.map(
-                                          (subFileData, subFileIndex) => (
-                                            <Col lg={3} md={3} sm={12}>
-                                              <AttachmentViewer
-                                                id={0}
-                                                name={
-                                                  subFileData.displayFileName
-                                                }
-                                              />
-                                            </Col>
-                                          )
-                                        )}
-                                      </Row>
-                                    ) : null}
-                                  </Col>
-                                  <Col
-                                    lg={2}
-                                    md={2}
-                                    sm={12}
-                                    className="position-relative"
+                      {data.agendaMinutes.map(
+                        (parentMinuteData, subMinuteIndex) => {
+                          const maxVisibleImages = 4;
+                          const approvedByUsers =
+                            parentMinuteData.approvedByUsers;
+                          const visibleApprovedUsers = approvedByUsers.slice(
+                            0,
+                            maxVisibleImages
+                          );
+                          const remainingCount =
+                            approvedByUsers.length - maxVisibleImages;
+                          return (
+                            <div>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="position-relative"
+                                >
+                                  <div
+                                    className={
+                                      styles["version-control-wrapper"]
+                                    }
                                   >
-                                    <Row className="m-0">
+                                    <span></span>
+                                  </div>
+                                  <div className={styles["uploaded-details"]}>
+                                    <Row className={styles["inherit-height"]}>
+                                      <Col lg={10} md={10} sm={12}>
+                                        <p
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              parentMinuteData.minutesDetails,
+                                          }}
+                                          className={styles["minutes-text"]}
+                                        ></p>
+                                        {parentMinuteData.minutesAttachmets
+                                          .length > 0 ? (
+                                          <Row>
+                                            {parentMinuteData.minutesAttachmets.map(
+                                              (subFileData, subFileIndex) => (
+                                                <Col lg={3} md={3} sm={12}>
+                                                  <AttachmentViewer
+                                                    id={0}
+                                                    name={
+                                                      subFileData.displayFileName
+                                                    }
+                                                  />
+                                                </Col>
+                                              )
+                                            )}
+                                          </Row>
+                                        ) : null}
+                                      </Col>
+                                      <Col
+                                        lg={2}
+                                        md={2}
+                                        sm={12}
+                                        className="position-relative"
+                                      >
+                                        <Row className="m-0">
+                                          <Col
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
+                                            className="p-0"
+                                          >
+                                            <span
+                                              className={styles["bar-line"]}
+                                            ></span>
+                                            <p
+                                              className={`${styles["uploadedbyuser"]} m-0`}
+                                            >
+                                              {t("Uploaded-by")}
+                                            </p>
+                                            <div className={styles["gap-ti"]}>
+                                              <img
+                                                src={`data:image/jpeg;base64,${parentMinuteData?.userProfilePicture?.displayProfilePictureName}`}
+                                                className={styles["Image"]}
+                                                alt=""
+                                                draggable={false}
+                                              />
+                                              <p
+                                                className={
+                                                  styles["agendaCreater"]
+                                                }
+                                              >
+                                                {parentMinuteData.userName}
+                                              </p>
+                                            </div>
+                                            <p
+                                              className={`${styles["uploadedbyuser"]} mt-3`}
+                                            >
+                                              {t("Approved-by")}
+                                            </p>
+                                            <div className={styles["gap-ti"]}>
+                                              {visibleApprovedUsers.map(
+                                                (
+                                                  approvedUserList,
+                                                  subFileIndex
+                                                ) => (
+                                                  <img
+                                                    key={subFileIndex}
+                                                    src={`data:image/jpeg;base64,${approvedUserList?.displayProfilePictureName}`}
+                                                    className={styles["Image"]}
+                                                    alt=""
+                                                    draggable={false}
+                                                  />
+                                                )
+                                              )}
+                                              {remainingCount > 0 && (
+                                                <span
+                                                  className={
+                                                    styles["reviewer-count"]
+                                                  }
+                                                >
+                                                  +{remainingCount}
+                                                </span>
+                                              )}
+                                            </div>
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </div>
+                          );
+                        }
+                      )}
+
+                      {data.childAgendas.map(
+                        (childAgendaData, subMinuteIndex) => {
+                          return (
+                            <div>
+                              <Row className="mx-50">
+                                <Col lg={12} md={12} sm={12}>
+                                  <p className={styles["Parent-title-heading"]}>
+                                    {index +
+                                      1 +
+                                      "." +
+                                      subMinuteIndex +
+                                      1 +
+                                      " " +
+                                      childAgendaData.agendaTitle}
+                                  </p>
+                                </Col>
+                              </Row>
+                              {childAgendaData.agendaMinutes.map(
+                                (childAgendaMinuteData, subMinuteIndex) => {
+                                  const maxVisibleImages = 4;
+                                  const approvedByUsers =
+                                    childAgendaMinuteData.approvedByUsers;
+                                  const visibleApprovedUsers =
+                                    approvedByUsers.slice(0, maxVisibleImages);
+                                  const remainingCount =
+                                    approvedByUsers.length - maxVisibleImages;
+                                  return (
+                                    <Row
+                                      className={
+                                        currentLanguage === "ar"
+                                          ? "mxr-50"
+                                          : "mxl-50"
+                                      }
+                                    >
                                       <Col
                                         lg={12}
                                         md={12}
                                         sm={12}
-                                        className="p-0"
+                                        className="position-relative"
                                       >
-                                        <span
-                                          className={styles["bar-line"]}
-                                        ></span>
-                                        <p
-                                          className={`${styles["uploadedbyuser"]} m-0`}
+                                        <div
+                                          className={
+                                            styles["version-control-wrapper"]
+                                          }
                                         >
-                                          Uploaded By
-                                        </p>
-                                        <div className={styles["gap-ti"]}>
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
-                                          <p
-                                            className={styles["agendaCreater"]}
-                                          >
-                                            {data.uploader.name}
-                                          </p>
+                                          <span></span>
                                         </div>
-                                        <p
-                                          className={`${styles["uploadedbyuser"]} mt-3`}
+                                        <div
+                                          className={styles["uploaded-details"]}
                                         >
-                                          Uploaded By
-                                        </p>
-                                        <div className={styles["gap-ti"]}>
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />{" "}
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
-                                          <img
-                                            src={DefaultAvatar}
-                                            className={styles["Image"]}
-                                            alt=""
-                                            draggable={false}
-                                          />
-                                          <span
-                                            className={styles["reviewer-count"]}
+                                          <Row
+                                            className={styles["inherit-height"]}
                                           >
-                                            +9
-                                          </span>
+                                            <Col lg={10} md={10} sm={12}>
+                                              <p
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    childAgendaMinuteData.minutesDetails,
+                                                }}
+                                                className={
+                                                  styles["minutes-text"]
+                                                }
+                                              ></p>
+                                              {childAgendaMinuteData
+                                                .minutesAttachmets.length >
+                                              0 ? (
+                                                <Row>
+                                                  {childAgendaMinuteData.minutesAttachmets.map(
+                                                    (
+                                                      subFileData,
+                                                      subFileIndex
+                                                    ) => (
+                                                      <Col
+                                                        lg={3}
+                                                        md={3}
+                                                        sm={12}
+                                                      >
+                                                        <AttachmentViewer
+                                                          id={0}
+                                                          name={
+                                                            subFileData.displayFileName
+                                                          }
+                                                        />
+                                                      </Col>
+                                                    )
+                                                  )}
+                                                </Row>
+                                              ) : null}
+                                            </Col>
+                                            <Col
+                                              lg={2}
+                                              md={2}
+                                              sm={12}
+                                              className="position-relative"
+                                            >
+                                              <Row className="m-0">
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className="p-0"
+                                                >
+                                                  <span
+                                                    className={
+                                                      styles["bar-line"]
+                                                    }
+                                                  ></span>
+                                                  <p
+                                                    className={`${styles["uploadedbyuser"]} m-0`}
+                                                  >
+                                                    {t("Uploaded-by")}
+                                                  </p>
+                                                  <div
+                                                    className={styles["gap-ti"]}
+                                                  >
+                                                    <img
+                                                      // src={DefaultAvatar}
+                                                      src={`data:image/jpeg;base64,${childAgendaMinuteData?.userProfilePicture?.displayProfilePictureName}`}
+                                                      className={
+                                                        styles["Image"]
+                                                      }
+                                                      alt=""
+                                                      draggable={false}
+                                                    />
+                                                    <p
+                                                      className={
+                                                        styles["agendaCreater"]
+                                                      }
+                                                    >
+                                                      {
+                                                        childAgendaMinuteData.userName
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                  <p
+                                                    className={`${styles["uploadedbyuser"]} mt-3`}
+                                                  >
+                                                    {t("Approved-by")}
+                                                  </p>
+                                                  <div
+                                                    className={styles["gap-ti"]}
+                                                  >
+                                                    {visibleApprovedUsers.map(
+                                                      (
+                                                        approvedUserList,
+                                                        subFileIndex
+                                                      ) => (
+                                                        <img
+                                                          key={subFileIndex}
+                                                          src={`data:image/jpeg;base64,${approvedUserList?.displayProfilePictureName}`}
+                                                          className={
+                                                            styles["Image"]
+                                                          }
+                                                          alt=""
+                                                          draggable={false}
+                                                        />
+                                                      )
+                                                    )}
+                                                    {remainingCount > 0 && (
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "reviewer-count"
+                                                          ]
+                                                        }
+                                                      >
+                                                        +{remainingCount}
+                                                      </span>
+                                                    )}
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                          </Row>
                                         </div>
                                       </Col>
                                     </Row>
-                                  </Col>
-                                </Row>
-                              </div>
-                            </Col>
-                          </Row>
-                        </div>
-                      ))}
+                                  );
+                                }
+                              )}
+                            </div>
+                          );
+                        }
+                      )}
+                    </>
+                  ) : null}
+                </div>
+              </>
+            </Col>
+          </Row>
+        );
+      })}
+
+      {publishMinutesDataGeneral.map((data, index) => {
+        const isOpen = openIndicesGeneral.includes(index);
+        const maxVisibleImages = 4;
+        const approvedByUsers = data.approvedByUsers;
+        const visibleApprovedUsers = approvedByUsers.slice(0, maxVisibleImages);
+        const remainingCount = approvedByUsers.length - maxVisibleImages;
+        return (
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
+              <>
+                <div>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className="mt-2">
+                      <div
+                        onClick={() =>
+                          accordianClickGeneral(data, data.minuteID, index)
+                        }
+                        className={
+                          isOpen
+                            ? styles["agenda-wrapper-closed"]
+                            : styles["agenda-wrapper-open"]
+                        }
+                      >
+                        <p className={styles["agenda-title"]}>
+                          {index + 1 + "." + " " + t("General-minute")}
+                        </p>
+                        <span>
+                          <img
+                            alt=""
+                            src={ArrowDown}
+                            className={
+                              isOpen
+                                ? styles["Arrow"]
+                                : styles["Arrow_Expanded"]
+                            }
+                          />
+                        </span>
+                      </div>
+                    </Col>
+                  </Row>
+                  {isOpen ? (
+                    <>
+                      <div>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="position-relative"
+                          >
+                            <div className={styles["version-control-wrapper"]}>
+                              <span></span>
+                            </div>
+                            <div className={styles["uploaded-details"]}>
+                              <Row className={styles["inherit-height"]}>
+                                <Col lg={10} md={10} sm={12}>
+                                  <p
+                                    dangerouslySetInnerHTML={{
+                                      __html: data.minutesDetails,
+                                    }}
+                                    className={styles["minutes-text"]}
+                                  ></p>
+                                  {data.minutesAttachmets.length > 0 ? (
+                                    <Row>
+                                      {data.minutesAttachmets.map(
+                                        (subFileData, subFileIndex) => (
+                                          <Col lg={3} md={3} sm={12}>
+                                            <AttachmentViewer
+                                              id={0}
+                                              name={subFileData.displayFileName}
+                                            />
+                                          </Col>
+                                        )
+                                      )}
+                                    </Row>
+                                  ) : null}
+                                </Col>
+                                <Col
+                                  lg={2}
+                                  md={2}
+                                  sm={12}
+                                  className="position-relative"
+                                >
+                                  <Row className="m-0">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="p-0"
+                                    >
+                                      <span
+                                        className={styles["bar-line"]}
+                                      ></span>
+                                      <p
+                                        className={`${styles["uploadedbyuser"]} m-0`}
+                                      >
+                                        {t("Uploaded-by")}
+                                      </p>
+                                      <div className={styles["gap-ti"]}>
+                                        <img
+                                          src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
+                                          className={styles["Image"]}
+                                          alt=""
+                                          draggable={false}
+                                        />
+                                        <p className={styles["agendaCreater"]}>
+                                          {data.userName}
+                                        </p>
+                                      </div>
+                                      <p
+                                        className={`${styles["uploadedbyuser"]} mt-3`}
+                                      >
+                                        {t("Approved-by")}
+                                      </p>
+                                      <div className={styles["gap-ti"]}>
+                                        {visibleApprovedUsers.map(
+                                          (approvedUserList, subFileIndex) => (
+                                            <img
+                                              key={subFileIndex}
+                                              src={`data:image/jpeg;base64,${approvedUserList?.displayProfilePictureName}`}
+                                              className={styles["Image"]}
+                                              alt=""
+                                              draggable={false}
+                                            />
+                                          )
+                                        )}
+                                        {remainingCount > 0 && (
+                                          <span
+                                            className={styles["reviewer-count"]}
+                                          >
+                                            +{remainingCount}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
                     </>
                   ) : null}
                 </div>
@@ -1276,10 +1536,10 @@ const Minutes = ({
             <div className={styles["button-block"]}>
               {(editorRole.role === "Organizer" &&
                 Number(editorRole.status) === 9 &&
-                deadLineDate === currentDateOnly) ||
+                deadLineDate <= currentDateOnly) ||
               (Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer" &&
-                deadLineDate === currentDateOnly) ? (
+                deadLineDate <= currentDateOnly) ? (
                 <Button
                   text={t("Publish-minutes")}
                   className={styles["PublishMinutes"]}
@@ -1550,7 +1810,11 @@ const Minutes = ({
                                         lg={1}
                                         md={1}
                                         sm={12}
-                                        className="text-end"
+                                        className={
+                                          currentLanguage === "ar"
+                                            ? "text-start"
+                                            : "text-end"
+                                        }
                                       >
                                         <img
                                           alt=""
@@ -1611,7 +1875,11 @@ const Minutes = ({
                                         lg={1}
                                         md={1}
                                         sm={12}
-                                        className="text-end"
+                                        className={
+                                          currentLanguage === "ar"
+                                            ? "text-start"
+                                            : "text-end"
+                                        }
                                       >
                                         <img
                                           alt=""
