@@ -2244,17 +2244,19 @@ const Dashboard = () => {
       meetingIdReducer.MeetingStatusEnded !== undefined &&
       meetingIdReducer.MeetingStatusEnded.length !== 0
     ) {
-      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meetingDetails;
+      let endMeetingData = meetingIdReducer?.MeetingStatusEnded?.meeting;
       let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       let isMeetingVideo = localStorage.getItem("isMeetingVideo");
       isMeetingVideo = isMeetingVideo ? JSON.parse(isMeetingVideo) : false;
-      if (
-        currentMeetingID === endMeetingData.pK_MDID &&
-        Number(endMeetingData.statusID) === 9
-      ) {
-        if (isMeetingVideo === true) {
-          dispatch(normalizeVideoPanelFlag(false));
-          dispatch(minimizeVideoPanelFlag(false));
+      if (endMeetingData) {
+        if (
+          currentMeetingID === endMeetingData?.pK_MDID &&
+          Number(endMeetingData?.statusID) === 9
+        ) {
+          if (isMeetingVideo === true) {
+            dispatch(normalizeVideoPanelFlag(false));
+            dispatch(minimizeVideoPanelFlag(false));
+          }
         }
       }
     }
