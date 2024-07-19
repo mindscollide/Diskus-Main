@@ -50,15 +50,15 @@ const EditCommentModal = ({
     const { value } = event.target;
     setUpdateMinutedata((prevState) => ({
       ...prevState,
-      minuteText: value,
+      MinuteText: value,
     }));
   };
 
   useEffect(() => {
     setUpdateMinutedata((prevState) => ({
       ...prevState,
-      minuteText: currentMeetingMinutesToReviewData.minutesDetails,
-      minuteID: currentMeetingMinutesToReviewData.minuteID,
+      MinuteText: currentMeetingMinutesToReviewData.minutesDetails,
+      MinuteID: currentMeetingMinutesToReviewData.minuteID,
     }));
   }, []);
 
@@ -90,7 +90,7 @@ const EditCommentModal = ({
         name="textField-RejectComment"
         className={styles["textField-RejectComment"]} // CSS class for text area
         type="text"
-        value={updateMinuteData.minuteText}
+        value={updateMinuteData.MinuteText}
         placeholder={t("Write-a-comment")} // Placeholder text for text area
         labelClassName={"d-none"} // CSS class for label
         timeClass={"d-none"} // CSS class for time

@@ -234,7 +234,7 @@ const AddReviewers = ({
         ) {
           let date = utcConvertintoGMT(
             MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
-              ?.workFlow?.deadlineDatetime + "000000"
+              ?.workFlow?.deadlineDatetime + "235959"
           );
           setMinuteDate(date);
 
@@ -589,7 +589,15 @@ const AddReviewers = ({
       show={true}
       closeButton={true}
       modalBodyClassName={
-        selectMinutes ? "scrollStyle mr-20 mt-16p" : "scrollStyle mr-20 "
+        selectMinutes && currentLanguage === "en"
+          ? "scrollStyle mr-20 mt-16p"
+          : !selectMinutes && currentLanguage === "en"
+          ? "scrollStyle mr-20 "
+          : selectMinutes && currentLanguage === "ar"
+          ? "scrollStyle ml-20 mt-16p"
+          : !selectMinutes && currentLanguage === "ar"
+          ? "scrollStyle ml-20 "
+          : ""
       }
       modalFooterClassName={"d-block"}
       modalHeaderClassName={"d-none"}

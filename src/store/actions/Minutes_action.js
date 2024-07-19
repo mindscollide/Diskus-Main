@@ -1209,7 +1209,7 @@ const GetMinutesVersionHistoryWithCommentsApi = (
                 )
             ) {
               dispatch(
-                GetMinuteVersionHistorywithComments_fail(t("No-data-available"))
+                GetMinuteVersionHistorywithComments_fail(t("No-version-history-available"))
               );
             } else if (
               response.data.responseResult.responseMessage

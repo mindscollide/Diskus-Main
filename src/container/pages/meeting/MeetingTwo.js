@@ -1073,6 +1073,10 @@ const NewMeeting = () => {
                 isPrimaryOrganizer: record.isPrimaryOrganizer,
               });
               dispatch(viewMeetingFlag(true));
+              localStorage.setItem(
+                "isMinutePublished",
+                record.isMinutePublished
+              );
               // setIsOrganisers(isOrganiser);
             }}
           >
@@ -1312,6 +1316,7 @@ const NewMeeting = () => {
       width: "80px",
       align: "center",
       render: (text, record) => {
+        console.log("recordrecord", record)
         const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
@@ -1374,6 +1379,10 @@ const NewMeeting = () => {
                         setEditFlag
                       )
                     );
+                    localStorage.setItem(
+                      "isMinutePublished",
+                      record.isMinutePublished
+                    );
                   }}
                 />
               );
@@ -1405,6 +1414,10 @@ const NewMeeting = () => {
                       )
                     );
                     localStorage.setItem("currentMeetingID", record.pK_MDID);
+                    localStorage.setItem(
+                      "isMinutePublished",
+                      record.isMinutePublished
+                    );
                     setAdvanceMeetingModalID(record.pK_MDID);
                     dispatch(viewMeetingFlag(true));
                     setViewAdvanceMeetingModal(true);
@@ -1439,6 +1452,10 @@ const NewMeeting = () => {
                     isPrimaryOrganizer: false,
                   });
                   dispatch(viewMeetingFlag(true));
+                  localStorage.setItem(
+                    "isMinutePublished",
+                    record.isMinutePublished
+                  );
                 }}
               />
             );
@@ -1460,6 +1477,10 @@ const NewMeeting = () => {
                     isPrimaryOrganizer: false,
                   });
                   dispatch(viewMeetingFlag(true));
+                  localStorage.setItem(
+                    "isMinutePublished",
+                    record.isMinutePublished
+                  );
                 }}
               />
             );
@@ -1481,6 +1502,10 @@ const NewMeeting = () => {
                     isPrimaryOrganizer: record.isPrimaryOrganizer,
                   });
                   dispatch(viewMeetingFlag(true));
+                  localStorage.setItem(
+                    "isMinutePublished",
+                    record.isMinutePublished
+                  );
                 }}
               />
             );
@@ -1721,44 +1746,8 @@ const NewMeeting = () => {
               return agenda.objMeetingAgenda.canView === true;
             });
           });
+          console.log("copyMeetingDatacopyMeetingData", copyMeetingData)
           setRow(copyMeetingData);
-          // let newRowData = [];
-          // searchMeetings.meetings.map((data, index) => {
-          //   try {
-          //     newRowData.push({
-          //       dateOfMeeting: data.dateOfMeeting,
-          //       host: data.host,
-          //       isAttachment: data.isAttachment,
-          //       isChat: data.isChat,
-          //       isVideoCall: data.isVideoCall,
-          //       isQuickMeeting: data.isQuickMeeting,
-          //       meetingAgenda: data.meetingAgenda,
-          //       meetingAttendees: data.meetingAttendees,
-          //       meetingEndTime: data.meetingEndTime,
-          //       meetingStartTime: data.meetingStartTime,
-          //       meetingURL: data.meetingURL,
-          //       orignalProfilePictureName: data.orignalProfilePictureName,
-          //       pK_MDID: data.pK_MDID,
-          //       meetingPoll: {
-          //         totalNoOfDirectors:
-          //           data.proposedMeetingDetail.totalNoOfDirectors,
-          //         totalNoOfDirectorsVoted:
-          //           data.proposedMeetingDetail.totalNoOfDirectorsVoted,
-          //       },
-          //       responseDeadLine: data.responseDeadLine,
-          //       status: data.status,
-          //       title: data.title,
-          //       talkGroupID: data.talkGroupID,
-          //       key: index,
-          //       // meetingType: data.meetingTypeID,
-          //       meetingType:
-          //         data.meetingTypeID === 1 && data.isQuickMeeting === true
-          //           ? 0
-          //           : data.meetingTypeID,
-          //     });
-          //   } catch {}
-          // });
-          // setRow(newRowData);
         }
       } else {
         setRow([]);

@@ -2122,5 +2122,8 @@
   "Minutes-review-flow-edited-successfully": "Minutes review flow edited successfully",
   "Show-comments": "Show comments",
   "Hide-comments": "Hide comments",
-  "Edit-minute": "Edit minutes"
+  "Edit-minute": "Edit minutes",
+  "Reviewed-by": "Reviewed by",
+  "Record-updated-and-is-a-review-minute": "Record updated and is a review minute",
+  "No-version-history-available": "No version history available"
 }

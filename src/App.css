@@ -7813,8 +7813,16 @@ th.ant-table-cell.leaveTimeParticipant.ant-table-cell-ellipsis.ant-table-column-
   margin-right: 20px !important;
 }
 
+.ml-20 {
+  margin-left: 20px !important;
+}
+
 .ml-25 {
   margin-left: 25px !important;
+}
+
+.mr-25 {
+  margin-right: 25px !important;
 }
 
 .mb-25 {

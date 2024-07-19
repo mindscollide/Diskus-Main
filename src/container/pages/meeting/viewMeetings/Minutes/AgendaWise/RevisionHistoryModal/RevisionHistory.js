@@ -114,8 +114,8 @@ const RevisionHistory = ({
   const [editMinuteData, setEditMinuteData] = useState(null);
 
   const [updateMinuteData, setUpdateMinutedata] = useState({
-    minuteID: 0,
-    minuteText: "",
+    MinuteID: 0,
+    MinuteText: "",
   });
 
   const [minuteDate, setMinuteDate] = useState("");
@@ -301,7 +301,16 @@ const RevisionHistory = ({
                                     </p>
                                   </div>
                                 </Col>
-                                <Col lg={1} md={1} sm={12} className="text-end">
+                                <Col
+                                  lg={1}
+                                  md={1}
+                                  sm={12}
+                                  className={
+                                    currentLanguage === "ar"
+                                      ? "text-start"
+                                      : "text-end"
+                                  }
+                                >
                                   <img
                                     alt=""
                                     src={DropdownPurple}
@@ -710,7 +719,11 @@ const RevisionHistory = ({
                                         lg={1}
                                         md={1}
                                         sm={12}
-                                        className="text-end"
+                                        className={
+                                          currentLanguage === "ar"
+                                            ? "text-start"
+                                            : "text-end"
+                                        }
                                       >
                                         <img
                                           alt=""
@@ -813,44 +826,29 @@ const RevisionHistory = ({
                                             __html: reviewData.minutesDetails,
                                           }}
                                         ></p>
-                                        <Row className="mt-1">
-                                          {/* {fileAttachments.length > 0
-                        ? fileAttachments.map((data, index) => {
-                            console.log(data, "datadatadata");
-                            return (
-                              <> */}
+                                        {/* <Row className="mt-1">
                                           <Col lg={3} md={3} sm={3}>
                                             <AttachmentViewer
-                                              // data={data}
                                               id={0}
                                               name={"DummyFile.pdf"}
                                               fk_UID={"1233"}
-                                              // handleClickRemove={() => handleRemoveFile(data)}
                                             />
                                           </Col>
                                           <Col lg={3} md={3} sm={3}>
                                             <AttachmentViewer
-                                              // data={data}
                                               id={0}
                                               name={"DummyFile.xls"}
                                               fk_UID={"1233"}
-                                              // handleClickRemove={() => handleRemoveFile(data)}
                                             />
                                           </Col>
                                           <Col lg={3} md={3} sm={3}>
                                             <AttachmentViewer
-                                              // data={data}
                                               id={0}
                                               name={"DummyFile.doc"}
                                               fk_UID={"1233"}
-                                              // handleClickRemove={() => handleRemoveFile(data)}
                                             />
                                           </Col>
-                                          {/* </>
-                            );
-                          })
-                        : null} */}
-                                        </Row>
+                                        </Row> */}
                                       </Col>
                                       <Col
                                         lg={3}

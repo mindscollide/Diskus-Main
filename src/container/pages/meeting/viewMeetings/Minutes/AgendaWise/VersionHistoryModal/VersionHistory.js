@@ -378,44 +378,6 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                         __html: versionData.minutesDetails,
                                       }}
                                     ></p>
-                                    <Row className="mt-1">
-                                      {/* {fileAttachments.length > 0
-                        ? fileAttachments.map((data, index) => {
-                            console.log(data, "datadatadata");
-                            return (
-                              <> */}
-                                      <Col lg={3} md={3} sm={3}>
-                                        <AttachmentViewer
-                                          // data={data}
-                                          id={0}
-                                          name={"DummyFile.pdf"}
-                                          fk_UID={"1233"}
-                                          // handleClickRemove={() => handleRemoveFile(data)}
-                                        />
-                                      </Col>
-                                      <Col lg={3} md={3} sm={3}>
-                                        <AttachmentViewer
-                                          // data={data}
-                                          id={0}
-                                          name={"DummyFile.xls"}
-                                          fk_UID={"1233"}
-                                          // handleClickRemove={() => handleRemoveFile(data)}
-                                        />
-                                      </Col>
-                                      <Col lg={3} md={3} sm={3}>
-                                        <AttachmentViewer
-                                          // data={data}
-                                          id={0}
-                                          name={"DummyFile.doc"}
-                                          fk_UID={"1233"}
-                                          // handleClickRemove={() => handleRemoveFile(data)}
-                                        />
-                                      </Col>
-                                      {/* </>
-                            );
-                          })
-                        : null} */}
-                                    </Row>
                                   </Col>
                                   <Col
                                     lg={3}
@@ -439,7 +401,7 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                         <div className={styles["gap-ti"]}>
                                           <img
                                             // src={DefaultAvatar}
-                                            src={`data:image/jpeg;base64,${versionData?.userProfilePicture?.displayProfilePictureName}`}
+                                            src={`data:image/jpeg;base64,${newVersionHistoryData?.mainVersionHistory?.userProfilePicture?.displayProfilePictureName}`}
                                             className={styles["Image"]}
                                             alt=""
                                             draggable={false}
@@ -447,7 +409,10 @@ const VersionHistory = ({ showVersionHistory, setShowVersionHistory }) => {
                                           <p
                                             className={styles["agendaCreater"]}
                                           >
-                                            {versionData.userName}
+                                            {
+                                              newVersionHistoryData
+                                                ?.mainVersionHistory?.userName
+                                            }
                                           </p>
                                         </div>
                                       </Col>

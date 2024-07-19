@@ -102,6 +102,7 @@ export const getAllUnpublishedMeetingData = async (
         key: index,
         isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
         userDetails: usersData?.userData,
+        isMinutePublished: data?.isMinutePublished,
       });
     });
   }
