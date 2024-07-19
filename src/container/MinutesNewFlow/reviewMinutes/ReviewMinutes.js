@@ -351,6 +351,14 @@ const ReviewMinutes = () => {
       console.log("Div doesn't have scroll");
       setReviewWrapperScroll(false);
     }
+    return () => {
+      dispatch(reviewMinutesPage(false));
+      dispatch(pendingApprovalPage(true));
+      setMinutesAgenda([]);
+      setMinutesAgendaHierarchy([]);
+      setMinutesGeneral([]);
+      setMinutesToReview([]);
+    };
   }, []); // This effect runs once after the component mounts
 
   useEffect(() => {
