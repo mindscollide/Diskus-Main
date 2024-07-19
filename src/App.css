@@ -1727,7 +1727,7 @@ i.icon-add-square.uploadfile {
 .ant-table-wrapper.ToDo .ant-table {
   background: none !important;
 }
-.ant-table-column-sorters {
+.ant-table-wrapper.ToDo .ant-table .ant-table-tbody > tr > th.ant-table-column-sorters {
   display: contents !important;
 }
 
@@ -3370,7 +3370,7 @@ label.filter.form-label {
   background-color: #000;
 }
 
-progress {
+/* progress {
   border-radius: 20px !important;
   border: 0.5px solid #ccc !important;
   background-color: linear-gradient(
@@ -3398,7 +3398,7 @@ body[dir="rtl"] progress {
 
 body[dir="rtl"] .progress-bar {
   background: linear-gradient(to left, #6172d6 20%, #49dbdb 80%) !important;
-}
+} */
 
 body.blur-background section.ant-layout.positionRelative .container {
   filter: blur(5px);
