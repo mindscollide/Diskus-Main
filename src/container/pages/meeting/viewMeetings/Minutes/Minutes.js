@@ -1536,10 +1536,10 @@ const Minutes = ({
             <div className={styles["button-block"]}>
               {(editorRole.role === "Organizer" &&
                 Number(editorRole.status) === 9 &&
-                deadLineDate === currentDateOnly) ||
+                deadLineDate <= currentDateOnly) ||
               (Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer" &&
-                deadLineDate === currentDateOnly) ? (
+                deadLineDate <= currentDateOnly) ? (
                 <Button
                   text={t("Publish-minutes")}
                   className={styles["PublishMinutes"]}
