@@ -412,7 +412,7 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
   display: block;
 }
 
-.BoardDeckButton {
+.Board-Deck {
   height: 28px;
   font-size: 12px;
   color: #fff;
@@ -421,10 +421,10 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
   border-radius: 4px !important;
 }
 
-.BoardDeckButton:active,
-.BoardDeckButton:hover,
-.BoardDeckButton:focus,
-.BoardDeckButton:focus-visible {
+.Board-Deck:active,
+.Board-Deck:hover,
+.Board-Deck:focus,
+.Board-Deck:focus-visible {
   height: 28px !important;
   font-size: 12px !important;
   color: #fff !important;

@@ -20,14 +20,34 @@ import {
   newTimeFormaterAsPerUTCTalkTime,
   utcConvertintoGMT,
 } from "../../../../../../../commen/functions/date_formater";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  GetDataForResendMinuteReview,
+  currentMeetingMinutesToReview,
+} from "../../../../../../../store/actions/Minutes_action";
 
-const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
+const RevisionHistory = ({
+  showRevisionHistory,
+  setShowRevisionHistory,
+  isAgenda,
+  advanceMeetingModalID,
+}) => {
   const { t } = useTranslation();
+
   const { GetMinuteReviewDetailsForOrganizerbyMinuteId } = useSelector(
     (state) => state.MinutesReducer
   );
+
+  const { GetDataForResendMinuteReviewData } = useSelector(
+    (state) => state.MinutesReducer
+  );
+
   let currentLanguage = localStorage.getItem("i18nextLng");
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const [reviewHistory, setReviewHistory] = useState([
     {
@@ -90,13 +110,31 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
     mainMinute: null,
     minuteVersionHistory: [],
   });
+
+  const [editMinuteData, setEditMinuteData] = useState(null);
+
+  const [updateMinuteData, setUpdateMinutedata] = useState({
+    minuteID: 0,
+    minuteText: "",
+  });
+
+  const [minuteDate, setMinuteDate] = useState("");
+
   console.log(revisionHistoryData, "revisionHistoryDatarevisionHistoryData");
-  const editMinuteFunction = () => {
-    if (editMinute === false) {
-      setEditMinute(true);
-    } else {
-      setEditMinute(false);
-    }
+  const editMinuteFunction = (data) => {
+    console.log("editMinuteFunctioneditMinuteFunction", data);
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+      MinuteID: data.minuteID,
+      IsAgenda: isAgenda,
+    };
+    dispatch(GetDataForResendMinuteReview(Data, navigate, t, setEditMinute));
+    dispatch(currentMeetingMinutesToReview(data));
+    // if (editMinute === false) {
+    //   setEditMinute(true);
+    // } else {
+    //   setEditMinute(false);
+    // }
   };
 
   const openCloseReviewerDetail = (index) => {
@@ -119,6 +157,15 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
       } catch (error) {}
     }
   }, [GetMinuteReviewDetailsForOrganizerbyMinuteId]);
+
+  useEffect(() => {
+    if (
+      GetDataForResendMinuteReviewData !== null &&
+      GetDataForResendMinuteReviewData !== undefined
+    ) {
+      setEditMinuteData(GetDataForResendMinuteReviewData.minuteBundle);
+    }
+  }, [GetDataForResendMinuteReviewData]);
 
   return (
     <Modal
@@ -158,6 +205,12 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
             setConfirmationEdit={setConfirmationEdit}
             resendMinuteForReview={resendMinuteForReview}
             setResendMinuteForReview={setResendMinuteForReview}
+            editMinuteData={editMinuteData}
+            updateMinuteData={updateMinuteData}
+            setUpdateMinutedata={setUpdateMinutedata}
+            minuteDate={minuteDate}
+            setMinuteDate={setMinuteDate}
+            isAgenda={isAgenda}
           />
         ) : confirmationEdit ? (
           <ConfirmationEditData
@@ -167,6 +220,12 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
             setConfirmationEdit={setConfirmationEdit}
             resendMinuteForReview={resendMinuteForReview}
             setResendMinuteForReview={setResendMinuteForReview}
+            editMinuteData={editMinuteData}
+            updateMinuteData={updateMinuteData}
+            setUpdateMinutedata={setUpdateMinutedata}
+            minuteDate={minuteDate}
+            setMinuteDate={setMinuteDate}
+            isAgenda={isAgenda}
           />
         ) : resendMinuteForReview ? (
           <ResendMinuteReviewModal
@@ -176,6 +235,13 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
             setConfirmationEdit={setConfirmationEdit}
             resendMinuteForReview={resendMinuteForReview}
             setResendMinuteForReview={setResendMinuteForReview}
+            editMinuteData={editMinuteData}
+            updateMinuteData={updateMinuteData}
+            setUpdateMinutedata={setUpdateMinutedata}
+            minuteDate={minuteDate}
+            setMinuteDate={setMinuteDate}
+            advanceMeetingModalID={advanceMeetingModalID}
+            isAgenda={isAgenda}
           />
         ) : (
           <>
@@ -203,7 +269,7 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                     className={styles["reviewer-progress-text"]}
                                   >
                                     <p>
-                                      Total:{" "}
+                                      {t("Total")}:{" "}
                                       {
                                         revisionHistoryData?.mainMinute
                                           ?.reviewStats?.totalReviews
@@ -211,7 +277,7 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                     </p>
                                     <span>|</span>
                                     <p>
-                                      Pending:{" "}
+                                      {t("Pending")}:{" "}
                                       {
                                         revisionHistoryData?.mainMinute
                                           ?.reviewStats?.pending
@@ -219,7 +285,7 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                     </p>
                                     <span>|</span>
                                     <p>
-                                      Accepted:{" "}
+                                      {t("Accepted")}:{" "}
                                       {
                                         revisionHistoryData?.mainMinute
                                           ?.reviewStats?.accepted
@@ -227,7 +293,7 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                     </p>
                                     <span>|</span>
                                     <p>
-                                      Rejected:{" "}
+                                      {t("Rejected")}:{" "}
                                       {
                                         revisionHistoryData?.mainMinute
                                           ?.reviewStats?.rejected
@@ -422,12 +488,17 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                         className={styles["edit-icon"]}
                                         src={EditIcon}
                                         alt=""
-                                        onClick={editMinuteFunction}
+                                        onClick={() =>
+                                          editMinuteFunction(
+                                            revisionHistoryData?.mainMinute
+                                          )
+                                        }
                                       />
                                       {/* )} */}
                                       <div className={styles["gap-ti"]}>
                                         <img
-                                          src={DefaultAvatar}
+                                          // src={DefaultAvatar}
+                                          src={`data:image/jpeg;base64,${revisionHistoryData?.mainMinute?.userProfilePicture?.displayProfilePictureName}`}
                                           className={styles["Image"]}
                                           alt=""
                                           draggable={false}
@@ -527,11 +598,12 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                                   styles["uploadedbyuser"]
                                                 }
                                               >
-                                                Reviewed by
+                                                {t("Reviewed-by")}
                                               </p>
                                               <div className={styles["gap-ti"]}>
                                                 <img
-                                                  src={DefaultAvatar}
+                                                  // src={DefaultAvatar}
+                                                  src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                   className={styles["Image"]}
                                                   alt=""
                                                   draggable={false}
@@ -801,19 +873,22 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                                 styles["uploadedbyuser"]
                                               }
                                             >
-                                              Uploaded By
+                                              {t("Uploaded-by")}
                                             </p>{" "}
                                             {index === 0 && (
                                               <img
                                                 className={styles["edit-icon"]}
                                                 src={EditIcon}
                                                 alt=""
-                                                onClick={editMinuteFunction}
+                                                onClick={() =>
+                                                  editMinuteFunction(reviewData)
+                                                }
                                               />
                                             )}
                                             <div className={styles["gap-ti"]}>
                                               <img
-                                                src={DefaultAvatar}
+                                                // src={DefaultAvatar}
+                                                src={`data:image/jpeg;base64,${reviewData?.mainMinute?.userProfilePicture?.displayProfilePictureName}`}
                                                 className={styles["Image"]}
                                                 alt=""
                                                 draggable={false}
@@ -823,7 +898,10 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                                   styles["agendaCreater"]
                                                 }
                                               >
-                                                Alex Rodriguez
+                                                {
+                                                  reviewData?.mainMinute
+                                                    ?.userName
+                                                }
                                               </p>
                                             </div>
                                           </Col>
@@ -928,7 +1006,7 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                                         styles["uploadedbyuser"]
                                                       }
                                                     >
-                                                      Reviewed by
+                                                      {t("Reviewed-by")}
                                                     </p>
                                                     <div
                                                       className={
@@ -936,7 +1014,8 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
                                                       }
                                                     >
                                                       <img
-                                                        src={DefaultAvatar}
+                                                        // src={DefaultAvatar}
+                                                        src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                         className={
                                                           styles["Image"]
                                                         }

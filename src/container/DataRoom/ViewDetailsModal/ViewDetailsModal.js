@@ -305,7 +305,7 @@ const ViewDetailsModal = ({
                                     }
                                   )}
                               </>
-                            ) : Number(documentDetails.generalAccess)  === 2 ? (
+                            ) : Number(documentDetails.generalAccess) === 2 ? (
                               <>
                                 {/* <Tooltip title="Hello"> */}
                                 <span className={styles["icon_outer_circle"]}>
@@ -322,7 +322,7 @@ const ViewDetailsModal = ({
                                 </span>
                                 {/* </Tooltip> */}
                               </>
-                            ) : Number(documentDetails.generalAccess)  === 3 ? (
+                            ) : Number(documentDetails.generalAccess) === 3 ? (
                               <>
                                 <span className={styles["icon_outer_circle"]}>
                                   {/* <Tooltip title="Hello"> */}
@@ -380,14 +380,29 @@ const ViewDetailsModal = ({
                           </Col>
                         </Row>
                         <Row className="mt-2">
-                          <Col lg={12} md={12} sm={12}>
-                            <Button
-                              text={t("Manage-access")}
-                              className={styles["Manage_access_button"]}
-                              onClick={ManageAccessBtn}
-                            />
-                          </Col>
+                          {documentDetails.sharedUsers.map(
+                            (sharedData, index) => {
+                              if (
+                                Number(sharedData.userID) ===
+                                  Number(currentUserID) &&
+                                Number(sharedData.permissionID) === 2
+                              ) {
+                                return (
+                                  <Col lg={12} md={12} sm={12} key={index}>
+                                    <Button
+                                      text={t("Manage-access")}
+                                      className={styles["Manage_access_button"]}
+                                      onClick={ManageAccessBtn}
+                                    />
+                                  </Col>
+                                );
+                              } else {
+                                return null; // Optionally return null if the condition is not met
+                              }
+                            }
+                          )}
                         </Row>
+
                         <span className={styles["Horizontal_seperator"]}></span>
                         <Row className="mt-4">
                           <Col lg={12} mg={12} sm={12}>

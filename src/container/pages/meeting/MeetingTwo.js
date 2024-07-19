@@ -474,22 +474,37 @@ const NewMeeting = () => {
             FK_MDID: Number(result.meetingID),
             DateTime: getCurrentDateTimeUTC(),
           };
-          // if (result.isQuickMeeting === true) {
-          await dispatch(
-            JoinCurrentMeeting(
-              true,
-              navigate,
-              t,
-              Data,
-              setViewFlag,
-              setEditFlag,
-              setSceduleMeeting,
-              1,
-              setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal
-            )
-          );
-
+          if (result.isQuickMeeting === true) {
+            await dispatch(
+              JoinCurrentMeeting(
+                true,
+                navigate,
+                t,
+                Data,
+                setViewFlag,
+                setEditFlag,
+                setSceduleMeeting,
+                1,
+                setAdvanceMeetingModalID,
+                setViewAdvanceMeetingModal
+              )
+            );
+          } else {
+            await setAdvanceMeetingModalID(Number(result.meetingID));
+            await setViewAdvanceMeetingModalUnpublish(true);
+            await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            setEdiorRole({
+              ...editorRole,
+              isPrimaryOrganizer: false,
+              role:
+                Number(result.attendeeId) === 2
+                  ? "Participant"
+                  : Number(result.attendeeId) === 4
+                  ? "Agenda Contributor"
+                  : "Organizer",
+              status: Number(result.meetingStatusId),
+            });
+          }
           localStorage.removeItem("meetingStr");
         })
         .catch((error) => {
@@ -545,13 +560,13 @@ const NewMeeting = () => {
         });
     }
   }, [MeetinUpd]);
-  useEffect(() => {
-    if (Meetingprop !== null) {
-      localStorage.setItem("MeetingCurrentView", 2);
-      localStorage.setItem("MeetingPageRows", 50);
-      localStorage.setItem("MeetingPageCurrent", 1);
-    }
-  }, [Meetingprop]);
+  // useEffect(() => {
+  //   if (Meetingprop !== null) {
+  //     localStorage.setItem("MeetingCurrentView", 2);
+  //     localStorage.setItem("MeetingPageRows", 50);
+  //     localStorage.setItem("MeetingPageCurrent", 1);
+  //   }
+  // }, [Meetingprop]);
 
   useEffect(() => {
     if (MeetingMin !== null) {
@@ -1185,7 +1200,7 @@ const NewMeeting = () => {
     {
       dataIndex: "Chat",
       key: "Chat",
-      width: "36px",
+      width: "45px",
       render: (text, record) => {
         return (
           <>
@@ -1294,7 +1309,8 @@ const NewMeeting = () => {
     {
       dataIndex: "Join",
       key: "Join",
-      width: "75px",
+      width: "80px",
+      align: "center",
       render: (text, record) => {
         const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
@@ -1477,20 +1493,11 @@ const NewMeeting = () => {
           console.log(record, "recordrecordrecord");
           return (
             <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <Button
-                    text={t("Board-deck")}
-                    className={styles["BoardDeckButton"]}
-                    onClick={() => boardDeckOnClick(record)}
-                  />
-                </Col>
-              </Row>
+              <Button
+                text={t("Board-deck")}
+                className={styles["Board-Deck"]}
+                onClick={() => boardDeckOnClick(record)}
+              />
             </>
           );
         } else {

@@ -727,7 +727,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationsUsers_02".toLowerCase()
+                  "Admin_AdminServiceManager_ManageUserScreen_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -740,7 +740,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationsUsers_03".toLowerCase()
+                  "Admin_AdminServiceManager_ManageUserScreen_02".toLowerCase()
                 )
             ) {
               dispatch(allOrganizationUsersFail(t("No-data-found")));
@@ -748,7 +748,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationsUsers_04".toLowerCase()
+                  "Admin_AdminServiceManager_ManageUserScreen_03".toLowerCase()
                 )
             ) {
               dispatch(allOrganizationUsersFail(t("Something-went-wrong")));

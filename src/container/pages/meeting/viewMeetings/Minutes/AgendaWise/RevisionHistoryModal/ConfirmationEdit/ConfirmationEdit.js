@@ -20,6 +20,9 @@ const ConfirmationEditData = ({
   setConfirmationEdit,
   resendMinuteForReview,
   setResendMinuteForReview,
+  editMinuteData,
+  updateMinuteData,
+  setUpdateMinutedata,
 }) => {
   const { t } = useTranslation(); // Translation hook
 

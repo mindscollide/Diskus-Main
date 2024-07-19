@@ -638,6 +638,10 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
             ) {
               let RSVP = localStorage.getItem("RSVP");
               let dataroomValue = localStorage.getItem("DataRoomEmail");
+              let MeetingStr = localStorage.getItem("meetingStr");
+              let MeetinUpd = localStorage.getItem("meetingUpd");
+              let MeetingMin = localStorage.getItem("meetingMin");
+              let Meetingprop = localStorage.getItem("meetingprop");
               let AgCont = localStorage.getItem("AgCont");
               let AdOrg = localStorage.getItem("AdOrg");
               dispatch(
@@ -669,10 +673,15 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   } else if (hasAdminRights === "true") {
                     navigate("/Admin/ManageUsers");
                   }
-                } else if (AgCont !== null) {
-                  navigate("/DisKus/Meeting");
-                } else if (AdOrg !== null) {
-                  navigate("/DisKus/Meeting");
+                } else if (
+                  MeetingStr !== null ||
+                  MeetinUpd !== null ||
+                  MeetingMin !== null ||
+                  Meetingprop !== null ||
+                  AgCont !== null ||
+                  AdOrg !== null
+                ) {
+                  navigate("/Diskus/Meeting");
                 } else if (hasAdminRights === "true") {
                   navigate("/Admin/ManageUsers");
                 } else if (hasUserRights === "true") {
@@ -694,10 +703,15 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   } else if (hasAdminRights === "true") {
                     navigate("/Admin/ManageUsers");
                   }
-                } else if (AgCont !== null) {
-                  navigate("/DisKus/Meeting");
-                } else if (AdOrg !== null) {
-                  navigate("/DisKus/Meeting");
+                } else if (
+                  MeetingStr !== null ||
+                  MeetinUpd !== null ||
+                  MeetingMin !== null ||
+                  Meetingprop !== null ||
+                  AgCont !== null ||
+                  AdOrg !== null
+                ) {
+                  navigate("/Diskus/Meeting");
                 } else {
                   if (hasUserRights === "true") {
                     navigate("/Diskus/");

@@ -1489,7 +1489,7 @@ const EditOrganizationsUser = {
 };
 
 const AllOrganizationsUsers = {
-  RequestMethod: "ServiceManager.AllOrganizationsUsers",
+  RequestMethod: "ServiceManager.ManageUserScreen",
 };
 
 const OrganizationPackageDetailsAndUserStats = {

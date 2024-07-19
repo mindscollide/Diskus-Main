@@ -149,28 +149,41 @@ const SelectMinutes = ({
               <div key={index}>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
-                    <Checkbox
-                      label2Class={styles["agenda-title"]}
-                      disabled={checkReviewersListAgenda(data) ? true : false}
-                      label2={data.agendaTitle}
-                      className="SearchCheckbox"
-                      name="IsChat"
-                      classNameDiv={styles["agendaTitleCheckbox"]}
-                      onChange={(e) =>
-                        handleCheckboxChange(
-                          e.target.checked,
-                          data.agendaID,
-                          "ParentCheckboxAgenda"
-                        )
-                      }
-                      checked={
-                        checkReviewersListAgenda(data)
-                          ? true
-                          : data.minuteData.every((item) =>
-                              selectedMinuteIDs.includes(item.minuteID)
-                            )
-                      }
-                    />
+                    {data.minuteData.length > 0 ? (
+                      <Checkbox
+                        label2Class={styles["agenda-title"]}
+                        disabled={
+                          checkReviewersListAgenda(data) &&
+                          data.minuteData.length !== 0
+                            ? true
+                            : false
+                        }
+                        label2={data.agendaTitle}
+                        className="SearchCheckbox"
+                        name="IsChat"
+                        classNameDiv={styles["agendaTitleCheckbox"]}
+                        onChange={(e) =>
+                          handleCheckboxChange(
+                            e.target.checked,
+                            data.agendaID,
+                            "ParentCheckboxAgenda"
+                          )
+                        }
+                        checked={
+                          checkReviewersListAgenda(data)
+                            ? true
+                            : data.minuteData.every((item) =>
+                                selectedMinuteIDs.includes(item.minuteID)
+                              )
+                        }
+                      />
+                    ) : (
+                      <div className={styles["agendaTitleCheckbox"]}>
+                        <p className={styles["agenda-title"]}>
+                          {data.agendaTitle}
+                        </p>
+                      </div>
+                    )}
                   </Col>
                 </Row>
                 <>
