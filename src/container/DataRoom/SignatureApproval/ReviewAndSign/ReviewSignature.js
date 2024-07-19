@@ -5,11 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import DescendIcon from "../../../MinutesNewFlow/Images/SorterIconDescend.png";
 import AscendIcon from "../../../MinutesNewFlow/Images/SorterIconAscend.png";
-import UserImage from "../../../../assets/images/Userprofile-1.png";
-import {
-  pendingApprovalPage,
-  reviewMinutesPage,
-} from "../../../../store/actions/Minutes_action";
 import { ChevronDown } from "react-bootstrap-icons";
 import { Notification, TableToDo } from "../../../../components/elements";
 import {
@@ -19,9 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import {
   clearWorkFlowResponseMessage,
-  getAllPendingApprovalStatusApi,
   getAllPendingApprovalsSignaturesApi,
-  getAllPendingApprovalsStatsApi,
 } from "../../../../store/actions/workflow_actions";
 import { useSelector } from "react-redux";
 import {
@@ -48,10 +41,7 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
-  console.log(
-    approvalStats.signedPercentage,
-    "approvalStatsapprovalStatsapprovalStats"
-  );
+
   const [reviewSignature, setReviewSignature] = useState([]);
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -217,21 +207,21 @@ const ReviewSignature = () => {
       className: "statusParticipant",
       width: "150px",
       filters: reviewAndSignatureStatus,
-    
-      onFilter: (value, record) => Number(record.workFlowStatusID) === value,
+      defaultFilteredValue: defaultreviewAndSignatureStatus,
+      onFilter: (value, record) => record.actorStatusID === value,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       render: (text, record) => {
-        const { workFlowStatusID, status } = record;
+        const { actorStatusID, status } = record;
         return (
           <p
             className={
-              workFlowStatusID === 1
+              actorStatusID === 2
                 ? styles["pendingStatus"]
-                : workFlowStatusID === 2
+                : actorStatusID === 3
                 ? styles["signedStatus"]
-                : workFlowStatusID === 3
+                : actorStatusID === 4
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
             }
@@ -242,17 +232,6 @@ const ReviewSignature = () => {
       },
     },
   ];
-
-  // const callingApi = async () => {
-  //   let newData = { IsCreator: false };
-  //   await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
-  //   await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
-  //   let Data = { sRow: 0, Length: 10 };
-  //   dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
-  // };
-  // useEffect(() => {
-  //   callingApi();
-  // }, []);
 
   const handleScroll = async () => {
     console.log(
@@ -294,11 +273,6 @@ const ReviewSignature = () => {
       }
     }
   }, [getAllPendingApprovalStatuses]);
-
-  console.log(
-    { reviewAndSignatureStatus, defaultreviewAndSignatureStatus },
-    "reviewAndSignatureStatusreviewAndSignatureStatusreviewAndSignatureStatus"
-  );
 
   useEffect(() => {
     if (getAllPendingForApprovalStats !== null) {
@@ -349,10 +323,6 @@ const ReviewSignature = () => {
         });
       }, 4000);
       dispatch(clearWorkFlowResponseMessage());
-      console.log(
-        ResponseMessage,
-        "ResponseMessageResponseMessageResponseMessage"
-      );
     }
   }, [ResponseMessage]);
 
@@ -366,12 +336,12 @@ const ReviewSignature = () => {
               <Col lg={6} md={6} sm={12}>
                 <div className="d-flex  position-relative">
                   {/* Progress bars with different colors and percentages */}
-                  {approvalStats.signed > 0 && (
+                  {approvalStats.declined > 0 && (
                     <ProgressBar
-                      width={approvalStats.signedPercentage}
+                      width={approvalStats.declinedPercentage}
                       color="#F16B6B"
                       indexValue="0"
-                      percentageValue={`${approvalStats.signedPercentage}%`}
+                      percentageValue={`${approvalStats.declinedPercentage}%`}
                     />
                   )}
                   {approvalStats.pending > 0 && (
@@ -382,12 +352,12 @@ const ReviewSignature = () => {
                       percentageValue={`${approvalStats.pendingPercentage}%`}
                     />
                   )}
-                  {approvalStats.declined > 0 && (
+                  {approvalStats.signed > 0 && (
                     <ProgressBar
-                      width={approvalStats.declinedPercentage}
+                      width={approvalStats.signedPercentage}
                       color="#55CE5C"
                       indexValue="2"
-                      percentageValue={`${approvalStats.declinedPercentage}%`}
+                      percentageValue={`${approvalStats.signedPercentage}%`}
                     />
                   )}
                 </div>
@@ -420,7 +390,7 @@ const ReviewSignature = () => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col sm={12} md={12} lg={12}>
           {/* {reviewAndSignatureStatus.length > 0 && ( */}
           <InfiniteScroll
             dataLength={reviewSignature.length}
