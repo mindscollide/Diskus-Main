@@ -211,6 +211,8 @@ const RevisionHistory = ({
             minuteDate={minuteDate}
             setMinuteDate={setMinuteDate}
             isAgenda={isAgenda}
+            showRevisionHistory={showRevisionHistory}
+            setShowRevisionHistory={setShowRevisionHistory}
           />
         ) : confirmationEdit ? (
           <ConfirmationEditData
@@ -226,6 +228,8 @@ const RevisionHistory = ({
             minuteDate={minuteDate}
             setMinuteDate={setMinuteDate}
             isAgenda={isAgenda}
+            showRevisionHistory={showRevisionHistory}
+            setShowRevisionHistory={setShowRevisionHistory}
           />
         ) : resendMinuteForReview ? (
           <ResendMinuteReviewModal
@@ -242,6 +246,8 @@ const RevisionHistory = ({
             setMinuteDate={setMinuteDate}
             advanceMeetingModalID={advanceMeetingModalID}
             isAgenda={isAgenda}
+            showRevisionHistory={showRevisionHistory}
+            setShowRevisionHistory={setShowRevisionHistory}
           />
         ) : (
           <>

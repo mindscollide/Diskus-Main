@@ -232,10 +232,15 @@ const AddReviewers = ({
           Object.keys(MinutesReducer.GetMinuteReviewFlowByMeetingIdData)
             .length > 0
         ) {
+          // let date = utcConvertintoGMT(
+          //   MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
+          //     ?.workFlow?.deadlineDatetime,
+          //   1
+          // );
+
           let date = utcConvertintoGMT(
             MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
-              ?.workFlow?.deadlineDatetime,
-            1
+              ?.workFlow?.deadlineDatetime + "235959"
           );
           setMinuteDate(date);
 

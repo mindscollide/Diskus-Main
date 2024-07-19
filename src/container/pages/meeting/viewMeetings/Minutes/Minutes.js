@@ -910,8 +910,10 @@ const Minutes = ({
       MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== undefined
     ) {
       setDeadLineDate(
-        MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow.workFlow
-          .deadlineDatetime
+        MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow.workFlow.deadlineDatetime.slice(
+          0,
+          8
+        )
       );
     } else {
       setDeadLineDate(null);
@@ -1107,7 +1109,7 @@ const Minutes = ({
                                             <p
                                               className={`${styles["uploadedbyuser"]} mt-3`}
                                             >
-                                              {t("Accepted-by")}
+                                              {t("Approved-by")}
                                             </p>
                                             <div className={styles["gap-ti"]}>
                                               {visibleApprovedUsers.map(
@@ -1283,7 +1285,7 @@ const Minutes = ({
                                                   <p
                                                     className={`${styles["uploadedbyuser"]} mt-3`}
                                                   >
-                                                    {t("Accepted-by")}
+                                                    {t("Approved-by")}
                                                   </p>
                                                   <div
                                                     className={styles["gap-ti"]}
@@ -1451,7 +1453,7 @@ const Minutes = ({
                                       <p
                                         className={`${styles["uploadedbyuser"]} mt-3`}
                                       >
-                                        {t("Accepted-by")}
+                                        {t("Approved-by")}
                                       </p>
                                       <div className={styles["gap-ti"]}>
                                         {visibleApprovedUsers.map(

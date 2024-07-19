@@ -24,6 +24,10 @@ import {
   getDataForResendMinuteReview,
 } from "../../commen/apis/Api_config";
 import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
+import {
+  GetAllAgendaWiseMinutesApiFunc,
+  GetAllGeneralMinutesApiFunc,
+} from "./NewMeetingActions";
 
 // Pendin Approval Page Route
 const pendingApprovalPage = (response) => {
@@ -1209,7 +1213,9 @@ const GetMinutesVersionHistoryWithCommentsApi = (
                 )
             ) {
               dispatch(
-                GetMinuteVersionHistorywithComments_fail(t("No-version-history-available"))
+                GetMinuteVersionHistorywithComments_fail(
+                  t("No-version-history-available")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1599,6 +1605,7 @@ const MeetingPublishedMinutesApi = (Data, navigate, t) => {
                   t("Published-successful")
                 )
               );
+              localStorage.setItem("isMinutePublished", true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1902,12 +1909,14 @@ const PublishMeetingMinutes = (Data, navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_01".toLowerCase()
                 )
             ) {
+              let data = { MeetingID: Data.MeetingID };
               dispatch(
                 publishMeetingMinutes_Success(
                   response.data.responseResult,
                   t("Publish-successful")
                 )
               );
+              dispatch(GetPublishedMeetingMinutesApi(data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2090,7 +2099,9 @@ const ResendUpdatedMinuteForReview = (
   t,
   setEditMinute,
   setConfirmationEdit,
-  setResendMinuteForReview
+  setResendMinuteForReview,
+  setShowRevisionHistory,
+  isAgenda
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -2128,6 +2139,36 @@ const ResendUpdatedMinuteForReview = (
               setEditMinute(false);
               setConfirmationEdit(false);
               setResendMinuteForReview(false);
+              if (isAgenda === true) {
+                setShowRevisionHistory(false);
+                let newData = {
+                  MeetingID: Data.MeetingID,
+                };
+                dispatch(
+                  GetAllAgendaWiseMinutesApiFunc(
+                    navigate,
+                    newData,
+                    t,
+                    Data.MeetingID,
+                    false,
+                    false,
+                    false
+                  )
+                );
+              } else {
+                let newData = {
+                  MeetingID: Data.MeetingID,
+                };
+                setShowRevisionHistory(false);
+                dispatch(
+                  GetAllGeneralMinutesApiFunc(
+                    navigate,
+                    t,
+                    newData,
+                    Data.MeetingID
+                  )
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

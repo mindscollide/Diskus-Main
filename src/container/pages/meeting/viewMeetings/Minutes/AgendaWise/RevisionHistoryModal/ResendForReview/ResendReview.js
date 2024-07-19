@@ -42,6 +42,8 @@ const ResendMinuteReviewModal = ({
   setMinuteDate,
   advanceMeetingModalID,
   isAgenda,
+  showRevisionHistory,
+  setShowRevisionHistory,
 }) => {
   const { t } = useTranslation(); // Translation hook
 
@@ -95,7 +97,9 @@ const ResendMinuteReviewModal = ({
           resendReviewData,
           setEditMinute,
           setConfirmationEdit,
-          setResendMinuteForReview
+          setResendMinuteForReview,
+          setShowRevisionHistory,
+          isAgenda
         )
       );
     } else {
@@ -108,7 +112,9 @@ const ResendMinuteReviewModal = ({
           resendReviewData,
           setEditMinute,
           setConfirmationEdit,
-          setResendMinuteForReview
+          setResendMinuteForReview,
+          setShowRevisionHistory,
+          isAgenda
         )
       );
     }
@@ -136,7 +142,8 @@ const ResendMinuteReviewModal = ({
   }, [currentLanguage]);
 
   useEffect(() => {
-    let date = utcConvertintoGMT(editMinuteData.bundleDeadline, 1);
+    // let date = utcConvertintoGMT(editMinuteData.bundleDeadline, 1);
+    let date = utcConvertintoGMT(editMinuteData.bundleDeadline + "235959");
     setMinuteDate(date);
   }, []);
 
