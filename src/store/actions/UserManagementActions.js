@@ -23,12 +23,14 @@ import {
   getOrganizationWallet,
   DownloadBoarddeckPDF,
   BoardDeckSendEmail,
+  validateVideoRecordingURL,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
   DataRoomAllFilesDownloads,
   dataRoomApi,
   getAdminURLs,
+  meetingApi,
   settingDownloadApi,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -2721,6 +2723,95 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
   };
 };
 
+//validate video URL BoardDeck
+
+const BoardDeckValidateURL_init = () => {
+  return {
+    type: actions.VALIDATE_VIDEO_URL_INIT,
+  };
+};
+
+const BoardDeckValidateURL_success = (response, message) => {
+  console.log(response, "responseresponseresponse");
+  return {
+    type: actions.VALIDATE_VIDEO_URL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const BoardDeckValidateURL_failed = (message) => {
+  return {
+    type: actions.VALIDATE_VIDEO_URL_FAILED,
+    message: message,
+  };
+};
+
+const BoardDeckValidateURLAPI = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(BoardDeckValidateURL_init());
+    let form = new FormData();
+    form.append("RequestMethod", validateVideoRecordingURL.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(BoardDeckValidateURLAPI(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringVideoURlBoardDeck_01".toLowerCase()
+                )
+            ) {
+              console.log("i am success");
+              dispatch(
+                BoardDeckValidateURL_success(
+                  response.data.responseResult,
+                  t("Record-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringVideoURlBoardDeck_02".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckValidateURL_failed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckValidateURL_failed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(BoardDeckValidateURL_failed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(BoardDeckValidateURL_failed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(BoardDeckValidateURL_failed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   changeSelectPacakgeApi,
   signUpOrganizationAndPakageSelection,
@@ -2751,4 +2842,5 @@ export {
   getOrganizationWalletApi,
   BoardDeckPDFDownloadApi,
   BoardDeckSendEmailApi,
+  BoardDeckValidateURLAPI,
 };

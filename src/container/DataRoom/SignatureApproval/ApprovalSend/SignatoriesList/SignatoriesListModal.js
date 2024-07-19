@@ -21,7 +21,7 @@ const SignatoriesList = ({
   const [pendingSignatories, setPendingSignatories] = useState(0);
   const [comments, setComments] = useState([]);
   const [combinedData, setCombinedData] = useState([]);
-  console.log(comments, "commentscomments")
+  console.log(comments, "commentscomments");
   useEffect(() => {
     if (SignatureWorkFlowReducer.getAllSignatoriesStatusWise !== null) {
       try {
@@ -97,10 +97,9 @@ const SignatoriesList = ({
       title: <span> Signed({formatValue(signedSignatories)})</span>,
       dataIndex: "signed",
       key: "signed",
-      render: (record) => {
-        console.log(record, "recordrecordrecord");
-        return (
-          <span className="d-flex gap-1  ">
+      render: (record) =>
+        record.userName ? (
+          <span className=" d-flex gap-1 align-items-center">
             <img
               className={`${styles["signatories_image"]} rounded-circle`}
               width={22}
@@ -112,8 +111,7 @@ const SignatoriesList = ({
               {record.userName}
             </span>
           </span>
-        );
-      },
+        ) : null,
     },
     {
       title: <span> Declined({formatValue(declineSignatories)})</span>,

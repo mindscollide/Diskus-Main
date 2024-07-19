@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Modal, TextField } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import styles from "./DeclineResonModal.module.css";
+import { useTranslation } from "react-i18next";
 const DeclineReasonModal = ({
   show,
   setShow,
@@ -11,6 +12,7 @@ const DeclineReasonModal = ({
   declineErrorMessage,
   setDeclineErrorMessage,
 }) => {
+  const { t } = useTranslation();
   const handleClose = () => {
     setShow(false);
     setDeclineReasonMessage("");
@@ -39,7 +41,7 @@ const DeclineReasonModal = ({
               lg={12}
               className={styles["DeclineModalHeading"]}
             >
-              Decline to sign this document
+              {t("Decline-to-sign-this-document")}
             </Col>
           </Row>
           <Row>
@@ -49,8 +51,9 @@ const DeclineReasonModal = ({
               lg={12}
               className={styles["DeclineModalSubTitle"]}
             >
-              Declining this document will clear anything you have entered and
-              notify the sender
+              {t(
+                "Declining-this-document-will-clear-anything-you-have-entered-and-notify-the-sender"
+              )}
             </Col>
           </Row>
           <Row className="mt-3">
@@ -60,7 +63,8 @@ const DeclineReasonModal = ({
               lg={12}
               className={styles["DeclineModalHeading2"]}
             >
-              Reason for declining <span className={styles["Steric"]}>*</span>
+              {t("Reason-for-declining")}{" "}
+              <span className={styles["Steric"]}>*</span>
             </Col>
           </Row>
           <Row className="mt-2">
@@ -70,7 +74,7 @@ const DeclineReasonModal = ({
               lg={12}
               className={styles["DeclineModalSubLine"]}
             >
-              This information will be shared only with the sender.
+              {t("This-information-will be-shared-only-with-the-sender")}
             </Col>
           </Row>
           <Row>
@@ -92,7 +96,7 @@ const DeclineReasonModal = ({
               className={styles["declineErrorMessage"]}
             >
               {declineReasonMessage === "" && declineErrorMessage
-                ? "Please provide a reason"
+                ? t("Please-provide-a-reason")
                 : null}
             </Col>
           </Row>
@@ -108,12 +112,12 @@ const DeclineReasonModal = ({
               className="d-flex justify-content-end gap-3"
             >
               <Button
-                text={"Cancel"}
+                text={t("Cancel")}
                 className={styles["CancelBtn"]}
                 onClick={handleClose}
               />
               <Button
-                text={"Decline"}
+                text={t("Decline")}
                 className={styles["DeclineBtn"]}
                 onClick={handleClickDecline}
               />

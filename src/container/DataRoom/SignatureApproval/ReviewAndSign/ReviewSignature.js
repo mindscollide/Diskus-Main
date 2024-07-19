@@ -3,11 +3,8 @@ import { Col, Row } from "react-bootstrap";
 import styles from "./ReviewSignature.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import UserImage from "../../../../assets/images/Userprofile-1.png";
-import {
-  pendingApprovalPage,
-  reviewMinutesPage,
-} from "../../../../store/actions/Minutes_action";
+import DescendIcon from "../../../MinutesNewFlow/Images/SorterIconDescend.png";
+import AscendIcon from "../../../MinutesNewFlow/Images/SorterIconAscend.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import { Notification, TableToDo } from "../../../../components/elements";
 import {
@@ -17,12 +14,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import {
   clearWorkFlowResponseMessage,
-  getAllPendingApprovalStatusApi,
   getAllPendingApprovalsSignaturesApi,
-  getAllPendingApprovalsStatsApi,
 } from "../../../../store/actions/workflow_actions";
 import { useSelector } from "react-redux";
-import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
+import {
+  SignatureandPendingApprovalDateTIme,
+  utcConvertintoGMT,
+} from "../../../../commen/functions/date_formater";
 import { set } from "lodash";
 import InfiniteScroll from "react-infinite-scroll-component";
 const ReviewSignature = () => {
@@ -43,10 +41,7 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
-  console.log(
-    approvalStats.signedPercentage,
-    "approvalStatsapprovalStatsapprovalStats"
-  );
+
   const [reviewSignature, setReviewSignature] = useState([]);
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -61,7 +56,8 @@ const ReviewSignature = () => {
   const [totalRecords, setTotalRecords] = useState(null);
   const [totalDataLnegth, setTotalDataLength] = useState(0);
   const [isScrollling, setIsScrolling] = useState(false);
-
+  const [sortOrderRequestBy, setSortOrderRequestBy] = useState(null);
+  const [sortOrderDateTime, setSortOrderDateTime] = useState(null);
   // ProgressBar component for visualizing progress
   const ProgressBar = ({ width, color, indexValue, percentageValue }) => {
     const barStyle = {
@@ -130,12 +126,32 @@ const ReviewSignature = () => {
       ),
     },
     {
-      title: t("Requested-by"),
+      title: (
+        <>
+          {t("Requested-by")}{" "}
+          {sortOrderRequestBy === "descend" ? (
+            <img src={DescendIcon} alt="" />
+          ) : (
+            <img src={AscendIcon} alt="" />
+          )}
+        </>
+      ),
       dataIndex: "creatorName",
       key: "creatorName",
       className: "emailParticipant",
       width: "180px",
       ellipsis: true,
+      sorter: (a, b) =>
+        a.creatorName.toLowerCase().localeCompare(b.creatorName.toLowerCase()),
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderRequestBy((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p
           className={
@@ -153,16 +169,35 @@ const ReviewSignature = () => {
       ),
     },
     {
-      title: t("Date-and-time"),
+      title: (
+        <>
+          {t("Date-and-time")}{" "}
+          {sortOrderDateTime === "descend" ? (
+            <img src={DescendIcon} alt="" />
+          ) : (
+            <img src={AscendIcon} alt="" />
+          )}
+        </>
+      ),
       dataIndex: "createdOn",
       key: "createdOn",
       className: "leaveTimeParticipant",
       width: "180px",
       ellipsis: true,
+      sorter: (a, b) =>
+        utcConvertintoGMT(a.deadline) - utcConvertintoGMT(b.deadline),
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderDateTime((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p className={"m-0"}>{SignatureandPendingApprovalDateTIme(text)}</p>
       ),
-      // render: (text, record) => convertAndFormatDateTimeGMT(text),
     },
     {
       title: t("Status"),
@@ -172,25 +207,21 @@ const ReviewSignature = () => {
       className: "statusParticipant",
       width: "150px",
       filters: reviewAndSignatureStatus,
-      // filters: [
-      //   { text: t("Pending"), value: "Pending" },
-      //   { text: t("Signed"), value: "Signed" },
-      //   { text: t("Decline"), value: "Decline" },
-      // ],
-      onFilter: (value, record) => Number(record.workFlowStatusID) === value,
+      defaultFilteredValue: defaultreviewAndSignatureStatus,
+      onFilter: (value, record) => record.actorStatusID === value,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       render: (text, record) => {
-        const { workFlowStatusID, status } = record;
+        const { actorStatusID, status } = record;
         return (
           <p
             className={
-              workFlowStatusID === 1
+              actorStatusID === 2
                 ? styles["pendingStatus"]
-                : workFlowStatusID === 2
+                : actorStatusID === 3
                 ? styles["signedStatus"]
-                : workFlowStatusID === 3
+                : actorStatusID === 4
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
             }
@@ -201,17 +232,6 @@ const ReviewSignature = () => {
       },
     },
   ];
-
-  // const callingApi = async () => {
-  //   let newData = { IsCreator: false };
-  //   await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
-  //   await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
-  //   let Data = { sRow: 0, Length: 10 };
-  //   dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
-  // };
-  // useEffect(() => {
-  //   callingApi();
-  // }, []);
 
   const handleScroll = async () => {
     console.log(
@@ -253,11 +273,6 @@ const ReviewSignature = () => {
       }
     }
   }, [getAllPendingApprovalStatuses]);
-
-  console.log(
-    { reviewAndSignatureStatus, defaultreviewAndSignatureStatus },
-    "reviewAndSignatureStatusreviewAndSignatureStatusreviewAndSignatureStatus"
-  );
 
   useEffect(() => {
     if (getAllPendingForApprovalStats !== null) {
@@ -308,10 +323,6 @@ const ReviewSignature = () => {
         });
       }, 4000);
       dispatch(clearWorkFlowResponseMessage());
-      console.log(
-        ResponseMessage,
-        "ResponseMessageResponseMessageResponseMessage"
-      );
     }
   }, [ResponseMessage]);
 
@@ -325,12 +336,12 @@ const ReviewSignature = () => {
               <Col lg={6} md={6} sm={12}>
                 <div className="d-flex  position-relative">
                   {/* Progress bars with different colors and percentages */}
-                  {approvalStats.signed > 0 && (
+                  {approvalStats.declined > 0 && (
                     <ProgressBar
-                      width={approvalStats.signedPercentage}
+                      width={approvalStats.declinedPercentage}
                       color="#F16B6B"
                       indexValue="0"
-                      percentageValue={`${approvalStats.signedPercentage}%`}
+                      percentageValue={`${approvalStats.declinedPercentage}%`}
                     />
                   )}
                   {approvalStats.pending > 0 && (
@@ -341,12 +352,12 @@ const ReviewSignature = () => {
                       percentageValue={`${approvalStats.pendingPercentage}%`}
                     />
                   )}
-                  {approvalStats.declined > 0 && (
+                  {approvalStats.signed > 0 && (
                     <ProgressBar
-                      width={approvalStats.declinedPercentage}
+                      width={approvalStats.signedPercentage}
                       color="#55CE5C"
                       indexValue="2"
-                      percentageValue={`${approvalStats.declinedPercentage}%`}
+                      percentageValue={`${approvalStats.signedPercentage}%`}
                     />
                   )}
                 </div>
@@ -379,30 +390,30 @@ const ReviewSignature = () => {
         </Col>
       </Row>
       <Row>
-        <Col>
-          {reviewAndSignatureStatus.length > 0 && (
-            <InfiniteScroll
-              dataLength={reviewSignature.length}
-              next={handleScroll}
-              hasMore={reviewSignature.length === totalRecords ? false : true}
-              style={{
-                overflowX: "hidden",
-              }}
-              height={"50vh"}
-            >
-              <TableToDo
-                sortDirections={["descend", "ascend"]}
-                column={pendingApprovalColumns}
-                className={"PendingApprovalsTable"}
-                rows={reviewSignature}
-                // scroll={scroll}
-                pagination={false}
-                id={(record, index) =>
-                  index === reviewSignature.length - 1 ? "last-row-class" : ""
-                }
-              />
-            </InfiniteScroll>
-          )}
+        <Col sm={12} md={12} lg={12}>
+          {/* {reviewAndSignatureStatus.length > 0 && ( */}
+          <InfiniteScroll
+            dataLength={reviewSignature.length}
+            next={handleScroll}
+            hasMore={reviewSignature.length === totalRecords ? false : true}
+            style={{
+              overflowX: "hidden",
+            }}
+            height={"50vh"}
+          >
+            <TableToDo
+              sortDirections={["descend", "ascend"]}
+              column={pendingApprovalColumns}
+              className={"PendingApprovalsTable"}
+              rows={reviewSignature}
+              // scroll={scroll}
+              pagination={false}
+              id={(record, index) =>
+                index === reviewSignature.length - 1 ? "last-row-class" : ""
+              }
+            />
+          </InfiniteScroll>
+          {/* )} */}
         </Col>
       </Row>{" "}
       <Notification

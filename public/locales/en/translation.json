@@ -2125,5 +2125,16 @@
   "Edit-minute": "Edit minutes",
   "Reviewed-by": "Reviewed by",
   "Record-updated-and-is-a-review-minute": "Record updated and is a review minute",
-  "No-version-history-available": "No version history available"
+  "No-version-history-available": "No version history available",
+  "This-document-is-now-closed": "This document is now closed",
+  "You-ill-receive-an-email-confirmation-shortly": "You'll receive an email confirmation shortly",
+  "Decline-to-sign-this-document": "Decline to sign this document",
+  "Declining-this-document-will-clear-anything-you-have-entered-and-notify-the-sender": "Declining this document will clear anything you have entered and notify the sender",
+  "This-information-will be-shared-only-with-the-sender": "This information will be shared only with the sender",
+  "Reason-for-declining": "Reason for declining",
+  "Please-provide-a-reason": "Please provide a reason",
+  "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission": "Ready to send a document for approval this tab awaits your next submission",
+  "Submit-document-for-approval": "Submit document for approval",
+  "Send-data-storage-retention-policy" : "Send Data Storage & Retention Policy",
+  "Email-to-signer": "Email to signer"
 }
