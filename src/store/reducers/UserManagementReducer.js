@@ -31,6 +31,7 @@ const initialState = {
   getOrganizationWallet: null,
   boardDeckSendEmailData: null,
   downloadBoardDeckPDF: null,
+  videoURLData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -634,6 +635,31 @@ const UserMangementReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+      };
+    }
+
+    case actions.VALIDATE_VIDEO_URL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.VALIDATE_VIDEO_URL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        videoURLData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.VALIDATE_VIDEO_URL_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        videoURLData: null,
+        ResponseMessage: action.message,
       };
     }
 
