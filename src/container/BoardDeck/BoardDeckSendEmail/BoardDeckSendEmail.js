@@ -35,6 +35,8 @@ const BoardDeckSendEmail = ({
 
   const animatedComponents = makeAnimated();
 
+  const OrganizationID = localStorage.getItem("organizationID");
+
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
@@ -57,7 +59,7 @@ const BoardDeckSendEmail = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: Number(boardDeckMeetingID),
+      OrganizationID: Number(OrganizationID),
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
   }, []);
