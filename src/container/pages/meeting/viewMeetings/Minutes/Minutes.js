@@ -149,10 +149,7 @@ const Minutes = ({
     value: 0,
   });
 
-  let isMinutePublished =
-    localStorage.getItem("isMinutePublished") !== null
-      ? localStorage.getItem("isMinutePublished")
-      : false;
+  let isMinutePublished = localStorage.getItem("isMinutePublished");
 
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -192,7 +189,7 @@ const Minutes = ({
       MeetingID: Number(advanceMeetingModalID),
     };
 
-    if (Boolean(isMinutePublished) === true) {
+    if (JSON.parse(isMinutePublished) === true) {
       dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
     } else {
       dispatch(
@@ -976,7 +973,7 @@ const Minutes = ({
     }
   }, [MinutesReducer.GetPublishedMinutes]);
 
-  return isMinutePublished ? (
+  return JSON.parse(isMinutePublished) ? (
     <>
       {publishMinutesDataAgenda.map((data, index) => {
         const isOpen = openIndices.includes(index);

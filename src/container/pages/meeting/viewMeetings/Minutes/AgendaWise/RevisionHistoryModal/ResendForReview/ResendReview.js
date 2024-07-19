@@ -136,7 +136,7 @@ const ResendMinuteReviewModal = ({
   }, [currentLanguage]);
 
   useEffect(() => {
-    let date = utcConvertintoGMT(editMinuteData.bundleDeadline + "235959");
+    let date = utcConvertintoGMT(editMinuteData.bundleDeadline, 1);
     setMinuteDate(date);
   }, []);
 
