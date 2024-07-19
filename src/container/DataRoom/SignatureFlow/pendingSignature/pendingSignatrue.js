@@ -548,7 +548,7 @@ const SignatureViewer = () => {
               newProcessXmlForReadOnly,
               removeXmlAfterHideDAtaRef.current
             );
-            
+
             const afterAddReadOnlyFreetextElements =
               await revertReadOnlyFreetextElements(
                 revertedHideFieldsXml,
@@ -629,6 +629,12 @@ const SignatureViewer = () => {
             };
 
             let newData = { ActorsFieldValuesList: convertData };
+            // console.log(
+            //   newData,
+            //   UpdateActorBundle,
+            //   addAnnoatationofFilesAttachment,
+            //   "handleClickSaveBtnhandleClickSaveBtn"
+            // );
 
             dispatch(
               addUpdateFieldValueApi(
