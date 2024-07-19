@@ -6,8 +6,6 @@
   height: 9vh;
   width: 100vw;
   padding: 10px 0 !important;
-  /* padding-left: 55px; */
-  /* padding-right: 25px; */
 }
 
 body[dir="rtl"] .header2-container {
