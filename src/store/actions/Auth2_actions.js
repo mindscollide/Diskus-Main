@@ -18,6 +18,7 @@ import {
   passswordUpdationOnForgetPassword,
   UserLogout,
   GetInvoiceHTMLByOrganizatonID,
+  DownloadInvoiceRM,
 } from "../../commen/apis/Api_config";
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
@@ -514,7 +515,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
   let dataroomValue = localStorage.getItem("DataRoomEmail");
   let AgCont = localStorage.getItem("AgCont");
   let AdOrg = localStorage.getItem("AdOrg");
-
+  let MeetingStr = localStorage.getItem("meetingStr");
+  let MeetinUpd = localStorage.getItem("meetingUpd");
+  let MeetingMin = localStorage.getItem("meetingMin");
+  let Meetingprop = localStorage.getItem("meetingprop");
   return async (dispatch) => {
     dispatch(enterPasswordInit());
     const formData = getFormData(data, userPasswordVerify);
@@ -650,10 +654,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              } else if (AgCont !== null) {
-                navigate("/DisKus/Meeting");
-              } else if (AdOrg !== null) {
-                navigate("/DisKus/Meeting");
+              } else if (
+                MeetingStr !== null ||
+                MeetinUpd !== null ||
+                MeetingMin !== null ||
+                Meetingprop !== null ||
+                AgCont !== null ||
+                AdOrg !== null
+              ) {
+                navigate("/Diskus/Meeting");
               } else {
                 navigate("/onboard");
               }
@@ -665,10 +674,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              } else if (AgCont !== null) {
-                navigate("/DisKus/Meeting");
-              } else if (AdOrg !== null) {
-                navigate("/DisKus/Meeting");
+              }  else if (
+                MeetingStr !== null ||
+                MeetinUpd !== null ||
+                MeetingMin !== null ||
+                Meetingprop !== null ||
+                AgCont !== null ||
+                AdOrg !== null
+              ) {
+                navigate("/Diskus/Meeting");
               } else {
                 navigate("/DisKus/");
               }
@@ -708,10 +722,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              } else if (AgCont !== null) {
-                navigate("/DisKus/Meeting");
-              } else if (AdOrg !== null) {
-                navigate("/DisKus/Meeting");
+              }  else if (
+                MeetingStr !== null ||
+                MeetinUpd !== null ||
+                MeetingMin !== null ||
+                Meetingprop !== null ||
+                AgCont !== null ||
+                AdOrg !== null
+              ) {
+                navigate("/Diskus/Meeting");
               } else {
                 navigate("/onboard/");
               }
@@ -723,10 +742,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              } else if (AgCont !== null) {
-                navigate("/DisKus/Meeting");
-              } else if (AdOrg !== null) {
-                navigate("/DisKus/Meeting");
+              }  else if (
+                MeetingStr !== null ||
+                MeetinUpd !== null ||
+                MeetingMin !== null ||
+                Meetingprop !== null ||
+                AgCont !== null ||
+                AdOrg !== null
+              ) {
+                navigate("/Diskus/Meeting");
               } else {
                 navigate("/Diskus/");
               }
@@ -1802,8 +1826,12 @@ const createPasswordAction = (value, navigate, t) => {
   let data = { UserID: JSON.parse(userID), Password: value };
   let RSVP = localStorage.getItem("RSVP");
   let dataroomValue = localStorage.getItem("DataRoomEmail");
+  let MeetingStr = localStorage.getItem("meetingStr");
+  let MeetinUpd = localStorage.getItem("meetingUpd");
+  let MeetingMin = localStorage.getItem("meetingMin");
+  let Meetingprop = localStorage.getItem("meetingprop"); 
   let AgCont = localStorage.getItem("AgCont");
-  let AdOrg = localStorage.getItem("AdOrg");
+let AdOrg = localStorage.getItem("AdOrg");
   return async (dispatch) => {
     dispatch(createPasswordInit());
     const formData = getFormData(data, userPasswordCreation);
@@ -3374,10 +3402,7 @@ const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getInvocieHTMLApi(navigate, t, Data, setInvoiceModal));
         } else if (response.data.responseCode === 200) {
-
           if (response.data.responseResult.isExecuted === true) {
-        
-
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3385,7 +3410,6 @@ const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
                   "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_01".toLowerCase()
                 )
             ) {
-
               setInvoiceModal(true);
               dispatch(
                 getInvoiceHTML_Success(
@@ -3424,6 +3448,70 @@ const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
       });
   };
 };
+
+const DownlaodInvoice_Init = () => {
+  return {
+    type: actions.DOWNLOADINVOICE_INIT,
+  };
+};
+const DownlaodInvoice_Success = (response, message) => {
+  return {
+    type: actions.DOWNLOADINVOICE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const DownlaodInvoice_Fail = (message) => {
+  return {
+    type: actions.DOWNLOADINVOICE_FAIL,
+    message: message,
+  };
+};
+
+const DownlaodInvoiceLApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(DownlaodInvoice_Init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DownloadInvoiceRM.RequestMethod);
+    let contentType = "application/pdf";
+    let ext = "pdf";
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+        "Content-Disposition": "attachment; filename=template." + ext,
+        "Content-Type": contentType,
+      },
+      responseType: "blob",
+    })
+      .then(async (response) => {
+        console.log("DownloadInvoice", response);
+
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DownlaodInvoiceLApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", ext);
+          document.body.appendChild(link);
+          link.click();
+          dispatch(DownlaodInvoice_Success(response, ""));
+        } else {
+          dispatch(DownlaodInvoice_Fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(DownlaodInvoice_Fail(t("Something-went-wrong")));
+      });
+  };
+};
 const setClient = (response) => {
   return {
     type: actions.SET_MQTT_CLIENT,
@@ -3432,6 +3520,7 @@ const setClient = (response) => {
 };
 
 export {
+  DownlaodInvoiceLApi,
   getInvocieHTMLApi,
   setClient,
   setLoader,

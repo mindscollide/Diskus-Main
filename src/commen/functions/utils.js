@@ -98,6 +98,9 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     { id: 41, name: "OrganizationlevelConfigUM" },
     { id: 42, name: "OrganizationlevelConfigUM" },
     { id: 43, name: "OrganizationlevelConfigUM" },
+    { id: 45, name: "subscriptionDetailsUserManagement" },
+    { id: 45, name: "downgradeSubscription" },
+    { id: 46, name: "updatedCancelSubscription" },
 
     // not in use
     // { id: 19, name: "Invoice" },
@@ -228,6 +231,9 @@ export async function handleLoginResponse(response) {
           { name: "PaymentHistory", id: 218 },
           { name: "changePassword", id: 220 },
           { name: "PaymentFormUserManagement", id: 222 },
+          { name: "subscriptionDetailsUserManagement", id: 288 },
+          { name: "downgradeSubscription", id: 289 },
+          { name: "updatedCancelSubscription", id: 290 },
         ]
       : [];
     if (response.isTrial) {
@@ -246,7 +252,7 @@ export async function handleLoginResponse(response) {
           { name: "signatureviewer", id: 19 },
           { name: "documentViewer", id: 20 },
           { name: "Payment", id: 109 },
-          { name: "Minutes", id: 115 }
+          { name: "Minutes", id: 115 },
         );
       }
       if (response.hasAdminRights) {
@@ -257,7 +263,7 @@ export async function handleLoginResponse(response) {
           { name: "CustomerInformation", id: 208 },
           { name: "AddUsers", id: 26 },
           { name: "loginreport", id: 35 },
-          { name: "PaymentFormUserManagement", id: 209 }
+          { name: "PaymentFormUserManagement", id: 222 }
         );
       }
     } else {

@@ -333,6 +333,7 @@ const ViewMeetingDetails = ({
         let MeetingData =
           NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
         localStorage.setItem("meetingTitle", MeetingData.meetingTitle);
+        localStorage.setItem("isMinutePublished", MeetingData.isMinutePublished)
         let getmeetingDates = MeetingData.meetingDates;
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;

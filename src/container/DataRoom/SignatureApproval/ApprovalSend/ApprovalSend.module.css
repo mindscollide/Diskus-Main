@@ -1,5 +1,31 @@
-/* Status Values */
-p.DraftStatus {
+p.pendingStatus {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase !important;
+  color: #d8a709;
+}
+
+p.signedStatus {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #55ce5c;
+}
+
+p.declineStatus {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #f16b6b;
+}
+
+p.draftStatus {
   margin: 0 !important;
   font-style: normal;
   font-weight: 700;
@@ -8,31 +34,6 @@ p.DraftStatus {
   color: #a2a2a2;
 }
 
-p.pendingStatus {
-  color: #d8a709;
-  margin: 0 !important;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-p.SignedStatus {
-  color: #55ce5c;
-  margin: 0 !important;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-p.DeclineStatus {
-  color: #f16b6b;
-  margin: 0 !important;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 12px;
-  text-transform: uppercase;
-}
 .signatories_vale {
   color: #6172d6;
   font-weight: 600;
@@ -44,6 +45,13 @@ p.DeclineStatus {
   color: #5a5a5a;
   font-size: 12px;
   font-weight: 600;
+}
+.status_draft_signatoriesList {
+  height: 1px;
+  background-color: #000;
+  width: 10px;
+  display: inline-block;
+  text-align: center;
 }
 .Sort_icon_descend {
   user-select: none;
@@ -57,4 +65,25 @@ p.DeclineStatus {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.ApprovalSend_emptyContainer {
+  display: flex;
+  justify-content: center;
+  max-height: 55vh;
+  height: 55vh;
+  align-items: center;
+  flex-direction: column;
+}
+.emptyState_title {
+  font-size: 30px;
+  font-weight: 600;
+  color: #5a5a5a;
+  text-align: center;
+  margin-top: 50px;
+}
+.emptyState_tagline {
+  font-size: 12px;
+  font-weight: 400;
+  color: #5a5a5a;
+  text-align: center;
 }

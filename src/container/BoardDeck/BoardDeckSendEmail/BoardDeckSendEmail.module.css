@@ -1,17 +1,3 @@
-img.image-close {
-  position: absolute;
-  right: 10px;
-  top: 0px;
-  cursor: pointer;
-}
-
-p.FileModalTitle {
-  margin: 0;
-  font-weight: 600;
-  font-size: 20px;
-  color: #6172d6;
-}
-
 p.FileModalTitle {
   margin: 0;
   font-weight: 500 !important;
@@ -91,7 +77,10 @@ body[dir="rtl"] img.image-close {
   flex-wrap: wrap;
   gap: 4px;
   background-color: hsl(0, 0%, 100%);
-  border: none !important;
+  border-color: hsl(0, 0%, 80%);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
 }
 
 .tags-input-containerr {
@@ -111,15 +100,14 @@ body[dir="rtl"] img.image-close {
 }
 
 .tag-item {
-  background-color: #fff !important;
-  color: #6172d6 !important;
+  background-color: #6172d6 !important;
+  color: #fff !important;
   border-radius: 50px !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 12px !important;
-  padding: 5px;
-  border: 1px solid #e1e1e1 !important;
+  font-size: 85%;
+  padding: 3px;
   padding-left: 6px;
   box-sizing: border-box;
 }
@@ -187,62 +175,4 @@ p.NonOrganizationUsers {
 
 .text-area-organizer label {
   display: none !important;
-}
-
-.Class_CheckBox_notify_people {
-  font-size: 12px !important;
-  color: #5a5a5a;
-  font-weight: 800 !important;
-}
-
-body[dir="rtl"] .Class_CheckBox_notify_people {
-  font-weight: 800 !important;
-}
-
-.AddButton {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  border-radius: 4px !important;
-  border: none !important;
-  height: 39px !important;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  color: #fff !important;
-}
-
-.AddButton:is(:active, :focus, :focus-visible, :hover) {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  height: 39px !important;
-  font-weight: 600 !important;
-  border-radius: 4px !important;
-  border: none !important;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  color: #fff !important;
-}
-
-body[dir="rtl"] .AddButton {
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
-}
-
-.SendButton {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  height: 39px !important;
-  font-weight: 600 !important;
-  border-radius: 4px !important;
-  border: none !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-}
-
-.AddButton:is(:active, :focus, :focus-visible, :hover) {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  height: 39px !important;
-  font-weight: 600 !important;
-  border-radius: 4px !important;
-  border: none !important;
-  background: #6172d6 !important;
-  color: #fff !important;
 }

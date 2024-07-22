@@ -1727,6 +1727,9 @@ i.icon-add-square.uploadfile {
 .ant-table-wrapper.ToDo .ant-table {
   background: none !important;
 }
+.ant-table-wrapper.ToDo .ant-table .ant-table-tbody > tr > th.ant-table-column-sorters {
+  display: contents !important;
+}
 
 .ant-table-wrapper.Billing_TablePakageSelection .ant-table {
   background: none !important;
@@ -3367,7 +3370,7 @@ label.filter.form-label {
   background-color: #000;
 }
 
-progress {
+/* progress {
   border-radius: 20px !important;
   border: 0.5px solid #ccc !important;
   background-color: linear-gradient(
@@ -3433,7 +3436,7 @@ body[dir="rtl"] progress {
 }
 body[dir="rtl"] .progress-bar {
   background: linear-gradient(to left, #6172d6 20%, #49dbdb 80%) !important;
-}
+} */
 
 body.blur-background section.ant-layout.positionRelative .container {
   filter: blur(5px);
@@ -7242,6 +7245,10 @@ span.billing-contactActive {
   font-size: 16px !important;
 }
 
+.no-padding-top {
+  padding-top: 0 !important;
+}
+
 span.billing-address {
   color: #5a5a5a !important;
   font-weight: 600 !important;
@@ -7517,7 +7524,7 @@ a.pendingApprovalsNav.nav-link {
 
 .PendingApprovalsTable .ant-table-thead > tr * {
   font-weight: 700 !important;
-  border-bottom: 1px solid #5a5a5a !important;
+  /* border-bottom: 1px solid #5a5a5a !important; */
   padding-bottom: 5px !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
@@ -7531,7 +7538,7 @@ a.pendingApprovalsNav.nav-link {
 .PendingApprovalsTable
   tr.ant-table-row.ant-table-row-level-0
   td.ant-table-cell {
-  padding: 7px 16px !important;
+  padding: 10px 16px !important;
   border-bottom: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
   font-style: normal;
@@ -7628,6 +7635,23 @@ th.ant-table-cell.statusParticipant
   z-index: 99999999999 !important;
 }
 
+.PendingApprovalsTable .ant-table-thead > tr > th {
+  border-bottom: 1px solid #5a5a5a !important;
+}
+
+.ant-table-wrapper.PendingApprovalsTable
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th
+  .ant-table-column-sorter {
+  display: none;
+}
+
+.fade.DeleteCommentModal.modal.show .modal-content {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 3px;
+}
 .ApprovalsTable .ant-table-thead > tr * {
   font-weight: 700 !important;
   /* border-bottom: 1px solid #5a5a5a !important; */
@@ -7635,6 +7659,19 @@ th.ant-table-cell.statusParticipant
   font-size: 16px !important;
   color: #5f78d6 !important;
   padding: 2px 8px;
+}
+.ApprovalsTable {
+  margin-bottom: 50px;
+  overflow-y: auto;
+}
+
+.ApprovalsTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+  padding: 10px 16px !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px !important;
 }
 
 .ApprovalsTable {
@@ -7791,4 +7828,327 @@ body[dir="rtl"]
   overflow: hidden;
   text-overflow: ellipsis;
   /* display: block; */
+}
+
+th.ant-table-cell.leaveTimeParticipant.ant-table-cell-ellipsis.ant-table-column-has-sorters {
+  display: flex !important;
+  margin-top: 1px !important;
+}
+
+.w-91 {
+  width: 91%;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.mr-20 {
+  margin-right: 20px !important;
+}
+
+.ml-20 {
+  margin-left: 20px !important;
+}
+
+.ml-25 {
+  margin-left: 25px !important;
+}
+
+.mr-25 {
+  margin-right: 25px !important;
+}
+
+.mb-25 {
+  margin-bottom: 25px !important;
+}
+
+.scrollStyle::-webkit-scrollbar {
+  width: 5px !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
+}
+.scrollStyle::-webkit-scrollbar-thumb {
+  border-radius: 20px !important;
+  background: #a2a2a2 !important;
+  margin-left: -15px !important;
+}
+
+.mt-16p {
+  margin-top: 16px !important;
+}
+
+.mt-16n {
+  margin-top: -16px !important;
+}
+
+/* Responsiveness CancelSubscription Ends*/
+.ant-table-thead th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* display: block; */
+}
+
+.datepickerlength .rmdp-container {
+  width: 96%;
+}
+
+.datepickerlength .rmdp-container svg {
+  color: #f16b6b !important;
+}
+
+span.text-truncate.description {
+  font-weight: 500;
+  font-size: 12px;
+  color: #5a5a5a;
+}
+
+span.text-truncate.description p {
+  margin: 0 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* SubscriptionExpiry Table Styles */
+tr.ant-table-row.ant-table-row-level-0.SubscriptionExpiry {
+  border-radius: 4px !important;
+  background: #fff !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.SubscriptionExpiry:last-child {
+  outline: none !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.SubscriptionExpiry:last-child:hover {
+  outline: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  border: none !important;
+}
+
+.ant-table-tbody > tr.SubscriptionExpiry:last-child.ant-table-row:hover > td,
+.ant-table-tbody
+  > tr.SubscriptionExpiry:last-child
+  > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr.SubscriptionExpiry > td {
+  border-bottom: none !important;
+}
+
+.ant-table-wrapper.SubscriptionExpiryTableStyles
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
+.ant-table-wrapper.SubscriptionExpiryTableStyles .ant-table {
+  background: none !important;
+}
+
+.SubscriptionExpiryTableStyles .ant-table table {
+  border-spacing: 0px 9px !important;
+  table-layout: inherit !important;
+  background: transparent !important;
+}
+
+.SubscriptionExpiryTableStyles .ant-table table .ant-table-thead > tr > th {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+body[dir="rtl"] .ant-table-wrapper.SubscriptionExpiryTableStyles {
+  padding-left: 10px;
+  padding-right: 0px;
+}
+
+.SubscriptionExpiryTableStyles::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.SubscriptionExpiryTableStyles::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.SubscriptionExpiryTableStyles {
+  overflow-y: auto !important;
+}
+
+.SubscriptionExpiryTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell {
+  padding: 10px 10px !important;
+  border-top: 1px solid #e1e1e1 !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  color: #505050 !important;
+}
+
+.SubscriptionExpiryTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-left: 1px solid #e1e1e1 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.SubscriptionExpiryTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:last-child {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+body[dir="rtl"]
+  .SubscriptionExpiryTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 4px !important;
+  border-left: 0px !important;
+}
+
+/* DownGrade Subscription Table */
+
+tr.ant-table-row.ant-table-row-level-0.DownGradeSubscription {
+  border-radius: 4px !important;
+  background: #fff !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.DownGradeSubscription:last-child {
+  outline: none !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.DownGradeSubscription:last-child:hover {
+  outline: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  border: none !important;
+}
+
+.ant-table-tbody > tr.DownGradeSubscription:last-child.ant-table-row:hover > td,
+.ant-table-tbody
+  > tr.DownGradeSubscription:last-child
+  > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr.DownGradeSubscription > td {
+  border-bottom: none !important;
+}
+
+.ant-table-wrapper.DowngradeTableStyles
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
+.ant-table-wrapper.DowngradeTableStyles .ant-table {
+  background: none !important;
+}
+
+.DowngradeTableStyles .ant-table table {
+  border-spacing: 0px 9px !important;
+  table-layout: inherit !important;
+  background: transparent !important;
+}
+
+.DowngradeTableStyles .ant-table table .ant-table-thead > tr > th {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+body[dir="rtl"] .ant-table-wrapper.DowngradeTableStyles {
+  padding-left: 10px;
+  padding-right: 0px;
+}
+
+.DowngradeTableStyles::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.DowngradeTableStyles::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.DowngradeTableStyles {
+  overflow-y: auto !important;
+}
+
+.DowngradeTableStyles tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+  padding: 10px 10px !important;
+  border-top: 1px solid #e1e1e1 !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  color: #505050 !important;
+}
+
+.DowngradeTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-left: 1px solid #e1e1e1 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.DowngradeTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:last-child {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+body[dir="rtl"]
+  .DowngradeTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 4px !important;
+  border-left: 0px !important;
+}
+
+.SignatoriesList .ant-table-thead > tr > th:nth-child(1) span {
+  color: #55ce5c !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
+.SignatoriesList .ant-table-thead > tr > th:nth-child(2) span {
+  color: #f16b6b !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
+.SignatoriesList .ant-table-thead > tr > th:nth-child(3) span {
+  color: #d8a709 !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
 }

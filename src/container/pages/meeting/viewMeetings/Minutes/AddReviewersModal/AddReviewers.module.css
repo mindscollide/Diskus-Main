@@ -1,0 +1,55 @@
+.Cancel-Button,
+.Cancel-Button:is(:hover, :active, :focus, :focus-visible, :target) {
+  width: 103px !important;
+  height: 39px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+}
+
+.Add-Button,
+.Add-Button:is(:hover, :active, :focus, :focus-visible, :target) {
+  width: 153px !important;
+  height: 39px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #5f78d6 !important;
+}
+
+.Add-Button-Reviewers,
+.Add-Button-Reviewers:is(:hover, :active, :focus, :focus-visible, :target) {
+  width: 86px !important;
+  height: 39px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #5f78d6 !important;
+}
+
+.Add-Button-Reviewerss,
+.Add-Button-Reviewerss:is(:hover, :active, :focus, :focus-visible, :target) {
+  width: 153px !important;
+  height: 39px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #5f78d6 !important;
+}
+
+.label-datePicker {
+  position: absolute;
+  top: -25px;
+  font-weight: 600;
+  font-size: 10px;
+  color: #5a5a5a;
+}

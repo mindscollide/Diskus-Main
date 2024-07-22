@@ -231,3 +231,69 @@ export const newGMTFormatter = (meetingDate, time) => {
 
   return gmtTimeString;
 };
+
+export const convertToGMTMinuteTime = (timeStr) => {
+  try {
+    // Extract hours, minutes, and seconds from the input string
+    let hours = parseInt(timeStr.substring(0, 2), 10);
+    let minutes = parseInt(timeStr.substring(2, 4), 10);
+    let seconds = parseInt(timeStr.substring(4, 6), 10);
+
+    // Create a Date object
+    let date = new Date();
+    date.setUTCHours(hours);
+    date.setUTCMinutes(minutes);
+    date.setUTCSeconds(seconds);
+
+    // Get the GMT hours, minutes, and seconds
+    let gmtHours = date.getUTCHours();
+    let gmtMinutes = date.getUTCMinutes();
+    let gmtSeconds = date.getUTCSeconds();
+
+    // Format the time in 12-hour format with AM/PM
+    let period = gmtHours >= 12 ? "pm" : "am";
+    gmtHours = gmtHours % 12;
+    gmtHours = gmtHours ? gmtHours : 12; // the hour '0' should be '12'
+
+    let formattedTime = `${gmtHours}:${
+      gmtMinutes < 10 ? "0" + gmtMinutes : gmtMinutes
+    }${period}`;
+
+    return formattedTime;
+  } catch {}
+};
+
+export const convertDateToGMTMinute = (dateStr) => {
+  try {
+    // Extract year, month, and day from the input string
+    let year = parseInt(dateStr.substring(0, 4), 10);
+    let month = parseInt(dateStr.substring(4, 6), 10) - 1; // Months are zero-indexed in JavaScript
+    let day = parseInt(dateStr.substring(6, 8), 10);
+
+    // Create a Date object
+    let date = new Date(Date.UTC(year, month, day));
+
+    // Define month names
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    // Format the date
+    let formattedDate = `${date.getUTCDate()}th ${
+      monthNames[date.getUTCMonth()]
+    }, ${date.getUTCFullYear()}`;
+
+    return formattedDate;
+  } catch {}
+};

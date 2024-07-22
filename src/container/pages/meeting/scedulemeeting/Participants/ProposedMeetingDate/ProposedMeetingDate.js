@@ -479,6 +479,7 @@ const ProposedMeetingDate = ({
   };
   // Function to handle the save Proposed button click
   const handleSave = () => {
+    console.log("Clicked");
     let newArr = [];
     rows.forEach((data) => {
       newArr.push({
@@ -504,7 +505,9 @@ const ProposedMeetingDate = ({
         return a.EndTime.localeCompare(b.EndTime);
       }
     });
+
     console.log(sortedDates, "newDatenewDatenewDatenewDate");
+
     if (sendResponseVal !== "") {
       let Data = {
         MeetingID: currentMeeting,

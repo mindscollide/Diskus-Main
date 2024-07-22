@@ -7,6 +7,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";
 import axios from "axios";
+import { currentUserPicture } from "./Minutes_action";
 
 const settingInit = () => {
   return {
@@ -94,6 +95,8 @@ const getUserSetting = (navigate, t, loader) => {
               } else {
                 localStorage.removeItem("googleEventColor");
               }
+
+              dispatch(currentUserPicture(response.data.responseResult.userSettings.userProfilePicture))
 
               localStorage.setItem(
                 "diskusEventColor",

@@ -86,6 +86,7 @@ import {
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
+import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 
 const boardDeckModal = (response) => {
   return {
@@ -942,11 +943,7 @@ const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
                 )
             ) {
               dispatch(
-                handleReucrringSuccess(
-                  response.data.responseResult,
-                  "",
-                  loader
-                )
+                handleReucrringSuccess(response.data.responseResult, "", loader)
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1048,9 +1045,7 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 pageNumbers: response.data.responseResult.pageNumbers,
                 totalRecords: response.data.responseResult.totalRecords,
               };
-              dispatch(
-                SearchMeeting_Success(newMeetingData, "")
-              );
+              dispatch(SearchMeeting_Success(newMeetingData, ""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1210,10 +1205,7 @@ const GetAllCommitteesUsersandGroupsParticipants = (Data, navigate, t) => {
                 )
             ) {
               dispatch(
-                showAddMoreParticipantsSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                showAddMoreParticipantsSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1302,10 +1294,7 @@ const GetAllParticipantsRoleNew = (navigate, t) => {
                 )
             ) {
               dispatch(
-                showParticipantsRolesSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                showParticipantsRolesSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1415,12 +1404,7 @@ const FetchMeetingURLApi = (
                   "Meeting_MeetingServiceManager_GetMeetingVideoURL_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                showMeetingURLSuccess(
-                  response.data.responseResult,
-                  ""
-                )
-              );
+              dispatch(showMeetingURLSuccess(response.data.responseResult, ""));
               dispatch(MeetingUrlSpinner(false));
               let meetingURL = response.data.responseResult.videoURL;
               var match = meetingURL.match(/RoomID=([^&]*)/);
@@ -2408,10 +2392,7 @@ const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
                 )
             ) {
               dispatch(
-                showPollsByMeetingIdSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                showPollsByMeetingIdSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2498,10 +2479,7 @@ const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
                 )
             ) {
               dispatch(
-                showGetAllMeetingUsersSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                showGetAllMeetingUsersSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3650,11 +3628,12 @@ const showAllGeneralMinutesInit = () => {
   };
 };
 
-const showAllGeneralMinutesSuccess = (response, message) => {
+const showAllGeneralMinutesSuccess = (response, message, flag) => {
   return {
     type: actions.GET_GENERAL_MINTES_SUCCESS,
     response: response,
     message: message,
+    flag: flag,
   };
 };
 
@@ -3666,7 +3645,13 @@ const showAllGeneralMinutesFailed = (message) => {
 };
 
 // Api Function For General Minutes
-const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
+const GetAllGeneralMinutesApiFunc = (
+  navigate,
+  t,
+  Data,
+  currentMeeting,
+  flag
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
@@ -3686,7 +3671,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
-          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
+          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting, flag)
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -3703,12 +3688,23 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
             );
 
             // After DocumentsOfMeetingGenralMinutesApiFunc is done, call showAllGeneralMinutesSuccess
-            dispatch(
-              showAllGeneralMinutesSuccess(
-                response.data.responseResult,
-                ""
-              )
-            );
+            if (flag) {
+              dispatch(
+                showAllGeneralMinutesSuccess(
+                  response.data.responseResult,
+                  "",
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                showAllGeneralMinutesSuccess(
+                  response.data.responseResult,
+                  "",
+                  false
+                )
+              );
+            }
           } else if (
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
@@ -4287,11 +4283,13 @@ const GetAllAgendaWiseMinutesApiFunc = (
   Data,
   t,
   currentMeeting,
-  loader
+  loader,
+  setAddReviewers,
+  clickFlag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
-    // dispatch(showGetAllAgendaWiseMinutesInit());
+    dispatch(showGetAllAgendaWiseMinutesInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllAgendaWiseMinutes.RequestMethod);
@@ -4315,7 +4313,9 @@ const GetAllAgendaWiseMinutesApiFunc = (
             Data,
             t,
             currentMeeting,
-            loader
+            loader,
+            setAddReviewers,
+            clickFlag
           )
         );
       } else if (response.data.responseCode === 200) {
@@ -4327,11 +4327,22 @@ const GetAllAgendaWiseMinutesApiFunc = (
                 "Meeting_MeetingServiceManager_GetAllMeetingAgendaWiseMinutes_01".toLowerCase()
               )
           ) {
+            await dispatch(
+              GetAllGeneralMinutesApiFunc(
+                navigate,
+                t,
+                Data,
+                Number(currentMeeting),
+                true
+              )
+            );
             let allAgendaWiseDocs = {
               MDID: Number(currentMeeting),
             };
             // Call AllDocumentsForAgendaWiseMinutesApiFunc and wait for it to complete
-
+            if (clickFlag === true) {
+              setAddReviewers(true);
+            }
             await dispatch(
               AllDocumentsForAgendaWiseMinutesApiFunc(
                 navigate,
@@ -4402,7 +4413,18 @@ const showUpdateAgendaWiseMinutesFailed = (message) => {
   };
 };
 
-const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+const UpdateAgendaWiseMinutesApiFunc = (
+  navigate,
+  Data,
+  t,
+  resendFlag,
+  resendData,
+  setEditMinute,
+  setConfirmationEdit,
+  setResendMinuteForReview,
+  setShowRevisionHistory,
+  isAgenda
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -4437,6 +4459,20 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                   t("Record-updated")
                 )
               );
+              if (resendFlag === true) {
+                dispatch(
+                  ResendUpdatedMinuteForReview(
+                    resendData,
+                    navigate,
+                    t,
+                    setEditMinute,
+                    setConfirmationEdit,
+                    setResendMinuteForReview,
+                    setShowRevisionHistory,
+                    isAgenda
+                  )
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4451,7 +4487,7 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_UpdateAgendaWiseMinute_03".toLowerCase()
                 )
             ) {
               dispatch(
@@ -4466,9 +4502,36 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
             ) {
               dispatch(
                 showUpdateAgendaWiseMinutesFailed(
-                  t("Only-a-organizer-can-perform-this-operation")
+                  t("Only-minute-creator-can-update")
                 )
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateAgendaWiseMinute_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showUpdateMinutesSuccess(
+                  response.data.responseResult,
+                  t("Record-updated-and-is-a-review-minute")
+                )
+              );
+              if (resendFlag === true) {
+                dispatch(
+                  ResendUpdatedMinuteForReview(
+                    resendData,
+                    navigate,
+                    t,
+                    setEditMinute,
+                    setConfirmationEdit,
+                    setResendMinuteForReview,
+                    setShowRevisionHistory,
+                    isAgenda
+                  )
+                );
+              }
             }
           } else {
             dispatch(
@@ -4969,7 +5032,18 @@ const showUpdateMinutesFailed = (message) => {
   };
 };
 
-const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
+const UpdateMinutesGeneralApiFunc = (
+  navigate,
+  Data,
+  t,
+  resendFlag,
+  resendData,
+  setEditMinute,
+  setConfirmationEdit,
+  setResendMinuteForReview,
+  setShowRevisionHistory,
+  isAgenda
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return async (dispatch) => {
@@ -4991,7 +5065,16 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         // Retry the API request
-        await dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
+        await dispatch(
+          UpdateMinutesGeneralApiFunc(
+            navigate,
+            Data,
+            t,
+            setEditMinute,
+            setConfirmationEdit,
+            setResendMinuteForReview
+          )
+        );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
           if (
@@ -5007,6 +5090,20 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
                 t("Record-updated")
               )
             );
+            if (resendFlag === true) {
+              dispatch(
+                ResendUpdatedMinuteForReview(
+                  resendData,
+                  navigate,
+                  t,
+                  setEditMinute,
+                  setConfirmationEdit,
+                  setResendMinuteForReview,
+                  setShowRevisionHistory,
+                  isAgenda
+                )
+              );
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -5023,6 +5120,43 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
               )
           ) {
             dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_UpdateGeneralMinute_04".toLowerCase()
+              )
+          ) {
+            dispatch(
+              showUpdateMinutesFailed(t("Only-minute-creator-can-update"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_UpdateGeneralMinute_05".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              showUpdateMinutesSuccess(
+                response.data.responseResult,
+                t("Record-updated-and-is-a-review-minute")
+              )
+            );
+            if (resendFlag === true) {
+              dispatch(
+                ResendUpdatedMinuteForReview(
+                  resendData,
+                  navigate,
+                  t,
+                  setEditMinute,
+                  setConfirmationEdit,
+                  setResendMinuteForReview,
+                  setShowRevisionHistory,
+                  isAgenda
+                )
+              );
+            }
           }
         } else {
           dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
@@ -5905,10 +6039,7 @@ const getMeetingbyGroupApi = (navigate, t, Data) => {
                 )
             ) {
               dispatch(
-                getMeetingbyGroup_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getMeetingbyGroup_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -7731,7 +7862,7 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
                 )
             ) {
-              dispatch(
+              await dispatch(
                 joinMeetingSuccess(
                   response.data.responseResult,
                   t("Successful")
@@ -7753,8 +7884,8 @@ const JoinCurrentMeeting = (
               } else {
                 setAdvanceMeetingModalID(Data.FK_MDID);
                 setViewAdvanceMeetingModal(true);
-                dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                dispatch(scheduleMeetingPageFlag(false));
+                await dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                await dispatch(scheduleMeetingPageFlag(false));
                 localStorage.setItem("currentMeetingID", Data.FK_MDID);
               }
               dispatch(currentMeetingStatus(10));
@@ -8203,7 +8334,7 @@ const validateStringEmailApi = (
                 )
             ) {
               dispatch(validateStringEmail_fail(t("Unsuccessful")));
-              resolve("Unsuccessful");
+              reject("Unsuccessful");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -8212,15 +8343,15 @@ const validateStringEmailApi = (
                 )
             ) {
               dispatch(validateStringEmail_fail(t("Something-went-wrong")));
-              resolve("Something-went-wrong");
+              reject("Something-went-wrong");
             }
           } else {
             dispatch(validateStringEmail_fail(t("Something-went-wrong")));
-            resolve("Something-went-wrong");
+            reject("Something-went-wrong");
           }
         } else {
           dispatch(validateStringEmail_fail(t("Something-went-wrong")));
-          resolve("Something-went-wrong");
+          reject("Something-went-wrong");
         }
       })
       .catch((error) => {
@@ -8399,4 +8530,5 @@ export {
   boardDeckModal,
   boardDeckShareModal,
   boardDeckEmailModal,
+  AllDocumentsForAgendaWiseMinutesApiFunc,
 };

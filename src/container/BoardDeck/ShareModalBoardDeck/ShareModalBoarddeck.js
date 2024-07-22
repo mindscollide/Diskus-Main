@@ -12,7 +12,7 @@ import {
   boardDeckShareModal,
 } from "../../../store/actions/NewMeetingActions";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
-const ShareModalBoarddeck = () => {
+const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -20,8 +20,6 @@ const ShareModalBoarddeck = () => {
   const navigate = useNavigate();
 
   const { NewMeetingreducer } = useSelector((state) => state);
-
-  const [radioValue, setRadioValue] = useState(1);
 
   const handleRadioChange = (value) => {
     setRadioValue(value);

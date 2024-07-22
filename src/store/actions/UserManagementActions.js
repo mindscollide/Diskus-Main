@@ -18,10 +18,20 @@ import {
   paymentStatus,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  downgradeOrganizationSubscription,
+  cancelOrganizationSubscription,
+  getOrganizationWallet,
+  DownloadBoarddeckPDF,
+  BoardDeckSendEmail,
+  validateVideoRecordingURL,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
+  DataRoomAllFilesDownloads,
+  dataRoomApi,
   getAdminURLs,
+  meetingApi,
+  settingDownloadApi,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import axios from "axios";
@@ -41,6 +51,7 @@ import {
   clearPaymentActionFromUrl,
   handleLoginResponse,
 } from "../../commen/functions/utils";
+import { boardDeckEmailModal } from "./NewMeetingActions";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -718,7 +729,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationsUsers_02".toLowerCase()
+                  "Admin_AdminServiceManager_ManageUserScreen_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -731,7 +742,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationsUsers_03".toLowerCase()
+                  "Admin_AdminServiceManager_ManageUserScreen_02".toLowerCase()
                 )
             ) {
               dispatch(allOrganizationUsersFail(t("No-data-found")));
@@ -739,7 +750,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationsUsers_04".toLowerCase()
+                  "Admin_AdminServiceManager_ManageUserScreen_03".toLowerCase()
                 )
             ) {
               dispatch(allOrganizationUsersFail(t("Something-went-wrong")));
@@ -2310,14 +2321,6 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
                 Number(response.data.responseResult.subscriptionID)
               );
               navigate("/Admin/PaymentFormUserManagement");
-              // localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
-              // if (changePacakgeFlag) {
-
-              //   localStorage.setItem("SignupFlowPageRoute", 5);
-              //   dispatch(signUpFlowRoutes(5));
-              //   localStorage.removeItem("changePacakgeFlag");
-              //   navigate("/Signup")
-              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2371,6 +2374,444 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
       });
   };
 };
+
+//DownGrade Organization Subscription
+const downgradeOrganizationSubscriptionInit = () => {
+  return {
+    type: actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_INIT,
+  };
+};
+
+const downgradeOrganizationSubscriptionSuccess = (response, message) => {
+  return {
+    type: actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const downgradeOrganizationSubscriptionFailed = (message) => {
+  return {
+    type: actions.DOWNGRADE_ORGANIZATION_SUBSCRIPTION_SUCCESS,
+    message: message,
+  };
+};
+
+const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(downgradeOrganizationSubscriptionInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      downgradeOrganizationSubscription.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(downgradeOrganizationSubscriptionApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionSuccess(t("Data-available"))
+              );
+              navigate("/Admin/subscriptionDetailsUserManagement");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionFailed(
+                  t("Invalid-request-data")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionFailed(t("No-packages-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                downgradeOrganizationSubscriptionFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//Get Organization wallet
+const getOrganizationWalletInit = () => {
+  return {
+    type: actions.GET_ORGANIZATION_WALLET_INIT,
+  };
+};
+
+const getOrganizationWalletSuccess = (response, message) => {
+  return {
+    type: actions.GET_ORGANIZATION_WALLET_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getOrganizationWalletFailed = (message) => {
+  return {
+    type: actions.GET_ORGANIZATION_WALLET_FAILED,
+    message: message,
+  };
+};
+
+const getOrganizationWalletApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getOrganizationWalletInit());
+    let form = new FormData();
+    form.append("RequestMethod", getOrganizationWallet.RequestMethod);
+
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getOrganizationWalletApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationWallet_01".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationWalletSuccess(t("Records-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationWallet_02".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationWalletFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationWallet_03".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//BoardDeck Send Email
+const BoardDeckSendEmail_init = () => {
+  return {
+    type: actions.BOARD_DECK_SEND_EMAIL_INIT,
+  };
+};
+
+const BoardDeckSendEmail_success = (response, message) => {
+  return {
+    type: actions.BOARD_DECK_SEND_EMAIL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const BoardDeckSendEmail_failed = (message) => {
+  return {
+    type: actions.BOARD_DECK_SEND_EMAIL_FAILED,
+    message: message,
+  };
+};
+
+const BoardDeckSendEmailApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(BoardDeckSendEmail_init());
+    let form = new FormData();
+    form.append("RequestMethod", BoardDeckSendEmail.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(BoardDeckSendEmailApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_01".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckSendEmail_success(t("Successfully")));
+              dispatch(boardDeckEmailModal(false));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_02".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckSendEmail_failed(t("Failed sending email")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_03".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckSendEmail_failed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(BoardDeckSendEmail_failed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(BoardDeckSendEmail_failed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(BoardDeckSendEmail_failed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Board Deck PDF Download
+
+const BoardDeckDownloadPDF_init = () => {
+  return {
+    type: actions.DOWNLOAD__BOARDDECKPDF_INIT,
+  };
+};
+
+const BoardDeckDownloadPDF_success = () => {
+  return {
+    type: actions.DOWNLOAD_BOARDDECKPDF_SUCCESS,
+  };
+};
+
+const BoardDeckDownloadPDF_failed = () => {
+  return {
+    type: actions.DOWNLOAD_BOARDDECKPDF_FAILED,
+  };
+};
+
+const SetLoaderFalseDownload = () => {
+  return {
+    type: actions.DOWNLOAD_BOARDDECKPDF_LOADER_FALSE,
+  };
+};
+
+const BoardDeckPDFDownloadApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let form = new FormData();
+  form.append("RequestMethod", DownloadBoarddeckPDF.RequestMethod);
+  form.append("RequestData", JSON.stringify(data));
+
+  return async (dispatch) => {
+    await dispatch(BoardDeckDownloadPDF_init());
+
+    axios({
+      method: "post",
+      url: DataRoomAllFilesDownloads,
+      data: form,
+      headers: {
+        _token: token,
+      },
+      responseType: "arraybuffer",
+    })
+      .then(async (response) => {
+        if (response.status === 200) {
+          console.log(response.status, "responsestatus");
+          console.log("Response data:", response.data);
+
+          const blob = new Blob([response.data], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+          console.log("Blob URL:", url);
+
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "BoardDeck.pdf");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          dispatch(SetLoaderFalseDownload(false));
+        } else {
+          console.log("Unexpected response status:", response.status);
+          console.log("Response headers:", response.headers);
+          console.log("Response data:", response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error during file download:", error);
+        dispatch(BoardDeckDownloadPDF_failed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//validate video URL BoardDeck
+
+const BoardDeckValidateURL_init = () => {
+  return {
+    type: actions.VALIDATE_VIDEO_URL_INIT,
+  };
+};
+
+const BoardDeckValidateURL_success = (response, message) => {
+  console.log(response, "responseresponseresponse");
+  return {
+    type: actions.VALIDATE_VIDEO_URL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const BoardDeckValidateURL_failed = (message) => {
+  return {
+    type: actions.VALIDATE_VIDEO_URL_FAILED,
+    message: message,
+  };
+};
+
+const BoardDeckValidateURLAPI = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(BoardDeckValidateURL_init());
+    let form = new FormData();
+    form.append("RequestMethod", validateVideoRecordingURL.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(BoardDeckValidateURLAPI(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringVideoURlBoardDeck_01".toLowerCase()
+                )
+            ) {
+              console.log("i am success");
+              dispatch(
+                BoardDeckValidateURL_success(
+                  response.data.responseResult,
+                  t("Record-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringVideoURlBoardDeck_02".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckValidateURL_failed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
+                )
+            ) {
+              dispatch(BoardDeckValidateURL_failed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(BoardDeckValidateURL_failed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(BoardDeckValidateURL_failed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(BoardDeckValidateURL_failed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   changeSelectPacakgeApi,
   signUpOrganizationAndPakageSelection,
@@ -2397,4 +2838,9 @@ export {
   requestOrganizationExtendApi,
   paymentStatusApi,
   cancelisTrailandSubscriptionApi,
+  downgradeOrganizationSubscriptionApi,
+  getOrganizationWalletApi,
+  BoardDeckPDFDownloadApi,
+  BoardDeckSendEmailApi,
+  BoardDeckValidateURLAPI,
 };

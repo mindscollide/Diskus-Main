@@ -19,6 +19,8 @@ const CustomTableToDo = ({
   prefClassName,
   rowHoverBg,
   summary,
+  sticky,
+  showHeader
 }) => {
   const { Text } = Typography;
 
@@ -41,6 +43,8 @@ const CustomTableToDo = ({
         sortDirections={sortDirections}
         pagination={pagination}
         rowHoverBg={rowHoverBg}
+        sticky={sticky}
+        showHeader={showHeader}
       />
     </>
   );

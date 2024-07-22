@@ -69,7 +69,7 @@ import {
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 import VerificationFailedIcon from "../../assets/images/failed.png";
-
+import { GetPendingApprovalsCount } from "../../store/actions/Minutes_action";
 // import io from "socket.io-client";
 import {
   createTaskCommitteeMQTT,
@@ -193,6 +193,7 @@ const Dashboard = () => {
     SignatureWorkFlowReducer,
     UserMangementReducer,
     UserManagementModals,
+    MinutesReducer,
   } = useSelector((state) => state);
 
   console.log(
@@ -2220,12 +2221,14 @@ const Dashboard = () => {
       window.removeEventListener("offline", handleOffline);
     };
   }, []);
- 
+
   localStorage.setItem("MqttConnectionState", isOnline);
 
   useEffect(() => {
     dispatch(GetAllUserChats(navigate, createrID, currentOrganization, t));
     dispatch(GetUserMissedCallCount(navigate, t));
+    //Owais Pending APproval Count
+    dispatch(GetPendingApprovalsCount(navigate, t));
     localStorage.setItem("activeOtoChatID", 0);
   }, []);
 
@@ -2241,17 +2244,19 @@ const Dashboard = () => {
       meetingIdReducer.MeetingStatusEnded !== undefined &&
       meetingIdReducer.MeetingStatusEnded.length !== 0
     ) {
-      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meetingDetails;
+      let endMeetingData = meetingIdReducer?.MeetingStatusEnded?.meeting;
       let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       let isMeetingVideo = localStorage.getItem("isMeetingVideo");
       isMeetingVideo = isMeetingVideo ? JSON.parse(isMeetingVideo) : false;
-      if (
-        currentMeetingID === endMeetingData.pK_MDID &&
-        Number(endMeetingData.statusID) === 9
-      ) {
-        if (isMeetingVideo === true) {
-          dispatch(normalizeVideoPanelFlag(false));
-          dispatch(minimizeVideoPanelFlag(false));
+      if (endMeetingData) {
+        if (
+          currentMeetingID === endMeetingData?.pK_MDID &&
+          Number(endMeetingData?.statusID) === 9
+        ) {
+          if (isMeetingVideo === true) {
+            dispatch(normalizeVideoPanelFlag(false));
+            dispatch(minimizeVideoPanelFlag(false));
+          }
         }
       }
     }
@@ -2365,6 +2370,7 @@ const Dashboard = () => {
             RealtimeNotification.Loading ||
             OrganizationBillingReducer.Loading ||
             DataRoomReducer.Loading ||
+            MinutesReducer.Loading ||
             DataRoomFileAndFoldersDetailsReducer.Loading ||
             SignatureWorkFlowReducer.Loading ||
             UserMangementReducer.Loading ? (

@@ -17,6 +17,7 @@ import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected
 import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
 import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
 import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
+import Recentadded_emptyIcon from "../../assets/images/Recentadded_emptyIcon.png";
 import start from "../../assets/images/Icon feather-star.svg";
 import plus from "../../assets/images/Icon feather-folder.svg";
 import fileupload from "../../assets/images/Group 2891.svg";
@@ -118,6 +119,7 @@ import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
 import {
   createWorkflowApi,
+  getAllPendingApprovalStatusApi,
   getAllSignaturesDocumentsforCreatorApi,
 } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
@@ -311,12 +313,35 @@ const DataRoom = () => {
       localStorage.removeItem("DataRoomEmail");
     };
   }, [DataRoomString]);
+  const apiCalling = async () => {
+    if (currentView === 4) {
+      let Data = {
+        UserID: Number(userID),
+        OrganizationID: Number(organizationID),
+      };
+      dispatch(getRecentDocumentsApi(navigate, t, Data));
+    } else if (currentView === 5) {
+      let Data = { pageNo: 1, pageSize: 10 };
+      dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      let newData = { IsCreator: true };
+      await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+      setGetAllData([]);
+      setSharedwithmebtn(true);
+      localStorage.removeItem("folderID");
+      if (searchoptions) {
+        setSearchoptions(false);
+      }
+    } else {
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
+      localStorage.removeItem("folderID");
+    }
+  };
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {
         // dispatch(allAssignessList(navigate, t));
       }
-      window.addEventListener("click", function (e) {
+      window.addEventListener("click", async function (e) {
         let clsname = e.target.className;
         if (typeof clsname === "string") {
           let arr = clsname && clsname.split("_");
@@ -338,17 +363,28 @@ const DataRoom = () => {
       });
     } catch {}
     if (currentView !== null) {
-      if (currentView === 4) {
-        let Data = {
-          UserID: Number(userID),
-          OrganizationID: Number(organizationID),
-        };
-        dispatch(getRecentDocumentsApi(navigate, t, Data));
-      } else if (currentView === 5) {
-      } else {
-        dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
-        localStorage.removeItem("folderID");
-      }
+      apiCalling();
+      // if (currentView === 4) {
+      //   let Data = {
+      //     UserID: Number(userID),
+      //     OrganizationID: Number(organizationID),
+      //   };
+      //   dispatch(getRecentDocumentsApi(navigate, t, Data));
+      // } else if (currentView === 5) {
+      //   let newData = { IsCreator: true };
+      //   dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
+      //   let Data = { pageNo: 1, pageSize: 10 };
+      //   dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      //   setGetAllData([]);
+      //   setSharedwithmebtn(true);
+      //   localStorage.removeItem("folderID");
+      //   if (searchoptions) {
+      //     setSearchoptions(false);
+      //   }
+      // } else {
+      //   dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
+      //   localStorage.removeItem("folderID");
+      // }
     } else {
       localStorage.setItem("setTableView", 3);
       dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
@@ -546,8 +582,12 @@ const DataRoom = () => {
     setSRowsData(0);
 
     localStorage.setItem("setTableView", 5);
-    let Data = { pageNo: 1, pageSize: 10 };
+    // getAllPendingApprovalStatusApi
+
+    let Data = { sRow: 0, Length: 10 };
     await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    let newData = { IsCreator: true };
+    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
     //  localStorage.set
     setGetAllData([]);
     setSharedwithmebtn(true);
@@ -3725,56 +3765,78 @@ const DataRoom = () => {
                         <>
                           <Row className="mt-3">
                             <Col lg={12} sm={12} md={12}>
-                              {gridbtnactive ? (
+                              {getAllData.length > 0 ? (
                                 <>
-                                  <GridViewDataRoom
-                                    data={getAllData}
-                                    optionsforFolder={optionsforFolder(t)}
-                                    optionsforFile={optionsforFile(t)}
-                                    sRowsData={sRowsData}
-                                    totalRecords={totalRecords}
-                                    filter_Value={filterValue}
-                                    setSearchTabOpen={setSearchTabOpen}
-                                    setDetailView={setDetailView}
-                                    setFileDataforAnalyticsCount={
-                                      setFileDataforAnalyticsCount
-                                    }
-                                  />
+                                  {gridbtnactive ? (
+                                    <>
+                                      <GridViewDataRoom
+                                        data={getAllData}
+                                        optionsforFolder={optionsforFolder(t)}
+                                        optionsforFile={optionsforFile(t)}
+                                        sRowsData={sRowsData}
+                                        totalRecords={totalRecords}
+                                        filter_Value={filterValue}
+                                        setSearchTabOpen={setSearchTabOpen}
+                                        setDetailView={setDetailView}
+                                        setFileDataforAnalyticsCount={
+                                          setFileDataforAnalyticsCount
+                                        }
+                                      />
+                                    </>
+                                  ) : listviewactive === true ? (
+                                    <TableToDo
+                                      sortDirections={["descend", "ascend"]}
+                                      column={MyRecentTab}
+                                      className={"DataRoom_Table"}
+                                      rows={getAllData}
+                                      pagination={false}
+                                      locale={{
+                                        emptyText: (
+                                          <span className="vh-100 text-center">
+                                            <p>
+                                              {/* <Icon type="like" /> */}
+                                              No Recent Data Found
+                                            </p>
+                                          </span>
+                                        ),
+                                      }}
+                                      onChange={handleSortMyRecentTab}
+                                      // rowSelection={rowSelection}
+                                      size={"middle"}
+                                    />
+                                  ) : (
+                                    <>
+                                      <Row className="mt-2">
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="d-flex justify-content-center h-100 align-items-center"
+                                        >
+                                          <span
+                                            className={
+                                              styles["Messege_nofiles"]
+                                            }
+                                          >
+                                            {t("There-are-no-items-here")}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </>
+                                  )}
                                 </>
-                              ) : listviewactive === true ? (
-                                <TableToDo
-                                  sortDirections={["descend", "ascend"]}
-                                  column={MyRecentTab}
-                                  className={"DataRoom_Table"}
-                                  rows={getAllData}
-                                  pagination={false}
-                                  locale={{
-                                    emptyText: (
-                                      <span className="vh-100 text-center">
-                                        <p>
-                                          {/* <Icon type="like" /> */}
-                                          No Recent Data Found
-                                        </p>
-                                      </span>
-                                    ),
-                                  }}
-                                  onChange={handleSortMyRecentTab}
-                                  // rowSelection={rowSelection}
-                                  size={"middle"}
-                                />
                               ) : (
                                 <>
-                                  <Row className="mt-2">
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className="d-flex justify-content-center h-100 align-items-center"
-                                    >
-                                      <span
-                                        className={styles["Messege_nofiles"]}
-                                      >
-                                        {t("There-are-no-items-here")}
+                                  <Row className="text-center mt-4">
+                                    <Col lg={12} sm={12} md={12}>
+                                      <img src={Recentadded_emptyIcon} />
+                                    </Col>
+                                    <Col lg={12} sm={12} md={12}>
+                                      <p className={styles["Recently_Added"]}>Recently Added</p>
+                                      <span  className={styles["Recently_Added_tagLine"]}>
+                                        This space is ready to showcase your
+                                        latest additions. What will you add
+                                        next?
                                       </span>
                                     </Col>
                                   </Row>

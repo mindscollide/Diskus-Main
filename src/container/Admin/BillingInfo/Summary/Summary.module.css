@@ -38,3 +38,33 @@ body[dir="rtl"] .deleteModal-message {
 body[dir="rtl"] .PaymentActivitySubtitle {
   font-weight: 700 !important;
 }
+
+.SummarayOpenInvoiceRecords {
+  font-weight: 400 !important;
+  color: #5a5a5a !important;
+  font-size: 16px !important;
+}
+
+body[dir="rtl"] .SummarayOpenInvoiceRecords {
+  font-weight: 400 !important;
+}
+
+.Pay_invoice_button {
+  padding: 6px 12px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Pay_invoice_button:is(:hover, :active, :focus, :focus-visible) {
+  padding: 6px 12px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
