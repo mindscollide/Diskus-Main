@@ -7,6 +7,7 @@ import NewCalendar from "./Calendar/Calendar";
 import Events from "./Events/Events";
 import Task from "./Tasks/Task";
 import RecentActivity from "./RecentActivity/RecentActivity";
+import Notes from "./Notes/Notes";
 
 const NewDashobard = () => {
   return (
@@ -40,7 +41,9 @@ const NewDashobard = () => {
             <section className={styles["RecentActivity"]}>
               <RecentActivity />
             </section>
-            <section className={styles["Notes"]}>Notes</section>
+            <section className={styles["Notes"]}>
+              <Notes />
+            </section>
           </Col>
         </Row>
       </section>

@@ -96,7 +96,9 @@ const Task = () => {
           );
         } else if (record.status.pK_TSID === 3) {
           return (
-            <span className=" Upcoming  status_value text-truncate cursor-pointer">{text.status}</span>
+            <span className=" Upcoming  status_value text-truncate cursor-pointer">
+              {text.status}
+            </span>
           );
         } else if (record.status.pK_TSID === 4) {
           return (
@@ -166,30 +168,11 @@ const Task = () => {
   return (
     <>
       <div>
-        {toDoListReducer.TableSpinner === true && getTodoID === 0 ? (
-          <CustomTableToDoDashboard
-            loading={{
-              spinning: true,
-              indicator: <Spin />,
-            }}
-            // prefClassName="DashboardTask"
-            className={"dashboard-todo"}
-
-
-            column={columnsToDo}
-            rows={[]}
-            labelTitle={<span className="task-title">{t("Tasks")}</span>}
-            scroll={{ y: 600 }}
-            pagination={false}
-          />
-        ) : rowsToDo.length > 0 &&
-          rowsToDo !== undefined &&
-          rowsToDo !== null ? (
+        {rowsToDo.length > 0 && rowsToDo !== undefined && rowsToDo !== null ? (
           <CustomTableToDoDashboard
             column={columnsToDo}
             // prefClassName="DashboardTask"
             className={"dashboard-todo"}
-
             rows={rowsToDo}
             labelTitle={
               <>
@@ -225,29 +208,43 @@ const Task = () => {
             // onChange={handleChangeTodoTable}
           />
         ) : (
-          <Paper>
-            <span className="task-title">{t("Tasks")}</span>
-            <ResultMessage
-              icon={
+          <>
+            <>
+              <span className="task-title">{t("Tasks")}</span>
+              <section className={styles["No_Tasks_View"]}>
                 <img src={noTask} width={"100%"} alt="" draggable="false" />
-              }
-              title={<span className="MainTitleClass">{t("No-task")}</span>}
-              subTitle={
+                <span className="MainTitleClass">{t("No-task")}</span>
                 <span className="SubtitleTodoMessege">
                   {t("There-is-no-pending-task")}
                 </span>
-              }
-              extra={[
                 <Button
                   disableBtn={checkFeatureIDAvailability(14) ? false : true}
                   text={t("Create-new-task")}
                   className={"CreateNewTaskButton"}
                   onClick={handleOpenTodoListModal}
-                />,
-              ]}
-              className="NoTask"
-            />
-          </Paper>
+                />
+                
+              </section>
+              {/* icon={
+                  <img src={noTask} width={"100%"} alt="" draggable="false" />
+                }
+                title={<span className="MainTitleClass">{t("No-task")}</span>}
+                subTitle={
+                  <span className="SubtitleTodoMessege">
+                    {t("There-is-no-pending-task")}
+                  </span>
+                } */}
+              {/* extra={[
+                  <Button
+                    disableBtn={checkFeatureIDAvailability(14) ? false : true}
+                    text={t("Create-new-task")}
+                    className={"CreateNewTaskButton"}
+                    onClick={handleOpenTodoListModal}
+                  />,
+                ]} */}
+              {/* className="NoTask" */}
+            </>
+          </>
         )}
       </div>
       {todoViewModal ? (
