@@ -36,6 +36,7 @@ const SelectReviewers = ({
   const [currentReviewers, setCurrentReviewers] = useState([]);
 
   const [checkAll, setCheckAll] = useState(false);
+  let currentLanguage = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
     const checkIfTruncated = () => {
@@ -165,7 +166,11 @@ const SelectReviewers = ({
                                   <div className={styles["minuteWrapper"]}>
                                     <Row>
                                       <Col
-                                        className="pr-0"
+                                        className={
+                                          currentLanguage === "ar"
+                                            ? "pl-0"
+                                            : "pr-0"
+                                        }
                                         lg={10}
                                         md={10}
                                         sm={12}
@@ -252,7 +257,14 @@ const SelectReviewers = ({
                     {data.subMinutes && data.subMinutes.length > 0
                       ? data.subMinutes.map((subagendaMinuteData, index) => {
                           return (
-                            <Row key={index} className="mb-25 ml-25">
+                            <Row
+                              key={index}
+                              className={
+                                currentLanguage === "en"
+                                  ? "mb-25 ml-25"
+                                  : "mb-25 mr-25"
+                              }
+                            >
                               <Col lg={12} md={12} sm={12}>
                                 <Row>
                                   <Col
@@ -295,7 +307,11 @@ const SelectReviewers = ({
                                           >
                                             <Row>
                                               <Col
-                                                className="pr-0"
+                                                className={
+                                                  currentLanguage === "ar"
+                                                    ? "pl-0"
+                                                    : "pr-0"
+                                                }
                                                 lg={10}
                                                 md={10}
                                                 sm={12}
@@ -427,7 +443,14 @@ const SelectReviewers = ({
                           />
                           <div className={styles["minuteWrapper"]}>
                             <Row>
-                              <Col className="pr-0" lg={10} md={10} sm={12}>
+                              <Col
+                                className={
+                                  currentLanguage === "ar" ? "pl-0" : "pr-0"
+                                }
+                                lg={10}
+                                md={10}
+                                sm={12}
+                              >
                                 <span
                                   ref={textRef}
                                   className={

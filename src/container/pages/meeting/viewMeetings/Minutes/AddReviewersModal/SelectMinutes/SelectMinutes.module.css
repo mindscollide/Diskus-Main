@@ -48,6 +48,19 @@ p.SelectAll {
   color: #5a5a5a;
 }
 
+body[dir="rtl"] .minuteParentLabel {
+  flex: auto;
+  margin-right: auto !important;
+  margin-left: 50px !important;
+  margin-bottom: 0 !important;
+  display: block;
+  overflow: hidden;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #5a5a5a;
+}
+
 span.view-details {
   font-weight: 500;
   font-size: 12px;

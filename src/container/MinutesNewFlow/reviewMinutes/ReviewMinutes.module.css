@@ -90,6 +90,14 @@ p.SUB-title-heading {
   margin-left: 62px;
 }
 
+body[dir="rtl"] p.SUB-title-heading {
+  font-weight: 600;
+  font-size: 16px;
+  color: #5f78d6;
+  margin-left: auto;
+  margin-right: 62px;
+}
+
 p.minutes-text {
   font-family: "Montserrat";
   font-style: normal;
@@ -139,6 +147,10 @@ p.agendaCreater {
   margin-left: 63px;
 }
 
+body[dir="rtl"] .uploaded-details {
+  margin-right: 63px;
+}
+
 .uploaded-details-rejected {
   border: 1px solid #f16b6b;
   border-radius: 4px;
@@ -149,6 +161,16 @@ p.agendaCreater {
   margin-right: 50px;
   position: relative; /* Added position relative for positioning the ::after element */
   margin-left: 63px;
+}
+
+body[dir="rtl"] .uploaded-details-rejected {
+  border: 1px solid #f16b6b;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+  min-height: 100px;
+  position: relative;
+  margin-right: 63px;
 }
 
 .uploaded-details-accepted {
@@ -172,6 +194,19 @@ p.agendaCreater {
   position: absolute;
   top: 60px;
   left: 21px;
+  border: none !important;
+}
+
+body[dir="rtl"] .version-control-wrapper-with-more {
+  width: 35px;
+  height: 100%;
+  background: #fff;
+  border-radius: 9px;
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: auto;
+  right: 21px;
   border: none !important;
 }
 
@@ -219,6 +254,18 @@ p.agendaCreater {
   position: absolute;
   top: 60px;
   left: 30px;
+}
+
+body[dir="rtl"] .version-control-wrapper-last {
+  width: 18px;
+  height: 18px;
+  background: #e1e1e1;
+  border-radius: 9px;
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: auto;
+  right: 30px;
 }
 
 .version-control-wrapper-with-more-last {
@@ -588,6 +635,16 @@ body[dir="rtl"] .Cancel:is(:active, :hover, :focus, :focus-visible) {
   justify-content: space-between;
 }
 
+body[dir="rtl"] .wrapper-userlist {
+  background: #ffdede;
+  padding: 10px;
+  margin-bottom: 15px;
+  margin-right: 0;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .wrapper-userlist p {
   margin: 0 !important;
   font-size: 12px;
@@ -604,6 +661,10 @@ body[dir="rtl"] .Cancel:is(:active, :hover, :focus, :focus-visible) {
   margin-left: 60px;
   display: flex;
   justify-content: space-between;
+}
+
+body[dir="rtl"] .wrapper-userlist-subagenda {
+  margin-right: 60px !important;
 }
 
 .wrapper-userlist-subagenda p {

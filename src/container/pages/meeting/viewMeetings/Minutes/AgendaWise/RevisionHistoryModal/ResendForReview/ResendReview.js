@@ -42,6 +42,8 @@ const ResendMinuteReviewModal = ({
   setMinuteDate,
   advanceMeetingModalID,
   isAgenda,
+  showRevisionHistory,
+  setShowRevisionHistory,
 }) => {
   const { t } = useTranslation(); // Translation hook
 
@@ -73,8 +75,8 @@ const ResendMinuteReviewModal = ({
     let resendReviewData = {
       MeetingID: Number(advanceMeetingModalID),
       Bundle: {
-        ID: editMinuteData.entity.fK_WorkFlowActionableBundle_ID,
-        Title: updateMinuteData.minuteText,
+        ID: "0",
+        Title: updateMinuteData.MinuteText,
         BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate),
         ListOfUsers: editMinuteData.actors.map((item) => item.pK_UID),
         Entity: {
@@ -95,7 +97,9 @@ const ResendMinuteReviewModal = ({
           resendReviewData,
           setEditMinute,
           setConfirmationEdit,
-          setResendMinuteForReview
+          setResendMinuteForReview,
+          setShowRevisionHistory,
+          isAgenda
         )
       );
     } else {
@@ -108,7 +112,9 @@ const ResendMinuteReviewModal = ({
           resendReviewData,
           setEditMinute,
           setConfirmationEdit,
-          setResendMinuteForReview
+          setResendMinuteForReview,
+          setShowRevisionHistory,
+          isAgenda
         )
       );
     }
@@ -136,7 +142,8 @@ const ResendMinuteReviewModal = ({
   }, [currentLanguage]);
 
   useEffect(() => {
-    let date = utcConvertintoGMT(editMinuteData.bundleDeadline + "000000");
+    // let date = utcConvertintoGMT(editMinuteData.bundleDeadline, 1);
+    let date = utcConvertintoGMT(editMinuteData.bundleDeadline + "235959");
     setMinuteDate(date);
   }, []);
 

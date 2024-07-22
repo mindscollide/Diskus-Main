@@ -1419,7 +1419,11 @@ const AgendaWise = ({
                                             lg={1}
                                             md={1}
                                             sm={12}
-                                            className="text-end"
+                                            className={
+                                              currentLanguage === "ar"
+                                                ? "text-start"
+                                                : "text-end"
+                                            }
                                           >
                                             <img
                                               alt=""
@@ -1829,7 +1833,13 @@ const AgendaWise = ({
                                   <>
                                     {minuteReviewData !== null &&
                                     minuteDataSubminute?.MinuteStats ? (
-                                      <Row className="mxl-50">
+                                      <Row
+                                        className={
+                                          currentLanguage === "ar"
+                                            ? "mxr-50"
+                                            : "mxl-50"
+                                        }
+                                      >
                                         <Col lg={12} md={12} sm={12}>
                                           <div
                                             className={
@@ -1885,7 +1895,11 @@ const AgendaWise = ({
                                                 lg={1}
                                                 md={1}
                                                 sm={12}
-                                                className="text-end"
+                                                className={
+                                                  currentLanguage === "ar"
+                                                    ? "text-start"
+                                                    : "text-end"
+                                                }
                                               >
                                                 <img
                                                   alt=""
@@ -2033,7 +2047,13 @@ const AgendaWise = ({
                                       </Row>
                                     ) : null}
 
-                                    <Row className="mxl-50">
+                                    <Row
+                                      className={
+                                        currentLanguage === "ar"
+                                          ? "mxr-50"
+                                          : "mxl-50"
+                                      }
+                                    >
                                       <Col
                                         lg={12}
                                         md={12}
