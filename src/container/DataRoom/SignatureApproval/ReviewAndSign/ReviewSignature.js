@@ -23,6 +23,7 @@ import {
 } from "../../../../commen/functions/date_formater";
 import { set } from "lodash";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ProgressStats from "../../../../components/elements/progressStats/ProgressStats";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -336,7 +337,16 @@ const ReviewSignature = () => {
               <Col lg={6} md={6} sm={12}>
                 <div className="d-flex  position-relative">
                   {/* Progress bars with different colors and percentages */}
-                  {approvalStats.declined > 0 && (
+                  <ProgressStats
+                    FirstColor="#6172D6"
+                    firstValue={approvalStats.signed}
+                    thirdValue={approvalStats.declined}
+                    thirdColor="#F16B6B"
+                    secondColor="#ffc300"
+                    secondValue={approvalStats.pending}
+                  />
+
+                  {/* {approvalStats.declined > 0 && (
                     <ProgressBar
                       width={approvalStats.declinedPercentage}
                       color="#F16B6B"
@@ -359,7 +369,7 @@ const ReviewSignature = () => {
                       indexValue="2"
                       percentageValue={`${approvalStats.signedPercentage}%`}
                     />
-                  )}
+                  )} */}
                 </div>
               </Col>
               <Col lg={6} md={6} sm={12} className="d-flex">

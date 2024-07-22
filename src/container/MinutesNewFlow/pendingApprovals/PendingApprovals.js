@@ -30,6 +30,7 @@ import {
   getAllPendingApprovalsStatsApi,
 } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import ProgressStats from "../../../components/elements/progressStats/ProgressStats";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -358,7 +359,15 @@ const PendingApproval = () => {
                           <Col lg={6} md={6} sm={12}>
                             <div className="d-flex positionRelative">
                               {/* Progress bars with different colors and percentages */}
-                              {progress.reviewed === 0 ? null : (
+                              <ProgressStats
+                                FirstColor="#6172D6"
+                                firstValue={progress.reviewedPercentage}
+                                thirdValue={progress.expiredPercentage}
+                                thirdColor="#F16B6B"
+                                secondColor="#ffc300"
+                                secondValue={progress.pendingPercentage}
+                              />
+                              {/* {progress.reviewed === 0 ? null : (
                                 <ProgressBar
                                   width={progress.reviewedPercentage}
                                   color="#6172d6"
@@ -387,7 +396,7 @@ const PendingApproval = () => {
                                     progress.expiredPercentage + "%"
                                   }
                                 />
-                              )}
+                              )} */}
                             </div>
                           </Col>
                           <Col lg={6} md={6} sm={12} className="d-flex">
