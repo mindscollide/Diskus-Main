@@ -252,7 +252,7 @@ export async function handleLoginResponse(response) {
           { name: "signatureviewer", id: 19 },
           { name: "documentViewer", id: 20 },
           { name: "Payment", id: 109 },
-          { name: "Minutes", id: 115 },
+          { name: "Minutes", id: 115 }
         );
       }
       if (response.hasAdminRights) {
@@ -349,4 +349,9 @@ export const clearPaymentActionFromUrl = () => {
 
   // Update the browser's URL without reloading the page
   window.history.replaceState({}, document.title, newUrl);
+};
+
+export const findAndSetConfigValue = (data, key) => {
+  const foundObject = data.find((obj) => obj.configKey === key);
+  return foundObject;
 };
