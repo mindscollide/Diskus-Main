@@ -118,9 +118,8 @@ const ReviewSignature = () => {
       ellipsis: true,
       render: (text, record) => (
         <p
-          className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center"
-          onClick={() => handleClickOpenSigatureDoc(record)}
-        >
+          className='cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center'
+          onClick={() => handleClickOpenSigatureDoc(record)}>
           <img src={getIconSource(getFileExtension(text))} />
           <span>{text}</span>
         </p>
@@ -131,9 +130,9 @@ const ReviewSignature = () => {
         <>
           {t("Requested-by")}{" "}
           {sortOrderRequestBy === "descend" ? (
-            <img src={DescendIcon} alt="" />
+            <img src={DescendIcon} alt='' />
           ) : (
-            <img src={AscendIcon} alt="" />
+            <img src={AscendIcon} alt='' />
           )}
         </>
       ),
@@ -157,13 +156,12 @@ const ReviewSignature = () => {
         <p
           className={
             "m-0 d-flex align-items-center gap-2 justify-content-start"
-          }
-        >
+          }>
           <img
             src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
             height={22}
-            className="rounded-circle "
+            className='rounded-circle '
           />
           <span>{text}</span>
         </p>
@@ -174,9 +172,9 @@ const ReviewSignature = () => {
         <>
           {t("Date-and-time")}{" "}
           {sortOrderDateTime === "descend" ? (
-            <img src={DescendIcon} alt="" />
+            <img src={DescendIcon} alt='' />
           ) : (
-            <img src={AscendIcon} alt="" />
+            <img src={AscendIcon} alt='' />
           )}
         </>
       ),
@@ -211,7 +209,7 @@ const ReviewSignature = () => {
       defaultFilteredValue: defaultreviewAndSignatureStatus,
       onFilter: (value, record) => record.actorStatusID === value,
       filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       render: (text, record) => {
         const { actorStatusID, status } = record;
@@ -225,8 +223,7 @@ const ReviewSignature = () => {
                 : actorStatusID === 4
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
-            }
-          >
+            }>
             {status}
           </p>
         );
@@ -335,15 +332,15 @@ const ReviewSignature = () => {
           <div className={styles["progressWrapper"]}>
             <Row>
               <Col lg={6} md={6} sm={12}>
-                <div className="d-flex  position-relative">
+                <div className='d-flex  position-relative'>
                   {/* Progress bars with different colors and percentages */}
                   <ProgressStats
-                    FirstColor="#6172D6"
-                    firstValue={approvalStats.signed}
-                    thirdValue={approvalStats.declined}
-                    thirdColor="#F16B6B"
-                    secondColor="#ffc300"
-                    secondValue={approvalStats.pending}
+                    FirstColor='#6172D6'
+                    firstValue={approvalStats.signedPercentage}
+                    thirdValue={approvalStats.declinedPercentage}
+                    thirdColor='#F16B6B'
+                    secondColor='#ffc300'
+                    secondValue={approvalStats.pendingPercentage}
                   />
 
                   {/* {approvalStats.declined > 0 && (
@@ -372,7 +369,7 @@ const ReviewSignature = () => {
                   )} */}
                 </div>
               </Col>
-              <Col lg={6} md={6} sm={12} className="d-flex">
+              <Col lg={6} md={6} sm={12} className='d-flex'>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-signed"]}>
                   <span className={styles["numeric-value"]}>
@@ -409,8 +406,7 @@ const ReviewSignature = () => {
             style={{
               overflowX: "hidden",
             }}
-            height={"50vh"}
-          >
+            height={"50vh"}>
             <TableToDo
               sortDirections={["descend", "ascend"]}
               column={pendingApprovalColumns}

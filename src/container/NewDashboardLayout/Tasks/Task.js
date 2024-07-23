@@ -58,7 +58,7 @@ const Task = () => {
       className: "titleDashboard",
       ellipsis: true,
       render: (text, record) => (
-        <span className="w-100 cursor-pointer">{text}</span>
+        <span className='w-100 cursor-pointer'>{text}</span>
       ),
       // render: (text) => <span className="fw-bold">{text}</span>,
     },
@@ -71,7 +71,7 @@ const Task = () => {
 
       render: (text, record) => {
         return (
-          <span className="cursor-pointer">{_justShowDateformat(text)}</span>
+          <span className='cursor-pointer'>{_justShowDateformat(text)}</span>
         );
       },
     },
@@ -84,37 +84,37 @@ const Task = () => {
       render: (text, record) => {
         if (record.status.pK_TSID === 1) {
           return (
-            <span className=" InProgress status_value text-truncate cursor-pointer">
+            <span className=' InProgress status_value text-truncate cursor-pointer'>
               {text.status}
             </span>
           );
         } else if (record.status.pK_TSID === 2) {
           return (
-            <span className=" Pending  status_value text-truncate cursor-pointer">
+            <span className=' Pending  status_value text-truncate cursor-pointer'>
               {text.status}
             </span>
           );
         } else if (record.status.pK_TSID === 3) {
           return (
-            <span className=" Upcoming  status_value text-truncate cursor-pointer">
+            <span className=' Upcoming  status_value text-truncate cursor-pointer'>
               {text.status}
             </span>
           );
         } else if (record.status.pK_TSID === 4) {
           return (
-            <span className=" Cancelled status_value text-truncate cursor-pointer">
+            <span className=' Cancelled status_value text-truncate cursor-pointer'>
               {text.status}
             </span>
           );
         } else if (record.status.pK_TSID === 5) {
           return (
-            <span className=" Completed status_value text-truncate cursor-pointer">
+            <span className=' Completed status_value text-truncate cursor-pointer'>
               {text.status}
             </span>
           );
         } else if (record.status.pK_TSID === 6) {
           return (
-            <span className=" color-F68732 status_value text-truncate cursor-pointer">
+            <span className=' color-F68732 status_value text-truncate cursor-pointer'>
               {text.status}
             </span>
           );
@@ -168,7 +168,9 @@ const Task = () => {
   return (
     <>
       <div>
-        {rowsToDo.length > 0 && rowsToDo !== undefined && rowsToDo !== null ? (
+        {rowsToDo.length > 100 &&
+        rowsToDo !== undefined &&
+        rowsToDo !== null ? (
           <CustomTableToDoDashboard
             column={columnsToDo}
             // prefClassName="DashboardTask"
@@ -181,14 +183,12 @@ const Task = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-between"
-                  >
-                    <span className="task-title">{t("Tasks")}</span>
+                    className='d-flex justify-content-between'>
+                    <span className='task-title'>{t("Tasks")}</span>
                     {rowsToDo.length === 15 && (
                       <span
-                        className="cursor-pointer"
-                        onClick={() => navigate("/DisKus/todolist")}
-                      >
+                        className='cursor-pointer'
+                        onClick={() => navigate("/DisKus/todolist")}>
                         {t("View-more")}
                       </span>
                     )}
@@ -210,39 +210,20 @@ const Task = () => {
         ) : (
           <>
             <>
-              <span className="task-title">{t("Tasks")}</span>
+              <span className='task-title'>{t("Tasks")}</span>
               <section className={styles["No_Tasks_View"]}>
-                <img src={noTask} width={"100%"} alt="" draggable="false" />
-                <span className="MainTitleClass">{t("No-task")}</span>
-                <span className="SubtitleTodoMessege">
+                <img src={noTask} width={"100%"} alt='' draggable='false' />
+                <span className={styles["MainTitleClass"]}>{t("No-task")}</span>
+                <span className={styles["SubtitleTodoMessege"]}>
                   {t("There-is-no-pending-task")}
                 </span>
                 <Button
                   disableBtn={checkFeatureIDAvailability(14) ? false : true}
                   text={t("Create-new-task")}
-                  className={"CreateNewTaskButton"}
+                  className={styles["CreateNewTaskButton"]}
                   onClick={handleOpenTodoListModal}
                 />
-                
               </section>
-              {/* icon={
-                  <img src={noTask} width={"100%"} alt="" draggable="false" />
-                }
-                title={<span className="MainTitleClass">{t("No-task")}</span>}
-                subTitle={
-                  <span className="SubtitleTodoMessege">
-                    {t("There-is-no-pending-task")}
-                  </span>
-                } */}
-              {/* extra={[
-                  <Button
-                    disableBtn={checkFeatureIDAvailability(14) ? false : true}
-                    text={t("Create-new-task")}
-                    className={"CreateNewTaskButton"}
-                    onClick={handleOpenTodoListModal}
-                  />,
-                ]} */}
-              {/* className="NoTask" */}
             </>
           </>
         )}

@@ -25,7 +25,6 @@
 }
 
 .Dashboard-Main-Container.container-fluid {
-  height: 91vh !important;
   /* padding-right: 20px; */
   /* padding-left: 0; */
   /* margin-left: 90px; */
@@ -53,6 +52,7 @@ body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
 
 .dashbaord_data {
   width: 95%;
+  height: calc(100vh - 89px);
 }
 .talk_features_home {
   width: 5%;

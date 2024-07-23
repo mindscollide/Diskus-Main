@@ -1,5 +1,5 @@
 .newDashboard {
-  max-height: calc(100vh - 10vh);
+  max-height: calc(100vh - 89px);
   margin: 15px 10px;
 }
 .StatsBox {
@@ -28,7 +28,6 @@
 }
 .Tasks {
   flex: 1;
-  max-width: 100%;
   width: 100%;
   height: 100%;
   display: flex;
@@ -45,7 +44,7 @@
   flex: 1;
   background-color: #fff;
   border: 1px solid #e1e1e1;
-  padding: 20px 10px;
+  padding: 15px 10px;
 }
 .EventBox_heading {
   font-weight: 700;

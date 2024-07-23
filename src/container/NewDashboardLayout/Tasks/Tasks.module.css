@@ -5,3 +5,34 @@
   flex-direction: column;
   height: 100%;
 }
+.MainTitleClass {
+  color: #49598c !important;
+  font-weight: 700 !important;
+}
+.SubtitleTodoMessege {
+  color: #767d9b !important;
+}
+
+.CreateNewTaskButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  color: #ffffff !important;
+  /* background: #2299ea !important; */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px !important;
+  border: none !important;
+  font-weight: 600;
+}
+
+.CreateNewTaskButton:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  color: #ffffff !important;
+  /* background: #2299ea !important; */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600;
+}

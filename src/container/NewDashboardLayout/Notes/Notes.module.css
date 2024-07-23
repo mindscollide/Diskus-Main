@@ -1,0 +1,7 @@
+.NotesDashboard {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 34vh;
+  padding-right: 7px;
+}
