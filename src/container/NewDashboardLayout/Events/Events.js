@@ -101,24 +101,7 @@ const Events = () => {
           .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
       ) {
         let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
-        // setCalendarEvents((calendarEventData) => {
-        //   return calendarEventData.map((data) => {
-        //     if (Number(data.pK_MDID) === Number(meetingID)) {
-        //       // Assuming statusID is defined somewhere and you want to update it for this data item
-        //       data.statusID = 10;
-        //     }
-        //     return data; // Always return the data item
-        //   });
-        // });
 
-        // setEvents((event) =>
-        //   event.map((eventData, index) => {
-        //     if (eventData.pK_MDID === Number(meetingID)) {
-        //       eventData.status = 10;
-        //     }
-        //     return eventData;
-        //   })
-        // );
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             if (

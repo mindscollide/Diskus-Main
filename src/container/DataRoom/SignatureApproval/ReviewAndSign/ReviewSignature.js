@@ -335,7 +335,7 @@ const ReviewSignature = () => {
                 <div className='d-flex  position-relative'>
                   {/* Progress bars with different colors and percentages */}
                   <ProgressStats
-                    FirstColor='#6172D6'
+                    FirstColor='#55ce5c'
                     firstValue={approvalStats.signedPercentage}
                     thirdValue={approvalStats.declinedPercentage}
                     thirdColor='#F16B6B'

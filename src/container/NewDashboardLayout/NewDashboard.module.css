@@ -52,8 +52,9 @@
   color: #5a5a5a;
 }
 .Events_content {
-  min-height: 29vh;
+  min-height: 34vh;
   overflow-y: auto;
+  max-height: 34vh;
   overflow-x: hidden;
   margin-bottom: 10px;
 }

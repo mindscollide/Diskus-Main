@@ -3,5 +3,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 34vh;
+  min-height: 34vh;
   padding-right: 7px;
 }
