@@ -93,9 +93,31 @@ const Notes = () => {
     } catch (error) {}
   }, [NotesReducer.GetAllNotesResponse]);
 
+  // render Notes Data
+  useEffect(() => {
+    try {
+      if (
+        NotesReducer.GetAllNotesResponse !== null &&
+        NotesReducer.GetAllNotesResponse !== undefined
+      ) {
+        if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
+          let notes = [];
+          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+            notes.push(data);
+          });
+          setNotes(notes);
+        } else {
+          setNotes([]);
+        }
+      } else {
+        setNotes([]);
+      }
+    } catch (error) {}
+  }, [NotesReducer.GetAllNotesResponse]);
+
   return (
     <>
-      <div className='d-flex justify-content-start gap-3'>
+      <div className='d-flex justify-content-start mb-2 gap-3'>
         <h1 className='noteheading color-5a5a5a '>{t("Notes")}</h1>
         {checkFeatureIDAvailability(6) && (
           <img

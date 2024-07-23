@@ -348,7 +348,6 @@ body[dir="rtl"] .event-details:hover {
 
 .rmdp-wrapper.rmdp-shadow {
   width: 100% !important;
-
 }
 
 .rmdp-top-class {
@@ -544,7 +543,6 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 .ant-table-wrapper.dashboard-todo .ant-table-tbody > tr > td {
   background: #fff !important;
   padding: 5px;
-
 }
 
 .ant-table-wrapper.dashboard-todo .ant-table-tbody > tr {
@@ -576,7 +574,6 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
     border: 5px solid #ccc !important;
 } */
 .dashboard-todo {
-
   padding-right: 8px;
 }
 
@@ -957,20 +954,6 @@ body[dir="rtl"] .Ok-Successfull-btn {
   font-weight: 600;
 }
 
-.allowModalIcon {
-  color: #f16b6b;
-  border: none !important;
-  border-radius: 0px !important;
-  margin-top: 25px !important;
-}
-
-.allow-limit-modal-p {
-  text-align: center !important;
-  font-size: 14px !important;
-  font-weight: 600;
-  margin-top: 10px;
-}
-
 .home-recentactivity-scrollbar-container::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
@@ -1284,8 +1267,8 @@ body[dir="rtl"] h1.noteheading {
 }
 
 .task-title {
-  color: #6172d6 !important;
-  font-weight: 600;
+  color: #5a5a5a !important;
+  font-weight: 700;
   font-size: 20px !important;
 }
 
@@ -1340,6 +1323,7 @@ body[dir="rtl"] h1.noteheading {
 .MainTitleClass {
   color: #49598c !important;
   font-weight: 700 !important;
+  font-size: 16px;
 }
 
 .SubtitleTodoMessege {
@@ -1421,9 +1405,7 @@ body[dir="rtl"] svg.DatePickerIcon {
   justify-content: center;
   align-items: center;
 }
-.status_value {
-  font-weight: 600;
-}
+
 .StatsBox {
   margin-top: 10px;
   min-height: 20vh !important;

@@ -11,8 +11,11 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { GetWeeklyToDoCount } from "../../../store/actions/ToDoList_action";
+import { getPendingApprovalStatsThisWeekApi } from "../../../store/actions/Minutes_action";
 const Stats = () => {
-  const { meetingIdReducer, toDoListReducer } = useSelector((state) => state);
+  const { meetingIdReducer, toDoListReducer, MinutesReducer } = useSelector(
+    (state) => state
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -42,46 +45,68 @@ const Stats = () => {
     let Data2 = {
       UserID: parseInt(createrID),
     };
+    dispatch(getPendingApprovalStatsThisWeekApi(Data2, navigate, t));
     dispatch(GetWeeklyToDoCount(navigate, Data2, t));
     dispatch(GetWeeklyMeetingsCount(navigate, Number(createrID), t));
   }, []);
   useEffect(() => {
-    if (
-      meetingIdReducer.TotalMeetingCountThisWeek !== 0 ||
-      meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek !== 0
-    ) {
-      setCounterValues({
-        ...counterValues,
-        UpcomingMeetingVal: meetingIdReducer.TotalMeetingCountThisWeek,
-        UpcomingMeetingProgressVal: {
-          RemainingCount: meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
-          totalCount: meetingIdReducer.TotalMeetingCountThisWeek,
-        },
-      });
-    }
+    console.log(
+      meetingIdReducer.TotalMeetingCountThisWeek,
+      meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
+      "meetingIdReducermeetingIdReducer"
+    );
+    setCounterValues({
+      ...counterValues,
+      UpcomingMeetingVal: meetingIdReducer.TotalMeetingCountThisWeek,
+      UpcomingMeetingProgressVal: {
+        RemainingCount: meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
+        totalCount: meetingIdReducer.TotalMeetingCountThisWeek,
+      },
+    });
   }, [
     meetingIdReducer.TotalMeetingCountThisWeek,
     meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
   ]);
 
   useEffect(() => {
-    if (
-      toDoListReducer.TotalNumberOfUpcommingTodoInWeek !== 0 ||
-      toDoListReducer.TotalTodoCountThisWeek !== 0
-    ) {
-      setCounterValues({
-        ...counterValues,
-        PendingTasksVal: toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
-        UpcomingMeetingProgressVal: {
-          RemainingCount: toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
-          totalCount: toDoListReducer.TotalTodoCountThisWeek,
-        },
-      });
-    }
+    console.log(
+      toDoListReducer.TotalTodoCountThisWeek,
+      toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
+      "toDoListReducertoDoListReducer"
+    );
+    setCounterValues({
+      ...counterValues,
+      PendingTasksVal: toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
+      UpcomingMeetingProgressVal: {
+        RemainingCount: toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
+        totalCount: toDoListReducer.TotalTodoCountThisWeek,
+      },
+    });
   }, [
     toDoListReducer.TotalTodoCountThisWeek,
     toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
   ]);
+  useEffect(() => {
+    if (MinutesReducer.PendingApprovalStatsThisWeek !== null) {
+      const { pendingApprovalsCount, totalApprovalsCount } =
+        MinutesReducer.PendingApprovalStatsThisWeek;
+      console.log(
+        pendingApprovalsCount,
+        totalApprovalsCount,
+        "pendingApprovalsCountpendingApprovalsCountpendingApprovalsCount"
+      );
+      try {
+        setCounterValues({
+          ...counterValues,
+          ApprovalPendingProgressVal: totalApprovalsCount,
+          PendingApprovalVal: pendingApprovalsCount,
+        });
+      } catch (error) {
+        console.log(error, "errror");
+      }
+    }
+  }, [MinutesReducer.PendingApprovalStatsThisWeek]);
+  console.log({ counterValues }, "counterValuescounterValues");
   return (
     <>
       <Row>
@@ -96,8 +121,7 @@ const Stats = () => {
                   sm={12}
                   md={4}
                   lg={4}
-                  className="d-flex justify-content-center align-items-center"
-                >
+                  className='d-flex justify-content-center align-items-center'>
                   <UpcomingMeeting
                     meetingValue={counterValues.UpcomingMeetingVal}
                   />
@@ -106,16 +130,14 @@ const Stats = () => {
                   sm={12}
                   md={4}
                   lg={4}
-                  className="d-flex justify-content-center align-items-center"
-                >
+                  className='d-flex justify-content-center align-items-center'>
                   <PendingTasks taskValue={counterValues.PendingTasksVal} />
                 </Col>
                 <Col
                   sm={12}
                   md={4}
                   lg={4}
-                  className="d-flex justify-content-center align-items-center"
-                >
+                  className='d-flex justify-content-center align-items-center'>
                   <PendingApproval
                     pendingAppr={counterValues.PendingApprovalVal}
                   />
@@ -128,27 +150,24 @@ const Stats = () => {
           sm={12}
           md={6}
           lg={6}
-          className={` d-flex flex-column gap-3 ${styles["ProgressBarContains"]}`}
-        >
+          className={` d-flex flex-column gap-3 ${styles["ProgressBarContains"]}`}>
           <ProgressBar
-            now={Number(
-              counterValues.UpcomingMeetingProgressVal.RemainingCount
-            )}
-            max={Number(counterValues?.UpcomingMeetingProgressVal?.totalCount)}
+            now={counterValues.UpcomingMeetingProgressVal?.RemainingCount}
+            max={counterValues?.UpcomingMeetingProgressVal?.totalCount}
             label={`${counterValues?.UpcomingMeetingProgressVal?.RemainingCount}/${counterValues?.UpcomingMeetingProgressVal?.totalCount}`}
-            className=" dashboard_progress_upcomingmeeting"
+            className={styles["dashboard_progress_upcomingmeeting"]}
           />
           <ProgressBar
             now={counterValues.PendingTaskProgressVal.RemainingCount}
             max={counterValues.PendingTaskProgressVal.totalCount}
             label={`${counterValues?.PendingTaskProgressVal?.RemainingCount}/${counterValues?.PendingTaskProgressVal?.totalCount}`}
-            className=" dashboard_progress_upcomingTask"
+            className={styles["dashboard_progress_upcomingTask"]}
           />
           <ProgressBar
             now={counterValues.ApprovalPendingProgressVal.RemainingCount}
             max={counterValues.ApprovalPendingProgressVal.totalCount}
             label={`${counterValues.ApprovalPendingProgressVal.RemainingCount}/${counterValues.ApprovalPendingProgressVal.totalCount}`}
-            className=" dashboard_progress_upcomingApproval"
+            className={styles["dashboard_progress_upcomingApproval"]}
           />
         </Col>
       </Row>

@@ -25,7 +25,6 @@ import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagemen
 import { Loader } from "./components/elements";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
-import { newData } from "./commen/apis/test";
 import axios from "axios";
 
 const POLLING_INTERVAL = 60000; // 1 minute
@@ -76,7 +75,6 @@ const App = () => {
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, [currentVersion]);
-  newData();
   return (
     <>
       <Suspense fallback={<Loader />}>

@@ -18,3 +18,42 @@
   left: 0;
   border-radius: 10px;
 }
+.dashboard_progress_upcomingmeeting {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingTask {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingApproval {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingmeeting div {
+  background-color: #6172d6 !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-right: 10px;
+}
+.dashboard_progress_upcomingTask div {
+  background-color: #ffc300 !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-right: 10px;
+}
+.dashboard_progress_upcomingApproval div {
+  background-color: #55ce5c !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-right: 10px;
+}

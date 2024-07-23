@@ -8152,3 +8152,18 @@ body[dir="rtl"]
   font-weight: 600 !important;
   font-size: 12px !important;
 }
+th.Tasks_newDashboardTable__L1Rc2-cell.titleDashboard.Tasks_newDashboardTable__L1Rc2-cell-ellipsis {
+  color: #6127d6 !important;
+  font-size: 12px;
+  font-weight: 500;
+}
+th.Tasks_newDashboardTable__L1Rc2-cell.deadlineDashboard{
+  color: #6127d6 !important;
+  font-size: 12px;
+  font-weight: 500;
+}
+th.Tasks_newDashboardTable__L1Rc2-cell.statusDashboard {
+  color: #6127d6 !important;
+  font-size: 12px;
+  font-weight: 500;
+}

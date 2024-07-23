@@ -21,6 +21,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import EventsModal from "../../EventsModal/EventsModal";
+import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 const NewCalendar = () => {
   const calendarReducer = useSelector((state) => state.calendarReducer);
   const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
@@ -297,10 +298,13 @@ const NewCalendar = () => {
       dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     }
   };
+
+
+
   return (
     <>
       {calendarReducer.Spinner === true ? (
-        <section className="bg-white">
+        <section className='bg-white'>
           <Spin />
         </section>
       ) : (
@@ -318,7 +322,7 @@ const NewCalendar = () => {
             }}
             multiple={false}
             onChange={calendarClickFunction}
-            // className="custom-multi-date-picker"
+            className='custom-multi-date-picker'
             onMonthChange={handleMonthChange}
             currentDate={currentDateObject}
             // format="YYYY-MM-DD"

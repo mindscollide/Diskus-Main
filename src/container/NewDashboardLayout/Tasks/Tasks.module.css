@@ -4,10 +4,12 @@
   align-items: center;
   flex-direction: column;
   height: 100%;
+  gap: 15px;
 }
 .MainTitleClass {
-  color: #49598c !important;
-  font-weight: 700 !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 28px;
 }
 .SubtitleTodoMessege {
   color: #767d9b !important;
@@ -36,3 +38,9 @@
   border-radius: 4px !important;
   font-weight: 600;
 }
+
+/* .newDashboardTable__L1Rc2 tr th {
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+  font-size: 12px !important;
+} */

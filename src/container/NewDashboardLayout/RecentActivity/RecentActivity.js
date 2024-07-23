@@ -29,6 +29,19 @@ const RecentActivity = () => {
     }
   }, [settingReducer.RecentActivityData]);
 
+  useEffect(() => {
+    if (
+      settingReducer.SocketRecentActivityData !== null &&
+      settingReducer.SocketRecentActivityData !== undefined &&
+      Object.keys(settingReducer.SocketRecentActivityData).length > 0
+    ) {
+      setRecentActivityData([
+        settingReducer.SocketRecentActivityData,
+        ...recentActivityData,
+      ]);
+    }
+  }, [settingReducer.SocketRecentActivityData]);
+
   return (
     <>
       {" "}
@@ -58,18 +71,52 @@ const RecentActivity = () => {
           recentActivityData.map((recentActivityData, index) => {
             return (
               <>
-                <Row className='mb-3'>
+                <div className='d-flex justify-content-start align-items-start gap-3'>
+                  {recentActivityData.notificationTypes.pK_NTID === 1 ? (
+                    <img src={DemoIcon} width={45} height={45} />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
+                    <img src={DemoIcon} width={45} height={45} />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 3 ? (
+                    <img src={DemoIcon} width={45} height={45} />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 4 ? (
+                    <img src={DemoIcon} wi />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 5 ? (
+                    <img src={DemoIcon} width={45} height={45} />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 6 ? (
+                    <img src={DemoIcon} width={45} height={45} />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 7 ? (
+                    <img src={DemoIcon} width={45} height={45} />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 8 ? (
+                    <img src={DemoIcon} width={45} height={45} />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 9 ? (
+                    <img src={DemoIcon} width={45} height={45} />
+                  ) : (
+                    <img src={DemoIcon} width={45} height={45} />
+                  )}
+                  {recentActivityData.notificationTypes.description}
+                </div>
+                <p className='d-flex justify-content-end  me-1'>
+                  {
+                    <TimeAgo
+                      datetime={forRecentActivity(
+                        recentActivityData.creationDateTime
+                      )}
+                      locale='en'
+                    />
+                  }
+                </p>
+                {/* <Row className='mb-3'>
                   <Col sm={2}>
                     {recentActivityData.notificationTypes.pK_NTID === 1 ? (
-                      <div className='desc-notification-user '>
+                      <div >
                         <img src={DemoIcon} width={45} height={45} />
                       </div>
                     ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
-                      <div className='desc-notification-user '>
+                      <div >
                         <img src={DemoIcon} width={45} height={45} />
                       </div>
                     ) : recentActivityData.notificationTypes.pK_NTID === 3 ? (
-                      <div className='desc-notification-user '>
+                      <div >
                         <img src={DemoIcon} width={45} height={45} />
                       </div>
                     ) : recentActivityData.notificationTypes.pK_NTID === 4 ? (
@@ -77,30 +124,31 @@ const RecentActivity = () => {
                         <img src={DemoIcon} wi />
                       </div>
                     ) : recentActivityData.notificationTypes.pK_NTID === 5 ? (
-                      <div className='desc-notification-user '>
+                      <div >
                         <img src={DemoIcon} width={45} height={45} />
                       </div>
                     ) : recentActivityData.notificationTypes.pK_NTID === 6 ? (
-                      <div className='desc-notification-user '>
+                      <div >
                         <img src={DemoIcon} width={45} height={45} />
                       </div>
                     ) : recentActivityData.notificationTypes.pK_NTID === 7 ? (
-                      <div className='desc-notification-user '>
+                      <div >
                         <img src={DemoIcon} width={45} height={45} />
                       </div>
                     ) : recentActivityData.notificationTypes.pK_NTID === 8 ? (
-                      <div className='desc-notification-user '>
+                      <div >
                         <img src={DemoIcon} width={45} height={45} />
                       </div>
                     ) : recentActivityData.notificationTypes.pK_NTID === 9 ? (
-                      <div className='desc-notification-user '>
+                      <div >
                         <img src={DemoIcon} width={45} height={45} />
                       </div>
                     ) : (
-                      <div className='desc-notification-user '>
+                      <div >
                         <img src={DemoIcon} width={45} height={45} />
                       </div>
                     )}
+                    {recentActivityData.notificationTypes.description}
                   </Col>
                   <Col sm={10}>
                     <Row>
@@ -123,7 +171,7 @@ const RecentActivity = () => {
                       </Col>
                     </Row>
                   </Col>
-                </Row>
+                </Row> */}
               </>
             );
           })

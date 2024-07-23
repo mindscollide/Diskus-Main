@@ -1722,7 +1722,12 @@ const validateVideoRecordingURL = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringVideoURlBoardDeck",
 };
 
+const getMinuteAndSignatureApprovalThisWeekRM = {
+  RequestMethod: "ServiceManager.GetMinuteAndSignatureApprovalsThisWeek",
+};
+
 export {
+  getMinuteAndSignatureApprovalThisWeekRM,
   GetDownloadInvoiceRM,
   DownloadInvoiceRM,
   GetAllPublishedMeetingMinutesRM,
