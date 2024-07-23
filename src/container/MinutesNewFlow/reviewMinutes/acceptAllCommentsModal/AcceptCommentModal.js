@@ -20,6 +20,7 @@ const AcceptCommentModal = ({
   setMinutesGeneral,
   setMinutesToReview,
   minutesToReview,
+  currentUserID,
 }) => {
   const { t } = useTranslation(); // Translation hook
 
@@ -33,7 +34,12 @@ const AcceptCommentModal = ({
         minuteData:
           agenda?.minuteData?.map((minute) => ({
             ...minute,
+            reason: "",
             actorBundleStatusID: 3,
+            declinedReviews:
+              minute.declinedReviews?.filter(
+                (review) => review.fK_UID !== currentUserID
+              ) || [], // Default to empty array if declinedReviews is undefined
           })) || [], // Default to empty array if minuteData is undefined
         subMinutes:
           agenda?.subMinutes?.map((subMinute) => ({
@@ -41,7 +47,12 @@ const AcceptCommentModal = ({
             minuteData:
               subMinute?.minuteData?.map((minute) => ({
                 ...minute,
+                reason: "",
                 actorBundleStatusID: 3,
+                declinedReviews:
+                  minute.declinedReviews?.filter(
+                    (review) => review.fK_UID !== currentUserID
+                  ) || [], // Default to empty array if declinedReviews is undefined
               })) || [], // Default to empty array if minuteData is undefined
           })) || [], // Default to empty array if subMinutes is undefined
       }));
@@ -51,6 +62,11 @@ const AcceptCommentModal = ({
         minutesGeneral?.map((minute) => ({
           ...minute,
           actorBundleStatusID: 3,
+          reason: "",
+          declinedReviews:
+            minute.declinedReviews?.filter(
+              (review) => review.fK_UID !== currentUserID
+            ) || [], // Default to empty array if declinedReviews is undefined
         })) || []; // Default to empty array if minutesGeneral is undefined
 
       // Set the updated states

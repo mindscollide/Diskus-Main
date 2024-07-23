@@ -46,15 +46,18 @@ const DeleteCommentModal = ({
           const updatedDeclinedReviews = minute.declinedReviews.filter(
             (review) => {
               return !(
-                review.fK_WorkFlowActor_ID === 0 &&
-                review.reason === updateData.reason
+                (review.fK_WorkFlowActor_ID === 0 &&
+                  review.reason === updateData.reason) ||
+                (review.fK_WorkFlowActor_ID ===
+                  deleteCommentLocal.fK_WorkFlowActor_ID &&
+                  review.reason === deleteCommentLocal.reason)
               );
             }
           );
 
           return {
             ...minute,
-            reason: updateData.reason,
+            reason: "",
             actorBundleStatusID: 2,
             declinedReviews: updatedDeclinedReviews,
           };
@@ -69,15 +72,18 @@ const DeleteCommentModal = ({
             const updatedDeclinedReviews = subMinute.declinedReviews.filter(
               (review) => {
                 return !(
-                  review.fK_WorkFlowActor_ID === 0 &&
-                  review.reason === updateData.reason
+                  (review.fK_WorkFlowActor_ID === 0 &&
+                    review.reason === updateData.reason) ||
+                  (review.fK_WorkFlowActor_ID ===
+                    deleteCommentLocal.fK_WorkFlowActor_ID &&
+                    review.reason === deleteCommentLocal.reason)
                 );
               }
             );
 
             return {
               ...subMinute,
-              reason: updateData.reason,
+              reason: "",
               actorBundleStatusID: 2,
               declinedReviews: updatedDeclinedReviews,
             };
@@ -105,8 +111,11 @@ const DeleteCommentModal = ({
         const updatedDeclinedReviews = minute.declinedReviews.filter(
           (review) => {
             return !(
-              review.fK_WorkFlowActor_ID === 0 &&
-              review.reason === updateData.reason
+              (review.fK_WorkFlowActor_ID === 0 &&
+                review.reason === updateData.reason) ||
+              (review.fK_WorkFlowActor_ID ===
+                deleteCommentLocal.fK_WorkFlowActor_ID &&
+                review.reason === deleteCommentLocal.reason)
             );
           }
         );
@@ -142,6 +151,7 @@ const DeleteCommentModal = ({
       );
       console.log("Updated minutes data:", updatedMinutesData);
       setMinutesAgenda(updatedMinutesData);
+      setMinutesToReview(minutesToReview + 1);
       dispatch(deleteCommentModal(false));
     }
   };

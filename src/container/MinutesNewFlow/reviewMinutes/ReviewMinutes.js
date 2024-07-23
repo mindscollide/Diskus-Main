@@ -128,14 +128,14 @@ const ReviewMinutes = () => {
     // Transform the first state data to the required format
     const actorMinuteReviewsFromState1 = allMinuteData.map((minute) => ({
       ActionableBundleID: minute.actionableBundleID,
-      IsAccepted: minute.actorBundleStatusID === 3,
+      StatusID: minute.actorBundleStatusID,
       DeclineReason: minute.reason || "",
     }));
 
     // Transform the second state data to the required format
     const actorMinuteReviewsFromState2 = minutesGeneral.map((minute) => ({
       ActionableBundleID: minute.actionableBundleID,
-      IsAccepted: minute.actorBundleStatusID === 3,
+      StatusID: minute.actorBundleStatusID,
       DeclineReason: minute.reason || "",
     }));
 
@@ -168,11 +168,7 @@ const ReviewMinutes = () => {
         .toISOString()
         .replace(/[-:T.]/g, "")
         .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
-      userProfilePicture: {
-        userID: currentUserID,
-        orignalProfilePictureName: "",
-        displayProfilePictureName: "",
-      },
+      userProfilePicture: rejectData.userProfilePicture,
     };
 
     return minutesData.map((agenda) => {
@@ -234,11 +230,7 @@ const ReviewMinutes = () => {
         .toISOString()
         .replace(/[-:T.]/g, "")
         .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
-      userProfilePicture: {
-        userID: currentUserID,
-        orignalProfilePictureName: "",
-        displayProfilePictureName: "",
-      },
+      userProfilePicture: rejectData.userProfilePicture,
     };
 
     return minutesData.map((minute) => {
@@ -549,6 +541,7 @@ const ReviewMinutes = () => {
     } catch {}
   }, [minuteDataToReject]);
 
+  console.log("AgendaMinutesAgendaMinutes", minutesAgenda);
   console.log("GeneralMinutesGeneralMinutes", minutesGeneral);
 
   return (
@@ -3613,6 +3606,8 @@ const ReviewMinutes = () => {
           setIsAgenda={setIsAgenda}
           setMinutesToReview={setMinutesToReview}
           minutesToReview={minutesToReview}
+          currentUserID={currentUserID}
+          deleteCommentLocal={deleteCommentLocal}
         />
       ) : null}
       {MinutesReducer.editCommentModal ? (
@@ -3657,6 +3652,7 @@ const ReviewMinutes = () => {
           setMinutesGeneral={setMinutesGeneral}
           minutesToReview={minutesToReview}
           setMinutesToReview={setMinutesToReview}
+          currentUserID={currentUserID}
         />
       ) : null}
     </section>
