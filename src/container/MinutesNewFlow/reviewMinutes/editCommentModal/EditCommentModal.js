@@ -67,6 +67,25 @@ const EditCommentModal = ({
                         ?.displayProfilePictureName,
                   },
                 };
+              } else if (
+                review.fK_WorkFlowActor_ID ===
+                editCommentLocal.fK_WorkFlowActor_ID
+              ) {
+                return {
+                  ...review,
+                  fK_ActorBundlesStatus_ID:
+                    editCommentLocal.fK_ActorBundlesStatus_ID,
+                  fK_UID: editCommentLocal.fK_UID,
+                  fK_WorkFlowActor_ID: editCommentLocal.fK_WorkFlowActor_ID,
+                  fK_WorkFlowActionableBundle_ID:
+                    editCommentLocal.fK_WorkFlowActionableBundle_ID,
+                  fK_ActorBundlesStatusState_ID:
+                    editCommentLocal.fK_ActorBundlesStatusState_ID,
+                  actorName: editCommentLocal.actorName,
+                  reason: updateData.reason,
+                  modifiedOn: editCommentLocal.modifiedOn,
+                  userProfilePicture: editCommentLocal.userProfilePicture,
+                };
               }
               return review;
             }
@@ -75,7 +94,7 @@ const EditCommentModal = ({
           return {
             ...minute,
             reason: updateData.reason,
-            actorBundleStatusID: 2,
+            actorBundleStatusID: 4,
             declinedReviews: updatedDeclinedReviews,
           };
         }
@@ -110,6 +129,25 @@ const EditCommentModal = ({
                           ?.displayProfilePictureName,
                     },
                   };
+                } else if (
+                  review.fK_WorkFlowActor_ID ===
+                  editCommentLocal.fK_WorkFlowActor_ID
+                ) {
+                  return {
+                    ...review,
+                    fK_ActorBundlesStatus_ID:
+                      editCommentLocal.fK_ActorBundlesStatus_ID,
+                    fK_UID: editCommentLocal.fK_UID,
+                    fK_WorkFlowActor_ID: editCommentLocal.fK_WorkFlowActor_ID,
+                    fK_WorkFlowActionableBundle_ID:
+                      editCommentLocal.fK_WorkFlowActionableBundle_ID,
+                    fK_ActorBundlesStatusState_ID:
+                      editCommentLocal.fK_ActorBundlesStatusState_ID,
+                    actorName: editCommentLocal.actorName,
+                    reason: updateData.reason,
+                    modifiedOn: editCommentLocal.modifiedOn,
+                    userProfilePicture: editCommentLocal.userProfilePicture,
+                  };
                 }
                 return review;
               }
@@ -118,7 +156,7 @@ const EditCommentModal = ({
             return {
               ...subMinute,
               reason: updateData.reason,
-              actorBundleStatusID: 2,
+              actorBundleStatusID: 4,
               declinedReviews: updatedDeclinedReviews,
             };
           }
@@ -164,6 +202,24 @@ const EditCommentModal = ({
                   MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
               },
             };
+          } else if (
+            review.fK_WorkFlowActor_ID === editCommentLocal.fK_WorkFlowActor_ID
+          ) {
+            return {
+              ...review,
+              fK_ActorBundlesStatus_ID:
+                editCommentLocal.fK_ActorBundlesStatus_ID,
+              fK_UID: editCommentLocal.fK_UID,
+              fK_WorkFlowActor_ID: editCommentLocal.fK_WorkFlowActor_ID,
+              fK_WorkFlowActionableBundle_ID:
+                editCommentLocal.fK_WorkFlowActionableBundle_ID,
+              fK_ActorBundlesStatusState_ID:
+                editCommentLocal.fK_ActorBundlesStatusState_ID,
+              actorName: editCommentLocal.actorName,
+              reason: updateData.reason,
+              modifiedOn: editCommentLocal.modifiedOn,
+              userProfilePicture: editCommentLocal.userProfilePicture,
+            };
           }
           return review;
         });
@@ -171,7 +227,7 @@ const EditCommentModal = ({
         return {
           ...minute,
           reason: updateData.reason,
-          actorBundleStatusID: 2,
+          actorBundleStatusID: 4,
           declinedReviews: updatedDeclinedReviews,
         };
       }
@@ -209,6 +265,8 @@ const EditCommentModal = ({
       dispatch(editCommentModal(false));
     }
   };
+
+  console.log("editCommentLocaleditCommentLocal", editCommentLocal);
 
   return (
     <section>

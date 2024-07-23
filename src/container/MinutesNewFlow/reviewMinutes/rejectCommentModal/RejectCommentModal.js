@@ -18,7 +18,13 @@ import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing cross icon i
 import { ListOfDefaultRejectionComments } from "../../../../store/actions/Minutes_action";
 
 // RejectCommentModal component definition
-const RejectCommentModal = ({ minuteDataToReject, setMinuteDataToReject, setMinutesToReview, minutesToReview }) => {
+const RejectCommentModal = ({
+  minuteDataToReject,
+  setMinuteDataToReject,
+  setMinutesToReview,
+  minutesToReview,
+  currentUserID,
+}) => {
   const { t } = useTranslation(); // Initializing translation function
 
   const { MinutesReducer } = useSelector((state) => state);
@@ -71,6 +77,12 @@ const RejectCommentModal = ({ minuteDataToReject, setMinuteDataToReject, setMinu
       ...minuteDataToReject,
       reason: commentText,
       actorBundleStatusID: 4,
+      userProfilePicture: {
+        userID: currentUserID,
+        orignalProfilePictureName: "",
+        displayProfilePictureName:
+          MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
+      },
     };
 
     // Optional: Update local state if needed

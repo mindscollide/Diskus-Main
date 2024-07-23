@@ -128,14 +128,14 @@ const ReviewMinutes = () => {
     // Transform the first state data to the required format
     const actorMinuteReviewsFromState1 = allMinuteData.map((minute) => ({
       ActionableBundleID: minute.actionableBundleID,
-      IsAccepted: minute.actorBundleStatusID === 3,
+      StatusID: minute.actorBundleStatusID,
       DeclineReason: minute.reason || "",
     }));
 
     // Transform the second state data to the required format
     const actorMinuteReviewsFromState2 = minutesGeneral.map((minute) => ({
       ActionableBundleID: minute.actionableBundleID,
-      IsAccepted: minute.actorBundleStatusID === 3,
+      StatusID: minute.actorBundleStatusID,
       DeclineReason: minute.reason || "",
     }));
 
@@ -168,11 +168,7 @@ const ReviewMinutes = () => {
         .toISOString()
         .replace(/[-:T.]/g, "")
         .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
-      userProfilePicture: {
-        userID: currentUserID,
-        orignalProfilePictureName: "",
-        displayProfilePictureName: "",
-      },
+      userProfilePicture: rejectData.userProfilePicture,
     };
 
     return minutesData.map((agenda) => {
@@ -234,11 +230,7 @@ const ReviewMinutes = () => {
         .toISOString()
         .replace(/[-:T.]/g, "")
         .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
-      userProfilePicture: {
-        userID: currentUserID,
-        orignalProfilePictureName: "",
-        displayProfilePictureName: "",
-      },
+      userProfilePicture: rejectData.userProfilePicture,
     };
 
     return minutesData.map((minute) => {
@@ -470,7 +462,7 @@ const ReviewMinutes = () => {
         }
 
         // console.log("transformedData", transformedData);
-      } 
+      }
       // else {
       //   setMinutesAgenda([]);
       //   setMinutesAgendaHierarchy([]);
@@ -549,6 +541,7 @@ const ReviewMinutes = () => {
     } catch {}
   }, [minuteDataToReject]);
 
+  console.log("AgendaMinutesAgendaMinutes", minutesAgenda);
   console.log("GeneralMinutesGeneralMinutes", minutesGeneral);
 
   return (
@@ -1002,6 +995,83 @@ const ReviewMinutes = () => {
                                                         </p>
                                                       </div>
                                                     </Col>
+                                                    {declinedData.fK_WorkFlowActor_ID !==
+                                                      0 &&
+                                                    Number(
+                                                      declinedData.fK_UID
+                                                    ) === currentUserID ? (
+                                                      <Col
+                                                        lg={6}
+                                                        md={6}
+                                                        sm={12}
+                                                        className="d-grid justify-content-end p-0"
+                                                      >
+                                                        <Button
+                                                          // onClick={() => {
+                                                          //   dispatch(
+                                                          //     editCommentModal(
+                                                          //       true
+                                                          //     )
+                                                          //   );
+                                                          //   setEditCommentLocal(
+                                                          //     declinedData
+                                                          //   );
+                                                          // }}
+                                                          onClick={() => {
+                                                            dispatch(
+                                                              editCommentModal(
+                                                                true
+                                                              )
+                                                            );
+                                                            setEditCommentLocal(
+                                                              declinedData
+                                                            );
+                                                            setParentMinuteID(
+                                                              parentMinutedata
+                                                            );
+                                                            setIsAgenda(true);
+                                                          }}
+                                                          text={t("Edit")}
+                                                          className={
+                                                            styles[
+                                                              "Reject-comment"
+                                                            ]
+                                                          }
+                                                        />
+                                                        <Button
+                                                          // onClick={() => {
+                                                          //   dispatch(
+                                                          //     deleteCommentModal(
+                                                          //       true
+                                                          //     )
+                                                          //   );
+                                                          //   setDeleteCommentLocal(
+                                                          //     declinedData
+                                                          //   );
+                                                          // }}
+                                                          onClick={() => {
+                                                            dispatch(
+                                                              deleteCommentModal(
+                                                                true
+                                                              )
+                                                            );
+                                                            setDeleteCommentLocal(
+                                                              declinedData
+                                                            );
+                                                            setParentMinuteID(
+                                                              parentMinutedata
+                                                            );
+                                                            setIsAgenda(true);
+                                                          }}
+                                                          text={t("Delete")}
+                                                          className={
+                                                            styles[
+                                                              "Reject-comment"
+                                                            ]
+                                                          }
+                                                        />
+                                                      </Col>
+                                                    ) : null}
                                                     {declinedData.fK_WorkFlowActor_ID ===
                                                     0 ? (
                                                       <Col
@@ -1442,6 +1512,92 @@ const ReviewMinutes = () => {
                                                                 </p>
                                                               </div>
                                                             </Col>
+                                                            {declinedDataHistory.fK_WorkFlowActor_ID !==
+                                                              0 &&
+                                                            Number(
+                                                              declinedDataHistory.fK_UID
+                                                            ) ===
+                                                              currentUserID ? (
+                                                              <Col
+                                                                lg={6}
+                                                                md={6}
+                                                                sm={12}
+                                                                className="d-grid justify-content-end p-0"
+                                                              >
+                                                                <Button
+                                                                  // onClick={() => {
+                                                                  //   dispatch(
+                                                                  //     editCommentModal(
+                                                                  //       true
+                                                                  //     )
+                                                                  //   );
+                                                                  //   setEditCommentLocal(
+                                                                  //     declinedData
+                                                                  //   );
+                                                                  // }}
+                                                                  onClick={() => {
+                                                                    dispatch(
+                                                                      editCommentModal(
+                                                                        true
+                                                                      )
+                                                                    );
+                                                                    setEditCommentLocal(
+                                                                      declinedDataHistory
+                                                                    );
+                                                                    setParentMinuteID(
+                                                                      parentMinutedata
+                                                                    );
+                                                                    setIsAgenda(
+                                                                      true
+                                                                    );
+                                                                  }}
+                                                                  text={t(
+                                                                    "Edit"
+                                                                  )}
+                                                                  className={
+                                                                    styles[
+                                                                      "Reject-comment"
+                                                                    ]
+                                                                  }
+                                                                />
+                                                                <Button
+                                                                  // onClick={() => {
+                                                                  //   dispatch(
+                                                                  //     deleteCommentModal(
+                                                                  //       true
+                                                                  //     )
+                                                                  //   );
+                                                                  //   setDeleteCommentLocal(
+                                                                  //     declinedData
+                                                                  //   );
+                                                                  // }}
+                                                                  onClick={() => {
+                                                                    dispatch(
+                                                                      deleteCommentModal(
+                                                                        true
+                                                                      )
+                                                                    );
+                                                                    setDeleteCommentLocal(
+                                                                      declinedDataHistory
+                                                                    );
+                                                                    setParentMinuteID(
+                                                                      parentMinutedata
+                                                                    );
+                                                                    setIsAgenda(
+                                                                      true
+                                                                    );
+                                                                  }}
+                                                                  text={t(
+                                                                    "Delete"
+                                                                  )}
+                                                                  className={
+                                                                    styles[
+                                                                      "Reject-comment"
+                                                                    ]
+                                                                  }
+                                                                />
+                                                              </Col>
+                                                            ) : null}
                                                             {declinedDataHistory.fK_WorkFlowActor_ID ===
                                                             0 ? (
                                                               <Col
@@ -1867,6 +2023,10 @@ const ReviewMinutes = () => {
                                       ) &&
                                         minuteDataSubminute.declinedReviews.map(
                                           (declinedData, index) => {
+                                            console.log(
+                                              declinedData,
+                                              "declinedDatadeclinedDatadeclinedData"
+                                            );
                                             const isLastIndex =
                                               index ===
                                               minuteDataSubminute
@@ -2010,6 +2170,75 @@ const ReviewMinutes = () => {
                                                                 </p>
                                                               </div>
                                                             </Col>
+                                                            {declinedData.fK_WorkFlowActor_ID !==
+                                                              0 &&
+                                                            Number(
+                                                              declinedData.fK_UID
+                                                            ) ===
+                                                              currentUserID ? (
+                                                              <>
+                                                                <Col
+                                                                  lg={6}
+                                                                  md={6}
+                                                                  sm={12}
+                                                                  className="d-grid justify-content-end p-0"
+                                                                >
+                                                                  <Button
+                                                                    // onClick={() => {
+                                                                    //   dispatch(
+                                                                    //     editCommentModal(
+                                                                    //       true
+                                                                    //     )
+                                                                    //   );
+                                                                    //   setEditCommentLocal(
+                                                                    //     declinedDataHistory
+                                                                    //   );
+                                                                    // }}
+                                                                    onClick={() => {
+                                                                      dispatch(
+                                                                        editCommentModal(
+                                                                          true
+                                                                        )
+                                                                      );
+                                                                      setEditCommentLocal(
+                                                                        declinedData
+                                                                      );
+                                                                      setParentMinuteID(
+                                                                        minuteDataSubminute
+                                                                      );
+                                                                      setIsAgenda(
+                                                                        true
+                                                                      );
+                                                                    }}
+                                                                    text={t(
+                                                                      "Edit"
+                                                                    )}
+                                                                    className={
+                                                                      styles[
+                                                                        "Reject-comment"
+                                                                      ]
+                                                                    }
+                                                                  />
+                                                                  <Button
+                                                                    onClick={() =>
+                                                                      dispatch(
+                                                                        deleteCommentModal(
+                                                                          true
+                                                                        )
+                                                                      )
+                                                                    }
+                                                                    text={t(
+                                                                      "Delete"
+                                                                    )}
+                                                                    className={
+                                                                      styles[
+                                                                        "Reject-comment"
+                                                                      ]
+                                                                    }
+                                                                  />
+                                                                </Col>
+                                                              </>
+                                                            ) : null}
                                                             {declinedData.fK_WorkFlowActor_ID ===
                                                             0 ? (
                                                               <Col
@@ -2383,6 +2612,10 @@ const ReviewMinutes = () => {
                                                     declinedDataHistory,
                                                     index
                                                   ) => {
+                                                    console.log(
+                                                      declinedDataHistory,
+                                                      "declinedDataHistorydeclinedDataHistory"
+                                                    );
                                                     const isLastIndexx =
                                                       index ===
                                                       historyData
@@ -2525,6 +2758,7 @@ const ReviewMinutes = () => {
                                                                         </p>
                                                                       </div>
                                                                     </Col>
+
                                                                     {declinedDataHistory.fK_WorkFlowActor_ID ===
                                                                     0 ? (
                                                                       <Col
@@ -2874,6 +3108,58 @@ const ReviewMinutes = () => {
                                             </p>
                                           </div>
                                         </Col>
+                                        {declinedData.fK_WorkFlowActor_ID !==
+                                          0 &&
+                                        Number(declinedData.fK_UID) ===
+                                          currentUserID ? (
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={12}
+                                            className="d-grid justify-content-end p-0"
+                                          >
+                                            <Button
+                                              onClick={() => {
+                                                dispatch(
+                                                  editCommentModal(true)
+                                                );
+                                                setEditCommentLocal(
+                                                  declinedData
+                                                );
+                                                setParentMinuteID(data);
+                                                setIsAgenda(false);
+                                              }}
+                                              text={t("Edit")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                            />
+                                            <Button
+                                              // onClick={() => {
+                                              //   dispatch(
+                                              //     deleteCommentModal(true)
+                                              //   );
+                                              //   setDeleteCommentLocal(
+                                              //     declinedData
+                                              //   );
+                                              // }}
+                                              onClick={() => {
+                                                dispatch(
+                                                  deleteCommentModal(true)
+                                                );
+                                                setDeleteCommentLocal(
+                                                  declinedData
+                                                );
+                                                setParentMinuteID(data);
+                                                setIsAgenda(false);
+                                              }}
+                                              text={t("Delete")}
+                                              className={
+                                                styles["Reject-comment"]
+                                              }
+                                            />
+                                          </Col>
+                                        ) : null}
                                         {declinedData.fK_WorkFlowActor_ID ===
                                         0 ? (
                                           <Col
@@ -3320,6 +3606,8 @@ const ReviewMinutes = () => {
           setIsAgenda={setIsAgenda}
           setMinutesToReview={setMinutesToReview}
           minutesToReview={minutesToReview}
+          currentUserID={currentUserID}
+          deleteCommentLocal={deleteCommentLocal}
         />
       ) : null}
       {MinutesReducer.editCommentModal ? (
@@ -3364,6 +3652,7 @@ const ReviewMinutes = () => {
           setMinutesGeneral={setMinutesGeneral}
           minutesToReview={minutesToReview}
           setMinutesToReview={setMinutesToReview}
+          currentUserID={currentUserID}
         />
       ) : null}
     </section>
