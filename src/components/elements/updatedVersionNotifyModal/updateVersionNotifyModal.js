@@ -1,8 +1,8 @@
 import React from "react";
-import { Col, Modal, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import styles from "./updateVersionNotifyModal.css";
-import { Button } from "../index";
+import styles from "./updateVersionNotifyModal.module.css";
+import { Button, Modal } from "../index";
 const UpdateVersionNotifyModal = ({ updateVersion, setUpdateVersion }) => {
   const { t } = useTranslation();
   return (
