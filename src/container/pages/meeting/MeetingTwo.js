@@ -2052,6 +2052,8 @@ const NewMeeting = () => {
       }
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
+
+
   useEffect(() => {
     if (
       meetingIdReducer.CommitteeMeetingMQTT !== null &&
@@ -2093,6 +2095,7 @@ const NewMeeting = () => {
       console.log(error);
     }
   }, [meetingIdReducer.GroupMeetingMQTT]);
+  
   useEffect(() => {
     try {
       if (

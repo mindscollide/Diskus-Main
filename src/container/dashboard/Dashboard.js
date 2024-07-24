@@ -2286,7 +2286,7 @@ const Dashboard = () => {
         {videoFeatureReducer.IncomingVideoCallFlag === true && (
           <div className="overlay-incoming-videocall" />
         )}
-        <Layout>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider width={"4%"}>

@@ -71,6 +71,7 @@ import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 //import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
 import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
+import NewDashobard from "../container/NewDashboardLayout/NewDashobard";
 import SubscriptionDetailsUserManagement from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement";
 import DowngradeSubscription from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription";
 import UpdatedCancelSubscription from "../container/pages/UserMangement/AdminUserManagement/UpdatedCancelSubscription/UpdatedCancelSubscription";
@@ -134,7 +135,9 @@ export const router = createHashRouter(
             path=""
             element={
               <RouteWrapperUser name="">
-                <Home />
+                {/* <Home /> */}
+
+                <NewDashobard />
               </RouteWrapperUser>
             }
           />
@@ -151,6 +154,7 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="home">
                 <Home />
+                {/* <NewDashobard /> */}
               </RouteWrapperUser>
             }
           />

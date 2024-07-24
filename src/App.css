@@ -3395,7 +3395,45 @@ body[dir="rtl"] progress {
   margin: 2px !important;
   border-radius: 5px !important;
 }
-
+.dashboard_progress_upcomingmeeting {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingTask {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingApproval {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingmeeting .progress-bar {
+  background: #6172d6 !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-right: 10px;
+}
+.dashboard_progress_upcomingTask .progress-bar {
+  background: #ffc300 !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-right: 10px;
+}
+.dashboard_progress_upcomingApproval .progress-bar {
+  background: #55ce5c !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-right: 10px;
+}
 body[dir="rtl"] .progress-bar {
   background: linear-gradient(to left, #6172d6 20%, #49dbdb 80%) !important;
 } */
@@ -8113,4 +8151,19 @@ body[dir="rtl"]
   color: #d8a709 !important;
   font-weight: 600 !important;
   font-size: 12px !important;
+}
+th.Tasks_newDashboardTable__L1Rc2-cell.titleDashboard.Tasks_newDashboardTable__L1Rc2-cell-ellipsis {
+  color: #6127d6 !important;
+  font-size: 12px;
+  font-weight: 500;
+}
+th.Tasks_newDashboardTable__L1Rc2-cell.deadlineDashboard{
+  color: #6127d6 !important;
+  font-size: 12px;
+  font-weight: 500;
+}
+th.Tasks_newDashboardTable__L1Rc2-cell.statusDashboard {
+  color: #6127d6 !important;
+  font-size: 12px;
+  font-weight: 500;
 }

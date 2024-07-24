@@ -1,0 +1,35 @@
+.PendingTaskLine {
+  position: relative;
+}
+.PendingTaskLine::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 5px;
+  background-color: #e1e1e1;
+  left: 0;
+  border-radius: 10px;
+}
+.PendingTaskLine::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 5px;
+  background-color: #e1e1e1;
+  right: 0;
+  border-radius: 10px;
+}
+.UpComingTaskCount {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  color: #ffc300;
+  text-align: center;
+}
+.UpComingTaskText {
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
+  color: #5a5a5a;
+  text-transform: uppercase;
+}

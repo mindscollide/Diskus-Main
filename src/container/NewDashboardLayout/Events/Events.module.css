@@ -1,0 +1,12 @@
+.Events_Empty {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+.No_UpcomingEvent_Text {
+    color: #6172d6 !important;
+    font-weight: 600;
+    font-size: 18px;
+}

@@ -36,6 +36,7 @@ const initialState = {
   GetDataForResendMinuteReviewData: null,
   currentMeetingMinutesToReviewData: null,
   ResendUpdatedMinuteForReviewData: null,
+  PendingApprovalStatsThisWeek: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -548,6 +549,28 @@ const MinutesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResendUpdatedMinuteForReviewData: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETMINUTESANDSIGNATUREAPPROVALTHISWEEK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETMINUTESANDSIGNATUREAPPROVALTHISWEEK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        PendingApprovalStatsThisWeek: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETMINUTESANDSIGNATUREAPPROVALTHISWEEK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        PendingApprovalStatsThisWeek: null,
         ResponseMessage: action.message,
       };
     }
