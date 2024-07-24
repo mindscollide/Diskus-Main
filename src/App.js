@@ -32,7 +32,7 @@ const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
-
+  console.log(updateVersion, "updateVersionupdateVersion");
   useEffect(() => {
     // Function to fetch the current version from version.json
     const fetchVersion = async () => {
@@ -88,6 +88,7 @@ const App = () => {
             updateVersion={updateVersion}
           />
         )}
+        // {/* )} */}
       </Suspense>
       {/* <Notification /> */}
     </>
