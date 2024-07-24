@@ -7,7 +7,7 @@ import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
 import IconAttachment from "../../../assets/images/AttachmentNotes.svg";
 import PlusButton from "../../../assets/images/PlusButton.svg";
-
+import Notes_Empty from "../../../assets/images/Notes_Dashboard.png";
 import { useDispatch } from "react-redux";
 import {
   GetNotes,
@@ -131,99 +131,114 @@ const Notes = () => {
         )}
       </div>
       <section className={styles["NotesDashboard"]}>
-        {notes.length > 0
-          ? notes.map((data, index) => {
-              if (index <= 11) {
-                return (
-                  <>
-                    <div
-                      className='notesdescription cursor-pointer'
-                      key={data.pK_NotesID}
-                      onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          {/* <p className="notescontent" > */}
-                          <p className='notescontent'>
-                            {data.title.slice(0, 100)}
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row className='mt-2'>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className='d-flex gap-2 align-items-center justify-content-between'>
-                          <span className='d-flex gap-2'>
-                            {data.isStarred ? (
-                              <Tooltip
-                                placement='bottomLeft'
-                                title={t("Starred")}>
-                                <img
-                                  src={hollowstar}
-                                  width='17.26px'
-                                  height='16.62px'
-                                  alt=''
-                                  draggable='false'
-                                  className={
-                                    styles["starIcon-In-Collapse-material"]
-                                  }
-                                />
-                              </Tooltip>
-                            ) : (
-                              <Tooltip
-                                placement='bottomLeft'
-                                title={t("Unstarred")}>
-                                <img
-                                  src={StarIcon}
-                                  width='17.34px'
-                                  height='16.62px'
-                                  alt=''
-                                  draggable='false'
-                                  className={
-                                    styles["starIcon-In-Collapse-material"]
-                                  }
-                                />
-                              </Tooltip>
-                            )}
-                            {/* <Star /> */}
-                            {data.isAttachment && (
-                              <span>
-                                <img
-                                  src={IconAttachment}
-                                  width='17.46px'
-                                  height='16.05px'
-                                  alt=''
-                                  draggable='false'
-                                />
-                              </span>
-                            )}
-                          </span>
-                          {/* <img src={IconAttachment} alt="" /> */}
-                          <span className='DataTimeDay'>
-                            {_justShowDateformat(data.date + data.time)} |
-                            {_justShowDay(data.date + data.time)}
-                          </span>
-                        </Col>
-                      </Row>
-                    </div>
-                    {/* <span>See More</span> */}
-                  </>
-                );
-              } else if (index === 12) {
-                // Display a different message when index is 12
-                return (
-                  <div key={index} className='d-flex justify-content-center'>
-                    <p
-                      className='ViewMoreLink_notes'
-                      onClick={() => navigate("/DisKus/Notes")}>
-                      {t("View-more")}
-                    </p>
+        {notes.length > 0 ? (
+          notes.map((data, index) => {
+            if (index <= 11) {
+              return (
+                <>
+                  <div
+                    className='notesdescription cursor-pointer'
+                    key={data.pK_NotesID}
+                    onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        {/* <p className="notescontent" > */}
+                        <p className='notescontent'>
+                          {data.title.slice(0, 100)}
+                        </p>
+                      </Col>
+                    </Row>
+                    <Row className='mt-2'>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center justify-content-between'>
+                        <span className='d-flex gap-2'>
+                          {data.isStarred ? (
+                            <Tooltip
+                              placement='bottomLeft'
+                              title={t("Starred")}>
+                              <img
+                                src={hollowstar}
+                                width='17.26px'
+                                height='16.62px'
+                                alt=''
+                                draggable='false'
+                                className={
+                                  styles["starIcon-In-Collapse-material"]
+                                }
+                              />
+                            </Tooltip>
+                          ) : (
+                            <Tooltip
+                              placement='bottomLeft'
+                              title={t("Unstarred")}>
+                              <img
+                                src={StarIcon}
+                                width='17.34px'
+                                height='16.62px'
+                                alt=''
+                                draggable='false'
+                                className={
+                                  styles["starIcon-In-Collapse-material"]
+                                }
+                              />
+                            </Tooltip>
+                          )}
+                          {/* <Star /> */}
+                          {data.isAttachment && (
+                            <span>
+                              <img
+                                src={IconAttachment}
+                                width='17.46px'
+                                height='16.05px'
+                                alt=''
+                                draggable='false'
+                              />
+                            </span>
+                          )}
+                        </span>
+                        {/* <img src={IconAttachment} alt="" /> */}
+                        <span className='DataTimeDay'>
+                          {_justShowDateformat(data.date + data.time)} |
+                          {_justShowDay(data.date + data.time)}
+                        </span>
+                      </Col>
+                    </Row>
                   </div>
-                );
-              }
-            })
-          : null}
+                  {/* <span>See More</span> */}
+                </>
+              );
+            } else if (index === 12) {
+              // Display a different message when index is 12
+              return (
+                <div key={index} className='d-flex justify-content-center'>
+                  <p
+                    className='ViewMoreLink_notes'
+                    onClick={() => navigate("/DisKus/Notes")}>
+                    {t("View-more")}
+                  </p>
+                </div>
+              );
+            }
+          })
+        ) : (
+          <>
+            <Row>
+              <Col
+                sm={12}
+                lg={12}
+                md={12}
+                className='d-flex justify-content-center align-items-center flex-column'>
+                <img src={Notes_Empty} width={"40%"} alt='' draggable='false' />
+                <p className={styles["emptystateNotesDashboard"]}>
+                  {t("You-dont-have-any-notes")}
+                </p>
+              </Col>
+            </Row>
+          </>
+        )}
       </section>
       {updateNotesModalHomePage && (
         <ModalViewNote
