@@ -1,0 +1,30 @@
+.updateVersion_Title {
+    font-weight: 700;
+    font-size: 24px;
+    text-align: center;
+    color: #5a5a5a;
+  }
+  .updateVersion_TagLine {
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    color: #5a5a5a;
+  }
+  .later_updateVersionButton {
+    padding: 12px 30px !important;
+    border-radius: 4px !important;
+    background-color: #fff !important;
+    border: 1px solid #e1e1e1 !important;
+    color: #5a5a5a !important;
+    font-weight: 600 !important;
+  }
+  
+  .update_updateVersionButton {
+    padding: 12px 30px !important;
+    border-radius: 4px !important;
+    background-color: #6127d6 !important;
+    border: none !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+  }
+  

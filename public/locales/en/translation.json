@@ -2137,5 +2137,9 @@
   "Submit-document-for-approval": "Submit document for approval",
   "Send-data-storage-retention-policy": "Send Data Storage & Retention Policy",
   "Email-to-signer": "Email to signer",
-  "Minute-review-saved-successfully": "Minute review saved successfully"
+  "Minute-review-saved-successfully": "Minute review saved successfully",
+  "Diskus-update-alert": "Diskus Update Alert",
+  "A-new-update-for-diskus-is-now-available": "A new update for Diskus is now available!",
+  "Later": "Later",
+  "Update-now": "Update Now"
 }
