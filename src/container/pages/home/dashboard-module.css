@@ -130,12 +130,13 @@ h1.recent-activity {
 .Recent-Activity-Box {
   height: 37vh !important;
   padding-left: 15px;
+  margin-bottom: 10px;
   overflow: hidden auto !important;
 }
 
 .DashboardTodoTable {
   position: relative;
-  height: 61vh !important;
+  /* height: 61vh !important; */
   /* overflow-y: auto;
   overflow-x   : hidden; */
   margin-left: -5px;
@@ -156,6 +157,7 @@ body[dir="rtl"] .DashboardTodoTable span.ant-typography.labelTitle {
 
 .DashboardTodoTable .ant-table-body {
   overflow-y: auto !important;
+  height: calc(91vh - 13vh) !important;
   /* max-height: 455px !important; */
   /* margin-top: 7px !important; */
 }
@@ -270,20 +272,20 @@ body[dir="rtl"] h1.upcoming-events {
 }
 
 .Upcoming-Events-Box {
-  height: 23vh;
+  height: 31vh;
   overflow-y: auto;
   overflow-x: hidden;
   margin-right: 7px !important;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
 }
 
 .event-details {
   padding: 8px 15px;
   border-radius: 7px;
-  margin: 5px 15px;
+  margin: 5px 5px;
   color: #fff;
   font-size: 15px;
   border: 1px solid #6172d6;
@@ -304,7 +306,7 @@ body[dir="rtl"] .upcoming_events {
 .event-details:hover {
   padding: 8px 15px;
   border-radius: 7px;
-  margin: 5px 15px;
+  margin: 5px 5px;
   color: #fff;
   font-size: 15px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
@@ -346,8 +348,6 @@ body[dir="rtl"] .event-details:hover {
 
 .rmdp-wrapper.rmdp-shadow {
   width: 100% !important;
-  margin-top: -5px;
-  background: white !important;
 }
 
 .rmdp-top-class {
@@ -363,14 +363,10 @@ body[dir="rtl"] .event-details:hover {
   margin-top: -12px;
 }
 
-/* .rmdp-day-picker {
-  margin-top: -5px;
-} */
-
 .rmdp-week {
-  margin-top: -5px;
   font-weight: 600;
   text-transform: uppercase;
+  font-size: 12px;
 }
 
 .rmdp-week .rmdp-week-day {
@@ -546,10 +542,13 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 
 .ant-table-wrapper.dashboard-todo .ant-table-tbody > tr > td {
   background: #fff !important;
+  padding: 5px;
 }
 
 .ant-table-wrapper.dashboard-todo .ant-table-tbody > tr {
   cursor: pointer;
+  border: 1px solid #e1e1e1;
+  border-radius: 20px;
 }
 
 /* .ant-table-wrapper.dashboard-todo .ant-table-tbody>tr {
@@ -575,10 +574,6 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
     border: 5px solid #ccc !important;
 } */
 .dashboard-todo {
-  max-height: 56.4vh !important;
-  /* overflow-x: hidden; */
-  /* overflow-y: auto;
-  margin-top: 0px; */
   padding-right: 8px;
 }
 
@@ -959,20 +954,6 @@ body[dir="rtl"] .Ok-Successfull-btn {
   font-weight: 600;
 }
 
-.allowModalIcon {
-  color: #f16b6b;
-  border: none !important;
-  border-radius: 0px !important;
-  margin-top: 25px !important;
-}
-
-.allow-limit-modal-p {
-  text-align: center !important;
-  font-size: 14px !important;
-  font-weight: 600;
-  margin-top: 10px;
-}
-
 .home-recentactivity-scrollbar-container::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
@@ -1259,7 +1240,7 @@ body[dir="rtl"] h1.noteheading {
 }
 
 .calendar_home {
-  height: 30.9vh !important;
+  height: 100% !important;
   border: 1px solid #e1e1e1 !important;
   border-bottom: none !important;
   border-bottom-left-radius: 0px;
@@ -1275,7 +1256,7 @@ body[dir="rtl"] h1.noteheading {
 }
 
 .dashboard-col-1 {
-  height: 91vh !important;
+  height: 61vh !important;
   /* background-color: #fff !important; */
 }
 
@@ -1286,8 +1267,8 @@ body[dir="rtl"] h1.noteheading {
 }
 
 .task-title {
-  color: #6172d6 !important;
-  font-weight: 600;
+  color: #5a5a5a !important;
+  font-weight: 700;
   font-size: 20px !important;
 }
 
@@ -1342,6 +1323,7 @@ body[dir="rtl"] h1.noteheading {
 .MainTitleClass {
   color: #49598c !important;
   font-weight: 700 !important;
+  font-size: 16px;
 }
 
 .SubtitleTodoMessege {
@@ -1423,6 +1405,12 @@ body[dir="rtl"] svg.DatePickerIcon {
   justify-content: center;
   align-items: center;
 }
-.status_value {
-  font-weight: 600;
+
+.StatsBox {
+  margin-top: 10px;
+  min-height: 20vh !important;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  margin-bottom: 10px;
+  padding: 15px;
 }

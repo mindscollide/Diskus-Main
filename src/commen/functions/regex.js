@@ -52,3 +52,5 @@ export const validateIP = (ip) => {
 export const regexOnlyNumbers = (data) => {
   return data.replace(/^\s/, "").replace(/\D/g, "");
 };
+
+export const formatValue = (value) => (value < 9 ? `0${value}` : value);

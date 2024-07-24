@@ -22,6 +22,7 @@ import {
   GetAllPublishedMeetingMinutesRM,
   publishMeetingMinutes,
   getDataForResendMinuteReview,
+  getMinuteAndSignatureApprovalThisWeekRM,
 } from "../../commen/apis/Api_config";
 import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
 import {
@@ -2244,7 +2245,110 @@ const ResendUpdatedMinuteForReview = (
   };
 };
 
+const getPendingApprovalStatsThisWeek_Init = () => {
+  return {
+    type: actions.GETMINUTESANDSIGNATUREAPPROVALTHISWEEK_INIT,
+  };
+};
+
+const getPendingApprovalStatsThisWeek_Success = (response, message) => {
+  return {
+    type: actions.GETMINUTESANDSIGNATUREAPPROVALTHISWEEK_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getPendingApprovalStatsThisWeek_Fail = (message, response) => {
+  return {
+    type: actions.GETMINUTESANDSIGNATUREAPPROVALTHISWEEK_FAIL,
+    message: message,
+    response: response,
+  };
+};
+
+//ResendUpdatedMinuteForReview
+const getPendingApprovalStatsThisWeekApi = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getPendingApprovalStatsThisWeek_Init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getMinuteAndSignatureApprovalThisWeekRM.RequestMethod
+    );
+    // form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getPendingApprovalStatsThisWeekApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteAndSignatureApprovalsThisWeek_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getPendingApprovalStatsThisWeek_Success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteAndSignatureApprovalsThisWeek_02".toLowerCase()
+                )
+            ) {
+              dispatch(getPendingApprovalStatsThisWeek_Fail(t("")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteAndSignatureApprovalsThisWeek_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
+  getPendingApprovalStatsThisWeekApi,
   GetPublishedMeetingMinutesApi,
   MeetingPublishedMinutesApi,
   DeleteMinuteReducer,

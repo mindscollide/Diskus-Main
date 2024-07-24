@@ -1,0 +1,137 @@
+.newDashboardTable .ant-table.ant-table-small.ant-table-layout-fixed {
+  background: none !important;
+}
+
+.newDashboardTable .ant-table-thead > tr > th {
+  border-bottom: none !important;
+  background: none !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #5f78d6 !important;
+}
+
+.AssignedToMe {
+  background-color: #d3f4f6 !important;
+  border-radius: 4px !important;
+  height: 39px !important;
+  margin-bottom: 10px !important;
+  overflow: hidden !important;
+}
+.AssignedToMe:hover {
+  background-color: #d3f4f6 !important;
+  border: 1px solid #000 !important;
+}
+.AssignedByMe {
+  background-color: #fff !important;
+  margin-bottom: 10px !important;
+  border-radius: 4px !important;
+  height: 39px !important;
+  overflow: hidden !important;
+}
+.AssignedByMe:hover {
+  background-color: #fff !important;
+  border: 1px solid #000 !important;
+}
+.newDashboardTable table {
+  width: 100% !important;
+  border-spacing: 0 10px !important;
+}
+
+.newDashboardTable
+  tr.AssignedByMe
+  td.ant-table-cell.titleDashboard.ant-table-cell-ellipsis {
+  color: #949494;
+}
+
+.newDashboardTable td.ant-table-cell.titleDashboard.ant-table-cell-ellipsis {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+}
+
+.newDashboardTable td.ant-table-cell.statusDashboard {
+  font-size: 10px !important;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+}
+
+.newDashboardTable .ant-table-tbody > tr > td {
+  border-bottom: 0 !important;
+}
+
+.newDashboardTable td.ant-table-cell.deadlineDashboard {
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  color: #5a5a5a !important;
+}
+
+.status_value {
+  font-weight: 500 !important;
+}
+
+.newDashboardTable .ant-table-tbody > tr.AssignedToMe.ant-table-row:hover > td,
+.newDashboardTable
+  .ant-table-tbody
+  > tr.AssignedToMe
+  > td.ant-table-cell-row-hover {
+  background: #d3f4f6 !important;
+  transition: none !important;
+}
+
+.newDashboardTable .ant-table-tbody > tr.AssignedByMe.ant-table-row:hover > td,
+.newDashboardTable
+  .ant-table-tbody
+  > tr.AssignedByMe
+  > td.ant-table-cell-row-hover {
+  background: #fff !important;
+  transition: none !important;
+}
+
+.newDashboardTable
+  .ant-table-tbody
+  > tr.ant-table-row:hover
+  > td.titleDashboard,
+.newDashboardTable
+  .ant-table-tbody
+  > tr
+  > td.ant-table-cell-row-hover.titleDashboard {
+  /* background: #d3f4f6 !important; */
+  transition: none !important;
+  border: 1px solid #000 !important;
+  border-right: none !important;
+  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+}
+
+.newDashboardTable
+  .ant-table-tbody
+  > tr.ant-table-row:hover
+  > td.deadlineDashboard,
+.newDashboardTable
+  .ant-table-tbody
+  > tr
+  > td.ant-table-cell-row-hover.deadlineDashboard {
+  /* background: #d3f4f6 !important; */
+  transition: none !important;
+  border: 1px solid #000 !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.newDashboardTable
+  .ant-table-tbody
+  > tr.ant-table-row:hover
+  > td.statusDashboard,
+.newDashboardTable
+  .ant-table-tbody
+  > tr
+  > td.ant-table-cell-row-hover.statusDashboard {
+  /* background: #d3f4f6 !important; */
+  transition: none !important;
+  border: 1px solid #000 !important;
+  border-left: none !important;
+  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+}

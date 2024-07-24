@@ -1,0 +1,99 @@
+.Stats_title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #5a5a5a;
+}
+.ProgressBarContains {
+  position: relative;
+  padding: 0 30px;
+  justify-content: center;
+}
+.ProgressBarContains::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 5px;
+  background-color: #e1e1e1;
+  left: 0;
+  border-radius: 10px;
+}
+.dashboard_progress_upcomingmeeting {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingmeeting_R {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingTask {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingTask_R {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingApproval {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingApproval_R {
+  height: 25px !important;
+  border-radius: 25px !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+.dashboard_progress_upcomingmeeting_R div {
+  background-color: transparent !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-left: 10px;
+}
+.dashboard_progress_upcomingmeeting div {
+  background-color: #6172d6 !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-right: 10px;
+}
+.dashboard_progress_upcomingTask_R div {
+  background-color: transparent !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-left: 10px;
+}
+.dashboard_progress_upcomingTask div {
+  background-color: #ffc300 !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-right: 10px;
+}
+.dashboard_progress_upcomingApproval_R div {
+  background-color: transparent !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-left: 10px;
+}
+
+.dashboard_progress_upcomingApproval div {
+  background-color: #55ce5c !important;
+  border-radius: 25px !important;
+  text-align: right;
+  padding-right: 10px;
+}

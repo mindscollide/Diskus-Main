@@ -1602,6 +1602,9 @@ const LoginHistoryReportExporttoExcel = {
 const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
+const GetDownloadInvoiceRM = {
+  RequestMethod: "ServiceManager.DownloadInvoic",
+};
 
 //Minutes APIs
 
@@ -1719,7 +1722,13 @@ const validateVideoRecordingURL = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringVideoURlBoardDeck",
 };
 
+const getMinuteAndSignatureApprovalThisWeekRM = {
+  RequestMethod: "ServiceManager.GetMinuteAndSignatureApprovalsThisWeek",
+};
+
 export {
+  getMinuteAndSignatureApprovalThisWeekRM,
+  GetDownloadInvoiceRM,
   DownloadInvoiceRM,
   GetAllPublishedMeetingMinutesRM,
   PublishMeetingMinutesRM,
