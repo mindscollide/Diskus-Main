@@ -1,0 +1,84 @@
+.sendDocument_Heading {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6172d6;
+  margin-bottom: 1.5rem;
+}
+
+.Email_Heading {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: .5rem;
+  color: #5a5a5a;
+}
+.signerEmail_box {
+  background-color: #6172d6;
+  border-radius: 20px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.signerEmail {
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.signersEmailsData {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-height: 75px;
+  overflow-y: auto;
+}
+.deleteSigner_icon {
+    display: block;
+    margin-top: 28px;
+}
+.labelClassEmail {
+    font-weight: 600 !important;
+    font-size: 10px;
+    color: #6172d6;
+}
+.labelClassMessage {
+    font-weight: 600 !important;
+    font-size: 10px;
+    color: #6172d6;
+}
+.SignedDocumentIcon {
+    font-size: 10px;
+    font-weight: 600;
+    color: #5a5a5a;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+
+.sendDocumentIcon {
+    position: absolute;
+    top: 28px;
+    right: 15px;
+}
+
+.SendButton_SendDocument {
+    background-color: #6172d6 !important;
+    border-radius: 4px !important; 
+    padding: 12px 30px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.AdduserCC {
+    border: 1px dashed #707070;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    padding: 2px 5px;
+}

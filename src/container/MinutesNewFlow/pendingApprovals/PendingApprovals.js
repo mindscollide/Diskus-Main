@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Row, Col, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next"; // Importing translation hook
+import {
+  utcConvertintoGMT,
+  newDateFormatterForMinutesPendingApproval,
+} from "../../../commen/functions/date_formater";
 import styles from "./PendingApprovals.module.css"; // Importing CSS module
 import {
   pendingApprovalPage,
   reviewMinutesPage,
+  GetMinuteReviewPendingApprovalsStatsByReviewerId,
+  GetMinuteReviewPendingApprovalsByReviewerId,
+  currentMeetingMinutesToReview,
 } from "../../../store/actions/Minutes_action"; // Importing Page Change State
 import { useDispatch } from "react-redux"; // Importing Redux hook
 import { useNavigate } from "react-router-dom"; // Importing navigation hook
 import { Button, Paper, TableToDo } from "../../../components/elements"; // Importing custom components
 import { ChevronDown } from "react-bootstrap-icons"; //Bootstrap Icon
+import DescendIcon from "./../Images/SorterIconDescend.png";
+import AscendIcon from "./../Images/SorterIconAscend.png";
+import ArrowDownIcon from "./../Images/Arrow-down.png";
+import ArrowUpIcon from "./../Images/Arrow-up.png";
+import NoApprovals from "./../Images/No-Approvals.png";
 import ReviewSignature from "../../DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
+import {
+  getAllPendingApprovalStatusApi,
+  getAllPendingApprovalsSignaturesApi,
+  getAllPendingApprovalsStatsApi,
+} from "../../../store/actions/workflow_actions";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import ProgressStats from "../../../components/elements/progressStats/ProgressStats";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -18,22 +38,41 @@ const PendingApproval = () => {
   const dispatch = useDispatch(); // Redux hook
   const navigate = useNavigate(); // Navigation hook
 
+  const { MinutesReducer } = useSelector((state) => state);
+
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   // State for tracking the active state of each button
   const [reviewMinutesActive, setReviewMinutesActive] = useState(true); // Default Review Minutes button to active
   const [reviewAndSignActive, setReviewAndSignActive] = useState(false);
+  const [progress, setProgress] = useState([]);
+  const [sortOrderMeetingTitle, setSortOrderMeetingTitle] = useState(null);
+  const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
+  const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
+  const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
 
   // Click handler for Review Minutes button
-  const handleReviewMinutesClick = () => {
+  const handleReviewMinutesClick = async () => {
+    let Data = { sRow: 0, Length: 10 };
+    await dispatch(
+      GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t)
+    );
+    await dispatch(
+      GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t)
+    );
     setReviewMinutesActive(true); // Set Review Minutes button to active
     setReviewAndSignActive(false); // Set Review & Sign button to inactive
     // Your functionality for Review Minutes button
   };
 
   // Click handler for Review & Sign button
-  const handleReviewAndSignClick = () => {
+  const handleReviewAndSignClick = async () => {
+    await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
+    let Data = { sRow: 0, Length: 10 };
+    dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+    let newData = { IsCreator: false };
+    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
     setReviewMinutesActive(false); // Set Review Minutes button to inactive
     setReviewAndSignActive(true); // Set Review & Sign button to active
     // Your functionality for Review & Sign button
@@ -58,6 +97,7 @@ const PendingApproval = () => {
       paddingTop: "5px",
       paddingRight: currentLanguage === "en" ? "10px" : "auto",
       paddingLeft: currentLanguage === "en" ? "auto" : "10px",
+      minWidth: `${indexValue === "0" ? "100%" : "auto"}`,
     };
 
     return <span style={barStyle}>{percentageValue}</span>; // Display progress bar with percentage
@@ -66,17 +106,44 @@ const PendingApproval = () => {
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
-      title: t("Meeting-title"),
-      dataIndex: "name",
-      key: "name",
+      // title: t("Meeting-title"),
+      title: (
+        <>
+          <span>
+            {t("Meeting-title")}{" "}
+            {sortOrderMeetingTitle === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
+      dataIndex: "title",
+      key: "title",
       className: "nameParticipant",
       width: "200px",
       ellipsis: true,
+      sorter: (a, b) =>
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+      sortOrderMeetingTitle,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderMeetingTitle((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p
           onClick={() => {
-            dispatch(reviewMinutesPage(true));
-            dispatch(pendingApprovalPage(false));
+            if (record.status !== "Expired") {
+              dispatch(reviewMinutesPage(true));
+              dispatch(pendingApprovalPage(false));
+              dispatch(currentMeetingMinutesToReview(record));
+            }
           }}
           className={
             record.status === "Expired"
@@ -89,12 +156,35 @@ const PendingApproval = () => {
       ),
     },
     {
-      title: t("Review-requested-by"),
-      dataIndex: "userEmail",
-      key: "userEmail",
+      title: (
+        <>
+          <span>
+            {t("Review-requested-by")}{" "}
+            {sortOrderReviewRequest === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
+      dataIndex: "requestedBy",
+      key: "requestedBy",
       className: "emailParticipant",
       width: "180px",
       ellipsis: true,
+      sorter: (a, b) =>
+        a.requestedBy.toLowerCase().localeCompare(b.requestedBy.toLowerCase()),
+      sortOrderReviewRequest,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderReviewRequest((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p className={record.status === "Expired" ? "opacity-25 m-0" : "m-0"}>
           {text}
@@ -102,15 +192,38 @@ const PendingApproval = () => {
       ),
     },
     {
-      title: t("Submission-date-and-time"),
-      dataIndex: "leaveTime",
-      key: "leaveTime",
+      title: (
+        <>
+          <span>
+            {t("Submission-date")}{" "}
+            {sortOrderLeaveDateTime === "descend" ? (
+              <img src={ArrowDownIcon} alt="" />
+            ) : (
+              <img src={ArrowUpIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
+      dataIndex: "deadline",
+      key: "deadline",
       className: "leaveTimeParticipant",
-      width: "180px",
+      width: "140px",
       ellipsis: true,
+      sorter: (a, b) =>
+        utcConvertintoGMT(a.deadline) - utcConvertintoGMT(b.deadline),
+      sortOrderLeaveDateTime,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderLeaveDateTime((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p className={record.status === "Expired" ? "opacity-25 m-0" : "m-0"}>
-          {text}
+          {newDateFormatterForMinutesPendingApproval(text)}
         </p>
       ),
       // render: (text, record) => convertAndFormatDateTimeGMT(text),
@@ -123,9 +236,9 @@ const PendingApproval = () => {
       className: "statusParticipant",
       width: "150px",
       filters: [
+        { text: t("Reviewed"), value: "Reviewed" },
         { text: t("Pending"), value: "Pending" },
         { text: t("Expired"), value: "Expired" },
-        { text: t("Reviewed"), value: "Reviewed" },
       ],
       onFilter: (value, record) => record.status === value,
       filterIcon: () => (
@@ -147,52 +260,48 @@ const PendingApproval = () => {
     },
   ];
 
-  // Data for rows of the pending approval table
-  const rowsPendingApproval = [
-    {
-      key: "1",
-      name: "Board Member Executive Meeting from Boss's and hahahahahaha",
-      userEmail: "john.doe@example.com",
-      status: "Pending",
-      leaveTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "1",
-      name: "IT Departmental Meeting",
-      userEmail: "john.doe@example.com",
-      status: "Pending",
-      leaveTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "1",
-      name: "John Doe",
-      userEmail: "john.doe@example.com",
-      status: "Reviewed",
-      leaveTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "2",
-      name: "Stock and Shareholders Meeting",
-      userEmail: "jane.smith@example.com",
-      status: "Expired",
-      leaveTime: "11-01-2024 | 04:30 PM",
-    },
-    {
-      key: "3",
-      name: "Board Member Executive Meeting from Boss's",
-      userEmail: "michael.johnson@example.com",
-      status: "Expired",
-      leaveTime: "11-01-2024 | 05:15 PM",
-    },
-    {
-      key: "4",
-      name: "Board Member Executive Meeting from Boss's",
-      userEmail: "emily.brown@example.com",
-      status: "Reviewed",
-      leaveTime: "11-01-2024 | 05:45 PM",
-    },
-    // Add more data as needed
-  ];
+  useEffect(() => {
+    let Data = { sRow: 0, Length: 10 };
+    dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
+    dispatch(GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData !== null &&
+      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData !==
+        undefined &&
+      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData.length !==
+        0
+    ) {
+      let reducerDataRow =
+        MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData
+          .pendingReviews;
+      setRowsPendingApproval(reducerDataRow);
+    } else {
+      setRowsPendingApproval([]);
+    }
+  }, [MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData]);
+
+  useEffect(() => {
+    if (
+      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData !==
+        null &&
+      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData !==
+        undefined &&
+      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
+        .length !== 0
+    ) {
+      let reducerData =
+        MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
+          .data;
+      setProgress(reducerData);
+    } else {
+      setProgress([]);
+    }
+  }, [MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData]);
+
+  console.log("progressprogress", progress);
 
   return (
     <section className={styles["pendingApprovalContainer"]}>
@@ -223,15 +332,18 @@ const PendingApproval = () => {
                   onClick={handleReviewMinutesClick} // Attach click handler
                 />
                 {/* Review & Sign button */}
-                <Button
-                  text="Review & Sign"
-                  className={
-                    reviewAndSignActive
-                      ? styles.activeMinutes
-                      : styles.inActiveMinutes
-                  } // Apply active or inactive styles based on state
-                  onClick={handleReviewAndSignClick} // Attach click handler
-                />
+                {(checkFeatureIDAvailability(19) ||
+                  checkFeatureIDAvailability(21)) && (
+                  <Button
+                    text="Review & Sign"
+                    className={
+                      reviewAndSignActive
+                        ? styles.activeMinutes
+                        : styles.inActiveMinutes
+                    } // Apply active or inactive styles based on state
+                    onClick={handleReviewAndSignClick} // Attach click handler
+                  />
+                )}
               </div>
             </Col>
           </Row>
@@ -240,76 +352,132 @@ const PendingApproval = () => {
               {" "}
               <Row>
                 <Col>
-                  <div className={styles["progressWrapper"]}>
-                    <Row>
-                      <Col lg={6} md={6} sm={12}>
-                        <div className="d-flex positionRelative">
-                          {/* Progress bars with different colors and percentages */}
-                          <ProgressBar
-                            width={100}
-                            color="#F16B6B"
-                            indexValue="0"
-                            percentageValue={"60%"}
+                  {rowsPendingApproval.length > 0 ? (
+                    <>
+                      <div className={styles["progressWrapper"]}>
+                        <Row>
+                          <Col lg={6} md={6} sm={12}>
+                            <div className="d-flex positionRelative">
+                              {/* Progress bars with different colors and percentages */}
+                              <ProgressStats
+                                FirstColor="#6172D6"
+                                firstValue={progress.reviewedPercentage}
+                                thirdValue={progress.expiredPercentage}
+                                thirdColor="#F16B6B"
+                                secondColor="#ffc300"
+                                secondValue={progress.pendingPercentage}
+                              />
+                              {/* {progress.reviewed === 0 ? null : (
+                                <ProgressBar
+                                  width={progress.reviewedPercentage}
+                                  color="#6172d6"
+                                  indexValue="0"
+                                  percentageValue={
+                                    progress.reviewedPercentage + "%"
+                                  }
+                                />
+                              )}{" "}
+                              {progress.pendingPercentage === 0 ? null : (
+                                <ProgressBar
+                                  width={progress.pendingPercentage}
+                                  color="#ffc300"
+                                  indexValue="1"
+                                  percentageValue={
+                                    progress.pendingPercentage + "%"
+                                  }
+                                />
+                              )}
+                              {progress.expiredPercentage === 0 ? null : (
+                                <ProgressBar
+                                  width={progress.expiredPercentage}
+                                  color="#f16b6b"
+                                  indexValue="2"
+                                  percentageValue={
+                                    progress.expiredPercentage + "%"
+                                  }
+                                />
+                              )} */}
+                            </div>
+                          </Col>
+                          <Col lg={6} md={6} sm={12} className="d-flex">
+                            <span className={styles["line"]} />
+                            <div
+                              className={
+                                styles["progress-value-wrapper-purple"]
+                              }
+                            >
+                              <span className={styles["numeric-value"]}>
+                                {progress.reviewed}
+                              </span>
+                              <span className={styles["value"]}>
+                                {t("Reviewed")}
+                              </span>
+                            </div>
+                            <span className={styles["line"]} />
+                            <div
+                              className={
+                                styles["progress-value-wrapper-yellow"]
+                              }
+                            >
+                              <span className={styles["numeric-value"]}>
+                                {progress.pending}
+                              </span>
+                              <span className={styles["value"]}>
+                                {t("Pending")}
+                              </span>
+                            </div>
+                            <span className={styles["line"]} />
+                            <div
+                              className={styles["progress-value-wrapper-red"]}
+                            >
+                              <span className={styles["numeric-value"]}>
+                                {progress.expired}
+                              </span>
+                              <span className={styles["value"]}>
+                                {t("Expired")}
+                              </span>
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+                      <Row>
+                        <Col>
+                          <TableToDo
+                            sortDirections={["descend", "ascend"]}
+                            column={pendingApprovalColumns}
+                            className={"PendingApprovalsTable"}
+                            rows={rowsPendingApproval}
+                            // scroll={scroll}
+                            pagination={false}
+                            scroll={
+                              rowsPendingApproval.length > 10
+                                ? { y: 385 }
+                                : undefined
+                            }
+                            id={(record, index) =>
+                              index === rowsPendingApproval.length - 1
+                                ? "last-row-class"
+                                : ""
+                            }
                           />
-                          <ProgressBar
-                            width={30}
-                            color="#ffc300"
-                            indexValue="1"
-                            percentageValue={"30%"}
-                          />
-                          <ProgressBar
-                            width={10}
-                            color="#6172D6"
-                            indexValue="2"
-                            percentageValue={"10%"}
-                          />
-                        </div>
-                      </Col>
-                      <Col lg={6} md={6} sm={12} className="d-flex">
-                        <span className={styles["line"]} />
-                        <div
-                          className={styles["progress-value-wrapper-purple"]}
-                        >
-                          <span className={styles["numeric-value"]}>03</span>
-                          <span className={styles["value"]}>Reviewed</span>
-                        </div>
-                        <span className={styles["line"]} />
-                        <div
-                          className={styles["progress-value-wrapper-yellow"]}
-                        >
-                          <span className={styles["numeric-value"]}>03</span>
-                          <span className={styles["value"]}>Pending</span>
-                        </div>
-                        <span className={styles["line"]} />
-                        <div className={styles["progress-value-wrapper-red"]}>
-                          <span className={styles["numeric-value"]}>02</span>
-                          <span className={styles["value"]}>Expired</span>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : (
+                    <section
+                      className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}
+                    >
+                      <img src={NoApprovals} alt="" />
+                      <span className={styles["No-Approvals"]}>
+                        {t("Approvals")}
+                      </span>
+                      <span className={styles["No-Approvals-Text"]}>
+                        {t("No-pending-approvals-at-the-moment")}
+                      </span>
+                    </section>
+                  )}
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                  <TableToDo
-                    sortDirections={["descend", "ascend"]}
-                    column={pendingApprovalColumns}
-                    className={"PendingApprovalsTable"}
-                    rows={rowsPendingApproval}
-                    // scroll={scroll}
-                    pagination={false}
-                    scroll={
-                      rowsPendingApproval.length > 10 ? { y: 385 } : undefined
-                    }
-                    id={(record, index) =>
-                      index === rowsPendingApproval.length - 1
-                        ? "last-row-class"
-                        : ""
-                    }
-                  />
-                </Col>
-              </Row>{" "}
             </>
           ) : (
             <ReviewSignature />

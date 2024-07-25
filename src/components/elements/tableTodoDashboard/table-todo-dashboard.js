@@ -13,6 +13,7 @@ const CustomTableToDoDashboard = ({
   labelTitle,
   scroll,
   onRow,
+  prefClassName,
 }) => {
   const { Text } = Typography;
 
@@ -31,6 +32,7 @@ const CustomTableToDoDashboard = ({
         pagination={pagination}
         scroll={scroll}
         onRow={onRow}
+        prefixCls={prefClassName}
       />
     </>
   );

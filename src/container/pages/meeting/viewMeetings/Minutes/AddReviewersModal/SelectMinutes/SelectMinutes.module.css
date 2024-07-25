@@ -1,0 +1,105 @@
+p.SelectAll {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  color: #5a5a5a;
+  margin: 0;
+}
+
+.addReviewersCheckbox {
+  display: flex;
+  gap: 15px;
+  justify-content: end;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.agendaTitleCheckbox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+  vertical-align: middle;
+}
+
+.agenda-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #5f78d6;
+  margin: 0;
+}
+
+.minuteWrapper {
+  border: 1px solid #e1e1e1;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.minuteParentLabel {
+  flex: auto;
+  margin-right: 50px !important;
+  margin-bottom: 0 !important;
+  display: block;
+  overflow: hidden;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #5a5a5a;
+}
+
+body[dir="rtl"] .minuteParentLabel {
+  flex: auto;
+  margin-right: auto !important;
+  margin-left: 50px !important;
+  margin-bottom: 0 !important;
+  display: block;
+  overflow: hidden;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #5a5a5a;
+}
+
+span.view-details {
+  font-weight: 500;
+  font-size: 12px;
+  text-decoration-line: underline;
+  color: #6172d6;
+  cursor: pointer;
+  display: flex;
+  align-items: end;
+}
+span.reviewer-count {
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  background: linear-gradient(270deg, #4adede -6.12%, #6172d6 100.01%);
+  border-radius: 100%;
+  top: -7px;
+  right: -7px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-wrapper {
+  margin: 15px 0px;
+  border: 1px solid #e1e1e1;
+  padding: 10px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.image-profile-wrapper {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 10px;
+}
+
+img.image-style {
+  border-radius: 100%;
+}

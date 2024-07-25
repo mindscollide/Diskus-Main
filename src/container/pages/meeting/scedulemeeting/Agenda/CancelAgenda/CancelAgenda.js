@@ -27,6 +27,7 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   };
 
   const handleYesFunctionality = async () => {
+    dispatch(showCancelModalAgenda(false));
     let searchData = {
       Date: "",
       Title: "",

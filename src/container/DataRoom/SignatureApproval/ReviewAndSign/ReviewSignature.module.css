@@ -95,3 +95,12 @@ p.declineStatus {
   text-transform: uppercase;
   color: #f16b6b;
 }
+
+p.draftStatus {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #a2a2a2;
+}

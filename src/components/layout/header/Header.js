@@ -6,7 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import TimeAgo from "timeago-react";
 import Cookies from "js-cookie";
 import MeetingChangesSvg from "../../../assets/images/meeting_changes-icon.svg";
-import "./Header.css";
+import "../header2/Header.css";
 import { useTour } from "@reactour/tour";
 import TextField from "../../elements/input_field/Input_field";
 import "../../../i18n.js";

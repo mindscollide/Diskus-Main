@@ -5,8 +5,10 @@ import {
   getUserSettings,
   updateProfileData,
 } from "../../commen/apis/Api_config";
+import { findAndSetConfigValue } from "../../commen/functions/utils";
 import { RefreshToken } from "../actions/Auth_action";
 import axios from "axios";
+import { currentUserPicture } from "./Minutes_action";
 
 const settingInit = () => {
   return {
@@ -95,28 +97,74 @@ const getUserSetting = (navigate, t, loader) => {
                 localStorage.removeItem("googleEventColor");
               }
 
+              dispatch(
+                currentUserPicture(
+                  response.data.responseResult.userSettings.userProfilePicture
+                )
+              );
+
+              let dataToFind =
+                response.data.responseResult.userSettings.configurations;
+
               localStorage.setItem(
                 "diskusEventColor",
                 response.data.responseResult.userSettings.diskusEventColor
               );
 
-              localStorage.setItem(
-                "videoBaseURLCaller",
-                response.data.responseResult.userSettings.configurations[1]
-                  .configValue
+              let baseUrlCaller = findAndSetConfigValue(
+                dataToFind,
+                "Video_Server_Base_URL_Caller"
               );
 
-              localStorage.setItem(
-                "callRingerTimeout",
-                response.data.responseResult.userSettings.configurations[2]
-                  .configValue
+              if (baseUrlCaller) {
+                localStorage.setItem(
+                  "videoBaseURLCaller",
+                  baseUrlCaller.configValue
+                );
+              }
+
+              let baseUrlParticipant = findAndSetConfigValue(
+                dataToFind,
+                "Video_Server_Base_URL_Participant"
               );
 
-              localStorage.setItem(
-                "videoBaseURLParticipant",
-                response.data.responseResult.userSettings.configurations[3]
-                  .configValue
+              if (baseUrlParticipant) {
+                localStorage.setItem(
+                  "videoBaseURLParticipant",
+                  baseUrlParticipant.configValue
+                );
+              }
+
+              // localStorage.setItem("callRingerTimeout", 30);
+
+              // let callRingerTimeout = findAndSetConfigValue(
+              //   dataToFind,
+              //   "Video_Server_Base_URL_Participant"
+              // );
+
+              // if (baseUrlParticipant) {
+              //   localStorage.setItem(
+              //     "videoBaseURLParticipant",
+              //     baseUrlParticipant.configValue
+              //   );
+              // }
+
+              let getCallRinger = findAndSetConfigValue(
+                dataToFind,
+                "Video_Call_Ringer_Timeout_Seconds"
               );
+              if (getCallRinger !== undefined) {
+                localStorage.setItem(
+                  "callRingerTimeout",
+                  getCallRinger.configValue
+                );
+              }
+
+              // localStorage.setItem(
+              //   "videoBaseURLParticipant",
+              //   response.data.responseResult.userSettings.configurations[14]
+              //     .configValue
+              // );
 
               await dispatch(
                 settingSuccess(response.data.responseResult.userSettings, "")

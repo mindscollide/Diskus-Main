@@ -87,26 +87,6 @@ const ParentAgenda = ({
   // const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
-  // const [expandedArray, setExpandedArray] = useState([]);
-
-  // useEffect(() => {
-  //   let agendaIDs = [];
-  //   let subAgendaIDs = [];
-
-  //   rows.forEach((item) => {
-  //     agendaIDs.push(item.id);
-  //     item.subAgenda.forEach((subItem) => {
-  //       subAgendaIDs.push(subItem.subAgendaID);
-  //     });
-  //   });
-
-  //   const allIDs = [...agendaIDs, ...subAgendaIDs];
-  //   setExpandedArray(allIDs);
-  //   console.log("IDSIDSIDS", allIDs);
-  // }, [rows]);
-  // function findIDInArray(id) {
-  //   return expandedArray.includes(id);
-  // }
 
   console.log("rowsrows", rows);
   //Timepicker
@@ -117,21 +97,6 @@ const ParentAgenda = ({
   const handleExpandedBtn = (index) => {
     setExpandIndex((prevIndex) => (prevIndex === index ? -1 : index));
   };
-
-  // function handleExpandedBtn(id) {
-  //   const index = expandedArray.indexOf(id);
-  //   if (index !== -1) {
-  //     // If ID exists, remove it from the array
-  //     expandedArray.splice(index, 1);
-  //   } else {
-  //     // If ID doesn't exist, add it to the array
-  //     expandedArray.push(id);
-  //   }
-  //   // Update state with the modified array
-  //   setExpandedArray([...expandedArray]);
-  // }
-
-  // console.log("handleExpandedBtn",expandedArray)
 
   const printFlag = useSelector(
     (state) => state.MeetingAgendaReducer.PrintAgendaFlag

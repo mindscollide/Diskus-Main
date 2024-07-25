@@ -1,0 +1,17 @@
+.NotesDashboard {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 34vh;
+  min-height: 34vh;
+  padding-right: 7px;
+}
+.emptystateNotesDashboard {
+  margin-top: 10px !important;
+  color: #e1e1e1 !important;
+  font-weight: 600;
+  font-size: 16px !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  text-align: center;
+}

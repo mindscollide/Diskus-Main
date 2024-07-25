@@ -28,7 +28,10 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { registerLocale } from "react-datepicker";
 import moment from "moment";
-import { multiDatePickerDateChangIntoUTC } from "../../../commen/functions/date_formater";
+import {
+  DateFormatForPolls,
+  multiDatePickerDateChangIntoUTC,
+} from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import {
   regexOnlyForNumberNCharacters,
@@ -356,13 +359,15 @@ const CreatePolling = () => {
   const changeDateStartHandler = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
+    DateDate.setHours(23, 59, 0, 0); // Set the time to 23:59:00
+
     setMeetingDate(meetingDateValueFormat);
     setcreatePollData({
       ...createPollData,
       date: DateDate,
     });
   };
-
+  console.log(createPollData, "createPollDatacreatePollData");
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
     return newDate;
@@ -389,6 +394,7 @@ const CreatePolling = () => {
           optionsListData.push(optionData.value);
         }
       });
+
       let data = {
         PollDetails: {
           PollTitle: createPollData.TypingTitle,
@@ -690,7 +696,7 @@ const CreatePolling = () => {
                             placeholder={t("Title") + "*"}
                             applyClass={"PollingCreateModal"}
                             labelClass="d-none"
-                            maxLength={490}
+                            maxLength={140}
                             name={"TypingTitle"}
                             value={createPollData.TypingTitle}
                             change={HandleChange}
@@ -735,7 +741,7 @@ const CreatePolling = () => {
                                               applyClass={"PollingCreateModal"}
                                               labelClass="d-none"
                                               name={data.name}
-                                              maxLength={490}
+                                              maxLength={100}
                                               value={data.value}
                                               change={(e) =>
                                                 HandleOptionChange(e)
@@ -759,7 +765,7 @@ const CreatePolling = () => {
                                               labelClass="d-none"
                                               name={data.name}
                                               value={data.value}
-                                              maxLength={490}
+                                              maxLength={100}
                                               change={(e) =>
                                                 HandleOptionChange(e)
                                               }
@@ -920,7 +926,12 @@ const CreatePolling = () => {
                                   <Row>
                                     <Col lg={11} md={11} sm={12}>
                                       <Row className={styles["Card_border2"]}>
-                                        <Col sm={12} md={10} lg={10} className="d-flex align-items-center">
+                                        <Col
+                                          sm={12}
+                                          md={10}
+                                          lg={10}
+                                          className="d-flex align-items-center"
+                                        >
                                           <img
                                             src={`data:image/jpeg;base64,${data.displayPicture}`}
                                             width="33px"

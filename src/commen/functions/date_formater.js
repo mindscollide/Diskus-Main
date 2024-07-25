@@ -616,7 +616,7 @@ export function formatDateToUTC(inputDate) {
   return month + day + year;
 }
 
-export const utcConvertintoGMT = (date) => {
+export const utcConvertintoGMT = (date, num) => {
   let fullDateyear =
     date?.slice(0, 4) +
     "-" +
@@ -631,6 +631,10 @@ export const utcConvertintoGMT = (date) => {
     date?.slice(12, 14) +
     ".000Z";
   let _dateTime = new Date(fullDateyear);
+  if (Number(num) === 1) {
+    _dateTime.setHours(23, 59, 0, 0);
+  }
+
   return _dateTime;
 };
 export const convertDateinGMT = (date) => {
@@ -948,4 +952,156 @@ export const convertUTCDateToLocalDate = (utcDateTime, locale) => {
 
 export const formattedString = (dateString) => {
   return dateString.replace("T", "").replace(/:/g, "").replace(/-/g, "");
+};
+
+export const newDateFormatterForMinutesPendingApproval = (dateTime) => {
+  console.log(dateTime, "newDateFormatterForMinutesPendingApproval");
+  let fullDateyear =
+    dateTime?.slice(0, 4) +
+    "-" +
+    dateTime?.slice(4, 6) +
+    "-" +
+    dateTime?.slice(6, 8) +
+    "T" +
+    dateTime?.slice(8, 10) +
+    ":" +
+    dateTime?.slice(10, 12) +
+    ":" +
+    dateTime?.slice(12, 14) +
+    ".000Z";
+  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  return moment(_dateTime).format("D - MM -YYYY | h:mm A");
+};
+
+export const SignatureandPendingApprovalDateTIme = (dateTime) => {
+  let fullDateyear =
+    dateTime?.slice(0, 4) +
+    "-" +
+    dateTime?.slice(4, 6) +
+    "-" +
+    dateTime?.slice(6, 8) +
+    "T" +
+    dateTime?.slice(8, 10) +
+    ":" +
+    dateTime?.slice(10, 12) +
+    ":" +
+    dateTime?.slice(12, 14) +
+    ".000Z";
+
+  let _dateTime = new Date(fullDateyear);
+  return moment(_dateTime).format("DD - MM - YYYY");
+};
+
+export const newDateFormatForMinutes = (dateTime) => {
+  let DateVal;
+  let TimeVal;
+  let fullDateyear =
+    dateTime?.slice(0, 4) +
+    "-" +
+    dateTime?.slice(4, 6) +
+    "-" +
+    dateTime?.slice(6, 8) +
+    "T" +
+    dateTime?.slice(8, 10) +
+    ":" +
+    dateTime?.slice(10, 12) +
+    ":" +
+    dateTime?.slice(12, 14) +
+    ".000Z";
+  let newDateFormate = new Date(fullDateyear);
+  DateVal = moment(newDateFormate).format("Do MMM YYYY");
+  TimeVal = moment(newDateFormate).format("HH:mm a");
+  return { DateVal, TimeVal };
+};
+
+//Date formatter Subscription DownGrade
+export function formatDateDownGradeSubscription(dateString) {
+  if (!dateString || dateString.length < 8) {
+    return "Invalid date";
+  }
+
+  // Extract year, month, day from the input string
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+
+  // Create a new Date object
+  const date = new Date(`${year}-${month}-${day}`);
+
+  // Define an array of month names
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  // Get the formatted day, month, and year
+  const formattedDay = date.getDate();
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Return the formatted date string
+  return `${formattedDay} ${formattedMonth} ${formattedYear}`;
+}
+
+export function formatDateToDDMMYYYYDownGradeSubscription(dateString) {
+  if (!dateString || dateString.length < 8) {
+    return "Invalid date";
+  }
+
+  // Extract year, month, day from the input string
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+
+  // Create a new Date object
+  const date = new Date(`${year}-${month}-${day}`);
+
+  // Get the formatted day, month, and year
+  const formattedDay = String(date.getDate()).padStart(2, "0");
+  const formattedMonth = String(date.getMonth() + 1).padStart(2, "0");
+  const formattedYear = date.getFullYear();
+
+  // Return the formatted date string
+  return `${formattedYear}-${formattedMonth}-${formattedDay}`;
+}
+
+export const newTimeFormaterViewPoll = (dateTime) => {
+  let _dateTime = new Date(dateTime).toString("YYYYMMDDHHmmss");
+  return moment(_dateTime).format("h:mm A, Do MMM, YYYY");
+};
+
+export const DateFormatForPolls = (date) => {
+  let dateFormatted = `${date}235900`;
+  let fullDateyear =
+    dateFormatted?.slice(0, 4) +
+    "-" +
+    dateFormatted?.slice(4, 6) +
+    "-" +
+    dateFormatted?.slice(6, 8) +
+    "T" +
+    dateFormatted?.slice(8, 10) +
+    ":" +
+    dateFormatted?.slice(10, 12) +
+    ":" +
+    dateFormatted?.slice(12, 14) +
+    ".000Z";
+  const now = new Date(dateFormatted);
+  const year = now.getUTCFullYear();
+  const month = String(now.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(now.getUTCDate()).padStart(2, "0");
+  const hours = String(now.getUTCHours()).padStart(2, "0");
+  const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+  const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+  console.log(`${year}${month}${day}${hours}${minutes}${seconds}`);
+  return `${year}${month}${day}${hours}${minutes}${seconds}`;
 };

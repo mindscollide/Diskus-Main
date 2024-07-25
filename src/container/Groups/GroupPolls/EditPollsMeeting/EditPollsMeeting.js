@@ -167,6 +167,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     setMeetingDate(meetingDateValueFormat);
     let newDate = new Date(date);
+    newDate.setHours(23, 59, 0, 0);
     setupdatePolls({
       ...updatePolls,
       date: newDate,
@@ -372,7 +373,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           Title: pollsDetailsData.pollDetails.pollTitle,
           AllowMultipleAnswers:
             pollsDetailsData.pollDetails.allowMultipleAnswers,
-          date: resolutionResultTable(pollsDetailsData?.pollDetails?.dueDate),
+          date: utcConvertintoGMT(newDateGmt, 1),
           PollID: pollsDetailsData.pollDetails.pollID,
         });
 
@@ -434,7 +435,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                 labelClass={"d-none"}
                 value={updatePolls.Title}
                 name={"UpdatePollsTitle"}
-                maxLength={490}
+                maxLength={140}
                 change={HandleChangeUpdatePolls}
                 disable={checkForPollStatus}
               />
@@ -470,7 +471,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                   labelClass="d-none"
                                   name={data.name}
                                   disable={checkForPollStatus}
-                                  maxLength={490}
+                                  maxLength={100}
                                   value={data.value}
                                   change={(e) => HandleOptionChange(e)}
                                 />
@@ -490,7 +491,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                   name={data.name}
                                   disable={checkForPollStatus}
                                   value={data.value}
-                                  maxLength={490}
+                                  maxLength={100}
                                   change={(e) => HandleOptionChange(e)}
                                   inputicon={
                                     checkForPollStatus ? null : (
@@ -577,7 +578,9 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                 calendar={calendarValue}
                 locale={localValue}
                 ref={calendRef}
-                onFocusedDateChange={(value) => changeDateStartHandlerUpdatePolls(value)}
+                onFocusedDateChange={(value) =>
+                  changeDateStartHandlerUpdatePolls(value)
+                }
               />
             </Col>
             <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">

@@ -178,12 +178,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
     console.log(date, "changeDateStartHandlerchangeDateStartHandler");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
-    console.log(DateDate, "changeDateStartHandlerchangeDateStartHandler");
-    console.log(
-      meetingDateValueFormat,
-      "changeDateStartHandlerchangeDateStartHandler"
-    );
-
+    DateDate.setHours(23, 59, 0, 0);
     setMeetingDate(meetingDateValueFormat);
     setPollsData({
       ...pollsData,
@@ -195,53 +190,56 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
       GroupsReducer.getGroupByGroupIdResponse !== null &&
       GroupsReducer.getGroupByGroupIdResponse !== undefined
     ) {
-      let newArr = [];
-      let getUserDetails = GroupsReducer.getGroupByGroupIdResponse.groupMembers;
-      getUserDetails.forEach((data, index) => {
-        newArr.push({
-          value: data.pK_UID,
-          name: data.userName,
-          label: (
-            <>
+      try {
+        let newArr = [];
+        let getUserDetails =
+          GroupsReducer.getGroupByGroupIdResponse.groupMembers;
+        getUserDetails.forEach((data, index) => {
+          newArr.push({
+            value: data.pK_UID,
+            name: data.userName,
+            label: (
               <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
-                    <img
-                      src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
-                    />
-                    <span className={styles["NameDropDown"]}>
-                      {data.userName}
-                    </span>
-                  </Col>
-                </Row>
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {data.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
               </>
-            </>
-          ),
-          type: 1,
+            ),
+            type: 1,
+          });
         });
-      });
-      setmemberSelect(newArr);
+        setmemberSelect(newArr);
+      } catch (error) {}
     }
   }, [GroupsReducer.getGroupByGroupIdResponse]);
 
-  useEffect(() => {
-    if (view === 2) {
-    } else {
-      let Data = {
-        MeetingID: currentMeetingID,
-      };
-      dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (view === 2) {
+  //   } else {
+  //     let Data = {
+  //       MeetingID: currentMeetingID,
+  //     };
+  //     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+  //   }
+  // }, []);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -418,7 +416,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                     <TextField
                       labelClass={"d-none"}
                       name={"TitlePolls"}
-                      maxLength={490}
+                      maxLength={140}
                       applyClass={"PollingCreateModal"}
                       value={pollsData.Title}
                       change={HandleChange}
@@ -457,7 +455,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                         applyClass={"PollingCreateModal"}
                                         labelClass="d-none"
                                         name={data.name}
-                                        maxLength={490}
+                                        maxLength={100}
                                         value={data.value}
                                         change={(e) => HandleOptionChange(e)}
                                       />
@@ -479,7 +477,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                         labelClass="d-none"
                                         name={data.name}
                                         value={data.value}
-                                        maxLength={490}
+                                        maxLength={100}
                                         change={(e) => HandleOptionChange(e)}
                                         inputicon={
                                           <img

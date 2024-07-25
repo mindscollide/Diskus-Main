@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import ModalresolutionRemove from "../ModalresolutionRemove/ModalresolutionRemove";
 import ModalCancellResolution from "../ModalCancellResolution/ModalCancellResolution";
-// import ModalUpdateresolution from "../";
+import ModalUpdateresolution from "../ModalUpdateResolution/ModalUpdateresolution";
 import MOdalResolutionCirculated from "../ModalResolutionCirculated/ModalResolutionCirculated";
 import ModalDiscardResolution from "../ModalDiscardResolution/ModalDiscardResolution";
 import ModalResolutionUpdated from "../ModalResolutionUpdated/ModalResolutionUpdated";
@@ -578,21 +578,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const handleCirculateResolution = async () => {
     if (fileForSend.length > 0) {
       setsendStatus(2);
-      // let newfiles = [...tasksAttachments];
-      // let tasksAttachmentsData = [];
-      // const uploadPromises = fileForSend.map((newData) => {
-      //   // Return the promise from FileUploadToDo
-      //   return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
-      // });
-
-      // // Wait for all uploadPromises to resolve
-      // await Promise.all(uploadPromises);
-      // newfiles.map((attachmentData, index) => {
-      //   tasksAttachmentsData.push({
-      //     DisplayAttachmentName: attachmentData.DisplayAttachmentName,
-      //     OriginalAttachmentName: attachmentData.OriginalAttachmentName,
-      //   });
-      // });
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -659,21 +644,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const handleUpdateResolution = async () => {
     if (fileForSend.length > 0) {
       setsendStatus(1);
-      // let newfiles = [...tasksAttachments];
-      // let tasksAttachmentsData = [];
-      // const uploadPromises = fileForSend.map((newData) => {
-      //   // Return the promise from FileUploadToDo
-      //   return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
-      // });
-
-      // // Wait for all uploadPromises to resolve
-      // await Promise.all(uploadPromises);
-      // newfiles.map((attachmentData, index) => {
-      //   tasksAttachmentsData.push({
-      //     DisplayAttachmentName: attachmentData.DisplayAttachmentName,
-      //     OriginalAttachmentName: attachmentData.OriginalAttachmentName,
-      //   });
-      // });
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -738,6 +708,7 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const createResolutionHandleClick = async (id) => {
+    console.log(id, "ididididid");
     if (
       editResolutionData.Title !== "" &&
       circulationDateTime.date !== "" &&
@@ -749,6 +720,8 @@ const EditResolution = ({ setCancelresolution }) => {
       editResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       editResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
+      console.log(typeof id, "ididididid");
+
       if (id === 1) {
         setResolutionupdate(true);
         setResolutionCirculate(false);
@@ -2251,9 +2224,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                               return (
                                                 <Col sm={4} lg={4} md={4}>
                                                   <AttachmentViewer
-                                                    id={
-                                                     0
-                                                    }
+                                                    id={0}
                                                     handleClickRemove={() =>
                                                       deleteFilefromAttachments(
                                                         data,
@@ -2549,13 +2520,13 @@ const EditResolution = ({ setCancelresolution }) => {
           handleCancelResolution={handleClickCancelResolution}
         />
       ) : null}
-      {/* {resolutionupdate ? (
+      {resolutionupdate ? (
         <ModalUpdateresolution
           updateresolution={resolutionupdate}
           setUpdateresolution={setResolutionupdate}
           handleUpdateResolution={handleUpdateResolution}
         />
-      ) : null} */}
+      ) : null}
       {resolutionCirculate ? (
         <MOdalResolutionCirculated
           circulateresolution={resolutionCirculate}

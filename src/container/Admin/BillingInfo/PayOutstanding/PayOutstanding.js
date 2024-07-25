@@ -16,14 +16,16 @@ import {
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
-import { getInvocieHTMLApi } from "../../../../store/actions/Auth2_actions";
+import {
+  DownlaodInvoiceLApi,
+  getInvocieHTMLApi,
+} from "../../../../store/actions/Auth2_actions";
 import InvoiceHtml from "./InvoiceHtml/InvoiceHtml";
 
 const PayOutstanding = () => {
-  const { OrganizationBillingReducer, LanguageReducer } = useSelector(
-    (state) => state
-  );
-
+  const { OrganizationBillingReducer, LanguageReducer, Authreducer } =
+    useSelector((state) => state);
+  console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
   // for translation
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -108,6 +110,21 @@ const PayOutstanding = () => {
           : 0,
     };
     dispatch(getInvocieHTMLApi(navigate, t, Data, setInvoiceModal));
+  };
+
+  const handleClickDownload = () => {
+    let Data = {
+      OrganizationID:
+        localStorage.getItem("organizationID") !== null
+          ? Number(localStorage.getItem("organizationID"))
+          : 0,
+      InvoiceID: Number(payOutStanding.InvoiceID),
+      SubscriptionID:
+        localStorage.getItem("organizationSubscriptionID") !== null
+          ? Number(localStorage.getItem("organizationSubscriptionID"))
+          : 0,
+    };
+    dispatch(DownlaodInvoiceLApi(navigate, t, Data));
   };
 
   return (
@@ -216,8 +233,15 @@ const PayOutstanding = () => {
                 <Col sm={12} md={12} lg={12} className="mt-3 p-0">
                   <Button
                     text={t("Pay-invoice-now")}
-                    className={styles["PayInvoiceButton"]}
+                    className={
+                      Number(payOutStanding.InvoiceID) === 0
+                        ? styles["PayInvoiceButton_disabled"]
+                        : styles["PayInvoiceButton"]
+                    }
                     onClick={hadlePayInvoiceButton}
+                    disableBtn={
+                      Number(payOutStanding.InvoiceID) === 0 ? true : false
+                    }
                   />
                 </Col>
               </Row>
@@ -226,7 +250,11 @@ const PayOutstanding = () => {
                 <Col sm={12} md={6} lg={6} className="mt-2 ps-0">
                   <Button
                     text={t("View-invoice-detail")}
-                    className={styles["viewInvocieButton"]}
+                    className={
+                      Number(payOutStanding.InvoiceID) === 0
+                        ? styles["viewInvocieButton_disabled"]
+                        : styles["viewInvocieButton"]
+                    }
                     onClick={handleViewInvoice}
                   />
                 </Col>
@@ -234,6 +262,7 @@ const PayOutstanding = () => {
                   <Button
                     text={t("Download-invoice")}
                     className={styles["DownloadInvoiceButton"]}
+                    onClick={handleClickDownload}
                   />
                 </Col>
               </Row>

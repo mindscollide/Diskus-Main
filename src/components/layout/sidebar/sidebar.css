@@ -295,14 +295,15 @@ a.iconSidebar:hover span {
 
 a.iconSidebar span {
   color: #505050 !important;
-  font-size: 8px !important;
+  font-size: 10px !important;
   white-space: nowrap;
   font-weight: 600;
 }
 
 body[dir="rtl"] a.iconSidebar span {
   color: #505050 !important;
-  font-size: 8px !important;
+  font-size: 10px !important;
+  white-space: nowrap;
   font-weight: 600;
 }
 

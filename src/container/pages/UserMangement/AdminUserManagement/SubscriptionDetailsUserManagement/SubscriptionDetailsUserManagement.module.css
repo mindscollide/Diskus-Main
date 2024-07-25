@@ -1,0 +1,83 @@
+.SubscriptionDetialsheading {
+  font-weight: 700 !important;
+  font-size: 30px !important;
+  color: #6172d6 !important;
+}
+
+body[dir="rtl"] .SubscriptionDetialsheading {
+  font-weight: 600 !important;
+}
+
+.Create_New_subscription_styles {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+
+.Create_New_subscription_styles:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .Create_New_subscription_styles {
+  font-weight: 600 !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.TableheadingTotal {
+  font-size: 20px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .TableheadingTotal {
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.SubscritionNumber_Styles {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .SubscritionNumber_Styles {
+  font-weight: 600 !important;
+}
+
+.DowngradeButton_styles {
+  padding: 6px 12px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.DowngradeButton_styles:is(:hover, :active, :focus, :focus-visible) {
+  padding: 6px 12px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+body[dir="rtl"] .DowngradeButton_styles {
+  font-weight: 600 !important;
+}
+
+.SubscritionNumber_Styles {
+}

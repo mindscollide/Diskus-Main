@@ -203,9 +203,7 @@ const UpdatePolls = () => {
         // let newDateGmt = convertintoGMTCalender(
         //   pollsDetails.poll.pollDetails.dueDate
         // );
-        let DateDate = utcConvertintoGMT(
-          pollsDetails.poll.pollDetails.dueDate.slice(0, 8) + "000000"
-        );
+        let DateDate = utcConvertintoGMT(pollsDetails.poll.pollDetails.dueDate, 1);
         // let DateDate = new Date(newDateGmt);
         if (pollsDetails.poll.pollDetails.pollStatus.pollStatusId === 2) {
           setCheckForPollStatus(true);
@@ -385,6 +383,7 @@ const UpdatePolls = () => {
 
   const changeDateStartHandler = (date) => {
     let DateDate = new Date(date);
+    DateDate.setHours(23, 59, 0, 0);
     setUpdatePolls({
       ...UpdatePolls,
       date: DateDate,
@@ -737,7 +736,7 @@ const UpdatePolls = () => {
                               applyClass={"PollingCreateModal"}
                               labelClass="d-none"
                               name={"TypingTitle"}
-                              maxLength={490}
+                              maxLength={140}
                               value={UpdatePolls.TypingTitle}
                               change={HandleChangeUpdatePolls}
                             />
@@ -824,7 +823,7 @@ const UpdatePolls = () => {
                                                     "PollingCreateModal"
                                                   }
                                                   labelClass="d-none"
-                                                  maxLength={490}
+                                                  maxLength={100}
                                                   name={data.name}
                                                   value={data.value}
                                                   change={(e) =>
@@ -855,7 +854,7 @@ const UpdatePolls = () => {
                                                   "PollingCreateModal"
                                                 }
                                                 labelClass="d-none"
-                                                maxLength={490}
+                                                maxLength={100}
                                                 name={data.name}
                                                 value={data.value}
                                                 change={(e) =>

@@ -1113,7 +1113,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_GENERAL_MINTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.flag,
         generalMinutes: action.response,
         ResponseMessage: action.message,
       };
@@ -1233,7 +1233,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.DELETE_GENERAL_MINUTES_METHOD_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
@@ -1241,7 +1241,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.DELETE_GENERAL_MINUTES_METHOD_FAILED: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
@@ -1256,7 +1256,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.UPDATE_GENERAL_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
@@ -1327,7 +1327,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.UPDATE_AGENDA_WISE_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }

@@ -178,6 +178,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const changeDateStartHandler = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
+    DateDate.setHours(23, 59, 0, 0);
     setMeetingDate(meetingDateValueFormat);
     setPollsData({
       ...pollsData,
@@ -595,7 +596,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                     <TextField
                       labelClass={"d-none"}
                       name={"TitlePolls"}
-                      maxLength={490}
+                      maxLength={140}
                       value={pollsData.Title}
                       change={HandleChange}
                     />
@@ -630,7 +631,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                         applyClass={"PollingCreateModal"}
                                         labelClass="d-none"
                                         name={data.name}
-                                        maxLength={490}
+                                        maxLength={100}
                                         value={data.value}
                                         change={(e) => HandleOptionChange(e)}
                                       />
@@ -649,7 +650,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                         labelClass="d-none"
                                         name={data.name}
                                         value={data.value}
-                                        maxLength={490}
+                                        maxLength={100}
                                         change={(e) => HandleOptionChange(e)}
                                         inputicon={
                                           <img
@@ -739,7 +740,9 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
-                      onFocusedDateChange={(value) => changeDateStartHandler(value)}
+                      onFocusedDateChange={(value) =>
+                        changeDateStartHandler(value)
+                      }
                     />
                   </Col>
                   <Col

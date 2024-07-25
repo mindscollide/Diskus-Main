@@ -15,12 +15,21 @@ import { showSceduleProposedMeeting } from "../../../../../../../store/actions/N
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
 import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMeetingActions";
-import { newTimeFormaterAsPerUTCFullDate } from "../../../../../../../commen/functions/date_formater";
-const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
+import {
+  newTimeFormaterAsPerUTCFullDate,
+  newTimeFormaterViewPoll,
+  utcConvertintoGMT,
+} from "../../../../../../../commen/functions/date_formater";
+import { update } from "lodash";
+const SceduleProposedmeeting = ({
+  organizerRows,
+  proposedDates,
+  setOrganizerRows,
+  setProposedDates,
+}) => {
   let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
-  console.log(proposedDates, "proposedDatesproposedDates");
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -30,45 +39,65 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   );
 
   const [isActive, setIsActive] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [selectProposedDate, setSelectPropsed] = useState(null);
+  const [selectProposedDate, setselectProposedDate] = useState(null);
+  const [formattedDates, setFormattedDates] = useState([]);
+  const [updateTableRows, setUpdateTableRows] = useState([]);
+  const [proposedDatesData, setProposedDatesData] = useState([]);
+
+  console.log(updateTableRows, "updateTableRowsupdateTableRows");
+  const [maxTotalCountIndex, setMaxTotalCountIndex] = useState(null);
+
+  useEffect(() => {
+    if (Array.isArray(organizerRows) && Array.isArray(proposedDates)) {
+      const yourNewObject = {
+        userID: 0,
+        userName: "Total",
+        designation: "",
+        userEmail: "",
+        title: "",
+        selectedProposedDates: Array(proposedDates?.length).fill({
+          proposedDateID: 0,
+          proposedDate: "",
+          startTime: "",
+          endTime: "",
+          isSelected: false,
+          isTotal: 0,
+        }),
+      };
+      const updatedOrganizerRows = [...organizerRows, yourNewObject];
+      setUpdateTableRows(updatedOrganizerRows);
+      let newDataProposedState = [...proposedDates];
+      setProposedDatesData(newDataProposedState);
+      const formattedDates = newDataProposedState.map((date) => {
+        try {
+          let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
+          const formatetDateTime = utcConvertintoGMT(datetimeVal);
+
+          return formatetDateTime;
+        } catch (error) {
+          console.log(error);
+        }
+      });
+
+      if (formattedDates) {
+        setFormattedDates(formattedDates);
+      }
+    }
+  }, [organizerRows, proposedDates]);
 
   const toggleActive = (index, record, formattedDate) => {
-    setIsActive(!isActive);
-    setActiveIndex(index);
-    let newdata2 = [];
-    let dateformat = moment(formattedDate).format("YYYYMMDD");
-
-    organizerRows.map((data, index) => {
-      if (data.selectedProposedDates.length > 0) {
-        data.selectedProposedDates.filter((newData, index) => {
-          if (newData.proposedDate === dateformat) {
-            return newdata2.push(newData);
-          }
-        });
-      }
-    });
-    const uniqueData = new Set(newdata2.map(JSON.stringify));
-    setSelectPropsed(Array.from(uniqueData).map(JSON.parse));
+    if (record !== undefined) {
+      setProposedDatesData((newData) =>
+        newData.map((proposedData) => ({
+          ...proposedData,
+          isSelected:
+            proposedData.proposedDateID === record.proposedDateID
+              ? true
+              : false,
+        }))
+      );
+    }
   };
-
-  const yourNewObject = {
-    userID: 0,
-    userName: "Total",
-    designation: "",
-    userEmail: "",
-    title: "",
-    selectedProposedDates: Array(proposedDates?.length).fill({
-      proposedDateID: 0,
-      proposedDate: "",
-      startTime: "",
-      endTime: "",
-      isSelected: false,
-      isTotal: 0,
-    }),
-  };
-
-  const updatedOrganizerRows = [...organizerRows, yourNewObject];
 
   // Function to count the selected proposed dates for a row
   const countSelectedProposedDatesForColumn = (columnIndex) => {
@@ -90,38 +119,21 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
       return "00";
     }
   };
-  const dateFormat = "YYYYMMDD";
-  const formattedDates = proposedDates.map((date) => {
-    try {
-      let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
-      const formatetDateTime = newTimeFormaterAsPerUTCFullDate(datetimeVal);
-
-      return formatetDateTime;
-    } catch (error) {
-      console.log(error);
-    }
-  });
 
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
-    let scheduleMeeting = {
-      MeetingID: Number(viewProposeDatePollMeetingID),
-      ProposedDateID: selectProposedDate[0].proposedDateID,
-    };
-    dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));
+    let findIsSelected = proposedDatesData.find(
+      (propsedData, index) => propsedData.isSelected === true
+    );
+
+    if (findIsSelected) {
+      let scheduleMeeting = {
+        MeetingID: Number(viewProposeDatePollMeetingID),
+        ProposedDateID: findIsSelected.proposedDateID,
+      };
+      dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));
+    }
   };
-
-  const totalCounts = formattedDates.map((_, index) => {
-    return updatedOrganizerRows.reduce((total, row) => {
-      if (row.selectedProposedDates[index].isSelected) {
-        return total + 1;
-      }
-      return total;
-    }, 0);
-  });
-
-  // Find the index of the date column with the highest total count
-  const maxTotalCountIndex = totalCounts.indexOf(Math.max(...totalCounts));
 
   const scheduleColumn = [
     {
@@ -141,75 +153,70 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
               <span className={styles["ParticipantName"]}>
                 {record.userName}
               </span>
-            )}{" "}
+            )}
             <span className={styles["Designation"]}>{record.designation}</span>
           </span>
         </>
       ),
     },
-
     ...formattedDates.map((formattedDate, index) => {
-      const record = organizerRows[index]; // Access the record using the index
-      const isSelectedCount = record?.selectedProposedDates?.reduce(
-        (count, date) => (date?.isSelected ? count + 1 : count),
-        0
-      );
-      console.log(
-        `Date: ${formattedDate}, isSelectedCount: ${isSelectedCount}, maxTotalCountIndex: ${maxTotalCountIndex}`
-      );
-      const dateDetailClass =
-        index === maxTotalCountIndex
-          ? `${styles["Date-Object-Detail_active"]}`
-          : `${styles["Date-Object-Detail"]}`;
+      let record = proposedDatesData[index];
 
-      console.log(record, "recordrecordrecord");
+      let isFind;
+      if (record !== null && record !== undefined) {
+        let datetimeVal = `${record?.proposedDate}${record?.startTime}`;
+        const formatetDateTime = utcConvertintoGMT(datetimeVal);
+        if (String(formatetDateTime) === String(formattedDate)) {
+          isFind = record;
+        }
+      }
       return {
         title: (
           <span
-            className={dateDetailClass}
+            className={
+              isFind !== undefined && isFind.isSelected
+                ? styles["Date-Object-Detail_active"]
+                : styles["Date-Object-Detail"]
+            }
             onClick={() => toggleActive(index, record, formattedDate)}
           >
-            <span className={styles["date-time-column"]}>{formattedDate}</span>
+            <span className={styles["date-time-column"]}>
+              {newTimeFormaterViewPoll(formattedDate)}
+            </span>
           </span>
         ),
-        dataIndex: "selectedProposedDates",
+        dataIndex: `selectedProposedDates-${index}`,
         key: `selectedProposedDates-${index}`,
-        render: (text, record, columnIndex) => {
-          try {
-            if (record.userName === "Total") {
-              const totalDate = record?.selectedProposedDates?.find(
-                (date) => date?.isTotal === 0
+        render: (text, record) => {
+          if (record.userName === "Total") {
+            const totalDate = record?.selectedProposedDates?.find(
+              (date) => date?.isTotal === 0
+            );
+            if (totalDate) {
+              return (
+                <span className={styles["TotalCount"]}>
+                  {countSelectedProposedDatesForColumn(index)}
+                </span>
               );
-              console.log(totalDate, "totaltotaltotaltotal");
-              if (totalDate) {
-                console.log(totalDate, "totaltotaltotaltotal");
-                return (
-                  <>
-                    <span className={styles["TotalCount"]}>
-                      {countSelectedProposedDatesForColumn(index)}
-                    </span>
-                  </>
-                );
-              }
-            } else if (record.userName !== "Total") {
-              if (
-                record?.selectedProposedDates &&
-                record?.selectedProposedDates[index] &&
-                record?.selectedProposedDates[index]?.isSelected
-              ) {
-                return (
-                  <img
-                    src={BlueTick}
-                    className={styles["TickIconClass"]}
-                    width="20.7px"
-                    height="14.21px"
-                    alt=""
-                  />
-                );
-              }
-              return null;
             }
-          } catch (error) {}
+          } else {
+            const proposedDate = record?.selectedProposedDates?.find(
+              (date) =>
+                date.proposedDate === moment(formattedDate).format("YYYYMMDD")
+            );
+            if (proposedDate?.isSelected) {
+              return (
+                <img
+                  src={BlueTick}
+                  className={styles["TickIconClass"]}
+                  width="20.7px"
+                  height="14.21px"
+                  alt=""
+                />
+              );
+            }
+          }
+          return null;
         },
       };
     }),
@@ -226,7 +233,6 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(showSceduleProposedMeeting(false));
-          setActiveIndex(-1);
         }}
         dialogClassName={`${styles["modal-class-width"]} ${styles["custom-modal-dialog"]}`}
         size={"xl"}
@@ -251,7 +257,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
                     scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
                     className="SceduleProposedMeeting"
-                    rows={updatedOrganizerRows}
+                    rows={updateTableRows}
                   />
                   <span>
                     <Row>

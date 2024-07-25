@@ -26,17 +26,8 @@ import {
   PackageUpgradeDetail,
   PackageUpgradeSelect,
   PasswordUpdateMessage,
-  // CreatePassword,
-  // PackageSelection,
-  // PaymentForm,
-  // PackageSelected,
-  // Signup,
-  // VerifyEmailOTP,
   Notes,
   CalendarPage,
-  // TwoFactor,
-  // TwoFacSendEmail,
-  // VerificationIphone,
   ForgotPasswordVerification,
   UpdatePasswordSuccessfully,
   Committee,
@@ -50,39 +41,54 @@ import {
   EmptyState,
   RSVP,
   MinutesFlow,
+  UserManagementProcess,
+  SignupProcessUserManagement,
+  PakageDetailsUserManagement,
+  BillingMethodUsermanagement,
+  PaymentTest,
+  ManageUsers,
+  PaymentProcess,
+  Reports,
+  PakageDetailsUMUpgrade,
+  AddUsers,
+  UserLevelConfigUM,
+  AddUserMain,
+  PaymentMethodBillInfo,
+  OrganizationLevelConfigUM,
+  CancelSubscriptionAdmin,
+  PakageDetailsAdmin,
+  DeleteOrganizationAdmin,
 } from "../container";
 
-import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
 import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateRoutes from "./private_routes";
-import Reports from "../container/Admin/Reports/Reports";
-import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
-import ManageUsers from "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers";
-import AddUsers from "../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers";
-import OrganizationLevelConfigUM from "../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM";
-import UserLevelConfigUM from "../container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM";
-import PakageDetailsUserManagement from "../container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement";
-import BillingMethodUsermanagement from "../container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement";
-import PakageDetailsAdmin from "../container/pages/UserMangement/AdminUserManagement/PakageDetailsAdmin/PakageDetailsAdmin";
-import CancelSubscriptionAdmin from "../container/pages/UserMangement/AdminUserManagement/CancelSubscriptionAdmin/CancelSubscriptionAdmin";
-import DeleteOrganizationAdmin from "../container/pages/UserMangement/AdminUserManagement/DeleteOrganizationAdmin/DeleteOrganizationAdmin";
-import PaymentMethodBillInfo from "../container/pages/UserMangement/AdminUserManagement/PaymentMethodBillInfoUserManagement/PaymentMethodBillInfo";
-import AddUserMain from "../container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain";
-import UserManagementProcess from "../container/pages/UserManagementProcess/UserManagementProcess";
-import SignupProcessUserManagement from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement";
+import SignatureViewer from "../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer";
+import PendingSignature from "../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue";
+import ViewSignatureDocument from "../container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument";
 import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
-import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade";
-import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
-import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
+//import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
 import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
+import NewDashobard from "../container/NewDashboardLayout/NewDashobard";
+import SubscriptionDetailsUserManagement from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement";
+import DowngradeSubscription from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription";
+import UpdatedCancelSubscription from "../container/pages/UserMangement/AdminUserManagement/UpdatedCancelSubscription/UpdatedCancelSubscription";
+import PrivateVideoMeeting from "./PrivateVideoMeetingRoute";
+import VideoMeetingBoardDeck from "../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck";
+import { DocumentViewer } from "../components/elements";
+
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+
 
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
+      {/* Video Meeting Route */}
+      <Route element={<PrivateVideoMeeting />}>
+        <Route path="/Diskus/video" element={<VideoMeetingBoardDeck />} />
+      </Route>
       {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
 
@@ -129,7 +135,17 @@ export const router = createHashRouter(
             path=""
             element={
               <RouteWrapperUser name="">
-                <Home />
+                {/* <Home /> */}
+
+                <NewDashobard />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="Minutes"
+            element={
+              <RouteWrapperUser name="Minutes">
+                <MinutesFlow />
               </RouteWrapperUser>
             }
           />
@@ -138,6 +154,7 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="home">
                 <Home />
+                {/* <NewDashobard /> */}
               </RouteWrapperUser>
             }
           />
@@ -170,6 +187,22 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="signatureviewer">
                 <SignatureViewer />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="signeddocument"
+            element={
+              <RouteWrapperUser name="signatureviewer">
+                <PendingSignature />
+              </RouteWrapperUser>
+            }
+          />
+             <Route
+            path="viewSignDocument"
+            element={
+              <RouteWrapperUser name="signatureviewer">
+                <ViewSignatureDocument />
               </RouteWrapperUser>
             }
           />
@@ -471,6 +504,30 @@ export const router = createHashRouter(
             element={
               <RouteWrapperAdmin name="PackageDetailsUserManagement">
                 <PakageDetailsAdmin />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="subscriptionDetailsUserManagement"
+            element={
+              <RouteWrapperAdmin name="subscriptionDetailsUserManagement">
+                <SubscriptionDetailsUserManagement />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="downgradeSubscription"
+            element={
+              <RouteWrapperAdmin name="downgradeSubscription">
+                <DowngradeSubscription />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="updatedCancelSubscription"
+            element={
+              <RouteWrapperAdmin name="updatedCancelSubscription">
+                <UpdatedCancelSubscription />
               </RouteWrapperAdmin>
             }
           />
