@@ -2373,7 +2373,8 @@ const Dashboard = () => {
             MinutesReducer.Loading ||
             DataRoomFileAndFoldersDetailsReducer.Loading ||
             SignatureWorkFlowReducer.Loading ||
-            UserMangementReducer.Loading ? (
+            UserMangementReducer.Loading 
+            ? (
             <Loader />
           ) : null}
           {/* Disconnectivity Modal  */}

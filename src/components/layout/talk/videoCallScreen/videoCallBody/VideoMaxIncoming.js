@@ -66,43 +66,43 @@ const VideoMaxIncoming = () => {
   let timeValue = Number(localStorage.getItem("callRingerTimeout"));
   timeValue = timeValue * 1000;
 
-  // useEffect(() => {
-  //   // Create the audio element
-  //   const audioElement = new Audio("/IncomingCall.wav");
+  useEffect(() => {
+    // Create the audio element
+    const audioElement = new Audio("/IncomingCall.wav");
 
-  //   audioElement.loop = true;
+    audioElement.loop = true;
 
-  //   // Play the audio when the component mounts
-  //   audioElement.play();
+    // Play the audio when the component mounts
+    audioElement.play();
 
-  //   const timer = setTimeout(() => {
-  //     // Dispatch action to update global state
-  //     let Data = {
-  //       ReciepentID: currentUserId,
-  //       RoomID: incomingRoomID,
-  //       CallStatusID: 3,
-  //       CallTypeID: callTypeID,
-  //     };
-  //     dispatch(VideoCallResponse(Data, navigate, t));
+    const timer = setTimeout(() => {
+      // Dispatch action to update global state
+      let Data = {
+        ReciepentID: currentUserId,
+        RoomID: incomingRoomID,
+        CallStatusID: 3,
+        CallTypeID: callTypeID,
+      };
+      dispatch(VideoCallResponse(Data, navigate, t));
 
-  //     dispatch(incomingVideoCallFlag(false));
-  //     setIsVisible(false);
-  //     audioElement.pause();
-  //     audioElement.currentTime = 0;
-  //   }, timeValue);
+      dispatch(incomingVideoCallFlag(false));
+      setIsVisible(false);
+      audioElement.pause();
+      audioElement.currentTime = 0;
+    }, timeValue);
 
-  //   // Clear the timer if isTimerRunning becomes false
+    // Clear the timer if isTimerRunning becomes false
 
-  //   if (!isTimerRunning) {
-  //     clearTimeout(timer);
-  //   }
+    if (!isTimerRunning) {
+      clearTimeout(timer);
+    }
 
-  //   return () => {
-  //     audioElement.pause();
-  //     audioElement.currentTime = 0;
-  //     clearTimeout(timer);
-  //   };
-  // }, []);
+    return () => {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+      clearTimeout(timer);
+    };
+  }, []);
 
   // useEffect(() => {
 

@@ -8,6 +8,7 @@ import {
   SaveMinutesReviewFlow,
   UpdateMinuteFlag,
 } from "../../../../../../store/actions/Minutes_action";
+import NoMinutes from "./../Images/No-Minutes.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
@@ -271,11 +272,11 @@ const AddReviewers = ({
           setMinuteDataGeneral(combinedData);
         }
       } else {
-        setMinuteDataGeneral(null);
+        setMinuteDataGeneral([]);
       }
     } catch (error) {
       console.error("Error transforming data:", error);
-      setMinuteDataGeneral(null);
+      setMinuteDataGeneral([]);
     }
   }, [NewMeetingreducer.generalMinutes]);
 
@@ -595,53 +596,80 @@ const AddReviewers = ({
       show={true}
       closeButton={true}
       modalBodyClassName={
-        selectMinutes && currentLanguage === "en"
+        selectMinutes &&
+        currentLanguage === "en" &&
+        (minuteDataAgenda.length !== 0 || minuteDataGeneral.length !== 0)
           ? "scrollStyle mr-20 mt-16p"
-          : !selectMinutes && currentLanguage === "en"
+          : !selectMinutes &&
+            currentLanguage === "en" &&
+            (minuteDataAgenda.length !== 0 || minuteDataGeneral.length !== 0)
           ? "scrollStyle mr-20 "
-          : selectMinutes && currentLanguage === "ar"
+          : selectMinutes &&
+            currentLanguage === "ar" &&
+            (minuteDataAgenda.length !== 0 || minuteDataGeneral.length !== 0)
           ? "scrollStyle ml-20 mt-16p"
-          : !selectMinutes && currentLanguage === "ar"
+          : !selectMinutes &&
+            currentLanguage === "ar" &&
+            (minuteDataAgenda.length !== 0 || minuteDataGeneral.length !== 0)
           ? "scrollStyle ml-20 "
+          : minuteDataAgenda.length === 0 || minuteDataGeneral.length === 0
+          ? "emptystatereviewers"
           : ""
       }
-      modalFooterClassName={"d-block"}
-      modalHeaderClassName={"d-none"}
+      modalFooterClassName={
+        minuteDataAgenda.length === 0 && minuteDataGeneral.length === 0
+          ? "d-none"
+          : "d-block"
+      }
+      modalHeaderClassName={
+        minuteDataAgenda.length === 0 && minuteDataGeneral.length === 0
+          ? "d-block text-end"
+          : "d-none"
+      }
       onHide={handleClose}
       fullscreen={true}
       className={addDateModal === true ? "d-none" : "FullScreenModal"}
       ModalBody={
-        <>
-          {selectMinutes === true &&
-            selectReviewers === false &&
-            (minuteDataAgenda !== null || minuteDataGeneral !== null) && (
-              <SelectMinutes
+        minuteDataAgenda.length === 0 && minuteDataGeneral.length === 0 ? (
+          <>
+            <img src={NoMinutes} alt="" />
+            <p className={styles["nominutes-text"]}>{t("No-minutes")}</p>
+          </>
+        ) : (
+          <>
+            {selectMinutes === true &&
+              selectReviewers === false &&
+              (minuteDataAgenda !== null || minuteDataGeneral !== null) && (
+                <SelectMinutes
+                  minuteDataAgenda={minuteDataAgenda}
+                  minuteDataGeneral={minuteDataGeneral}
+                  selectedMinuteIDs={selectedMinuteIDs}
+                  setSelectedMinuteIDs={setSelectedMinuteIDs}
+                  allReviewers={allReviewers}
+                  setMinuteDataAgenda={setMinuteDataAgenda}
+                  setMinuteDataGeneral={setMinuteDataGeneral}
+                  setSelectReviewersArray={setSelectReviewersArray}
+                  setSelectMinutes={setSelectMinutes}
+                  setSelectReviewers={setSelectReviewers}
+                />
+              )}
+            {selectReviewers === true && selectMinutes === false && (
+              <SelectReviewers
                 minuteDataAgenda={minuteDataAgenda}
                 minuteDataGeneral={minuteDataGeneral}
                 selectedMinuteIDs={selectedMinuteIDs}
-                setSelectedMinuteIDs={setSelectedMinuteIDs}
-                allReviewers={allReviewers}
-                setMinuteDataAgenda={setMinuteDataAgenda}
-                setMinuteDataGeneral={setMinuteDataGeneral}
+                selectReviewersArray={selectReviewersArray}
                 setSelectReviewersArray={setSelectReviewersArray}
+                allReviewers={allReviewers}
                 setSelectMinutes={setSelectMinutes}
                 setSelectReviewers={setSelectReviewers}
+                setMinuteReviewDataCheckForEdit={
+                  setMinuteReviewDataCheckForEdit
+                }
               />
             )}
-          {selectReviewers === true && selectMinutes === false && (
-            <SelectReviewers
-              minuteDataAgenda={minuteDataAgenda}
-              minuteDataGeneral={minuteDataGeneral}
-              selectedMinuteIDs={selectedMinuteIDs}
-              selectReviewersArray={selectReviewersArray}
-              setSelectReviewersArray={setSelectReviewersArray}
-              allReviewers={allReviewers}
-              setSelectMinutes={setSelectMinutes}
-              setSelectReviewers={setSelectReviewers}
-              setMinuteReviewDataCheckForEdit={setMinuteReviewDataCheckForEdit}
-            />
-          )}
-        </>
+          </>
+        )
       }
       ModalFooter={
         <>

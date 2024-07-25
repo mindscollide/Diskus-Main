@@ -2074,5 +2074,10 @@
   "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission": "Ready to send a document for approval this tab awaits your next submission",
   "Submit-document-for-approval": "Submit document for approval",
   "Send-data-storage-retention-policy": "Send Data Storage & Retention Policy",
-  "Record-available": "Record Available"
+  "Record-available": "Record Available",
+  "Diskus-update-alert": "Diskus Update Alert",
+  "A-new-update-for-diskus-is-now-available": "A new update for Diskus is now available!",
+  "Later": "Later",
+  "Update-now": "Update Now",
+  "No-minutes": "No Minutes"
 }

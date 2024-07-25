@@ -26,7 +26,17 @@ const Stats = () => {
   const [upComingTaskCount, setUpcomingTaskCount] = useState(0);
   const [totalPendingApprovalCount, setTotalPendingApprovalCount] = useState(0);
   const [upComingApprovalCount, setUpcomingApprovalCount] = useState(0);
-
+  console.log(
+    {
+      totalMeetingCount,
+      upcomingMeetingCount,
+      totalTaskCount,
+      upComingTaskCount,
+      totalPendingApprovalCount,
+      upComingApprovalCount,
+    },
+    "StatsStatsStats"
+  );
   useEffect(() => {
     let Data2 = {
       UserID: parseInt(createrID),
@@ -154,7 +164,9 @@ const Stats = () => {
             max={totalMeetingCount}
             label={`${upcomingMeetingCount}/${totalMeetingCount}`}
             className={
-              upcomingMeetingCount === 0
+              upcomingMeetingCount === 0 && totalMeetingCount > 0
+                ? styles["dashboard_progress_upcomingmeeting_R"]
+                : upcomingMeetingCount === 0 && totalMeetingCount === 0
                 ? styles["dashboard_progress_upcomingmeeting_R"]
                 : styles["dashboard_progress_upcomingmeeting"]
             }
@@ -164,7 +176,9 @@ const Stats = () => {
             max={totalTaskCount}
             label={`${upComingTaskCount}/${totalTaskCount}`}
             className={
-              upComingTaskCount === 0
+              upComingTaskCount === 0 && totalTaskCount > 0
+                ? styles["dashboard_progress_upcomingTask_R"]
+                : upComingTaskCount === 0 && totalTaskCount === 0
                 ? styles["dashboard_progress_upcomingTask_R"]
                 : styles["dashboard_progress_upcomingTask"]
             }
@@ -174,7 +188,9 @@ const Stats = () => {
             max={totalPendingApprovalCount}
             label={`${upComingApprovalCount}/${totalPendingApprovalCount}`}
             className={
-              upComingApprovalCount === 0
+              upComingApprovalCount === 0 && totalPendingApprovalCount > 0
+                ? styles["dashboard_progress_upcomingApproval_R"]
+                : upComingApprovalCount === 0 && totalPendingApprovalCount === 0
                 ? styles["dashboard_progress_upcomingApproval_R"]
                 : styles["dashboard_progress_upcomingApproval"]
             }

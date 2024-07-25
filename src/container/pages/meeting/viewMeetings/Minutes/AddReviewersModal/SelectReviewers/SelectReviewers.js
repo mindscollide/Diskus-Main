@@ -260,9 +260,13 @@ const SelectReviewers = ({
                             <Row
                               key={index}
                               className={
-                                currentLanguage === "en"
+                                currentLanguage === "en" &&
+                                subagendaMinuteData.minuteData.length > 0
                                   ? "mb-25 ml-25"
-                                  : "mb-25 mr-25"
+                                  : currentLanguage === "ar" &&
+                                    subagendaMinuteData.minuteData.length > 0
+                                  ? "mb-25 mr-25"
+                                  : ""
                               }
                             >
                               <Col lg={12} md={12} sm={12}>

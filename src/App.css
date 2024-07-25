@@ -1727,7 +1727,11 @@ i.icon-add-square.uploadfile {
 .ant-table-wrapper.ToDo .ant-table {
   background: none !important;
 }
-.ant-table-wrapper.ToDo .ant-table .ant-table-tbody > tr > th.ant-table-column-sorters {
+.ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-tbody
+  > tr
+  > th.ant-table-column-sorters {
   display: contents !important;
 }
 
@@ -2812,6 +2816,9 @@ input#Participant::placeholder {
   top: 10px;
 }
 
+.updateVersion .modal-dialog.modal-dialog-centered {
+  height: auto !important;
+}
 .modal-dialog.modal-dialog-centered {
   height: 640px !important;
 }
@@ -8157,7 +8164,7 @@ th.Tasks_newDashboardTable__L1Rc2-cell.titleDashboard.Tasks_newDashboardTable__L
   font-size: 12px;
   font-weight: 500;
 }
-th.Tasks_newDashboardTable__L1Rc2-cell.deadlineDashboard{
+th.Tasks_newDashboardTable__L1Rc2-cell.deadlineDashboard {
   color: #6127d6 !important;
   font-size: 12px;
   font-weight: 500;
@@ -8166,4 +8173,12 @@ th.Tasks_newDashboardTable__L1Rc2-cell.statusDashboard {
   color: #6127d6 !important;
   font-size: 12px;
   font-weight: 500;
+}
+.emptystatereviewers {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

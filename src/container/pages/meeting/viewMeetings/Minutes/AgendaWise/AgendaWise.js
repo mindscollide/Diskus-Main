@@ -751,14 +751,14 @@ const AgendaWise = ({
     let Data2 = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t));
+    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t,));
     dispatch(
       GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
         Data2,
         navigate,
         t,
         advanceMeetingModalID,
-        setAddReviewers,
+        false,
         false
       )
     );

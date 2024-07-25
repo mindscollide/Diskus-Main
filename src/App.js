@@ -22,18 +22,17 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
-import { Loader } from "./components/elements";
+import { Loader, Modal, Button } from "./components/elements";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
 import axios from "axios";
+import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
-  // const state = useSelector((state) => state);
-  // useEffect(() => {} ,[])
-  // console.log(state, "stateAppComponent");
+  const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
-
+  console.log(updateVersion, "updateVersionupdateVersion");
   useEffect(() => {
     // Function to fetch the current version from version.json
     const fetchVersion = async () => {
@@ -52,14 +51,15 @@ const App = () => {
     const checkVersion = async () => {
       const latestVersion = await fetchVersion();
       if (latestVersion && currentVersion && currentVersion !== latestVersion) {
+        setUpdateVersion(true);
         // If versions differ, prompt user to refresh or auto-refresh
-        if (
-          window.confirm(
-            "A new version of the application is available. Refresh now?"
-          )
-        ) {
-          window.location.reload();
-        }
+        // if (
+        //   window.confirm(
+        //     "A new version of the application is available. Refresh now?"
+        //   )
+        // ) {
+        //   window.location.reload();
+        // }
       } else if (!currentVersion) {
         // Set the initial version if it's not set
         setCurrentVersion(latestVersion);
@@ -82,6 +82,13 @@ const App = () => {
         <RouterProvider router={router} />
         {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
         <OpenPaymentForm />
+        {updateVersion && (
+          <UpdateVersionNotifyModal
+            setUpdateVersion={setUpdateVersion}
+            updateVersion={updateVersion}
+          />
+        )}
+        // {/* )} */}
       </Suspense>
       {/* <Notification /> */}
     </>

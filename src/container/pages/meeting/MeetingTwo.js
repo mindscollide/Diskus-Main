@@ -1077,6 +1077,7 @@ const NewMeeting = () => {
                 "isMinutePublished",
                 record.isMinutePublished
               );
+              localStorage.setItem("meetingTitle", record.title);
               // setIsOrganisers(isOrganiser);
             }}
           >
@@ -1379,6 +1380,7 @@ const NewMeeting = () => {
                         setEditFlag
                       )
                     );
+                    localStorage.setItem("meetingTitle", record.title);
                     localStorage.setItem(
                       "isMinutePublished",
                       record.isMinutePublished
@@ -1418,6 +1420,7 @@ const NewMeeting = () => {
                       "isMinutePublished",
                       record.isMinutePublished
                     );
+                    localStorage.setItem("meetingTitle", record.title);
                     setAdvanceMeetingModalID(record.pK_MDID);
                     dispatch(viewMeetingFlag(true));
                     setViewAdvanceMeetingModal(true);
@@ -1456,6 +1459,7 @@ const NewMeeting = () => {
                     "isMinutePublished",
                     record.isMinutePublished
                   );
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
@@ -1481,6 +1485,7 @@ const NewMeeting = () => {
                     "isMinutePublished",
                     record.isMinutePublished
                   );
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
@@ -1506,6 +1511,7 @@ const NewMeeting = () => {
                     "isMinutePublished",
                     record.isMinutePublished
                   );
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
