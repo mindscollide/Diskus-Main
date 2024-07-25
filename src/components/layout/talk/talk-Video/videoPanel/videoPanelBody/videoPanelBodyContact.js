@@ -413,6 +413,7 @@ const VideoPanelBodyContact = () => {
             }
             buttonText={buttonText}
             deselectAllUsers={deselectAllUsers}
+            groupCallUsers={groupCallUsers}
           />
         ) : null}
       </div>
