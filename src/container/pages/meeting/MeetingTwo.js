@@ -1712,11 +1712,12 @@ const NewMeeting = () => {
       setentereventIcon(true);
     }
   };
-
   //Board Deck Onclick function
   const boardDeckOnClick = (record) => {
+    console.log(record, "recordrecordrecord");
     setBoardDeckMeetingID(record.pK_MDID);
     dispatch(boardDeckModal(true));
+    localStorage.setItem("meetingTitle", record.title);
   };
 
   useEffect(() => {
@@ -2053,7 +2054,6 @@ const NewMeeting = () => {
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
 
-
   useEffect(() => {
     if (
       meetingIdReducer.CommitteeMeetingMQTT !== null &&
@@ -2095,7 +2095,7 @@ const NewMeeting = () => {
       console.log(error);
     }
   }, [meetingIdReducer.GroupMeetingMQTT]);
-  
+
   useEffect(() => {
     try {
       if (

@@ -119,6 +119,7 @@ const BoardDeckModal = ({
   const handlesharebuttonModal = () => {
     dispatch(boardDeckShareModal(true));
     dispatch(boardDeckModal(false));
+    localStorage.setItem("meetingTitle", "");
   };
 
   const handleRadioChange = (value) => {
@@ -128,6 +129,7 @@ const BoardDeckModal = ({
 
   const handleCancelButton = () => {
     dispatch(boardDeckModal(false));
+    localStorage.setItem("meetingTitle", "");
   };
 
   const handleDownloadButton = () => {
@@ -157,6 +159,19 @@ const BoardDeckModal = ({
           modalHeaderClassName={"d-block"}
           onHide={() => {
             dispatch(boardDeckModal(false));
+            localStorage.setItem("meetingTitle", "");
+            setBoarddeckOptions({
+              selectall: false,
+              Organizer: false,
+              AgendaContributor: false,
+              Participants: false,
+              Minutes: false,
+              Task: false,
+              polls: false,
+              attendeceReport: false,
+              video: false,
+              Agenda: false,
+            });
           }}
           size={"lg"}
           ModalBody={
