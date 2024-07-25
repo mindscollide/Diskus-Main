@@ -4340,9 +4340,9 @@ const GetAllAgendaWiseMinutesApiFunc = (
               MDID: Number(currentMeeting),
             };
             // Call AllDocumentsForAgendaWiseMinutesApiFunc and wait for it to complete
-            if (clickFlag === true) {
-              setAddReviewers(true);
-            }
+            // if (clickFlag === true) {
+            //   setAddReviewers(true);
+            // }
             await dispatch(
               AllDocumentsForAgendaWiseMinutesApiFunc(
                 navigate,

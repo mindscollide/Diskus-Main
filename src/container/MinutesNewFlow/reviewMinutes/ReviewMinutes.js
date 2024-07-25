@@ -374,11 +374,12 @@ const ReviewMinutes = () => {
   useEffect(() => {
     try {
       const reducerData = MinutesReducer.GetMinutesForReviewerByMeetingIdData;
-      if (reducerData !== null && reducerData !== undefined) {
-        setMinutesAgenda(reducerData.agendaMinutes);
-        setMinutesAgendaHierarchy(reducerData.agendaHierarchyList);
+      console.log(reducerData, "reducerDatareducerDatareducerData");
+      if (reducerData !== null) {
+        const { agendaHierarchyList, agendaMinutes, generalMinutes } =
+          reducerData;
         console.log(reducerData.generalMinutes, "reducerDatareducerData");
-        let newGeneralMeetingData = reducerData.generalMinutes.map(
+        let newGeneralMeetingData = generalMinutes.map(
           (generalMinteData, index) => {
             return {
               ...generalMinteData,
@@ -390,8 +391,8 @@ const ReviewMinutes = () => {
         setMinutesToReview(countActorBundleStatusID2(reducerData));
         setWorkflowID(reducerData.workFlowID);
         try {
-          let transformedData = minutesAgendaHierarchy.map((parentAgenda) => {
-            let parentAgendaMinutes = reducerData.agendaMinutes.filter(
+          let transformedData = agendaHierarchyList?.map((parentAgenda) => {
+            let parentAgendaMinutes = agendaMinutes?.filter(
               (minute) => minute.agendaID === parentAgenda.pK_MAID
             );
 
@@ -404,8 +405,8 @@ const ReviewMinutes = () => {
                   "subMinutessubMinutessubMinutessubMinutes"
                 );
 
-                return reducerData.agendaMinutes
-                  .filter((minute) => minute.agendaID === childAgenda.pK_MAID)
+                return agendaMinutes
+                  ?.filter((minute) => minute.agendaID === childAgenda.pK_MAID)
                   .map((minute) => {
                     const foundEntry =
                       NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes?.data?.find(
@@ -462,6 +463,11 @@ const ReviewMinutes = () => {
         }
 
         // console.log("transformedData", transformedData);
+      } else {
+        console.log(
+          MinutesReducer.GetMinutesForReviewerByMeetingIdData,
+          "transformedData error"
+        );
       }
       // else {
       //   setMinutesAgenda([]);

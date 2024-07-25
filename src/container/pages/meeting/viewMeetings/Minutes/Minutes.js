@@ -196,6 +196,18 @@ const Minutes = ({
         GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
       );
 
+      dispatch(
+        GetAllAgendaWiseMinutesApiFunc(
+          navigate,
+          Data,
+          t,
+          Number(advanceMeetingModalID),
+          false,
+          false,
+          true
+        )
+      );
+
       dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
     }
 
@@ -670,7 +682,6 @@ const Minutes = ({
 
   useEffect(() => {
     if (
-      ResponseMessage.trim() !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== "" &&
@@ -695,7 +706,6 @@ const Minutes = ({
       dispatch(CleareMessegeNewMeeting());
     }
     if (
-      ResponseMessageMinute.trim() !== "" &&
       ResponseMessageMinute !== t("No-record-found") &&
       ResponseMessageMinute !== t("No-records-found") &&
       ResponseMessageMinute !== "" &&
@@ -735,6 +745,7 @@ const Minutes = ({
   const [minuteReviewData, setMinuteReviewData] = useState(null);
 
   const [minutesData, setMinutesData] = useState([]);
+  const [minutesDataAgenda, setMinutesDataAgenda] = useState(null);
 
   const [publishMinutesDataAgenda, setPublishMinutesDataAgenda] = useState([]);
   const [publishMinutesDataGeneral, setPublishMinutesDataGeneral] = useState(
@@ -756,23 +767,14 @@ const Minutes = ({
     let newData = {
       MeetingID: Number(advanceMeetingModalID),
     };
+
     await dispatch(
       GetAllOrganizationUsersForReview(navigate, t, setAllReviewers)
     );
 
     dispatch(
-      GetAllAgendaWiseMinutesApiFunc(
-        navigate,
-        newData,
-        t,
-        Number(advanceMeetingModalID),
-        false,
-        setAddReviewers,
-        true
-      )
+      GetMinuteReviewFlowByMeetingId(newData, navigate, t, setAddReviewers)
     );
-
-    dispatch(GetMinuteReviewFlowByMeetingId(newData, navigate, t));
   };
 
   const accordianClick = (data, id, index) => {
@@ -892,6 +894,17 @@ const Minutes = ({
 
   useEffect(() => {
     if (
+      NewMeetingreducer.agendaWiseMinutesReducer !== null &&
+      NewMeetingreducer.agendaWiseMinutesReducer !== undefined
+    ) {
+      setMinutesDataAgenda(NewMeetingreducer.agendaWiseMinutesReducer);
+    } else {
+      setMinutesDataAgenda(null);
+    }
+  }, [NewMeetingreducer.agendaWiseMinutesReducer]);
+
+  useEffect(() => {
+    if (
       MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !== null &&
       MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !==
         undefined
@@ -959,7 +972,7 @@ const Minutes = ({
     dispatch(MeetingPublishedMinutesApi(Data, navigate, t));
   };
 
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
+  console.log("MinutesReducerMinutesReducer", minutesData, minutesDataAgenda);
 
   useEffect(() => {
     if (
@@ -1536,10 +1549,14 @@ const Minutes = ({
             <div className={styles["button-block"]}>
               {(editorRole.role === "Organizer" &&
                 Number(editorRole.status) === 9 &&
-                deadLineDate <= currentDateOnly) ||
+                deadLineDate <= currentDateOnly &&
+                (minutesData.length > 0 ||
+                  minutesDataAgenda !== null)) ||
               (Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer" &&
-                deadLineDate <= currentDateOnly) ? (
+                deadLineDate <= currentDateOnly &&
+                (minutesData.length > 0 ||
+                  minutesDataAgenda !== null)) ? (
                 <Button
                   text={t("Publish-minutes")}
                   className={styles["PublishMinutes"]}
