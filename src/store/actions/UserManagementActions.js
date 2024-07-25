@@ -2680,7 +2680,7 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
   let form = new FormData();
   form.append("RequestMethod", DownloadBoarddeckPDF.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
-
+  let meetingName = localStorage.getItem("meetingTitle");
   return async (dispatch) => {
     await dispatch(BoardDeckDownloadPDF_init());
 
@@ -2704,7 +2704,10 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
 
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "BoardDeck.pdf");
+          link.setAttribute(
+            "download",
+            "BoardDeckFile - " + meetingName + ".pdf"
+          );
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);

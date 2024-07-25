@@ -1316,7 +1316,7 @@ const NewMeeting = () => {
       width: "80px",
       align: "center",
       render: (text, record) => {
-        console.log("recordrecord", record)
+        console.log("recordrecord", record);
         const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
@@ -1706,11 +1706,12 @@ const NewMeeting = () => {
       setentereventIcon(true);
     }
   };
-
   //Board Deck Onclick function
   const boardDeckOnClick = (record) => {
+    console.log(record, "recordrecordrecord");
     setBoardDeckMeetingID(record.pK_MDID);
     dispatch(boardDeckModal(true));
+    localStorage.setItem("meetingTitle", record.title);
   };
 
   useEffect(() => {
@@ -1746,7 +1747,7 @@ const NewMeeting = () => {
               return agenda.objMeetingAgenda.canView === true;
             });
           });
-          console.log("copyMeetingDatacopyMeetingData", copyMeetingData)
+          console.log("copyMeetingDatacopyMeetingData", copyMeetingData);
           setRow(copyMeetingData);
         }
       } else {
@@ -2047,7 +2048,6 @@ const NewMeeting = () => {
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
 
-
   useEffect(() => {
     if (
       meetingIdReducer.CommitteeMeetingMQTT !== null &&
@@ -2089,7 +2089,7 @@ const NewMeeting = () => {
       console.log(error);
     }
   }, [meetingIdReducer.GroupMeetingMQTT]);
-  
+
   useEffect(() => {
     try {
       if (
