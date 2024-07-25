@@ -1,52 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import './VideoMaxOutgoing.css'
-import { Container, Row, Col } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button } from '../../../../elements'
-import videoEndIcon from '../../../../../assets/images/newElements/VideoEndIcon.png'
-import videoAvatar from '../../../../../assets/images/newElements/VideoAvatar.png'
-import { videoOutgoingCallFlag } from '../../../../../store/actions/VideoFeature_actions'
+import React, { useState, useEffect } from "react";
+import "./VideoMaxOutgoing.css";
+import { Container, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "../../../../elements";
+import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
+import videoAvatar from "../../../../../assets/images/newElements/VideoAvatar.png";
+import { videoOutgoingCallFlag } from "../../../../../store/actions/VideoFeature_actions";
 
 const VideoOutgoing = () => {
-  const dispatch = useDispatch()
+  const { VideoMainReducer } = useSelector((state) => state);
 
-  const { VideoMainReducer } = useSelector((state) => state)
-
-  const [isVisible, setIsVisible] = useState(true)
-
-  let currentCallType = Number(localStorage.getItem('CallType'))
-
-  // const [recipentData, setRecipentData] = useState([])
-
-  // useEffect(() => {
-  //   if (
-  //     VideoMainReducer.VideoRecipentData !== undefined &&
-  //     VideoMainReducer.VideoRecipentData !== null &&
-  //     VideoMainReducer.VideoRecipentData.length !== 0
-  //   ) {
-  //     setRecipentData(VideoMainReducer.VideoRecipentData)
-  //   } else {
-  //     setRecipentData([])
-  //   }
-  // }, [VideoMainReducer?.VideoRecipentData])
-
-  // const endCall = () => {
-  //   dispatch(videoOutgoingCallFlag(false))
-  // }
-
-  // let timeValue = Number(localStorage.getItem('callRingerTimeout'))
-  // timeValue = timeValue * 1000
-
-  // console.log('timeValue', timeValue, typeof timeValue)
+  let currentCallType = Number(localStorage.getItem("CallType"));
 
   useEffect(() => {
     // Create the audio element
-    const audioElement = new Audio('/CallRing.wav')
+    const audioElement = new Audio("/CallRing.wav");
 
-    audioElement.loop = true
+    audioElement.loop = true;
 
     // Play the audio when the component mounts
-    audioElement.play()
+    audioElement.play();
 
     // const timer = setTimeout(() => {
     //   // Dispatch action to update global state
@@ -57,13 +30,13 @@ const VideoOutgoing = () => {
     // }, timeValue)
 
     return () => {
-      audioElement.pause()
-      audioElement.currentTime = 0
+      audioElement.pause();
+      audioElement.currentTime = 0;
       // clearTimeout(timer)
-    }
-  }, [])
+    };
+  }, []);
 
-  const [userNameCR, setUserNameCR] = useState('')
+  const [userNameCR, setUserNameCR] = useState("");
 
   useEffect(() => {
     if (
@@ -72,15 +45,15 @@ const VideoOutgoing = () => {
       Object.keys(VideoMainReducer.VideoRecipentData).length !== 0 &&
       VideoMainReducer.VideoRecipentData.userName !== undefined
     ) {
-      setUserNameCR(VideoMainReducer.VideoRecipentData.userName)
+      setUserNameCR(VideoMainReducer.VideoRecipentData.userName);
     } else if (
       VideoMainReducer.VideoRecipentData !== undefined &&
       VideoMainReducer.VideoRecipentData !== null &&
       Object.keys(VideoMainReducer.VideoRecipentData).length !== 0
     ) {
-      setUserNameCR(VideoMainReducer.VideoRecipentData.recipients[0].userName)
+      setUserNameCR(VideoMainReducer.VideoRecipentData.recipients[0].userName);
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -91,21 +64,21 @@ const VideoOutgoing = () => {
               {Object.keys(VideoMainReducer.CallRequestReceivedMQTTData)
                 .length > 0 &&
               VideoMainReducer.CallRequestReceivedMQTTData.message ===
-                'VIDEO_CALL_UNANSWERED' ? (
+                "VIDEO_CALL_UNANSWERED" ? (
                 <>{userNameCR} is unavailable</>
               ) : Object.keys(VideoMainReducer.CallRequestReceivedMQTTData)
                   .length > 0 &&
                 VideoMainReducer.CallRequestReceivedMQTTData.message ===
-                  'VIDEO_CALL_RINGING' ? (
+                  "VIDEO_CALL_RINGING" ? (
                 <>
                   Ringing
-                  {' ' + userNameCR}
+                  {" " + userNameCR}
                   ...
                 </>
               ) : (
                 <>
                   Calling
-                  {' ' + userNameCR}
+                  {" " + userNameCR}
                   ...
                 </>
               )}
@@ -113,55 +86,8 @@ const VideoOutgoing = () => {
           ) : null}
         </Col>
       </Row>
-      {/* {isVisible && (
-        <div className="videoIncoming-max-call">
-          <Container>
-            <Row>
-              <Col sm={12} md={12} lg={12}>
-                <div className="avatar-column-max-call">
-                  <img src={videoAvatar} width={150} alt="Avatar video" />
-                </div>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col sm={12} md={12} lg={12}>
-                <div className="someone-calling-title-max-call">
-                  <p className="outgoing-call-text-max-call">
-                    {recipentData.length !== 0 &&
-                    recipentData !== undefined &&
-                    recipentData !== null
-                      ? recipentData.userName
-                      : null}
-                  </p>
-                </div>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col sm={12} md={12} lg={12}>
-                <div className="calling-title-max-call">
-                  <p className="calling-text-max-call">Ringing...</p>
-                </div>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col sm={12} md={12} lg={12}>
-                <div className="d-flex justify-content-center">
-                  <Button
-                    className="button-img-max-call"
-                    icon={<img src={videoEndIcon} width={50} />}
-                    onClick={endCall}
-                  />
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      )} */}
     </>
-  )
-}
+  );
+};
 
-export default VideoOutgoing
+export default VideoOutgoing;
