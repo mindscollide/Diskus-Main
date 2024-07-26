@@ -1263,7 +1263,7 @@ const MeetingDetails = ({
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Meeting_type_heading"]}>
-                        {t("Location")}
+                        {t("Location-Videourl")}
                         {/* <span className={styles["steric"]}>*</span> */}
                       </span>
                     </Col>
@@ -1271,7 +1271,7 @@ const MeetingDetails = ({
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <TextField
-                        placeholder={t("Location")}
+                        placeholder={t("Location-Videourl")}
                         applyClass={"meetinInnerSearch"}
                         name={"Location"}
                         labelClass="d-none"

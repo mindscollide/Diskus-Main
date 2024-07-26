@@ -2555,7 +2555,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         name="MeetingLocation"
                         applyClass="form-control2"
                         type="text"
-                        placeholder={t("Location")}
+                        placeholder={t("Location-Videourl")}
                         value={createMeeting.MeetingLocation}
                         required={true}
                         maxLength={245}
