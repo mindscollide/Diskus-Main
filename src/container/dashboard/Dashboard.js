@@ -146,6 +146,11 @@ import {
 import { Col, Row } from "react-bootstrap";
 import InternetConnectivityModal from "../pages/UserMangement/ModalsUserManagement/InternetConnectivityModal/InternetConnectivityModal";
 import { InsternetDisconnectModal } from "../../store/actions/UserMangementModalActions";
+import { DATAROOM_CLEAR_MESSAGE } from "../../store/action_types";
+import {
+  fileSharedMQTT,
+  folderSharedMQTT,
+} from "../../store/actions/DataRoom_actions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -1005,6 +1010,110 @@ const Dashboard = () => {
             };
             dispatch(setRecentActivityDataNotification(data2));
           }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "ORGANIZATION_SUBSCRIPTION_INACTIVE".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: t("Your-subscription-status-has-been-set-to-in-active"),
+            });
+          }
+          setNotificationID(id);
+
+          if (data.payload.isLoggedOut) {
+            setTimeout(() => {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }, 4000);
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "ORGANIZATION_SUBSCRIPTION_SUSPENDED".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: t("Your-subscription-has-been-suspended"),
+            });
+          }
+          setNotificationID(id);
+
+          if (data.payload.isLoggedOut) {
+            setTimeout(() => {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }, 4000);
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "ORGANIZATION_STATUS_INACTIVE".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: t("Your-organization-status-has-been-set-to-in-active"),
+            });
+          }
+          setNotificationID(id);
+
+          if (data.payload.isLoggedOut) {
+            setTimeout(() => {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }, 4000);
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "ORGANIZATION_STATUS_SUSPENDED".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: t("Your-organization-status-has-been-suspended"),
+            });
+          }
+          setNotificationID(id);
+
+          if (data.payload.isLoggedOut) {
+            setTimeout(() => {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }, 4000);
+          }
+        } else if (
+          data.payload.message.toLowerCase() === "FILE_SHARED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  `${data?.payload?.data?.displayFileName} document shared with you`
+                ),
+              });
+            }
+            setNotificationID(id);
+            dispatch(fileSharedMQTT(data.payload));
+          } catch (error) {
+              console.log(error, "errorerrorerrorerror")
+          }
+       
+        } else if (
+          data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  `${data?.payload?.data?.displayFolderName} folder shared with you`
+                ),
+              });
+            }
+            setNotificationID(id);
+            dispatch(folderSharedMQTT(data.payload));
+          } catch (error) {
+            
+          }
+
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
@@ -2281,29 +2390,28 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {videoFeatureReducer.IncomingVideoCallFlag === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className="dashbaord_data">
+              <div className='dashbaord_data'>
                 <Outlet />
               </div>
-              <div className="talk_features_home">
+              <div className='talk_features_home'>
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt="" draggable="false" />
+              <img src={IconMetroAttachment} alt='' draggable='false' />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -2316,8 +2424,8 @@ const Dashboard = () => {
           ) : null}
           {videoFeatureReducer.VideoChatMessagesFlag === true ? (
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -2373,8 +2481,7 @@ const Dashboard = () => {
             MinutesReducer.Loading ||
             DataRoomFileAndFoldersDetailsReducer.Loading ||
             SignatureWorkFlowReducer.Loading ||
-            UserMangementReducer.Loading 
-            ? (
+            UserMangementReducer.Loading ? (
             <Loader />
           ) : null}
           {/* Disconnectivity Modal  */}
@@ -2394,25 +2501,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
                   <>
-                    <Row className="mb-1">
+                    <Row className='mb-1'>
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className="d-flex justify-content-center">
+                          <Col className='d-flex justify-content-center'>
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=""
-                              draggable="false"
+                              alt=''
+                              draggable='false'
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className="text-center mt-4">
+                          <Col className='text-center mt-4'>
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -2428,13 +2535,12 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className="mb-3">
+                    <Row className='mb-3'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center"
-                      >
+                        className='d-flex justify-content-center'>
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}
