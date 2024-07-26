@@ -2079,5 +2079,9 @@
   "A-new-update-for-diskus-is-now-available": "A new update for Diskus is now available!",
   "Later": "Later",
   "Update-now": "Update Now",
-  "No-minutes": "No Minutes"
+  "No-minutes": "No Minutes",
+  "Your-subscription-status-has-been-set-to-in-active": "Your subscription status has been set to In-Active",
+  "Your-subscription-has-been-suspended": "Your subscription has been suspended",
+  "Your-organization-status-has-been-set-to-in-active": "Your organization status has been set to In-Active",
+  "Your-organization-status-has-been-suspended": "Your organization status has been suspended"
 }
