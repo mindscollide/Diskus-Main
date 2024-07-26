@@ -53,6 +53,8 @@ import {
   deleteSharedFileDataroom,
   deleteSharedFolderDataroom,
   FileisExist,
+  fileSharedMQTT,
+  folderSharedMQTT,
   getDocumentsAndFolderApi,
   getDocumentsAndFolderApiScrollbehaviour,
   getFolderDocumentsApi,
@@ -521,12 +523,85 @@ const DataRoom = () => {
       copyToClipboard(DataRoomReducer.getCreateFolderLink);
     }
   }, [DataRoomReducer.getCreateFolderLink]);
+  console.log(
+    DataRoomReducer.FileSharedMQTT,
+    DataRoomReducer.FolderSharedMQTT,
+    "DataRoomReducerDataRoomReducerDataRoomReducer"
+  );
+  useEffect(() => {
+    if (DataRoomReducer.FileSharedMQTT !== null) {
+      console.log(DataRoomReducer.FileSharedMQTT, currentView, "datadatadata");
+
+      try {
+        if (currentView === 3 || currentView === 2) {
+          const { data } = DataRoomReducer.FileSharedMQTT;
+          console.log(data, "datadatadata");
+
+          let fileData = {
+            id: data?.filesModel?.pK_FileID,
+            sharingID: data?.pK_FileSharingID,
+            name: data?.displayFileName,
+            diskusName: data?.diskusFileName,
+            owner: data?.sharedByUser,
+            modifiedDate: data?.modifiedDate,
+            sharedDate: data?.creationDateTime,
+            isFolder: false,
+            permissionID: data?.fK_PermissionID,
+            fileSize: data?.filesModel?.fileSize,
+            fileSizeOnDisk: 0,
+            location: "Shared With Me",
+            isShared: true,
+          };
+          console.log(fileData, "datadatadata");
+
+          // setGetAllData([fileData, ...getAllData]);
+        }
+        dispatch(fileSharedMQTT(null));
+      } catch (error) {
+        console.log(error, "datadatadata");
+      }
+    }
+  }, [DataRoomReducer.FileSharedMQTT]);
 
   useEffect(() => {
-    if (!isOnline) {
-      // CanceUpload();
+    if (DataRoomReducer.FolderSharedMQTT !== null) {
+      console.log(
+        DataRoomReducer.FolderSharedMQTT,
+        currentView,
+        "datadatadata"
+      );
+
+      try {
+        if (currentView === 2 || currentView === 3) {
+          console.log(data, "datadatadata");
+
+          const { data } = DataRoomReducer.FolderSharedMQTT;
+          console.log(data, "datadatadata");
+          let folderData = {
+            id: data?.filesModel?.pK_FolderID,
+            sharingID: data?.pK_FolderSharingID,
+            name: data?.displayFolderName,
+            diskusName: data?.diskusFolderName,
+            owner: data?.sharedByUser,
+            modifiedDate: data?.filesModel?.modifiedDate,
+            sharedDate: data?.creationDateTime,
+            isFolder: true,
+            permissionID: data?.fK_PermissionID,
+            fileSize: 0,
+            fileSizeOnDisk: 0,
+            location: "Shared With Me",
+            isShared: true,
+          };
+          console.log(folderData, "datadatadata");
+
+          // setGetAllData([folderData, ...getAllData]);
+        }
+        dispatch(folderSharedMQTT(null));
+      } catch (error) {
+        console.log(error, "datadatadata");
+      }
     }
-  }, [isOnline]);
+  }, [DataRoomReducer.FolderSharedMQTT]);
 
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
@@ -976,15 +1051,14 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" draggable="false" />
+                <img src={folderColor} alt='' draggable='false' />
                 <abbr title={text}>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
-                    {text} <img src={sharedIcon} alt="" draggable="false" />
+                    onClick={() => getFolderDocuments(data.id)}>
+                    {text} <img src={sharedIcon} alt='' draggable='false' />
                   </span>
                 </abbr>
               </div>
@@ -996,18 +1070,17 @@ const DataRoom = () => {
                   <section className={styles["fileRow"]}>
                     <img
                       src={getIconSource(getFileExtension(data.name))}
-                      alt=""
+                      alt=''
                       width={"25px"}
                       height={"25px"}
-                      className="me-2"
+                      className='me-2'
                     />
                     <abbr title={text}>
                       <span
                         onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                        className={styles["dataroom_table_heading"]}
-                      >
+                        className={styles["dataroom_table_heading"]}>
                         {text}
-                        <img src={sharedIcon} alt="" draggable="false" />
+                        <img src={sharedIcon} alt='' draggable='false' />
                       </span>
                     </abbr>
                   </section>
@@ -1018,15 +1091,15 @@ const DataRoom = () => {
                 <section className={styles["fileRow"]}>
                   <img
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=""
+                    alt=''
                     width={"25px"}
                     height={"25px"}
-                    className="me-2"
+                    className='me-2'
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
                       {text}
-                      <img src={sharedIcon} alt="" draggable="false" />
+                      <img src={sharedIcon} alt='' draggable='false' />
                     </span>
                   </abbr>
                 </section>
@@ -1037,14 +1110,13 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" draggable="false" />
+                <img src={folderColor} alt='' draggable='false' />
                 <abbr title={text}>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
+                    onClick={() => getFolderDocuments(data.id)}>
                     {text}{" "}
                   </span>
                 </abbr>
@@ -1064,16 +1136,15 @@ const DataRoom = () => {
                   <section className={styles["fileRow"]}>
                     <img
                       src={getIconSource(getFileExtension(data.name))}
-                      alt=""
+                      alt=''
                       width={"25px"}
                       height={"25px"}
-                      className="me-2"
+                      className='me-2'
                     />
                     <abbr title={text}>
                       <span
                         onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                        className={styles["dataroom_table_heading"]}
-                      >
+                        className={styles["dataroom_table_heading"]}>
                         {text}
                       </span>
                     </abbr>
@@ -1087,10 +1158,10 @@ const DataRoom = () => {
                 <section className={styles["fileRow"]}>
                   <img
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=""
+                    alt=''
                     width={"25px"}
                     height={"25px"}
-                    className="me-2"
+                    className='me-2'
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
@@ -1140,7 +1211,7 @@ const DataRoom = () => {
       defaultFilteredValue: ["2", "3", "4"],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <DownOutlined className="filter-chevron-icon-todolist" />
+        <DownOutlined className='filter-chevron-icon-todolist' />
       ),
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "modifiedDate" && sortedInfo.order,
@@ -1216,14 +1287,13 @@ const DataRoom = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-end gap-2 position-relative otherstuff"
-                >
-                  <div className="tablerowFeatures">
+                  className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+                  <div className='tablerowFeatures'>
                     {record.permissionID === 1 ||
                     record.permissionID === 3 ? null : (
                       //  Share Icon
 
-                      <Tooltip placement="topRight" title={t("Share")}>
+                      <Tooltip placement='topRight' title={t("Share")}>
                         <span className={styles["share__Icon"]}>
                           <svg
                             className={styles["share__Icon_img"]}
@@ -1234,31 +1304,30 @@ const DataRoom = () => {
                                 showShareFileModal(record.id, record.name);
                               }
                             }}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16.022"
-                            height="11.71"
-                            viewBox="0 0 16.022 11.71"
-                          >
+                            xmlns='http://www.w3.org/2000/svg'
+                            width='16.022'
+                            height='11.71'
+                            viewBox='0 0 16.022 11.71'>
                             <path
-                              id="Icon_material-group-add"
-                              data-name="Icon material-group-add"
-                              d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                              transform="translate(0.5 -7)"
-                              fill="none"
-                              stroke="#5a5a5a"
+                              id='Icon_material-group-add'
+                              data-name='Icon material-group-add'
+                              d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                              transform='translate(0.5 -7)'
+                              fill='none'
+                              stroke='#5a5a5a'
                             />
                           </svg>
                         </span>
                       </Tooltip>
                     )}
                     {/* Download Icon */}
-                    <Tooltip placement="topRight" title={t("Download")}>
+                    <Tooltip placement='topRight' title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
                           src={download}
-                          alt=""
-                          height="10.71px"
-                          width="15.02px"
+                          alt=''
+                          height='10.71px'
+                          width='15.02px'
                           className={styles["download__Icon_img"]}
                           onClick={() => showRequestingAccessModal(record)}
                         />
@@ -1305,20 +1374,19 @@ const DataRoom = () => {
                     )} */}
                   </div>
 
-                  <Tooltip placement="topRight" title={t("More")}>
+                  <Tooltip placement='topRight' title={t("More")}>
                     <span className={styles["threeDot__Icon"]}>
                       {record.isFolder ? (
                         <Dropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <Dropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
@@ -1329,8 +1397,7 @@ const DataRoom = () => {
                                       key={index}
                                       onClick={() =>
                                         fileOptionsSelect(data, record)
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -1342,8 +1409,7 @@ const DataRoom = () => {
                                       key={index}
                                       onClick={() =>
                                         fileOptionsSelect(data, record)
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -1356,8 +1422,7 @@ const DataRoom = () => {
                                         key={index}
                                         onClick={() =>
                                           fileOptionsSelect(data, record)
-                                        }
-                                      >
+                                        }>
                                         {data.label}
                                       </Dropdown.Item>
                                     );
@@ -1370,14 +1435,13 @@ const DataRoom = () => {
                         <Dropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <Dropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
@@ -1392,8 +1456,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -1409,8 +1472,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -1427,8 +1489,7 @@ const DataRoom = () => {
                                             record,
                                             pdfDataJson
                                           )
-                                        }
-                                      >
+                                        }>
                                         {data.label}
                                       </Dropdown.Item>
                                     );
@@ -1452,10 +1513,9 @@ const DataRoom = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-end gap-2 position-relative otherstuff"
-                >
-                  <div className="tablerowFeatures">
-                    <Tooltip placement="topRight" title={t("Share")}>
+                  className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+                  <div className='tablerowFeatures'>
+                    <Tooltip placement='topRight' title={t("Share")}>
                       <span className={styles["share__Icon"]}>
                         <svg
                           className={styles["share__Icon_img"]}
@@ -1466,42 +1526,41 @@ const DataRoom = () => {
                               showShareFileModal(record.id, record.name);
                             }
                           }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16.022"
-                          height="11.71"
-                          viewBox="0 0 16.022 11.71"
-                        >
+                          xmlns='http://www.w3.org/2000/svg'
+                          width='16.022'
+                          height='11.71'
+                          viewBox='0 0 16.022 11.71'>
                           <path
-                            id="Icon_material-group-add"
-                            data-name="Icon material-group-add"
-                            d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                            transform="translate(0.5 -7)"
-                            fill="none"
-                            stroke="#5a5a5a"
+                            id='Icon_material-group-add'
+                            data-name='Icon material-group-add'
+                            d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                            transform='translate(0.5 -7)'
+                            fill='none'
+                            stroke='#5a5a5a'
                           />
                         </svg>
                       </span>
                     </Tooltip>
-                    <Tooltip placement="topRight" title={t("Download")}>
+                    <Tooltip placement='topRight' title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
                           src={download}
-                          alt=""
-                          height="10.71px"
-                          width="15.02px"
+                          alt=''
+                          height='10.71px'
+                          width='15.02px'
                           className={styles["download__Icon_img"]}
                           onClick={() => showRequestingAccessModal(record)}
                         />
                       </span>
                     </Tooltip>
 
-                    <Tooltip placement="topRight" title={t("Delete")}>
+                    <Tooltip placement='topRight' title={t("Delete")}>
                       <span className={styles["delete__Icon"]}>
                         <img
                           src={hoverdelete}
-                          height="10.71px"
-                          alt=""
-                          width="15.02px"
+                          height='10.71px'
+                          alt=''
+                          width='15.02px'
                           className={styles["delete__Icon_img_hover"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -1515,9 +1574,9 @@ const DataRoom = () => {
                         />
                         <img
                           src={del}
-                          height="12.17px"
-                          alt=""
-                          width="9.47px"
+                          height='12.17px'
+                          alt=''
+                          width='9.47px'
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -1533,20 +1592,19 @@ const DataRoom = () => {
                     </Tooltip>
                   </div>
 
-                  <Tooltip placement="topRight" title={t("More")}>
+                  <Tooltip placement='topRight' title={t("More")}>
                     <span className={styles["threeDot__Icon"]}>
                       {record.isFolder ? (
                         <Dropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <Dropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
@@ -1556,8 +1614,7 @@ const DataRoom = () => {
                                   key={index}
                                   onClick={() =>
                                     fileOptionsSelect(data, record)
-                                  }
-                                >
+                                  }>
                                   {data.label}
                                 </Dropdown.Item>
                               );
@@ -1568,14 +1625,13 @@ const DataRoom = () => {
                         <Dropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <Dropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
@@ -1591,8 +1647,7 @@ const DataRoom = () => {
                                             record,
                                             pdfDataJsonSignature
                                           )
-                                        }
-                                      >
+                                        }>
                                         {data.label}
                                       </Dropdown.Item>
                                     );
@@ -1608,8 +1663,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -1667,15 +1721,14 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" draggable="false" />
+                <img src={folderColor} alt='' draggable='false' />
                 <abbr title={text}>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
-                    {text} <img src={sharedIcon} alt="" draggable="false" />
+                    onClick={() => getFolderDocuments(data.id)}>
+                    {text} <img src={sharedIcon} alt='' draggable='false' />
                   </span>
                 </abbr>
               </div>
@@ -1687,18 +1740,17 @@ const DataRoom = () => {
                   <section className={styles["fileRow"]}>
                     <img
                       src={getIconSource(getFileExtension(data.name))}
-                      alt=""
+                      alt=''
                       width={"25px"}
                       height={"25px"}
-                      className="me-2"
+                      className='me-2'
                     />
                     <abbr title={text}>
                       <span
                         onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                        className={styles["dataroom_table_heading"]}
-                      >
+                        className={styles["dataroom_table_heading"]}>
                         {text}
-                        <img src={sharedIcon} alt="" draggable="false" />
+                        <img src={sharedIcon} alt='' draggable='false' />
                       </span>
                     </abbr>
                   </section>
@@ -1709,15 +1761,15 @@ const DataRoom = () => {
                 <section className={styles["fileRow"]}>
                   <img
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=""
+                    alt=''
                     width={"25px"}
                     height={"25px"}
-                    className="me-2"
+                    className='me-2'
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
                       {text}
-                      <img src={sharedIcon} alt="" draggable="false" />
+                      <img src={sharedIcon} alt='' draggable='false' />
                     </span>
                   </abbr>
                 </section>
@@ -1728,14 +1780,13 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" draggable="false" />
+                <img src={folderColor} alt='' draggable='false' />
                 <abbr title={text}>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
+                    onClick={() => getFolderDocuments(data.id)}>
                     {text}{" "}
                   </span>
                 </abbr>
@@ -1755,16 +1806,15 @@ const DataRoom = () => {
                 <section className={styles["fileRow"]}>
                   <img
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=""
+                    alt=''
                     width={"25px"}
                     height={"25px"}
-                    className="me-2"
+                    className='me-2'
                   />
                   <abbr title={text}>
                     <span
                       onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                      className={styles["dataroom_table_heading"]}
-                    >
+                      className={styles["dataroom_table_heading"]}>
                       {text}
                     </span>
                   </abbr>
@@ -1808,7 +1858,7 @@ const DataRoom = () => {
       },
     },
     {
-      title: <span className="text-center">{currentFilter}</span>,
+      title: <span className='text-center'>{currentFilter}</span>,
       dataIndex: "modifiedDate",
       key: "modifiedDate",
       width: "110px",
@@ -1832,7 +1882,7 @@ const DataRoom = () => {
       defaultFilteredValue: ["2", "3", "4"],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <DownOutlined className="filter-chevron-icon-todolist" />
+        <DownOutlined className='filter-chevron-icon-todolist' />
       ),
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "modifiedDate" && sortedInfo.order,
@@ -1908,14 +1958,13 @@ const DataRoom = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-end gap-2 position-relative otherstuff"
-                >
-                  <div className="tablerowFeatures">
+                  className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+                  <div className='tablerowFeatures'>
                     {record.permissionID === 1 ||
                     record.permissionID === 3 ? null : (
                       //  Share Icon
 
-                      <Tooltip placement="topRight" title={t("Share")}>
+                      <Tooltip placement='topRight' title={t("Share")}>
                         <span className={styles["share__Icon"]}>
                           <svg
                             className={styles["share__Icon_img"]}
@@ -1926,31 +1975,30 @@ const DataRoom = () => {
                                 showShareFileModal(record.id, record.name);
                               }
                             }}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16.022"
-                            height="11.71"
-                            viewBox="0 0 16.022 11.71"
-                          >
+                            xmlns='http://www.w3.org/2000/svg'
+                            width='16.022'
+                            height='11.71'
+                            viewBox='0 0 16.022 11.71'>
                             <path
-                              id="Icon_material-group-add"
-                              data-name="Icon material-group-add"
-                              d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                              transform="translate(0.5 -7)"
-                              fill="none"
-                              stroke="#5a5a5a"
+                              id='Icon_material-group-add'
+                              data-name='Icon material-group-add'
+                              d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                              transform='translate(0.5 -7)'
+                              fill='none'
+                              stroke='#5a5a5a'
                             />
                           </svg>
                         </span>
                       </Tooltip>
                     )}
                     {/* Download Icon */}
-                    <Tooltip placement="topRight" title={t("Download")}>
+                    <Tooltip placement='topRight' title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
                           src={download}
-                          alt=""
-                          height="10.71px"
-                          width="15.02px"
+                          alt=''
+                          height='10.71px'
+                          width='15.02px'
                           className={styles["download__Icon_img"]}
                           onClick={() => showRequestingAccessModal(record)}
                         />
@@ -1997,20 +2045,19 @@ const DataRoom = () => {
                     )} */}
                   </div>
 
-                  <Tooltip placement="topRight" title={t("More")}>
+                  <Tooltip placement='topRight' title={t("More")}>
                     <span className={styles["threeDot__Icon"]}>
                       {record.isFolder ? (
                         <Dropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <Dropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
@@ -2021,8 +2068,7 @@ const DataRoom = () => {
                                       key={index}
                                       onClick={() =>
                                         fileOptionsSelect(data, record)
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -2034,8 +2080,7 @@ const DataRoom = () => {
                                       key={index}
                                       onClick={() =>
                                         fileOptionsSelect(data, record)
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -2048,8 +2093,7 @@ const DataRoom = () => {
                                         key={index}
                                         onClick={() =>
                                           fileOptionsSelect(data, record)
-                                        }
-                                      >
+                                        }>
                                         {data.label}
                                       </Dropdown.Item>
                                     );
@@ -2062,14 +2106,13 @@ const DataRoom = () => {
                         <Dropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <Dropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
@@ -2084,8 +2127,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -2101,8 +2143,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -2119,8 +2160,7 @@ const DataRoom = () => {
                                             record,
                                             pdfDataJson
                                           )
-                                        }
-                                      >
+                                        }>
                                         {data.label}
                                       </Dropdown.Item>
                                     );
@@ -2144,10 +2184,9 @@ const DataRoom = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-end gap-2 position-relative otherstuff"
-                >
-                  <div className="tablerowFeatures">
-                    <Tooltip placement="topRight" title={t("Share")}>
+                  className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+                  <div className='tablerowFeatures'>
+                    <Tooltip placement='topRight' title={t("Share")}>
                       <span className={styles["share__Icon"]}>
                         <svg
                           className={styles["share__Icon_img"]}
@@ -2158,42 +2197,41 @@ const DataRoom = () => {
                               showShareFileModal(record.id, record.name);
                             }
                           }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16.022"
-                          height="11.71"
-                          viewBox="0 0 16.022 11.71"
-                        >
+                          xmlns='http://www.w3.org/2000/svg'
+                          width='16.022'
+                          height='11.71'
+                          viewBox='0 0 16.022 11.71'>
                           <path
-                            id="Icon_material-group-add"
-                            data-name="Icon material-group-add"
-                            d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                            transform="translate(0.5 -7)"
-                            fill="none"
-                            stroke="#5a5a5a"
+                            id='Icon_material-group-add'
+                            data-name='Icon material-group-add'
+                            d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                            transform='translate(0.5 -7)'
+                            fill='none'
+                            stroke='#5a5a5a'
                           />
                         </svg>
                       </span>
                     </Tooltip>
-                    <Tooltip placement="topRight" title={t("Download")}>
+                    <Tooltip placement='topRight' title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
                           src={download}
-                          alt=""
-                          height="10.71px"
-                          width="15.02px"
+                          alt=''
+                          height='10.71px'
+                          width='15.02px'
                           className={styles["download__Icon_img"]}
                           onClick={() => showRequestingAccessModal(record)}
                         />
                       </span>
                     </Tooltip>
 
-                    <Tooltip placement="topRight" title={t("Delete")}>
+                    <Tooltip placement='topRight' title={t("Delete")}>
                       <span className={styles["delete__Icon"]}>
                         <img
                           src={hoverdelete}
-                          height="10.71px"
-                          alt=""
-                          width="15.02px"
+                          height='10.71px'
+                          alt=''
+                          width='15.02px'
                           className={styles["delete__Icon_img_hover"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -2211,9 +2249,9 @@ const DataRoom = () => {
                         />
                         <img
                           src={del}
-                          height="12.17px"
-                          alt=""
-                          width="9.47px"
+                          height='12.17px'
+                          alt=''
+                          width='9.47px'
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -2239,20 +2277,19 @@ const DataRoom = () => {
                     </Tooltip>
                   </div>
 
-                  <Tooltip placement="topRight" title={t("More")}>
+                  <Tooltip placement='topRight' title={t("More")}>
                     <span className={styles["threeDot__Icon"]}>
                       {record.isFolder ? (
                         <Dropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <Dropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
@@ -2262,8 +2299,7 @@ const DataRoom = () => {
                                   key={index}
                                   onClick={() =>
                                     fileOptionsSelect(data, record)
-                                  }
-                                >
+                                  }>
                                   {data.label}
                                 </Dropdown.Item>
                               );
@@ -2274,14 +2310,13 @@ const DataRoom = () => {
                         <Dropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <Dropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
@@ -2297,8 +2332,7 @@ const DataRoom = () => {
                                             record,
                                             pdfDataJsonSignature
                                           )
-                                        }
-                                      >
+                                        }>
                                         {data.label}
                                       </Dropdown.Item>
                                     );
@@ -2314,8 +2348,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -2356,12 +2389,11 @@ const DataRoom = () => {
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <img src={folderColor} alt="" draggable="false" />
+              <img src={folderColor} alt='' draggable='false' />
               <span
                 className={styles["dataroom_table_heading"]}
-                onClick={() => getFolderDocuments(record.id)}
-              >
-                {text} <img src={sharedIcon} alt="" draggable="false" />
+                onClick={() => getFolderDocuments(record.id)}>
+                {text} <img src={sharedIcon} alt='' draggable='false' />
               </span>
             </div>
           );
@@ -2371,7 +2403,7 @@ const DataRoom = () => {
               <div className={`${styles["dataFolderRow"]}`}>
                 <img
                   src={getIconSource(getFileExtension(record.name))}
-                  alt=""
+                  alt=''
                   width={"25px"}
                   height={"25px"}
                 />
@@ -2381,7 +2413,7 @@ const DataRoom = () => {
                   // onClick={() => getFolderDocuments(data.id)}
                 >
                   {record.name}{" "}
-                  <img src={sharedIcon} alt="" draggable="false" />
+                  <img src={sharedIcon} alt='' draggable='false' />
                 </span>
               </div>
             );
@@ -2390,7 +2422,7 @@ const DataRoom = () => {
               <div className={`${styles["dataFolderRow"]}`}>
                 <img
                   src={getIconSource(getFileExtension(record.name))}
-                  alt=""
+                  alt=''
                   width={"25px"}
                   height={"25px"}
                 />
@@ -2399,7 +2431,7 @@ const DataRoom = () => {
                   // onClick={() => getFolderDocuments(data.id)}
                 >
                   {record.name}{" "}
-                  <img src={sharedIcon} alt="" draggable="false" />
+                  <img src={sharedIcon} alt='' draggable='false' />
                 </span>
               </div>
             );
@@ -2469,14 +2501,13 @@ const DataRoom = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2 position-relative otherstuff"
-              >
-                <div className="tablerowFeatures">
+                className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+                <div className='tablerowFeatures'>
                   {record.permissionID === 1 ||
                   record.permissionID === 3 ? null : (
                     //  Share Icon
 
-                    <Tooltip placement="topRight" title={t("Share")}>
+                    <Tooltip placement='topRight' title={t("Share")}>
                       <span className={styles["share__Icon"]}>
                         <svg
                           className={styles["share__Icon_img"]}
@@ -2487,31 +2518,30 @@ const DataRoom = () => {
                               showShareFileModal(record.id, record.name);
                             }
                           }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16.022"
-                          height="11.71"
-                          viewBox="0 0 16.022 11.71"
-                        >
+                          xmlns='http://www.w3.org/2000/svg'
+                          width='16.022'
+                          height='11.71'
+                          viewBox='0 0 16.022 11.71'>
                           <path
-                            id="Icon_material-group-add"
-                            data-name="Icon material-group-add"
-                            d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                            transform="translate(0.5 -7)"
-                            fill="none"
-                            stroke="#5a5a5a"
+                            id='Icon_material-group-add'
+                            data-name='Icon material-group-add'
+                            d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                            transform='translate(0.5 -7)'
+                            fill='none'
+                            stroke='#5a5a5a'
                           />
                         </svg>
                       </span>
                     </Tooltip>
                   )}
                   {/* Download Icon */}
-                  <Tooltip placement="topRight" title={t("Download")}>
+                  <Tooltip placement='topRight' title={t("Download")}>
                     <span className={styles["download__Icon"]}>
                       <img
                         src={download}
-                        alt=""
-                        height="10.71px"
-                        width="15.02px"
+                        alt=''
+                        height='10.71px'
+                        width='15.02px'
                         className={styles["download__Icon_img"]}
                         onClick={() => showRequestingAccessModal(record)}
                       />
@@ -2558,20 +2588,19 @@ const DataRoom = () => {
                     )} */}
                 </div>
 
-                <Tooltip placement="topRight" title={t("More")}>
+                <Tooltip placement='topRight' title={t("More")}>
                   <span className={styles["threeDot__Icon"]}>
                     {record.isFolder ? (
                       <Dropdown
                         className={`${
                           styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
+                        } ${"dataroom_options"}`}>
+                        <Dropdown.Toggle id='dropdown-autoclose-true'>
                           <img
                             src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
+                            alt=''
+                            width='15.02px'
+                            height='10.71px'
                           />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -2582,8 +2611,7 @@ const DataRoom = () => {
                                     key={index}
                                     onClick={() =>
                                       fileOptionsSelect(data, record)
-                                    }
-                                  >
+                                    }>
                                     {data.label}
                                   </Dropdown.Item>
                                 );
@@ -2595,8 +2623,7 @@ const DataRoom = () => {
                                     key={index}
                                     onClick={() =>
                                       fileOptionsSelect(data, record)
-                                    }
-                                  >
+                                    }>
                                     {data.label}
                                   </Dropdown.Item>
                                 );
@@ -2609,8 +2636,7 @@ const DataRoom = () => {
                                       key={index}
                                       onClick={() =>
                                         fileOptionsSelect(data, record)
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -2623,14 +2649,13 @@ const DataRoom = () => {
                       <Dropdown
                         className={`${
                           styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
+                        } ${"dataroom_options"}`}>
+                        <Dropdown.Toggle id='dropdown-autoclose-true'>
                           <img
                             src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
+                            alt=''
+                            width='15.02px'
+                            height='10.71px'
                           />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -2645,8 +2670,7 @@ const DataRoom = () => {
                                         record,
                                         pdfDataJson
                                       )
-                                    }
-                                  >
+                                    }>
                                     {data.label}
                                   </Dropdown.Item>
                                 );
@@ -2662,8 +2686,7 @@ const DataRoom = () => {
                                         record,
                                         pdfDataJson
                                       )
-                                    }
-                                  >
+                                    }>
                                     {data.label}
                                   </Dropdown.Item>
                                 );
@@ -2680,8 +2703,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </Dropdown.Item>
                                   );
@@ -3359,15 +3381,14 @@ const DataRoom = () => {
           />
         )}
         {actionundonenotification && <ActionUndoNotification />}
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col sm={12} md={12} lg={12}>
             <Row>
               <Col
                 lg={4}
                 md={4}
                 sm={12}
-                className="d-flex gap-3 align-items-center"
-              >
+                className='d-flex gap-3 align-items-center'>
                 <span className={styles["Data_room_heading"]}>
                   {t("Data-room")}
                 </span>
@@ -3382,8 +3403,7 @@ const DataRoom = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Data_room_btn"]}
-                      >
+                        className={styles["Data_room_btn"]}>
                         <Plus width={20} height={20} fontWeight={800} />
                         <span className={styles["font_size"]}>{t("New")}</span>
                       </Col>
@@ -3393,20 +3413,18 @@ const DataRoom = () => {
                   <Dropdown.Menu className={styles["dropdown_menu_dataroom"]}>
                     <Dropdown.Item
                       className={styles["dataroom_dropdown_item"]}
-                      onClick={openFolderModal}
-                    >
+                      onClick={openFolderModal}>
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className=" d-flex gap-2 align-items-center"
-                        >
+                          className=' d-flex gap-2 align-items-center'>
                           <img
                             src={plus}
-                            height="10.8"
-                            alt=""
-                            width="12px"
+                            height='10.8'
+                            alt=''
+                            width='12px'
                             onClick={openFolderModal}
                           />
                           <span className={styles["New_folder"]}>
@@ -3421,13 +3439,12 @@ const DataRoom = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className=" d-flex gap-2 align-items-center"
-                        >
+                          className=' d-flex gap-2 align-items-center'>
                           <img
                             src={fileupload}
-                            alt=""
-                            height="10.8"
-                            width="12px"
+                            alt=''
+                            height='10.8'
+                            width='12px'
                           />
                           <UploadTextField
                             title={t("File-upload")}
@@ -3444,14 +3461,13 @@ const DataRoom = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className=" d-flex gap-1 align-items-center"
-                        >
+                          className=' d-flex gap-1 align-items-center'>
                           <img
                             src={plus}
-                            height="10.8"
-                            alt=""
-                            width="12px"
-                            draggable="false"
+                            height='10.8'
+                            alt=''
+                            width='12px'
+                            draggable='false'
                           />
                           <UploadDataFolder
                             title={t("Folder-upload")}
@@ -3471,8 +3487,7 @@ const DataRoom = () => {
                 lg={6}
                 md={6}
                 sm={12}
-                className="d-flex position-relative Inputfield_for_data_room justify-content-end "
-              >
+                className='d-flex position-relative Inputfield_for_data_room justify-content-end '>
                 <SearchBarComponent
                   setSearchDataFields={setSearchDataFields}
                   searchDataFields={searchDataFields}
@@ -3488,20 +3503,19 @@ const DataRoom = () => {
                 lg={1}
                 md={1}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 {currentView !== 5 && (
                   <span className={styles["lsit_grid_buttons"]}>
                     <Button
                       icon={
-                        <Tooltip placement="bottomLeft" title={t("Grid-view")}>
+                        <Tooltip placement='bottomLeft' title={t("Grid-view")}>
                           <img
                             src={
                               gridbtnactive ? Grid_Selected : Grid_Not_Selected
                             }
-                            height="25.27px"
-                            width="25.27px"
-                            alt=""
+                            height='25.27px'
+                            width='25.27px'
+                            alt=''
                             className={styles["grid_view_Icon"]}
                           />
                         </Tooltip>
@@ -3515,14 +3529,14 @@ const DataRoom = () => {
                     />
                     <Button
                       icon={
-                        <Tooltip placement="bottomLeft" title={t("List-view")}>
+                        <Tooltip placement='bottomLeft' title={t("List-view")}>
                           <img
                             src={
                               listviewactive ? List_Selected : List_Not_selected
                             }
-                            height="25.27px"
-                            width="25.27px"
-                            alt=""
+                            height='25.27px'
+                            width='25.27px'
+                            alt=''
                             className={styles["list_view_Icon"]}
                           />
                         </Tooltip>
@@ -3538,12 +3552,11 @@ const DataRoom = () => {
                 )}
               </Col>
             </Row>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={detailView ? 8 : 12}
                 md={detailView ? 8 : 12}
-                sm={detailView ? 8 : 12}
-              >
+                sm={detailView ? 8 : 12}>
                 <Paper className={styles["Data_room_paper"]}>
                   {searchTabOpen ? (
                     <SearchComponent
@@ -3559,7 +3572,7 @@ const DataRoom = () => {
                   ) : (
                     <>
                       <Row>
-                        <Col lg={12} md={12} sm={12} className="d-flex gap-3">
+                        <Col lg={12} md={12} sm={12} className='d-flex gap-3'>
                           <Button
                             text={t("All")}
                             className={
@@ -3616,7 +3629,7 @@ const DataRoom = () => {
                       </Row>
                       {currentView === 2 ? (
                         <>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} sm={12} md={12}>
                               {getAllData.length > 0 &&
                               getAllData !== undefined &&
@@ -3635,7 +3648,7 @@ const DataRoom = () => {
                                         : true
                                     }
                                     height={"58vh"}
-                                    endMessage=""
+                                    endMessage=''
                                     loader={
                                       getAllData.length <= totalRecords && (
                                         <Row>
@@ -3643,14 +3656,12 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center my-3"
-                                          >
+                                            className='d-flex justify-content-center my-3'>
                                             <Spin indicator={antIcon} />
                                           </Col>
                                         </Row>
                                       )
-                                    }
-                                  >
+                                    }>
                                     <GridViewDataRoom
                                       data={getAllData}
                                       sRowsData={sRowsData}
@@ -3681,7 +3692,7 @@ const DataRoom = () => {
                                         : true
                                     }
                                     height={"58vh"}
-                                    endMessage=""
+                                    endMessage=''
                                     loader={
                                       getAllData.length <= totalRecords && (
                                         <Row>
@@ -3689,14 +3700,12 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center my-3"
-                                          >
+                                            className='d-flex justify-content-center my-3'>
                                             <Spin indicator={antIcon} />
                                           </Col>
                                         </Row>
                                       )
-                                    }
-                                  >
+                                    }>
                                     <TableToDo
                                       sortDirections={["descend", "ascend"]}
                                       column={shareWithmeColoumns}
@@ -3710,48 +3719,43 @@ const DataRoom = () => {
                                 </>
                               ) : (
                                 <>
-                                  <Row className="mt-4">
+                                  <Row className='mt-4'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <img
                                         src={EmptyStateSharewithme}
-                                        alt=""
-                                        draggable="false"
+                                        alt=''
+                                        draggable='false'
                                       />
                                     </Col>
                                   </Row>
-                                  <Row className="mt-4">
+                                  <Row className='mt-4'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <span
                                         className={
                                           styles["Messege_nofiles_shared"]
-                                        }
-                                      >
+                                        }>
                                         {t("There-are-no-files-shared")}
                                       </span>
                                     </Col>
                                   </Row>
-                                  <Row className="mt-0">
+                                  <Row className='mt-0'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <span
                                         className={
                                           styles["Messege_nofiles_shared"]
-                                        }
-                                      >
+                                        }>
                                         {t("With-you")}
                                       </span>
                                     </Col>
@@ -3763,7 +3767,7 @@ const DataRoom = () => {
                         </>
                       ) : currentView === 4 ? (
                         <>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} sm={12} md={12}>
                               {getAllData.length > 0 ? (
                                 <>
@@ -3792,7 +3796,7 @@ const DataRoom = () => {
                                       pagination={false}
                                       locale={{
                                         emptyText: (
-                                          <span className="vh-100 text-center">
+                                          <span className='vh-100 text-center'>
                                             <p>
                                               {/* <Icon type="like" /> */}
                                               No Recent Data Found
@@ -3806,18 +3810,16 @@ const DataRoom = () => {
                                     />
                                   ) : (
                                     <>
-                                      <Row className="mt-2">
+                                      <Row className='mt-2'>
                                         <Col
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className="d-flex justify-content-center h-100 align-items-center"
-                                        >
+                                          className='d-flex justify-content-center h-100 align-items-center'>
                                           <span
                                             className={
                                               styles["Messege_nofiles"]
-                                            }
-                                          >
+                                            }>
                                             {t("There-are-no-items-here")}
                                           </span>
                                         </Col>
@@ -3827,13 +3829,18 @@ const DataRoom = () => {
                                 </>
                               ) : (
                                 <>
-                                  <Row className="text-center mt-4">
+                                  <Row className='text-center mt-4'>
                                     <Col lg={12} sm={12} md={12}>
                                       <img src={Recentadded_emptyIcon} />
                                     </Col>
                                     <Col lg={12} sm={12} md={12}>
-                                      <p className={styles["Recently_Added"]}>Recently Added</p>
-                                      <span  className={styles["Recently_Added_tagLine"]}>
+                                      <p className={styles["Recently_Added"]}>
+                                        Recently Added
+                                      </p>
+                                      <span
+                                        className={
+                                          styles["Recently_Added_tagLine"]
+                                        }>
                                         This space is ready to showcase your
                                         latest additions. What will you add
                                         next?
@@ -3849,7 +3856,7 @@ const DataRoom = () => {
                         <ApprovalSend />
                       ) : (
                         <>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} sm={12} md={12}>
                               {getAllData.length > 0 &&
                               getAllData !== undefined &&
@@ -3868,7 +3875,7 @@ const DataRoom = () => {
                                         : true
                                     }
                                     height={"55vh"}
-                                    endMessage=""
+                                    endMessage=''
                                     loader={
                                       getAllData.length <= totalRecords && (
                                         <Row>
@@ -3876,14 +3883,12 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center mt-2"
-                                          >
+                                            className='d-flex justify-content-center mt-2'>
                                             <Spin indicator={antIcon} />
                                           </Col>
                                         </Row>
                                       )
-                                    }
-                                  >
+                                    }>
                                     <GridViewDataRoom
                                       data={getAllData}
                                       sRowsData={sRowsData}
@@ -3913,7 +3918,7 @@ const DataRoom = () => {
                                       : true
                                   }
                                   height={"57vh"}
-                                  endMessage=""
+                                  endMessage=''
                                   loader={
                                     getAllData.length <= totalRecords && (
                                       <>
@@ -3922,16 +3927,14 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center mt-2"
-                                          >
+                                            className='d-flex justify-content-center mt-2'>
                                             <Spin indicator={antIcon} />
                                           </Col>
                                         </Row>
                                       </>
                                     )
                                   }
-                                  scrollableTarget="scrollableDiv"
-                                >
+                                  scrollableTarget='scrollableDiv'>
                                   <TableToDo
                                     column={MyDocumentsColumns}
                                     sortDirections={["descend", "ascend"]}
@@ -3945,42 +3948,37 @@ const DataRoom = () => {
                                 </InfiniteScroll>
                               ) : (
                                 <>
-                                  <Row className="mt-2">
+                                  <Row className='mt-2'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <span
-                                        className={styles["Messege_nofiles"]}
-                                      >
+                                        className={styles["Messege_nofiles"]}>
                                         {t("There-are-no-items-here")}
                                       </span>
                                     </Col>
                                   </Row>
-                                  <Row className="mt-3">
+                                  <Row className='mt-3'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <span
-                                        className={styles["Tag_line_nofiles"]}
-                                      >
+                                        className={styles["Tag_line_nofiles"]}>
                                         {t("Start-adding-your-documents")}
                                       </span>
                                     </Col>
                                   </Row>
                                   {/* Dragger Uploader */}
-                                  <Row className="mt-4">
+                                  <Row className='mt-4'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <Dragger
                                         setProgress={setProgress}
                                         className={
@@ -3992,9 +3990,9 @@ const DataRoom = () => {
                                         Icon={
                                           <img
                                             src={DrapDropIcon}
-                                            heigh="356.89"
-                                            width="356.89"
-                                            alt=""
+                                            heigh='356.89'
+                                            width='356.89'
+                                            alt=''
                                           />
                                         }
                                       />

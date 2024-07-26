@@ -147,6 +147,10 @@ import { Col, Row } from "react-bootstrap";
 import InternetConnectivityModal from "../pages/UserMangement/ModalsUserManagement/InternetConnectivityModal/InternetConnectivityModal";
 import { InsternetDisconnectModal } from "../../store/actions/UserMangementModalActions";
 import { DATAROOM_CLEAR_MESSAGE } from "../../store/action_types";
+import {
+  fileSharedMQTT,
+  folderSharedMQTT,
+} from "../../store/actions/DataRoom_actions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -1074,6 +1078,42 @@ const Dashboard = () => {
               dispatch(userLogOutApiFunc(navigate, t));
             }, 4000);
           }
+        } else if (
+          data.payload.message.toLowerCase() === "FILE_SHARED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  `${data?.payload?.data?.displayFileName} document shared with you`
+                ),
+              });
+            }
+            setNotificationID(id);
+            dispatch(fileSharedMQTT(data.payload));
+          } catch (error) {
+              console.log(error, "errorerrorerrorerror")
+          }
+       
+        } else if (
+          data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  `${data?.payload?.data?.displayFolderName} folder shared with you`
+                ),
+              });
+            }
+            setNotificationID(id);
+            dispatch(folderSharedMQTT(data.payload));
+          } catch (error) {
+            
+          }
+
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
