@@ -942,7 +942,6 @@ const OrganizationLevelConfigUM = () => {
           sm={12}
           className="d-flex gap-3 align-items-center"
         >
-          <img src={BlueArrowCircle} alt="" className="cursor-pointer" />
           <span className={styles["UserLevelConfig_Heading"]}>
             {t("Organization-level-configurations")}
           </span>

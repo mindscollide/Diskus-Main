@@ -199,41 +199,7 @@ const DocumentViewer = () => {
         try {
           console.log(isPermission, "isPermissionisPermissionisPermission");
 
-          if (Number(isPermission) === 0) {
-            //  Currently for all
-            // instance.UI.disableElements([
-            //   "thumbRotateClockwise",
-            //   "toolsOverlay",
-            //   "toolbarGroup-Shapes",
-            //   "toolbarGroup-Edit",
-            //   "toolbarGroup-Insert",
-            //   "shapeToolGroupButton",
-            //   "menuButton",
-            //   "freeHandHighlightToolGroupButton",
-            //   "underlineToolGroupButton",
-            //   "freeHandToolGroupButton",
-            //   "stickyToolGroupButton",
-            //   "squigglyToolGroupButton",
-            //   "strikeoutToolGroupButton",
-            //   "notesPanel",
-            //   "viewControlsButton",
-            //   "selectToolButton",
-            //   "toggleNotesButton",
-            //   "searchButton",
-            //   "freeTextToolGroupButton",
-            //   "crossStampToolButton",
-            //   "checkStampToolButton",
-            //   "dotStampToolButton",
-            //   "rubberStampToolGroupButton",
-            //   "dateFreeTextToolButton",
-            //   "eraserToolButton",
-            //   "panToolButton",
-            //   "signatureToolGroupButton",
-            //   "viewControlsOverlay",
-            //   "contextMenuPopup",
-            //   "signatureFieldToolGroupButton"
-            // ]);
-          } else if (Number(isPermission) === 1) {
+          if (Number(isPermission) === 1) {
             console.log(isPermission, "isPermissionisPermissionisPermission");
 
             //  for Viewer
@@ -268,41 +234,6 @@ const DocumentViewer = () => {
               "viewControlsOverlay",
               "contextMenuPopup",
               "header",
-            ]);
-          } else if (Number(isPermission) === 2) {
-            //  Editor Role
-            instance.UI.disableElements([
-              "thumbRotateClockwise",
-              "toolsOverlay",
-              "toolbarGroup-Shapes",
-              "toolbarGroup-Edit",
-              "toolbarGroup-Insert",
-              "shapeToolGroupButton",
-              "menuButton",
-              "freeHandHighlightToolGroupButton",
-              "underlineToolGroupButton",
-              "freeHandToolGroupButton",
-              "stickyToolGroupButton",
-              "squigglyToolGroupButton",
-              "strikeoutToolGroupButton",
-              "notesPanel",
-              "viewControlsButton",
-              "selectToolButton",
-              "toggleNotesButton",
-              "searchButton",
-              "freeTextToolGroupButton",
-              "crossStampToolButton",
-              "checkStampToolButton",
-              "dotStampToolButton",
-              "rubberStampToolGroupButton",
-              "dateFreeTextToolButton",
-              "eraserToolButton",
-              "panToolButton",
-              "signatureToolGroupButton",
-              "viewControlsOverlay",
-              "contextMenuPopup",
-              "signatureFieldToolGroupButton",
-              "leftPanelButton",
             ]);
           } else if (Number(isPermission) === 3) {
             // Not Ediable
@@ -390,8 +321,8 @@ const DocumentViewer = () => {
   }, [webViewer.ResponseMessage]);
   return (
     <>
-      <div className="documnetviewer">
-        <div className="webviewer" ref={viewer}></div>
+      <div className='documnetviewer'>
+        <div className='webviewer' ref={viewer}></div>
       </div>
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </>

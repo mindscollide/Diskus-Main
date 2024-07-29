@@ -3940,7 +3940,23 @@ const deleteSharedFolderDataroom = (navigate, Data, t) => {
       });
   };
 };
+
+const fileSharedMQTT = (response) => {
+  return {
+    type: actions.DATAROOM_FILE_SHARED_MQTT,
+    response,
+  };
+};
+
+const folderSharedMQTT = (response) => {
+  return {
+    type: actions.DATAROOM_FILE_SHARED_MQTT,
+    response,
+  };
+};
 export {
+  fileSharedMQTT,
+  folderSharedMQTT,
   deleteSharedFolderDataroom,
   deleteSharedFileDataroom,
   createFolderLink_fail,

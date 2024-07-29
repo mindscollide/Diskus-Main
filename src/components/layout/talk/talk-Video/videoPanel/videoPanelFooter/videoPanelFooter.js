@@ -12,6 +12,7 @@ const VideoPanelFooter = ({
   groupbtnClassName,
   buttonText,
   deselectAllUsers,
+  groupCallUsers,
 }) => {
   const dispatch = useDispatch();
 
@@ -26,14 +27,16 @@ const VideoPanelFooter = ({
       <Container>
         <Row>
           <Col lg={5} md={5} sm={12}>
-            {VideoMainReducer.Loading === false ? (
+            {/* {VideoMainReducer.Loading === false ? (
               <div className="deselect-all" onClick={deselectAllUsers}>
-                <p>
-                  {t("Deselect-all")}
-                  <X />
-                </p>
+                {groupCallUsers.length > 0 ? (
+                  <p>
+                    {t("Deselect-all")}
+                    <X />
+                  </p>
+                ) : null}
               </div>
-            ) : null}
+            ) : null} */}
           </Col>
           <Col lg={7} md={7} sm={12} className="text-end">
             {VideoMainReducer.Loading === false ? (
