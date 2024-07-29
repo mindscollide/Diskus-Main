@@ -3950,11 +3950,25 @@ const fileSharedMQTT = (response) => {
 
 const folderSharedMQTT = (response) => {
   return {
-    type: actions.DATAROOM_FILE_SHARED_MQTT,
+    type: actions.DATAROOM_FOLDER_SHARED_MQTT,
     response,
   };
 };
+const fileRemoveMQTT = (response) => {
+  return {
+    type: actions.DATAROOM_FILE_REMOVE_MQTT,
+    response: response,
+  };
+};
+const folderRemoveMQTT = (response) => {
+  return {
+    type: actions.DATAROOM_FOLDER_REMOVE_MQTT,
+    response: response,
+  };
+};
 export {
+  folderRemoveMQTT,
+  fileRemoveMQTT,
   fileSharedMQTT,
   folderSharedMQTT,
   deleteSharedFolderDataroom,

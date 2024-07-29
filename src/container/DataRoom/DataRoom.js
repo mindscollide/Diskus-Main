@@ -189,6 +189,7 @@ const DataRoom = () => {
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState(0);
   const [getAllData, setGetAllData] = useState([]);
+  console.log(getAllData, "getAllDatagetAllDatagetAllData");
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [sortValue, setSortValue] = useState(1);
   const [isAscending, setIsAscending] = useState(true);
@@ -526,35 +527,61 @@ const DataRoom = () => {
   console.log(
     DataRoomReducer.FileSharedMQTT,
     DataRoomReducer.FolderSharedMQTT,
+    { DataRoomReducer },
     "DataRoomReducerDataRoomReducerDataRoomReducer"
   );
+  // Share File MQTT
   useEffect(() => {
     if (DataRoomReducer.FileSharedMQTT !== null) {
       console.log(DataRoomReducer.FileSharedMQTT, currentView, "datadatadata");
 
       try {
-        if (currentView === 3 || currentView === 2) {
-          const { data } = DataRoomReducer.FileSharedMQTT;
-          console.log(data, "datadatadata");
+        let fileData;
+        const { data } = DataRoomReducer.FileSharedMQTT;
+        console.log(data, "datadatadata");
 
-          let fileData = {
-            id: data?.filesModel?.pK_FileID,
+        if (currentView === 2) {
+          // currentView 2 for Share with me
+
+          fileData = {
+            id: data?.pK_FileID,
             sharingID: data?.pK_FileSharingID,
             name: data?.displayFileName,
-            diskusName: data?.diskusFileName,
+            diskusName: null,
             owner: data?.sharedByUser,
-            modifiedDate: data?.modifiedDate,
-            sharedDate: data?.creationDateTime,
+            modifiedDate: data?.filesModel?.modifiedDate,
+            sharedDate: "20240726143136",
             isFolder: false,
-            permissionID: data?.fK_PermissionID,
+            permissionID: data.fK_PermissionID,
             fileSize: data?.filesModel?.fileSize,
             fileSizeOnDisk: 0,
             location: "Shared With Me",
             isShared: true,
           };
-          console.log(fileData, "datadatadata");
+          setGetAllData([fileData, ...getAllData]);
+          setTotalRecords((totalValue) => totalValue + 1);
 
-          // setGetAllData([fileData, ...getAllData]);
+          console.log(fileData, "datadatadata");
+        } else if (currentView === 3) {
+          // currentView 3 for All Tab
+
+          fileData = {
+            id: data?.pK_FileID,
+            sharingID: data?.pK_FileSharingID,
+            name: data?.displayFileName,
+            diskusName: null,
+            owner: data?.sharedByUser,
+            modifiedDate: data?.filesModel?.modifiedDate,
+            sharedDate: "20240726143136",
+            isFolder: false,
+            permissionID: data.fK_PermissionID,
+            fileSize: data?.filesModel?.fileSize,
+            fileSizeOnDisk: 0,
+            location: "Shared With Me",
+            isShared: true,
+          };
+          setGetAllData([fileData, ...getAllData]);
+          setTotalRecords((totalValue) => totalValue + 1);
         }
         dispatch(fileSharedMQTT(null));
       } catch (error) {
@@ -562,7 +589,46 @@ const DataRoom = () => {
       }
     }
   }, [DataRoomReducer.FileSharedMQTT]);
+  // Remove File MQTT
+  useEffect(() => {
+    if (DataRoomReducer.FileRemoveMQTT !== null) {
+      try {
+        let fileID = Number(DataRoomReducer.FileRemoveMQTT);
+        if (currentView === 2 || currentView === 3) {
+          setGetAllData((getllData) => {
+            return getAllData.filter((data, index) => data.id !== fileID);
+          });
+          setTotalRecords((totalValue) => totalValue - 1);
+        }
+      } catch (error) {
+        console.log(error, "datadatadata");
+      }
+    }
+  }, [DataRoomReducer.FileRemoveMQTT]);
+  // Remove Folder MQTT
+  useEffect(() => {
+    if (DataRoomReducer.FolderRemoveMQTT !== null) {
+      console.log(DataRoomReducer.FolderRemoveMQT, "folderIDfolderIDfolderID");
 
+      try {
+        let folderID = Number(DataRoomReducer.FolderRemoveMQTT);
+        console.log(folderID, "folderIDfolderIDfolderID");
+        if (currentView === 3) {
+          console.log(folderID, "folderIDfolderIDfolderID");
+
+          setGetAllData((getllData) => {
+            return getAllData.filter((data, index) => data.id !== folderID);
+          });
+          setTotalRecords((totalValue) => totalValue - 1);
+        } else if (currentView === 2) {
+        }
+      } catch (error) {
+        console.log(error, "datadatadata");
+      }
+    }
+  }, [DataRoomReducer.FolderRemoveMQTT]);
+
+  // Share Folder MQTT
   useEffect(() => {
     if (DataRoomReducer.FolderSharedMQTT !== null) {
       console.log(
@@ -570,32 +636,53 @@ const DataRoom = () => {
         currentView,
         "datadatadata"
       );
+      let folderData;
+      const { data } = DataRoomReducer.FolderSharedMQTT;
+      console.log(data, "datadatadata");
 
       try {
-        if (currentView === 2 || currentView === 3) {
-          console.log(data, "datadatadata");
-
-          const { data } = DataRoomReducer.FolderSharedMQTT;
-          console.log(data, "datadatadata");
-          let folderData = {
-            id: data?.filesModel?.pK_FolderID,
-            sharingID: data?.pK_FolderSharingID,
-            name: data?.displayFolderName,
-            diskusName: data?.diskusFolderName,
-            owner: data?.sharedByUser,
-            modifiedDate: data?.filesModel?.modifiedDate,
-            sharedDate: data?.creationDateTime,
+        if (currentView === 3) {
+          // currentView 3 for All Tab
+          folderData = {
+            id: data.pK_FolderID,
+            sharingID: data.pK_FolderSharingID,
+            name: data.displayFolderName,
+            diskusName: null,
+            owner: data.sharedByUser,
+            modifiedDate: data.folderDetails.modifiedDate,
+            sharedDate: data.sharedDate,
             isFolder: true,
-            permissionID: data?.fK_PermissionID,
+            permissionID: data.fK_PermissionID,
             fileSize: 0,
             fileSizeOnDisk: 0,
             location: "Shared With Me",
             isShared: true,
           };
           console.log(folderData, "datadatadata");
+          setGetAllData([folderData, ...getAllData]);
+          setTotalRecords((totalValue) => totalValue + 1);
+        } else if (currentView === 2) {
+          // currentView 2 for Share with me
 
-          // setGetAllData([folderData, ...getAllData]);
+          folderData = {
+            id: data.pK_FolderID,
+            sharingID: data.pK_FolderSharingID,
+            name: data.displayFolderName,
+            diskusName: null,
+            owner: data.sharedByUser,
+            modifiedDate: data.folderDetails.modifiedDate,
+            sharedDate: data.sharedDate,
+            isFolder: true,
+            permissionID: data.fK_PermissionID,
+            fileSize: 0,
+            fileSizeOnDisk: 0,
+            location: "Shared With Me",
+            isShared: true,
+          };
+          setGetAllData([folderData, ...getAllData]);
+          setTotalRecords((totalValue) => totalValue + 1);
         }
+
         dispatch(folderSharedMQTT(null));
       } catch (error) {
         console.log(error, "datadatadata");
@@ -744,16 +831,14 @@ const DataRoom = () => {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
         let ext = record.name.split(".").pop();
-        if (ext === "pdf") {
-          window.open(
-            `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-              pdfDataJson
-            )}`,
-            "_blank",
-            "noopener noreferrer"
-          );
-        }
+        // if (ext === "pdf") {
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
       }
+      // }
     } else if (data.value === 2) {
       // Share File Modal
       if (record.isFolder) {
@@ -1064,47 +1149,25 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            if (ext === "pdf") {
-              return (
-                <>
-                  <section className={styles["fileRow"]}>
-                    <img
-                      src={getIconSource(getFileExtension(data.name))}
-                      alt=''
-                      width={"25px"}
-                      height={"25px"}
-                      className='me-2'
-                    />
-                    <abbr title={text}>
-                      <span
-                        onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                        className={styles["dataroom_table_heading"]}>
-                        {text}
-                        <img src={sharedIcon} alt='' draggable='false' />
-                      </span>
-                    </abbr>
-                  </section>
-                </>
-              );
-            } else {
-              return (
-                <section className={styles["fileRow"]}>
-                  <img
-                    src={getIconSource(getFileExtension(data.name))}
-                    alt=''
-                    width={"25px"}
-                    height={"25px"}
-                    className='me-2'
-                  />
-                  <abbr title={text}>
-                    <span className={styles["dataroom_table_heading"]}>
-                      {text}
-                      <img src={sharedIcon} alt='' draggable='false' />
-                    </span>
-                  </abbr>
-                </section>
-              );
-            }
+            return (
+              <section className={styles["fileRow"]}>
+                <img
+                  src={getIconSource(getFileExtension(data.name))}
+                  alt=''
+                  width={"25px"}
+                  height={"25px"}
+                  className='me-2'
+                />
+                <abbr title={text}>
+                  <span
+                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    className={styles["dataroom_table_heading"]}>
+                    {text}
+                    <img src={sharedIcon} alt='' draggable='false' />
+                  </span>
+                </abbr>
+              </section>
+            );
           }
         } else {
           if (data.isFolder) {
@@ -1123,54 +1186,24 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            if (ext === "pdf") {
-              return (
-                // <Link
-                //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                //     pdfDataJson
-                //   )}`}
-                //   target="_blank"
-                //   rel="noopener noreferrer"
-                // >
-                <>
-                  <section className={styles["fileRow"]}>
-                    <img
-                      src={getIconSource(getFileExtension(data.name))}
-                      alt=''
-                      width={"25px"}
-                      height={"25px"}
-                      className='me-2'
-                    />
-                    <abbr title={text}>
-                      <span
-                        onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                        className={styles["dataroom_table_heading"]}>
-                        {text}
-                      </span>
-                    </abbr>
-                  </section>
-                </>
-
-                // </Link>
-              );
-            } else {
-              return (
-                <section className={styles["fileRow"]}>
-                  <img
-                    src={getIconSource(getFileExtension(data.name))}
-                    alt=''
-                    width={"25px"}
-                    height={"25px"}
-                    className='me-2'
-                  />
-                  <abbr title={text}>
-                    <span className={styles["dataroom_table_heading"]}>
-                      {text}
-                    </span>
-                  </abbr>
-                </section>
-              );
-            }
+            return (
+              <section className={styles["fileRow"]}>
+                <img
+                  src={getIconSource(getFileExtension(data.name))}
+                  alt=''
+                  width={"25px"}
+                  height={"25px"}
+                  className='me-2'
+                />
+                <abbr title={text}>
+                  <span
+                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    className={styles["dataroom_table_heading"]}>
+                    {text}
+                  </span>
+                </abbr>
+              </section>
+            );
           }
         }
       },
@@ -1734,47 +1767,25 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            if (ext === "pdf") {
-              return (
-                <>
-                  <section className={styles["fileRow"]}>
-                    <img
-                      src={getIconSource(getFileExtension(data.name))}
-                      alt=''
-                      width={"25px"}
-                      height={"25px"}
-                      className='me-2'
-                    />
-                    <abbr title={text}>
-                      <span
-                        onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                        className={styles["dataroom_table_heading"]}>
-                        {text}
-                        <img src={sharedIcon} alt='' draggable='false' />
-                      </span>
-                    </abbr>
-                  </section>
-                </>
-              );
-            } else {
-              return (
-                <section className={styles["fileRow"]}>
-                  <img
-                    src={getIconSource(getFileExtension(data.name))}
-                    alt=''
-                    width={"25px"}
-                    height={"25px"}
-                    className='me-2'
-                  />
-                  <abbr title={text}>
-                    <span className={styles["dataroom_table_heading"]}>
-                      {text}
-                      <img src={sharedIcon} alt='' draggable='false' />
-                    </span>
-                  </abbr>
-                </section>
-              );
-            }
+            return (
+              <section className={styles["fileRow"]}>
+                <img
+                  src={getIconSource(getFileExtension(data.name))}
+                  alt=''
+                  width={"25px"}
+                  height={"25px"}
+                  className='me-2'
+                />
+                <abbr title={text}>
+                  <span
+                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    className={styles["dataroom_table_heading"]}>
+                    {text}
+                    <img src={sharedIcon} alt='' draggable='false' />
+                  </span>
+                </abbr>
+              </section>
+            );
           }
         } else {
           if (data.isFolder) {
@@ -1793,54 +1804,24 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            // if (ext === "pdf") {
             return (
-              // <Link
-              //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-              //     pdfDataJson
-              //   )}`}
-              //   target="_blank"
-              //   rel="noopener noreferrer"
-              // >
-              <>
-                <section className={styles["fileRow"]}>
-                  <img
-                    src={getIconSource(getFileExtension(data.name))}
-                    alt=''
-                    width={"25px"}
-                    height={"25px"}
-                    className='me-2'
-                  />
-                  <abbr title={text}>
-                    <span
-                      onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                      className={styles["dataroom_table_heading"]}>
-                      {text}
-                    </span>
-                  </abbr>
-                </section>
-              </>
-
-              // </Link>
+              <section className={styles["fileRow"]}>
+                <img
+                  src={getIconSource(getFileExtension(data.name))}
+                  alt=''
+                  width={"25px"}
+                  height={"25px"}
+                  className='me-2'
+                />
+                <abbr title={text}>
+                  <span
+                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    className={styles["dataroom_table_heading"]}>
+                    {text}
+                  </span>
+                </abbr>
+              </section>
             );
-            // } else {
-            //   return (
-            //     <section className={styles["fileRow"]}>
-            //       <img
-            //         src={getIconSource(getFileExtension(data.name))}
-            //         alt=""
-            //         width={"25px"}
-            //         height={"25px"}
-            //         className="me-2"
-            //       />
-            //       <abbr title={text}>
-            //         <span className={styles["dataroom_table_heading"]}>
-            //           {text}
-            //         </span>
-            //       </abbr>
-            //     </section>
-            //   );
-            // }
           }
         }
       },
@@ -2398,44 +2379,23 @@ const DataRoom = () => {
             </div>
           );
         } else {
-          if (ext === "pdf") {
-            return (
-              <div className={`${styles["dataFolderRow"]}`}>
-                <img
-                  src={getIconSource(getFileExtension(record.name))}
-                  alt=''
-                  width={"25px"}
-                  height={"25px"}
-                />
-                <span
-                  className={styles["dataroom_table_heading"]}
-                  onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                  // onClick={() => getFolderDocuments(data.id)}
-                >
-                  {record.name}{" "}
-                  <img src={sharedIcon} alt='' draggable='false' />
-                </span>
-              </div>
-            );
-          } else {
-            return (
-              <div className={`${styles["dataFolderRow"]}`}>
-                <img
-                  src={getIconSource(getFileExtension(record.name))}
-                  alt=''
-                  width={"25px"}
-                  height={"25px"}
-                />
-                <span
-                  className={styles["dataroom_table_heading"]}
-                  // onClick={() => getFolderDocuments(data.id)}
-                >
-                  {record.name}{" "}
-                  <img src={sharedIcon} alt='' draggable='false' />
-                </span>
-              </div>
-            );
-          }
+          return (
+            <div className={`${styles["dataFolderRow"]}`}>
+              <img
+                src={getIconSource(getFileExtension(record.name))}
+                alt=''
+                width={"25px"}
+                height={"25px"}
+              />
+              <span
+                className={styles["dataroom_table_heading"]}
+                onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                // onClick={() => getFolderDocuments(data.id)}
+              >
+                {record.name} <img src={sharedIcon} alt='' draggable='false' />
+              </span>
+            </div>
+          );
         }
       },
     },

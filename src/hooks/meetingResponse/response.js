@@ -103,6 +103,7 @@ export const getAllUnpublishedMeetingData = async (
         isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
         userDetails: usersData?.userData,
         isMinutePublished: data?.isMinutePublished,
+        isRecordingAvailable: data?.isRecordingAvailable,
       });
     });
   }
@@ -155,6 +156,11 @@ export const mqttMeetingData = async (meetingData, currentSourceID) => {
     title: meetingData?.title,
     isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
     userDetails: usersData?.userData,
+    isRecordingAvailable:
+      meetingData.isRecordingAvailable !== undefined &&
+      meetingData.isRecordingAvailable !== null
+        ? meetingData.isRecordingAvailable
+        : false,
   };
 
   return Data;

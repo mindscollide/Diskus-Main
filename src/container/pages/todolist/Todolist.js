@@ -286,6 +286,7 @@ const TodoList = () => {
       render: (text, record) => (
         <p
           className="todolist-title-col"
+          title={text}
           onClick={(e) => viewModalHandler(record.pK_TID)}
         >
           {text}
