@@ -29,11 +29,6 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
 
-  //reducer call from Attendance_Reducers
-  const sceduleproposedMeeting = useSelector(
-    (state) => state.NewMeetingreducer.sceduleproposedMeeting
-  );
-
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
@@ -47,7 +42,6 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   );
 
   const [organizerRows, setOrganizerRows] = useState([]);
-  console.log(organizerRows, "newDatanewDatasnewDatanewDatas");
   const [initialOrganizerRows, setInitialOrganizerRows] = useState([]);
   const [proposedDates, setProposedDates] = useState([]);
 
@@ -57,10 +51,8 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
       MeetingID: Number(viewProposeDatePollMeetingID),
     };
     dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
-    return () => {
-      localStorage.removeItem("viewProposeDatePollMeetingID");
-    };
   }, []);
+  
   // for rendering data in table
   useEffect(() => {
     if (
@@ -220,9 +212,6 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
             <SceduleProposedmeeting
               organizerRows={organizerRows}
               proposedDates={proposedDates}
-              setOrganizerRows={setOrganizerRows}
-              setProposedDates={setProposedDates}
-              currentMeeting={viewProposeDatePollMeetingID}
             />
           ) : null}
         </Col>

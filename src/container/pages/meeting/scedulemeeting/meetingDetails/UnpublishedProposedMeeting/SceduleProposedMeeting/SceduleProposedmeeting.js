@@ -11,7 +11,10 @@ import {
   Loader,
 } from "../../../../../../../components/elements";
 import { useSelector } from "react-redux";
-import { showSceduleProposedMeeting } from "../../../../../../../store/actions/NewMeetingActions";
+import {
+  showSceduleProposedMeeting,
+  getUserWiseProposedDatesMainApi,
+} from "../../../../../../../store/actions/NewMeetingActions";
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
 import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMeetingActions";
@@ -21,12 +24,7 @@ import {
   utcConvertintoGMT,
 } from "../../../../../../../commen/functions/date_formater";
 import { update } from "lodash";
-const SceduleProposedmeeting = ({
-  organizerRows,
-  proposedDates,
-  setOrganizerRows,
-  setProposedDates,
-}) => {
+const SceduleProposedmeeting = ({}) => {
   let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
@@ -38,14 +36,66 @@ const SceduleProposedmeeting = ({
     (state) => state.NewMeetingreducer.sceduleproposedMeeting
   );
 
+  const getUserProposedOrganizerData = useSelector(
+    (state) => state.NewMeetingreducer.getUserProposedOrganizerData
+  );
+
   const [isActive, setIsActive] = useState(false);
   const [selectProposedDate, setselectProposedDate] = useState(null);
   const [formattedDates, setFormattedDates] = useState([]);
   const [updateTableRows, setUpdateTableRows] = useState([]);
   const [proposedDatesData, setProposedDatesData] = useState([]);
 
+  const [organizerRows, setOrganizerRows] = useState([]);
+  const [initialOrganizerRows, setInitialOrganizerRows] = useState([]);
+  const [proposedDates, setProposedDates] = useState([]);
+
   console.log(updateTableRows, "updateTableRowsupdateTableRows");
   const [maxTotalCountIndex, setMaxTotalCountIndex] = useState(null);
+
+  // dispatch Api in useEffect
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(viewProposeDatePollMeetingID),
+    };
+    dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
+  }, []);
+
+  // for rendering data in table
+  useEffect(() => {
+    if (
+      getUserProposedOrganizerData !== null &&
+      getUserProposedOrganizerData !== undefined &&
+      getUserProposedOrganizerData.length > 0
+    ) {
+      let ProposeDates;
+
+      getUserProposedOrganizerData.forEach((datesData, index) => {
+        const uniqueData = new Set(
+          datesData.selectedProposedDates.map(JSON.stringify)
+        );
+        ProposeDates = Array.from(uniqueData).map(JSON.parse);
+      });
+      setProposedDates(ProposeDates);
+      setInitialOrganizerRows(getUserProposedOrganizerData);
+    } else {
+      setInitialOrganizerRows([]);
+    }
+  }, [getUserProposedOrganizerData]);
+
+  useEffect(() => {
+    const newOrganizerRows = [...initialOrganizerRows];
+    // Find the maximum number of selectedProposedDates objects in initialOrganizerRows
+    let maxSelectedProposedDates = 0;
+    initialOrganizerRows.forEach((organizer) => {
+      const numSelectedProposedDates = organizer.selectedProposedDates.length;
+      if (numSelectedProposedDates > maxSelectedProposedDates) {
+        maxSelectedProposedDates = numSelectedProposedDates;
+      }
+    });
+
+    setOrganizerRows(newOrganizerRows);
+  }, [initialOrganizerRows]);
 
   useEffect(() => {
     if (Array.isArray(organizerRows) && Array.isArray(proposedDates)) {
@@ -228,7 +278,7 @@ const SceduleProposedmeeting = ({
         show={sceduleproposedMeeting}
         setShow={dispatch(showSceduleProposedMeeting)}
         className={styles["main-modal-class"]}
-        modalHeaderClassName={"d-block"}
+        closeButton={true}
         modalBodyClassName={styles["modal-class-width"]}
         modalFooterClassName={"d-block"}
         onHide={() => {
