@@ -32,7 +32,9 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
-
+  const sceduleproposedMeeting = useSelector(
+    (state) => state.NewMeetingreducer.sceduleproposedMeeting
+  );
   const getUserProposedOrganizerData = useSelector(
     (state) => state.NewMeetingreducer.getUserProposedOrganizerData
   );
@@ -52,7 +54,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
     };
     dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
   }, []);
-  
+
   // for rendering data in table
   useEffect(() => {
     if (
@@ -158,13 +160,12 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
 
   return (
     <section>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className="d-flex align-items-center align-items-center gap-3"
-        >
+          className='d-flex align-items-center align-items-center gap-3'>
           <span className={styles["Prposed_Meeting_heading"]}>
             {t("Organizer-View")}
           </span>
@@ -178,8 +179,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Button
                   text={t("Cancel")}
                   onClick={cancelHandler}
@@ -198,8 +198,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center mt-3"
-              >
+                className='d-flex justify-content-center mt-3'>
                 <Button
                   text={t("View-poll")}
                   onClick={handleViewPollClick}
