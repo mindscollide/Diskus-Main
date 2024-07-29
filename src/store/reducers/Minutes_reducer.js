@@ -37,6 +37,7 @@ const initialState = {
   currentMeetingMinutesToReviewData: null,
   ResendUpdatedMinuteForReviewData: null,
   PendingApprovalStatsThisWeek: null,
+  ResponseMessage: "",
 };
 
 const MinutesReducer = (state = initialState, action) => {
