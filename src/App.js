@@ -88,7 +88,6 @@ const App = () => {
             updateVersion={updateVersion}
           />
         )}
-        // {/* )} */}
       </Suspense>
       {/* <Notification /> */}
     </>
