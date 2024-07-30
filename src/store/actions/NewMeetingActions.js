@@ -2885,7 +2885,12 @@ const showPrposedMeetingReponsneFailed = (message) => {
   };
 };
 
-const SetMeetingResponseApiFunc = (Data, navigate, t) => {
+const SetMeetingResponseApiFunc = (
+  Data,
+  navigate,
+  t,
+  setViewProposeDatePoll
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showPrposedMeetingReponsneInit());
@@ -2903,7 +2908,9 @@ const SetMeetingResponseApiFunc = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+          dispatch(
+            SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2919,6 +2926,24 @@ const SetMeetingResponseApiFunc = (Data, navigate, t) => {
                   t("Record-saved")
                 )
               );
+              let userID = localStorage.getItem("userID");
+              let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              let meetingPageCurrent = parseInt(
+                localStorage.getItem("MeetingPageCurrent")
+              );
+              localStorage.setItem("MeetingCurrentView", 2);
+              setViewProposeDatePoll(false);
+              let searchData = {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(userID),
+                PageNumber:
+                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                PublishedMeetings: false,
+              };
+              dispatch(searchNewUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
