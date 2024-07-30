@@ -1,5 +1,4 @@
 import * as actions from "../action_types";
-import { useSelector } from "react-redux";
 import {
   refreshTokenTalk,
   getAllUserChats,
@@ -47,9 +46,7 @@ import {
 import { changeMQTTJSONOne } from "../../commen/functions/MQTTJson";
 import axios from "axios";
 import { talkApi, talkApiReport } from "../../commen/apis/Api_ends_points";
-import { signOut } from "./Auth_Sign_Out";
 import { RefreshToken } from "./Auth_action";
-import { useNavigate } from "react-router-dom";
 import { retryFlagState } from "./Talk_Feature_actions";
 
 // Refresh Token Talk Success
@@ -72,7 +69,6 @@ const refreshtokenTalkFail = (response, message) => {
 
 //Refresh Tokenm
 const RefreshTokenTalk = (props) => {
-  const navigate = useNavigate();
 
   let Token = JSON.parse(localStorage.getItem("token"));
   let RefreshTokenTalk = JSON.parse(localStorage.getItem("RefreshTokenTalk"));
@@ -100,7 +96,6 @@ const RefreshTokenTalk = (props) => {
             )
           );
         } else {
-          let message2 = "Your Session has expired. Please login again";
           // dispatch(signOut(navigate, message2));
           await dispatch(
             refreshtokenTalkFail(
@@ -3759,14 +3754,6 @@ const InsertBulkMessages = (object, t, navigate) => {
 const downloadChatInit = () => {
   return {
     type: actions.DOWNLOAD_CHAT_INIT,
-  };
-};
-
-const downloadChatSuccess = (response, message) => {
-  return {
-    type: actions.DOWNLOAD_CHAT_SUCCESS,
-    response: response,
-    message: message,
   };
 };
 

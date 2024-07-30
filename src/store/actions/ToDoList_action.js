@@ -1167,15 +1167,6 @@ const uploadDocument_init = () => {
   };
 };
 
-// Upload Documents Success
-const uploadDocument_success = (response, message) => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_TASKS_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
 // Upload Documents Fail
 const uploadDocument_fail = (message) => {
   return {

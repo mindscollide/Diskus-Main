@@ -21,7 +21,6 @@ import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import axios from "axios";
-import { getAnnotationsOfDataroomAttachement } from "./webVieverApi_actions";
 
 // crate workflow Init
 const createWorkflow_init = () => {
