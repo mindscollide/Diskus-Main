@@ -148,7 +148,9 @@ import InternetConnectivityModal from "../pages/UserMangement/ModalsUserManageme
 import { InsternetDisconnectModal } from "../../store/actions/UserMangementModalActions";
 import { DATAROOM_CLEAR_MESSAGE } from "../../store/action_types";
 import {
+  fileRemoveMQTT,
   fileSharedMQTT,
+  folderRemoveMQTT,
   folderSharedMQTT,
 } from "../../store/actions/DataRoom_actions";
 
@@ -1093,9 +1095,8 @@ const Dashboard = () => {
             setNotificationID(id);
             dispatch(fileSharedMQTT(data.payload));
           } catch (error) {
-              console.log(error, "errorerrorerrorerror")
+            console.log(error, "errorerrorerrorerror");
           }
-       
         } else if (
           data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
         ) {
@@ -1110,10 +1111,38 @@ const Dashboard = () => {
             }
             setNotificationID(id);
             dispatch(folderSharedMQTT(data.payload));
+          } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "FILE_SHARING_REMOVED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: `file remove to you`,
+              });
+            }
+            setNotificationID(id);
+            dispatch(fileRemoveMQTT(data?.payload?.fileID));
           } catch (error) {
-            
+            console.log(error, "FILE_SHARING_REMOVEDFILE_SHARING_REMOVED");
           }
-
+        } else if (
+          data.payload.message.toLowerCase() === "FOLDER_SHARING_REMOVED"
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: ` folder remove to you`,
+              });
+            }
+            setNotificationID(id);
+            dispatch(folderRemoveMQTT(data?.payload?.fileID));
+          } catch (error) {
+            console.log(error, "FOLDER_SHARING_REMOVEDFOLDER_SHARING_REMOVED");
+          }
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
@@ -1143,7 +1172,7 @@ const Dashboard = () => {
               notificationShow: true,
               message: changeMQTTJSONOne(
                 t("NEW_MEMBER_ADDED_IN_COMMITTEE"),
-                "[Committe Title]",
+                "[Committee Title]",
                 data.payload.committees.committeesTitle.substring(0, 100)
               ),
               // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,

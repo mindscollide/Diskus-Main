@@ -18,7 +18,6 @@ import { Spin } from "antd";
 import XLSIcon from "../../../assets/images/AttachmentIcons/xls-file.svg";
 import searchicon from "../../../assets/images/searchicon.svg";
 import Crossicon from "../../../assets/images/WhiteCrossIcon.svg";
-// Cross-Chat-Icon
 import CrossIcon from "../../../assets/images/Cross-Chat-Icon.png";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
