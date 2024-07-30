@@ -94,8 +94,12 @@ const ParentAgenda = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
 
   // Function For Expanding Main Agenda See More Options
-  const handleExpandedBtn = (index) => {
-    setExpandIndex((prevIndex) => (prevIndex === index ? -1 : index));
+  const handleExpandedBtn = (index, divFlag) => {
+    if (divFlag) {
+      setExpandIndex((prevIndex) => (prevIndex === index ? index : index));
+    } else {
+      setExpandIndex((prevIndex) => (prevIndex === index ? -1 : index));
+    }
   };
 
   const printFlag = useSelector(
@@ -280,6 +284,19 @@ const ParentAgenda = ({
         {/* Main Agenda Items Mapping */}
         <span className="position-relative">
           <Row key={data.id} className="mt-4 m-0 p-0">
+            <img
+              draggable={false}
+              src={CollapseIcon}
+              alt=""
+              className={
+                expandIndex === index && expand
+                  ? styles["Arrow_Expanded"]
+                  : styles["Arrow"]
+              }
+              onClick={() => {
+                handleExpandedBtn(index, false);
+              }}
+            />
             <Col
               lg={12}
               md={12}
@@ -288,8 +305,11 @@ const ParentAgenda = ({
               className={
                 apllyLockOnParentAgenda(index)
                   ? styles["BackGround_Agenda_InActive"]
-                  : styles["BackGround_Agenda"]
+                  : `${styles["BackGround_Agenda"]} cursor-pointer`
               }
+              onClick={() => {
+                handleExpandedBtn(index, true);
+              }}
             >
               <Row>
                 <Col lg={12} md={12} sm={12}>
@@ -422,21 +442,7 @@ const ParentAgenda = ({
                       </Row>
                       {/* </div> */}
                     </Col>
-                    <Col lg={1} md={1} sm={12} className="p-0">
-                      <img
-                        draggable={false}
-                        src={CollapseIcon}
-                        alt=""
-                        className={
-                          expandIndex === index && expand
-                            ? styles["Arrow_Expanded"]
-                            : styles["Arrow"]
-                        }
-                        onClick={() => {
-                          handleExpandedBtn(index);
-                        }}
-                      />
-                    </Col>
+                    <Col lg={1} md={1} sm={12} className="p-0"></Col>
                   </Row>
                   {expandIndex === index && expand ? (
                     <>

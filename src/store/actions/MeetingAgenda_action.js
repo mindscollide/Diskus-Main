@@ -105,10 +105,7 @@ const GetAgendaVotingDetails = (Data, navigate, t) => {
                 )
             ) {
               dispatch(
-                getAgendaVotingDetails_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getAgendaVotingDetails_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -389,10 +386,7 @@ const GetAgendaAndVotingInfo = (Data, navigate, t) => {
               // dispatch(showVoteAgendaModal(true));
 
               dispatch(
-                getAgendaAndVotingInfo_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getAgendaAndVotingInfo_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1053,7 +1047,7 @@ const UploadDocumentsAgendaApi = (
               )
           ) {
             // Successful upload
-            const dummyData = {
+            newfile.push({
               DisplayFileName: response.data.responseResult.displayFileName,
               DiskusFileNameString: response.data.responseResult.diskusFileName,
               ShareAbleLink: response.data.responseResult.shareAbleLink,
@@ -1061,10 +1055,19 @@ const UploadDocumentsAgendaApi = (
               FK_OrganizationID: JSON.parse(organizationID),
               FileSize: Number(response.data.responseResult.fileSizeOnDisk),
               fileSizeOnDisk: Number(response.data.responseResult.fileSize),
-            };
+            });
+            // const dummyData = {
+            //   DisplayFileName: response.data.responseResult.displayFileName,
+            //   DiskusFileNameString: response.data.responseResult.diskusFileName,
+            //   ShareAbleLink: response.data.responseResult.shareAbleLink,
+            //   FK_UserID: JSON.parse(creatorID),
+            //   FK_OrganizationID: JSON.parse(organizationID),
+            //   FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+            //   fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+            // };
             // Dispatch success action
             // dispatch(uploadDocumentSuccess(dummyData)); // You need to create this action creator
-            return { success: true, dummyData };
+            // return { success: true, dummyData };
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

@@ -75,7 +75,10 @@ const ModalShareFile = ({
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [personValue, setPersonValue] = useState({
+    value: 0,
+    label: "",
+  });
   const { t } = useTranslation();
 
   const [permissionID, setPermissionID] = useState({
@@ -138,13 +141,20 @@ const ModalShareFile = ({
   // set All User in state which was coming from api
   useEffect(() => {
     if (assignees.user.length > 0) {
-      let AssigeeUsers = assignees.user.filter(
-        (assignee) => assignee.pK_UID !== Number(userID)
-      );
-      setGetAllAssignees(AssigeeUsers);
+      let usersDataArr = [];
+      assignees.user
+        .filter((assignee) => assignee.pK_UID !== Number(userID))
+        .map((usersData, index) => {
+          console.log(usersData, "usersDatausersData");
+          usersDataArr.push({
+            value: usersData.pK_UID,
+            label: usersData.name,
+            name: usersData.name,
+          });
+        });
+      setGetAllAssignees(usersDataArr);
     }
   }, [assignees, userID]);
-
   // set All Shared data with are coming from api
   useEffect(() => {
     try {
@@ -212,60 +222,9 @@ const ModalShareFile = ({
     dispatch(createFolderLinkApi(navigate, t, Data, setLinkedcopied));
   };
 
-  const onSearch = (name, id) => {
-    setOnclickFlag(true);
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
-  };
-
-  //Drop Down Values
-  const searchFilterHandler = (value) => {
-    if (
-      getAllAssignees !== null &&
-      getAllAssignees !== undefined &&
-      getAllAssignees.length > 0
-    ) {
-      return getAllAssignees
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            <img
-              draggable="false"
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
-  };
-
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false);
-    if (e.target.value.trimStart() !== "") {
-      setTaskAssignedToInput(e.target.value.trimStart());
-    } else {
-      setTaskAssignedToInput("");
-      setTaskAssignedTo(0);
-      setTaskAssignedName("");
-    }
+    setPersonValue(e);
   };
 
   const Notificationnaccessrequest = () => {
@@ -300,70 +259,45 @@ const ModalShareFile = ({
 
   const handleAddMember = () => {
     let findIndexData = fileData.Files.findIndex(
-      (listData, index) => listData.FK_UserID === taskAssignedTo
+      (listData, index) => listData.FK_UserID === personValue.value
     );
     if (permissionID.value !== 0) {
-      if (taskAssignedName !== "") {
-        if (findIndexData === -1) {
-          let Data = {
-            FK_PermissionID: JSON.parse(permissionID.value),
-            FK_UserID: taskAssignedTo,
-            ExpiryDateTime: "",
-          };
-          if (taskAssignedTo !== 0) {
-            if (assignees.user.length > 0) {
-              assignees.user.map((data, index) => {
-                if (data.pK_UID === taskAssignedTo) {
-                  setMembers([...isMembers, data]);
-                }
-              });
-            }
+      if (findIndexData === -1) {
+        let Data = {
+          FK_PermissionID: JSON.parse(permissionID.value),
+          FK_UserID: personValue.value,
+          ExpiryDateTime: "",
+        };
+        if (personValue.value !== 0) {
+          if (assignees.user.length > 0) {
+            assignees.user.map((data, index) => {
+              if (data.pK_UID === personValue.value) {
+                setMembers([...isMembers, data]);
+              }
+            });
           }
-          setFileData((prev) => {
-            return { ...prev, Files: [...prev.Files, Data] };
-          });
-          setTaskAssignedToInput("");
-          setTaskAssignedTo(0);
-          setTaskAssignedName("");
-          setPermissionID({
-            label: t("Editor"),
-            value: 2,
-          });
-          setGeneralAccess({
-            label: t("Restricted"),
-            value: 1,
-          });
-        } else {
-          setTaskAssignedToInput("");
-          setTaskAssignedTo(0);
-          setTaskAssignedName("");
-          setPermissionID({
-            label: t("Editor"),
-            value: 2,
-          });
-          setGeneralAccess({
-            label: t("Restricted"),
-            value: 1,
-          });
-          setOpen({
-            flag: true,
-            message: t("User-is-already-exist"),
-          });
         }
+        setFileData((prev) => {
+          return { ...prev, Files: [...prev.Files, Data] };
+        });
       } else {
         setOpen({
           flag: true,
-          message: t("Please-select-user"),
-        });
-        setPermissionID({
-          label: t("Editor"),
-          value: 2,
-        });
-        setGeneralAccess({
-          label: t("Restricted"),
-          value: 1,
+          message: t("User-is-already-exist"),
         });
       }
+      setPersonValue({
+        value: 0,
+        label: "",
+      });
+      setPermissionID({
+        label: t("Editor"),
+        value: 2,
+      });
+      setGeneralAccess({
+        label: t("Restricted"),
+        value: 1,
+      });
     } else {
       setOpen({
         flag: true,
@@ -410,7 +344,7 @@ const ModalShareFile = ({
           }}
           setShow={setShareFile}
           ButtonTitle={ModalTitle}
-          modalFooterClassName="d-block position-relative"
+          modalFooterClassName='d-block position-relative'
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
@@ -509,26 +443,24 @@ const ModalShareFile = ({
                       </Col>
                     </Row>
 
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Row className='mt-3'>
+                      <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={newprofile}
-                          height="40px"
-                          width="41px"
+                          height='40px'
+                          width='41px'
                         />
-                        <Row className="mt-1">
+                        <Row className='mt-1'>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className={styles["Line-height"]}
-                          >
+                            className={styles["Line-height"]}>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 <span
-                                  className={styles["InvitetoEdit_Heading"]}
-                                >
+                                  className={styles["InvitetoEdit_Heading"]}>
                                   Saad Fudda (Saad@gmail.com)
                                   {t("Has-invited-you-to")}
                                   <span className={styles["Edit_options"]}>
@@ -540,8 +472,7 @@ const ModalShareFile = ({
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 <span
-                                  className={styles["InvitetoEdit_Heading"]}
-                                >
+                                  className={styles["InvitetoEdit_Heading"]}>
                                   {t("The-following-document-until")} 27 Apr
                                   2023, 11:59 GMT
                                 </span>
@@ -551,27 +482,25 @@ const ModalShareFile = ({
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Box_for_attachments"]}
-                      >
-                        <Row className="mt-2">
+                        className={styles["Box_for_attachments"]}>
+                        <Row className='mt-2'>
                           <Col lg={12} md={12} sm={12}>
                             <Row>
                               <Col
                                 lg={10}
                                 md={10}
                                 sm={10}
-                                className="d-flex justify-content-start gap-2 "
-                              >
+                                className='d-flex justify-content-start gap-2 '>
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   src={pdf}
-                                  height="16px"
-                                  width="14.23px"
+                                  height='16px'
+                                  width='14.23px'
                                 />
                                 <span className={styles["File_name"]}>
                                   Merger proposal for ABC Industries.pdf
@@ -581,19 +510,18 @@ const ModalShareFile = ({
                                 lg={2}
                                 md={2}
                                 sm={2}
-                                className="d-flex justify-content-end gap-2 mt-1"
-                              >
+                                className='d-flex justify-content-end gap-2 mt-1'>
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   src={download}
-                                  height="11px"
-                                  width="12.15px"
+                                  height='11px'
+                                  width='12.15px'
                                 />
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   src={star}
-                                  height="10.22px"
-                                  width="12.07px"
+                                  height='10.22px'
+                                  width='12.07px'
                                 />
                               </Col>
                             </Row>
@@ -613,19 +541,14 @@ const ModalShareFile = ({
                         </span>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={7} md={7} sm={12}>
-                        <InputSearchFilter
-                          labelClass="d-none"
-                          flag={1}
-                          applyClass="sharefoldersearchInput"
-                          placeholder={t("Search-member-here")}
-                          value={taskAssignedToInput}
-                          filteredDataHandler={searchFilterHandler(
-                            taskAssignedToInput
-                          )}
-                          change={onChangeSearch}
-                          onclickFlag={onclickFlag}
+                        <Select
+                          isSearchable={true}
+                          value={personValue.value !== 0 ? personValue : null}
+                          placeholder={t("Select-members")}
+                          options={getAllAssignees}
+                          onChange={onChangeSearch}
                         />
                       </Col>
                       <Col lg={3} md={3} sm={3}>
@@ -672,13 +595,14 @@ const ModalShareFile = ({
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Scroller_particiapnt_shared_folder"]}
-                      >
+                        className={
+                          styles["Scroller_particiapnt_shared_folder"]
+                        }>
                         <Row>
                           {ownerInfo !== null && (
                             <Col sm={4} md={4} lg={4}>
@@ -699,10 +623,10 @@ const ModalShareFile = ({
                                       userPic={data.displayProfilePictureName}
                                       icon={
                                         <img
-                                          draggable="false"
+                                          draggable='false'
                                           src={crossIcon}
-                                          height="14px"
-                                          width="14px"
+                                          height='14px'
+                                          width='14px'
                                           className={styles["cross_icon_modal"]}
                                           onClick={() =>
                                             handleRemoveMember(data)
@@ -717,18 +641,17 @@ const ModalShareFile = ({
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="CreateMeetingInput "
-                      >
+                        className='CreateMeetingInput '>
                         <TextField
-                          applyClass="text-area-create-group"
-                          type="text"
+                          applyClass='text-area-create-group'
+                          type='text'
                           as={"textarea"}
-                          rows="4"
+                          rows='4'
                           value={message}
                           change={(e) => setMessage(e.target.value)}
                           placeholder={t("Messege")}
@@ -736,13 +659,12 @@ const ModalShareFile = ({
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex gap-3 align-items-center"
-                      >
+                        className='d-flex gap-3 align-items-center'>
                         <Checkbox
                           checked={notifyPeople}
                           onChange={() => setNotifyPeople(!notifyPeople)}
@@ -813,8 +735,7 @@ const ModalShareFile = ({
                       lg={11}
                       md={11}
                       sm={11}
-                      className="d-flex justify-content-end"
-                    >
+                      className='d-flex justify-content-end'>
                       <Button
                         text={t("Open")}
                         className={styles["Open_button"]}
@@ -829,8 +750,7 @@ const ModalShareFile = ({
                       lg={6}
                       md={6}
                       sm={6}
-                      className="d-flex justify-content-start"
-                    >
+                      className='d-flex justify-content-start'>
                       <Button
                         text={t("Copy-link")}
                         className={styles["Copy_Link_btn"]}
@@ -841,8 +761,7 @@ const ModalShareFile = ({
                       lg={6}
                       md={6}
                       sm={6}
-                      className="d-flex justify-content-end"
-                    >
+                      className='d-flex justify-content-end'>
                       <Button
                         text={t("Send")}
                         className={styles["send_btn"]}
@@ -857,15 +776,13 @@ const ModalShareFile = ({
                           lg={12}
                           sm={12}
                           md={12}
-                          className={styles["Background_notification"]}
-                        >
-                          <Row className="mt-2">
+                          className={styles["Background_notification"]}>
+                          <Row className='mt-2'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center"
-                            >
+                              className='d-flex justify-content-center'>
                               <span className={styles["Link_copied"]}>
                                 {t("Link-copied")}
                               </span>
@@ -882,15 +799,13 @@ const ModalShareFile = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Back_ground_editNotification"]}
-                        >
+                          className={styles["Back_ground_editNotification"]}>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center mt-2"
-                            >
+                              className='d-flex justify-content-center mt-2'>
                               <span className={styles["Edit_notification"]}>
                                 {t("You-dont-have-permission-to-edit")} "Folder
                                 1"
@@ -908,15 +823,13 @@ const ModalShareFile = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Back_ground_accessupdate"]}
-                        >
+                          className={styles["Back_ground_accessupdate"]}>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center mt-2"
-                            >
+                              className='d-flex justify-content-center mt-2'>
                               <span className={styles["Access_updated"]}>
                                 {t("Access-updated")}
                               </span>

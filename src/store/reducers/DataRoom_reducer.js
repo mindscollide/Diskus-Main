@@ -47,6 +47,10 @@ const initialState = {
   downloadMessage: 0,
   deleteSharedFile: null,
   deleteSharedFolder: null,
+  FileSharedMQTT: null,
+  FolderSharedMQTT: null,
+  FileRemoveMQTT: null,
+  FolderRemoveMQTT: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -799,6 +803,30 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         deleteSharedFolder: null,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.DATAROOM_FILE_SHARED_MQTT: {
+      return {
+        ...state,
+        FileSharedMQTT: action.response,
+      };
+    }
+    case actions.DATAROOM_FOLDER_SHARED_MQTT: {
+      return {
+        ...state,
+        FolderSharedMQTT: action.response,
+      };
+    }
+    case actions.DATAROOM_FILE_REMOVE_MQTT: {
+      return {
+        ...state,
+        FileRemoveMQTT: action.response,
+      };
+    }
+    case actions.DATAROOM_FOLDER_REMOVE_MQTT: {
+      return {
+        ...state,
+        FolderRemoveMQTT: action.response,
       };
     }
     default:

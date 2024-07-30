@@ -68,7 +68,7 @@ const App = () => {
 
     // Initial version check on component mount
     checkVersion();
-
+ 
     // Set up polling interval to check for version updates
     const intervalId = setInterval(checkVersion, POLLING_INTERVAL);
     console.log("versionversionversion", intervalId);
@@ -88,7 +88,6 @@ const App = () => {
             updateVersion={updateVersion}
           />
         )}
-        // {/* )} */}
       </Suspense>
       {/* <Notification /> */}
     </>

@@ -389,40 +389,68 @@ const Agenda = ({
 
     let newFolder = [];
     let newfile = [];
-    await Promise.all(
-      fileForSend.map(async (newData) => {
+
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
         console.log("newDatanewData", newData);
-        try {
-          const result = await dispatch(
-            UploadDocumentsAgendaApi(
-              navigate,
-              t,
-              newData,
-              folderDataRoomMeeting,
-              newFolder
-            )
-          );
-          if (result && result.success) {
-            newfile = [...newfile, result.dummyData];
-            // setNewFile((prevState) => [...prevState, result.dummyData]);
-            console.log("newfilenewfile", newfile);
-            console.log("newfoldernewfolder", newFolder);
-          }
-          console.log("resultresult", result);
-        } catch (error) {
-          console.error(error);
-        }
-      })
-    );
+        await dispatch(
+          UploadDocumentsAgendaApi(
+            navigate,
+            t,
+            newData,
+            folderDataRoomMeeting,
+            newFolder,
+            newfile
+          )
+        );
+      });
+      console.log("uploadPromisesuploadPromises", uploadPromises);
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises); //till here the files get upload
+      await dispatch(
+        SaveFilesAgendaApi(
+          navigate,
+          t,
+          newfile,
+          folderDataRoomMeeting,
+          newFolder
+        )
+      );
+    }
+    // await Promise.all(
+    //   fileForSend.map(async (newData) => {
+    //     console.log("newDatanewData", newData);
+    //     try {
+    //       const result = await dispatch(
+    //         UploadDocumentsAgendaApi(
+    //           navigate,
+    //           t,
+    //           newData,
+    //           folderDataRoomMeeting,
+    //           newFolder
+    //         )
+    //       );
+    //       if (result && result.success) {
+    //         newfile = [...newfile, result.dummyData];
+    //         // setNewFile((prevState) => [...prevState, result.dummyData]);
+    //         console.log("newfilenewfile", newfile);
+    //         console.log("newfoldernewfolder", newFolder);
+    //       }
+    //       console.log("resultresult", result);
+    //     } catch (error) {
+    //       console.error(error);
+    //     }
+    //   })
+    // );
 
     // Convert date fields to UTC
     const convertedRows = convertDateFieldsToUTC(rows);
     console.log("newfile", newfile);
 
-    // Save files
-    await dispatch(
-      SaveFilesAgendaApi(navigate, t, newfile, folderDataRoomMeeting, newFolder)
-    );
+    // // Save files
+    // await dispatch(
+    //   SaveFilesAgendaApi(navigate, t, newfile, folderDataRoomMeeting, newFolder)
+    // );
 
     // Process data and update properties
     let cleanedData = removeProperties(convertedRows);
@@ -705,133 +733,7 @@ const Agenda = ({
     if (isValid) {
       updateSave(flag);
     }
-    // if (isValid) {
-    //   // All conditions are met, apply your feature here
-
-    //   let newFolder = [];
-    //   let newfile = [];
-    //   await Promise.all(fileForSend.map(async (newData) => {
-    //     try {
-    //       // Dispatch the upload API call
-    //       const result = await dispatch(UploadDocumentsAgendaApi(
-    //         navigate,
-    //         t,
-    //         newData,
-    //         folderDataRoomMeeting,
-    //         newFolder,
-    //         // newfile
-    //       ));
-
-    //       // If upload is successful, update newfile array
-    //       if (result && result.success) {
-    //         newfile = [...newfile, result.dummyData];
-    //         console.log("newfile", newfile);
-    //       }
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    //   }));
-    //   const convertedRows = convertDateFieldsToUTC(rows);
-
-    //   // Wait for all promises to resolve
-    //   console.log("newfile", newfile);
-
-    //   await dispatch(
-    //     SaveFilesAgendaApi(
-    //       navigate,
-    //       t,
-    //       newfile,
-    //       folderDataRoomMeeting,
-    //       newFolder
-    //     )
-    //   );
-
-    //   console.log("newFoldernewFolder", newFolder);
-
-    //   let cleanedData = removeProperties(convertedRows);
-
-    //   let mappingObject = {};
-    //   newFolder.forEach((folder) => {
-    //     mappingObject[folder.displayAttachmentName] =
-    //       folder.pK_FileID.toString();
-    //   });
-
-    //   // Update files property in capitalizedData
-    //   let updatedData = cleanedData.map((item) => {
-    //     let updatedFiles = item.files.map((file) => {
-    //       let newAttachmentName = mappingObject[file.displayAttachmentName];
-    //       if (newAttachmentName) {
-    //         return {
-    //           ...file,
-    //           originalAttachmentName: newAttachmentName,
-    //         };
-    //       } else {
-    //         return file;
-    //       }
-    //     });
-
-    //     // Update subfiles property in SubAgenda objects
-    //     let updatedSubAgenda = item.subAgenda.map((subAgenda) => {
-    //       let updatedSubFiles = subAgenda.subfiles.map((subFile) => {
-    //         let newAttachmentName =
-    //           mappingObject[subFile.displayAttachmentName];
-    //         if (newAttachmentName) {
-    //           return {
-    //             ...subFile,
-    //             originalAttachmentName: newAttachmentName,
-    //           };
-    //         } else {
-    //           return subFile;
-    //         }
-    //       });
-
-    //       return {
-    //         ...subAgenda,
-    //         subfiles: updatedSubFiles,
-    //       };
-    //     });
-
-    //     return {
-    //       ...item,
-    //       files: updatedFiles,
-    //       subAgenda: updatedSubAgenda,
-    //     };
-    //   });
-
-    //   setFileForSend([]);
-
-    //   let Data = {
-    //     MeetingID: currentMeetingIDLS,
-    //     AgendaList: updatedData,
-    //   };
-
-    //   let capitalizedData = capitalizeKeys(Data);
-    //   let publishMeetingData = { MeetingID: currentMeeting, StatusID: 1 };
-    //   await dispatch(
-    //     AddUpdateAdvanceMeetingAgenda(
-    //       capitalizedData,
-    //       navigate,
-    //       t,
-    //       currentMeetingIDLS,
-    //       flag,
-    //       publishMeetingData,
-    //       setEdiorRole,
-    //       setAdvanceMeetingModalID,
-    //       setDataroomMapFolderId,
-    //       setSceduleMeeting,
-    //       setPublishState,
-    //       setCalendarViewModal,
-    //       setMeetingMaterial,
-    //       setAgenda
-    //     )
-    //   );
-    // } else {
-    // }
   };
-
-  // useEffect(() => {
-  //   console.log("newFile updated:", newFile);
-  // }, [newFile]);
 
   console.log("fileForSendAgendafileForSendAgenda", fileForSend);
 

@@ -184,7 +184,6 @@ const GridViewDataRoom = ({
   const handleClickFile = (e, record) => {
     let ext = record.name.split(".").pop();
     if (checkFeatureIDAvailability(20)) {
-      if (ext === "pdf") {
         const pdfData = {
           taskId: record.id,
           commingFrom: 4,
@@ -198,7 +197,6 @@ const GridViewDataRoom = ({
           "_blank",
           "noopener noreferrer"
         );
-      }
     }
   };
 
@@ -207,7 +205,6 @@ const GridViewDataRoom = ({
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
         let ext = record.name.split(".").pop();
-        if (ext === "pdf") {
           const pdfData = {
             taskId: record.id,
             commingFrom: 4,
@@ -223,7 +220,6 @@ const GridViewDataRoom = ({
             "_blank",
             "noopener noreferrer"
           );
-        }
       }
     } else if (data.value === 2) {
       // Share File Modal
