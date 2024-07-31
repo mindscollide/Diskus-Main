@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalShareFile.module.css";
 import newprofile from "../../../assets/images/Mask Group 67.svg";
-import clock from "../../../assets/images/Icon metro-alarm.svg";
-import DeleteiCon from "../../../assets/images/Icon material-delete.svg";
-import userImage from "../../../assets/images/user.png";
 import crossIcon from "../../../assets/images/CrossIcon.svg";
 import download from "../../../assets/images/Icon feather-download.svg";
 import star from "../../../assets/images/startd.png";
@@ -17,15 +14,11 @@ import { useTranslation } from "react-i18next";
 import {
   Button,
   Checkbox,
-  MultiDatePicker,
   Modal,
   Notification,
   TextField,
-  InputSearchFilter,
 } from "../../../components/elements";
-import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg";
 import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
-import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import {
   createFileLinkApi,
@@ -58,14 +51,9 @@ const ModalShareFile = ({
   const [notifyPeople, setNotifyPeople] = useState(false);
   const [ownerInfo, setOwnerInfo] = useState(null);
   const [message, setMessage] = useState("");
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
-  const [meetingDate, setMeetingDate] = useState("");
+
   const [EditNotification, setEditNotification] = useState(false);
   const [accessupdate, setAccessupdate] = useState(false);
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [onclickFlag, setOnclickFlag] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -91,7 +79,6 @@ const ModalShareFile = ({
   });
   const [getAllAssignees, setGetAllAssignees] = useState([]);
 
-  const [taskAssignedName, setTaskAssignedName] = useState("");
   const [isMembers, setMembers] = useState([]);
 
   let organizationName = localStorage.getItem("organizatioName");
@@ -107,12 +94,6 @@ const ModalShareFile = ({
     { value: 2, label: organizationName },
     { value: 3, label: t("Any-one-with-link") },
   ];
-
-  const showcalender = () => {
-    // setCalenderdate(!calenderdate);
-    // setInviteedit(!inviteedit);
-    // setExpirationheader(false);
-  };
 
   //  Copy Link  useEffect
   useEffect(() => {
@@ -200,15 +181,6 @@ const ModalShareFile = ({
       label: SelectedOptions.label,
       value: SelectedOptions.value,
     });
-    // if (SelectedOptions.value === 1) {
-    //   // setExpirationheader(false);
-    //   setEditNotification(false);
-    //   setAccessupdate(true);
-    // } else if (SelectedOptions.value === 2) {
-    //   // setExpirationheader(false);
-    //   setEditNotification(true);
-    //   setAccessupdate(false);
-    // }
   };
 
   // copy link api calling
@@ -227,34 +199,13 @@ const ModalShareFile = ({
     setPersonValue(e);
   };
 
-  const Notificationnaccessrequest = () => {
-    if (fileData.Files.length > 0) {
-      let ShareFilesData = {
-        FileID: Number(folderId),
-        Message: message,
-        Files: fileData.Files,
-      };
-      dispatch(shareFilesApi(navigate, ShareFilesData, t));
-      setShowrequestsend(true);
-    } else {
-    }
-  };
-
   const openAccessRequestModalClick = () => {
-    // if (fileData.Files.length > 0) {
-    // setShareFile(false);
     let ShareFilesData = {
       FileID: Number(folderId),
       Files: fileData.Files,
       Message: message,
     };
     dispatch(shareFilesApi(navigate, ShareFilesData, t, setShareFile));
-    // } else {
-    //   setOpen({
-    //     flag: true,
-    //     message: t("Atleast-one-user-should-be-selected-to-share-the-document"),
-    //   });
-    // }
   };
 
   const handleAddMember = () => {
@@ -356,80 +307,6 @@ const ModalShareFile = ({
               ? "md"
               : "lg"
           }
-          // ModalTitle={
-          //   <>
-          //     {expirationheader ? (
-          //       <>
-          //         {calenderdate ? (
-          //           <>
-          //             <MultiDatePicker
-          //               // onChange={meetingDateHandler}
-          //               name="MeetingDate"
-          //               value={meetingDate}
-          //               calendar={calendarValue}
-          //               locale={localValue}
-          //               // newValue={createMeeting.MeetingDate}
-          //             />
-          //           </>
-          //         ) : null}
-          //         <Row>
-          //           <Col
-          //             lg={12}
-          //             md={12}
-          //             sm={12}
-          //             className={styles["Expiration_header_background"]}
-          //           >
-          //             <Row>
-          //               <Col
-          //                 lg={12}
-          //                 md={12}
-          //                 sm={12}
-          //                 className="d-flex justify-content-center gap-3"
-          //               >
-          //                 <img
-          //                   draggable="false"
-          //                   src={clock}
-          //                   height="14.66px"
-          //                   alt=""
-          //                   width="14.97px"
-          //                 />
-          //                 <span
-          //                   className={styles["Text_for_header_expiration"]}
-          //                 >
-          //                   {t("Access-expires-on")} Apr 20 11:11PM
-          //                 </span>
-          //                 <Row className={styles["margin"]}>
-          //                   <Col
-          //                     lg={12}
-          //                     md={12}
-          //                     sm={12}
-          //                     className="d-flex gap-2"
-          //                   >
-          //                     <img
-          //                       draggable="false"
-          //                       src={EditIconNote}
-          //                       height="11.11px"
-          //                       alt=""
-          //                       width="11.54px"
-          //                       onClick={showcalender}
-          //                     />
-          //                     <img
-          //                       draggable="false"
-          //                       src={DeleteiCon}
-          //                       width="9.47px"
-          //                       alt=""
-          //                       height="11.75px"
-          //                     />
-          //                   </Col>
-          //                 </Row>
-          //               </Col>
-          //             </Row>
-          //           </Col>
-          //         </Row>
-          //       </>
-          //     ) : null}
-          //   </>
-          // }
           ModalBody={
             <>
               {inviteedit ? (
