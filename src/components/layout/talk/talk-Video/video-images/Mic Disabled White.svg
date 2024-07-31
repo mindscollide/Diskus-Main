@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.707" height="20.76" viewBox="0 0 20.707 20.76">
+  <g id="Mic_Disabled_White" data-name="Mic Disabled White" transform="translate(-239.491 -268.176)">
+    <g id="Group_4306" data-name="Group 4306">
+      <rect id="Rectangle_1324" data-name="Rectangle 1324" width="8.245" height="14.573" rx="4.122" transform="translate(245.723 268.675)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <path id="Path_2099" data-name="Path 2099" d="M249.418,278.794" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <path id="Path_2100" data-name="Path 2100" d="M256.819,278.794" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <path id="Path_2101" data-name="Path 2101" d="M242.871,278.794" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <path id="Path_2102" data-name="Path 2102" d="M249.418,278.794" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <path id="Path_2103" data-name="Path 2103" d="M246.582,288.158" fill="#6172d6" stroke="#fff" stroke-width="1"/>
+      <path id="Path_2104" data-name="Path 2104" d="M242.871,278.794v.14a6.975,6.975,0,0,0,6.974,6.974h0a6.974,6.974,0,0,0,6.974-6.974v-.14" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+      <line id="Line_323" data-name="Line 323" y2="2.25" transform="translate(249.845 285.908)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+      <line id="Line_324" data-name="Line 324" x2="6.261" transform="translate(246.582 288.158)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+    </g>
+    <line id="Line_327" data-name="Line 327" y1="20" x2="20" transform="translate(239.845 268.582)" fill="none" stroke="#fff" stroke-width="1"/>
+  </g>
+</svg>
