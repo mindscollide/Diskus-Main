@@ -1,129 +1,158 @@
 .video-profile-icon {
-    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-    padding: 10px;
-    margin-top: 8px;
-    border-radius: 50%;
-    width: 44px !important;
-    height: 44px !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative !important;
-    margin-bottom: 10px;
-    margin-left: 5px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* Ensure the image covers the entire div */
-    /* Prevent image from repeating */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 50%;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative !important;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* Ensure the image covers the entire div */
+  /* Prevent image from repeating */
 }
-
 
 /* .video-profile-icon img {
     width: 22px;
 } */
 
 p.Video-chat-username {
-    margin-top: 16px !important;
-    font-size: 14px;
-    margin-left: 8px !important;
-    margin-bottom: 0 !important;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: #171D2D;
-    font-weight: 600;
+  margin-top: 16px !important;
+  font-size: 14px;
+  margin-left: 8px !important;
+  margin-bottom: 0 !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #171d2d;
+  font-weight: 600;
 }
 
 p.Video-chat-username.missed {
-    color: #F16B6B !important
+  color: #f16b6b !important;
 }
 
 body[dir="rtl"] p.Video-chat-username.m-0 {
-    margin-top: 15px !important;
-    font-size: 14px;
-    font-weight: 600;
-    margin-right: 8px !important;
-    margin-left: auto !important;
+  margin-top: 15px !important;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 8px !important;
+  margin-left: auto !important;
 }
 
 p.video-chat-date {
-    text-align: left !important;
-    font-size: 10px;
-    margin-left: 8px !important;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #5a5a5a;
-    white-space: nowrap;
-    font-weight: 500;
-    margin-top: -3px !important;
+  text-align: left !important;
+  font-size: 10px;
+  margin-left: 8px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #5a5a5a;
+  white-space: nowrap;
+  font-weight: 500;
+  margin-top: -3px !important;
 }
 
 body[dir="rtl"] p.video-chat-date {
-    text-align: right !important;
-    font-size: 10px;
-    margin-left: auto;
-    margin-right: 8px !important;
+  text-align: right !important;
+  font-size: 10px;
+  margin-left: auto;
+  margin-right: 8px !important;
 }
 
 span.call-status-icon {
-    position: relative;
-    left: 7px;
-    top: -1px;
+  position: relative;
+  left: 7px;
+  top: -1px;
 }
 
 body[dir="rtl"] span.call-status-icon {
-    position: relative;
-    left: auto;
-    top: -1px;
-    right: 7px;
+  position: relative;
+  left: auto;
+  top: -1px;
+  right: 7px;
 }
 
 .recent-scroll {
-    height: 78vh;
-    overflow: hidden auto;
+  height: 78vh;
+  overflow: hidden auto;
 }
 
 .single-chat span.ant-checkbox-inner {
-    border-radius: 5px !important;
-    width: 20px !important;
-    height: 20px !important;
-    margin-left: -5px !important;
-    margin-top: -4px !important;
-    border-width: 2px !important;
+  border-radius: 5px !important;
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: -5px !important;
+  margin-top: -4px !important;
+  border-width: 2px !important;
 }
 
 .single-chat .ant-checkbox:hover::after,
 .ant-checkbox-wrapper:hover .ant-checkbox::after {
-    visibility: hidden !important;
+  visibility: hidden !important;
 }
 
 .ant-result.ant-result-info.emptyRecentCalls {
-    transform: translate(10px, 80px);
+  transform: translate(10px, 80px);
 }
 
 .emptyRecentCalls .ant-result-title {
-    font-size: 14px;
-    color: #5a5a5a;
+  font-size: 14px;
+  color: #5a5a5a;
 }
 
 body[dir="rtl"] .video-profile-icon {
-    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-    padding: 10px;
-    margin-top: 8px;
-    border-radius: 50%;
-    width: 44px !important;
-    height: 44px !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative !important;
-    margin-bottom: 10px;
-    margin-left: auto !important;
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin-right: 5px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 50%;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative !important;
+  margin-bottom: 10px;
+  margin-left: auto !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 5px !important;
 }
 
 body[dir="rtl"] .video_call_icon img {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+p.disconnection-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #5a5a5a;
+}
+
+.confirmation-disconnection-button,
+.confirmation-disconnection-button:is(:active, :hover, :focus, :focus-visible) {
+  background: #6172d6 !important;
+  border-radius: 4px;
+  border-color: #6172d6 !important;
+  font-size: 12px;
+  font-weight: 600;
+  width: 112px;
+  height: 39px;
+  color: #fff !important;
+}
+
+.cancellation-disconnection-button,
+.cancellation-disconnection-button:is(:active, :hover, :focus, :focus-visible) {
+  background: #fff !important;
+  border-radius: 4px;
+  border: 1px solid #e1e1e1;
+  font-size: 12px;
+  font-weight: 600;
+  width: 112px;
+  height: 39px;
+  color: #5a5a5a !important;
 }

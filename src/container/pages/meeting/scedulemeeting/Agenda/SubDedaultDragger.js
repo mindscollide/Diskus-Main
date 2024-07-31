@@ -36,7 +36,6 @@ const SubDedaultDragger = ({
     onChange(data) {
       const { fileList } = data;
       let newRows = [...rows];
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -92,7 +91,11 @@ const SubDedaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
-            setFileForSend([...fileForSend, fileData.originFileObj]);
+            // setFileForSend([...fileForSend, fileData.originFileObj]);
+            setFileForSend((prevFiles) => [
+              ...prevFiles,
+              fileData.originFileObj,
+            ]);
             getRowData.subfiles.push(file);
           }
         });

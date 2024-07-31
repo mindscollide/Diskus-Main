@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { Paper } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  getUserProposedWiseApi,
   showSceduleProposedMeeting,
   getUserWiseProposedDatesMainApi,
   searchNewUserMeeting,
@@ -29,9 +28,6 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
 
-  const userWiseMeetingProposed = useSelector(
-    (state) => state.NewMeetingreducer.userWiseMeetingProposed
-  );
   const sceduleproposedMeeting = useSelector(
     (state) => state.NewMeetingreducer.sceduleproposedMeeting
   );
