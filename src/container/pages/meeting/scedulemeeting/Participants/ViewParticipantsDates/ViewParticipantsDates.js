@@ -306,7 +306,9 @@ const ViewParticipantsDates = ({
         MeetingID: currentMeetingID,
         ProposedDates: defaultarr,
       };
-      dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+      dispatch(
+        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
+      );
     } else if (findIsanySelected) {
       let newarr = [];
       prposedData.forEach((data, index) => {
@@ -324,7 +326,9 @@ const ViewParticipantsDates = ({
         ProposedDates: newarr,
       };
 
-      dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+      dispatch(
+        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
+      );
     } else if (!selectAll) {
       setOpen({
         flag: true,
