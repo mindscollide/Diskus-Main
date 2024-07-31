@@ -289,10 +289,10 @@ const NewMeeting = () => {
           HostName: "",
           UserID: Number(userID),
           PageNumber: 1,
-          Length: 50,
+          Length: 30,
           PublishedMeetings: true,
         };
-        localStorage.setItem("MeetingPageRows", 50);
+        localStorage.setItem("MeetingPageRows", 30);
         localStorage.setItem("MeetingPageCurrent", 1);
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         await dispatch(allAssignessList(navigate, t));
@@ -861,7 +861,7 @@ const NewMeeting = () => {
       Length: 50,
       PublishedMeetings: false,
     };
-    await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 50);

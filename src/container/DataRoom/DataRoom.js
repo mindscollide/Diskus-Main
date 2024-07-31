@@ -128,6 +128,11 @@ import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
 import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
+import {
+  validateExtensionsforHTMLPage,
+  validationExtension,
+} from "../../commen/functions/validations";
+import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
@@ -151,7 +156,9 @@ const DataRoom = () => {
     DataRoomReducer,
     LanguageReducer,
     SignatureWorkFlowReducer,
+    webViewer,
   } = useSelector((state) => state);
+
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -414,6 +421,73 @@ const DataRoom = () => {
       window.removeEventListener("offline", handleOnlineStatusChange);
     };
   }, []);
+
+  const base64ToBlob = (base64, mimeType) => {
+    const byteChars = atob(base64);
+    const byteNumbers = new Array(byteChars.length);
+    for (let i = 0; i < byteChars.length; i++) {
+      byteNumbers[i] = byteChars.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  };
+
+  const displayBlobAsHtml = (blob) => {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      // Get the HTML content from the Blob
+      const htmlContent = event.target.result;
+
+      // Open a new tab
+      const newTab = window.open();
+
+      if (newTab) {
+        // Create a new document in the new tab
+        const doc = newTab.document;
+
+        // Set up the document structure
+        doc.open();
+        doc.write(`
+          <html>
+            <head>
+              <title>HTML Content</title>
+            </head>
+            <body style="margin:0; padding:0;">
+              <div id="html-content" style="width:100%; height:100%; padding:0 15px;"></div>
+            </body>
+          </html>
+        `);
+        doc.close();
+
+        // Inject the HTML content into the div
+        const container = doc.getElementById("html-content");
+        container.innerHTML = htmlContent;
+      } else {
+        console.error("Failed to open new tab");
+      }
+    };
+
+    reader.readAsText(blob);
+  };
+
+  useEffect(() => {
+    if (webViewer.attachmentBlob) {
+      try {
+        const base64String = base64ToBlob(
+          webViewer.attachmentBlob,
+          "text/html"
+        );
+        displayBlobAsHtml(base64String);
+      } catch (error) {
+        console.error("Error converting blob to base64:", error);
+      }
+      console.log(
+        webViewer.attachmentBlob,
+        "webViewer.attachmentBlobwebViewer.attachmentBlobwebViewer.attachmentBlob"
+      );
+    }
+  }, [, webViewer.attachmentBlob]);
 
   useEffect(() => {
     try {
@@ -831,14 +905,28 @@ const DataRoom = () => {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
         let ext = record.name.split(".").pop();
-        // if (ext === "pdf") {
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
+        if (validationExtension(ext)) {
+          window.open(
+            `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+              pdfDataJson
+            )}`,
+            "_blank",
+            "noopener noreferrer"
+          );
+        } else if (validateExtensionsforHTMLPage(ext)) {
+          // window.open(
+          //   `/#/htmlDoc?docData=${encodeURIComponent(pdfDataJson)}`,
+          //   "_blank",
+          //   "noopener noreferrer"
+          // );
+          let dataRoomData = {
+            FileID: record.id,
+          };
+          dispatch(
+            getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
+          );
+        }
       }
-      // }
     } else if (data.value === 2) {
       // Share File Modal
       if (record.isFolder) {
@@ -1123,15 +1211,7 @@ const DataRoom = () => {
       sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       render: (text, data) => {
         console.log(data, "datadatadatadata");
-        let ext = data.name.split(".").pop();
-        const pdfData = {
-          taskId: data.id,
-          commingFrom: 4,
-          fileName: data.name,
-          attachmentID: data.id,
-          isPermission: data.permissionID,
-        };
-        const pdfDataJson = JSON.stringify(pdfData);
+
         if (data.isShared) {
           if (data.isFolder) {
             return (
@@ -1149,25 +1229,22 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            return (
-              <section className={styles["fileRow"]}>
-                <img
-                  src={getIconSource(getFileExtension(data.name))}
-                  alt=''
-                  width={"25px"}
-                  height={"25px"}
-                  className='me-2'
-                />
-                <abbr title={text}>
-                  <span
-                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                    className={styles["dataroom_table_heading"]}>
-                    {text}
-                    <img src={sharedIcon} alt='' draggable='false' />
-                  </span>
-                </abbr>
-              </section>
-            );
+            <div className={styles["dataFolderRow"]}>
+              <img
+                src={getIconSource(getFileExtension(data.name))}
+                alt=''
+                width={"25px"}
+                height={"25px"}
+                className='me-2'
+              />
+              <abbr title={text}>
+                <span
+                  onClick={(e) => handleLinkClick(e, data)}
+                  className={styles["dataroom_table_heading"]}>
+                  {text}
+                </span>
+              </abbr>
+            </div>;
           }
         } else {
           if (data.isFolder) {
@@ -1197,7 +1274,7 @@ const DataRoom = () => {
                 />
                 <abbr title={text}>
                   <span
-                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
@@ -1716,14 +1793,32 @@ const DataRoom = () => {
     },
   ];
 
-  const handleLinkClick = (e, data) => {
+  const handleLinkClick = (e, record) => {
     e.preventDefault();
     if (checkFeatureIDAvailability(20)) {
-      window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
+      const pdfData = {
+        taskId: record.id,
+        commingFrom: 4,
+        fileName: record.name,
+        attachmentID: record.id,
+        isPermission: record.permissionID,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      let ext = record.name.split(".").pop();
+      if (validationExtension(ext)) {
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else if (validateExtensionsforHTMLPage(ext)) {
+        let dataRoomData = {
+          FileID: record.id,
+        };
+        dispatch(
+          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
+        );
+      }
     }
   };
 
@@ -1738,22 +1833,10 @@ const DataRoom = () => {
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       render: (text, data) => {
-        console.log(data, "datadatadatadata");
-
-        let ext = data.name.split(".").pop();
-        const pdfData = {
-          taskId: data.id,
-          commingFrom: 4,
-          fileName: data.name,
-          attachmentID: data.id,
-          isPermission: data.permissionID,
-        };
-
-        const pdfDataJson = JSON.stringify(pdfData);
         if (data.isShared) {
           if (data.isFolder) {
             return (
-              <div className={`${styles["dataFolderRow"]}`}>
+              <div className={`${styles["fileRow"]}`}>
                 <img src={folderColor} alt='' draggable='false' />
                 <abbr title={text}>
                   <span
@@ -1778,7 +1861,7 @@ const DataRoom = () => {
                 />
                 <abbr title={text}>
                   <span
-                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
                     <img src={sharedIcon} alt='' draggable='false' />
@@ -1815,7 +1898,7 @@ const DataRoom = () => {
                 />
                 <abbr title={text}>
                   <span
-                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
@@ -2359,14 +2442,7 @@ const DataRoom = () => {
         console.log(record, "datadatadatadata");
 
         let ext = record.name.split(".").pop();
-        const pdfData = {
-          taskId: record.id,
-          commingFrom: 4,
-          fileName: record.name,
-          attachmentID: record.id,
-          isPermission: record.permissionID,
-        };
-        const pdfDataJson = JSON.stringify(pdfData);
+
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
@@ -2389,7 +2465,7 @@ const DataRoom = () => {
               />
               <span
                 className={styles["dataroom_table_heading"]}
-                onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                onClick={(e) => handleLinkClick(e, record)}
                 // onClick={() => getFolderDocuments(data.id)}
               >
                 {record.name} <img src={sharedIcon} alt='' draggable='false' />
