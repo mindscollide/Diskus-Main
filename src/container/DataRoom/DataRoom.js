@@ -598,12 +598,7 @@ const DataRoom = () => {
       copyToClipboard(DataRoomReducer.getCreateFolderLink);
     }
   }, [DataRoomReducer.getCreateFolderLink]);
-  console.log(
-    DataRoomReducer.FileSharedMQTT,
-    DataRoomReducer.FolderSharedMQTT,
-    { DataRoomReducer },
-    "DataRoomReducerDataRoomReducerDataRoomReducer"
-  );
+
   // Share File MQTT
   useEffect(() => {
     if (DataRoomReducer.FileSharedMQTT !== null) {
@@ -624,7 +619,7 @@ const DataRoom = () => {
             diskusName: null,
             owner: data?.sharedByUser,
             modifiedDate: data?.filesModel?.modifiedDate,
-            sharedDate: "20240726143136",
+            sharedDate: data?.sharedDate,
             isFolder: false,
             permissionID: data.fK_PermissionID,
             fileSize: data?.filesModel?.fileSize,
@@ -646,7 +641,7 @@ const DataRoom = () => {
             diskusName: null,
             owner: data?.sharedByUser,
             modifiedDate: data?.filesModel?.modifiedDate,
-            sharedDate: "20240726143136",
+            sharedDate: data?.sharedDate,
             isFolder: false,
             permissionID: data.fK_PermissionID,
             fileSize: data?.filesModel?.fileSize,
@@ -914,11 +909,6 @@ const DataRoom = () => {
             "noopener noreferrer"
           );
         } else if (validateExtensionsforHTMLPage(ext)) {
-          // window.open(
-          //   `/#/htmlDoc?docData=${encodeURIComponent(pdfDataJson)}`,
-          //   "_blank",
-          //   "noopener noreferrer"
-          // );
           let dataRoomData = {
             FileID: record.id,
           };
