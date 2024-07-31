@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, NavDropdown, MenuItem, Dropdown } from "react-bootstrap";
+import { Row, Col, Dropdown } from "react-bootstrap";
 import styles from "./GridViewDataRoom.module.css";
 import folderColor from "../../../assets/images/folder_color.svg";
 import file_image from "../../../assets/images/file_image.svg";
 import {
   getFolderDocumentsApi,
-  getDocumentsAndFolderApiScrollbehaviour,
   deleteFileDataroom,
   getDocumentsAndFolderApi,
   deleteFolder,
-  dataBehaviour,
-  getFolderDocumentsApiScrollBehaviour,
   getSharedFileUsersApi,
   getSharedFolderUsersApi,
   DataRoomDownloadFolderApiFunc,
@@ -18,9 +15,9 @@ import {
   deleteSharedFolderDataroom,
   deleteSharedFileDataroom,
 } from "../../../store/actions/DataRoom_actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ArrowUp from "../../../assets/images/Icon awesome-arrow-up.svg";
 import ArrowDown from "../../../assets/images/ArrowUp_Dataroom.svg";
 import threedots_dataroom from "../../../assets/images/threedots_dataroom.svg";
@@ -28,9 +25,6 @@ import ModalShareFolder from "../ModalShareFolder/ModalShareFolder";
 import ModalRenameFolder from "../ModalRenameFolder/ModalRenameFolder";
 import ModalShareFile from "../ModalShareFile/ModalShareFile";
 import ModalRenameFile from "../ModalRenameFile/ModalRenameFile";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import InfiniteScroll from "react-infinite-scroll-component";
 import {
   getFileExtension,
   getIconSource,
@@ -182,8 +176,27 @@ const GridViewDataRoom = ({
   };
 
   const handleClickFile = (e, record) => {
-    let ext = record.name.split(".").pop();
     if (checkFeatureIDAvailability(20)) {
+      const pdfData = {
+        taskId: record.id,
+        commingFrom: 4,
+        fileName: record.name,
+        attachmentID: record.id,
+        isPermission: record.permissionID,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
+
+  const fileOptionsSelect = (data, record, pdfDataJson) => {
+    if (data.value === 1) {
+      if (checkFeatureIDAvailability(20)) {
+        // Open on Apryse
         const pdfData = {
           taskId: record.id,
           commingFrom: 4,
@@ -197,29 +210,6 @@ const GridViewDataRoom = ({
           "_blank",
           "noopener noreferrer"
         );
-    }
-  };
-
-  const fileOptionsSelect = (data, record, pdfDataJson) => {
-    if (data.value === 1) {
-      if (checkFeatureIDAvailability(20)) {
-        // Open on Apryse
-        let ext = record.name.split(".").pop();
-          const pdfData = {
-            taskId: record.id,
-            commingFrom: 4,
-            fileName: record.name,
-            attachmentID: record.id,
-            isPermission: record.permissionID,
-          };
-          const pdfDataJson = JSON.stringify(pdfData);
-          window.open(
-            `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-              pdfDataJson
-            )}`,
-            "_blank",
-            "noopener noreferrer"
-          );
       }
     } else if (data.value === 2) {
       // Share File Modal

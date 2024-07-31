@@ -241,11 +241,6 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
               // await dispatch(SetLoaderFalse());
 
               setCreateTaskID(Number(response.data.responseResult.tid));
-              console.log(object, "objectobjectobjectobject");
-              console.log(
-                response.data.responseResult,
-                "objectobjectobjectobject"
-              );
               if (value === 1) {
               } else {
                 let Data = {
@@ -444,13 +439,7 @@ const ViewToDoFail = (message) => {
 
 //View To-Do
 
-const ViewToDoList = (
-  navigate,
-  object,
-  t,
-  setViewFlagToDo,
-  setTodoViewModal
-) => {
+const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
@@ -468,7 +457,7 @@ const ViewToDoList = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ViewToDoList(navigate, object, t));
+          dispatch(ViewToDoList(navigate, object, t, setViewFlagToDo));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -486,9 +475,6 @@ const ViewToDoList = (
               if (typeof setViewFlagToDo === "function") {
                 setViewFlagToDo(true);
               }
-              if (typeof setTodoViewModal === "function") {
-                setTodoViewModal(true);
-              }
               await dispatch(SetLoaderFalse());
             } else if (
               response.data.responseResult.responseMessage
@@ -499,7 +485,6 @@ const ViewToDoList = (
             ) {
               await dispatch(ViewToDoFail(t("No-records-found")));
               setViewFlagToDo(false);
-              setTodoViewModal(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -508,24 +493,20 @@ const ViewToDoList = (
                 )
             ) {
               setViewFlagToDo(false);
-              setTodoViewModal(false);
               await dispatch(ViewToDoFail(t("Something-went-wrong")));
             }
           } else {
             dispatch(ViewToDoFail(t("Something-went-wrong")));
             setViewFlagToDo(false);
-            setTodoViewModal(false);
           }
         } else {
           dispatch(ViewToDoFail(t("Something-went-wrong")));
           setViewFlagToDo(false);
-          setTodoViewModal(false);
         }
       })
       .catch((response) => {
         dispatch(ViewToDoFail(t("Something-went-wrong")));
         setViewFlagToDo(false);
-        setTodoViewModal(false);
       });
   };
 };
@@ -1167,15 +1148,6 @@ const uploadDocument_init = () => {
   };
 };
 
-// Upload Documents Success
-const uploadDocument_success = (response, message) => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_TASKS_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
 // Upload Documents Fail
 const uploadDocument_fail = (message) => {
   return {
@@ -1306,7 +1278,6 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
     UserID: JSON.parse(creatorID),
     Type: 0,
   };
-  console.log("saveFilesTaskApi Data", Data);
   return async (dispatch) => {
     dispatch(saveFiles_init());
     let form = new FormData();
@@ -1333,20 +1304,13 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              console.log(
-                response.data.responseResult,
-                "newFoldernewFoldernewFolder"
-              );
               let File = response.data.responseResult.fileID;
               File.forEach((newData, index) => {
-                console.log(newData, "newFoldernewFoldernewFolder");
                 return newFolder.push({
                   pK_FileID: newData.pK_FileID,
                   DisplayAttachmentName: newData.displayFileName,
                 });
               });
-
-              console.log(newFolder, "newFoldernewFoldernewFolder");
 
               await dispatch(
                 saveFiles_success(response.data.responseResult, "")

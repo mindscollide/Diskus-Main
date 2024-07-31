@@ -1721,7 +1721,6 @@ const NewMeetingreducer = (state = initialState, action) => {
           "videoBaseURLParticipant"
         );
         let randomGuestName = generateRandomGuest();
-        let UserName = localStorage.getItem("name");
         const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
         const extractedBaseURLCaller = extractedUrl(
           dynamicBaseURLCaller,

@@ -2,7 +2,6 @@ import {
   AddOrganizationsUser,
   AllOrganizationsUsers,
   GetOrganizationSelectedPackagesByOrganizationID,
-  IsPackageExpiryDetail,
   SaveOrganizationAndPakageSelection,
   getOrganizationSelectedPakages,
   OrganizationPackageDetailsAndUserStats,
@@ -19,7 +18,6 @@ import {
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
   downgradeOrganizationSubscription,
-  cancelOrganizationSubscription,
   getOrganizationWallet,
   DownloadBoarddeckPDF,
   BoardDeckSendEmail,
@@ -31,7 +29,6 @@ import {
   dataRoomApi,
   getAdminURLs,
   meetingApi,
-  settingDownloadApi,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import axios from "axios";
@@ -1356,26 +1353,30 @@ const ResendForgotPasswordCodeApi = (
                 newMessage
               )
             );
-            return setSeconds(60), setMinutes(4);
+            setSeconds(60);
+            setMinutes(4);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_02"
           ) {
             let newMessage = t("Unsuccessful");
             dispatch(ResendForgotPasswordCodefail(newMessage));
-            return setSeconds(0), setMinutes(0);
+            setSeconds(0);
+            setMinutes(0);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_03"
           ) {
             let newMessage = t("Something-went-wrong");
             dispatch(ResendForgotPasswordCodefail(newMessage));
-            return setSeconds(0), setMinutes(0);
+            setSeconds(0);
+            setMinutes(0);
           }
         } else {
           let newMessage = t("Something-went-wrong");
           dispatch(ResendForgotPasswordCodefail(newMessage));
-          return setSeconds(0), setMinutes(0);
+          setSeconds(0);
+          setMinutes(0);
         }
       })
       .catch((response) => {
@@ -2654,12 +2655,6 @@ const BoardDeckSendEmailApi = (navigate, t, data) => {
 const BoardDeckDownloadPDF_init = () => {
   return {
     type: actions.DOWNLOAD__BOARDDECKPDF_INIT,
-  };
-};
-
-const BoardDeckDownloadPDF_success = () => {
-  return {
-    type: actions.DOWNLOAD_BOARDDECKPDF_SUCCESS,
   };
 };
 
