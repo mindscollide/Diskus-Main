@@ -3,13 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
-import {
-  Button,
-  Loader,
-  LoaderPanel,
-  Modal,
-  Notification,
-} from "../../components/elements";
+import { Button, Loader, Modal, Notification } from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -18,7 +12,6 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setRecentActivityDataNotification } from "../../store/actions/GetUserSetting";
 import VideoCallScreen from "../../components/layout/talk/videoCallScreen/VideoCallScreen";
 import VideoMaxIncoming from "../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxIncoming";
-import VideoOutgoing from "../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxOutgoing";
 import {
   incomingVideoCallFlag,
   videoOutgoingCallFlag,
@@ -34,7 +27,6 @@ import {
   meetingCount,
   setMQTTRequestUpcomingEvents,
   mqttCurrentMeetingEnded,
-  GetUpcomingEvents,
   GetUpcomingEventsForMQTT,
   createGroupMeeting,
   createCommitteeMeeting,
@@ -129,7 +121,6 @@ import {
   resolutionMQTTClosed,
   resolutionMQTTCreate,
 } from "../../store/actions/Resolution_actions";
-import { useWindowSize } from "../../commen/functions/test";
 import {
   createGoogleEventMQTT,
   createMicrosftEventMQTT,
@@ -146,7 +137,6 @@ import {
 import { Col, Row } from "react-bootstrap";
 import InternetConnectivityModal from "../pages/UserMangement/ModalsUserManagement/InternetConnectivityModal/InternetConnectivityModal";
 import { InsternetDisconnectModal } from "../../store/actions/UserMangementModalActions";
-import { DATAROOM_CLEAR_MESSAGE } from "../../store/action_types";
 import {
   fileRemoveMQTT,
   fileSharedMQTT,
@@ -159,7 +149,6 @@ const Dashboard = () => {
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   const {
-    talkStateData,
     videoFeatureReducer,
     assignees,
     CommitteeReducer,
@@ -188,7 +177,6 @@ const Dashboard = () => {
     PollsReducer,
     NewMeetingreducer,
     LanguageReducer,
-    VideoMainReducer,
     webViewer,
     MeetingOrganizersReducer,
     MeetingAgendaReducer,
@@ -199,16 +187,8 @@ const Dashboard = () => {
     DataRoomFileAndFoldersDetailsReducer,
     SignatureWorkFlowReducer,
     UserMangementReducer,
-    UserManagementModals,
     MinutesReducer,
   } = useSelector((state) => state);
-
-  console.log(
-    UserManagementModals,
-    "UserManagementModalsUserManagementModalsUserManagementModalsz"
-  );
-
-  // const [socket, setSocket] = useState(Helper.socket);
 
   const navigate = useNavigate();
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -263,10 +243,7 @@ const Dashboard = () => {
   const isInternetDisconnectModalVisible = useSelector(
     (state) => state.UserManagementModals.internetDisconnectModal
   );
-  console.log(checkInternet.onLine, "checkInternet");
   useEffect(() => {
-    console.log(checkInternet.onLine, "checkInternet");
-
     if (checkInternet.onLine) {
       dispatch(InsternetDisconnectModal(false));
     } else {
@@ -279,10 +256,6 @@ const Dashboard = () => {
     var max = 90000;
     var id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
-    console.log(
-      "Connected to MQTT broker onMessageArrived",
-      JSON.parse(msg.payloadString)
-    );
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
         // if (data.action && data.payload ) {
@@ -590,13 +563,7 @@ const Dashboard = () => {
             "MeetingNotConductedNotification".toLowerCase()
           ) {
             try {
-              console.log(
-                "MeetingNotConductedNotificationMeetingNotConductedNotification"
-              );
               dispatch(meetingNotConductedMQTT(data.payload));
-              console.log(
-                "MeetingNotConductedNotificationMeetingNotConductedNotification"
-              );
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1094,9 +1061,7 @@ const Dashboard = () => {
             }
             setNotificationID(id);
             dispatch(fileSharedMQTT(data.payload));
-          } catch (error) {
-            console.log(error, "errorerrorerrorerror");
-          }
+          } catch (error) {}
         } else if (
           data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
         ) {
@@ -1125,9 +1090,7 @@ const Dashboard = () => {
             }
             setNotificationID(id);
             dispatch(fileRemoveMQTT(data?.payload?.fileID));
-          } catch (error) {
-            console.log(error, "FILE_SHARING_REMOVEDFILE_SHARING_REMOVED");
-          }
+          } catch (error) {}
         } else if (
           data.payload.message.toLowerCase() === "FOLDER_SHARING_REMOVED"
         ) {
@@ -1140,9 +1103,7 @@ const Dashboard = () => {
             }
             setNotificationID(id);
             dispatch(folderRemoveMQTT(data?.payload?.fileID));
-          } catch (error) {
-            console.log(error, "FOLDER_SHARING_REMOVEDFOLDER_SHARING_REMOVED");
-          }
+          } catch (error) {}
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
@@ -1349,8 +1310,6 @@ const Dashboard = () => {
               // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
           }
-          console.log("CheckCheckCheck", data.payload.message);
-          console.log("CheckCheckCheck", data.payload);
           dispatch(realtimeGroupStatusResponse(data.payload));
           setNotificationID(id);
         }
@@ -2014,7 +1973,6 @@ const Dashboard = () => {
             }
             localStorage.setItem("newCallerID", callerID);
             localStorage.setItem("initiateVideoCall", false);
-            let roomID = Number(localStorage.getItem("NewRoomID"));
             let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
             let activeRoomID = Number(localStorage.getItem("activeRoomID"));
             dispatch(incomingVideoCallFlag(false));
@@ -2052,7 +2010,6 @@ const Dashboard = () => {
             }
             localStorage.setItem("newCallerID", callerID);
             localStorage.setItem("initiateVideoCall", false);
-            let roomID = Number(localStorage.getItem("NewRoomID"));
             let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
             let activeRoomID = Number(localStorage.getItem("activeRoomID"));
             dispatch(incomingVideoCallFlag(false));
@@ -2122,7 +2079,6 @@ const Dashboard = () => {
           "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()
         ) {
           let callerID = Number(localStorage.getItem("callerID"));
-          let newCallerID = Number(localStorage.getItem("newCallerID"));
           // if (callerID === newCallerID) {
           //   localStorage.setItem('activeCall', false)
           // }
@@ -2289,11 +2245,6 @@ const Dashboard = () => {
           let getToken =
             localStorage.getItem("token") !== null &&
             localStorage.getItem("token");
-          console.log(
-            getToken,
-            data.payload.authToken.token,
-            "USER_LOGIN_ACTIVITYUSER_LOGIN_ACTIVITY"
-          );
           if (getToken !== data?.payload?.authToken?.token) {
             dispatch(userLogOutApiFunc(navigate, t));
           }
@@ -2329,16 +2280,6 @@ const Dashboard = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
-
-  let videoGroupPanel = localStorage.getItem("VideoPanelGroup");
-
-  const [isVideoPanel, setVideoPanel] = useState(false);
-
-  useEffect(() => {
-    if (videoGroupPanel !== undefined) {
-      setVideoPanel(videoGroupPanel);
-    }
-  }, [videoGroupPanel]);
 
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 
@@ -2419,28 +2360,29 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {videoFeatureReducer.IncomingVideoCallFlag === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -2453,8 +2395,8 @@ const Dashboard = () => {
           ) : null}
           {videoFeatureReducer.VideoChatMessagesFlag === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -2464,12 +2406,7 @@ const Dashboard = () => {
             <VideoCallScreen />
           ) : null}
           {!navigator.onLine ? (
-            <React.Fragment>
-              {/* Display alert when offline */}
-              {console.log(
-                "No internet connection. Please check your connection."
-              )}
-            </React.Fragment>
+            <React.Fragment></React.Fragment>
           ) : // Check for loading states to determine whether to display loader
           NewMeetingreducer.Loading ||
             assignees.Loading ||
@@ -2530,25 +2467,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -2564,12 +2501,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}

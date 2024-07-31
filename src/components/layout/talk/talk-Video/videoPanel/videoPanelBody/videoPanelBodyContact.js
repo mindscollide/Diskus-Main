@@ -177,7 +177,7 @@ const VideoPanelBodyContact = () => {
         localStorage.setItem("isCaller", true);
         localStorage.setItem("activeCall", true);
         localStorage.setItem("callerID", currentUserID);
-        localStorage.setItem("callTypeID", Data.CallTypeID)
+        localStorage.setItem("callTypeID", Data.CallTypeID);
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(groupCallRecipients(groupCallActiveUsers));
         // dispatch(getVideoRecipentData(userData))
@@ -401,7 +401,7 @@ const VideoPanelBodyContact = () => {
             />
           </>
         ) : (
-          <p>No Users Available</p>
+          <p>{t("No-users-available")}</p>
         )}
       </Container>
       <div className="videocall-footer-panel">
@@ -425,13 +425,16 @@ const VideoPanelBodyContact = () => {
         setShow={setInitiateVideoModalOto}
         modalFooterClassName="d-none"
         centered
-        size={"sm"}
+        size={"md"}
         ModalBody={
           <>
             <Container>
               <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <p> OTO Call Disconnection </p>
+                <Col lg={12} md={12} sm={12} className="text-center">
+                  <p className="disconnection-text">
+                    {" "}
+                    {t("Are-you-sure-you-want-to-disconnect-this-call")}{" "}
+                  </p>
                 </Col>
               </Row>
               <Row className="mt-3 mb-4">
@@ -442,14 +445,15 @@ const VideoPanelBodyContact = () => {
                   className="d-flex justify-content-center gap-2"
                 >
                   <Button
-                    text={
-                      callerID === currentUserID || callerID === 0
-                        ? t("End Host")
-                        : callerID !== currentUserID
-                        ? t("End Participant")
-                        : null
-                    }
-                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    // text={
+                    //   callerID === currentUserID || callerID === 0
+                    //     ? t("End Host")
+                    //     : callerID !== currentUserID
+                    //     ? t("End Participant")
+                    //     : null
+                    // }
+                    text={"Confirm"}
+                    className="confirmation-disconnection-button"
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHostOto
@@ -461,7 +465,7 @@ const VideoPanelBodyContact = () => {
 
                   <Button
                     text={t("Cancel")}
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    className="cancellation-disconnection-button"
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
                 </Col>

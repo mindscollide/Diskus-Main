@@ -1,6 +1,5 @@
 import Dragger from "antd/lib/upload/Dragger";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Notification } from "../../../../../components/elements";
@@ -34,7 +33,6 @@ const DefaultDragger = ({
     onChange(data) {
       const { fileList } = data;
       console.log(fileList, "fileListfileList");
-      let flag = false;
       let sizezero = true;
       let newRows = [...rows];
 
@@ -44,7 +42,6 @@ const DefaultDragger = ({
         return; // Skip processing if it's the same fileList
       }
       console.log(newRows[index], "checkingIndex");
-      let fileSizeArr;
       let getRowData = newRows[index];
       if (getRowData.files.length > 9) {
         setOpen({
@@ -91,7 +88,11 @@ const DefaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
-            setFileForSend([...fileForSend, fileData.originFileObj]);
+            // setFileForSend([...fileForSend, fileData.originFileObj]);
+            setFileForSend((prevFiles) => [
+              ...prevFiles,
+              fileData.originFileObj,
+            ]);
             getRowData.files.push(file);
           }
         });

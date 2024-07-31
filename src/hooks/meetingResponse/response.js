@@ -25,6 +25,8 @@ const getUserInfo = (data, currentUserId, currentSource) => {
             case 4:
               userInfo.isAgendaContributor = true;
               break;
+            default:
+              console.log("ERROR");
           }
           if (attendee.isPrimaryOrganizer === true) {
             userInfo.isPrimaryOrganizer = true;
@@ -42,6 +44,8 @@ const getUserInfo = (data, currentUserId, currentSource) => {
         case 4:
           userInfo.isAgendaContributor = true;
           break;
+        default:
+          console.log("ERROR");
       }
       if (data.isPrimaryOrganizer === true) {
         userInfo.isPrimaryOrganizer = true;

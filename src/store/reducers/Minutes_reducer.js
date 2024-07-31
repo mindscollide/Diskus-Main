@@ -21,7 +21,6 @@ const initialState = {
   currentMeetingMinutesToReview: null,
   SaveMinutesReviewFlowData: null,
   DeleteMinuteReducerData: null,
-  DeleteMinuteReducerData: null,
   EditSingleMinuteData: null,
   UpdateMinuteFlag: false,
   GetMinutesVersionHistorywithCommentsData: null,

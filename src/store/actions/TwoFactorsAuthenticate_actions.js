@@ -29,9 +29,6 @@ const TwoFaAuthenticateFail = (message) => {
 };
 
 const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
-  var min = 10000;
-  var max = 90000;
-  var id = min + Math.random() * (max - min);
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserID: JSON.parse(userID),
@@ -424,7 +421,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Device-does-not-exists")));
-              return setSeconds(0), setMinutes(0);
+              setSeconds(0);
+              setMinutes(0);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -433,7 +431,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Device-id-does-not-exists")));
-              return setSeconds(0), setMinutes(0);
+              // return setSeconds(0), setMinutes(0);
+              setSeconds(0);
+              setMinutes(0);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -442,7 +442,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("FailedtogenerateOTP")));
-              return setSeconds(0), setMinutes(0);
+              // return setSeconds(0), setMinutes(0);
+              setSeconds(0);
+              setMinutes(0);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -459,7 +461,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
-              return setSeconds(60), setMinutes(4);
+              // return setSeconds(60), setMinutes(4);
+              setSeconds(60);
+              setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -476,7 +480,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
-              return setSeconds(60), setMinutes(4);
+              setSeconds(60);
+              setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -493,7 +498,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
-              return setSeconds(60), setMinutes(4);
+              setSeconds(60);
+              setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -512,7 +518,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp", { state: { value: 2 } });
-              return setSeconds(60), setMinutes(4);
+              // return setSeconds(60), setMinutes(4);
+              setSeconds(60);
+              setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -529,7 +537,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
               );
               navigate("/2FAverificationdevieotp");
-              return setSeconds(60), setMinutes(4);
+              // return setSeconds(60), setMinutes(4);
+              setSeconds(60);
+              setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -548,7 +558,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp", { state: { value: 0 } });
-              return setSeconds(60), setMinutes(4);
+              // return setSeconds(60), setMinutes(4);
+              setSeconds(60);
+              setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -565,7 +577,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp", { state: { value: 1 } });
-              return setSeconds(60), setMinutes(4);
+              // return setSeconds(60), setMinutes(4);
+              setSeconds(60);
+              setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
