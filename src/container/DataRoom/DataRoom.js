@@ -120,6 +120,7 @@ import {
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
 import {
+  clearWorkFlowResponseMessage,
   createWorkflowApi,
   getAllPendingApprovalStatusApi,
   getAllSignaturesDocumentsforCreatorApi,
@@ -158,7 +159,9 @@ const DataRoom = () => {
     SignatureWorkFlowReducer,
     webViewer,
   } = useSelector((state) => state);
-
+  const SignatureResponseMessage = useSelector(
+    (state) => state.SignatureWorkFlowReducer.ResponseMessage
+  );
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -3377,6 +3380,25 @@ const DataRoom = () => {
     DataRoomReducer.ResponseMessage,
     DataRoomFileAndFoldersDetailsResponseMessage,
   ]);
+  useEffect(() => {
+    if (
+      SignatureResponseMessage !== "" &&
+      SignatureResponseMessage !== undefined &&
+      SignatureResponseMessage !== null
+    ) {
+      setOpen({
+        open: true,
+        message: SignatureResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+      });
+      dispatch(clearWorkFlowResponseMessage());
+    }
+  }, [SignatureResponseMessage]);
 
   const handleClickDeleteFolder = () => {
     dispatch(

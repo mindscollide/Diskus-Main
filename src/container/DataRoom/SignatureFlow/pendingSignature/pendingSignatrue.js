@@ -9,6 +9,7 @@ import { Notification, Loader } from "../../../../components/elements/index";
 import { Col, Row } from "react-bootstrap";
 import {
   addUpdateFieldValueApi,
+  clearWorkFlowResponseMessage,
   declineReasonApi,
   getWorkFlowByWorkFlowIdwApi,
 } from "../../../../store/actions/workflow_actions";
@@ -847,6 +848,7 @@ const SignatureViewer = () => {
           open: false,
         });
       }, 4000);
+      dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
   // === End ===//
