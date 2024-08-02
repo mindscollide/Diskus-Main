@@ -400,10 +400,14 @@ body[dir="rtl"] .languageSelector {
   margin-top: 20px;
   border-radius: 4px;
 }
-/* @media screen and (max-width: 425px) {
+@media screen and (max-width: 480px) {
+  .auth_container {
+    overflow: hidden;
+  }
   .freetrail_banner {
     position: fixed;
-    bottom: 10px;
+    bottom: 0;
+    left: 0;
     background-color: #6172d6;
     width: 100%;
     display: flex;
@@ -431,18 +435,19 @@ body[dir="rtl"] .languageSelector {
   .Login_page_text {
     position: fixed;
     top: 0;
+    margin-top: 20px;
   }
   .EmailVerifyBox {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    width: 380px !important;
-    height: auto;
+    max-width: 380px !important;
+    max-height: 450px;
     padding: 30px 41px !important;
     border: 1px solid #e1e1e1;
     border-radius: 4px;
-    margin: 0px 40px;
-    margin-top:180px;
+    margin: 0px !important;
+    margin-top: 115px !important;
   }
   .Login_page_text h1 {
     font-size: calc(35px - 20%) !important;
@@ -461,4 +466,4 @@ body[dir="rtl"] .languageSelector {
     align-items: center;
     max-height: 100vh;
   }
-} */
+}

@@ -69,10 +69,11 @@ const PendingApproval = () => {
   // Click handler for Review & Sign button
   const handleReviewAndSignClick = async () => {
     await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
-    let Data = { sRow: 0, Length: 10 };
-    dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
     let newData = { IsCreator: false };
     await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+    let Data = { sRow: 0, Length: 10 };
+    await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+
     setReviewMinutesActive(false); // Set Review Minutes button to inactive
     setReviewAndSignActive(true); // Set Review & Sign button to active
     // Your functionality for Review & Sign button
@@ -112,9 +113,9 @@ const PendingApproval = () => {
           <span>
             {t("Meeting-title")}{" "}
             {sortOrderMeetingTitle === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -149,8 +150,7 @@ const PendingApproval = () => {
             record.status === "Expired"
               ? "cursor-pointer opacity-25 m-0 text-truncate"
               : "cursor-pointer m-0 text-truncate"
-          }
-        >
+          }>
           {text}
         </p>
       ),
@@ -161,9 +161,9 @@ const PendingApproval = () => {
           <span>
             {t("Review-requested-by")}{" "}
             {sortOrderReviewRequest === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -197,9 +197,9 @@ const PendingApproval = () => {
           <span>
             {t("Submission-date")}{" "}
             {sortOrderLeaveDateTime === "descend" ? (
-              <img src={ArrowDownIcon} alt="" />
+              <img src={ArrowDownIcon} alt='' />
             ) : (
-              <img src={ArrowUpIcon} alt="" />
+              <img src={ArrowUpIcon} alt='' />
             )}
           </span>
         </>
@@ -242,7 +242,7 @@ const PendingApproval = () => {
       ],
       onFilter: (value, record) => record.status === value,
       filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       render: (text, record) => (
         <p
@@ -252,8 +252,7 @@ const PendingApproval = () => {
               : text === "Pending"
               ? styles["pendingStatus"]
               : styles["reviewedStatus"]
-          }
-        >
+          }>
           {text}
         </p>
       ),
@@ -307,7 +306,7 @@ const PendingApproval = () => {
     <section className={styles["pendingApprovalContainer"]}>
       {" "}
       {/* Container for pending approval section */}
-      <Row className="my-3 d-flex align-items-center">
+      <Row className='my-3 d-flex align-items-center'>
         <Col sm={12} md={12} lg={12}>
           <span className={styles["pendingApprovalHeading"]}>
             {t("Pending-approval")}{" "}
@@ -323,7 +322,7 @@ const PendingApproval = () => {
               <div className={styles["overallGap"]}>
                 {/* Buttons for reviewing minutes */}
                 <Button
-                  text="Review Minutes"
+                  text='Review Minutes'
                   className={
                     reviewMinutesActive
                       ? styles.activeMinutes
@@ -335,7 +334,7 @@ const PendingApproval = () => {
                 {(checkFeatureIDAvailability(19) ||
                   checkFeatureIDAvailability(21)) && (
                   <Button
-                    text="Review & Sign"
+                    text='Review & Sign'
                     className={
                       reviewAndSignActive
                         ? styles.activeMinutes
@@ -357,14 +356,14 @@ const PendingApproval = () => {
                       <div className={styles["progressWrapper"]}>
                         <Row>
                           <Col lg={6} md={6} sm={12}>
-                            <div className="d-flex positionRelative">
+                            <div className='d-flex positionRelative'>
                               {/* Progress bars with different colors and percentages */}
                               <ProgressStats
-                                FirstColor="#6172D6"
+                                FirstColor='#6172D6'
                                 firstValue={progress.reviewedPercentage}
                                 thirdValue={progress.expiredPercentage}
-                                thirdColor="#F16B6B"
-                                secondColor="#ffc300"
+                                thirdColor='#F16B6B'
+                                secondColor='#ffc300'
                                 secondValue={progress.pendingPercentage}
                               />
                               {/* {progress.reviewed === 0 ? null : (
@@ -399,13 +398,12 @@ const PendingApproval = () => {
                               )} */}
                             </div>
                           </Col>
-                          <Col lg={6} md={6} sm={12} className="d-flex">
+                          <Col lg={6} md={6} sm={12} className='d-flex'>
                             <span className={styles["line"]} />
                             <div
                               className={
                                 styles["progress-value-wrapper-purple"]
-                              }
-                            >
+                              }>
                               <span className={styles["numeric-value"]}>
                                 {progress.reviewed}
                               </span>
@@ -417,8 +415,7 @@ const PendingApproval = () => {
                             <div
                               className={
                                 styles["progress-value-wrapper-yellow"]
-                              }
-                            >
+                              }>
                               <span className={styles["numeric-value"]}>
                                 {progress.pending}
                               </span>
@@ -428,8 +425,7 @@ const PendingApproval = () => {
                             </div>
                             <span className={styles["line"]} />
                             <div
-                              className={styles["progress-value-wrapper-red"]}
-                            >
+                              className={styles["progress-value-wrapper-red"]}>
                               <span className={styles["numeric-value"]}>
                                 {progress.expired}
                               </span>
@@ -465,9 +461,8 @@ const PendingApproval = () => {
                     </>
                   ) : (
                     <section
-                      className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}
-                    >
-                      <img src={NoApprovals} alt="" />
+                      className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}>
+                      <img src={NoApprovals} alt='' />
                       <span className={styles["No-Approvals"]}>
                         {t("Approvals")}
                       </span>

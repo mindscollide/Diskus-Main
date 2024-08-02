@@ -657,7 +657,7 @@ const DataRoom = () => {
         }
         dispatch(fileSharedMQTT(null));
       } catch (error) {
-        console.log(error, "datadatadata");
+        console.log(error);
       }
     }
   }, [DataRoomReducer.FileSharedMQTT]);
@@ -680,14 +680,9 @@ const DataRoom = () => {
   // Remove Folder MQTT
   useEffect(() => {
     if (DataRoomReducer.FolderRemoveMQTT !== null) {
-      console.log(DataRoomReducer.FolderRemoveMQT, "folderIDfolderIDfolderID");
-
       try {
         let folderID = Number(DataRoomReducer.FolderRemoveMQTT);
-        console.log(folderID, "folderIDfolderIDfolderID");
         if (currentView === 3) {
-          console.log(folderID, "folderIDfolderIDfolderID");
-
           setGetAllData((getllData) => {
             return getAllData.filter((data, index) => data.id !== folderID);
           });
@@ -695,7 +690,7 @@ const DataRoom = () => {
         } else if (currentView === 2) {
         }
       } catch (error) {
-        console.log(error, "datadatadata");
+        console.log(error);
       }
     }
   }, [DataRoomReducer.FolderRemoveMQTT]);
@@ -703,14 +698,8 @@ const DataRoom = () => {
   // Share Folder MQTT
   useEffect(() => {
     if (DataRoomReducer.FolderSharedMQTT !== null) {
-      console.log(
-        DataRoomReducer.FolderSharedMQTT,
-        currentView,
-        "datadatadata"
-      );
       let folderData;
       const { data } = DataRoomReducer.FolderSharedMQTT;
-      console.log(data, "datadatadata");
 
       try {
         if (currentView === 3) {
@@ -730,7 +719,6 @@ const DataRoom = () => {
             location: "Shared With Me",
             isShared: true,
           };
-          console.log(folderData, "datadatadata");
           setGetAllData([folderData, ...getAllData]);
           setTotalRecords((totalValue) => totalValue + 1);
         } else if (currentView === 2) {
@@ -757,7 +745,7 @@ const DataRoom = () => {
 
         dispatch(folderSharedMQTT(null));
       } catch (error) {
-        console.log(error, "datadatadata");
+        console.log(error);
       }
     }
   }, [DataRoomReducer.FolderSharedMQTT]);
@@ -817,11 +805,11 @@ const DataRoom = () => {
 
     localStorage.setItem("setTableView", 5);
     // getAllPendingApprovalStatusApi
-
-    let Data = { sRow: 0, Length: 10 };
-    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     let newData = { IsCreator: true };
     await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+    let Data = { sRow: 0, Length: 10 };
+    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+
     //  localStorage.set
     setGetAllData([]);
     setSharedwithmebtn(true);
@@ -2377,7 +2365,9 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {fileExtension === "pdf"
+                            {fileExtension === "pdf" ||
+                            fileExtension === "docx" ||
+                            fileExtension === "doc"
                               ? optionsforPDFandSignatureFlow(t).map(
                                   (data, index) => {
                                     return (
@@ -3380,6 +3370,10 @@ const DataRoom = () => {
     DataRoomReducer.ResponseMessage,
     DataRoomFileAndFoldersDetailsResponseMessage,
   ]);
+  console.log(
+    SignatureResponseMessage,
+    "SignatureResponseMessageSignatureResponseMessage"
+  );
   useEffect(() => {
     if (
       SignatureResponseMessage !== "" &&
@@ -3395,8 +3389,8 @@ const DataRoom = () => {
           open: false,
           message: "",
         });
-      });
-      dispatch(clearWorkFlowResponseMessage());
+        dispatch(clearWorkFlowResponseMessage());
+      }, 4000);
     }
   }, [SignatureResponseMessage]);
 
