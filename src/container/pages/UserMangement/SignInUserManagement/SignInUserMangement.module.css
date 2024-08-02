@@ -441,7 +441,7 @@ body[dir="rtl"] .languageSelector {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    max-width: 380px !important;
+    max-width: 390px !important;
     max-height: 450px;
     padding: 30px 41px !important;
     border: 1px solid #e1e1e1;
@@ -450,8 +450,9 @@ body[dir="rtl"] .languageSelector {
     margin-top: 115px !important;
   }
   .Login_page_text h1 {
-    font-size: calc(35px - 20%) !important;
-    font-weight: 600 !important;
+    font-size: 30px !important;
+
+    font-weight: 700 !important;
     margin: 0 !important;
     width: 100%;
     white-space: nowrap;
