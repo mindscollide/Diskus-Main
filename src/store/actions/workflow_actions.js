@@ -1315,7 +1315,7 @@ const getAllPendingApprovalsStatsApi = (navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_GetAllPendingForApprovalStats_01".toLowerCase()
                 )
             ) {
-              dispatch(
+           await   dispatch(
                 getAllPendingApprovalsStats_success(
                   response.data.responseResult,
                   "",
@@ -1518,7 +1518,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                   "WorkFlow_WorkFlowServiceManager_GetPendingApprovalStatusesForSignatureFlow_01".toLowerCase()
                 )
             ) {
-              let loaderFlag = Number(flag) === 1 ? false : true;
+              let loaderFlag = Number(flag) === 1 ? true : false;
               dispatch(
                 getAllPendingApprovalStatus_success(
                   response.data.responseResult,

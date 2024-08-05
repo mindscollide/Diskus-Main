@@ -120,6 +120,7 @@ import {
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
 import {
+  clearWorkFlowResponseMessage,
   createWorkflowApi,
   getAllPendingApprovalStatusApi,
   getAllSignaturesDocumentsforCreatorApi,
@@ -128,6 +129,11 @@ import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
 import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
+import {
+  validateExtensionsforHTMLPage,
+  validationExtension,
+} from "../../commen/functions/validations";
+import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
@@ -151,7 +157,11 @@ const DataRoom = () => {
     DataRoomReducer,
     LanguageReducer,
     SignatureWorkFlowReducer,
+    webViewer,
   } = useSelector((state) => state);
+  const SignatureResponseMessage = useSelector(
+    (state) => state.SignatureWorkFlowReducer.ResponseMessage
+  );
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -415,6 +425,73 @@ const DataRoom = () => {
     };
   }, []);
 
+  const base64ToBlob = (base64, mimeType) => {
+    const byteChars = atob(base64);
+    const byteNumbers = new Array(byteChars.length);
+    for (let i = 0; i < byteChars.length; i++) {
+      byteNumbers[i] = byteChars.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  };
+
+  const displayBlobAsHtml = (blob) => {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      // Get the HTML content from the Blob
+      const htmlContent = event.target.result;
+
+      // Open a new tab
+      const newTab = window.open();
+
+      if (newTab) {
+        // Create a new document in the new tab
+        const doc = newTab.document;
+
+        // Set up the document structure
+        doc.open();
+        doc.write(`
+          <html>
+            <head>
+              <title>HTML Content</title>
+            </head>
+            <body style="margin:0; padding:0;">
+              <div id="html-content" style="width:100%; height:100%; padding:0 15px;"></div>
+            </body>
+          </html>
+        `);
+        doc.close();
+
+        // Inject the HTML content into the div
+        const container = doc.getElementById("html-content");
+        container.innerHTML = htmlContent;
+      } else {
+        console.error("Failed to open new tab");
+      }
+    };
+
+    reader.readAsText(blob);
+  };
+
+  useEffect(() => {
+    if (webViewer.attachmentBlob) {
+      try {
+        const base64String = base64ToBlob(
+          webViewer.attachmentBlob,
+          "text/html"
+        );
+        displayBlobAsHtml(base64String);
+      } catch (error) {
+        console.error("Error converting blob to base64:", error);
+      }
+      console.log(
+        webViewer.attachmentBlob,
+        "webViewer.attachmentBlobwebViewer.attachmentBlobwebViewer.attachmentBlob"
+      );
+    }
+  }, [, webViewer.attachmentBlob]);
+
   useEffect(() => {
     try {
       if (
@@ -524,12 +601,7 @@ const DataRoom = () => {
       copyToClipboard(DataRoomReducer.getCreateFolderLink);
     }
   }, [DataRoomReducer.getCreateFolderLink]);
-  console.log(
-    DataRoomReducer.FileSharedMQTT,
-    DataRoomReducer.FolderSharedMQTT,
-    { DataRoomReducer },
-    "DataRoomReducerDataRoomReducerDataRoomReducer"
-  );
+
   // Share File MQTT
   useEffect(() => {
     if (DataRoomReducer.FileSharedMQTT !== null) {
@@ -550,7 +622,7 @@ const DataRoom = () => {
             diskusName: null,
             owner: data?.sharedByUser,
             modifiedDate: data?.filesModel?.modifiedDate,
-            sharedDate: "20240726143136",
+            sharedDate: data?.sharedDate,
             isFolder: false,
             permissionID: data.fK_PermissionID,
             fileSize: data?.filesModel?.fileSize,
@@ -572,7 +644,7 @@ const DataRoom = () => {
             diskusName: null,
             owner: data?.sharedByUser,
             modifiedDate: data?.filesModel?.modifiedDate,
-            sharedDate: "20240726143136",
+            sharedDate: data?.sharedDate,
             isFolder: false,
             permissionID: data.fK_PermissionID,
             fileSize: data?.filesModel?.fileSize,
@@ -585,7 +657,7 @@ const DataRoom = () => {
         }
         dispatch(fileSharedMQTT(null));
       } catch (error) {
-        console.log(error, "datadatadata");
+        console.log(error);
       }
     }
   }, [DataRoomReducer.FileSharedMQTT]);
@@ -608,14 +680,9 @@ const DataRoom = () => {
   // Remove Folder MQTT
   useEffect(() => {
     if (DataRoomReducer.FolderRemoveMQTT !== null) {
-      console.log(DataRoomReducer.FolderRemoveMQT, "folderIDfolderIDfolderID");
-
       try {
         let folderID = Number(DataRoomReducer.FolderRemoveMQTT);
-        console.log(folderID, "folderIDfolderIDfolderID");
         if (currentView === 3) {
-          console.log(folderID, "folderIDfolderIDfolderID");
-
           setGetAllData((getllData) => {
             return getAllData.filter((data, index) => data.id !== folderID);
           });
@@ -623,7 +690,7 @@ const DataRoom = () => {
         } else if (currentView === 2) {
         }
       } catch (error) {
-        console.log(error, "datadatadata");
+        console.log(error);
       }
     }
   }, [DataRoomReducer.FolderRemoveMQTT]);
@@ -631,14 +698,8 @@ const DataRoom = () => {
   // Share Folder MQTT
   useEffect(() => {
     if (DataRoomReducer.FolderSharedMQTT !== null) {
-      console.log(
-        DataRoomReducer.FolderSharedMQTT,
-        currentView,
-        "datadatadata"
-      );
       let folderData;
       const { data } = DataRoomReducer.FolderSharedMQTT;
-      console.log(data, "datadatadata");
 
       try {
         if (currentView === 3) {
@@ -658,7 +719,6 @@ const DataRoom = () => {
             location: "Shared With Me",
             isShared: true,
           };
-          console.log(folderData, "datadatadata");
           setGetAllData([folderData, ...getAllData]);
           setTotalRecords((totalValue) => totalValue + 1);
         } else if (currentView === 2) {
@@ -685,7 +745,7 @@ const DataRoom = () => {
 
         dispatch(folderSharedMQTT(null));
       } catch (error) {
-        console.log(error, "datadatadata");
+        console.log(error);
       }
     }
   }, [DataRoomReducer.FolderSharedMQTT]);
@@ -745,11 +805,11 @@ const DataRoom = () => {
 
     localStorage.setItem("setTableView", 5);
     // getAllPendingApprovalStatusApi
-
-    let Data = { sRow: 0, Length: 10 };
-    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     let newData = { IsCreator: true };
     await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+    let Data = { sRow: 0, Length: 10 };
+    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+
     //  localStorage.set
     setGetAllData([]);
     setSharedwithmebtn(true);
@@ -831,14 +891,23 @@ const DataRoom = () => {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
         let ext = record.name.split(".").pop();
-        // if (ext === "pdf") {
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
+        if (validationExtension(ext)) {
+          window.open(
+            `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+              pdfDataJson
+            )}`,
+            "_blank",
+            "noopener noreferrer"
+          );
+        } else if (validateExtensionsforHTMLPage(ext)) {
+          let dataRoomData = {
+            FileID: record.id,
+          };
+          dispatch(
+            getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
+          );
+        }
       }
-      // }
     } else if (data.value === 2) {
       // Share File Modal
       if (record.isFolder) {
@@ -1123,15 +1192,7 @@ const DataRoom = () => {
       sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       render: (text, data) => {
         console.log(data, "datadatadatadata");
-        let ext = data.name.split(".").pop();
-        const pdfData = {
-          taskId: data.id,
-          commingFrom: 4,
-          fileName: data.name,
-          attachmentID: data.id,
-          isPermission: data.permissionID,
-        };
-        const pdfDataJson = JSON.stringify(pdfData);
+
         if (data.isShared) {
           if (data.isFolder) {
             return (
@@ -1149,25 +1210,22 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            return (
-              <section className={styles["fileRow"]}>
-                <img
-                  src={getIconSource(getFileExtension(data.name))}
-                  alt=''
-                  width={"25px"}
-                  height={"25px"}
-                  className='me-2'
-                />
-                <abbr title={text}>
-                  <span
-                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                    className={styles["dataroom_table_heading"]}>
-                    {text}
-                    <img src={sharedIcon} alt='' draggable='false' />
-                  </span>
-                </abbr>
-              </section>
-            );
+            <div className={styles["dataFolderRow"]}>
+              <img
+                src={getIconSource(getFileExtension(data.name))}
+                alt=''
+                width={"25px"}
+                height={"25px"}
+                className='me-2'
+              />
+              <abbr title={text}>
+                <span
+                  onClick={(e) => handleLinkClick(e, data)}
+                  className={styles["dataroom_table_heading"]}>
+                  {text}
+                </span>
+              </abbr>
+            </div>;
           }
         } else {
           if (data.isFolder) {
@@ -1197,7 +1255,7 @@ const DataRoom = () => {
                 />
                 <abbr title={text}>
                   <span
-                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
@@ -1716,14 +1774,32 @@ const DataRoom = () => {
     },
   ];
 
-  const handleLinkClick = (e, data) => {
+  const handleLinkClick = (e, record) => {
     e.preventDefault();
     if (checkFeatureIDAvailability(20)) {
-      window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
+      const pdfData = {
+        taskId: record.id,
+        commingFrom: 4,
+        fileName: record.name,
+        attachmentID: record.id,
+        isPermission: record.permissionID,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      let ext = record.name.split(".").pop();
+      if (validationExtension(ext)) {
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else if (validateExtensionsforHTMLPage(ext)) {
+        let dataRoomData = {
+          FileID: record.id,
+        };
+        dispatch(
+          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
+        );
+      }
     }
   };
 
@@ -1738,22 +1814,10 @@ const DataRoom = () => {
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       render: (text, data) => {
-        console.log(data, "datadatadatadata");
-
-        let ext = data.name.split(".").pop();
-        const pdfData = {
-          taskId: data.id,
-          commingFrom: 4,
-          fileName: data.name,
-          attachmentID: data.id,
-          isPermission: data.permissionID,
-        };
-
-        const pdfDataJson = JSON.stringify(pdfData);
         if (data.isShared) {
           if (data.isFolder) {
             return (
-              <div className={`${styles["dataFolderRow"]}`}>
+              <div className={`${styles["fileRow"]}`}>
                 <img src={folderColor} alt='' draggable='false' />
                 <abbr title={text}>
                   <span
@@ -1778,7 +1842,7 @@ const DataRoom = () => {
                 />
                 <abbr title={text}>
                   <span
-                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
                     <img src={sharedIcon} alt='' draggable='false' />
@@ -1815,7 +1879,7 @@ const DataRoom = () => {
                 />
                 <abbr title={text}>
                   <span
-                    onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                    onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
@@ -2301,7 +2365,9 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {fileExtension === "pdf"
+                            {fileExtension === "pdf" ||
+                            fileExtension === "docx" ||
+                            fileExtension === "doc"
                               ? optionsforPDFandSignatureFlow(t).map(
                                   (data, index) => {
                                     return (
@@ -2359,14 +2425,7 @@ const DataRoom = () => {
         console.log(record, "datadatadatadata");
 
         let ext = record.name.split(".").pop();
-        const pdfData = {
-          taskId: record.id,
-          commingFrom: 4,
-          fileName: record.name,
-          attachmentID: record.id,
-          isPermission: record.permissionID,
-        };
-        const pdfDataJson = JSON.stringify(pdfData);
+
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
@@ -2389,7 +2448,7 @@ const DataRoom = () => {
               />
               <span
                 className={styles["dataroom_table_heading"]}
-                onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                onClick={(e) => handleLinkClick(e, record)}
                 // onClick={() => getFolderDocuments(data.id)}
               >
                 {record.name} <img src={sharedIcon} alt='' draggable='false' />
@@ -3311,6 +3370,29 @@ const DataRoom = () => {
     DataRoomReducer.ResponseMessage,
     DataRoomFileAndFoldersDetailsResponseMessage,
   ]);
+  console.log(
+    SignatureResponseMessage,
+    "SignatureResponseMessageSignatureResponseMessage"
+  );
+  useEffect(() => {
+    if (
+      SignatureResponseMessage !== "" &&
+      SignatureResponseMessage !== undefined &&
+      SignatureResponseMessage !== null
+    ) {
+      setOpen({
+        open: true,
+        message: SignatureResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+        dispatch(clearWorkFlowResponseMessage());
+      }, 4000);
+    }
+  }, [SignatureResponseMessage]);
 
   const handleClickDeleteFolder = () => {
     dispatch(

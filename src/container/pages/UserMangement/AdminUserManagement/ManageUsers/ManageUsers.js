@@ -140,9 +140,11 @@ const ManageUsers = () => {
   //AllOrganizationsUsers Api Data
   useEffect(() => {
     try {
+      console.log("datadatadata");
       const Users = UserMangementReducer.allOrganizationUsersData;
+      console.log(Users, "UsersUsersUsersUsersUsers");
       Users.selectedPackageDetails.map((data, index) => {
-        console.log(data.headCount, "datadatadata");
+        console.log(data, "datadatadata");
         setHeadCount(data.headCount);
       });
 

@@ -742,7 +742,12 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
                   "Admin_AdminServiceManager_ManageUserScreen_02".toLowerCase()
                 )
             ) {
-              dispatch(allOrganizationUsersFail(t("No-data-found")));
+              dispatch(
+                allOrganizationUsersSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

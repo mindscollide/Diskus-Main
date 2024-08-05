@@ -3151,6 +3151,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
       responseType: "blob",
     })
       .then(async (response) => {
+        console.log(response, "responseresponseresponse")
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
@@ -3167,6 +3168,8 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
         }
       })
       .catch((response) => {
+        console.log(response, "responseresponseresponse")
+
         dispatch(DownloadMessage(0));
 
         dispatch(downloadFail(response));
