@@ -270,7 +270,7 @@ const SignInUserManagement = () => {
                         </Col>
                       </Row>
                     </Form>
-                    {/* <Row className='mt-3'>
+                    <Row className='mt-3'>
                       <Col sm={12} md={12} lg={12}>
                         {" "}
                         <span className={styles["havent-subscribed-text"]}>
@@ -290,7 +290,7 @@ const SignInUserManagement = () => {
                           className={styles["subscribNow_button_EmailVerify"]}
                         />
                       </Col>
-                    </Row> */}
+                    </Row>
                   </Col>
                 </Paper>
               </Col>

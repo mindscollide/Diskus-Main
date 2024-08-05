@@ -400,7 +400,7 @@ body[dir="rtl"] .languageSelector {
   margin-top: 20px;
   border-radius: 4px;
 }
-/* @media screen and (max-width: 480px) {
+@media screen and (max-width: 480px) {
   .auth_container {
     overflow: hidden;
   }
@@ -467,4 +467,4 @@ body[dir="rtl"] .languageSelector {
     align-items: center;
     max-height: 100vh;
   }
-} */
+}

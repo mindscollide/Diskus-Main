@@ -452,6 +452,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: action.loader,
+        getALlMeetingTypes: [],
         ResponseMessage: action.message,
       };
     }

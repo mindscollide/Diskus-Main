@@ -2365,10 +2365,9 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {fileExtension === "pdf"
-                            //  ||
-                            // fileExtension === "docx" ||
-                            // fileExtension === "doc"
+                            {fileExtension === "pdf" ||
+                            fileExtension === "docx" ||
+                            fileExtension === "doc"
                               ? optionsforPDFandSignatureFlow(t).map(
                                   (data, index) => {
                                     return (
