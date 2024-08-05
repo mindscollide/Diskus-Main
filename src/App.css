@@ -16,7 +16,9 @@
   color: #bbbbbb !important;
   font-family: "Montserrat" !important;
 }
-
+html {
+  height: 100%;
+}
 /*
 File Updated on  Dated Aug 24 2022 
 

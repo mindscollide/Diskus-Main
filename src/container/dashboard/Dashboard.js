@@ -256,6 +256,7 @@ const Dashboard = () => {
     var max = 90000;
     var id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
+    console.log(data, " MQTT onMessageArrived")
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
         // if (data.action && data.payload ) {

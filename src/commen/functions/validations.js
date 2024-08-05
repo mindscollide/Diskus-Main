@@ -71,3 +71,24 @@ export const validateEmailEnglishAndArabicFormat = (email) => {
   );
   return emailRegex.test(email);
 };
+
+export const validationExtension = (ext) => {
+  let arrExtension = [
+    "doc",
+    "docx",
+    "txt",
+    "xls",
+    "xlsx",
+    "csv",
+    "ppt",
+    "pptx",
+    "json",
+    "pdf",
+  ];
+  return arrExtension.includes(ext);
+};
+
+export const validateExtensionsforHTMLPage = (ext) => {
+  let newArrExtensions = ["html", "htm"];
+  return newArrExtensions.includes(ext);
+};

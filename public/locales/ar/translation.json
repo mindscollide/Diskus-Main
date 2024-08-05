@@ -2089,5 +2089,11 @@
   "Download-video-recording": "Download video recording",
   "Select-members": "Select Members",
   "Are-you-sure-you-want-to-disconnect-this-call": "Are you sure you want to disconnect this call?",
-  "Approved-by": "Approved by"
+  "Approved-by": "Approved by",
+  "Failed-to-save-file": "Failed to save file",
+  "Failed-to-save-workflow": "Failed to save workflow",
+  "Dataroom-api-call-error": "Dataroom api call error",
+  "Failed-to-save-signature-document": "Failed to save signature document",
+  "Failed-to-save-workflow-folder-mapping": "Failed to save workflow folder mapping",
+  "Failed-to-edit": "Failed to edit"
 }
