@@ -20,6 +20,7 @@ import CallEndRedIcon from "./../../talk-Video/video-images/Call End Red.svg";
 import NormalizeIcon from "./../../talk-Video/video-images/Collapse.svg";
 import RaiseHand from "./../../talk-Video/video-images/Raise Hand Purple.svg";
 import LowerHand from "./../../talk-Video/video-images/Raise Hand White.svg";
+import CopyLink from "./../../talk-Video/video-images/Copy Link Purple.svg";
 import CloseNotification from "../../../../../assets/images/Close-Notification.png";
 import ActiveParticipantIcon from "./../../talk-Video/video-images/Users White.svg";
 import ParticipantsIcon from "./../../talk-Video/video-images/Users Purple.svg";
@@ -458,6 +459,24 @@ const VideoCallNormalHeader = ({
                 </Tooltip>
               </div>
             ) : null}
+
+            <div
+              onClick={raiseHandFunction}
+              className={
+                videoFeatureReducer.LeaveCallModalFlag === true
+                  ? "grayScaleImage"
+                  : !handStatus
+                  ? "inactive-state"
+                  : "active-state"
+              }
+            >
+              <Tooltip
+                placement="topRight"
+                title={handStatus ? t("Lower-hand") : t("Raise-hand")}
+              >
+                <img src={handStatus ? LowerHand : RaiseHand} alt="" />
+              </Tooltip>
+            </div>
 
             <div
               onClick={raiseHandFunction}
