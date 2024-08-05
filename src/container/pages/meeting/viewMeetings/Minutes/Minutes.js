@@ -687,7 +687,8 @@ const Minutes = ({
       ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available")
+      ResponseMessage !== t("No-data-available") &&
+      ResponseMessage !== t("Something-went-wrong")
     ) {
       setOpen({
         ...open,
@@ -713,7 +714,9 @@ const Minutes = ({
       ResponseMessageMinute !== t("List-updated-successfully") &&
       ResponseMessageMinute !== t("No-data-available") &&
       ResponseMessageMinute !== t("Data-available") &&
-      ResponseMessageMinute !== t("Minute-review-flow-stats-not-available")
+      ResponseMessageMinute !== t("Minute-review-flow-stats-not-available") &&
+      ResponseMessageMinute !== t("Minute-review-flow-not-found") &&
+      ResponseMessageMinute !== t("Something-went-wrong")
     ) {
       setOpen({
         ...open,
@@ -1550,13 +1553,11 @@ const Minutes = ({
               {(editorRole.role === "Organizer" &&
                 Number(editorRole.status) === 9 &&
                 deadLineDate <= currentDateOnly &&
-                (minutesData.length > 0 ||
-                  minutesDataAgenda !== null)) ||
+                (minutesData.length > 0 || minutesDataAgenda !== null)) ||
               (Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer" &&
                 deadLineDate <= currentDateOnly &&
-                (minutesData.length > 0 ||
-                  minutesDataAgenda !== null)) ? (
+                (minutesData.length > 0 || minutesDataAgenda !== null)) ? (
                 <Button
                   text={t("Publish-minutes")}
                   className={styles["PublishMinutes"]}

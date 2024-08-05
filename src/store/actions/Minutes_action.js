@@ -1612,6 +1612,7 @@ const MeetingPublishedMinutesApi = (Data, navigate, t) => {
                 )
               );
               localStorage.setItem("isMinutePublished", true);
+              dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

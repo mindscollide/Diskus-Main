@@ -87,6 +87,7 @@ import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/respon
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
+import { GetAllUserChats } from "./Talk_action";
 
 const boardDeckModal = (response) => {
   return {
@@ -1003,7 +1004,8 @@ const SearchMeeting_Fail = (message) => {
 };
 const searchNewUserMeeting = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let currentUserId = localStorage.getItem("userID");
+  let currentOrganizationId = localStorage.getItem("organizationID");
   return (dispatch) => {
     dispatch(SearchMeeting_Init());
     let form = new FormData();
@@ -1046,6 +1048,14 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 totalRecords: response.data.responseResult.totalRecords,
               };
               dispatch(SearchMeeting_Success(newMeetingData, ""));
+              await dispatch(
+                GetAllUserChats(
+                  navigate,
+                  parseInt(currentUserId),
+                  parseInt(currentOrganizationId),
+                  t
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

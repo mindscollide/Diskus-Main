@@ -1319,7 +1319,7 @@ const MeetingDetails = ({
                     change={HandleChange}
                     placeholder={t("Note-for-this-meeting")}
                     required={true}
-                    maxLength={1000}
+                    maxLength={1100}
                     value={meetingDetails.Notes}
                     disable={
                       (Number(editorRole.status) === 9 ||
