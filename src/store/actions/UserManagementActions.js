@@ -515,7 +515,11 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
                   "Admin_AdminServiceManager_AddOrganizationsUsers_03".toLowerCase()
                 )
             ) {
-              dispatch(addOrganizationUsersFailed(t("Invalid-data-provided")));
+              dispatch(
+                addOrganizationUsersFailed(
+                  t("Unable-to-add-user-due-to-some-error")
+                )
+              );
             } else {
               dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
             }

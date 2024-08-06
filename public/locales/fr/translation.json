@@ -2041,5 +2041,6 @@
   "Maximum-meeting-duration-min": "Maximum Meeting Duration (min)",
   "Allow-google-calendar-synch-for-users": "Allow Google Calendar Synch for Users",
   "Allow-microsoft-calendar-synch-for-users": "Allow Microsoft Calendar Synch for Users",
-  "Calendar Span-months": "Calendar Span (months)"
+  "Calendar Span-months": "Calendar Span (months)",
+  "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error"
 }
