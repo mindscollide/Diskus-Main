@@ -34,6 +34,11 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
     dispatch(boardDeckShareModal(false));
     dispatch(boardDeckEmailModal(true));
   };
+
+  const handleCrossButton = () => {
+    dispatch(boardDeckShareModal(false));
+  };
+
   return (
     <Container>
       <Modal
@@ -51,7 +56,12 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
             <Row>
               <Col lg={12} md={12} sm={12} className="position-relative">
                 <p className={styles["FileModalTitle"]}>{t("Share")}</p>
-                <img className={styles["image-close"]} src={crossIcon} alt="" />
+                <img
+                  className={styles["image-close"]}
+                  src={crossIcon}
+                  alt=""
+                  onClick={handleCrossButton}
+                />
               </Col>
             </Row>
           </>
