@@ -746,7 +746,7 @@ const NewMeeting = () => {
     }
   };
 
-  const openSceduleMeetingPage = () => {
+  const openSceduleMeetingPage = async () => {
     setSceduleMeeting(true);
     dispatch(scheduleMeetingPageFlag(true));
     setCurrentMeetingID(0);
@@ -762,6 +762,7 @@ const NewMeeting = () => {
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
     dispatch(uploadGlobalFlag(false));
+   
   };
 
   const openProposedNewMeetingPage = () => {
@@ -846,7 +847,7 @@ const NewMeeting = () => {
       Length: 30,
       PublishedMeetings: true,
     };
-    await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 30);
@@ -1916,6 +1917,7 @@ const NewMeeting = () => {
       callMQTT();
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+
   useEffect(() => {
     if (
       meetingIdReducer.MeetingStatusSocket !== null &&

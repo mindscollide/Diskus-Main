@@ -1912,12 +1912,7 @@ const createPasswordAction = (value, navigate, t) => {
           // if (
           //   JSON.parse(response.data.responseResult.roleId) === (3 || 4 || 1)
           // ) {
-          dispatch(
-            createPasswordSuccess(
-              response.data.responseResult,
-              t("Password-created-and-2FA-is-enabled")
-            )
-          );
+          dispatch(createPasswordSuccess(response.data.responseResult, ""));
           localStorage.setItem("2fa", true);
           mqttConnection(response.data.responseResult.authToken.userID);
           await dispatch(
@@ -1946,12 +1941,7 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/Admin/ManageUsers");
               }
             }
-            dispatch(
-              createPasswordSuccess(
-                response.data.responseResult,
-                t("Password-created-and-this-is-an-admin-user")
-              )
-            );
+            dispatch(createPasswordSuccess(response.data.responseResult, ""));
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(
@@ -1970,12 +1960,7 @@ const createPasswordAction = (value, navigate, t) => {
             } else {
               navigate("/Admin/ManageUsers");
             }
-            dispatch(
-              createPasswordSuccess(
-                response.data.responseResult,
-                t("Password-created-and-this-is-a-admin")
-              )
-            );
+            dispatch(createPasswordSuccess(response.data.responseResult, ""));
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(
@@ -1996,12 +1981,7 @@ const createPasswordAction = (value, navigate, t) => {
             }
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
-            dispatch(
-              createPasswordSuccess(
-                response.data.responseResult,
-                t("Password-created-and-this-is-a-user")
-              )
-            );
+            dispatch(createPasswordSuccess(response.data.responseResult, ""));
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
@@ -3495,11 +3475,12 @@ const DownlaodInvoiceLApi = (navigate, t, Data) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DownlaodInvoiceLApi(navigate, t, Data));
-        } else if (response.data.responseCode === 200) {
+        } else if (response.status.responseCode === 200) {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", ext);
+          link.setAttribute("download", `Download_Invoice.${ext}`);
+
           document.body.appendChild(link);
           link.click();
           dispatch(DownlaodInvoice_Success(response, ""));
