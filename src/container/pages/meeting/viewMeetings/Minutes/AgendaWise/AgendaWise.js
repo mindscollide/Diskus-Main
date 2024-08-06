@@ -328,10 +328,11 @@ const AgendaWise = ({
     } else {
       if (source === "user") {
         // Update state only if no image is detected in the content
+        const isEmptyContent = content === "<p><br></p>";
         setAddNoteFields({
           ...addNoteFields,
           Description: {
-            value: content,
+            value: isEmptyContent ? "" : content,
             errorMessage: "",
             errorStatus: false,
           },
@@ -751,7 +752,7 @@ const AgendaWise = ({
     let Data2 = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t,));
+    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t));
     dispatch(
       GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
         Data2,
@@ -1331,15 +1332,15 @@ const AgendaWise = ({
                         <p className={styles["agenda-title"]}>
                           {index + 1 + "." + " " + data.agendaTitle}
                         </p>
-                        <span>
-                          {data.minuteData.length > 0 &&
-                          data?.minuteData[0]?.attachments.length > 0 ? (
-                            <img
-                              className={styles["Attachment"]}
-                              alt=""
-                              src={AttachmentIcon}
-                            />
-                          ) : null}
+                        <span className="d-flex align-items-start justify-content-center">
+                          {/* //data.minuteData.length > 0 && */}
+                          {/* // data?.minuteData[0]?.attachments.length > 0 ? ( */}
+                          <img
+                            className={styles["Attachment"]}
+                            alt=""
+                            src={AttachmentIcon}
+                          />
+                          {/* // ) : null} */}
                           <img
                             alt=""
                             src={ArrowDown}

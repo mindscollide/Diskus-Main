@@ -5077,10 +5077,12 @@ const UpdateMinutesGeneralApiFunc = (
   setConfirmationEdit,
   setResendMinuteForReview,
   setShowRevisionHistory,
-  isAgenda
+  isAgenda,
+  fileUploadFlag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  let currentMeeting = JSON.parse(localStorage.getItem("currentMeetingID"));
   return async (dispatch) => {
     dispatch(showUpdateMinutesInit());
     let form = new FormData();
@@ -5105,9 +5107,14 @@ const UpdateMinutesGeneralApiFunc = (
             navigate,
             Data,
             t,
+            resendFlag,
+            resendData,
             setEditMinute,
             setConfirmationEdit,
-            setResendMinuteForReview
+            setResendMinuteForReview,
+            setShowRevisionHistory,
+            isAgenda,
+            fileUploadFlag
           )
         );
       } else if (response.data.responseCode === 200) {
@@ -5125,6 +5132,14 @@ const UpdateMinutesGeneralApiFunc = (
                 t("Record-updated")
               )
             );
+            let Meet = {
+              MeetingID: currentMeeting,
+            };
+            if (!fileUploadFlag) {
+              await dispatch(
+                GetAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting)
+              );
+            }
             if (resendFlag === true) {
               dispatch(
                 ResendUpdatedMinuteForReview(
