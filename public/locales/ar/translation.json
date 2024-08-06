@@ -2094,5 +2094,6 @@
   "Dataroom-api-call-error": "Dataroom api call error",
   "Failed-to-save-signature-document": "Failed to save signature document",
   "Failed-to-save-workflow-folder-mapping": "Failed to save workflow folder mapping",
-  "Failed-to-edit": "Failed to edit"
+  "Failed-to-edit": "Failed to edit",
+  "Old-password-is-incorrect": "Old Password is Incorrect"
 }

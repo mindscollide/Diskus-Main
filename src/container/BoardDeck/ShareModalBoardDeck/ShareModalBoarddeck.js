@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ShareModalBoarddeck.module.css";
 import { Button, Modal } from "../../../components/elements";
 import { Col, Container, Row } from "react-bootstrap";
@@ -25,6 +25,10 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
     setRadioValue(value);
     console.log("valuevaluevalue", value);
   };
+
+  useEffect(() => {
+    setRadioValue(1);
+  }, []);
 
   const handleSharebutton = () => {
     dispatch(boardDeckShareModal(false));

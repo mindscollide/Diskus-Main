@@ -674,7 +674,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              }  else if (
+              } else if (
                 MeetingStr !== null ||
                 MeetinUpd !== null ||
                 MeetingMin !== null ||
@@ -722,7 +722,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              }  else if (
+              } else if (
                 MeetingStr !== null ||
                 MeetinUpd !== null ||
                 MeetingMin !== null ||
@@ -742,7 +742,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dataroomValue !== undefined
               ) {
                 navigate("/Diskus/dataroom");
-              }  else if (
+              } else if (
                 MeetingStr !== null ||
                 MeetinUpd !== null ||
                 MeetingMin !== null ||
@@ -1829,9 +1829,9 @@ const createPasswordAction = (value, navigate, t) => {
   let MeetingStr = localStorage.getItem("meetingStr");
   let MeetinUpd = localStorage.getItem("meetingUpd");
   let MeetingMin = localStorage.getItem("meetingMin");
-  let Meetingprop = localStorage.getItem("meetingprop"); 
+  let Meetingprop = localStorage.getItem("meetingprop");
   let AgCont = localStorage.getItem("AgCont");
-let AdOrg = localStorage.getItem("AdOrg");
+  let AdOrg = localStorage.getItem("AdOrg");
   return async (dispatch) => {
     dispatch(createPasswordInit());
     const formData = getFormData(data, userPasswordCreation);
@@ -3056,7 +3056,7 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
                   "ERM_AuthService_AuthManager_ChangePassword_03".toLowerCase()
                 )
             ) {
-              dispatch(changePasswordFail(t("No-password-updated")));
+              dispatch(changePasswordFail(t("Old-password-is-incorrect")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

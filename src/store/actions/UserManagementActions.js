@@ -48,7 +48,7 @@ import {
   clearPaymentActionFromUrl,
   handleLoginResponse,
 } from "../../commen/functions/utils";
-import { boardDeckEmailModal } from "./NewMeetingActions";
+import { boardDeckEmailModal, boardDeckModal } from "./NewMeetingActions";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -2713,6 +2713,7 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
           document.body.removeChild(link);
 
           dispatch(SetLoaderFalseDownload(false));
+          dispatch(boardDeckModal(false));
         } else {
           console.log("Unexpected response status:", response.status);
           console.log("Response headers:", response.headers);

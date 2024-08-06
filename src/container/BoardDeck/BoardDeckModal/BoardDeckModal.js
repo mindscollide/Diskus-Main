@@ -130,6 +130,18 @@ const BoardDeckModal = ({
   const handleCancelButton = () => {
     dispatch(boardDeckModal(false));
     localStorage.setItem("meetingTitle", "");
+    setBoarddeckOptions({
+      selectall: false,
+      Organizer: false,
+      AgendaContributor: false,
+      Participants: false,
+      Minutes: false,
+      Task: false,
+      polls: false,
+      attendeceReport: false,
+      video: false,
+      Agenda: false,
+    });
   };
 
   const handleDownloadButton = () => {
