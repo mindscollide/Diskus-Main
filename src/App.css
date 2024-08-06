@@ -8185,3 +8185,28 @@ th.Tasks_newDashboardTable__L1Rc2-cell.statusDashboard {
   align-items: center;
   flex-direction: column;
 }
+
+/* Customer information */
+input.CustomerInformation_formcontrol-ContactName-field_disabled__10CfD.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-ZipCode-field_disabled__21oSQ.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-City-field_disabled__yIYuo.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-State-field_disabled__JVh83.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-Addresstwo-field_disabled__HYn7E.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-control {
+  font-size: 13px !important;
+}

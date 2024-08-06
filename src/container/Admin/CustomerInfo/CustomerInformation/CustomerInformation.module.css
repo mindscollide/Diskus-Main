@@ -355,11 +355,11 @@ select:disabled {
 
 .formcontrol-ContactName-field {
   width: 100% !important;
-  height: 39px !important;
+  height: 30px !important;
   border-radius: 4px !important;
   color: #000 !important;
-  border: 1px solid #e1e1e1 !important;
-  background-color: white !important;
+  border: none !important;
+  background-color: transparent !important;
   font-size: 13px;
 }
 
