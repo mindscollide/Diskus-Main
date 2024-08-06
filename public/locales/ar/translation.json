@@ -2102,5 +2102,6 @@
   "Allow-microsoft-calendar-synch-for-users": "Allow Microsoft Calendar Synch for Users",
   "Calendar-span-months": "Calendar Span (months)",
   "Auto-close-resolution-days": "Auto Close Resolution (days)",
-  "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error"
+  "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error",
+  "User-not-added-user-already-exists": "User not added. User already exists"
 }
