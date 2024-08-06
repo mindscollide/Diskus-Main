@@ -3036,7 +3036,7 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
                   "ERM_AuthService_AuthManager_ChangePassword_03".toLowerCase()
                 )
             ) {
-              dispatch(changePasswordFail(t("No-password-updated")));
+              dispatch(changePasswordFail(t("Old-password-is-incorrect")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

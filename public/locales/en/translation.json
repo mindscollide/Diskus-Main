@@ -2153,8 +2153,15 @@
   "Are-you-sure-you-want-to-disconnect-this-call": "Are you sure you want to disconnect this call?",
   "Failed-to-save-file": "Failed to save file",
   "Failed-to-save-workflow": "Failed to save workflow",
-  "Dataroom-api-call-error" : "Dataroom api call error",
+  "Dataroom-api-call-error": "Dataroom api call error",
   "Failed-to-save-signature-document": "Failed to save signature document",
-  "Failed-to-save-workflow-folder-mapping" : "Failed to save workflow folder mapping",
-  "Failed-to-edit": "Failed to edit"
+  "Failed-to-save-workflow-folder-mapping": "Failed to save workflow folder mapping",
+  "Failed-to-edit": "Failed to edit",
+  "Old-password-is-incorrect": "Old Password is Incorrect",
+  "Inactivity-days-to-dormant-account": "Inactivity Days to dormant account",
+  "Maximum-meeting-duration-min": "Maximum Meeting Duration (min)",
+  "Allow-google-calendar-synch-for-users": "Allow Google Calendar Synch for Users",
+  "Allow-microsoft-calendar-synch-for-users": "Allow Microsoft Calendar Synch for Users",
+  "Calendar Span-months": "Calendar Span (months)",
+  "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error"
 }
