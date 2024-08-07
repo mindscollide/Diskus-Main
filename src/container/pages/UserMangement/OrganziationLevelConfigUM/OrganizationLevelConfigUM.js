@@ -1012,7 +1012,7 @@ const OrganizationLevelConfigUM = () => {
                               : styles["Options_headings"]
                           }
                         >
-                          {t("Todo")}
+                          {t("Task")}
                         </span>
                       </Col>
                     </Row>
@@ -1506,7 +1506,7 @@ const OrganizationLevelConfigUM = () => {
                         checked={userOrganizationSetting.AllowCalenderSync}
                       >
                         <span className={styles["Class_CheckBox"]}>
-                          {t("User-Allow-Google-Calendar-Synch")}
+                          {t("Allow-google-calendar-synch-for-users")}
                         </span>
                       </Checkbox>
                     </Col>
@@ -1520,7 +1520,7 @@ const OrganizationLevelConfigUM = () => {
                         }
                       >
                         <span className={styles["Class_CheckBox"]}>
-                          {t("User-Allow-Microsoft-Calendar-Synch")}
+                          {t("Allow-microsoft-calendar-synch-for-users")}
                         </span>
                       </Checkbox>
                     </Col>
@@ -2135,7 +2135,7 @@ const OrganizationLevelConfigUM = () => {
                       className="d-flex gap-4 w-100 justify-content-center align-items-center"
                     >
                       <span className={styles["Class_CheckBox2"]}>
-                        {t("Calendar-months-span")}
+                        {t("Calendar-span-months")}
                       </span>
                       <Select
                         options={MonthOptions}
@@ -2161,14 +2161,16 @@ const OrganizationLevelConfigUM = () => {
                 <>
                   <Row className="mt-3">
                     <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
+                      lg={6}
+                      md={6}
+                      sm={6}
                       className="d-flex gap-4 w-100 justify-content-between align-items-center"
                     >
                       <span className={styles["Class_CheckBox2"]}>
-                        {t("Dormant-inactive-users-for")}
+                        {t("Inactivity-days-to-dormant-account")}
                       </span>
+                    </Col>
+                    <Col lg={6} md={6} sm={6}>
                       <Select
                         menuShouldScrollIntoView={false}
                         isSearchable={false}
@@ -2239,7 +2241,7 @@ const OrganizationLevelConfigUM = () => {
                       className="d-flex gap-4 w-100 justify-content-center align-items-center"
                     >
                       <span className={styles["Class_CheckBox2"]}>
-                        {t("Auto-close-resolution")}
+                        {t("Auto-close-resolution-days")}
                       </span>
                       <Select
                         options={MonthValues}
@@ -2260,7 +2262,7 @@ const OrganizationLevelConfigUM = () => {
                       className="d-flex gap-4 w-100 justify-content-center align-items-center"
                     >
                       <span className={styles["Class_CheckBox3"]}>
-                        {t("Maximum-meeting-duration-in-minutes")}
+                        {t("Maximum-meeting-duration-min")}
                       </span>
                       <TextField
                         type={"number"}

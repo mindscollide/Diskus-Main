@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ShareModalBoarddeck.module.css";
 import { Button, Modal } from "../../../components/elements";
 import { Col, Container, Row } from "react-bootstrap";
@@ -26,10 +26,19 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
     console.log("valuevaluevalue", value);
   };
 
+  useEffect(() => {
+    setRadioValue(1);
+  }, []);
+
   const handleSharebutton = () => {
     dispatch(boardDeckShareModal(false));
     dispatch(boardDeckEmailModal(true));
   };
+
+  const handleCrossButton = () => {
+    dispatch(boardDeckShareModal(false));
+  };
+
   return (
     <Container>
       <Modal
@@ -47,7 +56,12 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
             <Row>
               <Col lg={12} md={12} sm={12} className="position-relative">
                 <p className={styles["FileModalTitle"]}>{t("Share")}</p>
-                <img className={styles["image-close"]} src={crossIcon} alt="" />
+                <img
+                  className={styles["image-close"]}
+                  src={crossIcon}
+                  alt=""
+                  onClick={handleCrossButton}
+                />
               </Col>
             </Row>
           </>

@@ -2035,5 +2035,13 @@
   "Pay-Invoice": "Pay Invoice",
   "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task",
   "Set-signer-order": "Set signer order",
-  "No-comments": "No comments"
+  "No-comments": "No comments",
+  "Old-password-is-incorrect": "Old Password is Incorrect",
+  "Inactivity-days-to-dormant-account": "Inactivity Days to dormant account",
+  "Maximum-meeting-duration-min": "Maximum Meeting Duration (min)",
+  "Allow-google-calendar-synch-for-users": "Allow Google Calendar Synch for Users",
+  "Allow-microsoft-calendar-synch-for-users": "Allow Microsoft Calendar Synch for Users",
+  "Calendar Span-months": "Calendar Span (months)",
+  "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error",
+  "User-not-added-user-already-exists": "User not added. User already exists"
 }
