@@ -2131,7 +2131,7 @@
   "Reason-for-declining": "Reason for declining",
   "Please-provide-a-reason": "Please provide a reason",
   "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission": "Ready to send a document for approval this tab awaits your next submission",
-  "Submit-document-for-approval": "Submit document for approval",
+  "Submit-document-for-approval": "Submit Document for Approval",
   "Send-data-storage-retention-policy": "Send Data Storage & Retention Policy",
   "Email-to-signer": "Email to signer",
   "Minute-review-saved-successfully": "Minute review saved successfully",
@@ -2162,5 +2162,8 @@
   "Calendar Span-months": "Calendar Span (months)",
   "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error",
   "User-not-added-user-already-exists": "User not added. User already exists",
-  "Seeking-opinions-on-something": "Seeking opinions on something?"
+  "Seeking-opinions-on-something": "Seeking opinions on something?",
+  "This-space-is-ready-to-showcase-your-latest-additions-what-will-you-add-next": "This space is ready to showcase yourlatest additions. What will you add next?"
+ 
+
 }
