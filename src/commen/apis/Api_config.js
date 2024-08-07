@@ -1725,8 +1725,19 @@ const validateVideoRecordingURL = {
 const getMinuteAndSignatureApprovalThisWeekRM = {
   RequestMethod: "ServiceManager.GetMinuteAndSignatureApprovalsThisWeek",
 };
-
+const getDashboardMeetingStatsRM = {
+  RequestMethod: "ServiceManager.GetDashboardMeetingData"
+}
+const getDashboardTaskStatsRM = {
+  RequestMethod: "ServiceManager.GetDashboardToDoListData"
+}
+const getDashboardPendingApprovalStatsRM = {
+  RequestMethod: "ServiceManager.GetDashboardMinuteAndSignatureApprovals"
+}
 export {
+  getDashboardMeetingStatsRM,
+  getDashboardTaskStatsRM,
+  getDashboardPendingApprovalStatsRM,
   getMinuteAndSignatureApprovalThisWeekRM,
   GetDownloadInvoiceRM,
   DownloadInvoiceRM,

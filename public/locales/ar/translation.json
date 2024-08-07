@@ -71,14 +71,13 @@
   "Select-date": "حدد التاريخ",
   "Select-time": "حدد الوقت",
   "Details": "المعلومات",
-  "Agendas": "الأجندات",
+  "Agenda": "الأجندة",
   "Attendees": "حضور",
   "Reminder": "التذكير",
   "Location": "الموقع",
   "Meeting": "عنوان الإجتماع",
   "Description": "الوصف",
   "Group-chat": "مجموعة المحادثة",
-  "Agenda": "عنوان جدول الأعمال",
   "Presenter": "المقدم",
   "Url": "عنوان الرابط",
   "Onboard-discussion": "محادثة مجلس الإدارة",
@@ -934,7 +933,6 @@
   "Are-you-sure-you-want-to-delete-this-note": "هل أنت متأكد أنك تريد حذف هذه الملاحظة",
   "View-note": "مشاهدة الملاحظة",
   "No-resolution-to-display": "لا يوجد حل للعرض",
-  "Planning-to-get-a-thought-on-something?": "هل تخطط للحصول على فكرة عن شيء ما؟",
   "Annual-Subscriptions": "الاشتراكات السنوية",
   "Please-add-atleast-one-group-head-and-one-group-member": "الرجاء إضافة رئيس مجموعة واحد على الأقل وعضو واحد في المجموعة",
   "Folder-name": "إسم الملف",
@@ -1462,6 +1460,7 @@
   "Clone-meeting": "اجتماع استنساخي",
   "Unpublished-proposed-meetings": "الاجتماعات غير المنشورة / المقترحة",
   "Published-meeting": "الاجتماع المنشور",
+  "Published-meetings": "الاجتماعات المنشورة",
   "Meeting-poll": "استطلاع الاجتماع",
   "Send-reponse-by": "إرسال الرد بواسطة",
   "Are-you-sure-to-delete-this-meeting": "هل أنت متأكد من الغاء هذا الاجتماع؟",
@@ -2103,5 +2102,8 @@
   "Calendar-span-months": "Calendar Span (months)",
   "Auto-close-resolution-days": "Auto Close Resolution (days)",
   "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error",
-  "User-not-added-user-already-exists": "User not added. User already exists"
+  "User-not-added-user-already-exists": "User not added. User already exists",
+  "Seeking-opinions-on-something": "Seeking opinions on something?",
+  "This-space-is-ready-to-showcase-your-latest-additions-what-will-you-add-next": "This space is ready to showcase yourlatest additions. What will you add next?"
+
 }

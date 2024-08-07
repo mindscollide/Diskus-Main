@@ -334,10 +334,11 @@ const DataRoom = () => {
       };
       dispatch(getRecentDocumentsApi(navigate, t, Data));
     } else if (currentView === 5) {
-      let Data = { pageNo: 1, pageSize: 10 };
-      dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
       let newData = { IsCreator: true };
       await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+      let Data = { pageNo: 1, pageSize: 10 };
+      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+
       setGetAllData([]);
       setSharedwithmebtn(true);
       localStorage.removeItem("folderID");
@@ -3839,10 +3840,7 @@ const DataRoom = () => {
                                       locale={{
                                         emptyText: (
                                           <span className='vh-100 text-center'>
-                                            <p>
-                                              {/* <Icon type="like" /> */}
-                                              No Recent Data Found
-                                            </p>
+                                            <p>No Recent Data Found</p>
                                           </span>
                                         ),
                                       }}
@@ -3877,15 +3875,15 @@ const DataRoom = () => {
                                     </Col>
                                     <Col lg={12} sm={12} md={12}>
                                       <p className={styles["Recently_Added"]}>
-                                        Recently Added
+                                        {t("Recently-Added")}
                                       </p>
                                       <span
                                         className={
                                           styles["Recently_Added_tagLine"]
                                         }>
-                                        This space is ready to showcase your
-                                        latest additions. What will you add
-                                        next?
+                                        {t(
+                                          "This-space-is-ready-to-showcase-your-latest-additions-what-will-you-add-next"
+                                        )}
                                       </span>
                                     </Col>
                                   </Row>

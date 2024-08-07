@@ -1832,7 +1832,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
                       }
                       variant={"Primary"}
-                      text={t("Agendas")}
+                      text={t("Agenda")}
                       onClick={changeSelectAgenda}
                       datatut="show-agenda"
                     />
