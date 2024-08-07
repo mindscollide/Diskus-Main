@@ -19,6 +19,7 @@ import {
   saveTaskandAssgineesRM,
   createupdateTaskDataroom,
   saveTaskDocuments,
+  getDashboardTaskStatsRM,
 } from "../../commen/apis/Api_config";
 import {
   getTaskCommitteeIDApi,
@@ -1797,7 +1798,92 @@ const createTaskMeetingMQTT = (response) => {
   };
 };
 
+
+const getDashbardTaskData_init = () => {
+  return {
+    type: actions.GETDASHBOARDTASKDATA_INIT,
+  };
+};
+const getDashbardTaskData_success = (response, message = "") => {
+  return {
+    type: actions.GETDASHBOARDTASKDATA_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getDashbardTaskData_fail = (message = "") => {
+  return {
+    type: actions.GETDASHBOARDTASKDATA_FAIL,
+    message: message,
+  };
+};
+const getDashbardTaskDataApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(getDashbardTaskData_init());
+    let form = new FormData();
+    form.append("RequestMethod", getDashboardTaskStatsRM.RequestMethod);
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getDashbardTaskDataApi(navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetDashboardToDoListData_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getDashbardTaskData_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetDashboardToDoListData_02".toLowerCase()
+                )
+            ) {
+              dispatch(getDashbardTaskData_fail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetDashboardToDoListData_03".toLowerCase()
+                )
+            ) {
+              dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
+  getDashbardTaskDataApi,
   createTaskGroupMQTT,
   createTaskCommitteeMQTT,
   createTaskMeetingMQTT,

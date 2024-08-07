@@ -65,6 +65,7 @@ import {
   joinMeeting,
   leaveMeeting,
   ValidateEmailRelatedString,
+  getDashboardMeetingStatsRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -8432,7 +8433,90 @@ const emailRouteID = (id) => {
   };
 };
 
+const getDashbardMeetingData_init = () => {
+  return {
+    type: actions.GETDASHBOARDMEETINGDATA_INIT,
+  };
+};
+const getDashbardMeetingData_success = (response, message = "") => {
+  return {
+    type: actions.GETDASHBOARDMEETINGDATA_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getDashbardMeetingData_fail = (message = "") => {
+  return {
+    type: actions.GETDASHBOARDMEETINGDATA_FAIL,
+    message: message,
+  };
+};
+const getDashbardMeetingDataApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(getDashbardMeetingData_init());
+    let form = new FormData();
+    form.append("RequestMethod", getDashboardMeetingStatsRM.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getDashbardMeetingDataApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetDashboardMeetingData_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getDashbardMeetingData_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetDashboardMeetingData_02".toLowerCase()
+                )
+            ) {
+              dispatch(getDashbardMeetingData_fail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetDashboardMeetingData_03".toLowerCase()
+                )
+            ) {
+              dispatch(getDashbardMeetingData_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getDashbardMeetingData_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getDashbardMeetingData_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getDashbardMeetingData_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getDashbardMeetingData_fail(t("Something-went-wrong")));
+      });
+  };
+};
 export {
+  getDashbardMeetingDataApi,
   emailRouteID,
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,

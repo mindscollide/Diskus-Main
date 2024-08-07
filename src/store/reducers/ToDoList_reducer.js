@@ -28,16 +28,16 @@ const initialState = {
   createTaskGroup: null,
   createTaskCommittee: null,
   createTaskMeeting: null,
+  getDashboardTaskData: null,
 };
 
 const toDoListReducer = (state = initialState, action) => {
   switch (action.type) {
-
-    case actions.TODOLIST_LOADER : {
+    case actions.TODOLIST_LOADER: {
       return {
         ...state,
-        Loading: action.loader
-      }
+        Loading: action.loader,
+      };
     }
     case actions.TASK_FOLDER_MAPPING_ID: {
       return {
@@ -447,6 +447,28 @@ const toDoListReducer = (state = initialState, action) => {
       return {
         ...state,
         createTaskMeeting: action.response,
+      };
+    }
+    case actions.GETDASHBOARDTASKDATA_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETDASHBOARDTASKDATA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getDashboardTaskData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETDASHBOARDTASKDATA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getDashboardTaskData: null,
+        ResponseMessage: action.message,
       };
     }
     default:
