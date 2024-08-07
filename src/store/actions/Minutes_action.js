@@ -26,6 +26,8 @@ import {
 } from "../../commen/apis/Api_config";
 import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
 import {
+  AllDocumentsForAgendaWiseMinutesApiFunc,
+  DocumentsOfMeetingGenralMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   GetAllGeneralMinutesApiFunc,
 } from "./NewMeetingActions";
@@ -1699,6 +1701,19 @@ const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
                 GetPublishedMeetingMinutes_success(
                   response.data.responseResult,
                   t("Record-available")
+                )
+              );
+              let MeetingDocs = {
+                MDID: Data.MeetingID,
+              };
+              await dispatch(
+                DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
+              );
+              await dispatch(
+                AllDocumentsForAgendaWiseMinutesApiFunc(
+                  navigate,
+                  MeetingDocs,
+                  t
                 )
               );
             } else if (

@@ -58,6 +58,8 @@ import {
   MeetingPublishedMinutesApi,
 } from "../../../../../store/actions/Minutes_action";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
+import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
 
 const Minutes = ({
   setMinutes,
@@ -529,6 +531,40 @@ const Minutes = ({
     }
   }, [addMinuteID]);
 
+  //Download the document
+  const downloadDocument = (record) => {
+    let data = {
+      FileID: record.pK_FileID,
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+    );
+  };
+
+  const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
+    let Data = {
+      taskId: Number(record.originalAttachmentName),
+      commingFrom: 4,
+      fileName: record.displayAttachmentName,
+      attachmentID: Number(record.originalAttachmentName),
+    };
+    let pdfDataJson = JSON.stringify(Data);
+    if (
+      ext === "pdf" ||
+      ext === "doc" ||
+      ext === "docx" ||
+      ext === "xlx" ||
+      ext === "xlsx"
+    ) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
+
   //UPloading the Documents
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
@@ -867,6 +903,76 @@ const Minutes = ({
     });
   };
 
+  const transformAgendaData = (documentsData, agendaData) => {
+    if (!documentsData || !agendaData) return [];
+
+    const updateMinutesAttachments = (agendaMinutes, documentsData) => {
+      return agendaMinutes.map((minute) => {
+        const matchedDocument = documentsData.find(
+          (doc) => doc.pK_MeetingAgendaMinutesID === minute.minuteID
+        );
+
+        const updatedAttachments = matchedDocument
+          ? (minute.minutesAttachmets || []).map((attachment) => {
+              const matchedFile = (matchedDocument.files || []).find(
+                (file) => file.pK_FileID === attachment.fileID
+              );
+              return matchedFile ? matchedFile : attachment;
+            })
+          : minute.minutesAttachmets || [];
+
+        return {
+          ...minute,
+          minutesAttachmets: updatedAttachments,
+        };
+      });
+    };
+
+    const transformChildAgendas = (childAgendas, documentsData) => {
+      return childAgendas.map((child) => ({
+        ...child,
+        agendaMinutes: updateMinutesAttachments(
+          child.agendaMinutes,
+          documentsData
+        ),
+        childAgendas: transformChildAgendas(child.childAgendas, documentsData),
+      }));
+    };
+
+    return agendaData.map((agenda) => ({
+      ...agenda,
+      agendaMinutes: updateMinutesAttachments(
+        agenda.agendaMinutes,
+        documentsData
+      ),
+      childAgendas: transformChildAgendas(agenda.childAgendas, documentsData),
+    }));
+  };
+
+  const transformDataPublishGeneral = (documentsData, dataToTransform) => {
+    if (!documentsData || !dataToTransform) return [];
+
+    return dataToTransform.map((item) => {
+      const matchedMinute = documentsData.find(
+        (minute) => minute.pK_MeetingGeneralMinutesID === item.minuteID
+      );
+
+      const updatedAttachments = matchedMinute
+        ? (item.minutesAttachmets || []).map((attachment) => {
+            const matchedFile = (matchedMinute.files || []).find(
+              (file) => file.pK_FileID === attachment.fileID
+            );
+            return matchedFile ? matchedFile : attachment;
+          })
+        : item.minutesAttachmets || [];
+
+      return {
+        ...item,
+        minutesAttachmets: updatedAttachments,
+      };
+    });
+  };
+
   useEffect(() => {
     try {
       const generalMinutes = NewMeetingreducer.generalMinutes;
@@ -1002,14 +1108,41 @@ const Minutes = ({
       MinutesReducer.GetPublishedMinutes !== null &&
       MinutesReducer.GetPublishedMinutes !== undefined
     ) {
-      setPublishMinutesDataAgenda(
-        MinutesReducer?.GetPublishedMinutes?.agendaWisePublishedMinutes
+      let dataToTransform =
+        MinutesReducer?.GetPublishedMinutes?.generalPublishedMinutes;
+      let dataToTransformAgenda =
+        MinutesReducer?.GetPublishedMinutes?.agendaWisePublishedMinutes;
+      let documentDataAgenda =
+        NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes?.data;
+      let documentsData = generalminutesDocumentForMeeting.data;
+      const resultedData = transformDataPublishGeneral(
+        documentsData,
+        dataToTransform
       );
-      setPublishMinutesDataGeneral(
-        MinutesReducer?.GetPublishedMinutes?.generalPublishedMinutes
+      const resultedDataAgenda = transformAgendaData(
+        documentDataAgenda,
+        dataToTransformAgenda
       );
+      setPublishMinutesDataGeneral(resultedData);
+      setPublishMinutesDataAgenda(resultedDataAgenda);
     }
-  }, [MinutesReducer.GetPublishedMinutes]);
+  }, [
+    MinutesReducer.GetPublishedMinutes,
+    generalminutesDocumentForMeeting,
+    NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes,
+  ]);
+
+  console.log(
+    "publishMinutesDataAgendapublishMinutesDataAgenda",
+    publishMinutesDataAgenda
+  );
+
+  console.log(
+    "publishMinutesDataGeneralpublishMinutesDataGeneral",
+    publishMinutesDataGeneral
+  );
+
+  console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
 
   return JSON.parse(isMinutePublished) ? (
     <>
@@ -1036,6 +1169,13 @@ const Minutes = ({
                           {index + 1 + "." + " " + data.agendaTitle}
                         </p>
                         <span>
+                          {data?.agendaMinutes?.minutesAttachmets?.length > 0 ? (
+                            <img
+                              className={styles["Attachment"]}
+                              alt=""
+                              src={AttachmentIcon}
+                            />
+                          ) : null}
                           <img
                             alt=""
                             src={ArrowDown}
@@ -1095,11 +1235,39 @@ const Minutes = ({
                                               (subFileData, subFileIndex) => (
                                                 <Col lg={3} md={3} sm={12}>
                                                   <AttachmentViewer
+                                                    handleClickDownload={() =>
+                                                      downloadDocument(
+                                                        subFileData
+                                                      )
+                                                    }
+                                                    fk_UID={0}
+                                                    handleClickRemove={() =>
+                                                      handleRemoveFile(
+                                                        subFileData
+                                                      )
+                                                    }
+                                                    data={
+                                                      parentMinuteData.minutesAttachmets
+                                                    }
+                                                    id={subFileData.pK_FileID}
+                                                    name={
+                                                      subFileData.displayFileName
+                                                    }
+                                                    handleEyeIcon={() =>
+                                                      pdfData(
+                                                        parentMinuteData.minutesAttachmets,
+                                                        getFileExtension(
+                                                          subFileData?.displayFileName
+                                                        )
+                                                      )
+                                                    }
+                                                  />
+                                                  {/* <AttachmentViewer
                                                     id={0}
                                                     name={
                                                       subFileData.displayFileName
                                                     }
-                                                  />
+                                                  /> */}
                                                 </Col>
                                               )
                                             )}
@@ -1261,10 +1429,40 @@ const Minutes = ({
                                                         md={3}
                                                         sm={12}
                                                       >
-                                                        <AttachmentViewer
+                                                        {/* <AttachmentViewer
                                                           id={0}
                                                           name={
                                                             subFileData.displayFileName
+                                                          }
+                                                        /> */}
+                                                        <AttachmentViewer
+                                                          handleClickDownload={() =>
+                                                            downloadDocument(
+                                                              subFileData
+                                                            )
+                                                          }
+                                                          fk_UID={0}
+                                                          handleClickRemove={() =>
+                                                            handleRemoveFile(
+                                                              subFileData
+                                                            )
+                                                          }
+                                                          data={
+                                                            childAgendaMinuteData.minutesAttachmets
+                                                          }
+                                                          id={
+                                                            subFileData.pK_FileID
+                                                          }
+                                                          name={
+                                                            subFileData.displayFileName
+                                                          }
+                                                          handleEyeIcon={() =>
+                                                            pdfData(
+                                                              childAgendaMinuteData.minutesAttachmets,
+                                                              getFileExtension(
+                                                                subFileData?.displayFileName
+                                                              )
+                                                            )
                                                           }
                                                         />
                                                       </Col>
@@ -1404,6 +1602,13 @@ const Minutes = ({
                           {index + 1 + "." + " " + t("General-minute")}
                         </p>
                         <span>
+                          {data.minutesAttachmets.length > 0 ? (
+                            <img
+                              className={styles["Attachment"]}
+                              alt=""
+                              src={AttachmentIcon}
+                            />
+                          ) : null}
                           <img
                             alt=""
                             src={ArrowDown}
@@ -1445,8 +1650,24 @@ const Minutes = ({
                                         (subFileData, subFileIndex) => (
                                           <Col lg={3} md={3} sm={12}>
                                             <AttachmentViewer
-                                              id={0}
+                                              handleClickDownload={() =>
+                                                downloadDocument(subFileData)
+                                              }
+                                              fk_UID={0}
+                                              handleClickRemove={() =>
+                                                handleRemoveFile(subFileData)
+                                              }
+                                              data={data.minutesAttachmets}
+                                              id={subFileData.pK_FileID}
                                               name={subFileData.displayFileName}
+                                              handleEyeIcon={() =>
+                                                pdfData(
+                                                  data.minutesAttachmets,
+                                                  getFileExtension(
+                                                    subFileData?.displayFileName
+                                                  )
+                                                )
+                                              }
                                             />
                                           </Col>
                                         )
@@ -2063,9 +2284,25 @@ const Minutes = ({
                                             (fileData, index) => (
                                               <Col lg={3} md={3} sm={12}>
                                                 <AttachmentViewer
+                                                  handleClickDownload={() =>
+                                                    downloadDocument(fileData)
+                                                  }
+                                                  fk_UID={0}
+                                                  handleClickRemove={() =>
+                                                    handleRemoveFile(fileData)
+                                                  }
+                                                  data={data.attachments}
                                                   id={fileData.pK_FileID}
                                                   name={
                                                     fileData.displayFileName
+                                                  }
+                                                  handleEyeIcon={() =>
+                                                    pdfData(
+                                                      data.attachments,
+                                                      getFileExtension(
+                                                        fileData?.displayFileName
+                                                      )
+                                                    )
                                                   }
                                                 />
                                               </Col>

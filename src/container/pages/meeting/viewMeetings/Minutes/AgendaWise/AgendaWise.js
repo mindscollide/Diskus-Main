@@ -52,6 +52,8 @@ import {
   convertToGMTMinuteTime,
   convertDateToGMTMinute,
 } from "../../../../../../commen/functions/time_formatter";
+import { DataRoomDownloadFileApiFunc } from "../../../../../../store/actions/DataRoom_actions";
+import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
 
 const AgendaWise = ({
   advanceMeetingModalID,
@@ -463,6 +465,16 @@ const AgendaWise = ({
     }
   }, [NewMeetingreducer.agendaWiseMinuteID]);
 
+  //Download the document
+  const downloadDocument = (record) => {
+    let data = {
+      FileID: record.pK_FileID,
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+    );
+  };
+
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
       prevFiles.filter(
@@ -483,6 +495,30 @@ const AgendaWise = ({
           fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
       )
     );
+  };
+
+  const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
+    let Data = {
+      taskId: Number(record.originalAttachmentName),
+      commingFrom: 4,
+      fileName: record.displayAttachmentName,
+      attachmentID: Number(record.originalAttachmentName),
+    };
+    let pdfDataJson = JSON.stringify(Data);
+    if (
+      ext === "pdf" ||
+      ext === "doc" ||
+      ext === "docx" ||
+      ext === "xlx" ||
+      ext === "xlsx"
+    ) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
   };
 
   const handleResetBtnFunc = () => {
@@ -858,96 +894,6 @@ const AgendaWise = ({
 
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
-  // useEffect(() => {
-  //   // Check if agendaWiseMinutesReducer is not null, undefined, and has at least one key
-  //   if (
-  //     NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-  //     NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
-  //     Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
-  //   ) {
-  //     // Store agendaWiseMinutesReducer in a local variable
-  //     let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
-  //     // Initialize an empty array to hold the transformed data
-  //     let transformedData = [];
-
-  //     // Iterate through each parent agenda in the agenda hierarchy list
-  //     reducerData.agendaHierarchyList.forEach((parentAgenda) => {
-  //       // Find the parent agenda details in the agendaWiseMinutes array
-  //       let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
-  //         (minute) => minute.agendaID === parentAgenda.pK_MAID
-  //       );
-
-  //       // Initialize an array to hold sub-minutes of the parent agenda
-  //       let subMinutes = [];
-  //       // Iterate through each child agenda of the parent agenda
-  //       parentAgenda.childAgendas.forEach((childAgenda) => {
-  //         // Filter the minutes that match the child agenda ID and push to subMinutes
-  //         let childMinutes = reducerData.agendaWiseMinutes.filter(
-  //           (minute) => minute.agendaID === childAgenda.pK_MAID
-  //         );
-  //         subMinutes.push(...childMinutes);
-  //       });
-
-  //       // Check if parent agenda details exist to determine if it's parent data
-  //       let isParentData = parentAgendaMinutes.length > 0;
-
-  //       // If there are parent agenda details or sub-minutes, create a parent agenda object
-  //       if (isParentData || subMinutes.length > 0) {
-  //         // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
-  //         let agendaTitle = isParentData
-  //           ? parentAgendaMinutes[0].agendaTitle
-  //           : parentAgenda.childAgendas.find((childAgenda) =>
-  //               subMinutes.some(
-  //                 (minute) => minute.agendaID === childAgenda.pK_MAID
-  //               )
-  //             )?.parentTitle || "";
-
-  //         let parentAgendaObj = {
-  //           agendaID: parentAgenda.pK_MAID,
-  //           agendaTitle: agendaTitle,
-  //           isParentData: isParentData,
-  //           minuteData: parentAgendaMinutes.map((minute) => ({
-  //             minuteID: minute.minuteID,
-  //             description: minute.minutesDetails,
-  //             attachments: minute.minutesAttachmets,
-  //             uploader: minute.userProfilePicture,
-  //             lastUpdatedDate: minute.lastUpdatedDate,
-  //             lastUpdatedTime: minute.lastUpdatedTime,
-  //             userID: minute.userID,
-  //             userName: minute.userName,
-  //           })),
-  //           subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
-  //             let childMinutes = subMinutes.filter(
-  //               (minute) => minute.agendaID === childAgenda.pK_MAID
-  //             );
-  //             return {
-  //               agendaID: childAgenda.pK_MAID,
-  //               agendaTitle: childMinutes[0]?.agendaTitle || "",
-  //               minuteData: childMinutes.map((minute) => ({
-  //                 minuteID: minute.minuteID,
-  //                 description: minute.minutesDetails,
-  //                 attachments: minute.minutesAttachmets,
-  //                 uploader: minute.userProfilePicture,
-  //                 lastUpdatedDate: minute.lastUpdatedDate,
-  //                 lastUpdatedTime: minute.lastUpdatedTime,
-  //                 userID: minute.userID,
-  //                 userName: minute.userName,
-  //               })),
-  //             };
-  //           }),
-  //         };
-
-  //         // Push the parent agenda object to the transformed data array
-  //         transformedData.push(parentAgendaObj);
-  //       }
-  //     });
-
-  //     // Log the transformed data to the console
-  //     setMinutesData(transformedData);
-  //     console.log("transformedData", transformedData);
-  //   }
-  // }, [NewMeetingreducer.agendaWiseMinutesReducer]);
-
   useEffect(() => {
     try {
       const reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
@@ -1155,6 +1101,8 @@ const AgendaWise = ({
     );
   };
 
+  console.log("Minutes of Agenda", minutesData);
+
   return (
     <section className={styles["agenda-wise-minutes"]}>
       {Number(editorRole.status) === 1 ||
@@ -1254,7 +1202,6 @@ const AgendaWise = ({
                     <Row className="mt-1">
                       {fileAttachments.length > 0
                         ? fileAttachments.map((data, index) => {
-                            console.log(data, "datadatadata");
                             return (
                               <>
                                 <Col lg={4} md={4} sm={4}>
@@ -1606,10 +1553,36 @@ const AgendaWise = ({
                                                 (fileData, index) => (
                                                   <Col lg={3} md={3} sm={12}>
                                                     <AttachmentViewer
-                                                      name={
-                                                        fileData?.displayFileName
+                                                      handleClickDownload={() =>
+                                                        downloadDocument(
+                                                          fileData
+                                                        )
+                                                      }
+                                                      fk_UID={0}
+                                                      handleClickRemove={() =>
+                                                        handleRemoveFile(
+                                                          fileData
+                                                        )
+                                                      }
+                                                      data={
+                                                        parentMinutedata.attachments
                                                       }
                                                       id={fileData.pK_FileID}
+                                                      name={
+                                                        fileData.displayFileName
+                                                      }
+                                                      handleEyeIcon={() =>
+                                                        pdfData(
+                                                          parentMinutedata.attachments,
+                                                          getFileExtension(
+                                                            fileData?.displayFileName
+                                                          )
+                                                        )
+                                                      }
+                                                      // name={
+                                                      //   fileData?.displayFileName
+                                                      // }
+                                                      // id={fileData.pK_FileID}
                                                     />
                                                   </Col>
                                                 )
@@ -2098,12 +2071,40 @@ const AgendaWise = ({
                                                         sm={12}
                                                       >
                                                         <AttachmentViewer
-                                                          name={
-                                                            subFileData.displayFileName
+                                                          handleClickDownload={() =>
+                                                            downloadDocument(
+                                                              subFileData
+                                                            )
+                                                          }
+                                                          fk_UID={0}
+                                                          handleClickRemove={() =>
+                                                            handleRemoveFile(
+                                                              subFileData
+                                                            )
+                                                          }
+                                                          data={
+                                                            minuteDataSubminute.attachments
                                                           }
                                                           id={
                                                             subFileData.pK_FileID
                                                           }
+                                                          name={
+                                                            subFileData.displayFileName
+                                                          }
+                                                          handleEyeIcon={() =>
+                                                            pdfData(
+                                                              minuteDataSubminute.attachments,
+                                                              getFileExtension(
+                                                                subFileData?.displayFileName
+                                                              )
+                                                            )
+                                                          }
+                                                          // name={
+                                                          //   subFileData.displayFileName
+                                                          // }
+                                                          // id={
+                                                          //   subFileData.pK_FileID
+                                                          // }
                                                         />
                                                       </Col>
                                                     )

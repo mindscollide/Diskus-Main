@@ -3717,7 +3717,6 @@ const GetAllGeneralMinutesApiFunc = (
             let MeetingDocs = {
               MDID: currentMeeting,
             };
-            // Call DocumentsOfMeetingGenralMinutesApiFunc and wait for its response
             await dispatch(
               DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
             );
@@ -6430,6 +6429,10 @@ const scheduleMeetingFail = (message) => {
 
 const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let userID = localStorage.getItem("userID");
   return (dispatch) => {
     dispatch(scheduleMeetingInit());
     let form = new FormData();
@@ -6462,6 +6465,17 @@ const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
                   t("Record-saved")
                 )
               );
+              let searchData = {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(userID),
+                PageNumber:
+                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                PublishedMeetings: false,
+              };
+              await dispatch(searchNewUserMeeting(navigate, searchData, t));
               dispatch(showSceduleProposedMeeting(false));
             } else if (
               response.data.responseResult.responseMessage
