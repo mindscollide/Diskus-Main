@@ -1483,6 +1483,7 @@ const AddUpdateAdvanceMeetingAgenda = (
               } else if (flag === 2) {
                 dispatch(
                   UpdateOrganizersMeeting(
+                    false,
                     navigate,
                     t,
                     5,

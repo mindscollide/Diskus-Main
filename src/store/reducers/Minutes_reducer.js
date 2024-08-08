@@ -386,7 +386,7 @@ const MinutesReducer = (state = initialState, action) => {
     case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_FAIL: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         GetMinuteReviewFlowByMeetingIdData: null,
         ResponseMessage: action.message,
       };

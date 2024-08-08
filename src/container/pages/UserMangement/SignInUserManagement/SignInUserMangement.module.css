@@ -400,6 +400,8 @@ body[dir="rtl"] .languageSelector {
   margin-top: 20px;
   border-radius: 4px;
 }
+
+/* This is to be commented when the build is given for production */
 @media screen and (max-width: 480px) {
   .auth_container {
     overflow: hidden;

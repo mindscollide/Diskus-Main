@@ -40,6 +40,9 @@ const SelectMinutes = ({
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
   const [expandedItems, setExpandedItems] = useState({});
+
+  const [totalIds, setTotalIds] = useState([]);
+
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
@@ -108,7 +111,19 @@ const SelectMinutes = ({
     setSelectReviewersArray(data.reviewersList);
   };
 
-  console.log("Data After Update: ", minuteDataAgenda, minuteDataGeneral);
+  useEffect(() => {
+    setTotalIds(
+      minuteDataAgenda.reduce((acc, item) => {
+        const agendaMinuteIDs = [
+          ...item.minuteData.map((subItem) => subItem.minuteID),
+          ...item.subMinutes.flatMap((subItem) =>
+            subItem.minuteData.map((subSubItem) => subSubItem.minuteID)
+          ),
+        ];
+        return acc + agendaMinuteIDs.length;
+      }, 0) + minuteDataGeneral.length
+    );
+  }, []);
 
   return (
     <>
@@ -126,8 +141,9 @@ const SelectMinutes = ({
             name="IsChat"
             onChange={(e) => handleSelectAll(e.target.checked)}
             checked={
-              hasNonEmptyReviewersAgenda(minuteDataAgenda) &&
-              allReviewersListsNonEmptyGeneral(minuteDataGeneral)
+              (hasNonEmptyReviewersAgenda(minuteDataAgenda) &&
+                allReviewersListsNonEmptyGeneral(minuteDataGeneral)) ||
+              selectedMinuteIDs.length === totalIds
                 ? true
                 : false
             }

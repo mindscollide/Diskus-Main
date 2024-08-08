@@ -7914,6 +7914,7 @@ th.ant-table-cell.leaveTimeParticipant.ant-table-cell-ellipsis.ant-table-column-
 span.text-truncate.description {
   font-weight: 500;
   font-size: 12px;
+  display: block;
   color: #5a5a5a;
 }
 

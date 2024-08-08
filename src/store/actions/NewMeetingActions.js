@@ -88,6 +88,7 @@ import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/respon
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
+import { GetAllUserChats } from "./Talk_action";
 
 const boardDeckModal = (response) => {
   return {
@@ -1004,7 +1005,8 @@ const SearchMeeting_Fail = (message) => {
 };
 const searchNewUserMeeting = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let currentUserId = localStorage.getItem("userID");
+  let currentOrganizationId = localStorage.getItem("organizationID");
   return (dispatch) => {
     dispatch(SearchMeeting_Init());
     let form = new FormData();
@@ -1047,6 +1049,14 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 totalRecords: response.data.responseResult.totalRecords,
               };
               dispatch(SearchMeeting_Success(newMeetingData, ""));
+              await dispatch(
+                GetAllUserChats(
+                  navigate,
+                  parseInt(currentUserId),
+                  parseInt(currentOrganizationId),
+                  t
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3708,7 +3718,6 @@ const GetAllGeneralMinutesApiFunc = (
             let MeetingDocs = {
               MDID: currentMeeting,
             };
-            // Call DocumentsOfMeetingGenralMinutesApiFunc and wait for its response
             await dispatch(
               DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
             );
@@ -5068,10 +5077,12 @@ const UpdateMinutesGeneralApiFunc = (
   setConfirmationEdit,
   setResendMinuteForReview,
   setShowRevisionHistory,
-  isAgenda
+  isAgenda,
+  fileUploadFlag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  let currentMeeting = JSON.parse(localStorage.getItem("currentMeetingID"));
   return async (dispatch) => {
     dispatch(showUpdateMinutesInit());
     let form = new FormData();
@@ -5096,9 +5107,14 @@ const UpdateMinutesGeneralApiFunc = (
             navigate,
             Data,
             t,
+            resendFlag,
+            resendData,
             setEditMinute,
             setConfirmationEdit,
-            setResendMinuteForReview
+            setResendMinuteForReview,
+            setShowRevisionHistory,
+            isAgenda,
+            fileUploadFlag
           )
         );
       } else if (response.data.responseCode === 200) {
@@ -5116,6 +5132,14 @@ const UpdateMinutesGeneralApiFunc = (
                 t("Record-updated")
               )
             );
+            let Meet = {
+              MeetingID: currentMeeting,
+            };
+            if (!fileUploadFlag) {
+              await dispatch(
+                GetAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting)
+              );
+            }
             if (resendFlag === true) {
               dispatch(
                 ResendUpdatedMinuteForReview(
@@ -6406,6 +6430,10 @@ const scheduleMeetingFail = (message) => {
 
 const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let userID = localStorage.getItem("userID");
   return (dispatch) => {
     dispatch(scheduleMeetingInit());
     let form = new FormData();
@@ -6438,6 +6466,17 @@ const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
                   t("Record-saved")
                 )
               );
+              let searchData = {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(userID),
+                PageNumber:
+                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                PublishedMeetings: false,
+              };
+              await dispatch(searchNewUserMeeting(navigate, searchData, t));
               dispatch(showSceduleProposedMeeting(false));
             } else if (
               response.data.responseResult.responseMessage

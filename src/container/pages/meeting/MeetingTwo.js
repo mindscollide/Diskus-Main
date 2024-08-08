@@ -295,7 +295,6 @@ const NewMeeting = () => {
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-
         localStorage.setItem("MeetingCurrentView", 1);
       }
     } catch (error) {}
@@ -769,18 +768,18 @@ const NewMeeting = () => {
     setProposedNewMeeting(true);
   };
 
-  const groupChatInitiation = (data) => {
+  const groupChatInitiation = async (data) => {
     if (data.talkGroupID !== 0) {
-      dispatch(createShoutAllScreen(false));
-      dispatch(addNewChatScreen(false));
-      dispatch(footerActionStatus(false));
-      dispatch(createGroupScreen(false));
-      dispatch(chatBoxActiveFlag(false));
-      dispatch(recentChatFlag(true));
-      dispatch(activeChatBoxGS(true));
-      dispatch(chatBoxActiveFlag(true));
-      dispatch(headerShowHideStatus(true));
-      dispatch(footerShowHideStatus(true));
+      await dispatch(createShoutAllScreen(false));
+      await dispatch(addNewChatScreen(false));
+      await dispatch(footerActionStatus(false));
+      await dispatch(createGroupScreen(false));
+      await dispatch(chatBoxActiveFlag(false));
+      await dispatch(recentChatFlag(true));
+      await dispatch(activeChatBoxGS(true));
+      await dispatch(chatBoxActiveFlag(true));
+      await dispatch(headerShowHideStatus(true));
+      await dispatch(footerShowHideStatus(true));
       let chatGroupData = {
         UserID: parseInt(currentUserId),
         ChannelID: currentOrganizationId,
@@ -788,7 +787,7 @@ const NewMeeting = () => {
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
-      dispatch(
+      await dispatch(
         GetAllUserChats(
           navigate,
           parseInt(currentUserId),
@@ -796,8 +795,8 @@ const NewMeeting = () => {
           t
         )
       );
-      dispatch(GetGroupMessages(navigate, chatGroupData, t));
-      dispatch(
+      await dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      await dispatch(
         GetAllUsers(
           navigate,
           parseInt(currentUserId),
@@ -805,7 +804,7 @@ const NewMeeting = () => {
           t
         )
       );
-      dispatch(
+      await dispatch(
         GetAllUsersGroupsRoomsList(
           navigate,
           parseInt(currentUserId),
@@ -817,13 +816,13 @@ const NewMeeting = () => {
       if (
         allChatMessages !== null &&
         allChatMessages !== undefined &&
-        allChatMessages.length !== 0
+        Object.keys(allChatMessages).length !== 0
       ) {
         const foundRecord = allChatMessages.allMessages.find(
           (item) => item.id === data.talkGroupID
         );
         if (foundRecord) {
-          dispatch(activeChat(foundRecord));
+          await dispatch(activeChat(foundRecord));
         }
         localStorage.setItem("activeOtoChatID", data.talkGroupID);
       }
@@ -915,14 +914,14 @@ const NewMeeting = () => {
           )
         );
 
-        dispatch(
-          GetAllUserChats(
-            navigate,
-            parseInt(currentUserId),
-            parseInt(currentOrganizationId),
-            t
-          )
-        );
+        // dispatch(
+        //   GetAllUserChats(
+        //     navigate,
+        //     parseInt(currentUserId),
+        //     parseInt(currentOrganizationId),
+        //     t
+        //   )
+        // );
       }
     } else {
       if (isQuickMeeting) {
@@ -1396,6 +1395,7 @@ const NewMeeting = () => {
                   onClick={() => {
                     dispatch(
                       UpdateOrganizersMeeting(
+                        record.isQuickMeeting,
                         navigate,
                         t,
                         4,
@@ -1430,6 +1430,7 @@ const NewMeeting = () => {
                   onClick={() => {
                     dispatch(
                       UpdateOrganizersMeeting(
+                        record.isQuickMeeting,
                         navigate,
                         t,
                         3,
@@ -1476,7 +1477,6 @@ const NewMeeting = () => {
                     record.isQuickMeeting,
                     record.status
                   );
-                  // setIsOrganisers(isOrganiser);
                   setEdiorRole({
                     status: record.status,
                     role: "Participant",
@@ -2231,6 +2231,7 @@ const NewMeeting = () => {
               if (meeting.isQuickMeeting === true) {
                 dispatch(
                   UpdateOrganizersMeeting(
+                    true,
                     navigate,
                     t,
                     4,
@@ -2246,6 +2247,7 @@ const NewMeeting = () => {
               } else if (meeting.isQuickMeeting === false) {
                 dispatch(
                   UpdateOrganizersMeeting(
+                    false,
                     navigate,
                     t,
                     3,

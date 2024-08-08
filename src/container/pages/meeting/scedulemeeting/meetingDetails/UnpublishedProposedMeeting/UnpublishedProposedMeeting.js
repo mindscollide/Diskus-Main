@@ -570,7 +570,7 @@ const UnpublishedProposedMeeting = ({
                       className={styles["publish_meeting_btn"]}
                       onClick={() =>
                         dispatch(
-                          UpdateOrganizersMeeting(navigate, t, 5, apiData)
+                          UpdateOrganizersMeeting(false, navigate, t, 5, apiData)
                         )
                       }
                     />
