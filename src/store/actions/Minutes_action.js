@@ -1703,19 +1703,7 @@ const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
                   t("Record-available")
                 )
               );
-              let MeetingDocs = {
-                MDID: Data.MeetingID,
-              };
-              await dispatch(
-                DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
-              );
-              await dispatch(
-                AllDocumentsForAgendaWiseMinutesApiFunc(
-                  navigate,
-                  MeetingDocs,
-                  t
-                )
-              );
+
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

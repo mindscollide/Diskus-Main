@@ -31,6 +31,8 @@ import {
   cleareAllState,
   InviteToCollaborateMinutesApiFunc,
   saveFilesMeetingMinutesApi,
+  DocumentsOfMeetingGenralMinutesApiFunc,
+  AllDocumentsForAgendaWiseMinutesApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import AgendaWise from "./AgendaWise/AgendaWise";
 import AddReviewers from "./AddReviewersModal/AddReviewers";
@@ -193,6 +195,15 @@ const Minutes = ({
 
     if (JSON.parse(isMinutePublished) === true) {
       dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
+      let MeetingDocs = {
+        MDID: Data.MeetingID,
+      };
+      dispatch(
+        DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
+      );
+      dispatch(
+        AllDocumentsForAgendaWiseMinutesApiFunc(navigate, MeetingDocs, t)
+      );
     } else {
       dispatch(
         GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
@@ -1148,6 +1159,12 @@ const Minutes = ({
     <>
       {publishMinutesDataAgenda.map((data, index) => {
         const isOpen = openIndices.includes(index);
+        const hasAttachments = data?.childAgendas?.some((childAgendaData) =>
+          childAgendaData?.agendaMinutes?.some(
+            (childAgendaMinuteData) =>
+              childAgendaMinuteData?.minutesAttachmets?.length > 0
+          )
+        );
         return (
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
@@ -1168,8 +1185,9 @@ const Minutes = ({
                         <p className={styles["agenda-title"]}>
                           {index + 1 + "." + " " + data.agendaTitle}
                         </p>
-                        <span>
-                          {data?.agendaMinutes?.minutesAttachmets?.length > 0 ? (
+                        <span className="d-flex justify-content-center align-items-center">
+                          {data?.agendaMinutes?.minutesAttachmets?.length > 0 ||
+                          hasAttachments ? (
                             <img
                               className={styles["Attachment"]}
                               alt=""
@@ -1601,7 +1619,7 @@ const Minutes = ({
                         <p className={styles["agenda-title"]}>
                           {index + 1 + "." + " " + t("General-minute")}
                         </p>
-                        <span>
+                        <span className="d-flex justify-content-center align-items-center">
                           {data.minutesAttachmets.length > 0 ? (
                             <img
                               className={styles["Attachment"]}
