@@ -16,6 +16,8 @@ import {
   DeleteSignatureDocumentRM,
   GetAllSignatoriesStatusRM,
   updateActorBundleStatusRM,
+  getDashboardTaskStatsRM,
+  getDashboardPendingApprovalStatsRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1315,7 +1317,7 @@ const getAllPendingApprovalsStatsApi = (navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_GetAllPendingForApprovalStats_01".toLowerCase()
                 )
             ) {
-              dispatch(
+              await dispatch(
                 getAllPendingApprovalsStats_success(
                   response.data.responseResult,
                   "",
@@ -1518,7 +1520,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                   "WorkFlow_WorkFlowServiceManager_GetPendingApprovalStatusesForSignatureFlow_01".toLowerCase()
                 )
             ) {
-              let loaderFlag = Number(flag) === 1 ? false : true;
+              let loaderFlag = Number(flag) === 1 ? true : false;
               dispatch(
                 getAllPendingApprovalStatus_success(
                   response.data.responseResult,
@@ -1995,6 +1997,103 @@ const UpdateActorBundleStatusApi = (navigate, t, Data) => {
       });
   };
 };
+const getDashbardPendingApprovalData_init = () => {
+  return {
+    type: actions.GETDASHBOARDPENDINGAPPROVALDATA_INIT,
+  };
+};
+const getDashbardPendingApprovalData_success = (response, message = "") => {
+  return {
+    type: actions.GETDASHBOARDPENDINGAPPROVALDATA_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getDashbardPendingApprovalData_fail = (message = "") => {
+  return {
+    type: actions.GETDASHBOARDPENDINGAPPROVALDATA_FAIL,
+    message: message,
+  };
+};
+const getDashbardPendingApprovalDataApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(getDashbardPendingApprovalData_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getDashboardPendingApprovalStatsRM.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getDashbardPendingApprovalDataApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetDashboardMinuteAndSignatureApprovals_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getDashbardPendingApprovalData_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetDashboardMinuteAndSignatureApprovals_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getDashbardPendingApprovalData_fail(t("No-data-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetDashboardMinuteAndSignatureApprovals_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getDashbardPendingApprovalData_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getDashbardPendingApprovalData_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getDashbardPendingApprovalData_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getDashbardPendingApprovalData_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getDashbardPendingApprovalData_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
 
 const clearWorkFlowResponseMessage = () => {
   return {
@@ -2003,6 +2102,7 @@ const clearWorkFlowResponseMessage = () => {
 };
 
 export {
+  getDashbardPendingApprovalDataApi,
   UpdateActorBundleStatusApi,
   getAllSignatoriesStatusWise_Api,
   deleteSignatureFlowDocumentApi,

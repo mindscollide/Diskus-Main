@@ -67,18 +67,21 @@ const LanguageSelector = () => {
       LanguageReducer.AllLanguagesData !== undefined &&
       LanguageReducer.AllLanguagesData.length !== 0
     ) {
-      let newValues = [];
-      LanguageReducer.AllLanguagesData.forEach((langValues, index) => {
-        newValues.push({
-          languageTitle:
-            langValues.systemSupportedLanguageID === 1
-              ? t("English")
-              : langValues.systemSupportedLanguageID === 2
-              ? t("Arabic")
-              : "",
-          systemSupportedLanguageID: langValues.systemSupportedLanguageID,
-        });
-      });
+      const newValues = LanguageReducer.AllLanguagesData.map((langValues) => ({
+        languageTitle:
+          langValues.systemSupportedLanguageID === 1
+            ? t("English")
+            : langValues.systemSupportedLanguageID === 2
+            ? t("Arabic")
+            : "",
+        systemSupportedLanguageID: langValues.systemSupportedLanguageID,
+        code:
+          langValues.systemSupportedLanguageID === 1
+            ? "en"
+            : langValues.systemSupportedLanguageID === 2
+            ? "ar"
+            : "",
+      })).filter((langValues) => langValues.systemSupportedLanguageID !== 3);
 
       setLanguages(newValues);
     }
@@ -181,10 +184,9 @@ const LanguageSelector = () => {
 
   return (
     <section
-      className="position-relative"
+      className='position-relative'
       ref={languageref}
-      onClick={() => setLanguageDropdown(!languageDropdown)}
-    >
+      onClick={() => setLanguageDropdown(!languageDropdown)}>
       <span
         className={
           location.pathname.includes("/DisKus/") ||
@@ -195,9 +197,7 @@ const LanguageSelector = () => {
           location.pathname.includes("/Admin")
             ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
-        }
-      >
-   
+        }>
         {/* {selectedLanguage.languageTitle} */}
         {currentLanguage === "en"
           ? t("EN")
@@ -217,8 +217,8 @@ const LanguageSelector = () => {
                 : LanguageArrowUpBlack
             }
             onClick={() => setLanguageDropdown(!languageDropdown)}
-            alt=""
-            draggable="false"
+            alt=''
+            draggable='false'
           />
         ) : (
           <img
@@ -233,8 +233,8 @@ const LanguageSelector = () => {
                 : LanguageArrowDownBlack
             }
             onClick={() => setLanguageDropdown(!languageDropdown)}
-            alt=""
-            draggable="false"
+            alt=''
+            draggable='false'
           />
         )}
       </span>
@@ -243,18 +243,16 @@ const LanguageSelector = () => {
           !languageDropdown
             ? styles["language_options"]
             : styles["language_options_active"]
-        }
-      >
+        }>
         {languages.length > 0 &&
           languages.map((data, index) => {
             return (
               <span
-                className="cursor-pointer"
+                className='cursor-pointer'
                 onClick={() =>
                   handleChangeLocale(data.systemSupportedLanguageID)
                 }
-                key={index}
-              >
+                key={index}>
                 {data.languageTitle}
               </span>
             );

@@ -26,6 +26,8 @@ import {
 } from "../../commen/apis/Api_config";
 import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
 import {
+  AllDocumentsForAgendaWiseMinutesApiFunc,
+  DocumentsOfMeetingGenralMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   GetAllGeneralMinutesApiFunc,
 } from "./NewMeetingActions";
@@ -1612,6 +1614,7 @@ const MeetingPublishedMinutesApi = (Data, navigate, t) => {
                 )
               );
               localStorage.setItem("isMinutePublished", true);
+              dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1700,6 +1703,7 @@ const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
                   t("Record-available")
                 )
               );
+
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

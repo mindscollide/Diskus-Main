@@ -148,229 +148,6 @@ const SignInUserManagement = () => {
         setEmail
       );
     }
-    // } else {
-    //   emailRef.current.focus();
-    //   let RememberEmailLocal = JSON.parse(
-    //     localStorage.getItem("rememberEmail")
-    //   );
-    //   let RememberPasswordLocal = JSON.parse(
-    //     localStorage.getItem("remeberPassword")
-    //   );
-    //   let reLang = localStorage.getItem("i18nextLng");
-
-    //   let RSVP = localStorage.getItem("RSVP");
-    //   let DataRoomEmailValue = localStorage.getItem("DataRoomEmail");
-    //   let LoginFlowPageRoute = JSON.parse(
-    //     localStorage.getItem("LoginFlowPageRoute")
-    //   );
-    //   let AdOrg = localStorage.getItem("AdOrg");
-    //   let AgCont = localStorage.getItem("AgCont");
-    //   let MeetingStr = localStorage.getItem("meetingStr");
-    //   let MeetinUpd = localStorage.getItem("meetingUpd");
-    //   let MeetingMin = localStorage.getItem("meetingMin");
-    //   let Meetingprop = localStorage.getItem("meetingprop");
-    //   let poPub = localStorage.getItem("poPub");
-    //   if (RememberEmailLocal === true && RememberPasswordLocal === true) {
-    //     let RememberEmailLocalValue =
-    //       localStorage.getItem("rememberEmailValue");
-
-    //     let RememberPasswordLocalValue = localStorage.getItem(
-    //       "rememberPasswordValue"
-    //     );
-
-    //     localStorage.clear();
-    //     try {
-    //       // if (Number(LoginFlowPageRoute) !== 1) {
-    //       console.log("LoginFlowRoutes", LoginFlowPageRoute);
-    //       localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-    //       dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-    //       // }
-    //     } catch {}
-    //     if (reLang !== undefined && reLang != null) {
-    //       localStorage.setItem("i18nextLng", reLang);
-    //     }
-    //     if (RSVP) {
-    //       localStorage.setItem("RSVP", RSVP);
-    //     }
-    //     if(MeetingStr) {
-    //       localStorage.setItem("meetingStr",MeetingStr)
-    //     }
-    //     if(MeetinUpd) {
-    //       localStorage.setItem("meetingUpd",MeetinUpd)
-    //     }
-    //     if(Meetingprop) {
-    //       localStorage.setItem("meetingprop",Meetingprop)
-    //     }
-    //     if(MeetingMin) {
-    //       localStorage.setItem("meetingMin",MeetingMin)
-    //     }
-    //     if (AgCont) {
-    //       localStorage.setItem("AgCont", AgCont);
-    //     }
-    //     if (poPub) {
-    //       localStorage.setItem("poPub", poPub);
-    //     }
-    //     if (AdOrg) {
-    //       localStorage.setItem("AdOrg", AdOrg);
-    //     }
-    //     if (DataRoomEmailValue) {
-    //       localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-    //     }
-    //     localStorage.setItem("remeberPassword", RememberPasswordLocal);
-    //     localStorage.setItem(
-    //       "rememberPasswordValue",
-    //       RememberPasswordLocalValue
-    //     );
-    //     localStorage.setItem("rememberEmail", RememberEmailLocal);
-    //     localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
-    //     setErrorMessage("");
-    //     setErrorBar(false);
-    //     setRemeberEmail(RememberEmailLocal);
-    //     setEmail(RememberEmailLocalValue);
-    //   } else if (RememberEmailLocal === true) {
-    //     let RememberEmailLocalValue =
-    //       localStorage.getItem("rememberEmailValue");
-    //     localStorage.clear();
-    //     try {
-    //       // if (Number(LoginFlowPageRoute) !== 1) {
-    //       localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-    //       console.log("LoginFlowRoutes", LoginFlowPageRoute);
-    //       dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-    //       // }
-    //     } catch {}
-    //     if (reLang !== undefined && reLang != null) {
-    //       localStorage.setItem("i18nextLng", reLang);
-    //     }
-    //     if (RSVP) {
-    //       localStorage.setItem("RSVP", RSVP);
-    //     }
-    //     if(MeetingStr) {
-    //       localStorage.setItem("meetingStr",MeetingStr)
-    //     }
-    //     if(MeetinUpd) {
-    //       localStorage.setItem("meetingUpd",MeetinUpd)
-    //     }
-    //     if(Meetingprop) {
-    //       localStorage.setItem("meetingprop",Meetingprop)
-    //     }
-    //     if(MeetingMin) {
-    //       localStorage.setItem("meetingMin",MeetingMin)
-    //     }
-    //     if (AgCont) {
-    //       localStorage.setItem("AgCont", AgCont);
-    //     }
-    //     if (poPub) {
-    //       localStorage.setItem("poPub", poPub);
-    //     }
-    //     if (AdOrg) {
-    //       localStorage.setItem("AdOrg", AdOrg);
-    //     }
-    //     if (DataRoomEmailValue) {
-    //       localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-    //     }
-    //     localStorage.setItem("rememberEmail", RememberEmailLocal);
-    //     localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
-    //     setErrorMessage("");
-    //     setErrorBar(false);
-    //     setRemeberEmail(RememberEmailLocal);
-    //     setEmail(RememberEmailLocalValue);
-    //   } else if (RememberPasswordLocal === true) {
-    //     let RememberPasswordLocalValue = localStorage.getItem(
-    //       "rememberPasswordValue"
-    //     );
-    //     localStorage.clear();
-    //     try {
-    //       // if (Number(LoginFlowPageRoute) !== 1) {
-    //       localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-    //       console.log("LoginFlowRoutes", LoginFlowPageRoute);
-    //       dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-    //       // }
-    //     } catch {}
-
-    //     if (reLang != undefined && reLang != null) {
-    //       localStorage.setItem("i18nextLng", reLang);
-    //     }
-    //     if (RSVP) {
-    //       localStorage.setItem("RSVP", RSVP);
-    //     }
-    //     if (AgCont) {
-    //       localStorage.setItem("AgCont", AgCont);
-    //     }
-    //     if(MeetingStr) {
-    //       localStorage.setItem("meetingStr",MeetingStr)
-    //     }
-    //     if(MeetinUpd) {
-    //       localStorage.setItem("meetingUpd",MeetinUpd)
-    //     }
-    //     if(Meetingprop) {
-    //       localStorage.setItem("meetingprop",Meetingprop)
-    //     }
-    //     if(MeetingMin) {
-    //       localStorage.setItem("meetingMin",MeetingMin)
-    //     }
-    //     if (poPub) {
-    //       localStorage.setItem("poPub", poPub);
-    //     }
-    //     if (AdOrg) {
-    //       localStorage.setItem("AdOrg", AdOrg);
-    //     }
-    //     if (DataRoomEmailValue) {
-    //       localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-    //     }
-    //     localStorage.setItem("remeberPassword", RememberPasswordLocal);
-    //     localStorage.setItem(
-    //       "rememberPasswordValue",
-    //       RememberPasswordLocalValue
-    //     );
-    //     setErrorMessage("");
-    //     setErrorBar(false);
-    //   } else {
-    //     localStorage.clear();
-    //     try {
-    //       // if (Number(LoginFlowPageRoute) !== 1) {
-    //       localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-    //       console.log("LoginFlowRoutes", LoginFlowPageRoute);
-    //       dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-    //       // }
-    //     } catch {}
-    //     if (reLang != undefined && reLang != null) {
-    //       localStorage.setItem("i18nextLng", reLang);
-    //     }
-    //     if (RSVP) {
-    //       localStorage.setItem("RSVP", RSVP);
-    //     }
-    //     if (AgCont) {
-    //       localStorage.setItem("AgCont", AgCont);
-    //     }
-    //     if(MeetingStr) {
-    //       localStorage.setItem("meetingStr",MeetingStr)
-    //     }
-    //     if(MeetinUpd) {
-    //       localStorage.setItem("meetingUpd",MeetinUpd)
-    //     }
-    //     if(Meetingprop) {
-    //       localStorage.setItem("meetingprop",Meetingprop)
-    //     }
-    //     if(MeetingMin) {
-    //       localStorage.setItem("meetingMin",MeetingMin)
-    //     }
-    //     if (poPub) {
-    //       localStorage.setItem("poPub", poPub);
-    //     }
-    //     if (AdOrg) {
-    //       localStorage.setItem("AdOrg", AdOrg);
-    //     }
-    //     if (DataRoomEmailValue) {
-    //       localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-    //     }
-    //     localStorage.setItem("rememberEmail", false);
-    //     localStorage.setItem("rememberEmailValue", "");
-    //     localStorage.setItem("remeberPassword", false);
-    //     localStorage.setItem("rememberPasswordValue", "");
-    //     setErrorMessage("");
-    //     setErrorBar(false);
-    //   }
-    // }
   }, []);
 
   useEffect(() => {
@@ -406,14 +183,13 @@ const SignInUserManagement = () => {
                   </span>
                   <span
                     className={styles["Free-Trial_btn"]}
-                    onClick={handleClickFreeTrail}
-                  >
+                    onClick={handleClickFreeTrail}>
                     {t("Free-Trial")}
                   </span>
                 </section>
               </Col>
             </Row>
-            <Row className="position-relative">
+            <Row className='position-relative'>
               <Col className={styles["languageSelector"]}>
                 <LanguageSelector />
               </Col>
@@ -427,16 +203,16 @@ const SignInUserManagement = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center"
-                      >
+                        className='d-flex justify-content-center'>
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={DiskusLogo}
-                          alt="diskus_logo"
+                          alt='diskus_logo'
+                          width={200}
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-4 mb-4 text-center">
+                    <Row className='mt-4 mb-4 text-center'>
                       <Col>
                         <span className={styles["signIn_heading"]}>
                           {t("Sign-in")}
@@ -444,19 +220,18 @@ const SignInUserManagement = () => {
                       </Col>
                     </Row>
                     <Form onSubmit={loginHandler}>
-                      <Row className="">
+                      <Row className=''>
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-center flex-column"
-                        >
+                          className='d-flex justify-content-center flex-column'>
                           <Form.Control
                             required
                             className={styles["inputEmailField"]}
                             onChange={emailChangeHandler}
                             value={email || ""}
-                            width="100%"
+                            width='100%'
                             placeholder={t("Email")}
                             maxLength={160}
                             ref={emailRef}
@@ -469,11 +244,10 @@ const SignInUserManagement = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
+                          className='d-flex gap-2 align-items-center'>
                           <Checkbox
                             checked={rememberEmail}
-                            classNameDiv=""
+                            classNameDiv=''
                             onChange={rememberChangeEmail}
                             className={styles["RememberEmail"]}
                           />
@@ -482,13 +256,12 @@ const SignInUserManagement = () => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-4 mb-1 d-flex justify-content-center">
+                      <Row className='mt-4 mb-1 d-flex justify-content-center'>
                         <Col
                           sm={12}
                           lg={12}
                           md={12}
-                          className="d-flex justify-content-center  "
-                        >
+                          className='d-flex justify-content-center  '>
                           <Button
                             text={t("Next")}
                             onClick={loginHandler}
@@ -497,7 +270,7 @@ const SignInUserManagement = () => {
                         </Col>
                       </Row>
                     </Form>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col sm={12} md={12} lg={12}>
                         {" "}
                         <span className={styles["havent-subscribed-text"]}>
@@ -505,13 +278,12 @@ const SignInUserManagement = () => {
                         </span>
                       </Col>
                     </Row>
-                    <Row className="d-flex justify-content-center mt-1">
+                    <Row className='d-flex justify-content-center mt-1'>
                       <Col
                         sm={12}
                         lg={12}
                         md={12}
-                        className="w-100 d-flex justify-content-center"
-                      >
+                        className='w-100 d-flex justify-content-center'>
                         <Button
                           text={t("Subscribe-now")}
                           onClick={handleSubscribeNowButton}
@@ -526,26 +298,24 @@ const SignInUserManagement = () => {
                 lg={8}
                 md={8}
                 sm={8}
-                className="position-relative d-flex overflow-hidden"
-              >
+                className='position-relative d-flex overflow-hidden'>
                 <Col
                   md={8}
                   lg={8}
                   sm={12}
-                  className={styles["Login_page_text"]}
-                >
+                  className={styles["Login_page_text"]}>
                   <h1 className={styles["heading-1"]}>
                     {t("Simplify-management")}
                   </h1>
                   <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
                   <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
                 </Col>
-                <Col md={4} lg={4} sm={12} className="position-relative">
+                <Col md={4} lg={4} sm={12} className='position-relative'>
                   <img
-                    draggable="false"
+                    draggable='false'
                     src={DiskusAuthPageLogo}
-                    alt="auth_icon"
-                    width="600px"
+                    alt='auth_icon'
+                    width='600px'
                     className={styles["Auth_Icon"]}
                   />
                 </Col>

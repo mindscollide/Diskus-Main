@@ -48,7 +48,7 @@ import {
   clearPaymentActionFromUrl,
   handleLoginResponse,
 } from "../../commen/functions/utils";
-import { boardDeckEmailModal } from "./NewMeetingActions";
+import { boardDeckEmailModal, boardDeckModal } from "./NewMeetingActions";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -515,7 +515,11 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
                   "Admin_AdminServiceManager_AddOrganizationsUsers_03".toLowerCase()
                 )
             ) {
-              dispatch(addOrganizationUsersFailed(t("Invalid-data-provided")));
+              dispatch(
+                addOrganizationUsersFailed(
+                  t("Unable-to-add-user-due-to-some-error")
+                )
+              );
             } else {
               dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
             }
@@ -742,7 +746,12 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
                   "Admin_AdminServiceManager_ManageUserScreen_02".toLowerCase()
                 )
             ) {
-              dispatch(allOrganizationUsersFail(t("No-data-found")));
+              dispatch(
+                allOrganizationUsersSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2708,6 +2717,7 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
           document.body.removeChild(link);
 
           dispatch(SetLoaderFalseDownload(false));
+          dispatch(boardDeckModal(false));
         } else {
           console.log("Unexpected response status:", response.status);
           console.log("Response headers:", response.headers);

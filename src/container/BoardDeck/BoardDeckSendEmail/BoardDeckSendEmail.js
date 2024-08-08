@@ -14,7 +14,10 @@ import {
   TextField,
   Notification,
 } from "../../../components/elements";
-import { boardDeckEmailModal } from "../../../store/actions/NewMeetingActions";
+import {
+  boardDeckEmailModal,
+  boardDeckShareModal,
+} from "../../../store/actions/NewMeetingActions";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { validateInput } from "../../../commen/functions/regex";
 import blueCrossIcon from "../../../assets/images/BlueCross.png";
@@ -50,13 +53,11 @@ const BoardDeckSendEmail = ({
     message: "",
   });
   const [notificationMessage, setNotificationMessage] = useState("");
-  console.log(notificationMessage, "notificationMessage");
   const [notifyPeople, setNotifyPeople] = useState({
     notifyPeople: false,
   });
 
   //For All Organizational Users
-
   useEffect(() => {
     let Data = {
       OrganizationID: Number(OrganizationID),
@@ -84,6 +85,7 @@ const BoardDeckSendEmail = ({
     }
   };
 
+  //Onchange Notify People
   const onChangenotifyPeople = (e) => {
     let value = e.target.checked;
     setNotifyPeople({
@@ -99,16 +101,20 @@ const BoardDeckSendEmail = ({
     return true;
   };
 
+  //Handling removing Email Tags
   const removeTag = (indexToRemove) => {
     setTags((prevTags) =>
       prevTags.filter((_, index) => index !== indexToRemove)
     );
   };
 
-  const handleCrossIcon = () => {
+  //handle Black Cross Icon of Main Modal
+  const handleBlackCrossIcon = () => {
     dispatch(boardDeckEmailModal(false));
+    dispatch(boardDeckShareModal(true));
   };
 
+  //Sending Email Function
   const handleSendEmailButton = () => {
     let organizationalUsers = selectedsearch.map((item) => item.value);
 
@@ -147,29 +153,48 @@ const BoardDeckSendEmail = ({
     }
   };
 
-  //Newly Component
-
-  function handleKeyDown(e) {
-    if (e.key !== "Enter") return;
+  //Enter Email Functionality non Organizational Users
+  const handleInputChange = (e) => {
     const value = e.target.value.trim();
 
     // Regular expression to validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(value)) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Invalid-email-format"),
-        }),
-        3000
-      );
-      return;
+    if (value.endsWith(".com")) {
+      if (!emailRegex.test(value)) {
+        setTimeout(() => {
+          setOpen({
+            open: true,
+            message: t("Invalid-email-format"),
+          });
+        }, 3000);
+        return;
+      }
+      setTags([...tags, value]);
+      e.target.value = "";
     }
+  };
+  // function handleKeyDown(e) {
+  //   if (e.key !== "Enter") return;
+  //   const value = e.target.value.trim();
 
-    setTags([...tags, value]);
-    e.target.value = "";
-  }
+  //   // Regular expression to validate email format
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // if (!emailRegex.test(value)) {
+  //   setTimeout(
+  //     setOpen({
+  //       open: true,
+  //       message: t("Invalid-email-format"),
+  //     }),
+  //     3000
+  //   );
+  //   return;
+  // }
+
+  //   setTags([...tags, value]);
+  //   e.target.value = "";
+  // }
 
   //Organizational Users
   useEffect(() => {
@@ -236,7 +261,12 @@ const BoardDeckSendEmail = ({
             <Row>
               <Col lg={12} md={12} sm={12} className="position-relative">
                 <p className={styles["FileModalTitle"]}>{t("Board-deck-IT")}</p>
-                <img className={styles["image-close"]} src={crossIcon} alt="" />
+                <img
+                  className={styles["image-close"]}
+                  src={crossIcon}
+                  alt=""
+                  onClick={handleBlackCrossIcon}
+                />
               </Col>
             </Row>
           </>
@@ -295,16 +325,12 @@ const BoardDeckSendEmail = ({
                             className={styles["close"]}
                             onClick={() => removeTag(index)}
                           >
-                            <img
-                              src={CrossEmail}
-                              alt=""
-                              onClick={handleCrossIcon}
-                            />
+                            <img src={CrossEmail} alt="" />
                           </span>
                         </div>
                       ))}
                       <input
-                        onKeyDown={handleKeyDown}
+                        onChange={handleInputChange}
                         type="text"
                         className={styles["tags-input"]}
                       />
@@ -342,18 +368,22 @@ const BoardDeckSendEmail = ({
                 />
               </Col>
             </Row>
-            <Row className="mt-3">
-              <Col lg={12} md={12} sm={12}>
-                <Checkbox
-                  onChange={onChangenotifyPeople}
-                  checked={notifyPeople.notifyPeople}
-                >
-                  <span className={styles["Class_CheckBox_notify_people"]}>
-                    {t("Notify-people")}
-                  </span>
-                </Checkbox>
-              </Col>
-            </Row>
+            {radioValue === 1 ? (
+              <>
+                <Row className="mt-3">
+                  <Col lg={12} md={12} sm={12}>
+                    <Checkbox
+                      onChange={onChangenotifyPeople}
+                      checked={notifyPeople.notifyPeople}
+                    >
+                      <span className={styles["Class_CheckBox_notify_people"]}>
+                        {t("Notify-people")}
+                      </span>
+                    </Checkbox>
+                  </Col>
+                </Row>
+              </>
+            ) : null}
           </>
         }
         ModalFooter={

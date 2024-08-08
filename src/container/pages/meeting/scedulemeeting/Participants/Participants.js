@@ -118,6 +118,7 @@ const Participants = ({
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
     dispatch(
       UpdateOrganizersMeeting(
+        false,
         navigate,
         t,
         5,

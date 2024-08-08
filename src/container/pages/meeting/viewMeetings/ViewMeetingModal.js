@@ -56,7 +56,9 @@ const ViewMeetingModal = ({
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
   const [meetingDetails, setmeetingDetails] = useState(
-    (editorRole.role === "Organizer" || editorRole.role === "Participant") &&
+    (editorRole.role === "Organizer" ||
+      editorRole.role === "Participant" ||
+      editorRole.role === "Agenda Contributor") &&
       Number(editorRole.status) === 10
       ? false
       : true
@@ -66,7 +68,9 @@ const ViewMeetingModal = ({
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(false);
   const [meetingMaterial, setMeetingMaterial] = useState(
-    (editorRole.role === "Organizer" || editorRole.role === "Participant") &&
+    (editorRole.role === "Organizer" ||
+      editorRole.role === "Participant" ||
+      editorRole.role === "Agenda Contributor") &&
       Number(editorRole.status) === 10
       ? true
       : false

@@ -151,6 +151,7 @@ const initialState = {
   boardDeckModalData: false,
   boarddeckShareModal: false,
   boardDeckEmailModal: false,
+  getDashboardMeetingData: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -452,6 +453,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: action.loader,
+        getALlMeetingTypes: [],
         ResponseMessage: action.message,
       };
     }
@@ -2324,6 +2326,28 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         boardDeckEmailModal: action.response,
+      };
+    }
+    case actions.GETDASHBOARDMEETINGDATA_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETDASHBOARDMEETINGDATA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getDashboardMeetingData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETDASHBOARDMEETINGDATA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getDashboardMeetingData: null,
+        ResponseMessage: action.message,
       };
     }
 

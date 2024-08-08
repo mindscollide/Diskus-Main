@@ -307,15 +307,17 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let Data2 = {
           MeetingID: meetingID,
         };
-        dispatch(
-          FetchMeetingURLClipboard(
-            Data2,
-            navigate,
-            t,
-            currentUserID,
-            currentOrganization
-          )
-        );
+        if (check) {
+          dispatch(
+            FetchMeetingURLClipboard(
+              Data2,
+              navigate,
+              t,
+              currentUserID,
+              currentOrganization
+            )
+          );
+        }
         setIsVideo(check);
         setMeetID(meetingID);
         setMeetStatus(StatusCheck);
