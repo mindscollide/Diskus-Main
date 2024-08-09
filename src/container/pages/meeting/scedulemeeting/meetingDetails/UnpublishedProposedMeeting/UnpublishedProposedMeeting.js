@@ -165,8 +165,9 @@ const UnpublishedProposedMeeting = ({
       dispatch(uploadGlobalFlag(false));
     } else if (isAgendaContributor) {
     } else if (isOrganiser) {
-      setViewProposeOrganizerPoll(true);
-      dispatch(viewProposeOrganizerMeetingPageFlag(true));
+      dispatch(showSceduleProposedMeeting(true));
+      setViewProposeOrganizerPoll(false);
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(meetingDetailsGlobalFlag(false));
       dispatch(organizersGlobalFlag(false));
       dispatch(agendaContributorsGlobalFlag(false));
@@ -174,7 +175,7 @@ const UnpublishedProposedMeeting = ({
       dispatch(agendaGlobalFlag(false));
       dispatch(meetingMaterialGlobalFlag(false));
       dispatch(minutesGlobalFlag(false));
-      dispatch(proposedMeetingDatesGlobalFlag(true));
+      dispatch(proposedMeetingDatesGlobalFlag(false));
       dispatch(actionsGlobalFlag(false));
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
@@ -569,7 +570,7 @@ const UnpublishedProposedMeeting = ({
                       className={styles["publish_meeting_btn"]}
                       onClick={() =>
                         dispatch(
-                          UpdateOrganizersMeeting(navigate, t, 5, apiData)
+                          UpdateOrganizersMeeting(false, navigate, t, 5, apiData)
                         )
                       }
                     />
@@ -705,68 +706,6 @@ const UnpublishedProposedMeeting = ({
       }
     }
   }, [NewMeetingreducer.meetingStatusProposedMqttData]);
-
-  // useEffect(() => {
-  //   if (
-  //     NewMeetingreducer.meetingStatusProposedMqttData !== null &&
-  //     NewMeetingreducer.meetingStatusProposedMqttData !== undefined
-  //   ) {
-  //     let meetingData = NewMeetingreducer.meetingStatusProposedMqttData;
-  //     const indexToUpdate = rows.findIndex(
-  //       (obj) => obj.pK_MDID === meetingData.pK_MDID
-  //     );
-
-  //     let updatedRows;
-  //     if (indexToUpdate !== -1) {
-  //       updatedRows = [...rows];
-  //       updatedRows[indexToUpdate] = meetingData;
-  //     } else {
-  //       updatedRows = [...rows, meetingData];
-  //     }
-
-  //     // Sort the updated rows based on date and time
-  //     updatedRows.sort((a, b) => {
-  //       const dateA = new Date(
-  //         newTimeFormaterAsPerUTCFullDate(a.dateOfMeeting + a.meetingStartTime)
-  //       );
-  //       const dateB = new Date(
-  //         newTimeFormaterAsPerUTCFullDate(b.dateOfMeeting + b.meetingStartTime)
-  //       );
-  //       return dateA - dateB;
-  //     });
-
-  //     setRow(updatedRows);
-  //   }
-  // }, [NewMeetingreducer.meetingStatusProposedMqttData]);
-  // useEffect(() => {
-  //   if (Meetingprop !== null) {
-  //     // Route for Meeting props
-  //     validateStringEmailApi(Meetingprop, navigate, t, 6, dispatch)
-  //       .then(async (result) => {
-  //         console.log("Result:", result);
-  //         if (Number(result.attendeeId) === 2) {
-  //           // Particpant
-  //           viewProposeDatePollHandler(
-  //             true,
-  //             false,
-  //             false,
-  //             result.pK_MDID,
-  //             result.responseDeadLine
-  //           );
-  //         } else if (Number(result.attendeeId) === 3) {
-  //           viewProposeDatePollHandler(false, false, true, result.meetingID);
-  //         }
-  //         // Handle the result here
-
-  //         localStorage.removeItem("meetingprop");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error:", error);
-  //         //
-  //       });
-  //     localStorage.removeItem("meetingprop");
-  //   }
-  // }, [Meetingprop]);
 
   useEffect(() => {
     if (

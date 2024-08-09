@@ -758,10 +758,7 @@ body[dir="rtl"] .cancel_icon_resolution {
 .NoResolutionHeading {
   color: #5a5a5a !important;
   font-weight: 600;
-
   font-size: 2.5rem !important;
-  text-transform: uppercase;
-  /* margin-top: 15px !important; */
   margin: 20px 0 0 0 !important;
   padding: 0 !important;
 }

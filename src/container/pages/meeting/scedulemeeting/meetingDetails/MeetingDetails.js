@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./MeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
-import MeetingVideoChatIcon from "../../../../../assets/images/ColoredVideo.svg";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
@@ -12,7 +11,6 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import whiteVideIcon from "../../../../../assets/images/whiteVideoIcon.png";
 import { Col, Row, Spinner } from "react-bootstrap";
 import {
   Button,
@@ -21,24 +19,16 @@ import {
   Notification,
 } from "../../../../../components/elements";
 import desh from "../../../../../assets/images/desh.svg";
-import {
-  containsStringandNumericCharacters,
-  regexOnlyCharacters,
-  validateInput,
-} from "../../../../../commen/functions/regex";
+import { validateInput } from "../../../../../commen/functions/regex";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import {
-  GetAllMeetingRecurringApiNew,
-  GetAllMeetingRemindersApiFrequencyNew,
-  GetAllMeetingTypesNewFunction,
   SaveMeetingDetialsNewApiFunction,
-  ShowNextConfirmationModal,
   clearResponseNewMeetingReducerMessage,
   showCancelModalmeetingDeitals,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
-import { Await, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   convertDateTimetoGMTMeetingDetail,
   createConvert,
@@ -63,10 +53,8 @@ import {
   getCurrentDate,
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
-  getTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
-import { endDateTimeMeetingCalender } from "../../../../../commen/functions/date_formater";
 
 const MeetingDetails = ({
   setorganizers,
@@ -106,7 +94,6 @@ const MeetingDetails = ({
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
-  const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
 
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
@@ -173,24 +160,6 @@ const MeetingDetails = ({
     IsPublished: false,
   });
 
-  // useEffect(() => {
-  //   if (Number(currentMeeting) === 0) {
-  //     const updatedRows = [...rows];
-  //     updatedRows[0].selectedOption =
-  //       currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "";
-  //     updatedRows[0].dateForView =
-  //       currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "";
-  //     updatedRows[0].startDate =
-  //       currentMeeting === 0 ? getStartTime?.formattedTime : "";
-  //     updatedRows[0].startTime =
-  //       currentMeeting === 0 ? getStartTime?.newFormatTime : "";
-  //     updatedRows[0].endDate =
-  //       currentMeeting === 0 ? getEndTime?.formattedTime : "";
-  //     updatedRows[0].endTime =
-  //       currentMeeting === 0 ? getEndTime?.newFormatTime : "";
-  //     setRows(updatedRows);
-  //   }
-  // }, [currentMeeting]);
   // custom react select styles recurring
   const customStyles = {
     menuPortal: (base) => ({
@@ -281,6 +250,8 @@ const MeetingDetails = ({
       },
     });
   };
+
+  console.log("MeetingDetailsMeetingDetails", meetingDetails);
 
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
@@ -1263,7 +1234,7 @@ const MeetingDetails = ({
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Meeting_type_heading"]}>
-                        {t("Location")}
+                        {t("Location-Videourl")}
                         {/* <span className={styles["steric"]}>*</span> */}
                       </span>
                     </Col>
@@ -1271,7 +1242,7 @@ const MeetingDetails = ({
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <TextField
-                        placeholder={t("Location")}
+                        placeholder={t("Location-Videourl")}
                         applyClass={"meetinInnerSearch"}
                         name={"Location"}
                         labelClass="d-none"
@@ -1319,7 +1290,7 @@ const MeetingDetails = ({
                     change={HandleChange}
                     placeholder={t("Note-for-this-meeting")}
                     required={true}
-                    maxLength={1000}
+                    maxLength={1100}
                     value={meetingDetails.Notes}
                     disable={
                       (Number(editorRole.status) === 9 ||
@@ -1988,6 +1959,7 @@ const MeetingDetails = ({
                     menuPlacement="top" // Set menuPlacement to 'top' to open the dropdown upwards
                     menuPortalTarget={document.body}
                     isSearchable={false}
+                    // isDisabled={true} THIS IS TO BE DONE, When the build is to be done on production and comment the above isDisabled
                   />
                 </Col>
               </Row>

@@ -1,8 +1,8 @@
 ::-webkit-scrollbar {
-  width: 0.5rem !important;
+  width: 0.3rem !important;
   border-radius: 20px !important;
   background-color: #f2f2f2 !important;
-  height: 0.5rem !important;
+  height: 0.3rem !important;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -16,7 +16,9 @@
   color: #bbbbbb !important;
   font-family: "Montserrat" !important;
 }
-
+html {
+  height: 100%;
+}
 /*
 File Updated on  Dated Aug 24 2022 
 
@@ -2819,9 +2821,9 @@ input#Participant::placeholder {
 .updateVersion .modal-dialog.modal-dialog-centered {
   height: auto !important;
 }
-.modal-dialog.modal-dialog-centered {
+/* .modal-dialog.modal-dialog-centered {
   height: 640px !important;
-}
+} */
 
 .ToDo .ant-table table {
   border-spacing: 0 10px !important;
@@ -7912,6 +7914,7 @@ th.ant-table-cell.leaveTimeParticipant.ant-table-cell-ellipsis.ant-table-column-
 span.text-truncate.description {
   font-weight: 500;
   font-size: 12px;
+  display: block;
   color: #5a5a5a;
 }
 
@@ -8173,4 +8176,37 @@ th.Tasks_newDashboardTable__L1Rc2-cell.statusDashboard {
   color: #6127d6 !important;
   font-size: 12px;
   font-weight: 500;
+}
+.emptystatereviewers {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Customer information */
+input.CustomerInformation_formcontrol-ContactName-field_disabled__10CfD.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-ZipCode-field_disabled__21oSQ.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-City-field_disabled__yIYuo.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-State-field_disabled__JVh83.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-Addresstwo-field_disabled__HYn7E.form-control {
+  font-size: 13px !important;
+}
+
+input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-control {
+  font-size: 13px !important;
 }

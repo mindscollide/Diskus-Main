@@ -99,7 +99,8 @@ const ResendMinuteReviewModal = ({
           setConfirmationEdit,
           setResendMinuteForReview,
           setShowRevisionHistory,
-          isAgenda
+          isAgenda,
+          false
         )
       );
     } else {

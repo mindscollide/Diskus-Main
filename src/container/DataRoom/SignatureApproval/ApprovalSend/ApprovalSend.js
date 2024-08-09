@@ -370,7 +370,7 @@ const ApprovalSend = () => {
             sm={12}
             md={12}
             lg={12}
-            className="d-flex justify-content-center align-items-center"
+            className="d-flex justify-content-center align-items-center mt-2"
           >
             <section className={styles["ApprovalSend_emptyContainer"]}>
               <img className="d-flex justify-content-center" src={EmtpyImage} />

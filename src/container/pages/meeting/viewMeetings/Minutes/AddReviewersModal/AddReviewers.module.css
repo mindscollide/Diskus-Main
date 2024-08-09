@@ -47,9 +47,15 @@
 }
 
 .label-datePicker {
-  position: absolute;
-  top: -25px;
   font-weight: 600;
   font-size: 10px;
   color: #5a5a5a;
+}
+
+p.nominutes-text {
+  font-weight: 700;
+  margin-top: 10px;
+  font-size: 30px;
+  color: #5a5a5a;
+  margin-bottom: 0 !important;
 }

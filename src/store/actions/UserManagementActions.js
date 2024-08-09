@@ -2,7 +2,6 @@ import {
   AddOrganizationsUser,
   AllOrganizationsUsers,
   GetOrganizationSelectedPackagesByOrganizationID,
-  IsPackageExpiryDetail,
   SaveOrganizationAndPakageSelection,
   getOrganizationSelectedPakages,
   OrganizationPackageDetailsAndUserStats,
@@ -19,7 +18,6 @@ import {
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
   downgradeOrganizationSubscription,
-  cancelOrganizationSubscription,
   getOrganizationWallet,
   DownloadBoarddeckPDF,
   BoardDeckSendEmail,
@@ -31,7 +29,6 @@ import {
   dataRoomApi,
   getAdminURLs,
   meetingApi,
-  settingDownloadApi,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import axios from "axios";
@@ -51,7 +48,7 @@ import {
   clearPaymentActionFromUrl,
   handleLoginResponse,
 } from "../../commen/functions/utils";
-import { boardDeckEmailModal } from "./NewMeetingActions";
+import { boardDeckEmailModal, boardDeckModal } from "./NewMeetingActions";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -518,7 +515,11 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
                   "Admin_AdminServiceManager_AddOrganizationsUsers_03".toLowerCase()
                 )
             ) {
-              dispatch(addOrganizationUsersFailed(t("Invalid-data-provided")));
+              dispatch(
+                addOrganizationUsersFailed(
+                  t("Unable-to-add-user-due-to-some-error")
+                )
+              );
             } else {
               dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
             }
@@ -745,7 +746,12 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
                   "Admin_AdminServiceManager_ManageUserScreen_02".toLowerCase()
                 )
             ) {
-              dispatch(allOrganizationUsersFail(t("No-data-found")));
+              dispatch(
+                allOrganizationUsersSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1356,26 +1362,30 @@ const ResendForgotPasswordCodeApi = (
                 newMessage
               )
             );
-            return setSeconds(60), setMinutes(4);
+            setSeconds(60);
+            setMinutes(4);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_02"
           ) {
             let newMessage = t("Unsuccessful");
             dispatch(ResendForgotPasswordCodefail(newMessage));
-            return setSeconds(0), setMinutes(0);
+            setSeconds(0);
+            setMinutes(0);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_03"
           ) {
             let newMessage = t("Something-went-wrong");
             dispatch(ResendForgotPasswordCodefail(newMessage));
-            return setSeconds(0), setMinutes(0);
+            setSeconds(0);
+            setMinutes(0);
           }
         } else {
           let newMessage = t("Something-went-wrong");
           dispatch(ResendForgotPasswordCodefail(newMessage));
-          return setSeconds(0), setMinutes(0);
+          setSeconds(0);
+          setMinutes(0);
         }
       })
       .catch((response) => {
@@ -2657,12 +2667,6 @@ const BoardDeckDownloadPDF_init = () => {
   };
 };
 
-const BoardDeckDownloadPDF_success = () => {
-  return {
-    type: actions.DOWNLOAD_BOARDDECKPDF_SUCCESS,
-  };
-};
-
 const BoardDeckDownloadPDF_failed = () => {
   return {
     type: actions.DOWNLOAD_BOARDDECKPDF_FAILED,
@@ -2680,7 +2684,7 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
   let form = new FormData();
   form.append("RequestMethod", DownloadBoarddeckPDF.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
-
+  let meetingName = localStorage.getItem("meetingTitle");
   return async (dispatch) => {
     await dispatch(BoardDeckDownloadPDF_init());
 
@@ -2704,12 +2708,16 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
 
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "BoardDeck.pdf");
+          link.setAttribute(
+            "download",
+            "BoardDeckFile - " + meetingName + ".pdf"
+          );
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
 
           dispatch(SetLoaderFalseDownload(false));
+          dispatch(boardDeckModal(false));
         } else {
           console.log("Unexpected response status:", response.status);
           console.log("Response headers:", response.headers);

@@ -19,6 +19,7 @@ import {
   saveTaskandAssgineesRM,
   createupdateTaskDataroom,
   saveTaskDocuments,
+  getDashboardTaskStatsRM,
 } from "../../commen/apis/Api_config";
 import {
   getTaskCommitteeIDApi,
@@ -241,11 +242,6 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
               // await dispatch(SetLoaderFalse());
 
               setCreateTaskID(Number(response.data.responseResult.tid));
-              console.log(object, "objectobjectobjectobject");
-              console.log(
-                response.data.responseResult,
-                "objectobjectobjectobject"
-              );
               if (value === 1) {
               } else {
                 let Data = {
@@ -444,13 +440,7 @@ const ViewToDoFail = (message) => {
 
 //View To-Do
 
-const ViewToDoList = (
-  navigate,
-  object,
-  t,
-  setViewFlagToDo,
-  setTodoViewModal
-) => {
+const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
@@ -468,7 +458,7 @@ const ViewToDoList = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ViewToDoList(navigate, object, t));
+          dispatch(ViewToDoList(navigate, object, t, setViewFlagToDo));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -486,9 +476,6 @@ const ViewToDoList = (
               if (typeof setViewFlagToDo === "function") {
                 setViewFlagToDo(true);
               }
-              if (typeof setTodoViewModal === "function") {
-                setTodoViewModal(true);
-              }
               await dispatch(SetLoaderFalse());
             } else if (
               response.data.responseResult.responseMessage
@@ -499,7 +486,6 @@ const ViewToDoList = (
             ) {
               await dispatch(ViewToDoFail(t("No-records-found")));
               setViewFlagToDo(false);
-              setTodoViewModal(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -508,24 +494,20 @@ const ViewToDoList = (
                 )
             ) {
               setViewFlagToDo(false);
-              setTodoViewModal(false);
               await dispatch(ViewToDoFail(t("Something-went-wrong")));
             }
           } else {
             dispatch(ViewToDoFail(t("Something-went-wrong")));
             setViewFlagToDo(false);
-            setTodoViewModal(false);
           }
         } else {
           dispatch(ViewToDoFail(t("Something-went-wrong")));
           setViewFlagToDo(false);
-          setTodoViewModal(false);
         }
       })
       .catch((response) => {
         dispatch(ViewToDoFail(t("Something-went-wrong")));
         setViewFlagToDo(false);
-        setTodoViewModal(false);
       });
   };
 };
@@ -1167,15 +1149,6 @@ const uploadDocument_init = () => {
   };
 };
 
-// Upload Documents Success
-const uploadDocument_success = (response, message) => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_TASKS_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
 // Upload Documents Fail
 const uploadDocument_fail = (message) => {
   return {
@@ -1306,7 +1279,6 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
     UserID: JSON.parse(creatorID),
     Type: 0,
   };
-  console.log("saveFilesTaskApi Data", Data);
   return async (dispatch) => {
     dispatch(saveFiles_init());
     let form = new FormData();
@@ -1333,20 +1305,13 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              console.log(
-                response.data.responseResult,
-                "newFoldernewFoldernewFolder"
-              );
               let File = response.data.responseResult.fileID;
               File.forEach((newData, index) => {
-                console.log(newData, "newFoldernewFoldernewFolder");
                 return newFolder.push({
                   pK_FileID: newData.pK_FileID,
                   DisplayAttachmentName: newData.displayFileName,
                 });
               });
-
-              console.log(newFolder, "newFoldernewFoldernewFolder");
 
               await dispatch(
                 saveFiles_success(response.data.responseResult, "")
@@ -1833,7 +1798,92 @@ const createTaskMeetingMQTT = (response) => {
   };
 };
 
+
+const getDashbardTaskData_init = () => {
+  return {
+    type: actions.GETDASHBOARDTASKDATA_INIT,
+  };
+};
+const getDashbardTaskData_success = (response, message = "") => {
+  return {
+    type: actions.GETDASHBOARDTASKDATA_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getDashbardTaskData_fail = (message = "") => {
+  return {
+    type: actions.GETDASHBOARDTASKDATA_FAIL,
+    message: message,
+  };
+};
+const getDashbardTaskDataApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(getDashbardTaskData_init());
+    let form = new FormData();
+    form.append("RequestMethod", getDashboardTaskStatsRM.RequestMethod);
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getDashbardTaskDataApi(navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetDashboardToDoListData_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getDashbardTaskData_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetDashboardToDoListData_02".toLowerCase()
+                )
+            ) {
+              dispatch(getDashbardTaskData_fail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetDashboardToDoListData_03".toLowerCase()
+                )
+            ) {
+              dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
+  getDashbardTaskDataApi,
   createTaskGroupMQTT,
   createTaskCommitteeMQTT,
   createTaskMeetingMQTT,

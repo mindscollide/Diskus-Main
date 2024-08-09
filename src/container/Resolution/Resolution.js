@@ -1632,7 +1632,7 @@ const Resolution = () => {
                           {t("No-resolution-to-display")}
                         </h2>
                         <p className={styles["NoResolution_Tagline"]}>
-                          {t("Planning-to-get-a-thought-on-something?")}
+                          {t("Seeking-opinions-on-something")}
                         </p>
                         <Button
                           className={styles["create-Resolution-btn"]}
@@ -1719,7 +1719,7 @@ const Resolution = () => {
                           {t("No-resolution-to-display")}
                         </h2>
                         <p className={styles["NoResolution_Tagline"]}>
-                          {t("Planning-to-get-a-thought-on-something?")}
+                          {t("Seeking-opinions-on-something")}
                         </p>
                         <Button
                           className={styles["create-Resolution-btn"]}

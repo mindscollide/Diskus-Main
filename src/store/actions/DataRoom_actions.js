@@ -7,7 +7,6 @@ import {
   createFolderRequestMethod,
   getDocumentsAndFolderRequestMethod,
   getFolderDocumentsRequestMethod,
-  getMyDocumentsAndFoldersRequestMethod,
   saveFilesRequestMethod,
   saveFolderRequestMethod,
   shareFilesRequestMethod,
@@ -38,12 +37,6 @@ import {
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 
-// Save Files Init
-const saveFiles_init = () => {
-  return {
-    type: actions.SAVEFILES_DATAROOM_INIT,
-  };
-};
 // Save Files Success
 const saveFiles_success = (response, message) => {
   return {
@@ -234,13 +227,6 @@ const saveFilesApi = (
         });
     };
   }
-};
-
-// Upload Documents Init
-const uploadDocument_init = () => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
-  };
 };
 
 // Upload Documents Success
@@ -449,30 +435,6 @@ const uploadDocumentsApi = (
         });
     };
   }
-};
-
-// Save Folder Init
-const saveFolder_init = () => {
-  return {
-    type: actions.SAVE_FOLDER_DATAROOM_INIT,
-  };
-};
-
-// Save Folder Success
-const saveFolder_success = (response, message) => {
-  return {
-    type: actions.SAVE_FOLDER_DATAROOM_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-// Save Folder Fail
-const saveFolder_fail = (message) => {
-  return {
-    type: actions.SAVE_FOLDER_DATAROOM_FAIL,
-    message: message,
-  };
 };
 
 // Save Folder API
@@ -887,14 +849,6 @@ const getDocumentsAndFolderApiScrollbehaviour = (
   filterValue,
   order
 ) => {
-  console.log(
-    navigate,
-    statusID,
-    t,
-    sRows,
-    filterValue,
-    "getFolderDocumentsApiScrollBehaviour"
-  );
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -994,16 +948,6 @@ const getFolderDocumentsApiScrollBehaviour = (
   SortBy,
   order
 ) => {
-  console.log(
-    navigate,
-    FolderId,
-    t,
-    no,
-    sRow,
-    SortBy,
-    order,
-    "getFolderDocumentsApiScrollBehaviour"
-  );
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -1564,14 +1508,6 @@ const FolderisExist_init = () => {
   };
 };
 
-// Folder Exist success
-const FolderisExist_success = (message) => {
-  return {
-    type: actions.FOLDERISEXIST_SUCCESS,
-    message: message,
-  };
-};
-
 // Folder Exist fail
 const FolderisExist_fail = (message) => {
   return {
@@ -1806,14 +1742,6 @@ const FolderisExistrename_init = () => {
   };
 };
 
-// Folder Exist success
-const FolderisExistrename_success = (message) => {
-  return {
-    type: actions.FOLDERISEXIST_SUCCESS,
-    message: message,
-  };
-};
-
 // Folder Exist fail
 const FolderisExistrename_fail = (message) => {
   return {
@@ -1909,13 +1837,7 @@ const renameFolder_init = () => {
     type: actions.RENAMEFOLDER_INIT,
   };
 };
-const renameFolder_success = (response, message) => {
-  return {
-    type: actions.RENAMEFOLDER_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
+
 const renameFolder_fail = (message) => {
   return {
     type: actions.RENAMEFOLDER_FAIL,
@@ -2097,13 +2019,7 @@ const renameFile_init = () => {
     type: actions.RENAMEFILE_INIT,
   };
 };
-const renameFile_success = (response, message) => {
-  return {
-    type: actions.RENAMEFILE_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
+
 const renameFile_fail = (message) => {
   return {
     type: actions.RENAMEFILE_FAIL,
@@ -2283,10 +2199,6 @@ const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_SearchDocumentsAndFolders_01".toLowerCase()
             ) {
-              console.log(
-                "DataRoomReducer.SearchFilesAndFoldersResponse",
-                response.data.responseResult
-              );
               dispatch(
                 searchDocumentsAndFoldersApi_success(
                   response.data.responseResult.data,
@@ -3239,6 +3151,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
       responseType: "blob",
     })
       .then(async (response) => {
+        console.log(response, "responseresponseresponse")
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
@@ -3255,6 +3168,8 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
         }
       })
       .catch((response) => {
+        console.log(response, "responseresponseresponse")
+
         dispatch(DownloadMessage(0));
 
         dispatch(downloadFail(response));
@@ -3940,7 +3855,37 @@ const deleteSharedFolderDataroom = (navigate, Data, t) => {
       });
   };
 };
+
+const fileSharedMQTT = (response) => {
+  return {
+    type: actions.DATAROOM_FILE_SHARED_MQTT,
+    response,
+  };
+};
+
+const folderSharedMQTT = (response) => {
+  return {
+    type: actions.DATAROOM_FOLDER_SHARED_MQTT,
+    response,
+  };
+};
+const fileRemoveMQTT = (response) => {
+  return {
+    type: actions.DATAROOM_FILE_REMOVE_MQTT,
+    response: response,
+  };
+};
+const folderRemoveMQTT = (response) => {
+  return {
+    type: actions.DATAROOM_FOLDER_REMOVE_MQTT,
+    response: response,
+  };
+};
 export {
+  folderRemoveMQTT,
+  fileRemoveMQTT,
+  fileSharedMQTT,
+  folderSharedMQTT,
   deleteSharedFolderDataroom,
   deleteSharedFileDataroom,
   createFolderLink_fail,

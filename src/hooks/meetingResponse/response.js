@@ -25,6 +25,8 @@ const getUserInfo = (data, currentUserId, currentSource) => {
             case 4:
               userInfo.isAgendaContributor = true;
               break;
+            default:
+              console.log("ERROR");
           }
           if (attendee.isPrimaryOrganizer === true) {
             userInfo.isPrimaryOrganizer = true;
@@ -42,6 +44,8 @@ const getUserInfo = (data, currentUserId, currentSource) => {
         case 4:
           userInfo.isAgendaContributor = true;
           break;
+        default:
+          console.log("ERROR");
       }
       if (data.isPrimaryOrganizer === true) {
         userInfo.isPrimaryOrganizer = true;
@@ -103,6 +107,7 @@ export const getAllUnpublishedMeetingData = async (
         isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
         userDetails: usersData?.userData,
         isMinutePublished: data?.isMinutePublished,
+        isRecordingAvailable: data?.isRecordingAvailable,
       });
     });
   }
@@ -155,6 +160,11 @@ export const mqttMeetingData = async (meetingData, currentSourceID) => {
     title: meetingData?.title,
     isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
     userDetails: usersData?.userData,
+    isRecordingAvailable:
+      meetingData.isRecordingAvailable !== undefined &&
+      meetingData.isRecordingAvailable !== null
+        ? meetingData.isRecordingAvailable
+        : false,
   };
 
   return Data;

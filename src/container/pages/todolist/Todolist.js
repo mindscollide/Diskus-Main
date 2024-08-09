@@ -9,9 +9,6 @@ import { Select } from "antd";
 import {
   Button,
   TableToDo,
-  ResultMessage,
-  Paper,
-  Loader,
   CustomDatePicker,
   TextField,
   Notification,
@@ -24,7 +21,6 @@ import {
   ViewToDoList,
   clearResponce,
   SearchTodoListApi,
-  saveTaskDocumentsAndAssigneesApi,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
@@ -58,22 +54,16 @@ const TodoList = () => {
     todoStatus,
     assignees,
     getTodosStatus,
-    socketTodoStatusData,
-    LanguageReducer,
-    uploadReducer,
   } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
-  console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
   const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
   const [statusValues, setStatusValues] = useState([]);
-  console.log(statusValues, "statusValuesstatusValuesstatusValues");
-  const [todoViewModal, setTodoViewModal] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
   const [searchData, setSearchData] = useState({
@@ -89,7 +79,6 @@ const TodoList = () => {
     message: "",
   });
   const [statusOptions, setStatusOptions] = useState([]);
-  const [tableFilterOptions, setTableFilterOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
 
@@ -183,11 +172,6 @@ const TodoList = () => {
           setRowToDo((rowsData) => {
             return rowsData.map((newData, index) => {
               if (newData.pK_TID === payloadData.todoid) {
-                console.log(
-                  payloadData.todoStatusID,
-                  statusValues[payloadData.todoStatusID],
-                  "statusValuesstatusValues"
-                );
                 const newObj = {
                   ...newData,
                   status: {
@@ -224,7 +208,6 @@ const TodoList = () => {
     }
     setStatusValues(newArrStatus);
     setStatusOptions(optionsArr);
-    setTableFilterOptions(newOptionsFilter);
   }, [todoStatus]);
 
   // for modal create  handler
@@ -246,7 +229,7 @@ const TodoList = () => {
   const viewModalHandler = (id) => {
     let Data = { ToDoListID: id };
     dispatch(
-      ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
+      ViewToDoList(navigate, Data, t, setViewFlagToDo)
     );
   };
 
@@ -286,6 +269,7 @@ const TodoList = () => {
       render: (text, record) => (
         <p
           className="todolist-title-col"
+          title={text}
           onClick={(e) => viewModalHandler(record.pK_TID)}
         >
           {text}
@@ -612,9 +596,9 @@ const TodoList = () => {
 
   useEffect(() => {
     if (
-      toDoListReducer.ResponseMessage != "" &&
-      toDoListReducer.ResponseMessage != undefined &&
-      toDoListReducer.ResponseMessage != "" &&
+      toDoListReducer.ResponseMessage !== "" &&
+      toDoListReducer.ResponseMessage !== undefined &&
+      toDoListReducer.ResponseMessage !== "" &&
       toDoListReducer.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({

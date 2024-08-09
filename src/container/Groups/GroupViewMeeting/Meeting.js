@@ -475,6 +475,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                       onClick={() => {
                         dispatch(
                           UpdateOrganizersMeeting(
+                            true,
                             navigate,
                             t,
                             7,

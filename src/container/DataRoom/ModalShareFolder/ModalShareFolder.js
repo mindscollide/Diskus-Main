@@ -1,45 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalShareFolder.module.css";
 import newprofile from "../../../assets/images/Mask Group 67.svg";
 import crossIcon from "../../../assets/images/CrossIcon.svg";
-import arabic from "react-date-object/calendars/arabic";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import download from "../../../assets/images/Icon feather-download.svg";
 import star from "../../../assets/images/startd.png";
 import pdf from "../../../assets/images/222.svg";
-import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_en from "react-date-object/locales/gregorian_en";
-// import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import DatePicker, { DateObject } from "react-multi-date-picker";
-
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
   Button,
   Checkbox,
-  MultiDatePicker,
   Modal,
   TextField,
   Notification,
-  InputSearchFilter,
 } from "../../../components/elements";
-import { style } from "@mui/system";
 import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
-import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import {
-  createFileLinkApi,
   createFolderLinkApi,
   createFolderLink_fail,
   shareFoldersApi,
 } from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
-import ChevronDown from "../../../assets/images/chevron-down.svg";
-import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg";
-import moment from "moment";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
 import copyToClipboard from "../../../hooks/useClipBoard";
 import { updateFolderGeneralAccessApi } from "../../../store/actions/DataRoom_actions";
 const ModalShareFolder = ({
@@ -58,11 +42,7 @@ const ModalShareFolder = ({
   const getCreateFolderLink = useSelector(
     (state) => state.DataRoomReducer.getCreateFolderLink
   );
-  const [showrequestsend, setShowrequestsend] = useState(false);
-  const [generalaccessdropdown, setGeneralaccessdropdown] = useState(false);
   const [linkedcopied, setLinkedcopied] = useState(false);
-  const [expirationheader, setExpirationheader] = useState(true);
-  const [calenderdate, setCalenderdate] = useState(false);
   const [inviteedit, setInviteedit] = useState(false);
   const [notifyPeople, setNotifyPeople] = useState(false);
   const [folderData, setFolderData] = useState({
@@ -74,15 +54,9 @@ const ModalShareFolder = ({
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const datePickerRef = useRef();
   const [getAllAssignees, setGetAllAssignees] = useState([]);
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
-  const [meetingDate, setMeetingDate] = useState("");
   const [EditNotification, setEditNotification] = useState(false);
   const [accessupdate, setAccessupdate] = useState(false);
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [permissionID, setPermissionID] = useState({
     label: t("Editor"),
     value: 2,
@@ -91,28 +65,15 @@ const ModalShareFolder = ({
     label: t("Restricted"),
     value: 1,
   });
-  const [taskAssignedName, setTaskAssignedName] = useState("");
-  const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
   const [ownerInfo, setOwnerInfo] = useState(null);
   const [message, setMessage] = useState("");
-  const [flag, setFlag] = useState(1);
-  const [onclickFlag, setOnclickFlag] = useState(false);
   let organizationName = localStorage.getItem("organizatioName");
-  let currentLanguage = localStorage.getItem("i18nextLng");
   let userID = localStorage.getItem("userID");
-  const [AccessExpireDate, setAccessExpireDate] = useState(null);
-
-  const showcalender = () => {
-    // setCalenderdate(!calenderdate);
-    // setInviteedit(!inviteedit);
-    // setExpirationheader(false);
-  };
-
-  console.log(
-    getCreateFolderLink,
-    "getCreateFolderLinkgetCreateFolderLinkgetCreateFolderLink"
-  );
+  const [personValue, setPersonValue] = useState({
+    value: 0,
+    label: "",
+  });
 
   useEffect(() => {
     if (getCreateFolderLink !== "") {
@@ -129,17 +90,6 @@ const ModalShareFolder = ({
       }, 2000);
     }
   }, [linkedcopied]);
-  useEffect(() => {
-    if (currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
-      }
-    }
-  }, [currentLanguage]);
 
   const handlechange = (SelectedOptions) => {
     setPermissionID({
@@ -184,10 +134,17 @@ const ModalShareFolder = ({
   // set All User in state which was coming from api
   useEffect(() => {
     if (assignees.user.length > 0) {
-      let AssigeeUsers = assignees.user.filter(
-        (assignee) => assignee.pK_UID !== Number(userID)
-      );
-      setGetAllAssignees(AssigeeUsers);
+      let usersDataArr = [];
+      assignees.user
+        .filter((assignee) => assignee.pK_UID !== Number(userID))
+        .map((usersData, index) => {
+          usersDataArr.push({
+            value: usersData.pK_UID,
+            label: usersData.name,
+            name: usersData.name,
+          });
+        });
+      setGetAllAssignees(usersDataArr);
     }
   }, [assignees, userID]);
 
@@ -228,68 +185,9 @@ const ModalShareFolder = ({
     } catch {}
   }, [getSharedFolderUsers, assignees]);
 
-  const searchFilterHandler = (value) => {
-    if (
-      getAllAssignees.length > 0 &&
-      getAllAssignees !== undefined &&
-      getAllAssignees !== null
-    ) {
-      return getAllAssignees
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-          return searchTerm && assigneesName.startsWith(searchTerm);
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            {}
-            <img
-              draggable="false"
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
-  };
-
-  const onSearch = (name, id) => {
-    setOnclickFlag(true);
-
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
-  };
-
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false);
-    if (e.target.value.trimStart() !== "") {
-      setTaskAssignedToInput(e.target.value.trimStart());
-    } else {
-      setTaskAssignedToInput("");
-      setTaskAssignedTo(0);
-      setTaskAssignedName("");
-    }
-  };
-
-  const Notificationnaccessrequest = () => {
-    if (folderData.Folders.length > 0) {
-      setShowrequestsend(true);
-      let ShareFolderData = {
-        FolderID: Number(folderId),
-        Folders: folderData.Folders,
-      };
-      dispatch(shareFoldersApi(navigate, ShareFolderData, t, setSharefolder));
-    }
+    setPersonValue(e);
   };
 
   const openAccessRequestModalClick = () => {
@@ -311,84 +209,52 @@ const ModalShareFolder = ({
 
   const handleAddMember = () => {
     let findIndexData = folderData.Folders.findIndex(
-      (listData, index) => listData.FK_UserID === taskAssignedTo
+      (listData, index) => listData.FK_UserID === personValue.value
     );
     if (permissionID.value !== 0) {
-      if (taskAssignedName !== "") {
-        if (findIndexData === -1) {
-          let Data = {
-            FK_PermissionID: JSON.parse(permissionID.value),
-            FK_UserID: taskAssignedTo,
-            ExpiryDateTime: "",
-          };
-          if (taskAssignedTo !== 0) {
-            if (assignees.user.length > 0) {
-              assignees.user.forEach((data, index) => {
-                if (data.pK_UID === taskAssignedTo) {
-                  setMembers([...isMembers, data]);
-                }
-              });
-            }
+      if (findIndexData === -1) {
+        let Data = {
+          FK_PermissionID: JSON.parse(permissionID.value),
+          FK_UserID: personValue.value,
+          ExpiryDateTime: "",
+        };
+        if (personValue.value !== 0) {
+          if (assignees.user.length > 0) {
+            assignees.user.forEach((data, index) => {
+              if (data.pK_UID === personValue.value) {
+                setMembers([...isMembers, data]);
+              }
+            });
           }
-          setFolderData((prev) => {
-            return { ...prev, Folders: [...prev.Folders, Data] };
-          });
-          setTaskAssignedToInput("");
-          setTaskAssignedTo(0);
-          setTaskAssignedName("");
-          setPermissionID({
-            label: t("Editor"),
-            value: 2,
-          });
-          setGeneralAccess({
-            label: t("Restricted"),
-            value: 1,
-          });
-        } else {
-          setOpen({
-            flag: true,
-            message: t("User-is-already-exist"),
-          });
-          setTaskAssignedToInput("");
-          setTaskAssignedTo(0);
-          setTaskAssignedName("");
-          setPermissionID({
-            label: t("Editor"),
-            value: 2,
-          });
-          setGeneralAccess({
-            label: t("Restricted"),
-            value: 1,
-          });
         }
+        setFolderData((prev) => {
+          return { ...prev, Folders: [...prev.Folders, Data] };
+        });
       } else {
         setOpen({
           flag: true,
-          message: t("Please-select-user"),
+          message: t("User-is-already-exist"),
         });
       }
+      setPersonValue({
+        value: 0,
+        label: "",
+      });
+
+      setPermissionID({
+        label: t("Editor"),
+        value: 2,
+      });
+      setGeneralAccess({
+        label: t("Restricted"),
+        value: 1,
+      });
     } else {
       setOpen({
         flag: true,
         message: t("All-options-must-be-selected"),
       });
     }
-
-    // setTaskAssignedToInput("");
-    // setTaskAssignedTo(0);
-    // setTaskAssignedName("");
-    // setPermissionID({
-    //   label: t("Editor"),
-    //   value: 2,
-    // });
-    // setGeneralAccess({
-    //   label: t("Restricted"),
-    //   value: 1,
-    // });
-  };
-
-  const closebtn = async () => {
-    setSharefolder(false);
   };
 
   const handleChangeGeneralAccess = async (selectValue) => {
@@ -398,26 +264,6 @@ const ModalShareFolder = ({
     });
     let data = { FolderID: Number(folderId), AccessID: selectValue.value };
     await dispatch(updateFolderGeneralAccessApi(navigate, t, data));
-  };
-
-  const CustomIcon = () => (
-    <div className="custom-icon-wrapper">
-      <img
-        src={EditIcon}
-        alt="Edit Icon"
-        height="11.11px"
-        width="11.54px"
-        className="custom-icon cursor-pointer"
-        onClick={handleIconClick}
-        draggable="false"
-      />
-    </div>
-  );
-
-  const handleIconClick = () => {
-    if (datePickerRef.current) {
-      datePickerRef.current.openCalendar();
-    }
   };
 
   const handleRemoveMember = (memberData) => {
@@ -435,10 +281,6 @@ const ModalShareFolder = ({
     });
   };
 
-  const AccessExpireDateChangeHandler = (date) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    setAccessExpireDate(meetingDateValueFormat);
-  };
   return (
     <>
       <Container>
@@ -640,10 +482,17 @@ const ModalShareFolder = ({
                   </Row>
                   <Row className="mt-2">
                     <Col lg={7} md={7} sm={12}>
-                      <InputSearchFilter
-                        labelClass="d-none"
+                      <Select
+                        isSearchable={true}
+                        value={personValue.value !== 0 ? personValue : null}
+                        placeholder={t("Select-members")}
+                        options={getAllAssignees}
+                        onChange={onChangeSearch}
+                      />
+                      {/* <InputSearchFilter
+                        labelClass='d-none'
                         flag={flag}
-                        applyClass="sharefoldersearchInput"
+                        applyClass='sharefoldersearchInput'
                         placeholder={t("Search-member-here")}
                         value={taskAssignedToInput}
                         filteredDataHandler={searchFilterHandler(
@@ -651,7 +500,7 @@ const ModalShareFolder = ({
                         )}
                         change={onChangeSearch}
                         onclickFlag={onclickFlag}
-                      />
+                      /> */}
                     </Col>
                     <Col lg={3} md={3} sm={3}>
                       <Select

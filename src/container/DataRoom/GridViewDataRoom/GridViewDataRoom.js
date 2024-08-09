@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, NavDropdown, MenuItem, Dropdown } from "react-bootstrap";
+import { Row, Col, Dropdown } from "react-bootstrap";
 import styles from "./GridViewDataRoom.module.css";
 import folderColor from "../../../assets/images/folder_color.svg";
 import file_image from "../../../assets/images/file_image.svg";
 import {
   getFolderDocumentsApi,
-  getDocumentsAndFolderApiScrollbehaviour,
   deleteFileDataroom,
   getDocumentsAndFolderApi,
   deleteFolder,
-  dataBehaviour,
-  getFolderDocumentsApiScrollBehaviour,
   getSharedFileUsersApi,
   getSharedFolderUsersApi,
   DataRoomDownloadFolderApiFunc,
@@ -18,9 +15,9 @@ import {
   deleteSharedFolderDataroom,
   deleteSharedFileDataroom,
 } from "../../../store/actions/DataRoom_actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ArrowUp from "../../../assets/images/Icon awesome-arrow-up.svg";
 import ArrowDown from "../../../assets/images/ArrowUp_Dataroom.svg";
 import threedots_dataroom from "../../../assets/images/threedots_dataroom.svg";
@@ -28,9 +25,6 @@ import ModalShareFolder from "../ModalShareFolder/ModalShareFolder";
 import ModalRenameFolder from "../ModalRenameFolder/ModalRenameFolder";
 import ModalShareFile from "../ModalShareFile/ModalShareFile";
 import ModalRenameFile from "../ModalRenameFile/ModalRenameFile";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import InfiniteScroll from "react-infinite-scroll-component";
 import {
   getFileExtension,
   getIconSource,
@@ -52,6 +46,11 @@ import {
 } from "../../../store/actions/DataRoom2_actions";
 import { createWorkflowApi } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import {
+  validateExtensionsforHTMLPage,
+  validationExtension,
+} from "../../../commen/functions/validations";
+import { getAnnotationsOfDataroomAttachement } from "../../../store/actions/webVieverApi_actions";
 const GridViewDataRoom = ({
   data,
   sRowsData,
@@ -182,9 +181,45 @@ const GridViewDataRoom = ({
   };
 
   const handleClickFile = (e, record) => {
-    let ext = record.name.split(".").pop();
     if (checkFeatureIDAvailability(20)) {
-      if (ext === "pdf") {
+      let ext = record.name.split(".").pop();
+
+      const pdfData = {
+        taskId: record.id,
+        commingFrom: 4,
+        fileName: record.name,
+        attachmentID: record.id,
+        isPermission: record.permissionID,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      if (validationExtension(ext)) {
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else if (validateExtensionsforHTMLPage(ext)) {
+        let dataRoomData = {
+          FileID: record.id,
+        };
+        dispatch(
+          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
+        );
+      }
+      // window.open(
+      //   `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+      //   "_blank",
+      //   "noopener noreferrer"
+      // );
+    }
+  };
+
+  const fileOptionsSelect = (data, record, pdfDataJson) => {
+    if (data.value === 1) {
+      if (checkFeatureIDAvailability(20)) {
+        let ext = record.name.split(".").pop();
+
+        // Open on Apryse
         const pdfData = {
           taskId: record.id,
           commingFrom: 4,
@@ -193,35 +228,20 @@ const GridViewDataRoom = ({
           isPermission: record.permissionID,
         };
         const pdfDataJson = JSON.stringify(pdfData);
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      }
-    }
-  };
-
-  const fileOptionsSelect = (data, record, pdfDataJson) => {
-    if (data.value === 1) {
-      if (checkFeatureIDAvailability(20)) {
-        // Open on Apryse
-        let ext = record.name.split(".").pop();
-        if (ext === "pdf") {
-          const pdfData = {
-            taskId: record.id,
-            commingFrom: 4,
-            fileName: record.name,
-            attachmentID: record.id,
-            isPermission: record.permissionID,
-          };
-          const pdfDataJson = JSON.stringify(pdfData);
+        if (validationExtension(ext)) {
           window.open(
             `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
               pdfDataJson
             )}`,
             "_blank",
             "noopener noreferrer"
+          );
+        } else if (validateExtensionsforHTMLPage(ext)) {
+          let dataRoomData = {
+            FileID: record.id,
+          };
+          dispatch(
+            getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
           );
         }
       }
@@ -354,18 +374,16 @@ const GridViewDataRoom = ({
               sm={12}
               md={12}
               lg={12}
-              className="d-flex gap-2 align-items-center justify-content-start"
-            >
+              className='d-flex gap-2 align-items-center justify-content-start'>
               {currentView === 1 || currentView === 3 || currentView === 4 ? (
                 <>
                   <Dropdown
-                    drop="down"
-                    align="start"
+                    drop='down'
+                    align='start'
                     className={`${
                       styles["options_dropdown"]
-                    } ${"dataroom_options"}`}
-                  >
-                    <Dropdown.Toggle id="dropdown-autoclose-true">
+                    } ${"dataroom_options"}`}>
+                    <Dropdown.Toggle id='dropdown-autoclose-true'>
                       <span className={styles["Name_heading__gridView"]}>
                         {filterValue.label}
                       </span>
@@ -376,8 +394,7 @@ const GridViewDataRoom = ({
                         return (
                           <Dropdown.Item
                             key={index}
-                            onClick={() => handleClickFilter(data)}
-                          >
+                            onClick={() => handleClickFilter(data)}>
                             {data.label}
                           </Dropdown.Item>
                         );
@@ -387,18 +404,18 @@ const GridViewDataRoom = ({
                   {sortIon ? (
                     <img
                       src={ArrowUp}
-                      width="15.02px"
-                      height="10.71px"
-                      alt=""
+                      width='15.02px'
+                      height='10.71px'
+                      alt=''
                       className={styles["sortIconGrid"]}
                       onClick={handleClickSortDecsending}
                     />
                   ) : (
                     <img
                       src={ArrowDown}
-                      alt=""
-                      width="15.02px"
-                      height="10.71px"
+                      alt=''
+                      width='15.02px'
+                      height='10.71px'
                       className={styles["sortIconGrid"]}
                       onClick={handleClickSortAscending}
                     />
@@ -407,13 +424,12 @@ const GridViewDataRoom = ({
               ) : (
                 <>
                   <Dropdown
-                    drop="down"
-                    align="start"
+                    drop='down'
+                    align='start'
                     className={`${
                       styles["options_dropdown"]
-                    } ${"dataroom_options"}`}
-                  >
-                    <Dropdown.Toggle id="dropdown-autoclose-true">
+                    } ${"dataroom_options"}`}>
+                    <Dropdown.Toggle id='dropdown-autoclose-true'>
                       <span className={styles["Name_heading__gridView"]}>
                         {filterShareTabValue.label}
                       </span>
@@ -424,8 +440,7 @@ const GridViewDataRoom = ({
                         return (
                           <Dropdown.Item
                             key={index}
-                            onClick={() => handleShareTabFilter(data)}
-                          >
+                            onClick={() => handleShareTabFilter(data)}>
                             {data.label}
                           </Dropdown.Item>
                         );
@@ -435,19 +450,19 @@ const GridViewDataRoom = ({
                   {sortIon ? (
                     <img
                       src={ArrowUp}
-                      width="15.02px"
+                      width='15.02px'
                       className={styles["sortIconGrid"]}
                       onClick={handleClickSortDecsending}
-                      alt=""
-                      height="10.71px"
+                      alt=''
+                      height='10.71px'
                     />
                   ) : (
                     <img
                       src={ArrowDown}
-                      width="15.02px"
+                      width='15.02px'
                       className={styles["sortIconGrid"]}
-                      alt=""
-                      height="10.71px"
+                      alt=''
+                      height='10.71px'
                       onClick={handleClickSortAscending}
                     />
                   )}
@@ -475,30 +490,28 @@ const GridViewDataRoom = ({
                             <div className={styles["gridViewFolder__name"]}>
                               <span
                                 className={styles["folderName__text"]}
-                                onClick={() => getFolderDocuments(fileData.id)}
-                              >
+                                onClick={() => getFolderDocuments(fileData.id)}>
                                 <img
                                   src={folderColor}
-                                  alt=""
-                                  draggable="false"
+                                  alt=''
+                                  draggable='false'
                                 />{" "}
                                 {fileData.name}
                               </span>
 
                               <span className={styles["three_dot__gridView"]}>
                                 <Dropdown
-                                  drop="down"
-                                  align="start"
+                                  drop='down'
+                                  align='start'
                                   className={`${
                                     styles["options_dropdown"]
-                                  } ${"dataroom_options"}`}
-                                >
-                                  <Dropdown.Toggle id="dropdown-autoclose-true">
+                                  } ${"dataroom_options"}`}>
+                                  <Dropdown.Toggle id='dropdown-autoclose-true'>
                                     <img
-                                      alt=""
+                                      alt=''
                                       src={threedots_dataroom}
-                                      width="15.02px"
-                                      height="10.71px"
+                                      width='15.02px'
+                                      height='10.71px'
                                     />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
@@ -513,8 +526,7 @@ const GridViewDataRoom = ({
                                                     data,
                                                     fileData
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 {data.label}
                                               </Dropdown.Item>
                                             );
@@ -531,8 +543,7 @@ const GridViewDataRoom = ({
                                                     data,
                                                     fileData
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 {data.label}
                                               </Dropdown.Item>
                                             );
@@ -550,8 +561,7 @@ const GridViewDataRoom = ({
                                                   data,
                                                   fileData
                                                 )
-                                              }
-                                            >
+                                              }>
                                               {data.label}
                                             </Dropdown.Item>
                                           );
@@ -571,30 +581,28 @@ const GridViewDataRoom = ({
                             <div className={styles["gridViewFolder__name"]}>
                               <span
                                 className={styles["folderName__text"]}
-                                onClick={() => getFolderDocuments(fileData.id)}
-                              >
+                                onClick={() => getFolderDocuments(fileData.id)}>
                                 <img
                                   src={folderColor}
-                                  alt=""
-                                  draggable="false"
+                                  alt=''
+                                  draggable='false'
                                 />{" "}
                                 {fileData.name}
                               </span>
 
                               <span className={styles["three_dot__gridView"]}>
                                 <Dropdown
-                                  drop="down"
-                                  align="start"
+                                  drop='down'
+                                  align='start'
                                   className={`${
                                     styles["options_dropdown"]
-                                  } ${"dataroom_options"}`}
-                                >
-                                  <Dropdown.Toggle id="dropdown-autoclose-true">
+                                  } ${"dataroom_options"}`}>
+                                  <Dropdown.Toggle id='dropdown-autoclose-true'>
                                     <img
-                                      alt=""
+                                      alt=''
                                       src={threedots_dataroom}
-                                      width="15.02px"
-                                      height="10.71px"
+                                      width='15.02px'
+                                      height='10.71px'
                                     />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
@@ -604,8 +612,7 @@ const GridViewDataRoom = ({
                                           key={index}
                                           onClick={() =>
                                             fileOptionsSelect(data, fileData)
-                                          }
-                                        >
+                                          }>
                                           {data.label}
                                         </Dropdown.Item>
                                       );
@@ -639,16 +646,15 @@ const GridViewDataRoom = ({
                             sm={12}
                             md={2}
                             lg={2}
-                            className={styles["gridViewFolder"]}
-                          >
+                            className={styles["gridViewFolder"]}>
                             <div className={styles["fileview__Box"]}>
                               <Row>
                                 <Col sm={12} md={12} lg={12}>
                                   <img
                                     src={file_image}
                                     width={"100%"}
-                                    alt=""
-                                    draggable="false"
+                                    alt=''
+                                    draggable='false'
                                   />
                                 </Col>
                                 <Col sm={12} md={12} lg={12}>
@@ -657,34 +663,31 @@ const GridViewDataRoom = ({
                                       className={styles["folderFile__text"]}
                                       onClick={(e) =>
                                         handleClickFile(e, fileData)
-                                      }
-                                    >
+                                      }>
                                       <img
                                         src={getIconSource(
                                           getFileExtension(fileData.name)
                                         )}
-                                        alt=""
-                                        draggable="false"
+                                        alt=''
+                                        draggable='false'
                                       />{" "}
                                       {fileData.name}
                                     </span>
 
                                     <span
-                                      className={styles["three_dot__gridView"]}
-                                    >
+                                      className={styles["three_dot__gridView"]}>
                                       <Dropdown
-                                        drop="down"
-                                        align="start"
+                                        drop='down'
+                                        align='start'
                                         className={`${
                                           styles["options_dropdown"]
-                                        } ${"dataroom_options"}`}
-                                      >
-                                        <Dropdown.Toggle id="dropdown-autoclose-true">
+                                        } ${"dataroom_options"}`}>
+                                        <Dropdown.Toggle id='dropdown-autoclose-true'>
                                           <img
                                             src={threedots_dataroom}
-                                            width="15.02px"
-                                            height="10.71px"
-                                            alt=""
+                                            width='15.02px'
+                                            height='10.71px'
+                                            alt=''
                                           />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
@@ -699,8 +702,7 @@ const GridViewDataRoom = ({
                                                           data,
                                                           fileData
                                                         )
-                                                      }
-                                                    >
+                                                      }>
                                                       {data.label}
                                                     </Dropdown.Item>
                                                   );
@@ -717,8 +719,7 @@ const GridViewDataRoom = ({
                                                           data,
                                                           fileData
                                                         )
-                                                      }
-                                                    >
+                                                      }>
                                                       {data.label}
                                                     </Dropdown.Item>
                                                   );
@@ -736,8 +737,7 @@ const GridViewDataRoom = ({
                                                         data,
                                                         fileData
                                                       )
-                                                    }
-                                                  >
+                                                    }>
                                                     {data.label}
                                                   </Dropdown.Item>
                                                 );
@@ -761,16 +761,15 @@ const GridViewDataRoom = ({
                             sm={12}
                             md={2}
                             lg={2}
-                            className={styles["gridViewFolder"]}
-                          >
+                            className={styles["gridViewFolder"]}>
                             <div className={styles["fileview__Box"]}>
                               <Row>
                                 <Col sm={12} md={12} lg={12}>
                                   <img
                                     src={file_image}
                                     width={"100%"}
-                                    alt=""
-                                    draggable="false"
+                                    alt=''
+                                    draggable='false'
                                   />
                                 </Col>
                                 <Col sm={12} md={12} lg={12}>
@@ -779,34 +778,31 @@ const GridViewDataRoom = ({
                                       className={styles["folderFile__text"]}
                                       onClick={(e) =>
                                         handleClickFile(e, fileData)
-                                      }
-                                    >
+                                      }>
                                       <img
                                         src={getIconSource(
                                           getFileExtension(fileData.name)
                                         )}
-                                        alt=""
-                                        draggable="false"
+                                        alt=''
+                                        draggable='false'
                                       />{" "}
                                       {fileData.name}
                                     </span>
 
                                     <span
-                                      className={styles["three_dot__gridView"]}
-                                    >
+                                      className={styles["three_dot__gridView"]}>
                                       <Dropdown
-                                        drop="down"
-                                        align="start"
+                                        drop='down'
+                                        align='start'
                                         className={`${
                                           styles["options_dropdown"]
-                                        } ${"dataroom_options"}`}
-                                      >
-                                        <Dropdown.Toggle id="dropdown-autoclose-true">
+                                        } ${"dataroom_options"}`}>
+                                        <Dropdown.Toggle id='dropdown-autoclose-true'>
                                           <img
                                             src={threedots_dataroom}
-                                            width="15.02px"
-                                            height="10.71px"
-                                            alt=""
+                                            width='15.02px'
+                                            height='10.71px'
+                                            alt=''
                                           />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
@@ -822,8 +818,7 @@ const GridViewDataRoom = ({
                                                         data,
                                                         fileData
                                                       )
-                                                    }
-                                                  >
+                                                    }>
                                                     {data.label}
                                                   </Dropdown.Item>
                                                 );
@@ -838,8 +833,7 @@ const GridViewDataRoom = ({
                                                           data,
                                                           fileData
                                                         )
-                                                      }
-                                                    >
+                                                      }>
                                                       {data.label}
                                                     </Dropdown.Item>
                                                   );

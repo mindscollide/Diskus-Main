@@ -261,6 +261,7 @@ const updateOrganizerMeetingStatus_fail = (message) => {
 
 // Save Meeting Organizers Api
 const UpdateOrganizersMeeting = (
+  isQuickMeeting,
   navigate,
   t,
   route,
@@ -304,6 +305,7 @@ const UpdateOrganizersMeeting = (
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             UpdateOrganizersMeeting(
+              isQuickMeeting,
               navigate,
               t,
               route,
@@ -404,36 +406,23 @@ const UpdateOrganizersMeeting = (
                     setViewAdvanceMeetingModal(false);
                     dispatch(viewAdvanceMeetingPublishPageFlag(false));
                     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-                    // let searchData = {
-                    //   Date: "",
-                    //   Title: "",
-                    //   HostName: "",
-                    //   UserID: Number(userID),
-                    //   PageNumber:
-                    //     meetingPageCurrent !== null
-                    //       ? Number(meetingPageCurrent)
-                    //       : 1,
-                    //   Length:
-                    //     meetingpageRow !== null ? Number(meetingpageRow) : 50,
-                    //   PublishedMeetings:
-                    //     currentView && Number(currentView) === 1 ? true : false,
-                    // };
-                    // dispatch(searchNewUserMeeting(navigate, searchData, t));
                   } else {
                     let requestDataForMeetingDetails = {
                       MeetingID: Number(Data.MeetingID),
                     };
-                    await dispatch(
-                      ViewMeeting(
-                        navigate,
-                        requestDataForMeetingDetails,
-                        t,
-                        setViewFlag,
-                        setEditFlag,
-                        setCalendarViewModal,
-                        1
-                      )
-                    );
+                    if (isQuickMeeting) {
+                      await dispatch(
+                        ViewMeeting(
+                          navigate,
+                          requestDataForMeetingDetails,
+                          t,
+                          setViewFlag,
+                          setEditFlag,
+                          setCalendarViewModal,
+                          1
+                        )
+                      );
+                    }
                     setAdvanceMeetingModalID(Data.MeetingID);
                     setEdiorRole({
                       status: "10",

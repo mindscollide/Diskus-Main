@@ -2,33 +2,23 @@ import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalShareFile.module.css";
 import newprofile from "../../../assets/images/Mask Group 67.svg";
-import clock from "../../../assets/images/Icon metro-alarm.svg";
-import DeleteiCon from "../../../assets/images/Icon material-delete.svg";
-import userImage from "../../../assets/images/user.png";
 import crossIcon from "../../../assets/images/CrossIcon.svg";
 import download from "../../../assets/images/Icon feather-download.svg";
 import star from "../../../assets/images/startd.png";
 import pdf from "../../../assets/images/222.svg";
-import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_en from "react-date-object/locales/gregorian_en";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
   Button,
   Checkbox,
-  MultiDatePicker,
   Modal,
   Notification,
   TextField,
-  InputSearchFilter,
 } from "../../../components/elements";
-import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg";
 import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
-import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import {
-  createFileLinkApi,
   createFileLink_fail,
   createFolderLinkApi,
   shareFilesApi,
@@ -58,14 +48,8 @@ const ModalShareFile = ({
   const [notifyPeople, setNotifyPeople] = useState(false);
   const [ownerInfo, setOwnerInfo] = useState(null);
   const [message, setMessage] = useState("");
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
-  const [meetingDate, setMeetingDate] = useState("");
   const [EditNotification, setEditNotification] = useState(false);
   const [accessupdate, setAccessupdate] = useState(false);
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [onclickFlag, setOnclickFlag] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -75,7 +59,10 @@ const ModalShareFile = ({
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [personValue, setPersonValue] = useState({
+    value: 0,
+    label: "",
+  });
   const { t } = useTranslation();
 
   const [permissionID, setPermissionID] = useState({
@@ -88,7 +75,6 @@ const ModalShareFile = ({
   });
   const [getAllAssignees, setGetAllAssignees] = useState([]);
 
-  const [taskAssignedName, setTaskAssignedName] = useState("");
   const [isMembers, setMembers] = useState([]);
 
   let organizationName = localStorage.getItem("organizatioName");
@@ -104,12 +90,6 @@ const ModalShareFile = ({
     { value: 2, label: organizationName },
     { value: 3, label: t("Any-one-with-link") },
   ];
-
-  const showcalender = () => {
-    // setCalenderdate(!calenderdate);
-    // setInviteedit(!inviteedit);
-    // setExpirationheader(false);
-  };
 
   //  Copy Link  useEffect
   useEffect(() => {
@@ -138,13 +118,19 @@ const ModalShareFile = ({
   // set All User in state which was coming from api
   useEffect(() => {
     if (assignees.user.length > 0) {
-      let AssigeeUsers = assignees.user.filter(
-        (assignee) => assignee.pK_UID !== Number(userID)
-      );
-      setGetAllAssignees(AssigeeUsers);
+      let usersDataArr = [];
+      assignees.user
+        .filter((assignee) => assignee.pK_UID !== Number(userID))
+        .map((usersData, index) => {
+          usersDataArr.push({
+            value: usersData.pK_UID,
+            label: usersData.name,
+            name: usersData.name,
+          });
+        });
+      setGetAllAssignees(usersDataArr);
     }
   }, [assignees, userID]);
-
   // set All Shared data with are coming from api
   useEffect(() => {
     try {
@@ -190,15 +176,6 @@ const ModalShareFile = ({
       label: SelectedOptions.label,
       value: SelectedOptions.value,
     });
-    // if (SelectedOptions.value === 1) {
-    //   // setExpirationheader(false);
-    //   setEditNotification(false);
-    //   setAccessupdate(true);
-    // } else if (SelectedOptions.value === 2) {
-    //   // setExpirationheader(false);
-    //   setEditNotification(true);
-    //   setAccessupdate(false);
-    // }
   };
 
   // copy link api calling
@@ -212,168 +189,67 @@ const ModalShareFile = ({
     dispatch(createFolderLinkApi(navigate, t, Data, setLinkedcopied));
   };
 
-  const onSearch = (name, id) => {
-    setOnclickFlag(true);
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
-  };
-
-  //Drop Down Values
-  const searchFilterHandler = (value) => {
-    if (
-      getAllAssignees !== null &&
-      getAllAssignees !== undefined &&
-      getAllAssignees.length > 0
-    ) {
-      return getAllAssignees
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            <img
-              draggable="false"
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
-  };
-
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false);
-    if (e.target.value.trimStart() !== "") {
-      setTaskAssignedToInput(e.target.value.trimStart());
-    } else {
-      setTaskAssignedToInput("");
-      setTaskAssignedTo(0);
-      setTaskAssignedName("");
-    }
-  };
-
-  const Notificationnaccessrequest = () => {
-    if (fileData.Files.length > 0) {
-      let ShareFilesData = {
-        FileID: Number(folderId),
-        Message: message,
-        Files: fileData.Files,
-      };
-      dispatch(shareFilesApi(navigate, ShareFilesData, t));
-      setShowrequestsend(true);
-    } else {
-    }
+    setPersonValue(e);
   };
 
   const openAccessRequestModalClick = () => {
-    // if (fileData.Files.length > 0) {
-    // setShareFile(false);
     let ShareFilesData = {
       FileID: Number(folderId),
       Files: fileData.Files,
       Message: message,
     };
     dispatch(shareFilesApi(navigate, ShareFilesData, t, setShareFile));
-    // } else {
-    //   setOpen({
-    //     flag: true,
-    //     message: t("Atleast-one-user-should-be-selected-to-share-the-document"),
-    //   });
-    // }
   };
 
   const handleAddMember = () => {
     let findIndexData = fileData.Files.findIndex(
-      (listData, index) => listData.FK_UserID === taskAssignedTo
+      (listData, index) => listData.FK_UserID === personValue.value
     );
     if (permissionID.value !== 0) {
-      if (taskAssignedName !== "") {
-        if (findIndexData === -1) {
-          let Data = {
-            FK_PermissionID: JSON.parse(permissionID.value),
-            FK_UserID: taskAssignedTo,
-            ExpiryDateTime: "",
-          };
-          if (taskAssignedTo !== 0) {
-            if (assignees.user.length > 0) {
-              assignees.user.map((data, index) => {
-                if (data.pK_UID === taskAssignedTo) {
-                  setMembers([...isMembers, data]);
-                }
-              });
-            }
+      if (findIndexData === -1) {
+        let Data = {
+          FK_PermissionID: JSON.parse(permissionID.value),
+          FK_UserID: personValue.value,
+          ExpiryDateTime: "",
+        };
+        if (personValue.value !== 0) {
+          if (assignees.user.length > 0) {
+            assignees.user.map((data, index) => {
+              if (data.pK_UID === personValue.value) {
+                setMembers([...isMembers, data]);
+              }
+            });
           }
-          setFileData((prev) => {
-            return { ...prev, Files: [...prev.Files, Data] };
-          });
-          setTaskAssignedToInput("");
-          setTaskAssignedTo(0);
-          setTaskAssignedName("");
-          setPermissionID({
-            label: t("Editor"),
-            value: 2,
-          });
-          setGeneralAccess({
-            label: t("Restricted"),
-            value: 1,
-          });
-        } else {
-          setTaskAssignedToInput("");
-          setTaskAssignedTo(0);
-          setTaskAssignedName("");
-          setPermissionID({
-            label: t("Editor"),
-            value: 2,
-          });
-          setGeneralAccess({
-            label: t("Restricted"),
-            value: 1,
-          });
-          setOpen({
-            flag: true,
-            message: t("User-is-already-exist"),
-          });
         }
+        setFileData((prev) => {
+          return { ...prev, Files: [...prev.Files, Data] };
+        });
       } else {
         setOpen({
           flag: true,
-          message: t("Please-select-user"),
-        });
-        setPermissionID({
-          label: t("Editor"),
-          value: 2,
-        });
-        setGeneralAccess({
-          label: t("Restricted"),
-          value: 1,
+          message: t("User-is-already-exist"),
         });
       }
+      setPersonValue({
+        value: 0,
+        label: "",
+      });
+      setPermissionID({
+        label: t("Editor"),
+        value: 2,
+      });
+      setGeneralAccess({
+        label: t("Restricted"),
+        value: 1,
+      });
     } else {
       setOpen({
         flag: true,
         message: t("All-options-must-be-selected"),
       });
     }
-  };
-
-  const closebtn = async () => {
-    setShareFile(false);
   };
 
   const handleChangeGeneralAccess = (selectedValue) => {
@@ -422,80 +298,6 @@ const ModalShareFile = ({
               ? "md"
               : "lg"
           }
-          // ModalTitle={
-          //   <>
-          //     {expirationheader ? (
-          //       <>
-          //         {calenderdate ? (
-          //           <>
-          //             <MultiDatePicker
-          //               // onChange={meetingDateHandler}
-          //               name="MeetingDate"
-          //               value={meetingDate}
-          //               calendar={calendarValue}
-          //               locale={localValue}
-          //               // newValue={createMeeting.MeetingDate}
-          //             />
-          //           </>
-          //         ) : null}
-          //         <Row>
-          //           <Col
-          //             lg={12}
-          //             md={12}
-          //             sm={12}
-          //             className={styles["Expiration_header_background"]}
-          //           >
-          //             <Row>
-          //               <Col
-          //                 lg={12}
-          //                 md={12}
-          //                 sm={12}
-          //                 className="d-flex justify-content-center gap-3"
-          //               >
-          //                 <img
-          //                   draggable="false"
-          //                   src={clock}
-          //                   height="14.66px"
-          //                   alt=""
-          //                   width="14.97px"
-          //                 />
-          //                 <span
-          //                   className={styles["Text_for_header_expiration"]}
-          //                 >
-          //                   {t("Access-expires-on")} Apr 20 11:11PM
-          //                 </span>
-          //                 <Row className={styles["margin"]}>
-          //                   <Col
-          //                     lg={12}
-          //                     md={12}
-          //                     sm={12}
-          //                     className="d-flex gap-2"
-          //                   >
-          //                     <img
-          //                       draggable="false"
-          //                       src={EditIconNote}
-          //                       height="11.11px"
-          //                       alt=""
-          //                       width="11.54px"
-          //                       onClick={showcalender}
-          //                     />
-          //                     <img
-          //                       draggable="false"
-          //                       src={DeleteiCon}
-          //                       width="9.47px"
-          //                       alt=""
-          //                       height="11.75px"
-          //                     />
-          //                   </Col>
-          //                 </Row>
-          //               </Col>
-          //             </Row>
-          //           </Col>
-          //         </Row>
-          //       </>
-          //     ) : null}
-          //   </>
-          // }
           ModalBody={
             <>
               {inviteedit ? (
@@ -516,6 +318,7 @@ const ModalShareFile = ({
                           src={newprofile}
                           height="40px"
                           width="41px"
+                          alt=""
                         />
                         <Row className="mt-1">
                           <Col
@@ -572,6 +375,7 @@ const ModalShareFile = ({
                                   src={pdf}
                                   height="16px"
                                   width="14.23px"
+                                  alt=""
                                 />
                                 <span className={styles["File_name"]}>
                                   Merger proposal for ABC Industries.pdf
@@ -588,11 +392,13 @@ const ModalShareFile = ({
                                   src={download}
                                   height="11px"
                                   width="12.15px"
+                                  alt=""
                                 />
                                 <img
                                   draggable="false"
                                   src={star}
                                   height="10.22px"
+                                  alt=""
                                   width="12.07px"
                                 />
                               </Col>
@@ -615,17 +421,12 @@ const ModalShareFile = ({
                     </Row>
                     <Row className="mt-3">
                       <Col lg={7} md={7} sm={12}>
-                        <InputSearchFilter
-                          labelClass="d-none"
-                          flag={1}
-                          applyClass="sharefoldersearchInput"
-                          placeholder={t("Search-member-here")}
-                          value={taskAssignedToInput}
-                          filteredDataHandler={searchFilterHandler(
-                            taskAssignedToInput
-                          )}
-                          change={onChangeSearch}
-                          onclickFlag={onclickFlag}
+                        <Select
+                          isSearchable={true}
+                          value={personValue.value !== 0 ? personValue : null}
+                          placeholder={t("Select-members")}
+                          options={getAllAssignees}
+                          onChange={onChangeSearch}
                         />
                       </Col>
                       <Col lg={3} md={3} sm={3}>
@@ -707,6 +508,7 @@ const ModalShareFile = ({
                                           onClick={() =>
                                             handleRemoveMember(data)
                                           }
+                                          alt=""
                                         />
                                       }
                                     />

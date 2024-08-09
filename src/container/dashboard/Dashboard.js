@@ -3,13 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
-import {
-  Button,
-  Loader,
-  LoaderPanel,
-  Modal,
-  Notification,
-} from "../../components/elements";
+import { Button, Loader, Modal, Notification } from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -18,7 +12,6 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setRecentActivityDataNotification } from "../../store/actions/GetUserSetting";
 import VideoCallScreen from "../../components/layout/talk/videoCallScreen/VideoCallScreen";
 import VideoMaxIncoming from "../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxIncoming";
-import VideoOutgoing from "../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxOutgoing";
 import {
   incomingVideoCallFlag,
   videoOutgoingCallFlag,
@@ -34,7 +27,6 @@ import {
   meetingCount,
   setMQTTRequestUpcomingEvents,
   mqttCurrentMeetingEnded,
-  GetUpcomingEvents,
   GetUpcomingEventsForMQTT,
   createGroupMeeting,
   createCommitteeMeeting,
@@ -129,7 +121,6 @@ import {
   resolutionMQTTClosed,
   resolutionMQTTCreate,
 } from "../../store/actions/Resolution_actions";
-import { useWindowSize } from "../../commen/functions/test";
 import {
   createGoogleEventMQTT,
   createMicrosftEventMQTT,
@@ -146,13 +137,18 @@ import {
 import { Col, Row } from "react-bootstrap";
 import InternetConnectivityModal from "../pages/UserMangement/ModalsUserManagement/InternetConnectivityModal/InternetConnectivityModal";
 import { InsternetDisconnectModal } from "../../store/actions/UserMangementModalActions";
+import {
+  fileRemoveMQTT,
+  fileSharedMQTT,
+  folderRemoveMQTT,
+  folderSharedMQTT,
+} from "../../store/actions/DataRoom_actions";
 
 const Dashboard = () => {
   const location = useLocation();
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   const {
-    talkStateData,
     videoFeatureReducer,
     assignees,
     CommitteeReducer,
@@ -181,7 +177,6 @@ const Dashboard = () => {
     PollsReducer,
     NewMeetingreducer,
     LanguageReducer,
-    VideoMainReducer,
     webViewer,
     MeetingOrganizersReducer,
     MeetingAgendaReducer,
@@ -192,16 +187,8 @@ const Dashboard = () => {
     DataRoomFileAndFoldersDetailsReducer,
     SignatureWorkFlowReducer,
     UserMangementReducer,
-    UserManagementModals,
     MinutesReducer,
   } = useSelector((state) => state);
-
-  console.log(
-    UserManagementModals,
-    "UserManagementModalsUserManagementModalsUserManagementModalsz"
-  );
-
-  // const [socket, setSocket] = useState(Helper.socket);
 
   const navigate = useNavigate();
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -256,10 +243,7 @@ const Dashboard = () => {
   const isInternetDisconnectModalVisible = useSelector(
     (state) => state.UserManagementModals.internetDisconnectModal
   );
-  console.log(checkInternet.onLine, "checkInternet");
   useEffect(() => {
-    console.log(checkInternet.onLine, "checkInternet");
-
     if (checkInternet.onLine) {
       dispatch(InsternetDisconnectModal(false));
     } else {
@@ -272,10 +256,7 @@ const Dashboard = () => {
     var max = 90000;
     var id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
-    console.log(
-      "Connected to MQTT broker onMessageArrived",
-      JSON.parse(msg.payloadString)
-    );
+    console.log(data, " MQTT onMessageArrived")
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
         // if (data.action && data.payload ) {
@@ -583,13 +564,7 @@ const Dashboard = () => {
             "MeetingNotConductedNotification".toLowerCase()
           ) {
             try {
-              console.log(
-                "MeetingNotConductedNotificationMeetingNotConductedNotification"
-              );
               dispatch(meetingNotConductedMQTT(data.payload));
-              console.log(
-                "MeetingNotConductedNotificationMeetingNotConductedNotification"
-              );
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1005,6 +980,131 @@ const Dashboard = () => {
             };
             dispatch(setRecentActivityDataNotification(data2));
           }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "ORGANIZATION_SUBSCRIPTION_INACTIVE".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: t("Your-subscription-status-has-been-set-to-in-active"),
+            });
+          }
+          setNotificationID(id);
+
+          if (data.payload.isLoggedOut) {
+            setTimeout(() => {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }, 4000);
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "ORGANIZATION_SUBSCRIPTION_SUSPENDED".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: t("Your-subscription-has-been-suspended"),
+            });
+          }
+          setNotificationID(id);
+
+          if (data.payload.isLoggedOut) {
+            setTimeout(() => {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }, 4000);
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "ORGANIZATION_STATUS_INACTIVE".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: t("Your-organization-status-has-been-set-to-in-active"),
+            });
+          }
+          setNotificationID(id);
+
+          if (data.payload.isLoggedOut) {
+            setTimeout(() => {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }, 4000);
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "ORGANIZATION_STATUS_SUSPENDED".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: t("Your-organization-status-has-been-suspended"),
+            });
+          }
+          setNotificationID(id);
+
+          if (data.payload.isLoggedOut) {
+            setTimeout(() => {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }, 4000);
+          }
+        } else if (
+          data.payload.message.toLowerCase() === "FILE_SHARED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  `${data?.payload?.data?.displayFileName} document shared with you`
+                ),
+              });
+            }
+            setNotificationID(id);
+            dispatch(fileSharedMQTT(data.payload));
+          } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  `${data?.payload?.data?.displayFolderName} folder shared with you`
+                ),
+              });
+            }
+            setNotificationID(id);
+            dispatch(folderSharedMQTT(data.payload));
+          } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "FILE_SHARING_REMOVED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: `file remove to you`,
+              });
+            }
+            setNotificationID(id);
+            dispatch(fileRemoveMQTT(data?.payload?.fileID));
+          } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() === "FOLDER_SHARING_REMOVED"
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: ` folder remove to you`,
+              });
+            }
+            setNotificationID(id);
+            dispatch(folderRemoveMQTT(data?.payload?.fileID));
+          } catch (error) {}
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
@@ -1034,7 +1134,7 @@ const Dashboard = () => {
               notificationShow: true,
               message: changeMQTTJSONOne(
                 t("NEW_MEMBER_ADDED_IN_COMMITTEE"),
-                "[Committe Title]",
+                "[Committee Title]",
                 data.payload.committees.committeesTitle.substring(0, 100)
               ),
               // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
@@ -1211,8 +1311,6 @@ const Dashboard = () => {
               // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
           }
-          console.log("CheckCheckCheck", data.payload.message);
-          console.log("CheckCheckCheck", data.payload);
           dispatch(realtimeGroupStatusResponse(data.payload));
           setNotificationID(id);
         }
@@ -1876,7 +1974,6 @@ const Dashboard = () => {
             }
             localStorage.setItem("newCallerID", callerID);
             localStorage.setItem("initiateVideoCall", false);
-            let roomID = Number(localStorage.getItem("NewRoomID"));
             let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
             let activeRoomID = Number(localStorage.getItem("activeRoomID"));
             dispatch(incomingVideoCallFlag(false));
@@ -1914,7 +2011,6 @@ const Dashboard = () => {
             }
             localStorage.setItem("newCallerID", callerID);
             localStorage.setItem("initiateVideoCall", false);
-            let roomID = Number(localStorage.getItem("NewRoomID"));
             let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
             let activeRoomID = Number(localStorage.getItem("activeRoomID"));
             dispatch(incomingVideoCallFlag(false));
@@ -1984,7 +2080,6 @@ const Dashboard = () => {
           "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()
         ) {
           let callerID = Number(localStorage.getItem("callerID"));
-          let newCallerID = Number(localStorage.getItem("newCallerID"));
           // if (callerID === newCallerID) {
           //   localStorage.setItem('activeCall', false)
           // }
@@ -2151,11 +2246,6 @@ const Dashboard = () => {
           let getToken =
             localStorage.getItem("token") !== null &&
             localStorage.getItem("token");
-          console.log(
-            getToken,
-            data.payload.authToken.token,
-            "USER_LOGIN_ACTIVITYUSER_LOGIN_ACTIVITY"
-          );
           if (getToken !== data?.payload?.authToken?.token) {
             dispatch(userLogOutApiFunc(navigate, t));
           }
@@ -2191,16 +2281,6 @@ const Dashboard = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
-
-  let videoGroupPanel = localStorage.getItem("VideoPanelGroup");
-
-  const [isVideoPanel, setVideoPanel] = useState(false);
-
-  useEffect(() => {
-    if (videoGroupPanel !== undefined) {
-      setVideoPanel(videoGroupPanel);
-    }
-  }, [videoGroupPanel]);
 
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 
@@ -2327,12 +2407,7 @@ const Dashboard = () => {
             <VideoCallScreen />
           ) : null}
           {!navigator.onLine ? (
-            <React.Fragment>
-              {/* Display alert when offline */}
-              {console.log(
-                "No internet connection. Please check your connection."
-              )}
-            </React.Fragment>
+            <React.Fragment></React.Fragment>
           ) : // Check for loading states to determine whether to display loader
           NewMeetingreducer.Loading ||
             assignees.Loading ||

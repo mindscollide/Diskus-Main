@@ -1832,7 +1832,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
                       }
                       variant={"Primary"}
-                      text={t("Agendas")}
+                      text={t("Agenda")}
                       onClick={changeSelectAgenda}
                       datatut="show-agenda"
                     />
@@ -2011,7 +2011,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         name="MeetingLocation"
                         applyClass="form-control2"
                         type="text"
-                        placeholder={t("Location")}
+                        placeholder={t("Location-Videourl")}
                         value={createMeeting.MeetingLocation}
                         required={true}
                         maxLength={245}

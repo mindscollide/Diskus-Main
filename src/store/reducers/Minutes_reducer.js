@@ -21,7 +21,6 @@ const initialState = {
   currentMeetingMinutesToReview: null,
   SaveMinutesReviewFlowData: null,
   DeleteMinuteReducerData: null,
-  DeleteMinuteReducerData: null,
   EditSingleMinuteData: null,
   UpdateMinuteFlag: false,
   GetMinutesVersionHistorywithCommentsData: null,
@@ -37,6 +36,7 @@ const initialState = {
   currentMeetingMinutesToReviewData: null,
   ResendUpdatedMinuteForReviewData: null,
   PendingApprovalStatsThisWeek: null,
+  ResponseMessage: "",
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -386,7 +386,7 @@ const MinutesReducer = (state = initialState, action) => {
     case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_FAIL: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         GetMinuteReviewFlowByMeetingIdData: null,
         ResponseMessage: action.message,
       };

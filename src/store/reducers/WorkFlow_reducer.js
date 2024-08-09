@@ -20,6 +20,7 @@ const initialState = {
   deleteSignatureDocument: null,
   getAllSignatoriesStatusWise: null,
   updateActorBundleStatus: null,
+  getDashboardPendingApprovalData: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -400,6 +401,28 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         updateActorBundleStatus: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETDASHBOARDPENDINGAPPROVALDATA_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETDASHBOARDPENDINGAPPROVALDATA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getDashboardPendingApprovalData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETDASHBOARDPENDINGAPPROVALDATA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getDashboardPendingApprovalData: null,
         ResponseMessage: action.message,
       };
     }

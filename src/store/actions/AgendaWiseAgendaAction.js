@@ -77,7 +77,7 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
                 t,
                 currentMeeting,
                 false,
-                setAddReviewers
+                false
               )
             );
 

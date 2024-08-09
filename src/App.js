@@ -22,7 +22,7 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
-import { Loader, Modal, Button } from "./components/elements";
+import { Loader } from "./components/elements";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
 import axios from "axios";
@@ -32,7 +32,7 @@ const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
-  console.log(updateVersion, "updateVersionupdateVersion");
+
   useEffect(() => {
     // Function to fetch the current version from version.json
     const fetchVersion = async () => {
@@ -52,14 +52,6 @@ const App = () => {
       const latestVersion = await fetchVersion();
       if (latestVersion && currentVersion && currentVersion !== latestVersion) {
         setUpdateVersion(true);
-        // If versions differ, prompt user to refresh or auto-refresh
-        // if (
-        //   window.confirm(
-        //     "A new version of the application is available. Refresh now?"
-        //   )
-        // ) {
-        //   window.location.reload();
-        // }
       } else if (!currentVersion) {
         // Set the initial version if it's not set
         setCurrentVersion(latestVersion);
@@ -71,7 +63,6 @@ const App = () => {
 
     // Set up polling interval to check for version updates
     const intervalId = setInterval(checkVersion, POLLING_INTERVAL);
-    console.log("versionversionversion", intervalId);
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, [currentVersion]);
@@ -88,7 +79,6 @@ const App = () => {
             updateVersion={updateVersion}
           />
         )}
-        // {/* )} */}
       </Suspense>
       {/* <Notification /> */}
     </>

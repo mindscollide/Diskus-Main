@@ -26,6 +26,8 @@ import {
 } from "../../commen/apis/Api_config";
 import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
 import {
+  AllDocumentsForAgendaWiseMinutesApiFunc,
+  DocumentsOfMeetingGenralMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   GetAllGeneralMinutesApiFunc,
 } from "./NewMeetingActions";
@@ -1457,7 +1459,7 @@ const getMinuteReviewFlowByMeetingId_Fail = (message, response) => {
 };
 
 //GetMinuteReviewFlowByMeetingId
-const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
+const GetMinuteReviewFlowByMeetingId = (Data, navigate, t, setAddReviewers) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMinuteReviewFlowByMeetingId_Init());
@@ -1475,7 +1477,9 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetMinuteReviewFlowByMeetingId(Data, navigate, t));
+          dispatch(
+            GetMinuteReviewFlowByMeetingId(Data, navigate, t, setAddReviewers)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1491,6 +1495,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                   t("Data-available")
                 )
               );
+              setAddReviewers(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1504,6 +1509,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                   t("No-data-available", data)
                 )
               );
+              setAddReviewers(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1518,6 +1524,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                   data
                 )
               );
+              setAddReviewers(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1607,6 +1614,7 @@ const MeetingPublishedMinutesApi = (Data, navigate, t) => {
                 )
               );
               localStorage.setItem("isMinutePublished", true);
+              dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1695,6 +1703,7 @@ const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
                   t("Record-available")
                 )
               );
+
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

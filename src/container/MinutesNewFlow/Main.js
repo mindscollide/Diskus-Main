@@ -29,7 +29,6 @@ const MinutesFlow = () => {
 
   useEffect(() => {
     if (
-      MinutesReducer.ResponseMessage.trim() !== "" &&
       MinutesReducer.ResponseMessage !== t("No-record-found") &&
       MinutesReducer.ResponseMessage !== t("No-records-found") &&
       MinutesReducer.ResponseMessage !== "" &&
