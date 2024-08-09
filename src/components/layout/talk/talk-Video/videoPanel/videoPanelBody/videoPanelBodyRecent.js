@@ -101,33 +101,36 @@ const VideoPanelBodyRecent = () => {
     setSearchChatValue(e);
     try {
       if (
-        VideoMainReducer.RecentCallsData !== undefined &&
-        VideoMainReducer.RecentCallsData !== null &&
-        VideoMainReducer.RecentCallsData.length !== 0
+        VideoMainReducer.RecentCallsData &&
+        VideoMainReducer.RecentCallsData.videoCallHistory &&
+        VideoMainReducer.RecentCallsData.videoCallHistory.length !== 0
       ) {
-        if (e !== "") {
-          let filteredData =
+        if (e) {
+          const filteredData =
             VideoMainReducer.RecentCallsData.videoCallHistory.filter(
               (value) => {
-                return value.callerName.toLowerCase().includes(e.toLowerCase());
+                return (
+                  value.recipients[0].userName
+                    .toLowerCase()
+                    .includes(e.toLowerCase()) ||
+                  value.callerName.toLowerCase().includes(e.toLowerCase())
+                );
               }
             );
-          if (filteredData.length === 0) {
-            setRecentVideoCalls(
-              VideoMainReducer.RecentCallsData.videoCallHistory
-            );
-          } else {
-            setRecentVideoCalls(filteredData);
-          }
-        } else if (e === "" || e === null) {
-          let data = VideoMainReducer.RecentCallsData.videoCallHistory;
-          setSearchChatValue("");
-          setRecentVideoCalls(data);
+          setRecentVideoCalls(filteredData.length > 0 ? filteredData : []);
+        } else {
+          // When search input is empty, reset to original data
+          setRecentVideoCalls(
+            VideoMainReducer.RecentCallsData.videoCallHistory
+          );
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("Error in searchChat:", error);
+    }
   };
 
+  console.log("Video Call User Data", VideoMainReducer);
   useEffect(() => {
     let Data = {
       OrganizationID: currentOrganization,
@@ -409,7 +412,7 @@ const VideoPanelBodyRecent = () => {
     <>
       <Container>
         {videoFeatureReducer.VideoChatSearchFlag === true ? (
-          <Row key={Math.random()}>
+          <Row>
             <Col lg={12} md={12} sm={12} className="mt-2">
               <TextField
                 maxLength={200}
