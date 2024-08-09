@@ -101,7 +101,10 @@ const VideoPanelHeader = () => {
             onClick={preventPropagation}
           />
         </div>
-        <div className="d-flex align-items-center justify-content-center" onClick={videoSearchFilterChat}>
+        <div
+          className="d-flex align-items-center justify-content-center cursor-pointer"
+          onClick={videoSearchFilterChat}
+        >
           <img src={SearchIcon} className="img-cover" width={20} />
         </div>
       </section>
