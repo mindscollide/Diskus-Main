@@ -355,3 +355,15 @@ export const findAndSetConfigValue = (data, key) => {
   const foundObject = data.find((obj) => obj.configKey === key);
   return foundObject;
 };
+export const truncateText = (text, maxLength) => {
+  console.log(
+    text.length,
+    maxLength,
+    text.length > maxLength,
+    "truncateTexttruncateText"
+  );
+  if (text.length > maxLength) {
+    return `${text.substring(0, maxLength - 3)}...`;
+  }
+  return text;
+};

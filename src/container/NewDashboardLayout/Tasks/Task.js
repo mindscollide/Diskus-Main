@@ -316,10 +316,10 @@ const Task = () => {
           </>
         )}
       </div>
-      {todoViewModal ? (
+      {viewFlagToDo ? (
         <ModalViewToDo
-          viewFlagToDo={todoViewModal}
-          setViewFlagToDo={setTodoViewModal}
+          viewFlagToDo={viewFlagToDo}
+          setViewFlagToDo={setViewFlagToDo}
         />
       ) : showTodo ? (
         <ModalToDoList show={showTodo} setShow={setShowTodo} />
