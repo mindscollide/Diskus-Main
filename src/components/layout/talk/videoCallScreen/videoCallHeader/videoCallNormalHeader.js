@@ -508,7 +508,7 @@ const VideoCallNormalHeader = ({
                         alt=""
                       />
                     </div>
-                    <div className="participants-list" key={Math.random()}>
+                    <div className="participants-list">
                       {currentParticipants !== undefined &&
                       currentParticipants !== null &&
                       currentParticipants.length > 0
@@ -567,6 +567,7 @@ const VideoCallNormalHeader = ({
                     </div>
                   </Tooltip>
                 )}
+                <span className="participants-counter">3</span>
               </div>
             ) : null}
 

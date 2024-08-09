@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Row, Col } from "react-bootstrap";
 import { Button } from "./../../../../elements";
-import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
 import { Tooltip } from "antd";
 import "./videoCallHeader.css";
 import {
@@ -14,16 +13,22 @@ import {
   leaveCallModal,
   minimizeParticipantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
-import MinimizeScreenShare from "../../../../../assets/images/newElements/MinimizeScreenShare.png";
-import MinimizeParticipant from "../../../../../assets/images/newElements/MinimizeParticipants.png";
-import MinimizeMicIcon from "../../../../../assets/images/newElements/MinimizeMicIcon.png";
-import MinimizeExpandIcon from "../../../../../assets/images/newElements/MinimizeExpandIcon.png";
-import MinimizeVideoIcon from "../../../../../assets/images/newElements/MinimizeVideoIcon.png";
-import CallEndRedIcon from "../../../../../assets/images/newElements/CallRedIcon.svg";
-import MinToNormalIcon from "../../../../../assets/images/newElements/Min-to-normal-Icon.svg";
-import ActiveParticipantIcon from "../../../../../assets/images/Active-Participant-Icon.png";
-import MicOffIcon from "../../../../../assets/images/Mic-OFF-WB.svg";
-import VideoOffIcon from "../../../../../assets/images/Video-OFF-WB.svg";
+import AddParticipant from "./../../talk-Video/video-images/Add Participant Purple.svg";
+import ExpandIcon from "./../../talk-Video/video-images/Expand White.svg";
+import MinToNormalIcon from "./../../talk-Video/video-images/Half Video Screen.svg";
+import NonActiveScreenShare from "./../../talk-Video/video-images/Screen Share Purple.svg";
+import videoEndIcon from "./../../talk-Video/video-images/Call End White.svg";
+import TileView from "./../../talk-Video/video-images/Tile View 1 Purple.svg";
+import SidebarView from "./../../talk-Video/video-images/Tile View 3 Purple.svg";
+import MicOn from "./../../talk-Video/video-images/Minimize Mic Enabled.svg";
+import VideoOn from "./../../talk-Video/video-images/Minimize Video Enabled.svg";
+import MicOff from "./../../talk-Video/video-images/Minimize Mic Disabled.svg";
+import VideoOff from "./../../talk-Video/video-images/Minimize Video Disabled.svg";
+import ChatIcon from "./../../talk-Video/video-images/Chat Purple.svg";
+import CallEndRedIcon from "./../../talk-Video/video-images/Call End Red.svg";
+import NormalizeIcon from "./../../talk-Video/video-images/Collapse.svg";
+import ActiveParticipantIcon from "./../../talk-Video/video-images/Users White.svg";
+import ParticipantsIcon from "./../../talk-Video/video-images/Users Purple.svg";
 
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 
@@ -184,28 +189,16 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     localStorage.setItem("VidOff", true);
   };
 
-  const disableMic = () => {
-    console.log("Disable Mic");
-    localStorage.setItem("MicOff", false);
-    setLocalMicStatus(false);
+  const toggleMic = (status) => {
+    console.log(status ? "Enable Mic" : "Disable Mic");
+    localStorage.setItem("MicOff", status);
+    setLocalMicStatus(status);
   };
 
-  const enableMic = () => {
-    console.log("Enable Mic");
-    localStorage.setItem("MicOff", true);
-    setLocalMicStatus(true);
-  };
-
-  const disableVideo = () => {
-    console.log("Disable Video");
-    localStorage.setItem("VidOff", false);
-    setLocalVidStatus(false);
-  };
-
-  const enableVideo = () => {
-    console.log("Enable Video");
-    localStorage.setItem("VidOff", true);
-    setLocalVidStatus(true);
+  const toggleVideo = (status) => {
+    console.log(status ? "Enable Video" : "Disable Video");
+    localStorage.setItem("VidOff", status);
+    setLocalVidStatus(status);
   };
 
   useEffect(() => {}, [localMicStatus, localVidStatus]);
@@ -292,140 +285,145 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               </p>
             </Col>
           )}
+
           <Col lg={4} md={4} sm={12}>
             <div className="minimize-screen-on-bottom">
+              <div
+                onClick={() => toggleVideo(!localVidStatus)}
+                className={
+                  videoFeatureReducer.LeaveCallModalFlag === true
+                    ? "grayScaleImage"
+                    : "cursor-pointer"
+                }
+              >
+                <Tooltip
+                  placement="topRight"
+                  title={
+                    localVidStatus ? t("Disable-video") : t("Enable-video")
+                  }
+                >
+                  <img src={localVidStatus ? VideoOn : VideoOff} alt="" />
+                </Tooltip>
+              </div>
+
+              <div
+                onClick={() => toggleMic(!localMicStatus)}
+                className={
+                  videoFeatureReducer.LeaveCallModalFlag === true
+                    ? "grayScaleImage"
+                    : "cursor-pointer"
+                }
+              >
+                <Tooltip
+                  placement="topRight"
+                  title={localMicStatus ? t("Disable-mic") : t("Enable-mic")}
+                >
+                  <img src={localMicStatus ? MicOn : MicOff} alt="" />
+                </Tooltip>
+              </div>
+
               {callerID === currentUserID &&
               (callTypeID === 2 || currentCallType === 2) ? (
                 <div
-                  className="positionRelative minimize-Participant-Toggle"
+                  className="position-relative"
                   ref={participantPopupDisable}
                 >
                   {videoFeatureReducer.MinimizeParticipantPopupFlag === true ? (
                     <>
-                      <Tooltip placement="bottomLeft" title={t("Participants")}>
-                        <img
-                          className={
-                            videoFeatureReducer.LeaveCallModalFlag === true
-                              ? "grayScaleImage"
-                              : "cursor-pointer"
-                          }
-                          src={ActiveParticipantIcon}
-                          alt="Normal Screen Participant"
-                          onClick={closeParticipantHandler}
-                          height={30}
-                          width={30}
-                        />
-                      </Tooltip>
-                      <div className="minimize-participants-list">
-                        <Row className="m-0">
-                          <Col className="p-0" lg={8} md={8} sm={12}>
-                            <p className="participant-name">
-                              {currentUserName}
-                            </p>
-                          </Col>
-                          <Col className="p-0" lg={4} md={4} sm={12}>
-                            <p className="participant-state">Host</p>
-                          </Col>
-                        </Row>
-                        {currentParticipants !== undefined &&
-                        currentParticipants !== null &&
-                        currentParticipants.length > 0
-                          ? currentParticipants.map(
-                              (participantData, index) => {
-                                console.log(
-                                  "participantStatus",
-                                  participantStatus[0]
-                                );
-                                const matchingStatus =
-                                  participantStatus[0].find(
-                                    (status) =>
-                                      status.RecipientID ===
-                                        participantData.userID &&
-                                      status.RoomID === initiateRoomID
+                      <div className="active-state">
+                        <Tooltip
+                          placement="bottomLeft"
+                          title={t("Participants")}
+                        >
+                          <img
+                            src={ActiveParticipantIcon}
+                            alt="Normal Screen Participant"
+                            onClick={closeParticipantHandler}
+                          />
+                        </Tooltip>
+                        <div className="minimize-participants-list">
+                          <Row className="m-0">
+                            <Col className="p-0" lg={8} md={8} sm={12}>
+                              <p className="participant-name">
+                                {currentUserName}
+                              </p>
+                            </Col>
+                            <Col className="p-0" lg={4} md={4} sm={12}>
+                              <p className="participant-state">Host</p>
+                            </Col>
+                          </Row>
+                          {currentParticipants !== undefined &&
+                          currentParticipants !== null &&
+                          currentParticipants.length > 0
+                            ? currentParticipants.map(
+                                (participantData, index) => {
+                                  console.log(
+                                    "participantStatus",
+                                    participantStatus[0]
                                   );
-                                return (
-                                  <Row className="m-0" key={index}>
-                                    <Col className="p-0" lg={8} md={8} sm={12}>
-                                      <p className="participant-name">
-                                        {participantData.userName}
-                                      </p>
-                                    </Col>
-                                    <Col className="p-0" lg={4} md={4} sm={12}>
-                                      <p className="participant-state">
-                                        {matchingStatus
-                                          ? matchingStatus.CallStatus
-                                          : "Calling..."}
-                                      </p>
-                                    </Col>
-                                  </Row>
-                                );
-                              }
-                            )
-                          : null}
+                                  const matchingStatus =
+                                    participantStatus[0].find(
+                                      (status) =>
+                                        status.RecipientID ===
+                                          participantData.userID &&
+                                        status.RoomID === initiateRoomID
+                                    );
+                                  return (
+                                    <Row className="m-0" key={index}>
+                                      <Col
+                                        className="p-0"
+                                        lg={8}
+                                        md={8}
+                                        sm={12}
+                                      >
+                                        <p className="participant-name">
+                                          {participantData.userName}
+                                        </p>
+                                      </Col>
+                                      <Col
+                                        className="p-0"
+                                        lg={4}
+                                        md={4}
+                                        sm={12}
+                                      >
+                                        <p className="participant-state">
+                                          {matchingStatus
+                                            ? matchingStatus.CallStatus
+                                            : "Calling..."}
+                                        </p>
+                                      </Col>
+                                    </Row>
+                                  );
+                                }
+                              )
+                            : null}
+                        </div>
                       </div>
                     </>
                   ) : (
-                    <Tooltip placement="bottomLeft" title={t("Participants")}>
-                      <img
-                        className={
-                          videoFeatureReducer.LeaveCallModalFlag === true
-                            ? "grayScaleImage"
-                            : "cursor-pointer"
-                        }
-                        src={MinimizeParticipant}
-                        onClick={closeParticipantHandler}
-                        height={20}
-                        alt={"Minimize Participant"}
-                        width={25}
-                      />
-                    </Tooltip>
+                    <div
+                      className={
+                        videoFeatureReducer.LeaveCallModalFlag === true
+                          ? "grayScaleImage"
+                          : "inactive-state"
+                      }
+                    >
+                      <Tooltip placement="bottomLeft" title={t("Participants")}>
+                        <img
+                          src={ParticipantsIcon}
+                          onClick={closeParticipantHandler}
+                          alt={"Minimize Participant"}
+                        />
+                      </Tooltip>
+                    </div>
                   )}
                 </div>
               ) : null}
 
-              {localVidStatus === true ? (
-                <Tooltip placement="bottomLeft" title={t("Disable-video")}>
-                  <img
-                    src={MinimizeVideoIcon}
-                    className={"minimize-video-icon cursor-pointer"}
-                    alt="Minimize Video Icon"
-                    onClick={disableVideo}
-                  />
-                </Tooltip>
-              ) : (
-                <Tooltip placement="bottomLeft" title={t("Enable-video")}>
-                  <img
-                    src={VideoOffIcon}
-                    className={"minimize-video-icon cursor-pointer"}
-                    alt="Minimize Video Icon"
-                    onClick={enableVideo}
-                  />
-                </Tooltip>
-              )}
-              {localMicStatus === true ? (
-                <Tooltip placement="bottomLeft" title={t("Disable-mic")}>
-                  <img
-                    className="cursor-pointer"
-                    src={MinimizeMicIcon}
-                    alt="Minimize Mic Icon"
-                    onClick={disableMic}
-                  />
-                </Tooltip>
-              ) : (
-                <Tooltip placement="bottomLeft" title={t("Enable-mic")}>
-                  <img
-                    className="cursor-pointer"
-                    src={MicOffIcon}
-                    alt="Minimize Mic Icon"
-                    onClick={enableMic}
-                  />
-                </Tooltip>
-              )}
               {videoFeatureReducer.LeaveCallModalFlag === true &&
               callerID === currentUserID ? (
                 <Tooltip placement="bottomLeft" title={t("Cancel")}>
                   <img
-                    width={25}
                     onClick={cancelLeaveCallOption}
                     src={videoEndIcon}
                     alt="Icon Video"
@@ -437,7 +435,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                 callerID === 0 ? (
                 <Tooltip placement="bottomLeft" title={t("End-call")}>
                   <img
-                    width={25}
                     src={CallEndRedIcon}
                     onClick={openVideoPanel}
                     alt="Icon Video"
@@ -448,7 +445,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                 callerID !== currentUserID ? (
                 <Tooltip placement="bottomLeft" title={t("End-call")}>
                   <img
-                    width={35}
                     src={CallEndRedIcon}
                     onClick={minimizeEndCallParticipant}
                     alt="Icon Video"
@@ -466,7 +462,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               </Tooltip>
               <Tooltip placement="bottomLeft" title={t("Maximize-screen")}>
                 <img
-                  src={MinimizeExpandIcon}
+                  src={ExpandIcon}
                   // className="minimize-expand-icon"
                   onClick={maximizePanel}
                   className="min-to-max-icon cursor-pointer"

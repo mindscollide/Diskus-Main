@@ -424,3 +424,16 @@ body[dir="rtl"] .video_maximize_icon img {
   cursor: pointer;
   margin-right: 10px;
 }
+
+span.participants-counter {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color: #fff;
+  width: 16px;
+  border-radius: 100%;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+}
