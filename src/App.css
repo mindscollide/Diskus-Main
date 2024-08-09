@@ -1,8 +1,8 @@
 ::-webkit-scrollbar {
-  width: 0.5rem !important;
+  width: 0.3rem !important;
   border-radius: 20px !important;
   background-color: #f2f2f2 !important;
-  height: 0.5rem !important;
+  height: 0.3rem !important;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -2821,9 +2821,9 @@ input#Participant::placeholder {
 .updateVersion .modal-dialog.modal-dialog-centered {
   height: auto !important;
 }
-.modal-dialog.modal-dialog-centered {
+/* .modal-dialog.modal-dialog-centered {
   height: 640px !important;
-}
+} */
 
 .ToDo .ant-table table {
   border-spacing: 0 10px !important;
