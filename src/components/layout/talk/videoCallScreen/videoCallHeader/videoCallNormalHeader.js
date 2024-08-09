@@ -6,11 +6,13 @@ import "./videoCallHeader.css";
 import { Button } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { Tooltip } from "antd";
+import AddParticipant from "./../../talk-Video/video-images/Add Participant Purple.svg";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
 import NonActiveScreenShare from "./../../talk-Video/video-images/Screen Share Purple.svg";
 import videoEndIcon from "./../../talk-Video/video-images/Call End White.svg";
-import LayoutIconPurple from "./../../talk-Video/video-images/Tile View 3 Purple.svg";
+import TileView from "./../../talk-Video/video-images/Tile View 1 Purple.svg";
+import SidebarView from "./../../talk-Video/video-images/Tile View 3 Purple.svg";
 import MicOn from "./../../talk-Video/video-images/Mic Enabled Purple.svg";
 import VideoOn from "./../../talk-Video/video-images/Video Enabled Purple.svg";
 import MicOff from "./../../talk-Video/video-images/Mic Disabled White.svg";
@@ -46,6 +48,7 @@ const VideoCallNormalHeader = ({
   disableVideo,
   isMicActive,
   isVideoActive,
+  showTile,
 }) => {
   const { videoFeatureReducer, VideoMainReducer, talkStateData } = useSelector(
     (state) => state
@@ -337,16 +340,16 @@ const VideoCallNormalHeader = ({
     <>
       <Row className="mb-4">
         {currentCallType === 2 && callTypeID === 2 && meetingTitle === "" ? (
-          <Col lg={5} md={5} sm={12} className="mt-1">
+          <Col lg={3} md={3} sm={12} className="mt-1">
             <p className="title-heading">{t("Group-call")}</p>
           </Col>
         ) : (currentCallType === 2 || callTypeID === 2) &&
           meetingTitle !== "" ? (
-          <Col lg={5} md={5} sm={12} className="mt-1">
+          <Col lg={3} md={3} sm={12} className="mt-1">
             <p className="title-heading">{meetingTitle}</p>
           </Col>
         ) : (
-          <Col lg={5} md={5} sm={12} className="mt-1">
+          <Col lg={3} md={3} sm={12} className="mt-1">
             <p className="title-heading">
               {currentUserName !==
                 VideoMainReducer.VideoRecipentData.userName &&
@@ -389,25 +392,7 @@ const VideoCallNormalHeader = ({
           ) : null}
         </Col>
         <>
-          <Col lg={4} md={4} sm={12} className="normal-screen-top-icons">
-            {videoFeatureReducer.MaximizeVideoFlag === true ? (
-              <div
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "screenShare-Toggle"
-                }
-              >
-                <Tooltip placement="topRight" title={t("Layout")}>
-                  <img
-                    className={"cursor-pointer"}
-                    onClick={layoutCurrentChange}
-                    src={LayoutIconPurple}
-                    alt=""
-                  />
-                </Tooltip>
-              </div>
-            ) : null}
+          <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
             <div
               onClick={disableMic}
               className={
@@ -479,22 +464,35 @@ const VideoCallNormalHeader = ({
             </div>
 
             <div
-              onClick={raiseHandFunction}
               className={
                 videoFeatureReducer.LeaveCallModalFlag === true
                   ? "grayScaleImage"
-                  : !handStatus
-                  ? "inactive-state"
-                  : "active-state"
+                  : "screenShare-Toggle inactive-state"
               }
             >
-              <Tooltip
-                placement="topRight"
-                title={handStatus ? t("Lower-hand") : t("Raise-hand")}
-              >
-                <img src={handStatus ? LowerHand : RaiseHand} alt="" />
+              <Tooltip placement="topRight" title={t("Copy-link")}>
+                <img src={CopyLink} alt="" />
               </Tooltip>
             </div>
+
+            {videoFeatureReducer.MaximizeVideoFlag === true ? (
+              <div
+                className={
+                  videoFeatureReducer.LeaveCallModalFlag === true
+                    ? "grayScaleImage"
+                    : "screenShare-Toggle"
+                }
+              >
+                <Tooltip placement="topRight" title={t("Layout")}>
+                  <img
+                    className={"cursor-pointer"}
+                    onClick={layoutCurrentChange}
+                    src={showTile ? TileView : SidebarView}
+                    alt=""
+                  />
+                </Tooltip>
+              </div>
+            ) : null}
 
             {callerID === currentUserID && currentCallType === 2 ? (
               <div
@@ -572,6 +570,18 @@ const VideoCallNormalHeader = ({
               </div>
             ) : null}
 
+            <div
+              className={
+                videoFeatureReducer.LeaveCallModalFlag === true
+                  ? "grayScaleImage"
+                  : "screenShare-Toggle inactive-state"
+              }
+            >
+              <Tooltip placement="topRight" title={t("Participants")}>
+                <img src={AddParticipant} alt="" />
+              </Tooltip>
+            </div>
+
             {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
               <div
                 className={
@@ -589,6 +599,20 @@ const VideoCallNormalHeader = ({
                 </Tooltip>
               </div>
             ) : null}
+
+            <Tooltip placement="topRight" title={t("Minimize")}>
+              <div
+                onClick={minimizeVideoPanel}
+                className={
+                  videoFeatureReducer.LeaveCallModalFlag === true
+                    ? "grayScaleImage"
+                    : "inactive-state"
+                }
+              >
+                <img src={MinimizeIcon} alt="" />
+              </div>
+            </Tooltip>
+
             {videoFeatureReducer.LeaveCallModalFlag === true &&
             callerID === currentUserID ? (
               <div className="active-state-end">
@@ -624,18 +648,7 @@ const VideoCallNormalHeader = ({
                 />
               </Tooltip>
             ) : null}
-            <Tooltip placement="topRight" title={t("Minimize")}>
-              <div
-                onClick={minimizeVideoPanel}
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "inactive-state"
-                }
-              >
-                <img src={MinimizeIcon} alt="" />
-              </div>
-            </Tooltip>
+
             {videoFeatureReducer.NormalizeVideoFlag === true &&
             videoFeatureReducer.MinimizeVideoFlag === false &&
             videoFeatureReducer.MaximizeVideoFlag === false ? (
