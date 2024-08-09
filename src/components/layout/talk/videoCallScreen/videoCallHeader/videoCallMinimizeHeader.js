@@ -292,23 +292,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               </p>
             </Col>
           )}
-          {/* <Col lg={3} md={3} sm={12} className="mt-1">
-            <p className="title-heading">
-              {currentUserName !==
-                VideoMainReducer.VideoRecipentData.userName &&
-              Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
-              initiateVideoCallFlag === true
-                ? VideoMainReducer.VideoRecipentData.userName
-                : currentUserName !==
-                    VideoMainReducer.VideoRecipentData.userName &&
-                  Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
-                  initiateVideoCallFlag === false
-                ? callerNameInitiate
-                : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
-                ? callerName
-                : null}
-            </p>
-          </Col> */}
           <Col lg={4} md={4} sm={12}>
             <div className="minimize-screen-on-bottom">
               {callerID === currentUserID &&
@@ -333,10 +316,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                           width={30}
                         />
                       </Tooltip>
-                      <div
-                        className="minimize-participants-list"
-                        key={Math.random()}
-                      >
+                      <div className="minimize-participants-list">
                         <Row className="m-0">
                           <Col className="p-0" lg={8} md={8} sm={12}>
                             <p className="participant-name">
@@ -382,14 +362,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                               }
                             )
                           : null}
-                        {/* <Button
-                        className="add-participant-button"
-                        text="Add Participants"
-                        icon={
-                          <img src={AddParticipantIcon} alt="participants" />
-                        }
-                        textClass="text-positioning"
-                      /> */}
                       </div>
                     </>
                   ) : (
@@ -411,21 +383,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                 </div>
               ) : null}
 
-              {/* <div className="screenShare-Toggle">
-                <img
-                  className={
-                    videoFeatureReducer.LeaveCallModalFlag === true
-                      ? "grayScaleImage"
-                      : ""
-                  }
-                  onClick={screenShareButton}
-                  src={MinimizeScreenShare}
-                  alt="Minimize Screen Share"
-                />
-              </div> */}
-
-              {/* <img src={MinimizeParticipant} alt="Mininmize Participants" /> */}
-              {/* <img src={MinimizeScreenShare} alt="Mininmize Screen Icon" /> */}
               {localVidStatus === true ? (
                 <Tooltip placement="bottomLeft" title={t("Disable-video")}>
                   <img

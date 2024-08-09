@@ -198,6 +198,7 @@ const VideoPanelBodyRecent = () => {
           OrganizationID: currentOrganization,
         };
         localStorage.setItem("CallType", Data.CallTypeID);
+        localStorage.setItem("callTypeID", Data.CallTypeID);
         dispatch(InitiateVideoCall(Data, navigate, t));
         localStorage.setItem("isCaller", true);
         localStorage.setItem("callerID", currentUserID);
