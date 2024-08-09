@@ -696,6 +696,12 @@ const VideoCallNormalHeader = ({
             <div className="leave-meeting-options__inner">
               <Button
                 className="leave-meeting-options__btn leave-meeting-red-button"
+                text={t("Leave-call")}
+                onClick={leaveCall}
+              />
+
+              <Button
+                className="leave-meeting-options__btn leave-meeting-gray-button"
                 text={
                   currentCallType === 1
                     ? t("End-call")
