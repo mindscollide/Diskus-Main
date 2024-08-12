@@ -1095,8 +1095,7 @@ const Dashboard = () => {
           } catch (error) {}
         } else if (
           data.payload.message.toLowerCase() ===
-            "FOLDER_SHARING_REMOVED".toLowerCase() ||
-          "FOLDER_DELETED".toLowerCase()
+          "FOLDER_SHARING_REMOVED".toLowerCase()
         ) {
           try {
             if (data.viewable) {
@@ -1107,6 +1106,19 @@ const Dashboard = () => {
             }
             setNotificationID(id);
             dispatch(folderRemoveMQTT(data?.payload?.fileID));
+          } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() === "FOLDER_DELETED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: ` folder remove to you`,
+              });
+            }
+            setNotificationID(id);
+            dispatch(folderRemoveMQTT(data?.payload?.folderID));
           } catch (error) {}
         }
       }
