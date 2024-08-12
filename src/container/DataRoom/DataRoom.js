@@ -3959,6 +3959,7 @@ const DataRoom = () => {
                                   }
                                   height={"57vh"}
                                   endMessage=''
+                                  
                                   loader={
                                     getAllData.length <= totalRecords && (
                                       <>
@@ -3984,6 +3985,7 @@ const DataRoom = () => {
                                     onChange={handleSortMyDocuments}
                                     // rowSelection={rowSelection}
                                     size={"middle"}
+                                    style={{overflowX: "auto"}}
                                   />
                                 </InfiniteScroll>
                               ) : (

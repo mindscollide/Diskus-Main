@@ -20,6 +20,7 @@ const CustomTableToDo = ({
   rowHoverBg,
   summary,
   sticky,
+  style,
   showHeader
 }) => {
   const { Text } = Typography;
@@ -45,6 +46,7 @@ const CustomTableToDo = ({
         rowHoverBg={rowHoverBg}
         sticky={sticky}
         showHeader={showHeader}
+        style={style}
       />
     </>
   );
