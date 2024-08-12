@@ -508,31 +508,23 @@ const ViewMeetingDetails = ({
     }
   };
 
+  console.log("NewMeetingreducer.CurrentMeetingURL", NewMeetingreducer);
+
   const copyToClipboardd = () => {
-    if (
-      NewMeetingreducer.CurrentMeetingURL !== undefined &&
-      NewMeetingreducer.CurrentMeetingURL !== null &&
-      NewMeetingreducer.CurrentMeetingURL !== ""
-    ) {
-      console.log(
-        "NewMeetingreducer.CurrentMeetingURL",
-        NewMeetingreducer.CurrentMeetingURL
-      );
-      copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
+    copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
+    setOpen({
+      ...open,
+      flag: true,
+      message: "URL copied to clipboard",
+    });
+    setTimeout(() => {
       setOpen({
         ...open,
-        flag: true,
-        message: "URL copied to clipboard",
+        flag: false,
+        message: "",
       });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
-      dispatch(CleareMessegeNewMeeting());
-    }
+    }, 3000);
+    dispatch(CleareMessegeNewMeeting());
   };
 
   const groupChatInitiation = (data) => {
