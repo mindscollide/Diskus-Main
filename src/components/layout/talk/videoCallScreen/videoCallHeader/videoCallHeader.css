@@ -11,14 +11,14 @@
   text-overflow: ellipsis;
 }
 
-.minimize-screen-on-bottom {
+/* .minimize-screen-on-bottom {
   display: flex;
   align-items: center;
   justify-content: end;
   vertical-align: top;
   gap: 20px;
-  margin: 0px 40px;
-}
+  margin: 0px 60px;
+} */
 
 .minimizeGroup-expand-icon {
   display: flex;
@@ -52,13 +52,14 @@
   position: fixed;
   left: 90px;
   width: 55%;
-  height: 50px;
+  height: 45px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  bottom: 0;
-  border: 1px solid #b4b4b4;
-  border-radius: 4px !important;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  bottom: -1px;
+  border-radius: 3px !important;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   z-index: 9999 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 /* Aun work on RTL in video screens */
@@ -67,13 +68,14 @@ body[dir="rtl"] .videoCallGroupScreen-minmizeVideoCall {
   position: fixed;
   right: 70px;
   width: 55%;
-  height: 50px;
+  height: 45px;
   background: linear-gradient(to left, #6172d6 0%, #49dbdb 100%) !important;
   bottom: 0;
-  border: 1px solid #b4b4b4;
-  border-radius: 4px !important;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 3px !important;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   z-index: 9999 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 .videoCallGroupScreen-minmizeVideoCall .title-heading {
@@ -139,17 +141,13 @@ img.normalize-Icon-Large {
 
 .minimize-leave-meeting-options {
   background: #fff;
-  border-radius: 4px;
+  border-radius: 3px;
   padding: 16px;
-  position: fixed;
-  width: 248px;
-  bottom: 50px;
-  left: 50%;
-  /* Use left: 50% to horizontally center the popup relative to the icon */
-  transform: translateX(-50%);
-  /* Use transform to center the popup precisely */
-  height: 130px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  width: 215px;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  bottom: 45px;
+  right: -88px;
 }
 
 body[dir="rtl"] .minimize-leave-meeting-options {
@@ -165,7 +163,7 @@ body[dir="rtl"] .minimize-leave-meeting-options {
   transform: translateX(-50%);
   /* Use transform to center the popup precisely */
   height: 130px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
 }
 
 .leave-meeting-options__inner {
@@ -282,16 +280,11 @@ p.Notification-text {
   padding: 10px 10px;
   position: absolute;
   width: 245px;
-  top: 39px;
-  height: 100px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  top: 50px;
+  height: 170px;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   left: -105px;
   overflow: hidden auto;
-}
-
-.participants-list .row {
-  border-bottom: 1px solid #d3cbcb;
-  margin-bottom: 10px !important;
 }
 
 .hostBorder.m-0.row {
@@ -308,7 +301,7 @@ p.Notification-text {
   width: 200px;
   bottom: 40px;
   height: 100px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   left: -85px;
 }
 
@@ -338,14 +331,12 @@ span.text-positioning {
 }
 
 p.participant-name {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: #5a5a5a;
-  width: 90px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin: 0;
 }
 
 p.participant-state {
@@ -425,6 +416,17 @@ body[dir="rtl"] .video_maximize_icon img {
   margin-right: 10px;
 }
 
+.minimize.active-state-end {
+  background: #fff;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
 span.participants-counter {
   position: absolute;
   top: 0;
@@ -436,4 +438,32 @@ span.participants-counter {
   text-align: center;
   font-size: 10px;
   font-weight: 600;
+}
+
+.minimize {
+  margin: 0 !important;
+}
+
+.active-state-minimize {
+  background: #fff;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.gap-10 {
+  gap: 10px !important;
+}
+
+.height100 {
+  height: 100%;
+}
+
+button.participant-toggle,
+button.participant-toggle:hover {
+  border: none !important;
 }
