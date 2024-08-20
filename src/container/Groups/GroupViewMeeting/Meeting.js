@@ -263,7 +263,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       title: t("Organizer"),
       dataIndex: "host",
       key: "host",
-      width: "60px",
+      width: "80px",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
@@ -342,7 +342,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                     className={
                       currentLanguage === "ar"
                         ? "margin-left-10"
-                        : "margin-right-10"
+                        : "margin-right-10 d-inline-block align-items-center"
                     }
                     // onClick={(e) => groupChatInitiation(record)}
                   >
@@ -539,7 +539,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
-        console.log(record, "GroupMeetingTable")
+        console.log(record, "GroupMeetingTable");
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -559,7 +559,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           record.status === "4"
         ) {
           return null;
-        } else  {
+        } else {
           if (isQuickMeeting) {
             if (isOrganiser) {
               if (
