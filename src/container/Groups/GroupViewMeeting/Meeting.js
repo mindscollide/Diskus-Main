@@ -488,6 +488,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                             // setEditFlag
                           )
                         );
+                        localStorage.setItem("meetingTitle", record.title);
                       }}
                     />
                   </Col>
@@ -503,6 +504,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
@@ -512,6 +514,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
+                  localStorage.setItem("meetingTitle", record.title);
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
                 }}
               />
@@ -523,6 +526,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
@@ -540,7 +544,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
-        console.log(record, "GroupMeetingTable")
+        console.log(record, "GroupMeetingTable");
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -560,7 +564,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           record.status === "4"
         ) {
           return null;
-        } else  {
+        } else {
           if (isQuickMeeting) {
             if (isOrganiser) {
               if (

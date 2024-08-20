@@ -35,6 +35,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
 
   const meetingDashboardCalendarEvent = (data) => {
     dispatch(dashboardCalendarEvent(data));
+    localStorage.setItem("meetingTitle", data.title);
     navigate("/DisKus/Meeting");
   };
 

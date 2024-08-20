@@ -187,8 +187,8 @@ const RevisionHistory = ({
       show={true}
       className={
         editMinute || confirmationEdit || resendMinuteForReview
-          ? ""
-          : "FullScreenModal"
+          ? "removeEditors"
+          : "removeEditors FullScreenModal"
       }
       fullscreen={
         editMinute || confirmationEdit || resendMinuteForReview ? false : true

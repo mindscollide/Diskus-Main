@@ -373,7 +373,7 @@ const UpdateOrganizersMeeting = (
                   });
                   dispatch(
                     JoinCurrentMeeting(
-                      true,
+                      false,
                       navigate,
                       t,
                       leaveMeetingData,

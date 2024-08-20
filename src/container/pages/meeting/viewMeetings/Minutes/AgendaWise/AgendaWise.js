@@ -368,11 +368,13 @@ const AgendaWise = ({
         AgendaID: agendaSelect.agendaSelectOptions.id,
         MinuteText: content,
       };
-      dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
-      setAgendaOptionValue({
-        value: 0,
-        label: "",
-      });
+      dispatch(
+        AddAgendaWiseMinutesApiFunc(navigate, Data, t, setAgendaOptionValue)
+      );
+      // setAgendaOptionValue({
+      //   value: 0,
+      //   label: "",
+      // });
     } else {
       if (!isDescriptionNotEmpty) {
         setAddNoteFields((prevState) => ({
@@ -627,7 +629,26 @@ const AgendaWise = ({
       MinuteID: updateData.minuteID,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, UpdateDataAgendaWise, t));
+    dispatch(
+      UpdateAgendaWiseMinutesApiFunc(
+        navigate,
+        UpdateDataAgendaWise,
+        t,
+        false,
+        null,
+        false,
+        false,
+        false,
+        false,
+        true,
+        setAgendaOptionValue,
+        setAddNoteFields,
+        addNoteFields,
+        setFileAttachments,
+        setFileForSend,
+        setisEdit
+      )
+    );
 
     let newfile = [...previousFileIDs];
     let fileObj = [];
@@ -690,22 +711,22 @@ const AgendaWise = ({
     } else {
     }
 
-    setAgendaOptionValue({
-      label: "",
-      value: 0,
-    });
-    setAddNoteFields({
-      ...addNoteFields,
-      Description: {
-        value: "",
-        errorMessage: "",
-        errorStatus: true,
-      },
-    });
+    // setAgendaOptionValue({
+    //   label: "",
+    //   value: 0,
+    // });
+    // setAddNoteFields({
+    //   ...addNoteFields,
+    //   Description: {
+    //     value: "",
+    //     errorMessage: "",
+    //     errorStatus: true,
+    //   },
+    // });
 
-    setFileAttachments([]);
-    setFileForSend([]);
-    setisEdit(false);
+    // setFileAttachments([]);
+    // setFileForSend([]);
+    // setisEdit(false);
   };
   const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
     console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
@@ -891,6 +912,29 @@ const AgendaWise = ({
         : [...prevIndices, index]
     );
   };
+
+  function hasAttachments(data) {
+    // Helper function to check if any minuteData object has attachments
+    const checkMinuteData = (minutes) => {
+      return minutes.some(
+        (minute) => minute.attachments && minute.attachments.length > 0
+      );
+    };
+
+    // Check the parent minuteData
+    if (checkMinuteData(data.minuteData)) {
+      return true;
+    }
+
+    // Check the subMinutes minuteData
+    if (data.subMinutes && data.subMinutes.length > 0) {
+      return data.subMinutes.some((subMinute) =>
+        checkMinuteData(subMinute.minuteData)
+      );
+    }
+
+    return false;
+  }
 
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
@@ -1259,6 +1303,7 @@ const AgendaWise = ({
         console.log(data, "minutesDataminutesDataminutesData");
         const isOpen = openIndices.includes(index);
         const isOpenReviewer = openReviewerDetail.includes(index);
+        let attachmentResult = hasAttachments(data);
         return (
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
@@ -1281,13 +1326,13 @@ const AgendaWise = ({
                         </p>
                         <span className="d-flex align-items-start justify-content-center">
                           {/* //data.minuteData.length > 0 && */}
-                          {/* // data?.minuteData[0]?.attachments.length > 0 ? ( */}
-                          <img
-                            className={styles["Attachment"]}
-                            alt=""
-                            src={AttachmentIcon}
-                          />
-                          {/* // ) : null} */}
+                          {attachmentResult ? (
+                            <img
+                              className={styles["Attachment"]}
+                              alt=""
+                              src={AttachmentIcon}
+                            />
+                          ) : null}
                           <img
                             alt=""
                             src={ArrowDown}
