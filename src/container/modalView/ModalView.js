@@ -307,15 +307,17 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let Data2 = {
           MeetingID: meetingID,
         };
-        dispatch(
-          FetchMeetingURLClipboard(
-            Data2,
-            navigate,
-            t,
-            currentUserID,
-            currentOrganization
-          )
-        );
+        if (check) {
+          dispatch(
+            FetchMeetingURLClipboard(
+              Data2,
+              navigate,
+              t,
+              currentUserID,
+              currentOrganization
+            )
+          );
+        }
         setIsVideo(check);
         setMeetID(meetingID);
         setMeetStatus(StatusCheck);
@@ -909,6 +911,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       PublishedMeetings: true,
     };
     await dispatch(StartMeeting(navigate, Data, t, Data2));
+    localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
   };
 
   const endMeeting = async () => {

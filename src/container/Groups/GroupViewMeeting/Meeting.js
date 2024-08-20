@@ -475,6 +475,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                       onClick={() => {
                         dispatch(
                           UpdateOrganizersMeeting(
+                            true,
                             navigate,
                             t,
                             7,
@@ -487,6 +488,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                             // setEditFlag
                           )
                         );
+                        localStorage.setItem("meetingTitle", record.title);
                       }}
                     />
                   </Col>
@@ -502,6 +504,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
@@ -511,6 +514,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
+                  localStorage.setItem("meetingTitle", record.title);
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
                 }}
               />
@@ -522,6 +526,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );

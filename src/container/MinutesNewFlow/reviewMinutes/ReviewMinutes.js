@@ -56,13 +56,7 @@ const ReviewMinutes = () => {
   const [editCommentLocal, setEditCommentLocal] = useState(null);
   const [parentMinuteID, setParentMinuteID] = useState(0);
   const [isAgenda, setIsAgenda] = useState(false);
-  console.log(minutesAgenda, "minutesAgendaminutesAgenda");
-  console.log(
-    minutesAgendaHierarchy,
-    "minutesAgendaHierarchyminutesAgendaHierarchy"
-  );
-
-  console.log(minutesGeneral, "minutesGeneralminutesGeneral");
+  const [disableSubmit, setDisableSubmit] = useState(false);
 
   const divRef = useRef(null);
 
@@ -95,35 +89,51 @@ const ReviewMinutes = () => {
     return count;
   };
 
-  const submitReviews = () => {
-    console.log("submitReviewssubmitReviews", minutesAgenda);
+  // Extract minuteData from all agendas and their subMinutes
+  const extractMinuteData = (agendas) => {
+    let allMinuteData = [];
 
-    // Extract minuteData from all agendas and their subMinutes
-    const extractMinuteData = (agendas) => {
-      let allMinuteData = [];
+    agendas.forEach((agenda) => {
+      // Add main agenda's minuteData
+      if (Array.isArray(agenda.minuteData)) {
+        allMinuteData = [...allMinuteData, ...agenda.minuteData];
+      }
 
-      agendas.forEach((agenda) => {
-        // Add main agenda's minuteData
-        if (Array.isArray(agenda.minuteData)) {
-          allMinuteData = [...allMinuteData, ...agenda.minuteData];
-        }
+      // Add subMinutes' minuteData
+      if (Array.isArray(agenda.subMinutes)) {
+        agenda.subMinutes.forEach((subMinute) => {
+          if (Array.isArray(subMinute.minuteData)) {
+            allMinuteData = [...allMinuteData, ...subMinute.minuteData];
+          }
+        });
+      }
+    });
 
-        // Add subMinutes' minuteData
-        if (Array.isArray(agenda.subMinutes)) {
-          agenda.subMinutes.forEach((subMinute) => {
-            if (Array.isArray(subMinute.minuteData)) {
-              allMinuteData = [...allMinuteData, ...subMinute.minuteData];
-            }
-          });
-        }
-      });
+    return allMinuteData;
+  };
 
-      return allMinuteData;
-    };
-
+  const checkActorBundleStatus = (minutesAgenda, minutesGeneral) => {
+    // Extract minute data from agendas
     const allMinuteData = extractMinuteData(minutesAgenda);
 
-    console.log("submitReviewssubmitReviews", allMinuteData);
+    // Combine all minute data with the minutesGeneral data
+    const combinedMinuteData = [...allMinuteData, ...minutesGeneral];
+
+    // Check if all actorBundleStatusID are 2
+    const allStatusAreTwo = combinedMinuteData.every(
+      (minute) => minute.actorBundleStatusID === 2
+    );
+
+    return allStatusAreTwo;
+  };
+
+  useEffect(() => {
+    let result = checkActorBundleStatus(minutesAgenda, minutesGeneral);
+    setDisableSubmit(result);
+  }, [minutesAgenda, minutesGeneral]);
+
+  const submitReviews = () => {
+    const allMinuteData = extractMinuteData(minutesAgenda);
 
     // Transform the first state data to the required format
     const actorMinuteReviewsFromState1 = allMinuteData.map((minute) => ({
@@ -152,7 +162,6 @@ const ReviewMinutes = () => {
     };
 
     dispatch(AcceptRejectMinuteReview(Data, navigate, t));
-    console.log("submitReviewssubmitReviews", Data);
   };
 
   const updateRejectMinutes = (minutesData, rejectData) => {
@@ -303,9 +312,6 @@ const ReviewMinutes = () => {
       return minute;
     });
 
-    console.log("Updated MinutesAgenda:", updatedMinutesAgenda);
-    console.log("Updated MinutesGeneral:", updatedMinutesGeneral);
-
     setMinutesAgenda(updatedMinutesAgenda);
     setMinutesGeneral(updatedMinutesGeneral);
     if (minutesToReview !== 0) {
@@ -339,10 +345,8 @@ const ReviewMinutes = () => {
     const div = divRef.current;
 
     if (div.scrollHeight > div.clientHeight) {
-      console.log("Div has scroll");
       setReviewWrapperScroll(true);
     } else {
-      console.log("Div doesn't have scroll");
       setReviewWrapperScroll(false);
     }
     return () => {
@@ -374,11 +378,9 @@ const ReviewMinutes = () => {
   useEffect(() => {
     try {
       const reducerData = MinutesReducer.GetMinutesForReviewerByMeetingIdData;
-      console.log(reducerData, "reducerDatareducerDatareducerData");
       if (reducerData !== null) {
         const { agendaHierarchyList, agendaMinutes, generalMinutes } =
           reducerData;
-        console.log(reducerData.generalMinutes, "reducerDatareducerData");
         let newGeneralMeetingData = generalMinutes.map(
           (generalMinteData, index) => {
             return {
@@ -398,13 +400,6 @@ const ReviewMinutes = () => {
 
             let subMinutes = parentAgenda.childAgendas.flatMap(
               (childAgenda) => {
-                console.log(
-                  reducerData,
-                  childAgenda,
-                  NewMeetingreducer,
-                  "subMinutessubMinutessubMinutessubMinutes"
-                );
-
                 return agendaMinutes
                   ?.filter((minute) => minute.agendaID === childAgenda.pK_MAID)
                   .map((minute) => {
@@ -422,7 +417,6 @@ const ReviewMinutes = () => {
               }
             );
 
-            console.log(subMinutes, "subMinutessubMinutessubMinutessubMinutes");
             let agendaTitle =
               parentAgendaMinutes.length > 0
                 ? parentAgendaMinutes[0].agendaTitle
@@ -458,16 +452,8 @@ const ReviewMinutes = () => {
             return parentAgendaObj;
           });
           setMinutesAgenda(transformedData);
-        } catch (error) {
-          console.log(error, "transformedData error");
-        }
-
-        // console.log("transformedData", transformedData);
+        } catch (error) {}
       } else {
-        console.log(
-          MinutesReducer.GetMinutesForReviewerByMeetingIdData,
-          "transformedData error"
-        );
       }
       // else {
       //   setMinutesAgenda([]);
@@ -538,17 +524,12 @@ const ReviewMinutes = () => {
 
         updatedMinutesData =
           filterEmptyReasonsForStateGeneral(updatedMinutesData);
-        console.log("Updated MinutesAgenda:", updatedMinutesAgenda);
-        console.log("Updated MinutesGeneral:", updatedMinutesData);
 
         setMinutesAgenda(updatedMinutesAgenda);
         setMinutesGeneral(updatedMinutesData);
       }
     } catch {}
   }, [minuteDataToReject]);
-
-  console.log("AgendaMinutesAgendaMinutes", minutesAgenda);
-  console.log("GeneralMinutesGeneralMinutes", minutesGeneral);
 
   return (
     <section className={styles["pendingApprovalContainer"]}>
@@ -608,10 +589,6 @@ const ReviewMinutes = () => {
                       </Row>
                       <>
                         {data?.minuteData?.map((parentMinutedata, index) => {
-                          console.log(
-                            parentMinutedata,
-                            "parentMinutedataparentMinutedata"
-                          );
                           return (
                             <>
                               <Row>
@@ -2029,10 +2006,6 @@ const ReviewMinutes = () => {
                                       ) &&
                                         minuteDataSubminute.declinedReviews.map(
                                           (declinedData, index) => {
-                                            console.log(
-                                              declinedData,
-                                              "declinedDatadeclinedDatadeclinedData"
-                                            );
                                             const isLastIndex =
                                               index ===
                                               minuteDataSubminute
@@ -2618,10 +2591,6 @@ const ReviewMinutes = () => {
                                                     declinedDataHistory,
                                                     index
                                                   ) => {
-                                                    console.log(
-                                                      declinedDataHistory,
-                                                      "declinedDataHistorydeclinedDataHistory"
-                                                    );
                                                     const isLastIndexx =
                                                       index ===
                                                       historyData
@@ -3599,6 +3568,7 @@ const ReviewMinutes = () => {
                 text={t("Submit-review")}
                 className={styles["Submit-review"]}
                 onClick={submitReviews}
+                disableBtn={disableSubmit}
               />
             </Col>
           </Row>

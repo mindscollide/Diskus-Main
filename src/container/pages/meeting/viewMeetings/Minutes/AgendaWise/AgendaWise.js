@@ -52,6 +52,8 @@ import {
   convertToGMTMinuteTime,
   convertDateToGMTMinute,
 } from "../../../../../../commen/functions/time_formatter";
+import { DataRoomDownloadFileApiFunc } from "../../../../../../store/actions/DataRoom_actions";
+import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
 
 const AgendaWise = ({
   advanceMeetingModalID,
@@ -328,10 +330,11 @@ const AgendaWise = ({
     } else {
       if (source === "user") {
         // Update state only if no image is detected in the content
+        const isEmptyContent = content === "<p><br></p>";
         setAddNoteFields({
           ...addNoteFields,
           Description: {
-            value: content,
+            value: isEmptyContent ? "" : content,
             errorMessage: "",
             errorStatus: false,
           },
@@ -365,11 +368,13 @@ const AgendaWise = ({
         AgendaID: agendaSelect.agendaSelectOptions.id,
         MinuteText: content,
       };
-      dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
-      setAgendaOptionValue({
-        value: 0,
-        label: "",
-      });
+      dispatch(
+        AddAgendaWiseMinutesApiFunc(navigate, Data, t, setAgendaOptionValue)
+      );
+      // setAgendaOptionValue({
+      //   value: 0,
+      //   label: "",
+      // });
     } else {
       if (!isDescriptionNotEmpty) {
         setAddNoteFields((prevState) => ({
@@ -462,6 +467,16 @@ const AgendaWise = ({
     }
   }, [NewMeetingreducer.agendaWiseMinuteID]);
 
+  //Download the document
+  const downloadDocument = (record) => {
+    let data = {
+      FileID: record.pK_FileID,
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+    );
+  };
+
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
       prevFiles.filter(
@@ -482,6 +497,30 @@ const AgendaWise = ({
           fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
       )
     );
+  };
+
+  const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
+    let Data = {
+      taskId: Number(record.originalAttachmentName),
+      commingFrom: 4,
+      fileName: record.displayAttachmentName,
+      attachmentID: Number(record.originalAttachmentName),
+    };
+    let pdfDataJson = JSON.stringify(Data);
+    if (
+      ext === "pdf" ||
+      ext === "doc" ||
+      ext === "docx" ||
+      ext === "xlx" ||
+      ext === "xlsx"
+    ) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
   };
 
   const handleResetBtnFunc = () => {
@@ -590,7 +629,26 @@ const AgendaWise = ({
       MinuteID: updateData.minuteID,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, UpdateDataAgendaWise, t));
+    dispatch(
+      UpdateAgendaWiseMinutesApiFunc(
+        navigate,
+        UpdateDataAgendaWise,
+        t,
+        false,
+        null,
+        false,
+        false,
+        false,
+        false,
+        true,
+        setAgendaOptionValue,
+        setAddNoteFields,
+        addNoteFields,
+        setFileAttachments,
+        setFileForSend,
+        setisEdit
+      )
+    );
 
     let newfile = [...previousFileIDs];
     let fileObj = [];
@@ -653,22 +711,22 @@ const AgendaWise = ({
     } else {
     }
 
-    setAgendaOptionValue({
-      label: "",
-      value: 0,
-    });
-    setAddNoteFields({
-      ...addNoteFields,
-      Description: {
-        value: "",
-        errorMessage: "",
-        errorStatus: true,
-      },
-    });
+    // setAgendaOptionValue({
+    //   label: "",
+    //   value: 0,
+    // });
+    // setAddNoteFields({
+    //   ...addNoteFields,
+    //   Description: {
+    //     value: "",
+    //     errorMessage: "",
+    //     errorStatus: true,
+    //   },
+    // });
 
-    setFileAttachments([]);
-    setFileForSend([]);
-    setisEdit(false);
+    // setFileAttachments([]);
+    // setFileForSend([]);
+    // setisEdit(false);
   };
   const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
     console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
@@ -751,7 +809,7 @@ const AgendaWise = ({
     let Data2 = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t,));
+    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t));
     dispatch(
       GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
         Data2,
@@ -855,97 +913,30 @@ const AgendaWise = ({
     );
   };
 
+  function hasAttachments(data) {
+    // Helper function to check if any minuteData object has attachments
+    const checkMinuteData = (minutes) => {
+      return minutes.some(
+        (minute) => minute.attachments && minute.attachments.length > 0
+      );
+    };
+
+    // Check the parent minuteData
+    if (checkMinuteData(data.minuteData)) {
+      return true;
+    }
+
+    // Check the subMinutes minuteData
+    if (data.subMinutes && data.subMinutes.length > 0) {
+      return data.subMinutes.some((subMinute) =>
+        checkMinuteData(subMinute.minuteData)
+      );
+    }
+
+    return false;
+  }
+
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
-
-  // useEffect(() => {
-  //   // Check if agendaWiseMinutesReducer is not null, undefined, and has at least one key
-  //   if (
-  //     NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-  //     NewMeetingreducer.agendaWiseMinutesReducer !== undefined &&
-  //     Object.keys(NewMeetingreducer.agendaWiseMinutesReducer).length > 0
-  //   ) {
-  //     // Store agendaWiseMinutesReducer in a local variable
-  //     let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
-  //     // Initialize an empty array to hold the transformed data
-  //     let transformedData = [];
-
-  //     // Iterate through each parent agenda in the agenda hierarchy list
-  //     reducerData.agendaHierarchyList.forEach((parentAgenda) => {
-  //       // Find the parent agenda details in the agendaWiseMinutes array
-  //       let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
-  //         (minute) => minute.agendaID === parentAgenda.pK_MAID
-  //       );
-
-  //       // Initialize an array to hold sub-minutes of the parent agenda
-  //       let subMinutes = [];
-  //       // Iterate through each child agenda of the parent agenda
-  //       parentAgenda.childAgendas.forEach((childAgenda) => {
-  //         // Filter the minutes that match the child agenda ID and push to subMinutes
-  //         let childMinutes = reducerData.agendaWiseMinutes.filter(
-  //           (minute) => minute.agendaID === childAgenda.pK_MAID
-  //         );
-  //         subMinutes.push(...childMinutes);
-  //       });
-
-  //       // Check if parent agenda details exist to determine if it's parent data
-  //       let isParentData = parentAgendaMinutes.length > 0;
-
-  //       // If there are parent agenda details or sub-minutes, create a parent agenda object
-  //       if (isParentData || subMinutes.length > 0) {
-  //         // If parent agenda details exist, use them, otherwise use childAgenda's parentTitle
-  //         let agendaTitle = isParentData
-  //           ? parentAgendaMinutes[0].agendaTitle
-  //           : parentAgenda.childAgendas.find((childAgenda) =>
-  //               subMinutes.some(
-  //                 (minute) => minute.agendaID === childAgenda.pK_MAID
-  //               )
-  //             )?.parentTitle || "";
-
-  //         let parentAgendaObj = {
-  //           agendaID: parentAgenda.pK_MAID,
-  //           agendaTitle: agendaTitle,
-  //           isParentData: isParentData,
-  //           minuteData: parentAgendaMinutes.map((minute) => ({
-  //             minuteID: minute.minuteID,
-  //             description: minute.minutesDetails,
-  //             attachments: minute.minutesAttachmets,
-  //             uploader: minute.userProfilePicture,
-  //             lastUpdatedDate: minute.lastUpdatedDate,
-  //             lastUpdatedTime: minute.lastUpdatedTime,
-  //             userID: minute.userID,
-  //             userName: minute.userName,
-  //           })),
-  //           subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
-  //             let childMinutes = subMinutes.filter(
-  //               (minute) => minute.agendaID === childAgenda.pK_MAID
-  //             );
-  //             return {
-  //               agendaID: childAgenda.pK_MAID,
-  //               agendaTitle: childMinutes[0]?.agendaTitle || "",
-  //               minuteData: childMinutes.map((minute) => ({
-  //                 minuteID: minute.minuteID,
-  //                 description: minute.minutesDetails,
-  //                 attachments: minute.minutesAttachmets,
-  //                 uploader: minute.userProfilePicture,
-  //                 lastUpdatedDate: minute.lastUpdatedDate,
-  //                 lastUpdatedTime: minute.lastUpdatedTime,
-  //                 userID: minute.userID,
-  //                 userName: minute.userName,
-  //               })),
-  //             };
-  //           }),
-  //         };
-
-  //         // Push the parent agenda object to the transformed data array
-  //         transformedData.push(parentAgendaObj);
-  //       }
-  //     });
-
-  //     // Log the transformed data to the console
-  //     setMinutesData(transformedData);
-  //     console.log("transformedData", transformedData);
-  //   }
-  // }, [NewMeetingreducer.agendaWiseMinutesReducer]);
 
   useEffect(() => {
     try {
@@ -1154,6 +1145,8 @@ const AgendaWise = ({
     );
   };
 
+  console.log("Minutes of Agenda", minutesData);
+
   return (
     <section className={styles["agenda-wise-minutes"]}>
       {Number(editorRole.status) === 1 ||
@@ -1253,7 +1246,6 @@ const AgendaWise = ({
                     <Row className="mt-1">
                       {fileAttachments.length > 0
                         ? fileAttachments.map((data, index) => {
-                            console.log(data, "datadatadata");
                             return (
                               <>
                                 <Col lg={4} md={4} sm={4}>
@@ -1311,6 +1303,7 @@ const AgendaWise = ({
         console.log(data, "minutesDataminutesDataminutesData");
         const isOpen = openIndices.includes(index);
         const isOpenReviewer = openReviewerDetail.includes(index);
+        let attachmentResult = hasAttachments(data);
         return (
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
@@ -1331,9 +1324,9 @@ const AgendaWise = ({
                         <p className={styles["agenda-title"]}>
                           {index + 1 + "." + " " + data.agendaTitle}
                         </p>
-                        <span>
-                          {data.minuteData.length > 0 &&
-                          data?.minuteData[0]?.attachments.length > 0 ? (
+                        <span className="d-flex align-items-start justify-content-center">
+                          {/* //data.minuteData.length > 0 && */}
+                          {attachmentResult ? (
                             <img
                               className={styles["Attachment"]}
                               alt=""
@@ -1605,10 +1598,36 @@ const AgendaWise = ({
                                                 (fileData, index) => (
                                                   <Col lg={3} md={3} sm={12}>
                                                     <AttachmentViewer
-                                                      name={
-                                                        fileData?.displayFileName
+                                                      handleClickDownload={() =>
+                                                        downloadDocument(
+                                                          fileData
+                                                        )
+                                                      }
+                                                      fk_UID={0}
+                                                      handleClickRemove={() =>
+                                                        handleRemoveFile(
+                                                          fileData
+                                                        )
+                                                      }
+                                                      data={
+                                                        parentMinutedata.attachments
                                                       }
                                                       id={fileData.pK_FileID}
+                                                      name={
+                                                        fileData.displayFileName
+                                                      }
+                                                      handleEyeIcon={() =>
+                                                        pdfData(
+                                                          parentMinutedata.attachments,
+                                                          getFileExtension(
+                                                            fileData?.displayFileName
+                                                          )
+                                                        )
+                                                      }
+                                                      // name={
+                                                      //   fileData?.displayFileName
+                                                      // }
+                                                      // id={fileData.pK_FileID}
                                                     />
                                                   </Col>
                                                 )
@@ -2097,12 +2116,40 @@ const AgendaWise = ({
                                                         sm={12}
                                                       >
                                                         <AttachmentViewer
-                                                          name={
-                                                            subFileData.displayFileName
+                                                          handleClickDownload={() =>
+                                                            downloadDocument(
+                                                              subFileData
+                                                            )
+                                                          }
+                                                          fk_UID={0}
+                                                          handleClickRemove={() =>
+                                                            handleRemoveFile(
+                                                              subFileData
+                                                            )
+                                                          }
+                                                          data={
+                                                            minuteDataSubminute.attachments
                                                           }
                                                           id={
                                                             subFileData.pK_FileID
                                                           }
+                                                          name={
+                                                            subFileData.displayFileName
+                                                          }
+                                                          handleEyeIcon={() =>
+                                                            pdfData(
+                                                              minuteDataSubminute.attachments,
+                                                              getFileExtension(
+                                                                subFileData?.displayFileName
+                                                              )
+                                                            )
+                                                          }
+                                                          // name={
+                                                          //   subFileData.displayFileName
+                                                          // }
+                                                          // id={
+                                                          //   subFileData.pK_FileID
+                                                          // }
                                                         />
                                                       </Col>
                                                     )

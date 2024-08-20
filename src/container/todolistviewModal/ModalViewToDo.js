@@ -40,6 +40,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
+import { truncateText } from "../../commen/functions/utils";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //For Localization
@@ -112,7 +113,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
   const [assgineeComments, setAssgieeComments] = useState("");
   const [deleteCommentsId, setDeleteCommentsId] = useState(0);
-
+  console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedToTaskAssignedTo");
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -421,96 +422,78 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   return (
     <>
-      <Container>
-        <Modal
-          onHide={handleClose}
-          show={viewFlagToDo}
-          setShow={setViewFlagToDo}
-          className="todview-modal"
-          modalBodyClassName="modalTodoViewBody"
-          modalFooterClassName="modalTodoViewFooter"
-          modalHeaderClassName="modalTodoViewHeader"
-          size="md"
-          ModalBody={
-            <>
-              {/* Render Assginees  */}
-              <Row className="d-flex align-items-center">
-                <Col sm={12} md={12} lg={12}>
-                  <Row className="mb-2">
-                    <Col sm={12} md={12} lg={12}>
-                      <p className=" AssignedToDoView">{t("Assigned-to")}</p>
-                    </Col>
-                  </Row>
-                  <Row className="view_todo_assignees">
-                    {TaskAssignedTo.length > 0 && todoCreator !== null ? (
-                      <>
-                        {TaskAssignedTo.map((assgineeData, index) => {
-                          if (
-                            Number(
-                              toDoListReducer.ToDoDetails.taskCreator.pK_UID
-                            ) === Number(createrID)
-                          ) {
-                            return (
-                              <Col sm={12} md={12} lg={12}>
-                                <TodoAssgineeEmployeeCard
-                                  employeeName={assgineeData.name}
-                                  employeeDesignation={assgineeData.designation}
-                                  cardText={assgineeData.datetimeFormating}
-                                  cardTextIconStyle="DateTimeViewTodo"
-                                  userImage={assgineeData.displayProfilePicture}
-                                />
-                              </Col>
-                            );
-                          } else {
-                            if (
-                              Number(assgineeData.pK_UID) === Number(createrID)
-                            ) {
-                              return (
-                                <Col sm={12} md={12} lg={12}>
-                                  <TodoAssgineeEmployeeCard
-                                    employeeName={assgineeData.name}
-                                    employeeDesignation={
-                                      assgineeData.designation
-                                    }
-                                    cardText={assgineeData.datetimeFormating}
-                                    cardTextIconStyle="DateTimeViewTodo"
-                                    userImage={
-                                      assgineeData.displayProfilePicture
-                                    }
-                                  />
-                                </Col>
-                              );
-                            }
-                          }
-                        })}
-                      </>
-                    ) : null}
-                  </Row>
-                </Col>
-              </Row>
-              {/* Render Assignee Task */}
-              <Row className="taskcreatorinfo">
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className=" todo-modal-title Saved_money_Tagline"
-                >
-                  <p className="Modal-todo-view1">{task.Title}</p>
-                </Col>
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className="MontserratRegular todo-modal-content FontArabicRegular"
-                >
-                  <p className="Modal-todo-view-discription1">
-                    {task.Description}{" "}
-                  </p>
-                </Col>
-              </Row>
-              {/* Render Assignee Comments */}
-              <Row className="comment-Height" id="commentviews">
+      <Modal
+        onHide={handleClose}
+        show={viewFlagToDo}
+        setShow={setViewFlagToDo}
+        className='todview-modal'
+        modalBodyClassName='modalTodoViewBody'
+        modalFooterClassName='modalTodoViewFooter'
+        modalHeaderClassName='modalTodoViewHeader d-none'
+        size='md'
+        ModalBody={
+          <>
+            <Row>
+              {/* Assigned to Heading */}
+              <Col sm={12} md={12} lg={12} className="mt-2">
+                <p className=' AssignedToDoView'>{t("Assigned-to")}</p>
+              </Col>
+              {/* Task Assigned Person Details */}
+              <Col sm={12} md={12} lg={12}>
+                {TaskAssignedTo.length > 0 && todoCreator !== null ? (
+                  <>
+                    {TaskAssignedTo.map((assgineeData, index) => {
+                      if (
+                        Number(
+                          toDoListReducer.ToDoDetails.taskCreator.pK_UID
+                        ) === Number(createrID)
+                      ) {
+                        return (
+                          <Col sm={12} md={12} lg={12}>
+                            <TodoAssgineeEmployeeCard
+                              employeeName={assgineeData.name}
+                              employeeDesignation={"Test Designation"}
+                              cardText={assgineeData.datetimeFormating}
+                              cardTextIconStyle='DateTimeViewTodo'
+                              userImage={assgineeData.displayProfilePicture}
+                            />
+                          </Col>
+                        );
+                      } else {
+                        if (Number(assgineeData.pK_UID) === Number(createrID)) {
+                          return (
+                            <Col sm={12} md={12} lg={12}>
+                              <TodoAssgineeEmployeeCard
+                                employeeName={assgineeData.name}
+                                employeeDesignation={"assgineeData.designation"}
+                                cardText={assgineeData.datetimeFormating}
+                                cardTextIconStyle='DateTimeViewTodo'
+                                userImage={assgineeData.displayProfilePicture}
+                              />
+                            </Col>
+                          );
+                        }
+                      }
+                    })}
+                  </>
+                ) : null}
+              </Col>
+              {/* Task Title and Description */}
+              <Col sm={12} md={12} lg={12} className='task-and-description'>
+                {/* Task Title */}
+                <p className='todo-modal-title mb-0' title={task.Title}>
+                  {" "}
+                  {task.Title}{" "}
+                </p>
+
+                {/* Task Description */}
+                <p className='Modal-todo-view-discription1'>
+                  {task.Description}
+                </p>
+              </Col>
+
+              {/* Task Comments */}
+              <Col sm={12} md={12} lg={12} className="taskComments">
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
                       if (Number(commentData.userID) === Number(createrID)) {
@@ -520,36 +503,35 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                               sm={12}
                               lg={12}
                               md={12}
-                              className="MontserratRegular my-1 FontArabicRegular position-relative"
-                              key={commentData.taskCommentID}
-                            >
+                              className='MontserratRegular my-1 FontArabicRegular position-relative'
+                              key={commentData.taskCommentID}>
                               <TextArea
                                 rows={2}
                                 timeValue={newTimeFormaterAsPerUTCFullDate(
                                   commentData.DateTime
                                 )}
                                 label={commentData.taskCommentUserName}
-                                labelClassName=" d-flex justify-content-start  fw-bold "
-                                disable="false"
-                                className="comment-view sender text-white  "
+                                labelClassName=' d-flex justify-content-start  fw-bold '
+                                disable='false'
+                                className='comment-view sender text-white  '
                                 value={commentData.Comment}
                                 timeClass={"timeClass"}
-                                formClassPosition="relative-position-form"
+                                formClassPosition='relative-position-form'
                               />
 
                               {toDoListReducer.deleteCommentSpinner &&
                               deleteCommentsId === commentData.taskCommentID ? (
-                                <span className="deleteCommentSpinner">
-                                  <Spin size="small" />
+                                <span className='deleteCommentSpinner'>
+                                  <Spin size='small' />
                                 </span>
                               ) : commentData.taskCommentID === 0 ||
                                 commentData.taskCommentID !== 0 ? (
                                 <>
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={CrossIcon}
                                     width={14}
-                                    alt=""
+                                    alt=''
                                     onClick={() =>
                                       handleDeleteComments(
                                         commentData.taskCommentID,
@@ -574,21 +556,20 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                               sm={12}
                               lg={12}
                               md={12}
-                              className="MontserratRegular my-1 FontArabicRegular"
-                              key={commentData.taskCommentID}
-                            >
+                              className='MontserratRegular my-1 FontArabicRegular'
+                              key={commentData.taskCommentID}>
                               <TextArea
                                 rows={2}
                                 label={commentData.taskCommentUserName}
-                                disable="false"
-                                className="comment-view"
+                                disable='false'
+                                className='comment-view'
                                 value={commentData.Comment}
-                                labelClassName=" d-flex justify-content-start mx-2 "
+                                labelClassName=' d-flex justify-content-start mx-2 '
                                 timeValue={newTimeFormaterAsPerUTCFullDate(
                                   commentData.DateTime
                                 )}
                                 timeClass={"timeClass Participant"}
-                                formClassPosition="relative-position-form"
+                                formClassPosition='relative-position-form'
                               />
                             </Col>
                           </>
@@ -597,23 +578,20 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                     })
                   : null}
                 <div ref={todoComments} />
-              </Row>
-
-              {/* Post Comments  */}
-              <Row className="mt-3">
+              </Col>
+              {/* Task Submit */}
+              <Col sm={12} md={12} lg={12} className="mb-2">
                 <Form
-                  className="d-flex"
-                  onSubmit={(e) => handleClickCommentSubmit(e, task.PK_TID)}
-                >
+                  className='d-flex'
+                  onSubmit={(e) => handleClickCommentSubmit(e, task.PK_TID)}>
                   <Col
                     sm={11}
                     md={11}
                     lg={11}
-                    className="todolist-modal-fields InputFieldStyle"
-                  >
+                    className='todolist-modal-fields InputFieldStyle'>
                     <TextField
                       placeholder={t("Type-in")}
-                      applyClass="todoviewmodalcomments"
+                      applyClass='todoviewmodalcomments'
                       width={"460"}
                       labelClass={"d-none"}
                       value={assgineeComments}
@@ -621,13 +599,13 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                       maxLength={100}
                     />
                   </Col>
-                  <Col sm={1} md={1} lg={1} className="comment-enter-button">
+                  <Col sm={1} md={1} lg={1} className='comment-enter-button'>
                     {currentLanguage === "ar" ? (
                       <ChevronLeft
                         width={25}
                         height={35}
                         color={"white"}
-                        className="cursor-pointer"
+                        className='cursor-pointer'
                         onClick={(e) =>
                           handleClickCommentSubmit(e, task.PK_TID)
                         }
@@ -637,7 +615,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                         width={25}
                         height={35}
                         color={"white"}
-                        className="cursor-pointer"
+                        className='cursor-pointer'
                         onClick={(e) =>
                           handleClickCommentSubmit(e, task.PK_TID)
                         }
@@ -645,297 +623,275 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                     )}
                   </Col>
                 </Form>
-              </Row>
-              {/* File Attachments */}
-              <Row className="my-3">
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className=" fw-600 Saved_money_Tagline"
-                >
-                  {/* Attachments */}
-                  {t("Attachement")}
-                </Col>
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className="todoModalViewFiles mt-2"
-                >
-                  {tasksAttachments.TasksAttachments.length > 0
-                    ? tasksAttachments.TasksAttachments.map(
-                        (modalviewAttachmentFiles, index) => {
-                          var ext =
-                            modalviewAttachmentFiles.DisplayAttachmentName.split(
-                              "."
-                            ).pop();
-                          const first =
-                            modalviewAttachmentFiles.DisplayAttachmentName.split(
-                              " "
-                            )[0];
+              </Col>
+              {/* Attachment Heading */}
+              <Col sm={12} md={12} lg={12} className="fw-600">
+                {/* Attachments */}
+                {t("Attachement")}
+              </Col>
+              {/* Task Attachment List */}
+              <Col sm={12} md={12} lg={12} className="todoModalViewFiles">
+                {tasksAttachments.TasksAttachments.length > 0
+                  ? tasksAttachments.TasksAttachments.map(
+                      (modalviewAttachmentFiles, index) => {
+                        let ext =
+                          modalviewAttachmentFiles.DisplayAttachmentName.split(
+                            "."
+                          ).pop();
+                        const first =
+                          modalviewAttachmentFiles.DisplayAttachmentName.split(
+                            " "
+                          )[0];
 
-                          const pdfData = {
-                            taskId: modalviewAttachmentFiles.FK_TID,
-                            attachmentID: Number(
-                              modalviewAttachmentFiles.OriginalAttachmentName
-                            ),
-                            fileName:
-                              modalviewAttachmentFiles.DisplayAttachmentName,
-                            commingFrom: 4,
-                          };
-                          const pdfDataJson = JSON.stringify(pdfData);
-                          return (
-                            <AttachmentViewer
-                              handleClickDownload={() =>
-                                handleClickDownloadFile(
-                                  modalviewAttachmentFiles.OriginalAttachmentName,
-                                  modalviewAttachmentFiles.DisplayAttachmentName
-                                )
-                              }
-                              handleEyeIcon={() => handleLinkClick(pdfDataJson)}
-                              id={
-                                modalviewAttachmentFiles.OriginalAttachmentName
-                              }
-                              data={modalviewAttachmentFiles}
-                              name={
+                        const pdfData = {
+                          taskId: modalviewAttachmentFiles.FK_TID,
+                          attachmentID: Number(
+                            modalviewAttachmentFiles.OriginalAttachmentName
+                          ),
+                          fileName:
+                            modalviewAttachmentFiles.DisplayAttachmentName,
+                          commingFrom: 4,
+                        };
+                        const pdfDataJson = JSON.stringify(pdfData);
+                        return (
+                          <AttachmentViewer
+                            handleClickDownload={() =>
+                              handleClickDownloadFile(
+                                modalviewAttachmentFiles.OriginalAttachmentName,
                                 modalviewAttachmentFiles.DisplayAttachmentName
-                              }
-                            />
-                          );
-                          return (
-                            <Col
-                              sm={12}
-                              lg={2}
-                              md={2}
-                              className="fileIconBoxView"
-                              // onClick={(e) =>
-                              //   downloadClick(e, modalviewAttachmentFiles)
-                              // }
-                            >
-                              {ext === "doc" ? (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={"docx"}
-                                    size={78}
-                                    type={"document"}
-                                    labelColor={"rgba(44, 88, 152)"}
-                                  />
-                                </span>
-                              ) : ext === "docx" ? (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={"docx"}
-                                    size={78}
-                                    type={"font"}
-                                    labelColor={"rgba(44, 88, 152)"}
-                                  />
-                                </span>
-                              ) : ext === "xls" ? (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={"xls"}
-                                    type={"spreadsheet"}
-                                    size={78}
-                                    labelColor={"rgba(16, 121, 63)"}
-                                  />
-                                </span>
-                              ) : ext === "xlsx" ? (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={"xls"}
-                                    type={"spreadsheet"}
-                                    size={78}
-                                    labelColor={"rgba(16, 121, 63)"}
-                                  />
-                                </span>
-                              ) : ext === "pdf" ? (
-                                // <Link
-                                //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                                //     pdfDataJson
-                                //   )}`}
-                                //   target="_blank"
-                                //   onClick={}
-                                //   rel="noopener noreferrer"
-                                // >
-
-                                <span
-                                  onClick={() => handleLinkClick(pdfDataJson)}
-                                >
-                                  <FileIcon
-                                    extension={"pdf"}
-                                    size={78}
-                                    {...defaultStyles.pdf}
-                                  />
-                                </span>
-                              ) : // </Link>
-                              ext === "png" ? (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={"png"}
-                                    size={78}
-                                    type={"image"}
-                                    labelColor={"rgba(102, 102, 224)"}
-                                  />
-                                </span>
-                              ) : ext === "txt" ? (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={"txt"}
-                                    size={78}
-                                    type={"document"}
-                                    labelColor={"rgba(52, 120, 199)"}
-                                  />
-                                </span>
-                              ) : ext === "jpg" ? (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={"jpg"}
-                                    size={78}
-                                    type={"image"}
-                                    labelColor={"rgba(102, 102, 224)"}
-                                  />
-                                </span>
-                              ) : ext === "jpeg" ? (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={"jpeg"}
-                                    size={78}
-                                    type={"image"}
-                                    labelColor={"rgba(102, 102, 224)"}
-                                  />
-                                </span>
-                              ) : ext === "gif" ? (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={"gif"}
-                                    size={78}
-                                    {...defaultStyles.gif}
-                                  />
-                                </span>
-                              ) : (
-                                <span
-                                  onClick={() =>
-                                    handleClickDownloadFile(
-                                      modalviewAttachmentFiles.OriginalAttachmentName,
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    )
-                                  }
-                                  className="cursor-pointer"
-                                >
-                                  <FileIcon
-                                    extension={ext}
-                                    size={78}
-                                    {...defaultStyles.ext}
-                                  />
-                                </span>
-                              )}
-                              <p
-                                className="todoModalFileAttach FontArabicRegular"
-                                title={
-                                  modalviewAttachmentFiles.DisplayAttachmentName
+                              )
+                            }
+                            handleEyeIcon={() => handleLinkClick(pdfDataJson)}
+                            id={modalviewAttachmentFiles.OriginalAttachmentName}
+                            data={modalviewAttachmentFiles}
+                            name={
+                              modalviewAttachmentFiles.DisplayAttachmentName
+                            }
+                          />
+                        );
+                        return (
+                          <Col
+                            sm={12}
+                            lg={2}
+                            md={2}
+                            className='fileIconBoxView'
+                            // onClick={(e) =>
+                            //   downloadClick(e, modalviewAttachmentFiles)
+                            // }
+                          >
+                            {ext === "doc" ? (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
                                 }
-                              >
-                                {first}
-                              </p>
-                            </Col>
-                          );
-                        }
-                      )
-                    : null}
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  className="d-flex justify-content-end"
-                  sm={12}
-                  md={12}
-                  lg={12}
-                >
-                  <Button
-                    className={"cancelButton_createTodo"}
-                    onClick={handleClose}
-                    text={t("Close")}
-                  />
-                </Col>
-              </Row>
-            </>
-          }
-          // ModalFooter = {() }
-        />
-      </Container>
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={"docx"}
+                                  size={78}
+                                  type={"document"}
+                                  labelColor={"rgba(44, 88, 152)"}
+                                />
+                              </span>
+                            ) : ext === "docx" ? (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
+                                }
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={"docx"}
+                                  size={78}
+                                  type={"font"}
+                                  labelColor={"rgba(44, 88, 152)"}
+                                />
+                              </span>
+                            ) : ext === "xls" ? (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
+                                }
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={"xls"}
+                                  type={"spreadsheet"}
+                                  size={78}
+                                  labelColor={"rgba(16, 121, 63)"}
+                                />
+                              </span>
+                            ) : ext === "xlsx" ? (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
+                                }
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={"xls"}
+                                  type={"spreadsheet"}
+                                  size={78}
+                                  labelColor={"rgba(16, 121, 63)"}
+                                />
+                              </span>
+                            ) : ext === "pdf" ? (
+                              // <Link
+                              //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                              //     pdfDataJson
+                              //   )}`}
+                              //   target="_blank"
+                              //   onClick={}
+                              //   rel="noopener noreferrer"
+                              // >
+
+                              <span
+                                onClick={() => handleLinkClick(pdfDataJson)}>
+                                <FileIcon
+                                  extension={"pdf"}
+                                  size={78}
+                                  {...defaultStyles.pdf}
+                                />
+                              </span>
+                            ) : // </Link>
+                            ext === "png" ? (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
+                                }
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={"png"}
+                                  size={78}
+                                  type={"image"}
+                                  labelColor={"rgba(102, 102, 224)"}
+                                />
+                              </span>
+                            ) : ext === "txt" ? (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
+                                }
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={"txt"}
+                                  size={78}
+                                  type={"document"}
+                                  labelColor={"rgba(52, 120, 199)"}
+                                />
+                              </span>
+                            ) : ext === "jpg" ? (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
+                                }
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={"jpg"}
+                                  size={78}
+                                  type={"image"}
+                                  labelColor={"rgba(102, 102, 224)"}
+                                />
+                              </span>
+                            ) : ext === "jpeg" ? (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
+                                }
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={"jpeg"}
+                                  size={78}
+                                  type={"image"}
+                                  labelColor={"rgba(102, 102, 224)"}
+                                />
+                              </span>
+                            ) : ext === "gif" ? (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
+                                }
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={"gif"}
+                                  size={78}
+                                  {...defaultStyles.gif}
+                                />
+                              </span>
+                            ) : (
+                              <span
+                                onClick={() =>
+                                  handleClickDownloadFile(
+                                    modalviewAttachmentFiles.OriginalAttachmentName,
+                                    modalviewAttachmentFiles.DisplayAttachmentName
+                                  )
+                                }
+                                className='cursor-pointer'>
+                                <FileIcon
+                                  extension={ext}
+                                  size={78}
+                                  {...defaultStyles.ext}
+                                />
+                              </span>
+                            )}
+                            <p
+                              className='todoModalFileAttach FontArabicRegular'
+                              title={
+                                modalviewAttachmentFiles.DisplayAttachmentName
+                              }>
+                              {first}
+                            </p>
+                          </Col>
+                        );
+                      }
+                    )
+                  : null}
+              </Col>
+            </Row>
+          </>
+        }
+        ModalFooter={
+          <>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className='d-flex justify-content-end'>
+                <Button
+                  className={"cancelButton_createTodo"}
+                  onClick={handleClose}
+                  text={t("Close")}
+                />
+              </Col>
+            </Row>
+          </>
+        }
+      />
+
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );

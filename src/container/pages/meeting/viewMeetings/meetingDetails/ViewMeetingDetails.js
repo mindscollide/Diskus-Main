@@ -197,15 +197,17 @@ const ViewMeetingDetails = ({
     let Data2 = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    await dispatch(
-      FetchMeetingURLClipboard(
-        Data2,
-        navigate,
-        t,
-        currentUserID,
-        currentOrganization
-      )
-    );
+    if (meetingDetails.IsVideoCall) {
+      await dispatch(
+        FetchMeetingURLClipboard(
+          Data2,
+          navigate,
+          t,
+          currentUserID,
+          currentOrganization
+        )
+      );
+    }
   };
 
   useEffect(() => {
@@ -333,7 +335,10 @@ const ViewMeetingDetails = ({
         let MeetingData =
           NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
         localStorage.setItem("meetingTitle", MeetingData.meetingTitle);
-        localStorage.setItem("isMinutePublished", MeetingData.isMinutePublished)
+        localStorage.setItem(
+          "isMinutePublished",
+          MeetingData.isMinutePublished
+        );
         let getmeetingDates = MeetingData.meetingDates;
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
@@ -503,31 +508,23 @@ const ViewMeetingDetails = ({
     }
   };
 
+  console.log("NewMeetingreducer.CurrentMeetingURL", NewMeetingreducer);
+
   const copyToClipboardd = () => {
-    if (
-      NewMeetingreducer.CurrentMeetingURL !== undefined &&
-      NewMeetingreducer.CurrentMeetingURL !== null &&
-      NewMeetingreducer.CurrentMeetingURL !== ""
-    ) {
-      console.log(
-        "NewMeetingreducer.CurrentMeetingURL",
-        NewMeetingreducer.CurrentMeetingURL
-      );
-      copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
+    copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
+    setOpen({
+      ...open,
+      flag: true,
+      message: "URL copied to clipboard",
+    });
+    setTimeout(() => {
       setOpen({
         ...open,
-        flag: true,
-        message: "URL copied to clipboard",
+        flag: false,
+        message: "",
       });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
-      dispatch(CleareMessegeNewMeeting());
-    }
+    }, 3000);
+    dispatch(CleareMessegeNewMeeting());
   };
 
   const groupChatInitiation = (data) => {
@@ -614,6 +611,7 @@ const ViewMeetingDetails = ({
                     onClick={() =>
                       dispatch(
                         UpdateOrganizersMeeting(
+                          false,
                           navigate,
                           t,
                           4,

@@ -56,7 +56,9 @@ const ViewMeetingModal = ({
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
   const [meetingDetails, setmeetingDetails] = useState(
-    (editorRole.role === "Organizer" || editorRole.role === "Participant") &&
+    (editorRole.role === "Organizer" ||
+      editorRole.role === "Participant" ||
+      editorRole.role === "Agenda Contributor") &&
       Number(editorRole.status) === 10
       ? false
       : true
@@ -66,7 +68,9 @@ const ViewMeetingModal = ({
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(false);
   const [meetingMaterial, setMeetingMaterial] = useState(
-    (editorRole.role === "Organizer" || editorRole.role === "Participant") &&
+    (editorRole.role === "Organizer" ||
+      editorRole.role === "Participant" ||
+      editorRole.role === "Agenda Contributor") &&
       Number(editorRole.status) === 10
       ? true
       : false
@@ -81,6 +85,8 @@ const ViewMeetingModal = ({
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+
+  let meetingTitle = localStorage.getItem("meetingTitle");
 
   const dispatch = useDispatch();
 
@@ -368,7 +374,7 @@ const ViewMeetingModal = ({
         <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
-              {t("Meeting-view")}
+              {meetingTitle ? meetingTitle : ""}
             </span>
           </Col>
         </Row>

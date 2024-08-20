@@ -682,7 +682,7 @@ const AddReviewers = ({
                   lg={6}
                   md={6}
                   sm={12}
-                  className="position-relative d-flex gap-3 justify-content-start"
+                  className="d-grid justify-content-start"
                 >
                   <label className={styles["label-datePicker"]}>
                     {t("Deadline")} <span className="text-danger">*</span>

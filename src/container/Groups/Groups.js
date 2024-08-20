@@ -589,7 +589,7 @@ const Groups = () => {
                               lg={12}
                               className={styles["NoGroupsDataFoundText"]}
                             >
-                              {t("You-dont-have-any-group-yet.")}
+                              {t("You-dont-have-any-group-yet")}
                             </Col>
                             <Col
                               sm={12}
@@ -597,7 +597,7 @@ const Groups = () => {
                               lg={12}
                               className={styles["NoGroupsDataFoundText"]}
                             >
-                              {t("Click-create-new-group-to-get-started.")}
+                              {t("Click-create-new-group")}
                             </Col>
 
                             <Col

@@ -88,8 +88,8 @@ const RecentChats = () => {
       setAllChatData([]);
     }
     return () => {
-      setAllChatData([])
-    }
+      setAllChatData([]);
+    };
   }, [talkStateData.AllUserChats.AllUserChatsData]);
 
   //Search Chats
@@ -212,47 +212,55 @@ const RecentChats = () => {
   };
 
   useEffect(() => {
-    if (allChatData.length !== 0) {
-      const updatedChatData = [...allChatData]; // Create a copy of the array
+    try {
+      if (allChatData.length !== 0) {
+        const updatedChatData = [...allChatData]; // Create a copy of the array
 
-      // Find the index of the chat to update or insert
-      const index = updatedChatData.findIndex(
-        (chat) => chat.id === talkStateData.PushChatData.id
-      );
+        // Find the index of the chat to update or insert
+        const index = updatedChatData.findIndex(
+          (chat) => chat.id === talkStateData.PushChatData.id
+        );
 
-      if (index !== -1) {
-        // Update the existing chat data
-        updatedChatData[index] = {
-          ...updatedChatData[index],
-          ...talkStateData.PushChatData,
-        };
-      } else {
-        // Insert the new chat data
-        updatedChatData.push(talkStateData.PushChatData);
+        if (index !== -1) {
+          // Update the existing chat data
+          updatedChatData[index] = {
+            ...updatedChatData[index],
+            ...talkStateData.PushChatData,
+          };
+        } else {
+          // Insert the new chat data
+          updatedChatData.push(talkStateData.PushChatData);
+        }
+
+        // Sort the updatedChatData array by messageDate in descending order
+        updatedChatData.sort((a, b) => {
+          const dateA = a.messageDate;
+          const dateB = b.messageDate;
+
+          // Convert custom date strings to numerical values for comparison
+          const numericDateA = parseInt(
+            `${dateA.slice(0, 8)}${dateA.slice(8)}`
+          );
+          const numericDateB = parseInt(
+            `${dateB.slice(0, 8)}${dateB.slice(8)}`
+          );
+
+          return numericDateB - numericDateA;
+        });
+
+        // Set the state with the sorted updatedChatData
+        setAllChatData(updatedChatData);
+      } else if (
+        allChatData.length === 0 &&
+        talkStateData.PushChatData.length !== 0
+      ) {
+        setAllChatData((prevChatData) => [
+          ...prevChatData,
+          talkStateData.PushChatData,
+        ]);
       }
-
-      // Sort the updatedChatData array by messageDate in descending order
-      updatedChatData.sort((a, b) => {
-        const dateA = a.messageDate;
-        const dateB = b.messageDate;
-
-        // Convert custom date strings to numerical values for comparison
-        const numericDateA = parseInt(`${dateA.slice(0, 8)}${dateA.slice(8)}`);
-        const numericDateB = parseInt(`${dateB.slice(0, 8)}${dateB.slice(8)}`);
-
-        return numericDateB - numericDateA;
-      });
-
-      // Set the state with the sorted updatedChatData
-      setAllChatData(updatedChatData);
-    } else if (
-      allChatData.length === 0 &&
-      talkStateData.PushChatData.length !== 0
-    ) {
-      setAllChatData((prevChatData) => [
-        ...prevChatData,
-        talkStateData.PushChatData,
-      ]);
+    } catch (error) {
+      console.log("ERROR");
     }
   }, [talkStateData.PushChatData]);
 
