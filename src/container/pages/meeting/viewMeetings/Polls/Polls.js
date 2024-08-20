@@ -599,7 +599,6 @@ const Polls = ({
   useEffect(() => {
     if (
       PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("Data-available") &&
       PollsReducer.ResponseMessage !== t("No-data-available") &&
       PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("No-records-found") &&
@@ -625,7 +624,6 @@ const Polls = ({
   useEffect(() => {
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
       NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
       NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("No-records-found") &&

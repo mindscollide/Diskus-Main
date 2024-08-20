@@ -297,7 +297,7 @@ const getEventsTypes = (navigate, t) => {
               await dispatch(
                 getEventsType_success(
                   response.data.responseResult.eventTypes,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -382,7 +382,7 @@ const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
               dispatch(
                 getEventsDetails_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               if (Data.CalendarEventTypeId === 2) {

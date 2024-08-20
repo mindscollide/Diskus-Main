@@ -1521,6 +1521,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                 )
             ) {
               let loaderFlag = Number(flag) === 1 ? true : false;
+
               dispatch(
                 getAllPendingApprovalStatus_success(
                   response.data.responseResult,
@@ -1528,6 +1529,16 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                   loaderFlag
                 )
               );
+              console.log(Data.IsCreator, "isCreatorisCreatorisCreatorisCreator")
+              if(Data.IsCreator) {
+                let Data = { sRow: 0, Length: 10 };
+                await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+              } else {
+                let Data2 = { sRow: 0, Length: 10 };
+                console.log(Data, "handleScrollhandleScrollhandleScroll");
+                await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data2));
+              }
+   
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2048,7 +2059,7 @@ const getDashbardPendingApprovalDataApi = (navigate, t) => {
               dispatch(
                 getDashbardPendingApprovalData_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

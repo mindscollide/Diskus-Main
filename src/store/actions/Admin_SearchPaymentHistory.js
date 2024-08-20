@@ -81,7 +81,7 @@ const searchPaymentHistoryApi = (
               dispatch(
                 searchPaymentHistory_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               if (no === 1) {

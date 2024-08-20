@@ -1029,7 +1029,6 @@ const Resolution = () => {
   useEffect(() => {
     if (
       ResolutionReducer.ResponseMessage !== "" &&
-      ResolutionReducer.ResponseMessage !== t("Data-available") &&
       ResolutionReducer.ResponseMessage !== t("No-data-available") &&
       ResolutionReducer.ResponseMessage !== undefined
     ) {

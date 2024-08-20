@@ -65,7 +65,7 @@ const getFilesandFolderDetailsApi = (navigate, t, Data, setDetailView) => {
             dispatch(
               getFileandFolderDetail_Success(
                 response.data.responseResult.data,
-                t("Data-available")
+                ""
               )
             );
             setDetailView(true);
@@ -252,7 +252,7 @@ const getDataAnalyticsApi = (
             await dispatch(
               getDataAnalytics_Success(
                 response.data.responseResult,
-                t("Data-available")
+                ""
               )
             );
             setActivityState(true);
@@ -355,7 +355,7 @@ const getDataAnalyticsCountApi = (
             dispatch(
               getDataAnalyticsCount_Success(
                 response.data.responseResult.dataAnalysis,
-                t("Data-available")
+                ""
               )
             );
             setFileDataforAnalyticsCount(record);

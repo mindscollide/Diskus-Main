@@ -66,7 +66,7 @@ const getMeetingTaskMainApi = (navigate, t, meetingTaskData) => {
               dispatch(
                 getMeetingTask_Success(
                   response.data.responseResult,
-                  t("Data-Available")
+                  ""
                 )
               );
               dispatch(showCancelActions(false));

@@ -49,7 +49,7 @@ const getPaymentMethodApi = (navigate, t) => {
               dispatch(
                 getPaymentMethod_success(
                   response.data.responseResult.paymentMethod,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

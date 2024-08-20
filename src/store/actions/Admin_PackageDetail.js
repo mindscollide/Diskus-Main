@@ -152,7 +152,7 @@ const getSubscriptionPaymentDetail = (navigate, TenureID, t) => {
               dispatch(
                 getSubscriptionDetailPaymentDetails_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -269,7 +269,7 @@ const getSubscriptionUpgradeAmountInfoApi = (
               dispatch(
                 getSubscriptionUpgradeAmountInfo_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               localStorage.setItem("PackageIDforPayment", Data.PackageID);

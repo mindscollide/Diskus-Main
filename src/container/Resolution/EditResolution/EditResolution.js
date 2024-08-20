@@ -976,8 +976,7 @@ const EditResolution = ({ setCancelresolution }) => {
 
   useEffect(() => {
     if (
-      ResolutionReducer.ResponseMessage !== "" &&
-      ResolutionReducer.ResponseMessage !== t("Data-available")
+      ResolutionReducer.ResponseMessage !== "" 
     ) {
       setOpen({
         flag: true,

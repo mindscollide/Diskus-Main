@@ -62,7 +62,7 @@ const getSubscriptionDetails = (navigate, t) => {
               dispatch(
                 getSubscriptionDetailSuccess(
                   response.data.responseResult.subscriptionPackages,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

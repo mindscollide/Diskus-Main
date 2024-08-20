@@ -56,7 +56,7 @@ const userLoginHistory_Api = (navigate, t, Data, loader) => {
               dispatch(
                 userLoginHistory_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

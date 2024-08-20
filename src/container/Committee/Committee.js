@@ -394,7 +394,6 @@ const Committee = () => {
     if (
       CommitteeReducer.ResponseMessage !== "" &&
       CommitteeReducer.ResponseMessage !== undefined &&
-      CommitteeReducer.ResponseMessage !== t("Data-available") &&
       CommitteeReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({

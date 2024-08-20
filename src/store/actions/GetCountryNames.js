@@ -56,7 +56,7 @@ const getCountryNamesAction = (navigate, t) => {
               await dispatch(
                 getCountryNameSuccess(
                   response.data.responseResult.worldCountries,
-                  t("Data-available")
+                  ""
                 )
               );
 

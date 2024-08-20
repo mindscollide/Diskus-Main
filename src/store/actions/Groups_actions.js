@@ -88,15 +88,11 @@ const getGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(groupLoader(false));
-              // if (id === 1) {
-              //   dispatch(getArchivedGroups_success(
-              //     response.data.responseResult,
-              //     t("Data-available")))
-              // } else {
+         
               dispatch(
                 getGroup_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               // }
@@ -230,7 +226,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
               dispatch(
                 getArchivedGroups_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -361,7 +357,7 @@ const getbyGroupID = (
               dispatch(
                 getbyGroupID_Success(
                   response.data.responseResult.group,
-                  t("Data-available")
+                  ""
                 )
               );
               let newData = {
@@ -479,7 +475,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               await dispatch(
                 createGroup_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               localStorage.setItem(
@@ -601,7 +597,7 @@ const getGroupMembersRoles = (navigate, Data, t) => {
               await dispatch(
                 getOrganiationGroupRoles_Success(
                   response.data.responseResult.groupRoles,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -685,7 +681,7 @@ const getOrganizationGroupTypes = (navigate, Data, t) => {
               await dispatch(
                 getOrganizationGroupTypes_Success(
                   response.data.responseResult.groupTypes,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -982,7 +978,7 @@ const getAllGroups = (navigate, t) => {
               dispatch(
                 getAllGroups_Success(
                   response.data.responseResult.groups,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -1549,7 +1545,7 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showRetriveDocumentsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

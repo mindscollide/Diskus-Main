@@ -61,7 +61,7 @@ const GetNotes = (navigate, Data, t) => {
               dispatch(
                 getNotes_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -404,7 +404,7 @@ const GetNotesByIdAPI = (
               dispatch(
                 GetNotesById_Success(
                   response.data.responseResult.getNotes,
-                  t("Data-available")
+                  ""
                 )
               );
               // await dispatch(GetNotes(getNotesAPI, t))

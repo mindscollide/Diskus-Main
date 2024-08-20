@@ -3590,7 +3590,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                 // await dispatch(
                 //   showRetriveGeneralMinutesDocsMeetingSuccess(
                 //     response.data.responseResult,
-                //     t("Data-available")
+                //     ""
                 //   )
                 // );
                 await dispatch(
@@ -4157,7 +4157,7 @@ const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showRetriveGeneralMinutesDocsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -5517,7 +5517,7 @@ const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showRetriveAgendaWiseDocumentsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -8481,7 +8481,7 @@ const getDashbardMeetingDataApi = (navigate, t) => {
               dispatch(
                 getDashbardMeetingData_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

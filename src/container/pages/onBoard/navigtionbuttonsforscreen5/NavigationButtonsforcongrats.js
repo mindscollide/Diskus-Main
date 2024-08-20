@@ -19,7 +19,7 @@ const NavigationButtons = () => {
                 <Col className=''><Button text={t("Next")} icon2={<ChevronRight />} className="skipButtons-onboard_screen5" onClick={() => setCurrentStep(currentStep + 1)} /></Col>
             </Row>
             <Row>
-                <Col onClick={() => navigate("/Diskus")} className="d-flex justify-content-center mt-2" ><h3 className="tour-skip">SKIP DEMO</h3></Col>
+                <Col onClick={() => navigate("/Diskus/")} className="d-flex justify-content-center mt-2" ><h3 className="tour-skip">SKIP DEMO</h3></Col>
             </Row>
         </div>
     </>

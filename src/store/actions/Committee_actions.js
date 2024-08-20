@@ -311,7 +311,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
               dispatch(
                 getallcommitteesbyuserid_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -430,7 +430,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
               dispatch(
                 getArcheivedCommittees_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -568,7 +568,7 @@ const getCommitteesbyCommitteeId = (
               dispatch(
                 getCommitteByCommitteeID_Success(
                   response.data.responseResult.committee,
-                  t("Data-available")
+                  ""
                 )
               );
               let newData = {
@@ -698,7 +698,7 @@ const createcommittee = (navigate, Data, t) => {
                 createcommittee_success(
                   response.data.responseResult,
                   response.data.responseResult.committeeID,
-                  t("Data-available")
+                  ""
                 )
               );
               let newData = {
@@ -817,7 +817,7 @@ const getCommitteeTypes = (navigate, Data, t) => {
               await dispatch(
                 getCommitteeTypes_Success(
                   response.data.responseResult.committeeTypes,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -905,7 +905,7 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
               await dispatch(
                 getCommitteeMembersRole_Success(
                   response.data.responseResult.committeeMemberRoles,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -1510,7 +1510,7 @@ const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
             dispatch(
               reteriveCommitteeDocuments_success(
                 response.data.responseResult,
-                t("Data-available")
+                ""
               )
             );
           } else if (

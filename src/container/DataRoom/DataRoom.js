@@ -335,9 +335,9 @@ const DataRoom = () => {
       dispatch(getRecentDocumentsApi(navigate, t, Data));
     } else if (currentView === 5) {
       let newData = { IsCreator: true };
-      await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
-      let Data = { pageNo: 1, pageSize: 10 };
-      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1,));
+      // let Data = { pageNo: 1, pageSize: 10 };
+      // await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
 
       setGetAllData([]);
       setSharedwithmebtn(true);
@@ -808,8 +808,8 @@ const DataRoom = () => {
     // getAllPendingApprovalStatusApi
     let newData = { IsCreator: true };
     await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
-    let Data = { sRow: 0, Length: 10 };
-    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    // let Data = { sRow: 0, Length: 10 };
+    // await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
 
     //  localStorage.set
     setGetAllData([]);
@@ -3296,7 +3296,6 @@ const DataRoom = () => {
   useEffect(() => {
     if (
       DataRoomReducer.ResponseMessage !== "" &&
-      DataRoomReducer.ResponseMessage !== t("Data-available") &&
       DataRoomReducer.ResponseMessage !== t("No-record-found") &&
       DataRoomReducer.ResponseMessage !==
         t("No-folder-exist-against-this-name") &&
@@ -3350,7 +3349,6 @@ const DataRoom = () => {
       }, 4000);
     }
     if (
-      DataRoomFileAndFoldersDetailsResponseMessage !== t("Data-available") &&
       DataRoomFileAndFoldersDetailsResponseMessage !== ""
     ) {
       setOpen({

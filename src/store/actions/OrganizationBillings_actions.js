@@ -65,7 +65,7 @@ const getBillingInformationapi = (navigate, t) => {
               dispatch(
                 getBillingInformation_success(
                   response.data.responseResult.billingInfo,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -152,7 +152,7 @@ const getPayoutStandingInformation = (navigate, t) => {
               dispatch(
                 getPayoutstading_success(
                   response.data.responseResult.invoiceDetails,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -242,7 +242,7 @@ const invoiceandpaymenthistory = (navigate, t) => {
               dispatch(
                 invoiceandpaymenthistory_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

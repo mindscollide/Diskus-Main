@@ -1847,7 +1847,7 @@ const getDashbardTaskDataApi = (navigate, t) => {
               dispatch(
                 getDashbardTaskData_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

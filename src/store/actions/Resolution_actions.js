@@ -571,7 +571,7 @@ const getAllVotingMethods = (navigate, t) => {
               dispatch(
                 getAllVoting_Success(
                   response.data.responseResult.resolutionMethod,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -647,7 +647,7 @@ const getAllResolutionStatus = (navigate, t) => {
               dispatch(
                 getAllResolutionStatus_Success(
                   response.data.responseResult.resolutionStatus,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -749,7 +749,7 @@ const getResolutions = (
               dispatch(
                 getResolutions_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -1159,7 +1159,7 @@ const getResolutionbyResolutionID = (navigate, id, t, no) => {
               dispatch(
                 getResolutionById_Success(
                   response.data.responseResult.resolution,
-                  t("Data-available")
+                  ""
                 )
               );
               if (no === 1) {
@@ -1244,7 +1244,7 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
               dispatch(
                 getResolutionResult_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               setResultresolution(true);
@@ -1325,7 +1325,7 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
               dispatch(
                 getVotesDetail_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               if (typeof setVoteresolution === "function") {
@@ -1712,7 +1712,7 @@ const getVoterResolution = (
               dispatch(
                 getVoterResolution_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
