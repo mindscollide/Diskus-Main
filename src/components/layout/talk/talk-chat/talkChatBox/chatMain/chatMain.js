@@ -5,8 +5,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import moment from "moment";
 import { Row, Col, Container, Form, Dropdown } from "react-bootstrap";
-import { Checkbox } from "antd";
-import { Spin } from "antd";
+import { Checkbox, Tooltip, Spin } from "antd";
 import {
   oneToOneMessages,
   groupMessages,
@@ -3432,8 +3431,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         </Dropdown.Menu>
                       </Dropdown>
                     </Col>
-                    {activeCall === false &&
-                    checkFeatureIDAvailability(5) ? (
+                    {activeCall === false && checkFeatureIDAvailability(5) ? (
                       <Col lg={1} md={1} sm={12}>
                         <div className="chat-box-icons">
                           <img
@@ -5665,32 +5663,37 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 />
                                 {uploadOptions === true ? (
                                   <div className="upload-options">
-                                    <div className="file-upload-options">
-                                      <label
-                                        className="image-upload"
-                                        htmlFor="document-upload"
-                                      >
-                                        <img
-                                          draggable="false"
-                                          src={UploadDocument}
-                                          alt=""
+                                    <Tooltip
+                                      placement="topRight"
+                                      title={t("Document")}
+                                    >
+                                      <div className="file-upload-options">
+                                        <label
+                                          className="image-upload"
+                                          htmlFor="document-upload"
+                                        >
+                                          <img
+                                            draggable="false"
+                                            src={UploadDocument}
+                                            alt=""
+                                          />
+                                        </label>
+                                        <input
+                                          id="document-upload"
+                                          type="file"
+                                          onChange={(event) =>
+                                            handleFileUpload(event, "document")
+                                          }
+                                          onClick={(event) => {
+                                            event.target.value = null;
+                                          }}
+                                          maxfilesize={10000000}
+                                          accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
+                                          style={{ display: "none" }}
                                         />
-                                      </label>
-                                      <input
-                                        id="document-upload"
-                                        type="file"
-                                        onChange={(event) =>
-                                          handleFileUpload(event, "document")
-                                        }
-                                        onClick={(event) => {
-                                          event.target.value = null;
-                                        }}
-                                        maxfilesize={10000000}
-                                        accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
-                                        style={{ display: "none" }}
-                                      />
-                                    </div>
-                                    <div className="file-upload-options">
+                                      </div>
+                                    </Tooltip>
+                                    {/* <div className="file-upload-options">
                                       <label
                                         className="image-upload"
                                         htmlFor="sticker-upload"
@@ -5714,32 +5717,37 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
                                         style={{ display: "none" }}
                                       />
-                                    </div>
-                                    <div className="file-upload-options">
-                                      <label
-                                        className="image-upload"
-                                        htmlFor="image-upload"
-                                      >
-                                        <img
-                                          draggable="false"
-                                          src={UploadPicVid}
-                                          alt=""
+                                    </div> */}
+                                    <Tooltip
+                                      placement="topRight"
+                                      title={t("Upload-image")}
+                                    >
+                                      <div className="file-upload-options">
+                                        <label
+                                          className="image-upload"
+                                          htmlFor="image-upload"
+                                        >
+                                          <img
+                                            draggable="false"
+                                            src={UploadPicVid}
+                                            alt=""
+                                          />
+                                        </label>
+                                        <input
+                                          id="image-upload"
+                                          type="file"
+                                          onChange={(event) =>
+                                            handleFileUpload(event, "image")
+                                          }
+                                          onClick={(event) => {
+                                            event.target.value = null;
+                                          }}
+                                          maxfilesize={10000000}
+                                          accept="image/*"
+                                          style={{ display: "none" }}
                                         />
-                                      </label>
-                                      <input
-                                        id="image-upload"
-                                        type="file"
-                                        onChange={(event) =>
-                                          handleFileUpload(event, "image")
-                                        }
-                                        onClick={(event) => {
-                                          event.target.value = null;
-                                        }}
-                                        maxfilesize={10000000}
-                                        accept="image/*"
-                                        style={{ display: "none" }}
-                                      />
-                                    </div>
+                                      </div>
+                                    </Tooltip>
                                   </div>
                                 ) : null}
                               </span>

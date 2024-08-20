@@ -8210,3 +8210,18 @@ input.CustomerInformation_formcontrol-Addresstwo-field_disabled__HYn7E.form-cont
 input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-control {
   font-size: 13px !important;
 }
+
+.removeEditors .ql-toolbar.ql-snow {
+  display: none !important;
+}
+
+.removeEditors .ql-container.ql-snow {
+  height: 156px !important;
+  border-radius: 4px !important;
+  border-color: #e1e1e1 !important;
+  margin-bottom: 15px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  border-top: 1px solid #ccc !important;
+}
