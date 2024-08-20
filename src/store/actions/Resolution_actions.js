@@ -571,14 +571,14 @@ const getAllVotingMethods = (navigate, t) => {
               dispatch(
                 getAllVoting_Success(
                   response.data.responseResult.resolutionMethod,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetAllVotingMethod_02".toLowerCase()
             ) {
-              dispatch(getAllVoting_Fail(t("No-data-available")));
+              dispatch(getAllVoting_Fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetAllVotingMethod_03".toLowerCase()
@@ -647,14 +647,14 @@ const getAllResolutionStatus = (navigate, t) => {
               dispatch(
                 getAllResolutionStatus_Success(
                   response.data.responseResult.resolutionStatus,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetAllResolutionStatus_02".toLowerCase()
             ) {
-              dispatch(getAllResolutionStatus_Fail(t("No-data-available")));
+              dispatch(getAllResolutionStatus_Fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetAllResolutionStatus_03".toLowerCase()
@@ -749,7 +749,7 @@ const getResolutions = (
               dispatch(
                 getResolutions_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -759,7 +759,7 @@ const getResolutions = (
               dispatch(
                 getResolutions_Success(
                   response.data.responseResult.resolutionTable,
-                  t("No-data-available")
+                  ""
                 )
               );
             } else if (
@@ -1159,7 +1159,7 @@ const getResolutionbyResolutionID = (navigate, id, t, no) => {
               dispatch(
                 getResolutionById_Success(
                   response.data.responseResult.resolution,
-                  t("Data-available")
+                  ""
                 )
               );
               if (no === 1) {
@@ -1244,7 +1244,7 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
               dispatch(
                 getResolutionResult_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               setResultresolution(true);
@@ -1325,7 +1325,7 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
               dispatch(
                 getVotesDetail_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               if (typeof setVoteresolution === "function") {
@@ -1336,7 +1336,7 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetVoteDetailsByID_02".toLowerCase()
             ) {
-              dispatch(getVotesDetail_Fail(t("No-data-available")));
+              dispatch(getVotesDetail_Fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetVoteDetailsByID_03".toLowerCase()
@@ -1712,14 +1712,14 @@ const getVoterResolution = (
               dispatch(
                 getVoterResolution_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_SearchVoterResolutions_02".toLowerCase()
             ) {
-              dispatch(getVoterResolution_fail(t("No-data-available")));
+              dispatch(getVoterResolution_fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_SearchVoterResolutions_03".toLowerCase()

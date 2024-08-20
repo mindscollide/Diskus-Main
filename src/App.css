@@ -53,7 +53,7 @@ body {
   color: #000000;
   line-height: 1.5;
   background-color: #f6fafd !important;
-  overflow: hidden auto;
+  /* overflow: hidden auto; */
 }
 
 .MuiInputBase-root {

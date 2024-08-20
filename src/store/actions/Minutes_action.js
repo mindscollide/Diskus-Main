@@ -173,7 +173,7 @@ const ListOfDefaultRejectionComments = (navigate, t) => {
               dispatch(
                 getListOfDefaultRejectionComments_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -280,7 +280,7 @@ const GetPendingApprovalsCount = (navigate, t) => {
               dispatch(
                 getPendingApprovalsCount_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -387,7 +387,7 @@ const GetMinuteReviewStatsForOrganizerByMeetingId = (Data, navigate, t) => {
               dispatch(
                 getMinuteReviewStatsForOrganizerByMeetingId_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -519,7 +519,7 @@ const GetAllOrganizationUsersForReview = (navigate, t, setAllReviewers) => {
               dispatch(
                 getAllOrganizationUsersForReview_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -626,7 +626,7 @@ const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
               dispatch(
                 getMinutesForReviewerByMeetingId_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -768,7 +768,7 @@ const GetMinuteReviewPendingApprovalsStatsByReviewerId = (navigate, t) => {
               dispatch(
                 getMinuteReviewPendingApprovalsStatsByReviewerId_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -893,7 +893,7 @@ const GetMinuteReviewPendingApprovalsByReviewerId = (Data, navigate, t) => {
               dispatch(
                 getMinuteReviewPendingApprovalsByReviewerId_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -1204,7 +1204,7 @@ const GetMinutesVersionHistoryWithCommentsApi = (
               dispatch(
                 GetMinuteVersionHistorywithComments_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               setShowVersionHistory(true);
@@ -1340,7 +1340,7 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
               dispatch(
                 GetMinuteReviewDetailsByOrganizerByMinuteId_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               setShowRevisionHistory(true);
@@ -1353,7 +1353,7 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
             ) {
               dispatch(
                 GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-                  t("No-data-available")
+                  ""
                 )
               );
             } else if (
@@ -1492,7 +1492,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t, setAddReviewers) => {
               dispatch(
                 getMinuteReviewFlowByMeetingId_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               setAddReviewers(true);

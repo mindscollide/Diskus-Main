@@ -49,7 +49,7 @@ const getPaymentMethodApi = (navigate, t) => {
               dispatch(
                 getPaymentMethod_success(
                   response.data.responseResult.paymentMethod,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -59,7 +59,7 @@ const getPaymentMethodApi = (navigate, t) => {
                   "Admin_AdminServiceManager_GetPaymentMethods_02".toLowerCase()
                 )
             ) {
-              dispatch(getPaymentMethod_fail(t("No-data-available")));
+              dispatch(getPaymentMethod_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

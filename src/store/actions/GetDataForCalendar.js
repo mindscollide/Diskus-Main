@@ -297,7 +297,7 @@ const getEventsTypes = (navigate, t) => {
               await dispatch(
                 getEventsType_success(
                   response.data.responseResult.eventTypes,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -307,7 +307,7 @@ const getEventsTypes = (navigate, t) => {
                   "Calender_CalenderServiceManager_GetAllEventTypes_02".toLowerCase()
                 )
             ) {
-              dispatch(getEventsType_fail(t("No-data-available")));
+              dispatch(getEventsType_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -382,7 +382,7 @@ const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
               dispatch(
                 getEventsDetails_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               if (Data.CalendarEventTypeId === 2) {
@@ -395,7 +395,7 @@ const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
                   "Calender_CalenderServiceManager_GetDiskusEventDetails_02".toLowerCase()
                 )
             ) {
-              dispatch(getEventsDetails_fail(t("No-data-available")));
+              dispatch(getEventsDetails_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

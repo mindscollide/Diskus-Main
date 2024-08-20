@@ -237,7 +237,6 @@ const Notes = () => {
   useEffect(() => {
     if (
       NotesReducer.ResponseMessage !== "" &&
-      NotesReducer.ResponseMessage !== t("Data-available") &&
       NotesReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({

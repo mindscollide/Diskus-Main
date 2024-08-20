@@ -65,7 +65,7 @@ const getFilesandFolderDetailsApi = (navigate, t, Data, setDetailView) => {
             dispatch(
               getFileandFolderDetail_Success(
                 response.data.responseResult.data,
-                t("Data-available")
+                ""
               )
             );
             setDetailView(true);
@@ -76,7 +76,7 @@ const getFilesandFolderDetailsApi = (navigate, t, Data, setDetailView) => {
                 "DataRoom_DataRoomManager_GetFileFolderDetails_02".toLowerCase()
               )
           ) {
-            dispatch(getFileandFolderDetail_Fail(t("No-data-available")));
+            dispatch(getFileandFolderDetail_Fail(""));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -252,7 +252,7 @@ const getDataAnalyticsApi = (
             await dispatch(
               getDataAnalytics_Success(
                 response.data.responseResult,
-                t("Data-available")
+                ""
               )
             );
             setActivityState(true);
@@ -267,7 +267,7 @@ const getDataAnalyticsApi = (
             setActivityState(false);
             setDetailsState(true);
 
-            dispatch(getDataAnalytics_Fail(t("No-data-available")));
+            dispatch(getDataAnalytics_Fail(""));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -355,7 +355,7 @@ const getDataAnalyticsCountApi = (
             dispatch(
               getDataAnalyticsCount_Success(
                 response.data.responseResult.dataAnalysis,
-                t("Data-available")
+                ""
               )
             );
             setFileDataforAnalyticsCount(record);
@@ -367,7 +367,7 @@ const getDataAnalyticsCountApi = (
                 "DataRoom_DataRoomManager_GetDataAnalyticsCount_02".toLowerCase()
               )
           ) {
-            dispatch(getDataAnalyticsCount_Fail(t("No-data-available")));
+            dispatch(getDataAnalyticsCount_Fail(""));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

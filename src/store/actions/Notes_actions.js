@@ -58,12 +58,7 @@ const GetNotes = (navigate, Data, t) => {
                   "Notes_NotesServiceManager_SearchNotes_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                getNotes_Success(
-                  response.data.responseResult,
-                  t("Data-available")
-                )
-              );
+              dispatch(getNotes_Success(response.data.responseResult, ""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -72,7 +67,7 @@ const GetNotes = (navigate, Data, t) => {
                 )
             ) {
               let data = [];
-              dispatch(getNotes_Fail(t("No-data-available", data)));
+              dispatch(getNotes_Fail("", data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -402,10 +397,7 @@ const GetNotesByIdAPI = (
                 )
             ) {
               dispatch(
-                GetNotesById_Success(
-                  response.data.responseResult.getNotes,
-                  t("Data-available")
-                )
+                GetNotesById_Success(response.data.responseResult.getNotes, "")
               );
               // await dispatch(GetNotes(getNotesAPI, t))
               if (no === 1) {
@@ -428,7 +420,7 @@ const GetNotesByIdAPI = (
                   "Notes_NotesServiceManager_GetNotesByNotesID_02".toLowerCase()
                 )
             ) {
-              dispatch(GetNotesById_Fail(t("No-data-available")));
+              dispatch(GetNotesById_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

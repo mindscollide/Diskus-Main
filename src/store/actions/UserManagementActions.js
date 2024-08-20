@@ -736,7 +736,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
               dispatch(
                 allOrganizationUsersSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -749,7 +749,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
               dispatch(
                 allOrganizationUsersSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -832,7 +832,7 @@ const OrganizationPackageDetailsAndUserStatsApi = (navigate, t, data) => {
               dispatch(
                 organzationPakageDetailsAnduserStatsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -949,7 +949,7 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (navigate, t) => {
               dispatch(
                 organizationSelectedPakagebyOrganzationidSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -1062,7 +1062,7 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
               dispatch(
                 getOrganizationSelectedPakagesSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -1165,7 +1165,7 @@ const getOrganizationPackageUserStatsAPI = (navigate, t) => {
               dispatch(
                 getOrganizationPackageUserStatsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -1263,7 +1263,7 @@ const getAllUserTypePackagesApi = (navigate, t, flag) => {
               await dispatch(
                 getAllUserTypePackagesSuccess(
                   response.data.responseResult,
-                  t("Data-available"),
+                  "",
                   flag
                 )
               );
@@ -1669,7 +1669,7 @@ const getCancelSubscriptionReasonApi = (navigate, t) => {
               dispatch(
                 cancelSubscriptionReasonSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -2439,7 +2439,7 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                downgradeOrganizationSubscriptionSuccess(t("Data-available"))
+                downgradeOrganizationSubscriptionSuccess("")
               );
               navigate("/Admin/subscriptionDetailsUserManagement");
             } else if (

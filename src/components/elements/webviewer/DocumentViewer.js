@@ -26,7 +26,7 @@ const DocumentViewer = () => {
     open: false,
     message: "",
   });
-  const { webViewer } = useSelector((state) => state);
+  const { webViewer, DataRoomReducer } = useSelector((state) => state);
   const viewer = useRef(null);
   let name = localStorage.getItem("name");
   // Parse the URL parameters to get the data
@@ -91,6 +91,21 @@ const DocumentViewer = () => {
     return new Blob([bytes], { type: "application/pdf" });
   }
 
+  // Remove File MQTT
+  useEffect(() => {
+    if (DataRoomReducer.FileRemoveMQTT !== null) {
+      try {
+        let fileID = Number(DataRoomReducer.FileRemoveMQTT);
+        if (Number(attachmentID) === fileID) {
+          window.close();
+        }
+  
+      } catch (error) {
+        console.log(error, "datadatadata");
+      }
+    }
+  }, [DataRoomReducer.FileRemoveMQTT]);
+
   useEffect(() => {
     if (webViewer.attachmentBlob) {
       setPdfResponceData({
@@ -116,8 +131,7 @@ const DocumentViewer = () => {
         instance.UI.loadDocument(base64ToBlob(webViewer.attachmentBlob), {
           filename: fileName,
         });
-        const { documentViewer, annotationManager } =
-          instance.Core;
+        const { documentViewer, annotationManager } = instance.Core;
         const annotManager = documentViewer.getAnnotationManager();
 
         instance.UI.setHeaderItems((header) => {
@@ -180,9 +194,7 @@ const DocumentViewer = () => {
         //======================================== disable header =====================================//
         // if (isPermission) {
         try {
-
           if (Number(isPermission) === 1) {
-
             //  for Viewer
             instance.UI.disableElements([
               "thumbRotateClockwise",
@@ -218,8 +230,7 @@ const DocumentViewer = () => {
             ]);
           } else if (Number(isPermission) === 3) {
             // Not Ediable
-          } else if(Number(isPermission) === 1 || Number(isPermission) === 2) {
-            
+          } else if (Number(isPermission) === 1 || Number(isPermission) === 2) {
           }
         } catch (error) {
           console.log(error);

@@ -1670,7 +1670,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="organization-labels">
-                      {t("User-Allow-Google-Calendar-Synch")}
+                      {t("User-allow-google-calendar-synch")}
                     </label>
                   </Col>
                   <Col
@@ -1699,7 +1699,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="organization-labels">
-                      {t("User-Allow-Microsoft-Calendar-Synch")}
+                      {t("User-allow-microsoft-calendar-synch")}
                     </label>
                   </Col>
                   <Col

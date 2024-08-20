@@ -15,7 +15,10 @@ import ForgotPasswordVerificationUM from "../UserMangement/ForgotPasswordVerific
 import TwoFactorMultipleDevices from "../UserMangement/2FA Verification/TwoFactorMultipleDevices/TwoFactorMultipleDevices";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { cleareMessage } from "../../../store/actions/Auth2_actions";
+import {
+  cleareMessage,
+  validateStringOTPEmail_Api,
+} from "../../../store/actions/Auth2_actions";
 import { Notification } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
@@ -23,7 +26,7 @@ import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import Helper from "../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
 
 const UserManagementProcess = () => {
@@ -31,6 +34,9 @@ const UserManagementProcess = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const currentUrl = window.location.href.split("?verifyOTPaction=")[1];
+  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
+  let userManagementRoute = Number(localStorage.getItem("LoginFlowPageRoute"));
 
   const { UserMangementReducer, Authreducer } = useSelector((state) => state);
 
@@ -39,22 +45,30 @@ const UserManagementProcess = () => {
     open: false,
     message: "",
   });
-  const [storedStep, setStoredStep] = useState(
-    Number(localStorage.getItem("LoginFlowPageRoute"))
-  );
+  const [storedStep, setStoredStep] = useState(0);
+
   // Retrieve currentStep value from localStorage, default to 1 if not found
   // let storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
   useEffect(() => {
-    // Retrieve current step from local storage
-    if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
-      if (storedStep) {
-        dispatch(LoginFlowRoutes(storedStep));
-      }
+    if (currentUrl !== undefined) {
+      let EncryptedString = {
+        EncryptedString:
+          "5bAsK1TynmedOUZYFPkwNIk/VF67XzUNFJr0XMLMixPXuthoakAX/zS+S8W+bzrTM1ZCYQR/3WVCFgkiHP9Nb3nY45J219dc5bk4kMZfKEcxXg2vOHd5afpJ37yPTXPR53qHsu6ABYsOF3/xBrp26udTyGWOv/b3yVXAiWJ518P09wXjoISOqopcj/U2E7ZWErglFU0iNpTu+IBZsie/R1D+7o9z66H8FLaNxMhlPPeAQXnaBfgFFclssImS1MP4Ohr14SPEigQW44ZrRk1SIA==",
+      };
+      dispatch(validateStringOTPEmail_Api(EncryptedString, navigate, t));
+      console.log(EncryptedString, "EncryptedStringEncryptedString");
     } else {
-      console.log("LoginFlowPageRoute");
-      localStorage.setItem("LoginFlowPageRoute", 1);
-      setStoredStep(1);
-      dispatch(LoginFlowRoutes(1));
+      // Retrieve current step from local storage
+      if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+        if (storedStep) {
+          dispatch(LoginFlowRoutes(storedStep));
+        }
+      } else {
+        console.log("LoginFlowPageRoute");
+        localStorage.setItem("LoginFlowPageRoute", 1);
+        setStoredStep(1);
+        dispatch(LoginFlowRoutes(1));
+      }
     }
   }, []);
 
@@ -67,6 +81,15 @@ const UserManagementProcess = () => {
       );
     }
   }, [UserMangementReducer.defaultRoutingValue]);
+
+  useEffect(() => {
+    if (userManagementRoute !== null) {
+      setStoredStep(userManagementRoute);
+    } else {
+      setStoredStep(1);
+      localStorage.setItem("LoginFlowPageRoute", 1);
+    }
+  }, [userManagementRoute]);
 
   useEffect(() => {
     if (
@@ -233,8 +256,18 @@ const UserManagementProcess = () => {
   }, [Authreducer?.AuthenticateAFAResponseMessage]);
 
   let componentToRender;
-
-  if (UserMangementReducer.defaultRoutingValue === 1 && storedStep === 1) {
+  console.log(
+    UserMangementReducer.defaultRoutingValue,
+    { storedStep, userManagementRoute },
+    "storedStepstoredStep"
+  );
+  // if (currentUrl !== undefined) {
+  //   componentToRender = <VerifyOTPUM />;
+  // } else
+   if (
+    UserMangementReducer.defaultRoutingValue === 1 &&
+    storedStep === 1
+  ) {
     componentToRender = <SignInComponent />;
   } else if (UserMangementReducer.defaultRoutingValue === 2) {
     componentToRender = <PasswordVerification />;
