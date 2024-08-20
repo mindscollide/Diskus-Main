@@ -2599,7 +2599,7 @@ const BoardDeckSendEmail_failed = (message) => {
   };
 };
 
-const BoardDeckSendEmailApi = (navigate, t, data) => {
+const BoardDeckSendEmailApi = (navigate, t, data, setBoarddeckOptions) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(BoardDeckSendEmail_init());
@@ -2617,7 +2617,9 @@ const BoardDeckSendEmailApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(BoardDeckSendEmailApi(navigate, t, data));
+          dispatch(
+            BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2629,6 +2631,18 @@ const BoardDeckSendEmailApi = (navigate, t, data) => {
             ) {
               dispatch(BoardDeckSendEmail_success(t("Successfully")));
               dispatch(boardDeckEmailModal(false));
+              setBoarddeckOptions({
+                selectall: false,
+                Organizer: false,
+                AgendaContributor: false,
+                Participants: false,
+                Minutes: false,
+                Task: false,
+                polls: false,
+                attendeceReport: false,
+                video: false,
+                Agenda: false,
+              });
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
