@@ -321,7 +321,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
                   "Committees_CommitteeServiceManager_SearchCommittees_02".toLowerCase()
                 )
             ) {
-              dispatch(getallcommitteebyuserid_fail(t("No-data-available")));
+              dispatch(getallcommitteebyuserid_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -329,7 +329,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
                   "Committees_CommitteeServiceManager_SearchCommittees_03".toLowerCase()
                 )
             ) {
-              dispatch(getallcommitteebyuserid_fail(t("No-data-available")));
+              dispatch(getallcommitteebyuserid_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -337,7 +337,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
                   "Committees_CommitteeServiceManager_SearchCommittees_04".toLowerCase()
                 )
             ) {
-              dispatch(getallcommitteebyuserid_fail(t("No-data-available")));
+              dispatch(getallcommitteebyuserid_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -345,7 +345,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
                   "Committees_CommitteeServiceManager_SearchCommittees_05".toLowerCase()
                 )
             ) {
-              dispatch(getallcommitteebyuserid_fail(t("No-data-available")));
+              dispatch(getallcommitteebyuserid_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -440,7 +440,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
                   "Committees_CommitteeServiceManager_SearchCommittees_02".toLowerCase()
                 )
             ) {
-              dispatch(getArcheivedCommittees_fail(t("No-data-available")));
+              dispatch(getArcheivedCommittees_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -448,7 +448,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
                   "Committees_CommitteeServiceManager_SearchCommittees_03".toLowerCase()
                 )
             ) {
-              dispatch(getArcheivedCommittees_fail(t("No-data-available")));
+              dispatch(getArcheivedCommittees_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -456,7 +456,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
                   "Committees_CommitteeServiceManager_SearchCommittees_04".toLowerCase()
                 )
             ) {
-              dispatch(getArcheivedCommittees_fail(t("No-data-available")));
+              dispatch(getArcheivedCommittees_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -464,7 +464,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
                   "Committees_CommitteeServiceManager_SearchCommittees_05".toLowerCase()
                 )
             ) {
-              dispatch(getArcheivedCommittees_fail(t("No-data-available")));
+              dispatch(getArcheivedCommittees_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -601,7 +601,7 @@ const getCommitteesbyCommitteeId = (
                   "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_02".toLowerCase()
                 )
             ) {
-              dispatch(getCommitteByCommitteeID_Fail(t("No-data-available")));
+              dispatch(getCommitteByCommitteeID_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -609,7 +609,7 @@ const getCommitteesbyCommitteeId = (
                   "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_03".toLowerCase()
                 )
             ) {
-              dispatch(getCommitteByCommitteeID_Fail(t("No-data-available")));
+              dispatch(getCommitteByCommitteeID_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -617,7 +617,7 @@ const getCommitteesbyCommitteeId = (
                   "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_04".toLowerCase()
                 )
             ) {
-              dispatch(getCommitteByCommitteeID_Fail(t("No-data-available")));
+              dispatch(getCommitteByCommitteeID_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -625,7 +625,7 @@ const getCommitteesbyCommitteeId = (
                   "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_05".toLowerCase()
                 )
             ) {
-              dispatch(getCommitteByCommitteeID_Fail(t("No-data-available")));
+              dispatch(getCommitteByCommitteeID_Fail(""));
             }
           } else {
             dispatch(getCommitteByCommitteeID_Fail(t("Something-went-wrong")));
@@ -718,7 +718,7 @@ const createcommittee = (navigate, Data, t) => {
                   "Committees_CommitteeServiceManager_CreateNewcommittee_02".toLowerCase()
                 )
             ) {
-              dispatch(createcommittee_fail(t("No-data-available")));
+              dispatch(createcommittee_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -726,7 +726,7 @@ const createcommittee = (navigate, Data, t) => {
                   "Committees_CommitteeServiceManager_CreateNewcommittee_03".toLowerCase()
                 )
             ) {
-              dispatch(createcommittee_fail(t("No-data-available")));
+              dispatch(createcommittee_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -734,7 +734,7 @@ const createcommittee = (navigate, Data, t) => {
                   "Committees_CommitteeServiceManager_CreateNewcommittee_04".toLowerCase()
                 )
             ) {
-              dispatch(createcommittee_fail(t("No-data-available")));
+              dispatch(createcommittee_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -742,7 +742,7 @@ const createcommittee = (navigate, Data, t) => {
                   "Committees_CommitteeServiceManager_CreateNewcommittee_05".toLowerCase()
                 )
             ) {
-              dispatch(createcommittee_fail(t("No-data-available")));
+              dispatch(createcommittee_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -827,7 +827,7 @@ const getCommitteeTypes = (navigate, Data, t) => {
                   "Committees_CommitteeServiceManager_GetallOrganizationCommitteType_02".toLowerCase()
                 )
             ) {
-              dispatch(getCommitteeTypes_Fail(t("No-data-available")));
+              dispatch(getCommitteeTypes_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -835,7 +835,7 @@ const getCommitteeTypes = (navigate, Data, t) => {
                   "Committees_CommitteeServiceManager_GetallOrganizationCommitteType_03".toLowerCase()
                 )
             ) {
-              dispatch(getCommitteeTypes_Fail(t("No-data-available")));
+              dispatch(getCommitteeTypes_Fail(""));
             } else {
               dispatch(getCommitteeTypes_Fail(t("Something-went-wrong")));
             }
@@ -915,7 +915,7 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
                   "Committees_CommitteeServiceManager_GetallOrganizationCommitteMemberRole_02".toLowerCase()
                 )
             ) {
-              dispatch(getCommitteeMembersRole_Fail(t("No-data-available")));
+              dispatch(getCommitteeMembersRole_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -923,7 +923,7 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
                   "Committees_CommitteeServiceManager_GetallOrganizationCommitteMemberRole_03".toLowerCase()
                 )
             ) {
-              dispatch(getCommitteeMembersRole_Fail(t("No-data-available")));
+              dispatch(getCommitteeMembersRole_Fail(""));
             } else {
               dispatch(getCommitteeMembersRole_Fail(t("Something-went-wrong")));
             }
@@ -1517,7 +1517,7 @@ const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomManager_ReteriveCommitteeDocuments_02".toLowerCase()
           ) {
-            dispatch(reteriveCommitteeDocuments_fail(t("No-data-available")));
+            dispatch(reteriveCommitteeDocuments_fail(""));
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomManager_ReteriveCommitteeDocuments_03".toLowerCase()

@@ -425,7 +425,7 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_GetWorkFlowByFileID_02".toLowerCase()
                 )
             ) {
-              dispatch(getWorkFlowByFlodID_fail(t("No-data-available")));
+              dispatch(getWorkFlowByFlodID_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1225,9 +1225,7 @@ const getAllSignaturesDocumentsforCreatorApi = (navigate, t, Data) => {
                   "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreator_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                getAllSignaturesDocumentsforCreator_fail(t("No-data-available"))
-              );
+              dispatch(getAllSignaturesDocumentsforCreator_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1331,9 +1329,7 @@ const getAllPendingApprovalsStatsApi = (navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_GetAllPendingForApprovalStats_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                getAllPendingApprovalsStats_fail(t("No-data-available"))
-              );
+              dispatch(getAllPendingApprovalsStats_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1429,9 +1425,7 @@ const getAllPendingApprovalsSignaturesApi = (navigate, t, Data) => {
                   "WorkFlow_WorkFlowServiceManager_ListOfPendingForApprovalSignatures_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                getAllPendingApprovalsSignatures_fail(t("No-data-available"))
-              );
+              dispatch(getAllPendingApprovalsSignatures_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1529,16 +1523,22 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                   loaderFlag
                 )
               );
-              console.log(Data.IsCreator, "isCreatorisCreatorisCreatorisCreator")
-              if(Data.IsCreator) {
+              console.log(
+                Data.IsCreator,
+                "isCreatorisCreatorisCreatorisCreator"
+              );
+              if (Data.IsCreator) {
                 let Data = { sRow: 0, Length: 10 };
-                await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+                await dispatch(
+                  getAllSignaturesDocumentsforCreatorApi(navigate, t, Data)
+                );
               } else {
                 let Data2 = { sRow: 0, Length: 10 };
                 console.log(Data, "handleScrollhandleScrollhandleScroll");
-                await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data2));
+                await dispatch(
+                  getAllPendingApprovalsSignaturesApi(navigate, t, Data2)
+                );
               }
-   
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2069,9 +2069,7 @@ const getDashbardPendingApprovalDataApi = (navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_GetDashboardMinuteAndSignatureApprovals_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                getDashbardPendingApprovalData_fail(t("No-data-available"))
-              );
+              dispatch(getDashbardPendingApprovalData_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

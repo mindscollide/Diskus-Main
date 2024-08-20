@@ -75,7 +75,7 @@ const getBillingInformationapi = (navigate, t) => {
                   "Admin_AdminServiceManager_GetBillingInformation_02".toLowerCase()
                 )
             ) {
-              dispatch(getBillingInformation_fail(t("No-data-available")));
+              dispatch(getBillingInformation_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -162,7 +162,7 @@ const getPayoutStandingInformation = (navigate, t) => {
                   "Admin_AdminServiceManager_PayOustanding_02".toLowerCase()
                 )
             ) {
-              dispatch(getPayoutstading_fail(t("No-data-available")));
+              dispatch(getPayoutstading_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -252,7 +252,7 @@ const invoiceandpaymenthistory = (navigate, t) => {
                   "Admin_AdminServiceManager_InvoicesAndPaymentHistory_02".toLowerCase()
                 )
             ) {
-              dispatch(invoiceandpaymenthistory_fail(t("No-data-available")));
+              dispatch(invoiceandpaymenthistory_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

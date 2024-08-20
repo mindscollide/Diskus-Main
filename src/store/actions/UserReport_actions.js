@@ -54,10 +54,7 @@ const userLoginHistory_Api = (navigate, t, Data, loader) => {
                 )
             ) {
               dispatch(
-                userLoginHistory_Success(
-                  response.data.responseResult,
-                  ""
-                )
+                userLoginHistory_Success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -66,7 +63,7 @@ const userLoginHistory_Api = (navigate, t, Data, loader) => {
                   "Admin_AdminServiceManager_GetUserLoginHistory_02".toLowerCase()
                 )
             ) {
-              dispatch(userLoginHistory_Fail(t("No-data-available")));
+              dispatch(userLoginHistory_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -79,14 +76,14 @@ const userLoginHistory_Api = (navigate, t, Data, loader) => {
               dispatch(userLoginHistory_Fail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(userLoginHistory_Fail(t("No-data-available")));
+            dispatch(userLoginHistory_Fail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(userLoginHistory_Fail(t("No-data-available")));
+          dispatch(userLoginHistory_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(userLoginHistory_Fail(t("No-data-available")));
+        dispatch(userLoginHistory_Fail(t("Something-went-wrong")));
       });
   };
 };

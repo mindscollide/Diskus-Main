@@ -163,7 +163,7 @@ const getSubscriptionPaymentDetail = (navigate, TenureID, t) => {
                 )
             ) {
               dispatch(
-                getSubscriptionDetailPaymentDetails_fail(t("No-data-available"))
+                getSubscriptionDetailPaymentDetails_fail("")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -286,7 +286,7 @@ const getSubscriptionUpgradeAmountInfoApi = (
                 )
             ) {
               dispatch(
-                getSubscriptionUpgradeAmountInfo_fail(t("No-data-available"))
+                getSubscriptionUpgradeAmountInfo_fail("")
               );
             } else if (
               response.data.responseResult.responseMessage

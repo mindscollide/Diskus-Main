@@ -94,7 +94,7 @@ const searchPaymentHistoryApi = (
                   "Admin_AdminServiceManager_InvoicesAndPaymentHistory_02".toLowerCase()
                 )
             ) {
-              dispatch(searchPaymentHistory_fail(t("No-data-available")));
+              dispatch(searchPaymentHistory_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

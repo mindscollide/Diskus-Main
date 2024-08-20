@@ -2936,7 +2936,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("No-data-available")
+                  ""
                 )
               );
             } else if (
@@ -2949,17 +2949,17 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("No-data-available")
+                  ""
                 )
               );
             }
           } else {
-            dispatch(getSelectedPackageandDetailsFail(t("No-data-available")));
+            dispatch(getSelectedPackageandDetailsFail(""));
           }
         }
       })
       .catch((response) => {
-        dispatch(getSelectedPackageandDetailsFail(t("No-data-available")));
+        dispatch(getSelectedPackageandDetailsFail(""));
       });
   };
 };

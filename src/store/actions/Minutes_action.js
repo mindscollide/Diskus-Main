@@ -1353,7 +1353,7 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
             ) {
               dispatch(
                 GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-                  t("No-data-available")
+                  ""
                 )
               );
             } else if (

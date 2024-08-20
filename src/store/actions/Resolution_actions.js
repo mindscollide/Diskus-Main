@@ -578,7 +578,7 @@ const getAllVotingMethods = (navigate, t) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetAllVotingMethod_02".toLowerCase()
             ) {
-              dispatch(getAllVoting_Fail(t("No-data-available")));
+              dispatch(getAllVoting_Fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetAllVotingMethod_03".toLowerCase()
@@ -654,7 +654,7 @@ const getAllResolutionStatus = (navigate, t) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetAllResolutionStatus_02".toLowerCase()
             ) {
-              dispatch(getAllResolutionStatus_Fail(t("No-data-available")));
+              dispatch(getAllResolutionStatus_Fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetAllResolutionStatus_03".toLowerCase()
@@ -759,7 +759,7 @@ const getResolutions = (
               dispatch(
                 getResolutions_Success(
                   response.data.responseResult.resolutionTable,
-                  t("No-data-available")
+                  ""
                 )
               );
             } else if (
@@ -1336,7 +1336,7 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetVoteDetailsByID_02".toLowerCase()
             ) {
-              dispatch(getVotesDetail_Fail(t("No-data-available")));
+              dispatch(getVotesDetail_Fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetVoteDetailsByID_03".toLowerCase()
@@ -1719,7 +1719,7 @@ const getVoterResolution = (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_SearchVoterResolutions_02".toLowerCase()
             ) {
-              dispatch(getVoterResolution_fail(t("No-data-available")));
+              dispatch(getVoterResolution_fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_SearchVoterResolutions_03".toLowerCase()

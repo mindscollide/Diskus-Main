@@ -72,7 +72,7 @@ const getSubscriptionDetails = (navigate, t) => {
                   "ERM_AuthService_SignUpManager_GetSubscriptionPackages_02".toLowerCase()
                 )
             ) {
-              dispatch(getSubscriptionDetailFail(t("No-data-available")));
+              dispatch(getSubscriptionDetailFail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -80,7 +80,7 @@ const getSubscriptionDetails = (navigate, t) => {
                   "ERM_AuthService_SignUpManager_GetSubscriptionPackages_03".toLowerCase()
                 )
             ) {
-              dispatch(getSubscriptionDetailFail(t("No-data-available")));
+              dispatch(getSubscriptionDetailFail(""));
             }
           } else {
             dispatch(getSubscriptionDetailFail(t("Something-went-wrong")));

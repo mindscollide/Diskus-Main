@@ -1857,7 +1857,7 @@ const getDashbardTaskDataApi = (navigate, t) => {
                   "ToDoList_ToDoListServiceManager_GetDashboardToDoListData_02".toLowerCase()
                 )
             ) {
-              dispatch(getDashbardTaskData_fail(t("No-data-available")));
+              dispatch(getDashbardTaskData_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
