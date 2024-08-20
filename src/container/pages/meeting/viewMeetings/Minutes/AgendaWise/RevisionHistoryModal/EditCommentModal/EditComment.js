@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Modal,
   Button,
@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import CrossIcon from "./../../../../../../../MinutesNewFlow/Images/Cross_Icon.png";
+import ReactQuill, { Quill } from "react-quill";
 
 // Functional component for editing a comment
 const EditCommentModal = ({
@@ -27,6 +28,8 @@ const EditCommentModal = ({
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  const editorRef = useRef(null);
 
   const { currentMeetingMinutesToReviewData } = useSelector(
     (state) => state.MinutesReducer
@@ -52,6 +55,27 @@ const EditCommentModal = ({
       ...prevState,
       MinuteText: value,
     }));
+  };
+
+  const onTextChange = (content, delta, source) => {
+    const deltaOps = delta.ops || [];
+
+    // Check if any image is being pasted
+    const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
+    if (containsImage) {
+      setUpdateMinutedata((prevState) => ({
+        ...prevState,
+        MinuteText: "",
+      }));
+    } else {
+      if (source === "user") {
+        const isEmptyContent = content === "<p><br></p>";
+        setUpdateMinutedata((prevState) => ({
+          ...prevState,
+          MinuteText: isEmptyContent ? "" : content,
+        }));
+      }
+    }
   };
 
   useEffect(() => {
@@ -86,7 +110,19 @@ const EditCommentModal = ({
         disable={true}
       />
 
-      <TextArea
+      <ReactQuill
+        ref={editorRef}
+        theme="snow"
+        value={updateMinuteData.MinuteText || ""}
+        placeholder={t("Minutes-details")}
+        onChange={onTextChange}
+        className={styles["quill-height-addNote"]}
+        style={{
+          direction: currentLanguage === "ar" ? "rtl" : "ltr",
+        }}
+      />
+
+      {/* <TextArea
         name="textField-RejectComment"
         className={styles["textField-RejectComment"]} // CSS class for text area
         type="text"
@@ -95,7 +131,7 @@ const EditCommentModal = ({
         labelClassName={"d-none"} // CSS class for label
         timeClass={"d-none"} // CSS class for time
         onChange={handleChange}
-      />
+      /> */}
 
       <Row className="mt-4">
         <Col

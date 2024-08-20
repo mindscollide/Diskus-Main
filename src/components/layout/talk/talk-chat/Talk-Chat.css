@@ -1001,8 +1001,8 @@ body[dir="rtl"] span.securityicon-box {
 
 .upload-options {
   position: absolute;
-  top: -155px;
-  left: -22px;
+  bottom: 30px;
+  left: -20px;
 }
 
 .upload-options span.MuiButton-label {

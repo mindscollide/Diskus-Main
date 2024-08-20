@@ -211,6 +211,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             className={styles["meetingTitle"]}
             onClick={() => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+              localStorage.setItem("meetingTitle", record.title);
             }}
           >
             {truncateString(text, 30)}
@@ -492,6 +493,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                             // setEditFlag
                           )
                         );
+                        localStorage.setItem("meetingTitle", record.title);
                       }}
                     />
                   </Col>
@@ -507,6 +509,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
@@ -517,6 +520,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
@@ -527,6 +531,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
