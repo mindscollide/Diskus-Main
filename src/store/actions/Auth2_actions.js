@@ -336,7 +336,7 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created")
                 )
               );
-              //localStorage.setItem("LoginFlowPageRoute", 2);
+              localStorage.setItem("LoginFlowPageRoute", 2);
               dispatch(LoginFlowRoutes(2));
               // navigate("/enterPassword");
             } else if (
