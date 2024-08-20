@@ -73,13 +73,13 @@
   "Select-date": "Select date",
   "Select-time": "Select time",
   "Details": "Details",
-  "Agendas": "Agendas",
+  "Agendas": "Agenda",
   "Attendees": "Attendees",
   "Reminder": "Reminder",
   "Location": "Location",
   "Description": "Description",
-  "Group-chat": "Group chat",
-  "Agenda-title": "Agenda title",
+  "Group-chat": "Group Chat",
+  "Agenda-title": "Agenda Title",
   "Presenter": "Presenter",
   "Url": "Url",
   "On-board-discussion": "Onboard discussion",
@@ -2164,5 +2164,7 @@
   "Allow-microsoft-calendar-synch-for-users": "Allow Microsoft Calendar Synch for Users",
   "Calendar Span-months": "Calendar Span (months)",
   "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error",
-  "User-not-added-user-already-exists": "User not added. User already exists"
+  "User-not-added-user-already-exists": "User not added. User already exists",
+  "Calendar-span-months": "Calendar Span (months)",
+  "Auto-close-resolution-days": "Auto Close Resolution (days)"
 }
