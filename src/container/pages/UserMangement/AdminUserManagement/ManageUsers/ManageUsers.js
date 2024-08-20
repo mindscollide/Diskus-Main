@@ -580,7 +580,6 @@ const ManageUsers = () => {
   useEffect(() => {
     if (
       UserMangementReducer.ResponseMessage !== "" &&
-      UserMangementReducer.ResponseMessage !== t("Data-available") &&
       UserMangementReducer.ResponseMessage !== t("No-data-found")
     ) {
       setOpen({

@@ -380,7 +380,6 @@ const Groups = () => {
   useEffect(() => {
     if (
       GroupsReducer.ResponseMessage !== "" &&
-      GroupsReducer.ResponseMessage !== t("Data-available") &&
       GroupsReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({

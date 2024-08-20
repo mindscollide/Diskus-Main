@@ -798,7 +798,6 @@ const ScheduleNewResolution = () => {
   useEffect(() => {
     if (
       ResolutionReducer.ResponseMessage !== "" &&
-      ResolutionReducer.ResponseMessage !== t("Data-available") &&
       ResolutionReducer.ResponseMessage !== undefined &&
       ResolutionReducer.ResponseMessage !== t("No-data-available")
     ) {

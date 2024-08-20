@@ -1734,7 +1734,12 @@ const getDashboardTaskStatsRM = {
 const getDashboardPendingApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetDashboardMinuteAndSignatureApprovals"
 }
+
+const ValidateEncryptedStringForOTPEmailLinkRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringForOTPEmailLink"
+}
 export {
+  ValidateEncryptedStringForOTPEmailLinkRM,
   getDashboardMeetingStatsRM,
   getDashboardTaskStatsRM,
   getDashboardPendingApprovalStatsRM,

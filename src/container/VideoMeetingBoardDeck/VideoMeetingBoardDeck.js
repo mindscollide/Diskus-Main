@@ -107,7 +107,6 @@ const VideoMeetingBoardDeck = () => {
   useEffect(() => {
     if (
       UserMangementReducer.ResponseMessage !== "" &&
-      UserMangementReducer.ResponseMessage !== t("Data-available") &&
       UserMangementReducer.ResponseMessage !== t("No-data-available") &&
       UserMangementReducer.ResponseMessage !== t("Record-available")
     ) {

@@ -89,7 +89,7 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
               await dispatch(
                 allMeetingSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

@@ -245,16 +245,19 @@ const PasswordVerification = () => {
     passwordRef.current.focus();
   }, []);
 
-  //handling Goback Functionality
+  // Handling GoBack Functionality
   const handleGoback = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
+
+    // Reload the page
+    // window.location.reload();
   };
 
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
-        <Row className="position-relative">
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -264,8 +267,7 @@ const PasswordVerification = () => {
             lg={4}
             md={4}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
+            className='d-flex justify-content-center align-items-center min-vh-100'>
             <Paper className={styles["loginbox_auth"]}>
               <Col sm={12} lg={12} md={12} className={styles["EmailVerifyBox"]}>
                 <Row>
@@ -273,12 +275,11 @@ const PasswordVerification = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <img draggable="false" src={DiskusLogo} alt="diskus_logo" />
+                    className='d-flex justify-content-center'>
+                    <img draggable='false' src={DiskusLogo} alt='diskus_logo' />
                   </Col>
                 </Row>
-                <Row className="text-center mt-3 mb-4">
+                <Row className='text-center mt-3 mb-4'>
                   <Col>
                     <span className={styles["signIn_heading"]}>
                       {t("Sign-in")}
@@ -291,33 +292,31 @@ const PasswordVerification = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="Enter-password-field position-relative d-flex justify-content-cente"
-                    >
+                      className='Enter-password-field position-relative d-flex justify-content-cente'>
                       <Form.Control
                         className={styles["PasswordTextField"]}
                         type={showNewPasswordIcon ? "text" : "password"}
-                        name="MyUniquePasswordField"
+                        name='MyUniquePasswordField'
                         ref={passwordRef}
                         value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Password")}
                         iconClassName={styles["IconStyle"]}
-                        labelClass="lightLabel"
-                        autoComplete="off"
+                        labelClass='lightLabel'
+                        autoComplete='off'
                         maxLength={200}
                       />
                       <span
                         className={styles["passwordIcon"]}
-                        onClick={showNewPassowrd}
-                      >
+                        onClick={showNewPassowrd}>
                         {showNewPasswordIcon ? (
                           <img
-                            draggable="false"
-                            alt=""
+                            draggable='false'
+                            alt=''
                             src={PasswordHideEyeIcon}
                           />
                         ) : (
-                          <img draggable="false" alt="" src={PasswordEyeIcon} />
+                          <img draggable='false' alt='' src={PasswordEyeIcon} />
                         )}
                       </span>
                     </Col>
@@ -329,16 +328,15 @@ const PasswordVerification = () => {
                           errorBar
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
+                        }>
                         {errorMessage}
                       </p>
                     </Col>
                   </Row>
                   <Row>
-                    <Col sm={12} md={12} lg={12} className="d-flex gap-2">
+                    <Col sm={12} md={12} lg={12} className='d-flex gap-2'>
                       <Checkbox
-                        classNameDiv=""
+                        classNameDiv=''
                         checked={remeberPassword}
                         onChange={rememberPasswordCheck}
                       />
@@ -348,13 +346,12 @@ const PasswordVerification = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-5 d-flex justify-content-center">
+                  <Row className='mt-5 d-flex justify-content-center'>
                     <Col
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center "
-                    >
+                      className='d-flex justify-content-center '>
                       <Button
                         text={t("Sign-in")}
                         onClick={loginHandler}
@@ -363,32 +360,28 @@ const PasswordVerification = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className={styles["forogt_email_link"]}
-                  >
+                    className={styles["forogt_email_link"]}>
                     <Link
                       onClick={handelForgotPassword}
-                      className={styles["ForgotPassword"]}
-                    >
+                      className={styles["ForgotPassword"]}>
                       {t("Forgot-password")}
                     </Link>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className={styles["forogt_email_link"]}
-                  >
+                    className={styles["forogt_email_link"]}>
                     <Link
                       onClick={handleGoback}
-                      className={styles["ForgotPassword"]}
-                    >
+                      className={styles["ForgotPassword"]}>
                       {t("Go-back")}
                     </Link>
                   </Col>
@@ -400,8 +393,7 @@ const PasswordVerification = () => {
             lg={8}
             md={8}
             sm={8}
-            className="position-relative d-flex  overflow-hidden"
-          >
+            className='position-relative d-flex  overflow-hidden'>
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
               <h1 className={styles["heading-1"]}>
                 {t("Simplify-management")}
@@ -409,12 +401,12 @@ const PasswordVerification = () => {
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
-            <Col md={4} lg={4} sm={12} className="position-relative">
+            <Col md={4} lg={4} sm={12} className='position-relative'>
               <img
-                draggable="false"
+                draggable='false'
                 src={DiskusAuthPageLogo}
-                alt="auth_icon"
-                width="600px"
+                alt='auth_icon'
+                width='600px'
                 className={styles["Auth_Icon"]}
               />
             </Col>

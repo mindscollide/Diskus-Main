@@ -429,7 +429,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   useEffect(() => {
     if (
       PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("Data-available") &&
       PollsReducer.ResponseMessage !== t("No-data-available") &&
       PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("No-record-found")
