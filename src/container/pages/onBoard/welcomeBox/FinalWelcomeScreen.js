@@ -50,7 +50,7 @@ const FinalWelcomeScreen = ({ message }) => {
                       fontSize={38}
                       color="white"
                       cursor="pointer"
-                      onClick={() => navigate("/Diskus/home")}
+                      onClick={() => navigate("/Diskus/")}
                     />
                   </Col>
                 </Row>

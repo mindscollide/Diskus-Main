@@ -33,6 +33,7 @@ const initialState = {
   logoutUser: null,
   getInvoiceHTML: null,
   downloadInvoice: null,
+  validateStringOtpEmail: null,
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -535,6 +536,28 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         downloadInvoice: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        validateStringOtpEmail: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        validateStringOtpEmail: null,
         ResponseMessage: action.message,
       };
     }

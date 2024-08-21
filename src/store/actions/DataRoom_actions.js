@@ -557,7 +557,7 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
               dispatch(
                 getFolerDocuments_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               dispatch(isFolder(1));
@@ -806,7 +806,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
               dispatch(
                 getDocumentsAndFolders_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               if (statusID === 1) {
@@ -899,7 +899,7 @@ const getDocumentsAndFolderApiScrollbehaviour = (
               dispatch(
                 getDocumentsAndFolders_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               if (statusID === 1) {
@@ -999,7 +999,7 @@ const getFolderDocumentsApiScrollBehaviour = (
               dispatch(
                 getFolerDocuments_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               dispatch(isFolder(1));
@@ -1015,7 +1015,7 @@ const getFolderDocumentsApiScrollBehaviour = (
               dispatch(
                 getFolerDocuments_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -2203,7 +2203,7 @@ const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
                 searchDocumentsAndFoldersApi_success(
                   response.data.responseResult.data,
                   response.data.responseResult.totalCount,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -2539,7 +2539,7 @@ const createFolderLink_fail = (message) => {
 //               dispatch(
 //                 createFolderLink_success(
 //                   response.data.responseResult.link,
-//                   t("Data-available")
+//                   ""
 //                 )
 //               );
 //               setLinkedcopied(true);

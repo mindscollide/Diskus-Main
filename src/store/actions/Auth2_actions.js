@@ -19,6 +19,7 @@ import {
   UserLogout,
   GetInvoiceHTMLByOrganizatonID,
   DownloadInvoiceRM,
+  ValidateEncryptedStringForOTPEmailLinkRM,
 } from "../../commen/apis/Api_config";
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
@@ -2916,7 +2917,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               let TenureID =
@@ -2935,7 +2936,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("No-data-available")
+                  ""
                 )
               );
             } else if (
@@ -2948,17 +2949,17 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("No-data-available")
+                  ""
                 )
               );
             }
           } else {
-            dispatch(getSelectedPackageandDetailsFail(t("No-data-available")));
+            dispatch(getSelectedPackageandDetailsFail(""));
           }
         }
       })
       .catch((response) => {
-        dispatch(getSelectedPackageandDetailsFail(t("No-data-available")));
+        dispatch(getSelectedPackageandDetailsFail(""));
       });
   };
 };
@@ -3493,6 +3494,86 @@ const DownlaodInvoiceLApi = (navigate, t, Data) => {
       });
   };
 };
+
+const validateStringOTPEmail_init = () => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_INIT,
+  };
+};
+const validateStringOTPEmail_success = (response, message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const validateStringOTPEmail_fail = (message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_FAIL,
+    message: message,
+  };
+};
+const validateStringOTPEmail_Api = (Data, navigate, t) => {
+  return (dispatch) => {
+    dispatch(validateStringOTPEmail_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      ValidateEncryptedStringForOTPEmailLinkRM.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                validateStringOTPEmail_success(
+                  response.data.responseResult,
+                  t("Successfully-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_02".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringOTPEmail_fail(t("Validation-Failed")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_03".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+      });
+  };
+};
 const setClient = (response) => {
   return {
     type: actions.SET_MQTT_CLIENT,
@@ -3501,6 +3582,7 @@ const setClient = (response) => {
 };
 
 export {
+  validateStringOTPEmail_Api,
   DownlaodInvoiceLApi,
   getInvocieHTMLApi,
   setClient,

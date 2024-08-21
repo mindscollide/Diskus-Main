@@ -34,8 +34,7 @@ const MinutesFlow = () => {
       MinutesReducer.ResponseMessage !== "" &&
       MinutesReducer.ResponseMessage !== t("No-record-found") &&
       MinutesReducer.ResponseMessage !== t("List-updated-successfully") &&
-      MinutesReducer.ResponseMessage !== t("No-data-available") &&
-      MinutesReducer.ResponseMessage !== t("Data-available")
+      MinutesReducer.ResponseMessage !== t("No-data-available") 
     ) {
       setOpen({
         ...open,

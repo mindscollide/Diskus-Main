@@ -56,7 +56,7 @@ const getCountryNamesAction = (navigate, t) => {
               await dispatch(
                 getCountryNameSuccess(
                   response.data.responseResult.worldCountries,
-                  t("Data-available")
+                  ""
                 )
               );
 
@@ -77,7 +77,7 @@ const getCountryNamesAction = (navigate, t) => {
                   "ERM_AuthService_SignUpManager_GetWorldCountries_03".toLowerCase()
                 )
             ) {
-              dispatch(getCountryNameFail("No-data-available"));
+              dispatch(getCountryNameFail(""));
               dispatch(setLoader(false));
             } else {
               dispatch(getCountryNameFail("Something-went-wrong"));
