@@ -42,13 +42,36 @@ const RSVP = () => {
   console.log(UserAvalibilityState, "UserAvalibilityState");
 
   useEffect(() => {
-    if (RSVP !== undefined && RSVP !== null) {
-      let Data = { EncryptedString: RSVP };
-      dispatch(
-        validateEncryptedStringUserAvailibilityForMeetingApi(navigate, Data, t)
-      );
+    if (
+      currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
+    ) {
+      const remainingString = currentUrl.split("?action=")[1];
+      if (remainingString) {
+        // APi call
+        let Data = { EncryptedString: remainingString };
+        dispatch(
+          validateEncryptedStringUserAvailibilityForMeetingApi(
+            navigate,
+            Data,
+            t
+          )
+        );
+      }
+      // Save something in local storage if the condition is true
     } else {
-      navigate("/Diskus/Meeting");
+      let RSVP = localStorage.getItem("RSVP");
+      if (RSVP !== undefined && RSVP !== null) {
+        let Data = { EncryptedString: RSVP };
+        dispatch(
+          validateEncryptedStringUserAvailibilityForMeetingApi(
+            navigate,
+            Data,
+            t
+          )
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+      }
     }
   }, []);
 
@@ -80,100 +103,82 @@ const RSVP = () => {
     <section>
       <Row>
         <Col lg={3} md={3} sm={3}></Col>
-
-        <Col lg={6} md={6} sm={6}>
-          <Row className='mt-5'>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className='d-flex flex-column flex-wrap align-items-center'>
-              {rsvpData && (
-                <>
-                  {rsvpData.userResponseStatus === 2 ? (
-                    // Your rendering logic for userResponseStatus 2
-                    <>
-                      <img
-                        src={ThumbsUp}
-                        height='130.64px'
-                        width='113.47px'
-                        alt=''
-                      />
-                      <span className={styles["ThankyouHeading"]}>
-                        {t("Thank-you")}!
-                      </span>
-                      <span className={styles["Subheading"]}>
-                        {t("Your-response-has-been-duly-noted")}.
-                      </span>
-                    </>
-                  ) : rsvpData.userResponseStatus === 3 ? (
-                    // Your rendering logic for userResponseStatus 3
-                    <>
-                      <img
-                        src={RedChair}
-                        height='130.64px'
-                        width='113.47px'
-                        alt=''
-                      />
-                      <span className={styles["RedThankyouHeading"]}>
-                        {t("Thank-you")}!
-                      </span>
-                      <span className={styles["Subheading"]}>
-                        {t(
-                          "We-acknowledge-your-unavailability-for-the-meeting"
-                        )}
-                        .
-                      </span>
-                    </>
-                  ) : rsvpData.userResponseStatus === 4 ? (
-                    // Your rendering logic for userResponseStatus 4
-                    <>
-                      <img
-                        src={Clock}
-                        height='130.64px'
-                        width='113.47px'
-                        alt=''
-                      />
-                      <span className={styles["OrangeThankyouHeading"]}>
-                        {t("Thank-you")}!
-                      </span>
-                      <span className={styles["Subheading"]}>
-                        {t(
-                          "We're-really-looking-forward-to-having-you-at-the-meeting-hopefully-you-can-make-it"
-                        )}
-                      </span>
-                      <span className={styles["Subheading"]}>
-                        {t("Hopefully-you-can-make-it")}
-                      </span>
-                    </>
-                  ) : null}
-                </>
-              )}
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["MeetingTitle"]}>
-                {t("Meeting-title")}
-              </span>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <TextField
-                labelClass={"d-none"}
-                name={"MeetingTitle"}
-                value={rsvpData.meetingTitle}
-                disable={true}
-              />
-            </Col>
-          </Row>
-          <Row className='mt-2'>
+        {rsvpData && (
+          <>
             <Col lg={6} md={6} sm={6}>
-              <Row className='mt-2'>
+              <Row className='mt-5'>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='d-flex flex-column flex-wrap align-items-center'>
+                  {rsvpData && (
+                    <>
+                      {rsvpData.userResponseStatus === 2 ? (
+                        // Your rendering logic for userResponseStatus 2
+                        <>
+                          <img
+                            src={ThumbsUp}
+                            height='130.64px'
+                            width='113.47px'
+                            alt=''
+                          />
+                          <span className={styles["ThankyouHeading"]}>
+                            {t("Thank-you")}!
+                          </span>
+                          <span className={styles["Subheading"]}>
+                            {t("Your-response-has-been-duly-noted")}.
+                          </span>
+                        </>
+                      ) : rsvpData.userResponseStatus === 3 ? (
+                        // Your rendering logic for userResponseStatus 3
+                        <>
+                          <img
+                            src={RedChair}
+                            height='130.64px'
+                            width='113.47px'
+                            alt=''
+                          />
+                          <span className={styles["RedThankyouHeading"]}>
+                            {t("Thank-you")}!
+                          </span>
+                          <span className={styles["Subheading"]}>
+                            {t(
+                              "We-acknowledge-your-unavailability-for-the-meeting"
+                            )}
+                            .
+                          </span>
+                        </>
+                      ) : rsvpData.userResponseStatus === 4 ? (
+                        // Your rendering logic for userResponseStatus 4
+                        <>
+                          <img
+                            src={Clock}
+                            height='130.64px'
+                            width='113.47px'
+                            alt=''
+                          />
+                          <span className={styles["OrangeThankyouHeading"]}>
+                            {t("Thank-you")}!
+                          </span>
+                          <span className={styles["Subheading"]}>
+                            {t(
+                              "We're-really-looking-forward-to-having-you-at-the-meeting-hopefully-you-can-make-it"
+                            )}
+                          </span>
+                          <span className={styles["Subheading"]}>
+                            {t("Hopefully-you-can-make-it")}
+                          </span>
+                        </>
+                      ) : null}
+                    </>
+                  )}
+                </Col>
+              </Row>
+              <Row>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["MeetingTitle"]}>
-                    {t("Meeting-date-and-time")}
+                    {t("Meeting-title")}
                   </span>
                 </Col>
               </Row>
@@ -181,73 +186,94 @@ const RSVP = () => {
                 <Col lg={12} md={12} sm={12}>
                   <TextField
                     labelClass={"d-none"}
-                    name={"MeetingDateAndTime"}
-                    value={convertDateTimeRangeToGMT(
-                      rsvpData.meetingDate + rsvpData.startTime,
-                      rsvpData.meetingDate + rsvpData.endTime
-                    )}
+                    name={"MeetingTitle"}
+                    value={rsvpData.meetingTitle}
                     disable={true}
                   />
                 </Col>
               </Row>
               <Row className='mt-2'>
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["MeetingTitle"]}>
-                    {t("Date-of-submitting-response")}
-                  </span>
+                <Col lg={6} md={6} sm={6}>
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["MeetingTitle"]}>
+                        {t("Meeting-date-and-time")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        labelClass={"d-none"}
+                        name={"MeetingDateAndTime"}
+                        value={convertDateTimeRangeToGMT(
+                          rsvpData.meetingDate + rsvpData.startTime,
+                          rsvpData.meetingDate + rsvpData.endTime
+                        )}
+                        disable={true}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["MeetingTitle"]}>
+                        {t("Date-of-submitting-response")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        labelClass={"d-none"}
+                        name={"DateOfSubmissionResponse"}
+                        value={newTimeFormaterAsPerUTCTalkDateTime(
+                          rsvpData.responseDate + rsvpData.responseTime
+                        )}
+                        disable={true}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <TextField
-                    labelClass={"d-none"}
-                    name={"DateOfSubmissionResponse"}
-                    value={newTimeFormaterAsPerUTCTalkDateTime(
-                      rsvpData.responseDate + rsvpData.responseTime
-                    )}
-                    disable={true}
-                  />
+                <Col lg={6} md={6} sm={6}>
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["MeetingTitle"]}>
+                        {t("Meeting-location")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        labelClass={"d-none"}
+                        name={"MeetingLocation"}
+                        value={rsvpData.meetingLocation}
+                        disable={true}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["MeetingTitle"]}>
+                        {t("You-have-confirmed-your-attendance")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        labelClass={"d-none"}
+                        name={"ConfirmedAttendance"}
+                        value={rsvpData.userResponse}
+                        disable={true}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>
-            <Col lg={6} md={6} sm={6}>
-              <Row className='mt-2'>
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["MeetingTitle"]}>
-                    {t("Meeting-location")}
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <TextField
-                    labelClass={"d-none"}
-                    name={"MeetingLocation"}
-                    value={rsvpData.meetingLocation}
-                    disable={true}
-                  />
-                </Col>
-              </Row>
-              <Row className='mt-2'>
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["MeetingTitle"]}>
-                    {t("You-have-confirmed-your-attendance")}
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <TextField
-                    labelClass={"d-none"}
-                    name={"ConfirmedAttendance"}
-                    value={rsvpData.userResponse}
-                    disable={true}
-                  />
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Col>
+          </>
+        )}
 
         <Col lg={3} md={3} sm={3}></Col>
       </Row>
