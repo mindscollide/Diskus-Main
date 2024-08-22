@@ -338,17 +338,16 @@ const ViewMeetingDetails = ({
           let Data2 = {
             MeetingID: Number(advanceMeetingModalID),
           };
-          if (meetingDetails.IsVideoCall) {
-            dispatch(
-              FetchMeetingURLClipboard(
-                Data2,
-                navigate,
-                t,
-                currentUserID,
-                currentOrganization
-              )
-            );
-          }
+
+          dispatch(
+            FetchMeetingURLClipboard(
+              Data2,
+              navigate,
+              t,
+              currentUserID,
+              currentOrganization
+            )
+          );
         }
         setMeetingDetailsData({
           MeetingTitle: MeetingData.meetingTitle,
