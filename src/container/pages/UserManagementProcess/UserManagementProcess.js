@@ -55,18 +55,31 @@ const UserManagementProcess = () => {
   // Retrieve currentStep value from localStorage, default to 1 if not found
   // let storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
   useEffect(() => {
-    // Retrieve current step from local storage
-    if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
-      if (storedStep) {
-        dispatch(LoginFlowRoutes(storedStep));
+    if (currentUrl === undefined) {
+      // Retrieve current step from local storage
+      if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+        if (storedStep) {
+          dispatch(LoginFlowRoutes(storedStep));
+        }
+      } else {
+        console.log("LoginFlowPageRoute");
+        localStorage.setItem("LoginFlowPageRoute", 1);
+        setStoredStep(1);
+        dispatch(LoginFlowRoutes(1));
       }
-    } else {
-      console.log("LoginFlowPageRoute");
-      localStorage.setItem("LoginFlowPageRoute", 1);
-      setStoredStep(1);
-      dispatch(LoginFlowRoutes(1));
     }
   }, []);
+
+  useEffect(() => {
+    if (currentUrl !== undefined) {
+      let Data = { EncryptedString: currentUrl };
+      dispatch(validateStringOTPEmail_Api(Data, navigate, t));
+      localStorage.setItem("LoginFlowPageRoute", 6);
+
+      setStoredStep(3);
+      dispatch(LoginFlowRoutes(3));
+    }
+  }, [currentUrl]);
 
   useEffect(() => {
     if (UserMangementReducer.defaultRoutingValue) {
