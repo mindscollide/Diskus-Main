@@ -5,6 +5,7 @@ const initialState = {
   ResponseMessage: "",
   xfdfData: "",
   attachmentBlob: "",
+  isHTML: false
 };
 
 const webViewerReducer = (state = initialState, action) => {
@@ -181,6 +182,7 @@ const webViewerReducer = (state = initialState, action) => {
         xfdfData: action.xfdfData,
         attachmentBlob: action.attachmentBlob,
         ResponseMessage: action.meessage,
+        isHTML: action.checking
       };
     }
     case actions.GETANNOTATIONSOFDATAROOMATTACHEMENT_FAIL: {

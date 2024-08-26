@@ -37,7 +37,10 @@ const UserManagementProcess = () => {
   const currentUrl = window.location.href.split("?verifyOTPaction=")[1];
   console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
   let userManagementRoute = Number(localStorage.getItem("LoginFlowPageRoute"));
-
+  console.log(
+    userManagementRoute,
+    "userManagementuserManagementuserManagement"
+  );
   const { UserMangementReducer, Authreducer } = useSelector((state) => state);
 
   //state to show snackbar
@@ -45,19 +48,14 @@ const UserManagementProcess = () => {
     open: false,
     message: "",
   });
-  const [storedStep, setStoredStep] = useState(0);
+  const [storedStep, setStoredStep] = useState(
+    Number(localStorage.getItem("LoginFlowPageRoute"))
+  );
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
   // let storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
   useEffect(() => {
-    if (currentUrl !== undefined) {
-      let EncryptedString = {
-        EncryptedString:
-          "5bAsK1TynmedOUZYFPkwNIk/VF67XzUNFJr0XMLMixPXuthoakAX/zS+S8W+bzrTM1ZCYQR/3WVCFgkiHP9Nb3nY45J219dc5bk4kMZfKEcxXg2vOHd5afpJ37yPTXPR53qHsu6ABYsOF3/xBrp26udTyGWOv/b3yVXAiWJ518P09wXjoISOqopcj/U2E7ZWErglFU0iNpTu+IBZsie/R1D+7o9z66H8FLaNxMhlPPeAQXnaBfgFFclssImS1MP4Ohr14SPEigQW44ZrRk1SIA==",
-      };
-      dispatch(validateStringOTPEmail_Api(EncryptedString, navigate, t));
-      console.log(EncryptedString, "EncryptedStringEncryptedString");
-    } else {
+    if (currentUrl === undefined) {
       // Retrieve current step from local storage
       if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
         if (storedStep) {
@@ -73,12 +71,23 @@ const UserManagementProcess = () => {
   }, []);
 
   useEffect(() => {
+    if (currentUrl !== undefined) {
+      let Data = { EncryptedString: currentUrl };
+      dispatch(validateStringOTPEmail_Api(Data, navigate, t));
+      localStorage.setItem("LoginFlowPageRoute", 6);
+
+      setStoredStep(3);
+      dispatch(LoginFlowRoutes(3));
+    }
+  }, [currentUrl]);
+
+  useEffect(() => {
     if (UserMangementReducer.defaultRoutingValue) {
       // Update local storage with the current step
-      localStorage.setItem(
-        "LoginFlowPageRoute",
-        UserMangementReducer.defaultRoutingValue
-      );
+      // localStorage.setItem(
+      //   "LoginFlowPageRoute",
+      //   UserMangementReducer.defaultRoutingValue
+      // );
     }
   }, [UserMangementReducer.defaultRoutingValue]);
 
@@ -264,10 +273,7 @@ const UserManagementProcess = () => {
   // if (currentUrl !== undefined) {
   //   componentToRender = <VerifyOTPUM />;
   // } else
-   if (
-    UserMangementReducer.defaultRoutingValue === 1 &&
-    storedStep === 1
-  ) {
+  if (UserMangementReducer.defaultRoutingValue === 1 && storedStep === 1) {
     componentToRender = <SignInComponent />;
   } else if (UserMangementReducer.defaultRoutingValue === 2) {
     componentToRender = <PasswordVerification />;

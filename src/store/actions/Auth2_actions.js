@@ -336,7 +336,7 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created")
                 )
               );
-              //localStorage.setItem("LoginFlowPageRoute", 2);
+              localStorage.setItem("LoginFlowPageRoute", 2);
               dispatch(LoginFlowRoutes(2));
               // navigate("/enterPassword");
             } else if (
@@ -3543,6 +3543,10 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
                   t("Successfully-updated")
                 )
               );
+              localStorage.setItem("email", response?.data?.responseResult?.data?.email)
+              localStorage.setItem("userID", Number(response?.data?.responseResult?.data?.userID))
+              localStorage.setItem("organizationID", response?.data?.responseResult?.data?.organizationID)
+              dispatch(LoginFlowRoutes(6));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

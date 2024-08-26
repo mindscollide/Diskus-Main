@@ -68,38 +68,49 @@ const ExpandedMenu = () => {
 
   //Dataroom Sidebar Click
   const handleMeetingSidebarDataroom = () => {
-    if (
-      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-      NewMeetingreducer.viewMeetingFlag === false
-    ) {
-      setDataroomNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      dispatch(uploadGlobalFlag(false));
-      localStorage.setItem("navigateLocation", "dataroom");
-    } else {
-      setDataroomNavigation("dataroom");
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
+    console.log("Test Dataroom");
+    try {
+      if (
+        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+        NewMeetingreducer.viewMeetingFlag === false
+      ) {
+        console.log("Test Dataroom");
+
+        setDataroomNavigation("Meeting");
+        dispatch(showCancelModalmeetingDeitals(true));
+        dispatch(uploadGlobalFlag(false));
+        localStorage.setItem("navigateLocation", "dataroom");
+      } else {
+        console.log("Test Dataroom");
+
+        setDataroomNavigation("dataroom");
+        dispatch(showCancelModalmeetingDeitals(false));
+        dispatch(scheduleMeetingPageFlag(false));
+        dispatch(viewProposeDateMeetingPageFlag(false));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        dispatch(viewProposeOrganizerMeetingPageFlag(false));
+        dispatch(proposeNewMeetingPageFlag(false));
+        dispatch(viewMeetingFlag(false));
+        let Data = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        if (CurrentMeetingStatus === 10) {
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(currentMeetingStatus(0));
+        }
       }
+    } catch (error) {
+      console.log("Test Dataroom");
+      console.log("Test Dataroom", error);
     }
+
     // navigate(`/${dataroomNavigation}`);
   };
 
@@ -278,16 +289,15 @@ const ExpandedMenu = () => {
               ? "/DisKus/Meeting"
               : "/DisKus/dataroom"
           }
-          draggable="false"
+          draggable='false'
           className={
             location.pathname === "/DisKus/dataroom" ||
             location.pathname === "/Diskus/dataroom"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarDataroom}
-        >
-          <img src={DataroomImage} alt="DataroomIcon" />
+          onClick={handleMeetingSidebarDataroom}>
+          <img src={DataroomImage} alt='DataroomIcon' />
           <p>{t("Data-room")}</p>
         </Nav.Link>
       ) : null}
@@ -309,17 +319,16 @@ const ExpandedMenu = () => {
               : "/DisKus/groups"
           }
           disabled={false}
-          draggable="false"
+          draggable='false'
           className={
             location.pathname === "/DisKus/groups" ||
             location.pathname === "/Diskus/groups"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarGroups}
-        >
+          onClick={handleMeetingSidebarGroups}>
           {/* Grouo Icon */}
-          <img src={GroupImage} alt="" />
+          <img src={GroupImage} alt='' />
 
           <p>{t("Groups")}</p>
         </Nav.Link>
@@ -342,18 +351,17 @@ const ExpandedMenu = () => {
               : "/DisKus/committee"
           }
           disabled={false}
-          draggable="false"
+          draggable='false'
           className={
             location.pathname === "/DisKus/committee" ||
             location.pathname === "/Diskus/committee"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarCommittees}
-        >
+          onClick={handleMeetingSidebarCommittees}>
           {/* CommitteeIcon */}
 
-          <img src={CommitteeImage} alt="" />
+          <img src={CommitteeImage} alt='' />
           <p>{t("Committees")}</p>
         </Nav.Link>
       ) : null}
@@ -375,17 +383,16 @@ const ExpandedMenu = () => {
               : "/DisKus/resolution"
           }
           disabled={false}
-          draggable="false"
+          draggable='false'
           className={
             location.pathname === "/DisKus/resolution" ||
             location.pathname === "/Diskus/resolution"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarResolutions}
-        >
+          onClick={handleMeetingSidebarResolutions}>
           {/* Resolution Icon */}
-          <img src={ResolutionImage} alt="" />
+          <img src={ResolutionImage} alt='' />
           <p>{t("Resolutions")}</p>
         </Nav.Link>
       ) : null}
@@ -407,16 +414,15 @@ const ExpandedMenu = () => {
               : "/DisKus/polling"
           }
           disabled={false}
-          draggable="false"
+          draggable='false'
           className={
             location.pathname === "/DisKus/polling" ||
             location.pathname === "/Diskus/polling"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarPolls}
-        >
-          <img src={PollImage} alt="" />
+          onClick={handleMeetingSidebarPolls}>
+          <img src={PollImage} alt='' />
 
           <p>{t("Polls")}</p>
         </Nav.Link>

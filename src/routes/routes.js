@@ -225,7 +225,7 @@ export const router = createHashRouter(
           <Route
             path='Meeting/Useravailabilityformeeting'
             element={
-              <RouteWrapperUser name='Meeting/Useravailabilityformeeting'>
+              <RouteWrapperUser name='Meeting'>
                 <RSVP />
               </RouteWrapperUser>
             }
