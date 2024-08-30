@@ -62,6 +62,10 @@ import {
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
+import {
+  removeHTMLTags,
+  removeHTMLTagsAndTruncate,
+} from "../../../../../commen/functions/utils";
 
 const Minutes = ({
   setMinutes,
@@ -280,15 +284,33 @@ const Minutes = ({
           },
         });
       } else {
-        const isEmptyContent = content === "<p><br></p>";
-        setAddNoteFields({
-          ...addNoteFields,
-          Description: {
-            value: isEmptyContent ? "" : content,
-            errorMessage: "",
-            errorStatus: false,
-          },
-        });
+        let isEmptyContent = content === "<p><br></p>";
+        if (String(content).length >= 501) {
+          console.log(
+            removeHTMLTagsAndTruncate(String(content)),
+            removeHTMLTagsAndTruncate(String(content)).length,
+            "Test String"
+          );
+          setAddNoteFields({
+            ...addNoteFields,
+            Description: {
+              value: removeHTMLTagsAndTruncate(String(content)),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAddNoteFields({
+            ...addNoteFields,
+            Description: {
+              value: isEmptyContent ? "" : content,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+
+        console.log(String(content).length, content, "String Length ....");
       }
     }
   };
@@ -311,62 +333,76 @@ const Minutes = ({
       let flag = false;
       let sizezero = true;
       let size = true;
-
-      if (fileAttachments.length > 9) {
+      console.log("testtesttest", fileAttachments, fileList);
+      if (fileList.length > 10) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
         return;
-      }
-
-      fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
-          size = false;
-        } else if (fileData.size === 0) {
-          sizezero = false;
-        }
-
-        let fileExists = fileAttachments.some(
-          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
-        );
-
-        if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
-        } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
-        } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+      } else {
+        if (fileAttachments.length > 9) {
+          setOpen({
+            flag: true,
+            message: t("Not-allowed-more-than-10-files"),
+          });
+          return;
         } else {
-          let file = {
-            DisplayAttachmentName: fileData.name,
-            OriginalAttachmentName: fileData.name,
-            fileSize: fileData.originFileObj.size,
-          };
-          setFileAttachments((prevAttachments) => [...prevAttachments, file]);
-          fileSizeArr += fileData.originFileObj.size;
-          setFileForSend((prevFiles) => [...prevFiles, fileData.originFileObj]);
-          setFileSize(fileSizeArr);
-        }
-      });
+          fileList.forEach((fileData, index) => {
+            if (fileData.size > 10485760) {
+              size = false;
+            } else if (fileData.size === 0) {
+              sizezero = false;
+            }
 
-      // Update previousFileList to current fileList
-      previousFileList = fileList;
+            let fileExists = fileAttachments.some(
+              (oldFileData) =>
+                oldFileData.DisplayAttachmentName === fileData.name
+            );
+
+            if (!size) {
+              setTimeout(() => {
+                setOpen({
+                  flag: true,
+                  message: t("File-size-should-not-be-greater-then-zero"),
+                });
+              }, 3000);
+            } else if (!sizezero) {
+              setTimeout(() => {
+                setOpen({
+                  flag: true,
+                  message: t("File-size-should-not-be-zero"),
+                });
+              }, 3000);
+            } else if (fileExists) {
+              setTimeout(() => {
+                setOpen({
+                  flag: true,
+                  message: t("File-already-exists"),
+                });
+              }, 3000);
+            } else {
+              let file = {
+                DisplayAttachmentName: fileData.name,
+                OriginalAttachmentName: fileData.name,
+                fileSize: fileData.originFileObj.size,
+              };
+              setFileAttachments((prevAttachments) => [
+                ...prevAttachments,
+                file,
+              ]);
+              fileSizeArr += fileData.originFileObj.size;
+              setFileForSend((prevFiles) => [
+                ...prevFiles,
+                fileData.originFileObj,
+              ]);
+              setFileSize(fileSizeArr);
+            }
+          });
+          // Update previousFileList to current fileList
+          previousFileList = fileList;
+        }
+      }
     },
     onDrop(e) {},
     customRequest() {},
@@ -555,10 +591,10 @@ const Minutes = ({
   const pdfData = (record, ext) => {
     console.log("PDFDATAPDFDATA", record);
     let Data = {
-      taskId: Number(record.originalAttachmentName),
+      taskId: 1,
       commingFrom: 4,
-      fileName: record.displayAttachmentName,
-      attachmentID: Number(record.originalAttachmentName),
+      fileName: record[0].displayFileName,
+      attachmentID: record[0].pK_FileID,
     };
     let pdfDataJson = JSON.stringify(Data);
     if (
@@ -618,12 +654,9 @@ const Minutes = ({
       MinuteID: updateData.minuteID,
       MinuteText: addNoteFields.Description.value,
     };
-    let fileUploadFlag;
-    if (Object.keys(fileForSend).length > 0) {
-      fileUploadFlag = true;
-    } else {
-      fileUploadFlag = false;
-    }
+
+    let fileUploadFlag = Object.keys(fileForSend).length > 0;
+
     dispatch(
       UpdateMinutesGeneralApiFunc(
         navigate,
@@ -642,6 +675,7 @@ const Minutes = ({
 
     let newfile = [...previousFileIDs];
     let fileObj = [];
+
     if (Object.keys(fileForSend).length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
@@ -660,31 +694,20 @@ const Minutes = ({
       await dispatch(
         saveFilesMeetingMinutesApi(navigate, t, fileObj, folderID, newfile)
       );
-
-      let docsData = {
-        FK_MeetingGeneralMinutesID: updateData.minuteID,
-        FK_MDID: advanceMeetingModalID,
-        UpdateFileList: newfile.map((data, index) => {
-          return { PK_FileID: Number(data.pK_FileID) };
-        }),
-      };
-      await dispatch(
-        SaveMinutesDocumentsApiFunc(
-          navigate,
-          docsData,
-          t,
-          advanceMeetingModalID
-        )
-      );
     }
-    // else {
-    //   let Meet = {
-    //     MeetingID: Number(advanceMeetingModalID),
-    //   };
-    //   await dispatch(
-    //     GetAllGeneralMinutesApiFunc(navigate, t, Meet, advanceMeetingModalID)
-    //   );
-    // }
+
+    let docsData = {
+      FK_MeetingGeneralMinutesID: updateData.minuteID,
+      FK_MDID: advanceMeetingModalID,
+      UpdateFileList:
+        newfile.length > 0
+          ? newfile.map((data) => ({ PK_FileID: Number(data.pK_FileID) }))
+          : [],
+    };
+
+    await dispatch(
+      SaveMinutesDocumentsApiFunc(navigate, docsData, t, advanceMeetingModalID)
+    );
 
     setFileAttachments([]);
     setFileForSend([]);

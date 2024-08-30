@@ -35,6 +35,7 @@ import MissedCallIcon from "../../../../../../assets/images/Missedcall-Icon.png"
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
 import IncomingIcon from "../../../../../../assets/images/Incoming-Icon.png";
 import OutgoingIcon from "../../../../../../assets/images/Outgoing-Icon.png";
+import VideoDownload from "../../../../../../assets/images/Download-Video.png";
 import EmptyRecentCalls from "./emptyRecentCalls";
 
 const VideoPanelBodyRecent = () => {
@@ -408,6 +409,19 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("isMeetingVideo", false);
   };
 
+  const formatUserNames = (data) => {
+    const [firstUser, ...remainingUsers] = data;
+    const remainingCount = remainingUsers.length;
+
+    if (remainingCount === 0) {
+      return firstUser.userName;
+    } else if (remainingCount === 1) {
+      return `${firstUser.userName} and 1 other`;
+    } else {
+      return `${firstUser.userName} and ${remainingCount} others`;
+    }
+  };
+
   return (
     <>
       <Container>
@@ -454,6 +468,7 @@ const VideoPanelBodyRecent = () => {
             {recentVideoCalls.map((recentCallData, index) => {
               let recentCallDateTime =
                 recentCallData.callDate + recentCallData.callTime;
+              console.log("recentCallDatarecentCallData", recentCallData);
               return (
                 <>
                   <Row className="single-chat" key={index}>
@@ -476,8 +491,9 @@ const VideoPanelBodyRecent = () => {
                     </Col>
                     <Col lg={8} md={8} sm={12} className="bottom-border">
                       <div className={"video-block"}>
-                        {recentCallData.callStatus.status === "Unanswered" ||
-                        recentCallData.callStatus.status === "Busy" ? (
+                        {(recentCallData.callStatus.status === "Unanswered" ||
+                          recentCallData.callStatus.status === "Busy") &&
+                        recentCallData.callType.callTypeID === 1 ? (
                           <p className="Video-chat-username m-0">
                             {recentCallData.callerName === currentUserName
                               ? recentCallData.recipients[0].userName
@@ -486,11 +502,31 @@ const VideoPanelBodyRecent = () => {
                               <img src={MissedCallIcon} />
                             </span>
                           </p>
+                        ) : (recentCallData.callStatus.status ===
+                            "Unanswered" ||
+                            recentCallData.callStatus.status === "Busy") &&
+                          recentCallData.callType.callTypeID === 2 ? (
+                          <p className="Video-chat-username m-0">
+                            {formatUserNames(recentCallData.recipients)}
+                            <span className="call-status-icon">
+                              <img src={MissedCallIcon} />
+                            </span>
+                          </p>
+                        ) : recentCallData.callType.callTypeID === 3 ? (
+                          <p className="Video-chat-username m-0">
+                            {recentCallData.meetingName}
+                          </p>
                         ) : (
                           <p className="Video-chat-username m-0">
-                            {recentCallData.callerName === currentUserName
+                            {recentCallData.callerName === currentUserName &&
+                            recentCallData.callType.callTypeID === 1
                               ? recentCallData.recipients[0].userName
-                              : recentCallData.callerName}
+                              : recentCallData.callerName !== currentUserName &&
+                                recentCallData.callType.callTypeID === 1
+                              ? recentCallData.callerName
+                              : recentCallData.callType.callTypeID === 2
+                              ? formatUserNames(recentCallData.recipients)
+                              : null}
                             <span className="call-status-icon">
                               {recentCallData.isIncoming === false ? (
                                 <img src={OutgoingIcon} />
@@ -533,6 +569,7 @@ const VideoPanelBodyRecent = () => {
                       </div>
                     </Col>
                     <Col lg={2} md={2} sm={12} className="video_call_icon mt-4">
+                      {/* <img src={VideoDownload} alt="" /> */}
                       <Tooltip
                         placement="bottomLeft"
                         title={t("Start-video-call")}

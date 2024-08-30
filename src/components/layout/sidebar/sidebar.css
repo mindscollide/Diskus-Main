@@ -249,7 +249,6 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
 
 .expanded_menu {
   position: absolute !important;
-  width: 100% !important;
   height: auto !important;
   left: 61px !important;
   background-color: #fff !important;

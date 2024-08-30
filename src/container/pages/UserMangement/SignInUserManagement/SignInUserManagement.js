@@ -128,8 +128,10 @@ const SignInUserManagement = () => {
   };
 
   useEffect(() => {
+    console.log("onChangeAllowMicrosoftCalenderSync", code);
     if (code) {
       localStorage.setItem("Ms", code);
+      console.log("onChangeAllowMicrosoftCalenderSync", code);
       window.close();
     } else if (getpayemntString !== "") {
       console.log("Payment_actionPayment_action");

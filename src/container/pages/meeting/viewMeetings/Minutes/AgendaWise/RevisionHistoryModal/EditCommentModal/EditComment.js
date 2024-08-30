@@ -102,7 +102,8 @@ const EditCommentModal = ({
         applyClass={"textField-RejectComment"} // CSS class for text area
         type="text"
         value={
-          currentMeetingMinutesToReviewData.agendaDetails !== null
+          currentMeetingMinutesToReviewData.agendaDetails !== null ||
+          currentMeetingMinutesToReviewData.agendaDetails !== undefined
             ? currentMeetingMinutesToReviewData.agendaDetails.agendaTitle
             : t("General-minute")
         }

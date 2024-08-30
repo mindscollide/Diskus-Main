@@ -8225,3 +8225,11 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
   font-size: 12px !important;
   border-top: 1px solid #ccc !important;
 }
+
+.ql-toolbar.ql-snow {
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  padding: 8px;
+  z-index: 0 !important;
+}

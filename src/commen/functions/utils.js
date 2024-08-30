@@ -367,3 +367,16 @@ export const truncateText = (text, maxLength) => {
   }
   return text;
 };
+
+export const removeHTMLTags = (htmlString) => {
+  return htmlString.replace(/<\/?[^>]+(>|$)/g, "");
+};
+
+export const removeHTMLTagsAndTruncate = (String, maxLength = 500) => {
+  // Truncate the content to the specified length
+  if (String.length > maxLength) {
+    return String.substring(0, maxLength);
+  }
+
+  return String;
+};

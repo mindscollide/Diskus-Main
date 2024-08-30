@@ -74,6 +74,8 @@ const Header2 = ({ isVideo }) => {
 
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
 
+  let currentOrganizationName = localStorage.getItem("organizatioName");
+
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
@@ -869,10 +871,15 @@ const Header2 = ({ isVideo }) => {
                         alt=""
                         draggable="false"
                       />
-
-                      <p className={`${"user-name me-2"} ${currentLanguage}`}>
-                        {currentUserName}
-                      </p>
+                      <div>
+                        <p className={`${"user-name me-2"} ${currentLanguage}`}>
+                          {currentUserName}
+                        </p>
+                        <p className={`${"user-name orgStyle me-2"} ${currentLanguage}`}>
+                          {" "}
+                          {currentOrganizationName}
+                        </p>
+                      </div>
                     </Dropdown.Toggle>
                     {location.pathname.includes("/Admin") ? (
                       <Dropdown.Menu className="dropdown_menu_admin">
