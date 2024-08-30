@@ -2628,6 +2628,7 @@ const DataRoom = () => {
                   <span className={styles["threeDot__Icon"]}>
                     {record.isFolder ? (
                       <Dropdown
+
                         className={`${
                           styles["options_dropdown"]
                         } ${"dataroom_options"}`}>
@@ -3993,10 +3994,11 @@ const DataRoom = () => {
                                     className={"DataRoom_Table"}
                                     rows={getAllData}
                                     pagination={false}
+                                    scroll={{ y: "57vh" }}
+                                    // scroll={{x: "max-content"}}
                                     onChange={handleSortMyDocuments}
                                     // rowSelection={rowSelection}
                                     size={"middle"}
-                                    style={{ overflowX: "auto" }}
                                   />
                                 </InfiniteScroll>
                               ) : (
