@@ -23,11 +23,16 @@ import RejectCommentModal from "./rejectCommentModal/RejectCommentModal";
 import EditCommentModal from "./editCommentModal/EditCommentModal";
 import DeleteCommentModal from "./deleteCommentModal/DeleteCommentModal";
 import AcceptCommentModal from "./acceptAllCommentsModal/AcceptCommentModal.js";
-import { AllDocumentsForAgendaWiseMinutesApiFunc } from "../../../store/actions/NewMeetingActions.js";
+import {
+  AllDocumentsForAgendaWiseMinutesApiFunc,
+  DocumentsOfMeetingGenralMinutesApiFunc,
+} from "../../../store/actions/NewMeetingActions.js";
 import {
   convertDateToGMTMinute,
   convertToGMTMinuteTime,
 } from "../../../commen/functions/time_formatter";
+import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions.js";
+import { getFileExtension } from "../../DataRoom/SearchFunctionality/option.js";
 
 // Functional component for pending approvals section
 const ReviewMinutes = () => {
@@ -341,6 +346,40 @@ const ReviewMinutes = () => {
     // dispatch(RejectMinute(data));
   };
 
+  //Download the document
+  const downloadDocument = (record) => {
+    let data = {
+      FileID: record.pK_FileID,
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+    );
+  };
+
+  const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
+    let Data = {
+      taskId: Number(record.originalAttachmentName),
+      commingFrom: 4,
+      fileName: record.displayAttachmentName,
+      attachmentID: Number(record.originalAttachmentName),
+    };
+    let pdfDataJson = JSON.stringify(Data);
+    if (
+      ext === "pdf" ||
+      ext === "doc" ||
+      ext === "docx" ||
+      ext === "xlx" ||
+      ext === "xlsx"
+    ) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
+
   useEffect(() => {
     const div = divRef.current;
 
@@ -369,6 +408,10 @@ const ReviewMinutes = () => {
       };
       dispatch(
         AllDocumentsForAgendaWiseMinutesApiFunc(navigate, allAgendaWiseDocs, t)
+      );
+
+      dispatch(
+        DocumentsOfMeetingGenralMinutesApiFunc(navigate, allAgendaWiseDocs, t)
       );
 
       dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
@@ -531,6 +574,8 @@ const ReviewMinutes = () => {
     } catch {}
   }, [minuteDataToReject]);
 
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
+
   return (
     <section className={styles["pendingApprovalContainer"]}>
       {/* Container for pending approval section */}
@@ -641,15 +686,31 @@ const ReviewMinutes = () => {
                                                 return (
                                                   <Col sm={3} md={3} lg={3}>
                                                     <AttachmentViewer
+                                                      handleClickDownload={() =>
+                                                        downloadDocument(
+                                                          filesData
+                                                        )
+                                                      }
+                                                      fk_UID={0}
+                                                      data={data.attachments}
+                                                      id={filesData.pK_FileID}
                                                       name={
                                                         filesData.displayFileName
                                                       }
-                                                      // id={filesData.pK_FileID}
-                                                      // fk_UID={
-                                                      //   filesData.fK_UserID
-                                                      // }
-                                                      // data={filesData}
+                                                      handleEyeIcon={() =>
+                                                        pdfData(
+                                                          data.attachments,
+                                                          getFileExtension(
+                                                            filesData?.displayFileName
+                                                          )
+                                                        )
+                                                      }
                                                     />
+                                                    {/* <AttachmentViewer
+                                                      name={
+                                                        filesData.displayFileName
+                                                      }
+                                                    /> */}
                                                   </Col>
                                                 );
                                               }
@@ -1748,6 +1809,53 @@ const ReviewMinutes = () => {
                                                     styles["minutes-text"]
                                                   }
                                                 ></p>
+                                                <Row>
+                                                  {minuteDataSubminute
+                                                    .minuteAttachmentFiles
+                                                    .length > 0 &&
+                                                    minuteDataSubminute.minuteAttachmentFiles.map(
+                                                      (filesData, index) => {
+                                                        return (
+                                                          <Col
+                                                            sm={3}
+                                                            md={3}
+                                                            lg={3}
+                                                          >
+                                                            <AttachmentViewer
+                                                              handleClickDownload={() =>
+                                                                downloadDocument(
+                                                                  filesData
+                                                                )
+                                                              }
+                                                              fk_UID={0}
+                                                              data={
+                                                                data.attachments
+                                                              }
+                                                              id={
+                                                                filesData.pK_FileID
+                                                              }
+                                                              name={
+                                                                filesData.displayFileName
+                                                              }
+                                                              handleEyeIcon={() =>
+                                                                pdfData(
+                                                                  data.attachments,
+                                                                  getFileExtension(
+                                                                    filesData?.displayFileName
+                                                                  )
+                                                                )
+                                                              }
+                                                            />
+                                                            {/* <AttachmentViewer
+                                                      name={
+                                                        filesData.displayFileName
+                                                      }
+                                                    /> */}
+                                                          </Col>
+                                                        );
+                                                      }
+                                                    )}
+                                                </Row>
                                               </Col>
                                               <Col
                                                 lg={4}
@@ -2870,6 +2978,39 @@ const ReviewMinutes = () => {
                                 }}
                                 className={styles["minutes-text"]}
                               ></p>
+                              <Row>
+                                {data.minuteAttachmentFiles.length > 0 &&
+                                  data.minuteAttachmentFiles.map(
+                                    (filesData, index) => {
+                                      return (
+                                        <Col sm={3} md={3} lg={3}>
+                                          <AttachmentViewer
+                                            handleClickDownload={() =>
+                                              downloadDocument(filesData)
+                                            }
+                                            fk_UID={0}
+                                            data={data.attachments}
+                                            id={filesData.pK_FileID}
+                                            name={filesData.displayFileName}
+                                            handleEyeIcon={() =>
+                                              pdfData(
+                                                data.attachments,
+                                                getFileExtension(
+                                                  filesData?.displayFileName
+                                                )
+                                              )
+                                            }
+                                          />
+                                          {/* <AttachmentViewer
+                                                      name={
+                                                        filesData.displayFileName
+                                                      }
+                                                    /> */}
+                                        </Col>
+                                      );
+                                    }
+                                  )}
+                              </Row>
                             </Col>
                             <Col
                               lg={4}
