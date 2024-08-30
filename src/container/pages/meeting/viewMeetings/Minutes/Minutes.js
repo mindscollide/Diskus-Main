@@ -62,6 +62,10 @@ import {
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
+import {
+  removeHTMLTags,
+  removeHTMLTagsAndTruncate,
+} from "../../../../../commen/functions/utils";
 
 const Minutes = ({
   setMinutes,
@@ -280,15 +284,33 @@ const Minutes = ({
           },
         });
       } else {
-        const isEmptyContent = content === "<p><br></p>";
-        setAddNoteFields({
-          ...addNoteFields,
-          Description: {
-            value: isEmptyContent ? "" : content,
-            errorMessage: "",
-            errorStatus: false,
-          },
-        });
+        let isEmptyContent = content === "<p><br></p>";
+        if (String(content).length >= 501) {
+          console.log(
+            removeHTMLTagsAndTruncate(String(content)),
+            removeHTMLTagsAndTruncate(String(content)).length,
+            "Test String"
+          );
+          setAddNoteFields({
+            ...addNoteFields,
+            Description: {
+              value: removeHTMLTagsAndTruncate(String(content)),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAddNoteFields({
+            ...addNoteFields,
+            Description: {
+              value: isEmptyContent ? "" : content,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+
+        console.log(String(content).length, content, "String Length ....");
       }
     }
   };
