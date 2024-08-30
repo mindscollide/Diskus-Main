@@ -223,7 +223,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       title: t("Task"),
       dataIndex: "title",
       key: "title",
-      width: "260px",
+      width: "220px",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -313,6 +313,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       key: "deadlineDateTime",
       className: "deadLineTodo",
       width: "220px",
+      ellipsis: true,
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
