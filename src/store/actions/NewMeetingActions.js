@@ -3590,7 +3590,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                 // await dispatch(
                 //   showRetriveGeneralMinutesDocsMeetingSuccess(
                 //     response.data.responseResult,
-                //     t("Data-available")
+                //     ""
                 //   )
                 // );
                 await dispatch(
@@ -4157,7 +4157,7 @@ const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showRetriveGeneralMinutesDocsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -4458,7 +4458,13 @@ const UpdateAgendaWiseMinutesApiFunc = (
   setConfirmationEdit,
   setResendMinuteForReview,
   setShowRevisionHistory,
-  isAgenda
+  isAgenda,
+  setAgendaOptionValue,
+  setAddNoteFields,
+  addNoteFields,
+  setFileAttachments,
+  setFileForSend,
+  setisEdit
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
@@ -4494,6 +4500,22 @@ const UpdateAgendaWiseMinutesApiFunc = (
                   t("Record-updated")
                 )
               );
+              setAgendaOptionValue({
+                label: "",
+                value: 0,
+              });
+              setAddNoteFields({
+                ...addNoteFields,
+                Description: {
+                  value: "",
+                  errorMessage: "",
+                  errorStatus: true,
+                },
+              });
+
+              setFileAttachments([]);
+              setFileForSend([]);
+              setisEdit(false);
               if (resendFlag === true) {
                 dispatch(
                   ResendUpdatedMinuteForReview(
@@ -4866,7 +4888,12 @@ const showAgendaWiseAddMinutesFailed = (message) => {
   };
 };
 
-const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+const AddAgendaWiseMinutesApiFunc = (
+  navigate,
+  Data,
+  t,
+  setAgendaOptionValue
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -4901,6 +4928,10 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                   t("Record-saved")
                 )
               );
+              setAgendaOptionValue({
+                value: 0,
+                label: "",
+              });
               console.log(
                 response.data.responseResult,
                 "GetAllAgendaWiseMinutesApiFunc"
@@ -5517,7 +5548,7 @@ const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showRetriveAgendaWiseDocumentsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -8481,7 +8512,7 @@ const getDashbardMeetingDataApi = (navigate, t) => {
               dispatch(
                 getDashbardMeetingData_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

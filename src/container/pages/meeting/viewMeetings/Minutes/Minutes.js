@@ -781,7 +781,6 @@ const Minutes = ({
       ResponseMessageMinute !== t("Record-found") &&
       ResponseMessageMinute !== t("List-updated-successfully") &&
       ResponseMessageMinute !== t("No-data-available") &&
-      ResponseMessageMinute !== t("Data-available") &&
       ResponseMessageMinute !== t("Minute-review-flow-stats-not-available") &&
       ResponseMessageMinute !== t("Minute-review-flow-not-found") &&
       ResponseMessageMinute !== t("Something-went-wrong") &&

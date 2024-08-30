@@ -331,8 +331,7 @@ const SignupProcessUserManagement = () => {
   //User Management PakageDetails Messeges SignUp Process Response Messeges Controller
   useEffect(() => {
     if (
-      UserMangementReducer.ResponseMessage !== "" &&
-      UserMangementReducer.ResponseMessage !== t("Data-available")
+      UserMangementReducer.ResponseMessage !== "" 
     ) {
       setOpen({
         open: true,

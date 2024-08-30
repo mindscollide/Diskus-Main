@@ -53,7 +53,10 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
-import { GetMinuteReviewPendingApprovalsByReviewerId, GetMinuteReviewPendingApprovalsStatsByReviewerId } from "../../../store/actions/Minutes_action.js";
+import {
+  GetMinuteReviewPendingApprovalsByReviewerId,
+  GetMinuteReviewPendingApprovalsStatsByReviewerId,
+} from "../../../store/actions/Minutes_action.js";
 
 const Talk = () => {
   const { t } = useTranslation();
@@ -95,6 +98,16 @@ const Talk = () => {
       dispatch(contactVideoFlag(false));
       dispatch(recentVideoFlag(true));
       setActiveVideoIcon(true);
+      dispatch(activeChatBoxGS(false));
+      dispatch(globalChatsSearchFlag(false));
+      dispatch(videoChatSearchFlag(false));
+    } else if (talkFeatureStates.ActiveChatBoxGS === true) {
+      setActiveVideoIcon(true);
+      dispatch(privateGroupChatFlag(false));
+      dispatch(privateChatFlag(false));
+      dispatch(videoChatPanel(true));
+      dispatch(contactVideoFlag(false));
+      dispatch(recentVideoFlag(true));
       dispatch(activeChatBoxGS(false));
       dispatch(globalChatsSearchFlag(false));
       dispatch(videoChatSearchFlag(false));
@@ -177,6 +190,7 @@ const Talk = () => {
   let currentLang = localStorage.getItem("i18nextLng");
 
   const iconClick = () => {
+    setActiveVideoIcon(false);
     if (talkFeatureStates.ActiveChatBoxGS === false) {
       dispatch(createShoutAllScreen(false));
       dispatch(addNewChatScreen(false));
@@ -214,7 +228,6 @@ const Talk = () => {
       dispatch(globalChatsSearchFlag(false));
     } else {
       dispatch(videoChatPanel(false));
-      setActiveVideoIcon(false);
       dispatch(activeChatBoxGS(false));
       dispatch(contactVideoFlag(false));
       dispatch(recentVideoFlag(false));
@@ -532,7 +545,14 @@ const Talk = () => {
           {checkFeatureIDAvailability(4) ? (
             <Tooltip placement="leftTop" title={t("Video-call")}>
               <div
-                className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
+                // className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"
+                className={
+                  activeVideoIcon && subIcons
+                    ? "talk_subIcon with-hover"
+                    : !activeVideoIcon && subIcons
+                    ? "talk_subIcon"
+                    : "talk_subIcon_hidden"
+                }
                 onClick={videoIconClick}
               >
                 {/* <span className="talk-count"></span> */}
@@ -572,7 +592,13 @@ const Talk = () => {
           {checkFeatureIDAvailability(3) ? (
             <Tooltip placement="leftTop" title={t("Chat")}>
               <div
-                className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
+                className={
+                  talkFeatureStates.ActiveChatBoxGS && subIcons
+                    ? "talk_subIcon with-hover"
+                    : !talkFeatureStates.ActiveChatBoxGS && subIcons
+                    ? "talk_subIcon"
+                    : "talk_subIcon_hidden"
+                }
                 onClick={iconClick}
               >
                 <span className={unreadMessageCount === 0 ? "" : "talk-count"}>

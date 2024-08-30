@@ -261,7 +261,7 @@ const OrganizationUserListStatisticsAction = (navigate, Data, t) => {
             dispatch(
               OrganizationUserListStatisticsSuccess(
                 response.data.responseResult,
-                t("Data-available")
+                ""
               )
             );
           } else if (
@@ -364,11 +364,10 @@ const AllUserAction = (navigate, Data, t, setIsUpdateSuccessfully) => {
                   "Admin_AdminServiceManager_AllOrganizationUsers_02".toLowerCase()
                 )
             ) {
-              let newMessage = t("Data-available");
               await dispatch(
                 allUserListSuccess(
                   response.data.responseResult.organizationUsers,
-                  newMessage
+                  ""
                 )
               );
               try {

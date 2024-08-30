@@ -195,7 +195,7 @@ const Header2 = ({ isVideo }) => {
     }
   };
 
-  const homePageDashboardClick = () => {
+  const homePageDashboardClick = (event) => {
     if (location.pathname.includes("/Admin") === false) {
       if (
         (NewMeetingreducer.scheduleMeetingPageFlag === true ||
@@ -206,6 +206,7 @@ const Header2 = ({ isVideo }) => {
           NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
         NewMeetingreducer.viewMeetingFlag === false
       ) {
+        event.preventDefault();
         dispatch(showCancelModalmeetingDeitals(true));
         localStorage.setItem("navigateLocation", "home");
       } else {
@@ -662,18 +663,6 @@ const Header2 = ({ isVideo }) => {
                     : cancelSub
                     ? "/Admin/ManageUsers"
                     : "/Admin/ManageUsers"
-                  : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                        true ||
-                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                        true ||
-                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                        true ||
-                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                        true ||
-                      NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-                    NewMeetingreducer.viewMeetingFlag === false
-                  ? "/Admin/ManageUsers"
                   : "/Diskus"
               }
               onClick={homePageDashboardClick}

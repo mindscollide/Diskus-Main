@@ -1083,7 +1083,7 @@ const OrganizationLevelSetting = () => {
                                 : styles["Options_headings"]
                             }
                           >
-                            {t("Calender")}
+                            {t("Calendar")}
                           </span>
                         </Col>
                       </Row>
@@ -1513,7 +1513,7 @@ const OrganizationLevelSetting = () => {
                           checked={userOrganizationSetting.AllowCalenderSync}
                         >
                           <span className={styles["Class_CheckBox"]}>
-                            {t("User-Allow-Google-Calendar-Synch")}
+                            {t("User-allow-google-calendar-synch")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1527,7 +1527,7 @@ const OrganizationLevelSetting = () => {
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
-                            {t("User-Allow-Microsoft-Calendar-Synch")}
+                            {t("User-allow-microsoft-calendar-synch")}
                           </span>
                         </Checkbox>
                       </Col>

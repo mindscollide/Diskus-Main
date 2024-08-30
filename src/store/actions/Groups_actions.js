@@ -88,15 +88,11 @@ const getGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(groupLoader(false));
-              // if (id === 1) {
-              //   dispatch(getArchivedGroups_success(
-              //     response.data.responseResult,
-              //     t("Data-available")))
-              // } else {
+         
               dispatch(
                 getGroup_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               // }
@@ -107,7 +103,7 @@ const getGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_02".toLowerCase()
                 )
             ) {
-              dispatch(getGroup_Fail(t("No-data-available")));
+              dispatch(getGroup_Fail(""));
               dispatch(groupLoader(false));
             } else if (
               response.data.responseResult.responseMessage
@@ -116,7 +112,7 @@ const getGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_03".toLowerCase()
                 )
             ) {
-              dispatch(getGroup_Fail(t("No-data-available")));
+              dispatch(getGroup_Fail(""));
               dispatch(groupLoader(false));
             } else if (
               response.data.responseResult.responseMessage
@@ -125,7 +121,7 @@ const getGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_04".toLowerCase()
                 )
             ) {
-              dispatch(getGroup_Fail(t("No-data-available")));
+              dispatch(getGroup_Fail(""));
               dispatch(groupLoader(false));
             } else if (
               response.data.responseResult.responseMessage
@@ -134,7 +130,7 @@ const getGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_05".toLowerCase()
                 )
             ) {
-              dispatch(getGroup_Fail(t("No-data-available")));
+              dispatch(getGroup_Fail(""));
               dispatch(groupLoader(false));
             } else if (
               response.data.responseResult.responseMessage
@@ -230,7 +226,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
               dispatch(
                 getArchivedGroups_success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -240,7 +236,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_02".toLowerCase()
                 )
             ) {
-              dispatch(getArchivedGroups_fail(t("No-data-available")));
+              dispatch(getArchivedGroups_fail(""));
               // dispatch(groupLoader(false))
             } else if (
               response.data.responseResult.responseMessage
@@ -249,7 +245,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_03".toLowerCase()
                 )
             ) {
-              dispatch(getArchivedGroups_fail(t("No-data-available")));
+              dispatch(getArchivedGroups_fail(""));
               // dispatch(groupLoader(false))
             } else if (
               response.data.responseResult.responseMessage
@@ -258,7 +254,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_04".toLowerCase()
                 )
             ) {
-              dispatch(getArchivedGroups_fail(t("No-data-available")));
+              dispatch(getArchivedGroups_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -266,7 +262,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_05".toLowerCase()
                 )
             ) {
-              dispatch(getArchivedGroups_fail(t("No-data-available")));
+              dispatch(getArchivedGroups_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -361,7 +357,7 @@ const getbyGroupID = (
               dispatch(
                 getbyGroupID_Success(
                   response.data.responseResult.group,
-                  t("Data-available")
+                  ""
                 )
               );
               let newData = {
@@ -388,7 +384,7 @@ const getbyGroupID = (
                   "Groups_GroupServiceManager_GetGroupByGroupID_02".toLowerCase()
                 )
             ) {
-              dispatch(getbyGroupID_Fail(t("No-data-available")));
+              dispatch(getbyGroupID_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -396,7 +392,7 @@ const getbyGroupID = (
                   "Groups_GroupServiceManager_GetGroupByGroupID_03".toLowerCase()
                 )
             ) {
-              dispatch(getbyGroupID_Fail(t("No-data-available")));
+              dispatch(getbyGroupID_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -404,7 +400,7 @@ const getbyGroupID = (
                   "Groups_GroupServiceManager_GetGroupByGroupID_04".toLowerCase()
                 )
             ) {
-              dispatch(getbyGroupID_Fail(t("No-data-available")));
+              dispatch(getbyGroupID_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -412,7 +408,7 @@ const getbyGroupID = (
                   "Groups_GroupServiceManager_GetGroupByGroupID_05".toLowerCase()
                 )
             ) {
-              dispatch(getbyGroupID_Fail(t("No-data-available")));
+              dispatch(getbyGroupID_Fail(""));
             }
           } else {
             dispatch(getbyGroupID_Fail(t("Something-went-wrong")));
@@ -479,7 +475,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               await dispatch(
                 createGroup_Success(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               localStorage.setItem(
@@ -504,7 +500,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                   "Groups_GroupServiceManager_CreateNewGroup_02".toLowerCase()
                 )
             ) {
-              dispatch(createGroup_Fail(t("No-data-available")));
+              dispatch(createGroup_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -512,7 +508,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                   "Groups_GroupServiceManager_CreateNewGroup_03".toLowerCase()
                 )
             ) {
-              dispatch(createGroup_Fail(t("No-data-available")));
+              dispatch(createGroup_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -520,7 +516,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                   "Groups_GroupServiceManager_CreateNewGroup_04".toLowerCase()
                 )
             ) {
-              dispatch(createGroup_Fail(t("No-data-available")));
+              dispatch(createGroup_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -528,7 +524,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                   "Groups_GroupServiceManager_CreateNewGroup_05".toLowerCase()
                 )
             ) {
-              dispatch(createGroup_Fail(t("No-data-available")));
+              dispatch(createGroup_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -601,7 +597,7 @@ const getGroupMembersRoles = (navigate, Data, t) => {
               await dispatch(
                 getOrganiationGroupRoles_Success(
                   response.data.responseResult.groupRoles,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -611,7 +607,7 @@ const getGroupMembersRoles = (navigate, Data, t) => {
                   "Groups_GroupServiceManager_GetAllOrganizationGroupRoles_02".toLowerCase()
                 )
             ) {
-              dispatch(getOrganiationGroupRoles_Fail(t("No-data-available")));
+              dispatch(getOrganiationGroupRoles_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -619,7 +615,7 @@ const getGroupMembersRoles = (navigate, Data, t) => {
                   "Groups_GroupServiceManager_GetAllOrganizationGroupRoles_03".toLowerCase()
                 )
             ) {
-              dispatch(getOrganiationGroupRoles_Fail(t("No-data-available")));
+              dispatch(getOrganiationGroupRoles_Fail(""));
             } else {
               dispatch(
                 getOrganiationGroupRoles_Fail(t("Something-went-wrong"))
@@ -685,7 +681,7 @@ const getOrganizationGroupTypes = (navigate, Data, t) => {
               await dispatch(
                 getOrganizationGroupTypes_Success(
                   response.data.responseResult.groupTypes,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -695,7 +691,7 @@ const getOrganizationGroupTypes = (navigate, Data, t) => {
                   "Groups_GroupServiceManager_GetAllOrgainzationGroupTypes_02".toLowerCase()
                 )
             ) {
-              dispatch(getOrganizationGroupTypes_Fail(t("No-data-available")));
+              dispatch(getOrganizationGroupTypes_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -703,7 +699,7 @@ const getOrganizationGroupTypes = (navigate, Data, t) => {
                   "Groups_GroupServiceManager_GetAllOrgainzationGroupTypes_03".toLowerCase()
                 )
             ) {
-              dispatch(getOrganizationGroupTypes_Fail(t("No-data-available")));
+              dispatch(getOrganizationGroupTypes_Fail(""));
             } else {
               dispatch(
                 getOrganizationGroupTypes_Fail(t("Something-went-wrong"))
@@ -793,7 +789,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                   "Groups_GroupServiceManager_UpdateGroup_02".toLowerCase()
                 )
             ) {
-              dispatch(updateGroup_Fail(t("No-data-available")));
+              dispatch(updateGroup_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -801,7 +797,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                   "Groups_GroupServiceManager_UpdateGroup_03".toLowerCase()
                 )
             ) {
-              dispatch(updateGroup_Fail(t("No-data-available")));
+              dispatch(updateGroup_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -809,7 +805,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                   "Groups_GroupServiceManager_UpdateGroup_04".toLowerCase()
                 )
             ) {
-              dispatch(updateGroup_Fail(t("No-data-available")));
+              dispatch(updateGroup_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -817,7 +813,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                   "Groups_GroupServiceManager_UpdateGroup_05".toLowerCase()
                 )
             ) {
-              dispatch(updateGroup_Fail(t("No-data-available")));
+              dispatch(updateGroup_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -982,7 +978,7 @@ const getAllGroups = (navigate, t) => {
               dispatch(
                 getAllGroups_Success(
                   response.data.responseResult.groups,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -1549,7 +1545,7 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showRetriveDocumentsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (
@@ -1559,7 +1555,7 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
                   "DataRoom_DataRoomManager_ReteriveGroupDocuments_02".toLowerCase()
                 )
             ) {
-              dispatch(showRetriveDocumentsFailed(t("No-data-available")));
+              dispatch(showRetriveDocumentsFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

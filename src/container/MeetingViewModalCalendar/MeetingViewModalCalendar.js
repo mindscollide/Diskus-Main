@@ -578,6 +578,7 @@ const MeetingViewModalCalendar = ({
       UserID: parseInt(createrID),
     };
     await dispatch(StartMeeting(navigate, Data, t));
+    localStorage.setItem("meetingTitle", assignees.ViewMeetingDetails.meetingDetails.title);
   };
 
   const endMeeting = async () => {

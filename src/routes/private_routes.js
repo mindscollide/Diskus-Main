@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
+  console.log(currentUrl , "currentUrlcurrentUrlcurrentUrl")
   const navigate = useNavigate()
 
   // Effect hook to perform actions based on the current URL

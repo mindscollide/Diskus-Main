@@ -196,3 +196,30 @@ body[dir="rtl"] .talk-count {
   font-size: 9px;
   right: 3px;
 }
+
+.talk_subIcon.with-hover {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  transition: 0.5s;
+}
+
+.talk_subIcon.with-hover {
+  filter: #fff;
+}
+
+.talk_subIcon.with-hover svg path {
+  fill: #fff;
+  overflow: hidden;
+  border: 2px;
+}
+
+.talk_subIcon.with-hover svg rect#Rectangle_830 {
+  fill: #fff !important;
+}
+
+.talk_subIcon.with-hover svg rect#Rectangle_831 {
+  fill: #fff !important;
+}
+
+.talk_subIcon.with-hover svg rect#Rectangle_832 {
+  fill: #fff !important;
+}

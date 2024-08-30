@@ -2,6 +2,11 @@
   font-size: 30px !important;
   font-weight: 600 !important;
   color: #5f78d6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+  display: block;
 }
 
 .Scedule_meeting_paper {

@@ -472,7 +472,6 @@ body[dir="rtl"] .languageSelector {
 }
 /* Styles for landscape orientation */
 @media screen and (max-height: 480px) and (orientation: landscape) {
-  /* Your landscape styles go here */
   .Auth_Icon {
     display: none !important;
   }

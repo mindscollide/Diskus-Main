@@ -1082,7 +1082,7 @@ const OrganizationLevelConfigUM = () => {
                               : styles["Options_headings"]
                           }
                         >
-                          {t("Calender")}
+                          {t("Calendar")}
                         </span>
                       </Col>
                     </Row>
@@ -2135,7 +2135,7 @@ const OrganizationLevelConfigUM = () => {
                       className="d-flex gap-4 w-100 justify-content-center align-items-center"
                     >
                       <span className={styles["Class_CheckBox2"]}>
-                        {t("Calendar-span-months")}
+                        {t("Calendar-months-span")}
                       </span>
                       <Select
                         options={MonthOptions}

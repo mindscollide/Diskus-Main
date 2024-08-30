@@ -284,12 +284,44 @@ const DataRoom = () => {
   const [detailView, setDetailView] = useState(false);
   //validate User Encrypted String Api
   useEffect(() => {
-    if (currentUrl.includes("DisKus/dataroom?action=")) {
-      const remainingString = currentUrl.split("?action=")[1];
-      if (remainingString !== "") {
-        setDataRoomString(remainingString);
-        // APi call
-        let Data = { Link: currentUrl };
+    try {
+      if (currentUrl.includes("DisKus/dataroom?action=")) {
+        console.log("Test Dataroom");
+
+        const remainingString = currentUrl.split("?action=")[1];
+        if (remainingString !== "") {
+          console.log("Test Dataroom");
+
+          setDataRoomString(remainingString);
+          // APi call
+          let Data = { Link: currentUrl };
+          dispatch(
+            validateUserAvailibilityEncryptedStringDataRoomApi(
+              navigate,
+              Data,
+              t,
+              setShareFileModal,
+              setRequestFile
+            )
+          );
+        }
+        // Save something in local storage if the condition is true
+      }
+    } catch (error) {
+      console.log("Test Dataroom", error);
+    }
+
+    return () => {};
+  }, []);
+  useEffect(() => {
+    try {
+      if (DataRoomString !== undefined && DataRoomString !== null) {
+        console.log("Test Dataroom");
+
+        // setRequestingAccess(true);
+        setDataRoomString(DataRoomString);
+        let Data = { Link: DataRoomString };
+
         dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
             navigate,
@@ -299,29 +331,13 @@ const DataRoom = () => {
             setRequestFile
           )
         );
+      } else {
+        navigate("/DisKus/dataroom");
       }
-      // Save something in local storage if the condition is true
+    } catch (error) {
+      console.log("Test Dataroom", error);
     }
-    return () => {};
-  }, []);
-  useEffect(() => {
-    if (DataRoomString !== undefined && DataRoomString !== null) {
-      // setRequestingAccess(true);
-      setDataRoomString(DataRoomString);
-      let Data = { Link: DataRoomString };
 
-      dispatch(
-        validateUserAvailibilityEncryptedStringDataRoomApi(
-          navigate,
-          Data,
-          t,
-          setShareFileModal,
-          setRequestFile
-        )
-      );
-    } else {
-      navigate("/DisKus/dataroom");
-    }
     return () => {
       localStorage.removeItem("DataRoomEmail");
     };
@@ -336,8 +352,8 @@ const DataRoom = () => {
     } else if (currentView === 5) {
       let newData = { IsCreator: true };
       await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
-      let Data = { pageNo: 1, pageSize: 10 };
-      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      // let Data = { pageNo: 1, pageSize: 10 };
+      // await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
 
       setGetAllData([]);
       setSharedwithmebtn(true);
@@ -476,7 +492,7 @@ const DataRoom = () => {
   };
 
   useEffect(() => {
-    if (webViewer.attachmentBlob) {
+    if ((webViewer.attachmentBlob, webViewer.isHTML === true)) {
       try {
         const base64String = base64ToBlob(
           webViewer.attachmentBlob,
@@ -491,7 +507,7 @@ const DataRoom = () => {
         "webViewer.attachmentBlobwebViewer.attachmentBlobwebViewer.attachmentBlob"
       );
     }
-  }, [, webViewer.attachmentBlob]);
+  }, [webViewer.attachmentBlob, webViewer.isHTML]);
 
   useEffect(() => {
     try {
@@ -808,8 +824,8 @@ const DataRoom = () => {
     // getAllPendingApprovalStatusApi
     let newData = { IsCreator: true };
     await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
-    let Data = { sRow: 0, Length: 10 };
-    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    // let Data = { sRow: 0, Length: 10 };
+    // await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
 
     //  localStorage.set
     setGetAllData([]);
@@ -1798,7 +1814,7 @@ const DataRoom = () => {
           FileID: record.id,
         };
         dispatch(
-          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
+          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData, true)
         );
       }
     }
@@ -3296,7 +3312,6 @@ const DataRoom = () => {
   useEffect(() => {
     if (
       DataRoomReducer.ResponseMessage !== "" &&
-      DataRoomReducer.ResponseMessage !== t("Data-available") &&
       DataRoomReducer.ResponseMessage !== t("No-record-found") &&
       DataRoomReducer.ResponseMessage !==
         t("No-folder-exist-against-this-name") &&
@@ -3349,10 +3364,7 @@ const DataRoom = () => {
         dispatch(clearDataResponseMessage());
       }, 4000);
     }
-    if (
-      DataRoomFileAndFoldersDetailsResponseMessage !== t("Data-available") &&
-      DataRoomFileAndFoldersDetailsResponseMessage !== ""
-    ) {
+    if (DataRoomFileAndFoldersDetailsResponseMessage !== "") {
       setOpen({
         open: true,
         message: DataRoomFileAndFoldersDetailsResponseMessage,
@@ -3984,6 +3996,7 @@ const DataRoom = () => {
                                     onChange={handleSortMyDocuments}
                                     // rowSelection={rowSelection}
                                     size={"middle"}
+                                    style={{ overflowX: "auto" }}
                                   />
                                 </InfiniteScroll>
                               ) : (

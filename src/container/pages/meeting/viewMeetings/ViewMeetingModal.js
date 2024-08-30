@@ -86,6 +86,8 @@ const ViewMeetingModal = ({
   let userID = localStorage.getItem("userID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
 
+  let meetingTitle = localStorage.getItem("meetingTitle");
+
   const dispatch = useDispatch();
 
   const { meetingIdReducer, NewMeetingreducer } = useSelector((state) => state);
@@ -372,7 +374,7 @@ const ViewMeetingModal = ({
         <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
-              {t("Meeting-view")}
+              {meetingTitle ? meetingTitle : ""}
             </span>
           </Col>
         </Row>
