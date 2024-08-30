@@ -462,6 +462,7 @@ const UserSettings = () => {
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
     const value = e.target.checked;
+    console.log("onChangeAllowMicrosoftCalenderSync", value);
     if (value) {
       await redirectToUrl();
     }
