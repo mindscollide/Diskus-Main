@@ -41,6 +41,7 @@ import {
   createGroupMeeting,
   getMeetingStatusfromSocket,
 } from "../../../store/actions/GetMeetingUserId";
+import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 const CommitteeMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
@@ -50,8 +51,15 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
   );
-  const { GroupMeetingMQTT, MeetingStatusSocket } = useSelector(
-    (state) => state.meetingIdReducer
+  const {
+    GroupMeetingMQTT,
+    MeetingStatusSocket,
+    allMeetingsSocketData,
+    MeetingStatusEnded,
+  } = useSelector((state) => state.meetingIdReducer);
+  console.log(
+    allMeetingsSocketData,
+    "allMeetingsSocketDataallMeetingsSocketData"
   );
   const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
@@ -199,7 +207,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
-      width: "115px",
+      width: "120px",
+      ellipsis: true,
       render: (text, record) => {
         return (
           <span
@@ -208,8 +217,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
             }}
           >
-            {truncateString(text, 30)}
-            {/* {text} */}
+            {text}
           </span>
         );
       },
@@ -276,6 +284,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "115px",
+      ellipsis: true,
+
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
@@ -310,7 +320,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         return (
           <>
             <Row>
-              <Col sm={12} md={12} lg={12}>
+              <Col sm={12} md={12} lg={12} className={styles["IconAlignment"]}>
                 {record.isAttachment ? (
                   <span
                     className={
@@ -644,12 +654,39 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   }, [meetingStatusNotConductedMqttData, rows]);
 
   useEffect(() => {
+    if (allMeetingsSocketData !== null) {
+      try {
+        const updateMeeting = async () => {
+          let meetingID = allMeetingsSocketData.pK_MDID;
+          let meetingData = allMeetingsSocketData;
+          setRow((rowsData) => {
+            return rowsData.map((item) => {
+              if (item.pK_MDID === meetingID) {
+                return meetingData;
+              } else {
+                return item; // Return the original item if the condition is not met
+              }
+            });
+          });
+        };
+        updateMeeting();
+      } catch (error) {
+        console.log(error, "error");
+      }
+    }
+  }, [allMeetingsSocketData]);
+
+  useEffect(() => {
     try {
       if (GroupMeetingMQTT !== null) {
         if (Number(ViewGroupID) === Number(GroupMeetingMQTT.groupID)) {
           let meetingData = GroupMeetingMQTT.meeting;
           let findIsExist = rows.findIndex(
             (data, index) => data.pK_MDID === meetingData.pK_MDID
+          );
+          console.log(
+            GroupMeetingMQTT,
+            "GroupMeetingMQTTGroupMeetingMQTTGroupMeetingMQTT"
           );
           if (findIsExist !== -1) {
             setRow((rowsData) => {
@@ -667,7 +704,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         }
         dispatch(createGroupMeeting(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [GroupMeetingMQTT]);
 
   const handelCreateMeeting = () => {
@@ -722,7 +761,20 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
       ) {
-        let meetingID = MeetingStatusSocket.meeting.pK_MDID;
+        let meetingID = MeetingStatusSocket?.meeting?.pK_MDID;
+        setRow((meetingRow) => {
+          return meetingRow.map((meetingData) => {
+            if (Number(meetingData?.pK_MDID) === Number(meetingID)) {
+              return {
+                ...meetingData,
+                status: "10",
+              };
+            } else {
+              // If the condition isn't met, return the original value
+              return meetingData;
+            }
+          });
+        });
       }
 
       dispatch(getMeetingStatusfromSocket(null));
@@ -731,6 +783,36 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       // }
     }
   }, [MeetingStatusSocket]);
+
+  useEffect(() => {
+    if (MeetingStatusEnded !== null) {
+      console.log(MeetingStatusEnded, "MeetingStatusEndedMeetingStatusEnded");
+      try {
+        if (
+          MeetingStatusEnded.message.toLowerCase() ===
+          "MEETING_STATUS_EDITED_END".toLowerCase()
+        ) {
+          let meetingID = MeetingStatusEnded.meeting.pK_MDID;
+
+          setRow((meetingRow) => {
+            return meetingRow.map((meetingData) => {
+              if (Number(meetingData.pK_MDID) === Number(meetingID)) {
+                return {
+                  ...meetingData,
+                  status: "9",
+                };
+              } else {
+                // If the condition isn't met, return the original value
+                return meetingData;
+              }
+            });
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [MeetingStatusEnded]);
 
   return (
     <>
@@ -772,7 +854,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         <Col sm={12} md={12} lg={12}>
           <Table
             column={MeetingColoumns}
-            scroll={{ y: "39vh", x: true }}
+            scroll={{ y: "39vh", x: "max-content" }}
             rows={rows}
             pagination={false}
             size="small"

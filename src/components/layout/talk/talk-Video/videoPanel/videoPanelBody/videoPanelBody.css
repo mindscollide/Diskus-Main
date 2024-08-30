@@ -31,6 +31,9 @@ p.Video-chat-username {
   text-overflow: ellipsis;
   color: #171d2d;
   font-weight: 600;
+  position: relative;
+  padding-right: 20px;
+  width: 150px;
 }
 
 p.Video-chat-username.missed {
@@ -65,16 +68,17 @@ body[dir="rtl"] p.video-chat-date {
 }
 
 span.call-status-icon {
-  position: relative;
-  left: 7px;
-  top: -1px;
+  position: absolute; /* Change to absolute positioning */
+  right: 0; /* Position the icon at the right end of the p element */
+  top: 50%; /* Center the icon vertically within the p element */
+  transform: translateY(-50%); /* Adjust for perfect centering */
 }
 
 body[dir="rtl"] span.call-status-icon {
-  position: relative;
-  left: auto;
-  top: -1px;
-  right: 7px;
+  position: absolute; /* Change to absolute positioning */
+  right: 0; /* Position the icon at the right end of the p element */
+  top: 50%; /* Center the icon vertically within the p element */
+  transform: translateY(-50%); /* Adjust for perfect centering */
 }
 
 .recent-scroll {
