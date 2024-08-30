@@ -1826,15 +1826,15 @@ const DataRoom = () => {
       dataIndex: "name",
       key: "name",
       sorter: true,
-      width: "100px",
-
+      width: "200px",
+      ellipsis: true,
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       render: (text, data) => {
         if (data.isShared) {
           if (data.isFolder) {
             return (
-              <div className={`${styles["fileRow"]}`}>
+              <div className={`${styles["dataFolderRow"]}`}>
                 <img src={folderColor} alt='' draggable='false' />
                 <abbr title={text}>
                   <span
@@ -3994,7 +3994,6 @@ const DataRoom = () => {
                                     className={"DataRoom_Table"}
                                     rows={getAllData}
                                     pagination={false}
-                                    scroll={{ y: "57vh" }}
                                     // scroll={{x: "max-content"}}
                                     onChange={handleSortMyDocuments}
                                     // rowSelection={rowSelection}

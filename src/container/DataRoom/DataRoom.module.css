@@ -963,7 +963,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   width: 300px !important;
   user-select: none !important;
   cursor: pointer !important;
-  display: block !important;
+  display: initial !important;
 
   /* display: flex; */
   /* gap: 5px; */
