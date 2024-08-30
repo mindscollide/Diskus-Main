@@ -555,10 +555,10 @@ const Minutes = ({
   const pdfData = (record, ext) => {
     console.log("PDFDATAPDFDATA", record);
     let Data = {
-      taskId: Number(record.originalAttachmentName),
+      taskId: 1,
       commingFrom: 4,
-      fileName: record.displayAttachmentName,
-      attachmentID: Number(record.originalAttachmentName),
+      fileName: record[0].displayFileName,
+      attachmentID: record[0].pK_FileID,
     };
     let pdfDataJson = JSON.stringify(Data);
     if (
