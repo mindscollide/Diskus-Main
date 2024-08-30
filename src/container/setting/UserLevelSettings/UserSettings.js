@@ -462,6 +462,7 @@ const UserSettings = () => {
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
     const value = e.target.checked;
+    console.log("onChangeAllowMicrosoftCalenderSync", value);
     if (value) {
       await redirectToUrl();
     }
@@ -1594,8 +1595,8 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                    roleID !== 1 &&
+                    roleID !== 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
