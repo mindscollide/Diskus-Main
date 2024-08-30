@@ -875,7 +875,7 @@ const Header2 = ({ isVideo }) => {
                         <p className={`${"user-name me-2"} ${currentLanguage}`}>
                           {currentUserName}
                         </p>
-                        <p className={`${"user-name me-2"} ${currentLanguage}`}>
+                        <p className={`${"user-name orgStyle me-2"} ${currentLanguage}`}>
                           {" "}
                           {currentOrganizationName}
                         </p>
