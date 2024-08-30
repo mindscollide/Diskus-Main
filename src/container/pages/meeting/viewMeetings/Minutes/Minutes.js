@@ -311,62 +311,76 @@ const Minutes = ({
       let flag = false;
       let sizezero = true;
       let size = true;
-
-      if (fileAttachments.length > 9) {
+      console.log("testtesttest", fileAttachments, fileList);
+      if (fileList.length > 10) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
         return;
-      }
-
-      fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
-          size = false;
-        } else if (fileData.size === 0) {
-          sizezero = false;
-        }
-
-        let fileExists = fileAttachments.some(
-          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
-        );
-
-        if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
-        } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
-        } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+      } else {
+        if (fileAttachments.length > 9) {
+          setOpen({
+            flag: true,
+            message: t("Not-allowed-more-than-10-files"),
+          });
+          return;
         } else {
-          let file = {
-            DisplayAttachmentName: fileData.name,
-            OriginalAttachmentName: fileData.name,
-            fileSize: fileData.originFileObj.size,
-          };
-          setFileAttachments((prevAttachments) => [...prevAttachments, file]);
-          fileSizeArr += fileData.originFileObj.size;
-          setFileForSend((prevFiles) => [...prevFiles, fileData.originFileObj]);
-          setFileSize(fileSizeArr);
-        }
-      });
+          fileList.forEach((fileData, index) => {
+            if (fileData.size > 10485760) {
+              size = false;
+            } else if (fileData.size === 0) {
+              sizezero = false;
+            }
 
-      // Update previousFileList to current fileList
-      previousFileList = fileList;
+            let fileExists = fileAttachments.some(
+              (oldFileData) =>
+                oldFileData.DisplayAttachmentName === fileData.name
+            );
+
+            if (!size) {
+              setTimeout(() => {
+                setOpen({
+                  flag: true,
+                  message: t("File-size-should-not-be-greater-then-zero"),
+                });
+              }, 3000);
+            } else if (!sizezero) {
+              setTimeout(() => {
+                setOpen({
+                  flag: true,
+                  message: t("File-size-should-not-be-zero"),
+                });
+              }, 3000);
+            } else if (fileExists) {
+              setTimeout(() => {
+                setOpen({
+                  flag: true,
+                  message: t("File-already-exists"),
+                });
+              }, 3000);
+            } else {
+              let file = {
+                DisplayAttachmentName: fileData.name,
+                OriginalAttachmentName: fileData.name,
+                fileSize: fileData.originFileObj.size,
+              };
+              setFileAttachments((prevAttachments) => [
+                ...prevAttachments,
+                file,
+              ]);
+              fileSizeArr += fileData.originFileObj.size;
+              setFileForSend((prevFiles) => [
+                ...prevFiles,
+                fileData.originFileObj,
+              ]);
+              setFileSize(fileSizeArr);
+            }
+          });
+          // Update previousFileList to current fileList
+          previousFileList = fileList;
+        }
+      }
     },
     onDrop(e) {},
     customRequest() {},
