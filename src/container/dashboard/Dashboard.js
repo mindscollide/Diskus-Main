@@ -276,9 +276,9 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
             dispatch(allMeetingsSocket(data.payload.meeting));
-            setNotificationID(id);
           } else if (
             data.payload.message.toLowerCase() ===
             "MEETING_EDITED_HOST".toLowerCase()
@@ -293,9 +293,9 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
             dispatch(allMeetingsSocket(data.payload.meeting));
-            setNotificationID(id);
           } else if (
             data.payload.message.toLowerCase() ===
             "MEETING_STATUS_EDITED_STARTED".toLowerCase()
@@ -310,9 +310,9 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
             dispatch(getMeetingStatusfromSocket(data.payload));
-            setNotificationID(id);
           } else if (
             data.payload.message
               .toLowerCase()
@@ -328,13 +328,13 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
             // let Data2 = {
             //   UserID: Number(createrID),
             // };
             // dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
             dispatch(mqttCurrentMeetingEnded(data.payload));
-            setNotificationID(id);
           } else if (
             data.payload.message.toLowerCase() ===
             "MEETING_STATUS_EDITED_CANCELLED".toLowerCase()
@@ -349,10 +349,10 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
 
             dispatch(getMeetingStatusfromSocket(data.payload));
-            setNotificationID(id);
           } else if (
             data.payload.message.toLowerCase() ===
             "MEETING_STATUS_EDITED_ADMIN".toLowerCase()
@@ -367,9 +367,9 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
             dispatch(getMeetingStatusfromSocket(data.payload));
-            setNotificationID(id);
           } else if (
             data.payload.message.toLowerCase() ===
             "NEW_UPCOMING_EVENTS".toLowerCase()
@@ -401,7 +401,6 @@ const Dashboard = () => {
             data.payload.message.toLowerCase() ===
             "MEETING_STATUS_EDITED_PUBLISHED".toLowerCase()
           ) {
-            dispatch(meetingStatusPublishedMqtt(data.payload.meeting));
             if (data.viewable) {
               setNotification({
                 ...notification,
@@ -412,43 +411,49 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
+            dispatch(meetingStatusPublishedMqtt(data.payload.meeting));
+            setNotificationID(id);
           } else if (
             data.payload.message.toLowerCase() ===
             "AGENDA_VOTING_STARTED".toLowerCase()
           ) {
-            dispatch(meetingAgendaStartedMQTT(data.payload));
             if (data.viewable) {
               setNotification({
                 ...notification,
                 notificationShow: true,
                 message: t("AGENDA_VOTING_STARTED"),
               });
+              setNotificationID(id);
             }
+            dispatch(meetingAgendaStartedMQTT(data.payload));
           } else if (
             data.payload.message.toLowerCase() ===
             "AGENDA_VOTING_ENDED".toLowerCase()
           ) {
-            dispatch(meetingAgendaEndedMQTT(data.payload));
             if (data.viewable) {
               setNotification({
                 ...notification,
                 notificationShow: true,
                 message: t("AGENDA_VOTING_ENDED"),
               });
+              setNotificationID(id);
             }
+            dispatch(meetingAgendaEndedMQTT(data.payload));
           } else if (
             data.payload.message.toLowerCase() ===
             "NEW_MEETING_AGENDA_ADDED".toLowerCase()
           ) {
-            dispatch(meetingAgendaUpdatedMQTT(data.payload));
             if (data.viewable) {
               setNotification({
                 ...notification,
                 notificationShow: true,
                 message: t("NEW_MEETING_AGENDA_ADDED"),
               });
+              setNotificationID(id);
             }
+            dispatch(meetingAgendaUpdatedMQTT(data.payload));
           } else if (
             data.payload.message.toLowerCase() ===
             "NEW_MEETINGS_COUNT".toLowerCase()
@@ -458,23 +463,27 @@ const Dashboard = () => {
             data.payload.message.toLowerCase() ===
             "MEETING_STATUS_EDITED_PUBLISHED_GROUP".toLowerCase()
           ) {
-            dispatch(createGroupMeeting(data.payload));
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_STATUS_EDITED_PUBLISHED"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
+            try {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_PUBLISHED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              dispatch(createGroupMeeting(data.payload));
+            } catch (error) {
+              console.log(error);
             }
           } else if (
             data.payload.message.toLowerCase() ===
             "MEETING_STATUS_EDITED_PUBLISHED_COMMITTEE".toLowerCase()
           ) {
-            dispatch(createCommitteeMeeting(data.payload));
             if (data.viewable) {
               setNotification({
                 ...notification,
@@ -485,7 +494,9 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
+            dispatch(createCommitteeMeeting(data.payload));
           } else if (
             data.payload.message?.toLowerCase() ===
             "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
@@ -500,10 +511,11 @@ const Dashboard = () => {
             //       data.payload.meetingTitle.substring(0, 100)
             //     ),
             //   });
+            // setNotificationID(id);
+
             // }
 
             dispatch(meetingAgendaContributorAdded(data.payload));
-            setNotificationID(id);
           } else if (
             data.payload.message
               ?.toLowerCase()
@@ -519,10 +531,10 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
 
             dispatch(meetingAgendaContributorRemoved(data.payload));
-            setNotificationID(id);
           } else if (
             data.payload.message
               ?.toLowerCase()
@@ -538,9 +550,9 @@ const Dashboard = () => {
                   data.payload.title.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
             dispatch(meetingOrganizerAdded(data.payload));
-            setNotificationID(id);
           } else if (
             data.payload.message
               ?.toLowerCase()
@@ -556,15 +568,14 @@ const Dashboard = () => {
                   data.payload.title.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
             dispatch(meetingOrganizerRemoved(data.payload));
-            setNotificationID(id);
           } else if (
             data.payload.message?.toLowerCase() ===
             "MeetingNotConductedNotification".toLowerCase()
           ) {
             try {
-              dispatch(meetingNotConductedMQTT(data.payload));
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -575,7 +586,9 @@ const Dashboard = () => {
                     data.payload.meetingTitle.substring(0, 100)
                   ),
                 });
+                setNotificationID(id);
               }
+              dispatch(meetingNotConductedMQTT(data.payload));
             } catch (error) {}
           } else if (
             data.payload.message?.toLowerCase() ===
@@ -593,8 +606,8 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+              setNotificationID(id);
             }
-            setNotificationID(id);
           } else if (
             data.payload.message.toLowerCase() ===
             "MEETING_PARTICIPANT_DELETED".toLowerCase()
@@ -611,8 +624,8 @@ const Dashboard = () => {
               //     data.payload.meetingTitle.substring(0, 100)
               //   ),
               // });
+              setNotificationID(id);
             }
-            setNotificationID(id);
           } else if (
             data.payload.message.toLowerCase() ===
             "NEW_MEETING_PARTICIPANT_ADDED".toLowerCase()
@@ -622,7 +635,6 @@ const Dashboard = () => {
               Number(data.payload.status) !== 12
             ) {
               dispatch(meetingParticipantAdded(data.payload));
-              setNotificationID(id);
 
               if (data.viewable) {
                 setNotification({
@@ -634,6 +646,7 @@ const Dashboard = () => {
                     data.payload.title.substring(0, 100)
                   ),
                 });
+                setNotificationID(id);
               }
             }
           }
@@ -654,8 +667,8 @@ const Dashboard = () => {
                 data.payload.todoTitle.substring(0, 100)
               ),
             });
+            setNotificationID(id);
           }
-          setNotificationID(id);
         } else if (
           data.payload.message.toLowerCase() ===
           "TDOD_STATUS_EDITED".toLowerCase()
@@ -687,6 +700,7 @@ const Dashboard = () => {
             });
             setNotificationID(id);
           }
+
           dispatch(setTodoStatusDataFormSocket(data.payload));
         } else if (
           data.payload.message.toLowerCase() ===
@@ -711,9 +725,9 @@ const Dashboard = () => {
                 data.payload.comment.todoTitle.substring(0, 100)
               ),
             });
+            setNotificationID(id);
           }
           dispatch(deleteCommentsMQTT(data.payload));
-          setNotificationID(id);
         } else if (
           data.payload.message
             .toLowerCase()
@@ -729,14 +743,13 @@ const Dashboard = () => {
                 data.payload.todoTitle.substring(0, 100)
               ),
             });
+            setNotificationID(id);
           }
-          setNotificationID(id);
         } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_GROUP_TODO".toLowerCase())
         ) {
-          dispatch(createTaskGroupMQTT(data.payload));
           if (data.viewable) {
             setNotification({
               notificationShow: true,
@@ -746,14 +759,14 @@ const Dashboard = () => {
                 data.payload.todoTitle.substring(0, 100)
               ),
             });
+            setNotificationID(id);
           }
-          setNotificationID(id);
+          dispatch(createTaskGroupMQTT(data.payload));
         } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_COMMITTEE_TODO".toLowerCase())
         ) {
-          dispatch(createTaskCommitteeMQTT(data.payload));
           if (data.viewable) {
             setNotification({
               notificationShow: true,
@@ -763,8 +776,9 @@ const Dashboard = () => {
                 data.payload.todoTitle.substring(0, 100)
               ),
             });
+            setNotificationID(id);
           }
-          setNotificationID(id);
+          dispatch(createTaskCommitteeMQTT(data.payload));
         }
       }
       if (data.action.toLowerCase() === "COMMENT".toLowerCase()) {
@@ -1049,77 +1063,17 @@ const Dashboard = () => {
             }, 4000);
           }
         } else if (
-          data.payload.message.toLowerCase() === "FILE_SHARED".toLowerCase()
+          data.payload.message.toLowerCase() ===
+          "NEW_GROUP_CREATION_RECENT_ACTIVITY".toLowerCase()
         ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: t(
-                  `${data?.payload?.data?.displayFileName} document shared with you`
-                ),
-              });
-            }
-            setNotificationID(id);
-            dispatch(fileSharedMQTT(data.payload));
-          } catch (error) {}
-        } else if (
-          data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
-        ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: t(
-                  `${data?.payload?.data?.displayFolderName} folder shared with you`
-                ),
-              });
-            }
-            setNotificationID(id);
-            dispatch(folderSharedMQTT(data.payload));
-          } catch (error) {}
         } else if (
           data.payload.message.toLowerCase() ===
-            "FILE_SHARING_REMOVED".toLowerCase() ||
-          "FILE_DELETED".toLowerCase()
+          "MEETING_STATUS_EDITED_STARTED".toLowerCase()
         ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: `file remove to you`,
-              });
-            }
-            setNotificationID(id);
-            dispatch(fileRemoveMQTT(data?.payload?.fileID));
-          } catch (error) {}
         } else if (
           data.payload.message.toLowerCase() ===
-          "FOLDER_SHARING_REMOVED".toLowerCase()
+          "NEW_TODO_DELETED_RECENT_ACTIVITY".toLowerCase()
         ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: ` folder remove to you`,
-              });
-            }
-            setNotificationID(id);
-            dispatch(folderRemoveMQTT(data?.payload?.fileID));
-          } catch (error) {}
-        } else if (
-          data.payload.message.toLowerCase() === "FOLDER_DELETED".toLowerCase()
-        ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: ` folder remove to you`,
-              });
-            }
-            setNotificationID(id);
-            dispatch(folderRemoveMQTT(data?.payload?.folderID));
-          } catch (error) {}
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
@@ -2264,6 +2218,81 @@ const Dashboard = () => {
           if (getToken !== data?.payload?.authToken?.token) {
             dispatch(userLogOutApiFunc(navigate, t));
           }
+        }
+      }
+      if (data.action.toLowerCase() === "DATAROOM".toLowerCase()) {
+        if (
+          data.payload.message.toLowerCase() === "FILE_SHARED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  `${data?.payload?.data?.displayFileName} document shared with you`
+                ),
+              });
+            }
+            setNotificationID(id);
+            dispatch(fileSharedMQTT(data.payload));
+          } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  `${data?.payload?.data?.displayFolderName} folder shared with you`
+                ),
+              });
+            }
+            setNotificationID(id);
+            dispatch(folderSharedMQTT(data.payload));
+          } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() ===
+            "FILE_SHARING_REMOVED".toLowerCase() ||
+          "FILE_DELETED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: `file remove to you`,
+              });
+            }
+            setNotificationID(id);
+            dispatch(fileRemoveMQTT(data?.payload?.fileID));
+          } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "FOLDER_SHARING_REMOVED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: ` folder remove to you`,
+              });
+            }
+            setNotificationID(id);
+            dispatch(folderRemoveMQTT(data?.payload?.fileID));
+          } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() === "FOLDER_DELETED".toLowerCase()
+        ) {
+          try {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: ` folder remove to you`,
+              });
+            }
+            setNotificationID(id);
+            dispatch(folderRemoveMQTT(data?.payload?.folderID));
+          } catch (error) {}
         }
       }
     } catch (error) {}
