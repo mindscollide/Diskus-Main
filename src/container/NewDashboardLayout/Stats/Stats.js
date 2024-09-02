@@ -104,7 +104,7 @@ const Stats = () => {
   return (
     <Row>
       <Col sm={12} md={6} lg={6}>
-        <Row className="mt-1">
+        <Row className='mt-1'>
           <Col sm={12} md={12} lg={12}>
             <Row>
               <Col
@@ -144,6 +144,11 @@ const Stats = () => {
             max={bar.max}
             label={`${bar.now}/${bar.max}`}
             className={bar.className}
+            children={
+              <>
+                <span >{`${bar.now}/${bar.max}`}</span>
+              </>
+            }
           />
         ))}
       </Col>

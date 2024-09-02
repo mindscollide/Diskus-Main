@@ -73,11 +73,7 @@ const UserManagementProcess = () => {
   useEffect(() => {
     if (currentUrl !== undefined) {
       let Data = { EncryptedString: currentUrl };
-      dispatch(validateStringOTPEmail_Api(Data, navigate, t));
-      localStorage.setItem("LoginFlowPageRoute", 6);
-
-      setStoredStep(6);
-      dispatch(LoginFlowRoutes(6));
+      dispatch(validateStringOTPEmail_Api(Data, navigate, t, setStoredStep));
     }
   }, [currentUrl]);
 
