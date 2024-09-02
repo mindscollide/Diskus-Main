@@ -1697,7 +1697,8 @@ const verificationEmailOTP = (
   setMinutes
 ) => {
   let userID = localStorage.getItem("userID");
-  let email = localStorage.getItem("userEmail");
+  let email =
+    localStorage.getItem("userEmail") || localStorage.getItem("email");
   let data = { UserID: JSON.parse(userID), Email: email, OTP: OTPValue };
   return (dispatch) => {
     dispatch(verifyOTPInit());
@@ -3513,7 +3514,7 @@ const validateStringOTPEmail_fail = (message) => {
     message: message,
   };
 };
-const validateStringOTPEmail_Api = (Data, navigate, t) => {
+const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
   return (dispatch) => {
     dispatch(validateStringOTPEmail_init());
     let form = new FormData();
@@ -3555,7 +3556,9 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
                 "organizationID",
                 response?.data?.responseResult?.data?.organizationID
               );
-              dispatch(LoginFlowRoutes(6));
+              localStorage.setItem("LoginFlowPageRoute", 3);
+              setStoredStep(3);
+              dispatch(LoginFlowRoutes(3));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3564,6 +3567,9 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
                 )
             ) {
               dispatch(validateStringOTPEmail_fail(t("Validation-Failed")));
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              setStoredStep(1);
+              dispatch(LoginFlowRoutes(1));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3571,18 +3577,33 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
                   "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_03".toLowerCase()
                 )
             ) {
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              setStoredStep(1);
+              dispatch(LoginFlowRoutes(1));
               dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
             } else {
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              setStoredStep(1);
+              dispatch(LoginFlowRoutes(1));
               dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
             }
           } else {
+            localStorage.setItem("LoginFlowPageRoute", 1);
+            setStoredStep(1);
+            dispatch(LoginFlowRoutes(1));
             dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
           }
         } else {
+          localStorage.setItem("LoginFlowPageRoute", 1);
+          setStoredStep(1);
+          dispatch(LoginFlowRoutes(1));
           dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
+        localStorage.setItem("LoginFlowPageRoute", 1);
+        setStoredStep(1);
+        dispatch(LoginFlowRoutes(1));
         dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
       });
   };

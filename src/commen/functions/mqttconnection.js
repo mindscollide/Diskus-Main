@@ -5,11 +5,6 @@ import Helper from "./history_logout";
 
 let newClient;
 
-//  const onMessageArrived = (message) => {
-//   console.log("Message arrived:", message.payloadString);
-//   // Handle incoming messages here
-// };
-
 export const mqttConnection = (subscribeID) => {
   if (!subscribeID) {
     console.error("No subscribeID provided for MQTT connection.");
@@ -35,7 +30,8 @@ export const mqttConnection = (subscribeID) => {
       console.log("Connected to MQTT broker");
       newClient.subscribe(subscribeID.toString(), {
         onSuccess: () => console.log(` MQTT Subscribed to ${subscribeID}`),
-        onFailure: (error) => console.log(` MQTT Subscription failed: ${error.errorMessage}`),
+        onFailure: (error) =>
+          console.log(` MQTT Subscription failed: ${error.errorMessage}`),
       });
     },
     onFailure: (error) => {

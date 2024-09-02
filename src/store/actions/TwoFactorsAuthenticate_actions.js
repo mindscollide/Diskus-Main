@@ -8,7 +8,10 @@ import {
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { LoginFlowRoutes } from "./UserManagementActions";
-import { clearLocalStorageAtloginresponce, handleLoginResponse } from "../../commen/functions/utils";
+import {
+  clearLocalStorageAtloginresponce,
+  handleLoginResponse,
+} from "../../commen/functions/utils";
 const TwoFaAuthenticateInit = () => {
   return {
     type: actions.CHECKINGAUTHENTICATEAFA_INIT,
@@ -650,7 +653,6 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   "ERM_AuthService_AuthManager_Verify2FAOTP_01".toLowerCase()
                 )
             ) {
-              await handleLoginResponse(response.data.responseResult);
               let RSVP = localStorage.getItem("RSVP");
               let dataroomValue = localStorage.getItem("DataRoomEmail");
               let MeetingStr = localStorage.getItem("meetingStr");

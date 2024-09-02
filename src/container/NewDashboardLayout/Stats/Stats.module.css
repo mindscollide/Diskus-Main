@@ -35,11 +35,11 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingmeeting div {
+.dashboard_progress_upcomingmeeting span {
   background-color: #6172d6 !important;
   border-radius: 25px !important;
   text-align: right;
-  padding-right: 10px;
+  padding: 0 10px;
 }
 .dashboard_progress_upcomingmeeting_R {
   height: 25px !important;
@@ -48,7 +48,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingmeeting_R div {
+.dashboard_progress_upcomingmeeting_R span {
   background-color: transparent !important;
   border-radius: 25px !important;
   text-align: right;
@@ -57,18 +57,18 @@ body[dir="rtl"] .ProgressBarContains::before {
 }
 /* Upcoming Task this week */
 
-.dashboard_progress_upcomingTask {
+.dashboard_progress_upcomingTask  {
   height: 25px !important;
   border-radius: 25px !important;
   color: #fff;
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingTask div {
+.dashboard_progress_upcomingTask span {
   background-color: #ffc300 !important;
   border-radius: 25px !important;
   text-align: right;
-  padding-right: 10px;
+  padding: 0 10px;
 }
 
 .dashboard_progress_upcomingTask_R {
@@ -78,7 +78,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingTask_R div {
+.dashboard_progress_upcomingTask_R span {
   background-color: transparent !important;
   border-radius: 25px !important;
   text-align: right;
@@ -87,7 +87,7 @@ body[dir="rtl"] .ProgressBarContains::before {
 }
 /* Upcoming Pending Approval this week */
 
-.dashboard_progress_upcomingApproval {
+.dashboard_progress_upcomingApproval  {
   height: 25px !important;
   border-radius: 25px !important;
   color: #fff;
@@ -95,11 +95,12 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-size: 16px;
 }
 
-.dashboard_progress_upcomingApproval div {
+.dashboard_progress_upcomingApproval span {
   background-color: #55ce5c !important;
   border-radius: 25px !important;
   text-align: right;
-  padding-right: 10px;
+  padding: 0 10px;
+
 }
 .dashboard_progress_upcomingApproval_R {
   height: 25px !important;
@@ -108,7 +109,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingApproval_R div {
+.dashboard_progress_upcomingApproval_R span {
   background-color: transparent !important;
   border-radius: 25px !important;
   text-align: right;
