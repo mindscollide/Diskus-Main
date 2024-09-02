@@ -44,6 +44,7 @@ import {
   getIconSource,
 } from "../../../../../DataRoom/SearchFunctionality/option";
 import FilesMappingAgendaWiseMinutes from "./FilesMappingAgendaWiseMinutes";
+import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
 
 const AgendaWise = ({
   currentMeeting,
@@ -391,8 +392,22 @@ const AgendaWise = ({
         },
       });
     } else {
-      if (source === "user") {
+      if (source === "user" && String(content).length >= 501) {
+        console.log(
+          removeHTMLTagsAndTruncate(String(content)),
+          removeHTMLTagsAndTruncate(String(content)).length,
+          "Test String"
+        );
         // Update state only if no image is detected in the content
+        setAgendaWiseFields({
+          ...addAgendaWiseFields,
+          Description: {
+            value: removeHTMLTagsAndTruncate(String(content)),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else {
         setAgendaWiseFields({
           ...addAgendaWiseFields,
           Description: {
@@ -406,6 +421,22 @@ const AgendaWise = ({
         });
       }
     }
+    // else {
+    //   if (source === "user") {
+    //     // Update state only if no image is detected in the content
+    //     setAgendaWiseFields({
+    //       ...addAgendaWiseFields,
+    //       Description: {
+    //         value: content,
+    //         errorMessage:
+    //           contentTrimmed !== ""
+    //             ? ""
+    //             : addAgendaWiseFields.Description.errorMessage,
+    //         errorStatus: contentTrimmed === "",
+    //       },
+    //     });
+    //   }
+    // }
   };
 
   const handleAgendaSelect = (selectoptions) => {

@@ -123,7 +123,7 @@
 
 .calendar .rbc-month-view .rbc-month-row {
   border: 1px solid #ccc !important;
-  display: inline-table !important;
+  /* display: inline-table !important; */
 }
 
 .calendar .rbc-month-view .rbc-month-row .rbc-row-bg {
