@@ -241,14 +241,15 @@ export const convertToGMTMinuteTime = (timeStr) => {
 
     // Create a Date object
     let date = new Date();
-    date.setUTCHours(hours);
-    date.setUTCMinutes(minutes);
-    date.setUTCSeconds(seconds);
+    console.log(date, "convertToGMTMinuteTimeconvertToGMTMinuteTime")
+    // date.setUTCHours(hours);
+    // date.setUTCMinutes(minutes);
+    // date.setUTCSeconds(seconds);
 
     // Get the GMT hours, minutes, and seconds
-    let gmtHours = date.getUTCHours();
-    let gmtMinutes = date.getUTCMinutes();
-    let gmtSeconds = date.getUTCSeconds();
+    let gmtHours = date.getHours();
+    let gmtMinutes = date.getMinutes();
+    let gmtSeconds = date.getSeconds();
 
     // Format the time in 12-hour format with AM/PM
     let period = gmtHours >= 12 ? "pm" : "am";
