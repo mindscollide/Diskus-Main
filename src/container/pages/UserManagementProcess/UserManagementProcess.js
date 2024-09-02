@@ -76,8 +76,8 @@ const UserManagementProcess = () => {
       dispatch(validateStringOTPEmail_Api(Data, navigate, t));
       localStorage.setItem("LoginFlowPageRoute", 6);
 
-      setStoredStep(3);
-      dispatch(LoginFlowRoutes(3));
+      setStoredStep(6);
+      dispatch(LoginFlowRoutes(6));
     }
   }, [currentUrl]);
 
@@ -270,9 +270,7 @@ const UserManagementProcess = () => {
     { storedStep, userManagementRoute },
     "storedStepstoredStep"
   );
-  // if (currentUrl !== undefined) {
-  //   componentToRender = <VerifyOTPUM />;
-  // } else
+
   if (UserMangementReducer.defaultRoutingValue === 1 && storedStep === 1) {
     componentToRender = <SignInComponent />;
   } else if (UserMangementReducer.defaultRoutingValue === 2) {

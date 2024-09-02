@@ -1697,7 +1697,8 @@ const verificationEmailOTP = (
   setMinutes
 ) => {
   let userID = localStorage.getItem("userID");
-  let email = localStorage.getItem("userEmail");
+  let email =
+    localStorage.getItem("userEmail") || localStorage.getItem("email");
   let data = { UserID: JSON.parse(userID), Email: email, OTP: OTPValue };
   return (dispatch) => {
     dispatch(verifyOTPInit());
@@ -3543,9 +3544,18 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
                   t("Successfully-updated")
                 )
               );
-              localStorage.setItem("email", response?.data?.responseResult?.data?.email)
-              localStorage.setItem("userID", Number(response?.data?.responseResult?.data?.userID))
-              localStorage.setItem("organizationID", response?.data?.responseResult?.data?.organizationID)
+              localStorage.setItem(
+                "email",
+                response?.data?.responseResult?.data?.email
+              );
+              localStorage.setItem(
+                "userID",
+                Number(response?.data?.responseResult?.data?.userID)
+              );
+              localStorage.setItem(
+                "organizationID",
+                response?.data?.responseResult?.data?.organizationID
+              );
               dispatch(LoginFlowRoutes(6));
             } else if (
               response.data.responseResult.responseMessage
