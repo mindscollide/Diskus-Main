@@ -1416,6 +1416,7 @@ const SignatureViewer = () => {
         UserID: 0,
       });
     } else {
+      window.close()
       setOpen({
         ...open,
         message: "Data Must Required",
@@ -1823,12 +1824,12 @@ const SignatureViewer = () => {
               >
                 <Button
                   className={"CancelBtn"}
-                  text={t("Cancel")}
+                  text={t("Close")}
                   onClick={handleHideModal}
                 />
                 <Button
                   className={"Add"}
-                  text={t("Add")}
+                  text={t("Save")}
                   onClick={clickSaveSigners}
                 />
               </Col>
