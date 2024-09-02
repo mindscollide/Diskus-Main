@@ -660,6 +660,8 @@ const AgendaWise = ({
     let newfile = [...previousFileIDs];
     let fileObj = [];
     if (Object.keys(fileForSend).length > 0) {
+      console.log(updateData.minuteID, "updateDataupdateData");
+
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
           uploadDocumentsMeetingAgendaWiseMinutesApi(
@@ -699,8 +701,10 @@ const AgendaWise = ({
         )
       );
     } else if (newfile.length > 0) {
+      console.log(updateData, "updateDataupdateData");
+
       let docsData = {
-        FK_MeetingAgendaMinutesID: Number(updateData.MinutesID),
+        FK_MeetingAgendaMinutesID: Number(updateData.minuteID),
         FK_MDID: advanceMeetingModalID,
         UpdateFileList: newfile.map((data, index) => {
           return { PK_FileID: Number(data.pK_FileID) };
@@ -716,6 +720,23 @@ const AgendaWise = ({
         )
       );
     } else {
+      // If newfile is empty, call the API with an empty docsData
+
+      console.log(updateData.minuteID, "updateDataupdateData");
+      let docsData = {
+        FK_MeetingAgendaMinutesID: Number(updateData.minuteID),
+        FK_MDID: advanceMeetingModalID,
+        UpdateFileList: [],
+      };
+
+      dispatch(
+        SaveAgendaWiseDocumentsApiFunc(
+          navigate,
+          docsData,
+          t,
+          advanceMeetingModalID
+        )
+      );
     }
 
     // setAgendaOptionValue({
