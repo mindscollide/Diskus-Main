@@ -121,6 +121,7 @@ const AgendaWise = ({
         AgendaWiseAgendaListReducer.AllAgendas !== null &&
         AgendaWiseAgendaListReducer.AllAgendas !== undefined
       ) {
+        console.log(AgendaWiseAgendaListReducer.AllAgendas, "AllAgendas");
         let NewData = [];
         console.log(
           AgendaWiseAgendaListReducer.AllAgendas,
@@ -147,6 +148,8 @@ const AgendaWise = ({
       }
     } catch {}
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
+
+  console.log(agendaOptions, "agendaOptionsagendaOptions");
 
   // Grouping the messages by agendaID while maintaining the unique titles
   const groupedMessages = messages.reduce((acc, curr) => {
@@ -541,15 +544,19 @@ const AgendaWise = ({
     setPreviousFileIDs([]);
     setisEdit(false);
   };
+  console.log(agendaOptions, "descriptiondescription");
 
   //handle Edit functionality
-  const handleEditFunc = (data) => {
+  const handleEditFunc = (data, title) => {
+    console.log(agendaOptions, "descriptiondescription");
+    console.log(data, title, "descriptiondescription");
     setupdateData(data);
     if (data.description !== "") {
+      console.log(data.description, "descriptiondescription");
       let findOptionValue = agendaOptions.filter(
-        (agendaOption, index) => agendaOption.label === data.agendaTitle
+        (agendaOption, index) => agendaOption.label === title
       );
-      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
+      console.log(findOptionValue, "descriptiondescription");
       setAddNoteFields({
         Description: {
           value: data.description,
@@ -561,11 +568,11 @@ const AgendaWise = ({
         ...agendaSelect,
         agendaSelectOptions: {
           id: findOptionValue.value,
-          title: data.agendaTitle,
+          title: title,
         },
       });
       setAgendaOptionValue({
-        label: data.agendaTitle,
+        label: title,
         value: findOptionValue.value,
       });
       setisEdit(true);
@@ -1719,7 +1726,8 @@ const AgendaWise = ({
                                                     alt=""
                                                     onClick={() =>
                                                       handleEditFunc(
-                                                        parentMinutedata
+                                                        parentMinutedata,
+                                                        data.agendaTitle
                                                       )
                                                     }
                                                   />
@@ -2249,7 +2257,8 @@ const AgendaWise = ({
                                                         alt=""
                                                         onClick={() =>
                                                           handleEditFunc(
-                                                            minuteDataSubminute
+                                                            minuteDataSubminute,
+                                                            subMinuteData.agendaTitle
                                                           )
                                                         }
                                                       />
