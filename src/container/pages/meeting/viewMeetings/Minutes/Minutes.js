@@ -209,17 +209,17 @@ const Minutes = ({
         GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
       );
 
-      dispatch(
-        GetAllAgendaWiseMinutesApiFunc(
-          navigate,
-          Data,
-          t,
-          Number(advanceMeetingModalID),
-          false,
-          false,
-          true
-        )
-      );
+      // dispatch(
+      //   GetAllAgendaWiseMinutesApiFunc(
+      //     navigate,
+      //     Data,
+      //     t,
+      //     Number(advanceMeetingModalID),
+      //     false,
+      //     false,
+      //     true
+      //   )
+      // );
 
       dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
     }
@@ -844,8 +844,29 @@ const Minutes = ({
       GetAllOrganizationUsersForReview(navigate, t, setAllReviewers)
     );
 
-    dispatch(
+    await dispatch(
       GetMinuteReviewFlowByMeetingId(newData, navigate, t, setAddReviewers)
+    );
+
+    await dispatch(
+      GetAllGeneralMinutesApiFunc(
+        navigate,
+        t,
+        newData,
+        Number(advanceMeetingModalID)
+      )
+    );
+
+    await dispatch(
+      GetAllAgendaWiseMinutesApiFunc(
+        navigate,
+        newData,
+        t,
+        Number(advanceMeetingModalID),
+        false,
+        false,
+        true
+      )
     );
   };
 
@@ -1153,7 +1174,7 @@ const Minutes = ({
     publishMinutesDataGeneral
   );
 
-  console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   return JSON.parse(isMinutePublished) ? (
     <>
@@ -1812,11 +1833,13 @@ const Minutes = ({
               {(editorRole.role === "Organizer" &&
                 Number(editorRole.status) === 9 &&
                 deadLineDate <= currentDateOnly &&
-                (minutesData.length > 0 || minutesDataAgenda !== null)) ||
+                (minutesData.length > 0 || minutesDataAgenda !== null) &&
+                MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null) ||
               (Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer" &&
                 deadLineDate <= currentDateOnly &&
-                (minutesData.length > 0 || minutesDataAgenda !== null)) ? (
+                (minutesData.length > 0 || minutesDataAgenda !== null) &&
+                MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null) ? (
                 <Button
                   text={t("Publish-minutes")}
                   className={styles["PublishMinutes"]}
