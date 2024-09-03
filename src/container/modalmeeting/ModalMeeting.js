@@ -126,17 +126,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
-  console.log(
-    meetingAttendeesList,
-    "meetingAttendeesListmeetingAttendeesListmeetingAttendeesList"
-  );
+
   const [defaultPresenter, setDefaultPresenter] = useState(null);
 
   const [attendeesParticipant, setAttendeesParticipant] = useState([]);
-  console.log(
-    { attendeesParticipant },
-    "attendeesParticipantattendeesParticipant"
-  );
+
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("Participant");
   const [participantRoleID, setParticipantRoleID] = useState(2);
@@ -151,11 +145,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     label: "",
     name: "",
   });
-  console.log(taskAssignedToInput, "taskAssignedToInputtaskAssignedToInput");
   const [attachments, setAttachments] = useState([]);
   const [forUpdateAttachments, setForUpdateAttachent] = useState([]);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  console.log(taskAssignedTo, "taskAssignedTotaskAssignedTo");
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [createMeetingTime, setCreateMeetingTime] = useState(
     getStartTime.newFormatTime
@@ -186,11 +178,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     label: "",
     name: "",
   });
-  console.log(
-    defaultMeetingAgenda,
-    defaultPresenter,
-    "defaultPresenterdefaultPresenterdefaultPresenter"
-  );
+
   // for main json for create meating
   const [createMeeting, setCreateMeeting] = useState({
     MeetingTitle: "",
@@ -208,10 +196,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     MeetingAttendees: [],
     ExternalMeetingAttendees: [],
   });
-  console.log(
-    createMeeting,
-    "createMeetingcreateMeetingcreateMeetingcreateMeeting"
-  );
+
   useEffect(() => {
     if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
@@ -502,25 +487,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   };
 
   const meetingDateHandler = (date) => {
-    console.log(date, "getformattedDateTImegetformattedDateTIme");
     if (createMeeting.MeetingStartTime !== "") {
       let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-      console.log(
-        meetingDateValueFormat,
-        "getformattedDateTImegetformattedDateTIme"
-      );
 
       let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
-      console.log(
-        meetingDateSaveFormat,
-        "getformattedDateTImegetformattedDateTIme"
-      );
 
       const getformattedDateTIme = getCurrentDateTime(new Date());
-      console.log(
-        getformattedDateTIme,
-        "getformattedDateTImegetformattedDateTIme"
-      );
+
       const dateTimeFormat = convertDateTimeObject(
         `${meetingDateSaveFormat}${createMeeting.MeetingStartTime}`
       );
@@ -583,133 +556,113 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
-    let fileSizeArr;
-    const uploadedFile = data.target.files[0];
+    let filesArray = Object.values(data.target.files);
+    let fileSizeArr = fileSize;
 
-    let mergeFileSizes = ConvertFileSizeInMB(fileSize);
-    let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
+    // Start with the existing files in fileForSend and forUpdateAttachment
+    let updatedFilesForSend = [...fileForSend];
+    let updatedForUpdateAttachment = [...forUpdateAttachments];
 
-    if (Object.keys(fileForSend).length === 10) {
-      setTimeout(
+    let size = true;
+    let sizezero = true;
+
+    if (updatedFilesForSend.length + filesArray.length > 10) {
+      setTimeout(() => {
         setOpen({
           flag: true,
           message: t("You-can-not-upload-more-then-10-files"),
-        }),
-        3000
-      );
-    } else if (mergeFileSizes === 10) {
-      setTimeout(
-        setOpen({
-          flag: true,
-          message: t("You-can-not-upload-more-then-100MB-files"),
-        }),
-        3000
-      );
-    } else {
-      let ext = uploadedFile.name.split(".").pop();
-      let file = attachments;
+        });
+      }, 3000);
+      return;
+    }
+
+    filesArray.forEach((uploadedFile) => {
+      let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
+      let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
+
+      if (mergeFileSizes + fileSizeinMB > 100) {
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("You-can-not-upload-more-then-100MB-files"),
+          });
+        }, 3000);
+        return;
+      }
+
+      let ext = uploadedFile.name.split(".").pop().toLowerCase();
 
       if (
-        ext === "doc" ||
-        ext === "docx" ||
-        ext === "xls" ||
-        ext === "xlsx" ||
-        ext === "pdf" ||
-        ext === "png" ||
-        ext === "txt" ||
-        ext === "jpg" ||
-        ext === "jpeg" ||
-        ext === "gif" ||
-        ext === "csv"
+        [
+          "doc",
+          "docx",
+          "xls",
+          "xlsx",
+          "pdf",
+          "png",
+          "txt",
+          "jpg",
+          "jpeg",
+          "gif",
+          "csv",
+        ].includes(ext)
       ) {
-        let data;
-        let sizezero;
-        let size;
-        if (file.length > 0) {
-          file.forEach((filename, index) => {
-            if (filename.DisplayAttachmentName === uploadedFile.name) {
-              data = false;
-            }
+        let fileExists = attachments.some(
+          (filename) => filename.DisplayAttachmentName === uploadedFile.name
+        );
+
+        if (fileSizeinMB > 10) {
+          size = false;
+        } else if (fileSizeinMB === 0) {
+          sizezero = false;
+        }
+
+        if (fileExists) {
+          setOpen({
+            ...open,
+            message: t("This-file-already-exist"),
+            flag: true,
           });
-          if (fileSizeinMB > 10) {
-            size = false;
-          } else if (fileSizeinMB === 0) {
-            sizezero = false;
-          }
-          if (data === false) {
+        } else if (!size) {
+          setTimeout(() => {
             setOpen({
-              ...open,
-              message: t("This-file-already-exist"),
               flag: true,
+              message: t("You-can-not-upload-more-then-10MB-file"),
             });
-          } else if (size === false) {
-            setTimeout(
-              setOpen({
-                flag: true,
-                message: t("You-can-not-upload-more-then-10MB-file"),
-              }),
-              3000
-            );
-          } else if (sizezero === false) {
-            setOpen({
-              ...open,
-              flag: true,
-              message: t("File-size-is-0mb"),
-            });
-          } else {
-            let fileData = {
-              PK_MAAID: 0,
-              DisplayAttachmentName: uploadedFile.name,
-              OriginalAttachmentName: uploadedFile.name,
-              CreationDateTime: "111111",
-              FK_MAID: 0,
-            };
-            setAttachments((prev) => [...prev, fileData]);
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileForSend([...fileForSend, uploadedFile]);
-            setFileSize(fileSizeArr);
-          }
+          }, 3000);
+        } else if (!sizezero) {
+          setOpen({
+            ...open,
+            flag: true,
+            message: t("File-size-is-0mb"),
+          });
         } else {
-          let size;
-          let sizezero;
-          if (fileSizeinMB > 10) {
-            size = false;
-          } else if (fileSizeinMB === 0) {
-            sizezero = false;
-          }
-          if (size === false) {
-            setTimeout(
-              setOpen({
-                flag: true,
-                message: t("You-can-not-upload-more-then-10MB-file"),
-              }),
-              3000
-            );
-          } else if (sizezero === false) {
-            setOpen({
-              ...open,
-              flag: true,
-              message: t("File-size-is-0mb"),
-            });
-          } else {
-            let fileData = {
-              PK_MAAID: 0,
-              DisplayAttachmentName: uploadedFile.name,
-              OriginalAttachmentName: uploadedFile.name,
-              CreationDateTime: "111111",
-              FK_MAID: 0,
-            };
-            setAttachments((prev) => [...prev, fileData]);
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileForSend([...fileForSend, uploadedFile]);
-            setFileSize(fileSizeArr);
-          }
+          let fileData = {
+            PK_MAAID: 0,
+            DisplayAttachmentName: uploadedFile.name,
+            OriginalAttachmentName: uploadedFile.name,
+            CreationDateTime: "111111",
+            FK_MAID: 0,
+          };
+          setAttachments((prev) => [...prev, fileData]);
+          fileSizeArr += uploadedFile.size;
+
+          // Append new file to the existing ones
+          updatedFilesForSend.push(uploadedFile);
+          updatedForUpdateAttachment.push(fileData); // Add file data for update
         }
       }
-    }
+    });
+
+    // Update the states with the accumulated values
+    setFileForSend(updatedFilesForSend);
+    setForUpdateAttachent(updatedForUpdateAttachment); // Update state for files to be updated
+    setFileSize(fileSizeArr);
   };
 
   const editGrid = (datarecord, dataindex) => {
+    console.log(datarecord, "datarecorddatarecord");
+    console.log(dataindex, "datarecorddatarecord");
     let Data;
     meetingAttendeesList.forEach((user, index) => {
       const { PresenterName } = datarecord.ObjMeetingAgenda;
@@ -762,7 +715,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     setAttachments(filesData);
     setForUpdateAttachent(filesData);
   };
-
+  console.log(attachments, "datarecorddatarecord");
+  console.log(forUpdateAttachments, "datarecorddatarecord");
   const deleteGrid = (datarecord, dataindex) => {
     let splicedArray = createMeeting.MeetingAgendas.indexOf(datarecord);
     createMeeting.MeetingAgendas.splice(splicedArray, 1);
@@ -854,6 +808,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           if (fileForSend.length > 0) {
             setModalField(false);
             let fileforSend = [...forUpdateAttachments];
+            console.log(fileforSend, "datarecorddatarecord");
             let newfile = [];
             const uploadPromises = fileForSend.map((newData) => {
               // Return the promise from FileUploadToDo
@@ -924,7 +879,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
       setModalField(false);
     } else {
-      if (objMeetingAgenda.Title !== "") {
+      if (objMeetingAgenda.Title) {
         // if (objMeetingAgenda.URLs !== "") {
         //   if (urlPatternValidation(objMeetingAgenda.URLs)) {
         //     if (fileForSend.length > 0) {
@@ -1059,6 +1014,25 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
         // }
       } else {
+        // If Title is empty, create a numbered title and append the object
+        const agendaCount = createMeeting.MeetingAgendas.length + 1;
+        const newObjMeetingAgenda = {
+          ...objMeetingAgenda,
+          Title: `Agenda ${agendaCount}`,
+        };
+
+        let previousAdendas = [...createMeeting.MeetingAgendas];
+        let newData = {
+          ObjMeetingAgenda: newObjMeetingAgenda,
+          MeetingAgendaAttachments: [],
+        };
+        previousAdendas.push(newData);
+        setCreateMeeting({
+          ...createMeeting,
+          MeetingAgendas: previousAdendas,
+        });
+
+        // Show the modal and message if necessary
         setModalField(true);
         setOpen({
           ...open,
@@ -1595,14 +1569,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       createMeeting.MeetingDate + createMeeting.MeetingStartTime;
     let newDate = finalDateTimeWithoutUTC.slice(0, 8);
     let newTime = finalDateTimeWithoutUTC.slice(8, 14);
-    let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
-    let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
+    // let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
+    // let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
 
     let newData = {
+      // MeetingTitle:
+      //   createMeeting.MeetingTitle !== ""
+      //     ? createMeeting.MeetingTitle
+      //     : `Untitled @ ${ifemptyDate} ${ifemptyTime}`,
       MeetingTitle:
         createMeeting.MeetingTitle !== ""
           ? createMeeting.MeetingTitle
-          : `Untitled @ ${ifemptyDate} ${ifemptyTime}`,
+          : "Quick Meeting",
       MeetingDescription: createMeeting.MeetingDescription,
       MeetingTypeID: 0,
       MeetingDate: finalDateTime.slice(0, 8),
@@ -1687,10 +1665,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       ["MeetingAgendaAttachments"]: searchIndex,
     });
   };
-  console.log(
-    { attachments, meetingAgendaAttachments, fileForSend },
-    "deleteFilefromAttachmentsdeleteFilefromAttachmentsdeleteFilefromAttachments"
-  );
+
   const handleDeleteAttendee = (data, index) => {
     let user1 = createMeeting.MeetingAttendees;
     user1.splice(index, 1);
@@ -1759,7 +1734,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     });
   };
   const filterFunc = (options, searchText) => {
-    // console.log(options, "filterFuncfilterFunc");
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {
@@ -2057,10 +2031,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {modalField === true &&
+                      {/* {modalField === true &&
                       createMeeting.MeetingTitle === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
-                      ) : null}
+                      ) : null} */}
                     </Col>
                   </Row>
 
@@ -2108,10 +2082,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                             maxLength={300}
                             placeholder={t("Agenda-title") + "*"}
                           />
-                          {modalField === true &&
+                          {/* {modalField === true &&
                           objMeetingAgenda.Title === "" ? (
                             <ErrorBar errorText={t("This-field-is-empty")} />
-                          ) : null}
+                          ) : null} */}
                         </Col>
                         <Col
                           lg={5}
@@ -2175,6 +2149,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           <span className="custom-upload-input">
                             <CustomUpload
                               change={uploadFilesAgenda}
+                              multiple={true}
                               onClick={(event) => {
                                 event.target.value = null;
                               }}
