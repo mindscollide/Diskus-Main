@@ -559,9 +559,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     let filesArray = Object.values(data.target.files);
     let fileSizeArr = fileSize;
 
-    // Start with the existing files in fileForSend and forUpdateAttachment
+    // Start with the existing files in fileForSend
     let updatedFilesForSend = [...fileForSend];
-    let updatedForUpdateAttachment = [...forUpdateAttachments];
 
     let size = true;
     let sizezero = true;
@@ -646,17 +645,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           };
           setAttachments((prev) => [...prev, fileData]);
           fileSizeArr += uploadedFile.size;
-
-          // Append new file to the existing ones
-          updatedFilesForSend.push(uploadedFile);
-          updatedForUpdateAttachment.push(fileData); // Add file data for update
+          updatedFilesForSend.push(uploadedFile); // Append new file to the existing ones
         }
       }
     });
 
     // Update the states with the accumulated values
     setFileForSend(updatedFilesForSend);
-    setForUpdateAttachent(updatedForUpdateAttachment); // Update state for files to be updated
     setFileSize(fileSizeArr);
   };
 
@@ -735,9 +730,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           if (urlPatternValidation(objMeetingAgenda.URLs)) {
             if (fileForSend.length > 0) {
               setModalField(false);
-              let fileforSend = [
-                ...meetingAgendaAttachments.MeetingAgendaAttachments,
-              ];
+              let fileforSend = [...forUpdateAttachments];
+              console.log(fileForSend, "fileForSendfileForSend");
               let newfile = [];
               const uploadPromises = fileForSend.map((newData) => {
                 // Return the promise from FileUploadToDo
@@ -808,7 +802,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           if (fileForSend.length > 0) {
             setModalField(false);
             let fileforSend = [...forUpdateAttachments];
-            console.log(fileforSend, "datarecorddatarecord");
             let newfile = [];
             const uploadPromises = fileForSend.map((newData) => {
               // Return the promise from FileUploadToDo
