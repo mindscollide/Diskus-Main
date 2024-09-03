@@ -54,6 +54,7 @@ import {
 } from "../../../../../../commen/functions/time_formatter";
 import { DataRoomDownloadFileApiFunc } from "../../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
+import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
 
 const AgendaWise = ({
   advanceMeetingModalID,
@@ -329,31 +330,60 @@ const AgendaWise = ({
   };
 
   const onTextChange = (content, delta, source) => {
-    const deltaOps = delta.ops || [];
+    if (source === "user") {
+      const deltaOps = delta.ops || [];
 
-    // Check if any image is being pasted
-    const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
-    if (containsImage) {
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
-    } else {
-      if (source === "user") {
-        // Update state only if no image is detected in the content
-        const isEmptyContent = content === "<p><br></p>";
+      // Check if any image is being pasted
+      const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
+      if (containsImage) {
         setAddNoteFields({
           ...addNoteFields,
           Description: {
-            value: isEmptyContent ? "" : content,
+            value: "",
             errorMessage: "",
             errorStatus: false,
           },
         });
+      } else {
+        let isEmptyContent = content === "<p><br></p>";
+        if (String(content).length >= 501) {
+          console.log(
+            removeHTMLTagsAndTruncate(String(content)),
+            removeHTMLTagsAndTruncate(String(content)).length,
+            "Test String"
+          );
+          setAddNoteFields({
+            ...addNoteFields,
+            Description: {
+              value: removeHTMLTagsAndTruncate(String(content)),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAddNoteFields({
+            ...addNoteFields,
+            Description: {
+              value: isEmptyContent ? "" : content,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+
+        console.log(String(content).length, content, "String Length ....");
+        // if (source === "user") {
+        //   // Update state only if no image is detected in the content
+        //   const isEmptyContent = content === "<p><br></p>";
+        //   setAddNoteFields({
+        //     ...addNoteFields,
+        //     Description: {
+        //       value: isEmptyContent ? "" : content,
+        //       errorMessage: "",
+        //       errorStatus: false,
+        //     },
+        //   });
+        // }
       }
     }
   };

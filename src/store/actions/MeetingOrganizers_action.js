@@ -411,24 +411,26 @@ const UpdateOrganizersMeeting = (
                       MeetingID: Number(Data.MeetingID),
                     };
                     if (isQuickMeeting) {
-                      await dispatch(
-                        ViewMeeting(
-                          navigate,
-                          requestDataForMeetingDetails,
-                          t,
-                          setViewFlag,
-                          setEditFlag,
-                          setCalendarViewModal,
-                          1
-                        )
-                      );
+                      // await dispatch(
+                      //   ViewMeeting(
+                      //     navigate,
+                      //     requestDataForMeetingDetails,
+                      //     t,
+                      //     setViewFlag,
+                      //     setEditFlag,
+                      //     setCalendarViewModal,
+                      //     1
+                      //   )
+                      // );
+                    } else {
+                      setAdvanceMeetingModalID(Data.MeetingID);
+                      setEdiorRole({
+                        status: "10",
+                        role: "Organizer",
+                        isPrimaryOrganizer: false,
+                      });
                     }
-                    setAdvanceMeetingModalID(Data.MeetingID);
-                    setEdiorRole({
-                      status: "10",
-                      role: "Organizer",
-                      isPrimaryOrganizer: false,
-                    });
+
                     dispatch(
                       JoinCurrentMeeting(
                         true,
