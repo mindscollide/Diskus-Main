@@ -92,3 +92,27 @@ export const validateExtensionsforHTMLPage = (ext) => {
   let newArrExtensions = ["html", "htm"];
   return newArrExtensions.includes(ext);
 };
+
+
+export const isBase64 = (str) => {
+  if (typeof str !== "string") {
+    return false;
+  }
+  
+  // Remove any data URL prefix if present
+  const base64Pattern = /^data:image\/(png|jpeg);base64,/;
+  if (base64Pattern.test(str)) {
+    str = str.replace(base64Pattern, "");
+  }
+
+  // Base64 pattern
+  const base64Regex = /^[A-Za-z0-9+/]+[=]{0,2}$/;
+
+  // Check if the length of the string is divisible by 4
+  if (str.length % 4 !== 0) {
+    return false;
+  }
+
+  // Validate using regex
+  return base64Regex.test(str);
+};

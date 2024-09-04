@@ -1,103 +1,107 @@
 import ImgCrop from "antd-img-crop";
-import React, { useEffect, useState } from "react";
-import { Upload, Button, Modal, Spin } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
+import { Upload, Spin } from "antd";
+import CustomModal from "../../elements/modal/Modal";
 import styles from "./imageUploader.module.css";
+import "./imageuploader.css";
 import { updateUserProfilePicture } from "../../../store/actions/UpdateUserProfile";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  base64UrlToFile,
-  getBase64,
-} from "../../../commen/functions/getBase64";
-import { PlusLg } from "react-bootstrap-icons";
+import { getBase64 } from "../../../commen/functions/getBase64";
+import { PlusLg, Eye } from "react-bootstrap-icons";
+import { isBase64 } from "../../../commen/functions/validations";
 
 const AvatarEditorComponent = ({ pictureObj }) => {
   const [fileList, setFileList] = useState([]);
-  const [onHold, setOnHold] = useState([]);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
   const dispatch = useDispatch();
   const { Authreducer } = useSelector((state) => state);
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState(null);
-
+  console.log(fileList, "fileListfileList");
   const handlePreview = async (file) => {
-    console.log("handlePreview", file)
-    setPreviewImage(file.url);
-    setPreviewOpen(true);
+    const base64Image = file.url.split(",")[1];
+    if (isBase64(base64Image)) {
+      setPreviewImage(base64Image);
+      setPreviewOpen(true);
+    }
   };
+
   const handleCancel = () => setPreviewOpen(false);
 
   const uploadProfilePic = ({ file }) => {
-    console.log(file, "uploadProfilePicuploadProfilePicuploadProfilePic");
     getBase64(file)
       .then((res) => {
-        console.log("Test");
-        // setFileList([file])
         let fileUrL = res.split(",")[1];
         dispatch(updateUserProfilePicture(navigate, t, file.name, fileUrL));
       })
-      .catch((err) => console.log(err, "newFileListnewFileList"));
+      .catch((err) => console.log(err));
   };
 
+  const memoizedFile = useMemo(() => {
+    if (pictureObj.DisplayProfilePictureName) {
+      return [
+        {
+          uid: "1",
+          name: "image.png",
+          url: `data:image/jpeg;base64,${pictureObj.DisplayProfilePictureName}`,
+        },
+      ];
+    }
+    return [];
+  }, [pictureObj.DisplayProfilePictureName]);
   useEffect(() => {
-    let file = {
-      uid: "1",
-      name: "image.png",
-      url: `data:image/jpeg;base64,${pictureObj.DisplayProfilePictureName}`,
-    }; // Set the base64 data as the URL
-    setFileList([file]);
-  }, [pictureObj]);
+    setFileList(memoizedFile);
+  }, [memoizedFile]);
 
   return (
     <>
-      <ImgCrop
-      
-        rotationSlider
-        modalCancel={t("Cancel")}
-        modalOk={t("Ok")}
-     
-      >
+      <ImgCrop rotationSlider modalCancel={t("Cancel")} modalOk={t("Ok")}>
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          listType="picture-card"
+          listType='picture-card'
           fileList={fileList}
           customRequest={uploadProfilePic}
           onPreview={handlePreview}
-          accept="image/png, image/jpeg"
+          accept='image/png, image/jpeg'
           onRemove={() => setFileList([])}
-          className={styles["image_uploader_box"]}
-        >
+          className={
+            fileList.length > 0 && isBase64(fileList[0].url)
+              ? "image_uploader_box"
+              : "not_working"
+          }>
           {Authreducer.Loading ? (
             <Spin />
           ) : fileList.length === 0 ? (
             <>
-              <span className="d-flex align-items-center gap-1">
+              <span className='d-flex align-items-center gap-1'>
                 <PlusLg /> Upload
               </span>
             </>
           ) : null}
         </Upload>
-
-        <Modal
-          zIndex={10}
-          open={previewOpen}
-
-          footer={null}
-          onCancel={handleCancel}
-        >
-          <img
-            alt="example"
-            
-            style={{
-              width: "100%",
-            }}
-            src={previewImage}
-            draggable="false"
-            />
-        </Modal>
       </ImgCrop>
+
+      <CustomModal
+        className={styles["CustomModalProfile"]}
+        show={previewOpen}
+        size={"small"}
+        ModalBody={
+          <>
+            {previewImage && (
+              <img
+                alt='Preview'
+                src={`data:image/jpeg;base64,${previewImage}`}
+                draggable='false'
+                height={500}
+                width={"100%"}
+              />
+            )}
+          </>
+        }
+        onHide={handleCancel}
+      />
     </>
   );
 };

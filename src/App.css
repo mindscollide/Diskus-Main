@@ -6205,44 +6205,6 @@ body[dir="rtl"] .bg-white.border-radius-4.border {
   z-index: 1000000000 !important;
 }
 
-.ant-upload.ant-upload-select-picture-card {
-  border-radius: 50% !important;
-  text-align: center;
-  /* display: flex !important;
-  justify-content: center !important;
-  align-items: center !important; */
-  margin: 0 auto !important;
-}
-
-.ant-upload-list-picture-card .ant-upload-list-item-info {
-  border-radius: 50% !important;
-}
-
-.ant-upload-list-picture-card-container {
-  margin: 0 auto !important;
-}
-
-.ant-upload-list-picture-card .ant-upload-list-item {
-  border: none !important;
-}
-
-.ant-upload-list-picture-card-container {
-  display: block !important;
-}
-
-.ant-upload-list-picture-card {
-  margin: 0 auto !important;
-  display: flex !important;
-}
-
-.ant-upload-list-picture-card
-  .ant-upload-list-item-uploading.ant-upload-list-item {
-  border-radius: 50% !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .folder_upload_loader-inner {
   width: 25px !important;
   height: 25px !important;
@@ -8229,7 +8191,7 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
 .ql-toolbar.ql-snow {
   border: 1px solid #ccc;
   box-sizing: border-box;
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   padding: 8px;
   z-index: 0 !important;
 }
