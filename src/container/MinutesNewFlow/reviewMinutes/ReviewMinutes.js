@@ -361,8 +361,8 @@ const ReviewMinutes = () => {
     let Data = {
       taskId: 2,
       commingFrom: 4,
-      fileName: record[0].displayFileName,
-      attachmentID: record[0].pK_FileID,
+      fileName: record.displayFileName,
+      attachmentID: record.pK_FileID,
     };
     let pdfDataJson = JSON.stringify(Data);
     if (
@@ -699,7 +699,7 @@ const ReviewMinutes = () => {
                                                       }
                                                       handleEyeIcon={() =>
                                                         pdfData(
-                                                          data.attachments,
+                                                          filesData,
                                                           getFileExtension(
                                                             filesData?.displayFileName
                                                           )
@@ -1839,7 +1839,7 @@ const ReviewMinutes = () => {
                                                               }
                                                               handleEyeIcon={() =>
                                                                 pdfData(
-                                                                  data.attachments,
+                                                                  filesData,
                                                                   getFileExtension(
                                                                     filesData?.displayFileName
                                                                   )
@@ -2994,7 +2994,7 @@ const ReviewMinutes = () => {
                                             name={filesData.displayFileName}
                                             handleEyeIcon={() =>
                                               pdfData(
-                                                data.attachments,
+                                                filesData,
                                                 getFileExtension(
                                                   filesData?.displayFileName
                                                 )

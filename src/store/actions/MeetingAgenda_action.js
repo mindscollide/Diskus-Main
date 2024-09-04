@@ -22,6 +22,7 @@ import {
   sendAgendaPDFAsEmail,
   exportAgendaAsPDF,
   printMeetingAgenda,
+  getAdvanceMeetingAgendabyMeetingIDForView,
 } from "../../commen/apis/Api_config";
 import {
   meetingApi,
@@ -2256,6 +2257,129 @@ const PrintMeetingAgenda = (Data, navigate, t) => {
   };
 };
 
+//Get Agenda Details For View Init
+const getAdvanceMeetingAgendabyMeetingIDForView_init = () => {
+  return {
+    type: actions.GET_ADVANCEMEETINGAGENDAFORVIEW_INIT,
+  };
+};
+
+//Get Agenda Details For View Success
+const getAdvanceMeetingAgendabyMeetingIDForView_success = (
+  response,
+  message
+) => {
+  return {
+    type: actions.GET_ADVANCEMEETINGAGENDAFORVIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//Get Agenda Details For View Fail
+const getAdvanceMeetingAgendabyMeetingIDForView_fail = (message) => {
+  return {
+    type: actions.GET_ADVANCEMEETINGAGENDAFORVIEW_FAIL,
+    message: message,
+  };
+};
+
+//Get Agenda Details For View
+const GetAdvanceMeetingAgendabyMeetingIDForView = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAdvanceMeetingAgendabyMeetingIDForView_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      getAdvanceMeetingAgendabyMeetingIDForView.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingIDForView_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingIDForView_success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingIDForView_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingIDForView_fail(
+                  t("No-records-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingIDForView_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingIDForView_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingIDForView_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              getAdvanceMeetingAgendabyMeetingIDForView_fail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            getAdvanceMeetingAgendabyMeetingIDForView_fail(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getAdvanceMeetingAgendabyMeetingIDForView_fail(
+            t("Something-went-wrong")
+          )
+        );
+      });
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -2297,4 +2421,5 @@ export {
   SendAgendaPDFAsEmail,
   ExportAgendaPDF,
   PrintMeetingAgenda,
+  GetAdvanceMeetingAgendabyMeetingIDForView,
 };

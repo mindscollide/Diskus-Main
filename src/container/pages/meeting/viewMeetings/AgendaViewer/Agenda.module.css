@@ -873,7 +873,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   position: absolute;
   background-color: #fff;
   border: 1px solid #e1e1e1;
-  z-index: 9;
+  z-index: 999 !important;
   top: 32px;
   right: 0;
   transition: opacity 0.3s ease;
