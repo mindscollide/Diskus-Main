@@ -18,7 +18,7 @@ import {
   FetchMeetingURLApi,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
-  GetAdvanceMeetingAgendabyMeetingID,
+  GetAdvanceMeetingAgendabyMeetingIDForView,
   clearAgendaReducerState,
   printAgenda,
   exportAgenda,
@@ -90,8 +90,11 @@ const AgendaViewer = ({
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let meetingTitle = localStorage.getItem("meetingTitle");
 
-  const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
+  console.log("MeetingAgendaReducerMeetingAgendaReducer", MeetingAgendaReducer);
+
+  const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
+    (state) =>
+      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
   );
 
   const cancelMeetingMaterial = useSelector(
@@ -152,7 +155,7 @@ const AgendaViewer = ({
           ? currentMeeting
           : Number(advanceMeetingModalID),
     };
-    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+    dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
     return () => {
       dispatch(clearAgendaReducerState());
       setRows([]);
@@ -184,14 +187,22 @@ const AgendaViewer = ({
   };
 
   useEffect(() => {
+    console.log(
+      "AgendaDataAgendaDataAgendaDataAgendaDataAgendaDataAgendaData",
+      GetAdvanceMeetingAgendabyMeetingIDForViewData
+    );
     if (
-      GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-      GetAdvanceMeetingAgendabyMeetingIDData !== undefined &&
-      GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+      GetAdvanceMeetingAgendabyMeetingIDForViewData !== null &&
+      GetAdvanceMeetingAgendabyMeetingIDForViewData !== undefined &&
+      GetAdvanceMeetingAgendabyMeetingIDForViewData.length !== 0
     ) {
-      setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
+      console.log(
+        "AgendaDataAgendaDataAgendaDataAgendaDataAgendaDataAgendaData",
+        GetAdvanceMeetingAgendabyMeetingIDForViewData
+      );
+      setRows(GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList);
     }
-  }, [GetAdvanceMeetingAgendabyMeetingIDData]);
+  }, [GetAdvanceMeetingAgendabyMeetingIDForViewData]);
 
   useEffect(() => {
     if (rows.length !== 0) {
@@ -483,15 +494,12 @@ const AgendaViewer = ({
               ? currentMeeting
               : Number(advanceMeetingModalID),
         };
-        dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+        dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
       }
     }
   }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
 
-  console.log(
-    "agendaResponseMessageagendaResponseMessage",
-    agendaResponseMessage
-  );
+  console.log("AgendaDataAgendaDataAgendaData", rows);
 
   return (
     <>

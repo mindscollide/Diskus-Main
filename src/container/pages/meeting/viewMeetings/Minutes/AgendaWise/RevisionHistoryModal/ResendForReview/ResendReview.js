@@ -127,7 +127,7 @@ const ResendMinuteReviewModal = ({
     );
     // setEditMinute(false);
     // setConfirmationEdit(false);
-    // setResendMinuteForReview(false);
+    setResendMinuteForReview(false);
   };
 
   useEffect(() => {
