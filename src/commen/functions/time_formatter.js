@@ -248,21 +248,11 @@ export const convertToGMTMinuteTime = (timeStr) => {
       timeStr.slice(12, 14) +
       ".000Z";
     // Create a Date object
-    let date = new Date(fullDateyear);
+    let date = new Date(fullDateyear).toString();
 
-    // Get the GMT hours, minutes, and seconds
-    let gmtHours = date.getHours();
-    let gmtMinutes = date.getMinutes();
 
-    // Format the time in 12-hour format with AM/PM
-    let period = gmtHours >= 12 ? "pm" : "am";
-    gmtHours = gmtHours % 12;
-    gmtHours = gmtHours ? gmtHours : 12; // the hour '0' should be '12'
-
-    let formattedTime = `${gmtHours}:${
-      gmtMinutes < 10 ? "0" + gmtMinutes : gmtMinutes
-    }${period}`;
-
+    let formattedTime = moment(date).format("hh:mm a")
+    console.log(formattedTime, "formattedTime")
     return formattedTime;
   } catch {}
 };
