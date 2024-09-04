@@ -127,6 +127,12 @@ body[dir="rtl"] .video-profile-icon {
   margin-right: 5px !important;
 }
 
+.video_call_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 body[dir="rtl"] .video_call_icon img {
   transform: rotate(180deg);
 }

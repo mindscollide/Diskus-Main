@@ -1374,7 +1374,7 @@
   "USER_ROLE_EDITED": "Your role in [organizationName] has been updated. Please login again to continue working",
   "ORGANIZATION_SUBSCRIPTION_CANCELLED": "Organization Subscription of [organizationName] has been cancelled by the Organization Admin. Try logging in after some time",
   "ORGANIZATION_DELETED": "Organization [organizationName] has been unregistered from the System by the Organization Admin. Try logging in after some time",
-  "USER_PROFILE_EDITED": "The User Profile has been Updated. Try logging in after some time",
+  "USER_PROFILE_EDITED": "The User Profile has been Updated",
   "NEW_TODO_CREATION_RECENT_ACTIVITY": "The New Todo Creation",
   "NEW_MEETTING_CREATION_RECENT_ACTIVITY": "The New Meeting Creation",
   "NEW_POLL_PUBLISHED_RECENT_ACTIVITY": "The New Poll is published for your review",

@@ -30,7 +30,7 @@ const ImportPrevious = () => {
   // const [importAgendaData, setImportAgendaData] = useState({
   //   InputSearchVal: "",
   // });
-  const [isPageSize, setIsPageSize] = useState(8);
+  const [isPageSize, setIsPageSize] = useState(20);
   const [isCurrent, setIsCurrent] = useState(1);
 
   const [rowsData, setRowsData] = useState([]);
@@ -184,7 +184,7 @@ const ImportPrevious = () => {
         onHide={() => {
           dispatch(showImportPreviousAgendaModal(false));
         }}
-        size={"lg"}
+        size={"xl"}  
         ModalTitle={
           <>
             <Row>
@@ -276,9 +276,9 @@ const ImportPrevious = () => {
                               current={isCurrent}
                               pageSize={isPageSize}
                               onChange={handelChangePagination}
+                              pageSizeOptionsValues={["20", "50", "100", "200"]}
                               total={totalRecords}
                               showSizer={true}
-                              // pageSizeOptionsValues={["1", "5", "10", "15"]}
                             />
                           </Col>
                         </Row>

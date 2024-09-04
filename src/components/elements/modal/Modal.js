@@ -35,6 +35,7 @@ const CustomModal = ({
           className={className}
           dialogClassName={dialogClassName}
           fullscreen={fullscreen}
+          
         >
           <Modal.Header
             className={modalHeaderClassName}

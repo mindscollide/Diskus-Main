@@ -3544,6 +3544,7 @@ const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
                   t("Successfully-updated")
                 )
               );
+           
               localStorage.setItem(
                 "email",
                 response?.data?.responseResult?.data?.email
@@ -3559,6 +3560,11 @@ const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
               localStorage.setItem("LoginFlowPageRoute", 3);
               setStoredStep(3);
               dispatch(LoginFlowRoutes(3));
+              const currentUrl = window.location.href;
+              const baseUrl = currentUrl.split("?")[0];
+              const hashPart = currentUrl.split("#")[1];
+              const newUrl = `${baseUrl}`;
+              window.history.replaceState({}, "", newUrl);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -514,7 +514,7 @@ const VideoPanelBodyRecent = () => {
                           </p>
                         ) : recentCallData.callType.callTypeID === 3 ? (
                           <p className="Video-chat-username m-0">
-                            {recentCallData.meetingName}
+                            {recentCallData.meetingTitle}
                           </p>
                         ) : (
                           <p className="Video-chat-username m-0">
@@ -568,14 +568,18 @@ const VideoPanelBodyRecent = () => {
                         </p>
                       </div>
                     </Col>
-                    <Col lg={2} md={2} sm={12} className="video_call_icon mt-4">
-                      {/* <img src={VideoDownload} alt="" /> */}
+                    <Col lg={2} md={2} sm={12} className="video_call_icon">
+                      <img
+                        className="cursor-pointer me-2"
+                        src={VideoDownload}
+                        alt=""
+                      />
                       <Tooltip
                         placement="bottomLeft"
                         title={t("Start-video-call")}
                       >
                         <img
-                          className="cursor-pointer"
+                          className="cursor-pointer me-4"
                           src={VideoCallIcon}
                           onClick={() => otoVideoCall(recentCallData)}
                         />
