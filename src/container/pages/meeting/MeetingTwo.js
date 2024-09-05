@@ -1209,15 +1209,11 @@ const NewMeeting = () => {
       key: "Chat",
       width: "65px",
       render: (text, record) => {
+        console.log(record, "recordrecordrecord");
         return (
           <>
             <Row>
-              <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className="d-flex align-items-center justify-content-center"
-              >
+              <Col sm={3} md={3} lg={3}>
                 {record.isAttachment ? (
                   <span
                     className={
@@ -1244,6 +1240,28 @@ const NewMeeting = () => {
                     }
                   ></span>
                 )}
+
+                {/* {record.isVideoCall ? (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-10"
+                        : "margin-right-10"
+                    }
+                  >
+                    <img src={VideoIcon} alt="" draggable="false" />
+                  </span>
+                ) : (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-20"
+                        : "margin-right-20"
+                    }
+                  ></span>
+                )} */}
+              </Col>
+              <Col lg={3} md={3} sm={3}>
                 {record.isChat ? (
                   <span
                     className={
@@ -1273,28 +1291,10 @@ const NewMeeting = () => {
                     }
                   ></span>
                 )}
-                {/* {record.isVideoCall ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-right-10"
-                    }
-                  >
-                    <img src={VideoIcon} alt="" draggable="false" />
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )} */}
-                {record.status === "9" &&
-                record.isOrganizer &&
-                record.isQuickMeeting === false ? (
+              </Col>
+              <Col lg={3} md={3} sm={3}>
+                {(record.status === "9" && record.isOrganizer) ||
+                record.isQuickMeeting === true ? (
                   <Tooltip placement="topLeft" title={t("Attendance")}>
                     <img
                       src={member}
@@ -1315,6 +1315,8 @@ const NewMeeting = () => {
                     }
                   ></span>
                 )}
+              </Col>
+              <Col lg={3} md={3} sm={3}>
                 {record.status === "9" &&
                 record.isQuickMeeting === false &&
                 record.isRecordingAvailable ? (
@@ -1562,7 +1564,18 @@ const NewMeeting = () => {
               <Button
                 text={t("Board-deck")}
                 className={styles["Board-Deck"]}
-                onClick={() => boardDeckOnClick(record)}
+                onClick={() => {
+                  boardDeckOnClick(record);
+                  setEdiorRole({
+                    status: record.status,
+                    role: record.isParticipant
+                      ? "Participant"
+                      : record.isAgendaContributor
+                      ? "Agenda Contributor"
+                      : "Organizer",
+                    isPrimaryOrganizer: record.isPrimaryOrganizer,
+                  });
+                }}
               />
             </>
           );
@@ -1841,6 +1854,25 @@ const NewMeeting = () => {
     NewMeetingreducer.mqttMeetingPrAdded,
     NewMeetingreducer.mqtMeetingPrRemoved,
   ]);
+  useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingAcRemoved !== null &&
+      NewMeetingreducer.mqttMeetingAcRemoved !== undefined
+    ) {
+      let meetingData = NewMeetingreducer.mqttMeetingAcRemoved;
+      try {
+        const updatedRows = rows.filter(
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+        );
+        setRow(updatedRows);
+        // dispatch(meetingAgendaContributorAdded(null));
+        // dispatch(meetingAgendaContributorRemoved(null));
+        // dispatch(meetingOrganizerAdded(null));
+        // dispatch(meetingOrganizerRemoved(null));
+      } catch {}
+    }
+  }, [NewMeetingreducer.mqttMeetingAcRemoved]);
+
   useEffect(() => {
     try {
       if (
@@ -2335,7 +2367,6 @@ const NewMeeting = () => {
 
     dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData, rows]);
-
   return (
     <>
       <section className={styles["NewMeeting_container"]}>
@@ -2793,6 +2824,7 @@ const NewMeeting = () => {
           boardDeckMeetingID={boardDeckMeetingID}
           boarddeckOptions={boarddeckOptions}
           setBoarddeckOptions={setBoarddeckOptions}
+          editorRole={editorRole}
         />
       )}
       {NewMeetingreducer.boarddeckShareModal && (

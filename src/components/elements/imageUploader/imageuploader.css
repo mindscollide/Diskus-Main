@@ -1,0 +1,76 @@
+.image_uploader_box .ant-upload.ant-upload-select-picture-card {
+  border-radius: 50% !important;
+  text-align: center;
+  margin: 0 auto !important;
+}
+
+.image_uploader_box .ant-upload-list-picture-card .ant-upload-list-item-info {
+  border-radius: 50% !important;
+}
+
+.image_uploader_box .ant-upload-list-picture-card-container {
+  margin: 0 auto !important;
+}
+
+.image_uploader_box .ant-upload-list-picture-card .ant-upload-list-item {
+  border: none !important;
+}
+
+.image_uploader_box .ant-upload-list-picture-card-container {
+  display: block !important;
+}
+
+.image_uploader_box .ant-upload-list-picture-card {
+  margin: 0 auto !important;
+  display: flex !important;
+}
+
+.image_uploader_box
+  .ant-upload-list-picture-card
+  .ant-upload-list-item-uploading.ant-upload-list-item {
+  border-radius: 50% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Not correct Picture */
+.not_working .ant-upload.ant-upload-select-picture-card {
+  border-radius: 50% !important;
+  text-align: center;
+  margin: 0 auto !important;
+}
+
+.not_working .ant-upload-list-picture-card .ant-upload-list-item-info {
+  border-radius: 50% !important;
+}
+
+.not_working .ant-upload-list-picture-card-container {
+  margin: 0 auto !important;
+}
+
+.not_working .ant-upload-list-picture-card .ant-upload-list-item {
+  border: none !important;
+}
+
+.not_working .ant-upload-list-picture-card-container {
+  display: block !important;
+}
+
+.not_working .ant-upload-list-picture-card {
+  margin: 0 auto !important;
+  display: flex !important;
+}
+
+.not_working
+  .ant-upload-list-picture-card
+  .ant-upload-list-item-uploading.ant-upload-list-item {
+  border-radius: 50% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.not_working  .ant-upload-list-item-actions .anticon-eye {
+    display: none !important;
+}

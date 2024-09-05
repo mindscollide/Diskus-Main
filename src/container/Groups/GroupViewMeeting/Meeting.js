@@ -229,7 +229,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "50px",
+      width: "90px",
       filters: [
         {
           text: t("Active"),
@@ -271,7 +271,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       title: t("Organizer"),
       dataIndex: "host",
       key: "host",
-      width: "80px",
+      width: "90px",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
@@ -310,7 +310,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     {
       dataIndex: "Chat",
       key: "Chat",
-      width: "36px",
+      width: "70px",
       render: (text, record) => {
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
@@ -320,15 +320,14 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         return (
           <>
             <Row>
-              <Col sm={12} md={12} lg={12} className={styles["IconAlignment"]}>
-                {record.isAttachment ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-right-10"
-                    }
-                  >
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex justify-content-center gap-3"
+              >
+                <span className={styles["iconsWidth"]}>
+                  {record.isAttachment ? (
                     <Tooltip placement="topRight" title={t("ClipIcon")}>
                       <img
                         src={ClipIcon}
@@ -337,77 +336,44 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                         draggable="false"
                       />
                     </Tooltip>
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-                {record.isChat ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-right-10 d-inline-block align-items-center"
-                    }
-                    // onClick={(e) => groupChatInitiation(record)}
-                  >
-                    <Tooltip placement="topLeft" title={t("Chat")}>
-                      <img
-                        src={CommentIcon}
-                        className="cursor-pointer"
-                        // width="20.06px"
-                        // height="15.95px"
-                        alt=""
-                        draggable="false"
-                      />
-                    </Tooltip>
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-                {record.isVideoCall ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-right-10"
-                    }
-                  >
-                    <img src={VideoIcon} alt="" draggable="false" />
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-                {record.status === "9" && isOrganiser && (
-                  <Tooltip placement="topLeft" title={t("member")}>
+                  ) : null}
+                </span>
+
+                <span className={styles["iconsWidth"]}>
+                  {record.isChat ? (
+                    <img
+                      src={CommentIcon}
+                      className="cursor-pointer"
+                      // width="20.06px"
+                      // height="15.95px"
+                      alt=""
+                      draggable="false"
+                    />
+                  ) : null}
+                </span>
+
+                <span className={styles["iconsWidth"]}>
+                  {record.isVideoCall ? (
+                    <img
+                      src={VideoIcon}
+                      alt=""
+                      title={t("Video")}
+                      draggable="false"
+                    />
+                  ) : null}
+                </span>
+                <span className={styles["iconsWidth"]}>
+                  {record.status === "9" && isOrganiser && (
                     <img
                       src={member}
                       className="cursor-pointer"
-                      width="17.1px"
-                      height="16.72px"
                       alt=""
+                      title={t("Member")}
                       draggable="false"
                       onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
-                  </Tooltip>
-                )}
+                  )}
+                </span>
               </Col>
             </Row>
           </>

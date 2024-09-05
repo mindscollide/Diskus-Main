@@ -17,6 +17,7 @@ const BoardDeckModal = ({
   boarddeckOptions,
   setBoarddeckOptions,
   boardDeckMeetingID,
+  editorRole,
 }) => {
   const { t } = useTranslation();
 
@@ -160,7 +161,7 @@ const BoardDeckModal = ({
     };
     dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
   };
-
+  console.log(editorRole.role, "rolerolerolerole");
   return (
     <>
       <Container>
@@ -337,11 +338,13 @@ const BoardDeckModal = ({
                     className={styles["ShareButton"]}
                     onClick={handlesharebuttonModal}
                   />
-                  <Button
-                    text={t("Download")}
-                    className={styles["ShareButton"]}
-                    onClick={handleDownloadButton}
-                  />
+                  {editorRole.role === "Agenda Contributor" ? null : (
+                    <Button
+                      text={t("Download")}
+                      className={styles["ShareButton"]}
+                      onClick={handleDownloadButton}
+                    />
+                  )}
                 </Col>
               </Row>
             </>

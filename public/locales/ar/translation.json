@@ -2112,5 +2112,7 @@
   "Total-rejected": "Total Rejected",
   "Total-pending": "Total Pending",
   "All-minutes-reviewed-go-publish": "All meeting minutes have been successfully reviewed. Now you can publish them.",
-  "Published-successful": "Minutes published successfully"
+  "Published-successful": "Minutes published successfully",
+  "Add-reminders": "Add Reminders",
+  "Add-notes": "Add Notes"
 }

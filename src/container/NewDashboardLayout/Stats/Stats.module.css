@@ -35,7 +35,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingmeeting span {
+.dashboard_progress_upcomingmeeting div {
   background-color: #6172d6 !important;
   border-radius: 25px !important;
   text-align: right;
@@ -48,7 +48,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingmeeting_R span {
+.dashboard_progress_upcomingmeeting_R div {
   background-color: transparent !important;
   border-radius: 25px !important;
   text-align: right;
@@ -64,7 +64,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingTask span {
+.dashboard_progress_upcomingTask div {
   background-color: #ffc300 !important;
   border-radius: 25px !important;
   text-align: right;
@@ -78,7 +78,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingTask_R span {
+.dashboard_progress_upcomingTask_R div {
   background-color: transparent !important;
   border-radius: 25px !important;
   text-align: right;
@@ -95,7 +95,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-size: 16px;
 }
 
-.dashboard_progress_upcomingApproval span {
+.dashboard_progress_upcomingApproval div {
   background-color: #55ce5c !important;
   border-radius: 25px !important;
   text-align: right;
@@ -109,7 +109,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   font-weight: 700;
   font-size: 16px;
 }
-.dashboard_progress_upcomingApproval_R span {
+.dashboard_progress_upcomingApproval_R div {
   background-color: transparent !important;
   border-radius: 25px !important;
   text-align: right;
