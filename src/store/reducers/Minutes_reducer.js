@@ -36,11 +36,48 @@ const initialState = {
   currentMeetingMinutesToReviewData: null,
   ResendUpdatedMinuteForReviewData: null,
   PendingApprovalStatsThisWeek: null,
+  GetStatsForPublishingMinutesByWorkFlowIdData: null,
   ResponseMessage: "",
 };
 
 const MinutesReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_SUCCESS: {
+      console.log(
+        "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
+        action.response
+      );
+      try {
+        return {
+          ...state,
+          Loading: false,
+          GetMinuteReviewFlowByMeetingIdData: action.response,
+          ResponseMessage: action.message,
+        };
+      } catch (error) {
+        console.log(
+          "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
+          error
+        );
+      }
+    }
+
+    case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_FAIL: {
+      return {
+        ...state,
+        // Loading: false,
+        GetMinuteReviewFlowByMeetingIdData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     case actions.PENDING_APPROVAL_PAGE: {
       return {
         ...state,
@@ -368,35 +405,13 @@ const MinutesReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-
-    case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_SUCCESS: {
-      return {
-        ...state,
-        Loading: false,
-        GetMinuteReviewFlowByMeetingIdData: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-    case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_FAIL: {
-      return {
-        ...state,
-        // Loading: false,
-        GetMinuteReviewFlowByMeetingIdData: null,
-        ResponseMessage: action.message,
-      };
-    }
     case actions.PUBLISHEDMEETINGMINUTES_INIT: {
       return {
         ...state,
         Loading: true,
       };
     }
+
     case actions.PUBLISHEDMEETINGMINUTES_SUCCESS: {
       return {
         ...state,
@@ -571,6 +586,29 @@ const MinutesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         PendingApprovalStatsThisWeek: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_STATSFORPUBLISHINGMINUTESBYWORKFLOWID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_STATSFORPUBLISHINGMINUTESBYWORKFLOWID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetStatsForPublishingMinutesByWorkFlowIdData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_STATSFORPUBLISHINGMINUTESBYWORKFLOWID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetStatsForPublishingMinutesByWorkFlowIdData: null,
         ResponseMessage: action.message,
       };
     }

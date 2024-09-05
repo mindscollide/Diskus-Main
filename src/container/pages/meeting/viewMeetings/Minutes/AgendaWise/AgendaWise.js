@@ -1131,6 +1131,8 @@ const AgendaWise = ({
         }
 
         console.log("Final transformedData:", transformedData);
+      } else {
+        setMinutesData([]);
       }
     } catch (error) {
       console.error("Error transforming data:", error);

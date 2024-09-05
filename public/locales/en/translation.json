@@ -2168,5 +2168,11 @@
   "Auto-close-resolution-days": "Auto Close Resolution (days)",
   "Seeking-opinions-on-something": "Seeking opinions on something?",
   "This-space-is-ready-to-showcase-your-latest-additions-what-will-you-add-next": "This space is ready to showcase yourlatest additions. What will you add next?",
-  "Upload-image": "Photos & videos"
+  "Upload-image": "Photos & videos",
+  "Publish-anyway": "Publish anyway",
+  "Approval-status-is-incomplete-do-you-want-to-proceed-with-publishing-the-minutes": "Approval status is incomplete. Do you want to proceed with publishing the minutes?",
+  "Total-rejected": "Total Rejected",
+  "Total-pending": "Total Pending",
+  "All-minutes-reviewed-go-publish": "All meeting minutes have been successfully reviewed. Now you can publish them.",
+  "Published-successful": "Minutes published successfully"
 }
