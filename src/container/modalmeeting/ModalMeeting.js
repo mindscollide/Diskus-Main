@@ -864,11 +864,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
       } else {
         setModalField(true);
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Enter-Title-Information"),
-        });
+        // setOpen({
+        //   ...open,
+        //   flag: true,
+        //   message: t("Enter-Title-Information"),
+        // });
       }
       setModalField(false);
     } else {
@@ -1027,11 +1027,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
         // Show the modal and message if necessary
         setModalField(true);
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Enter-Title-Information"),
-        });
+        // setOpen({
+        //   ...open,
+        //   flag: true,
+        //   message: t("Enter-Title-Information"),
+        // });
       }
     }
   };

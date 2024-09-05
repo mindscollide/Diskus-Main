@@ -1296,7 +1296,7 @@ const MeetingDetails = ({
                     <TextField
                       label={
                         <span className={styles["Meeting_type_heading"]}>
-                          {t("Notes")}
+                          {t("Add-notes")}
                           <span className={styles["steric"]}>*</span>
                         </span>
                       }
@@ -1624,7 +1624,7 @@ const MeetingDetails = ({
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Meeting_type_heading"]}>
-                    {t("Reminder")}
+                    {t("Add-reminders")}
                     <span className={styles["steric"]}>*</span>
                   </span>
                 </Col>
@@ -1740,7 +1740,7 @@ const MeetingDetails = ({
                   <TextField
                     label={
                       <span className={styles["Meeting_type_heading"]}>
-                        {t("Description")}
+                        {t("Add-description")}
                         <span className={styles["steric"]}>*</span>
                       </span>
                     }
