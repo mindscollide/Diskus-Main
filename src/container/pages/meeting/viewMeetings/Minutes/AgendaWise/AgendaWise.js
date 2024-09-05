@@ -580,9 +580,9 @@ const AgendaWise = ({
       label: "",
       value: 0,
     });
+    setisEdit(false);
     setFileAttachments([]);
     setPreviousFileIDs([]);
-    setisEdit(false);
   };
   console.log(agendaOptions, "descriptiondescription");
 
