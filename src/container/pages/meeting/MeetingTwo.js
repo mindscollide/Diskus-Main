@@ -1835,10 +1835,13 @@ const NewMeeting = () => {
       NewMeetingreducer.mqttMeetingAcRemoved !== undefined
     ) {
       let meetingData = NewMeetingreducer.mqttMeetingAcRemoved;
+      console.log(meetingData, "meetingDatameetingDatameetingData");
       try {
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
+        console.log(updatedRows, "meetingDatameetingDatameetingData");
+
         setRow(updatedRows);
         // dispatch(meetingAgendaContributorAdded(null));
         // dispatch(meetingAgendaContributorRemoved(null));
@@ -2342,7 +2345,7 @@ const NewMeeting = () => {
 
     dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData, rows]);
-
+  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer")
   return (
     <>
       <section className={styles["NewMeeting_container"]}>

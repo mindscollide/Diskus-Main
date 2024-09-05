@@ -2043,5 +2043,7 @@
   "Allow-microsoft-calendar-synch-for-users": "Allow Microsoft Calendar Synch for Users",
   "Calendar Span-months": "Calendar Span (months)",
   "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error",
-  "User-not-added-user-already-exists": "User not added. User already exists"
+  "User-not-added-user-already-exists": "User not added. User already exists",
+  "Please-at-least-one-partcipant-required": "Please at least one partcipant required",
+  "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED": "You have been removed as a Agenda Contributor from this [Place holder]"
 }

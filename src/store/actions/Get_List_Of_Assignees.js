@@ -209,9 +209,9 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
             ) {
               await dispatch(SetLoaderFalse(false));
               dispatch(meetingLoaderDashboard(false));
-              await dispatch(
-                ShowNotification(t("The-record-has-been-saved-successfully"))
-              );
+              // await dispatch(
+              //   ShowNotification(t("The-record-has-been-saved-successfully"))
+              // );
 
               if (checkFlag === 2) {
                 await dispatch(getCalendarDataResponse(navigate, t, createrID));
@@ -388,9 +388,9 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
               // } else {
               // }
 
-              await dispatch(
-                ShowNotification(t("The-record-has-been-updated-successfully"))
-              );
+              // await dispatch(
+              //   ShowNotification(t("The-record-has-been-updated-successfully"))
+              // );
               await dispatch(meetingLoaderDashboard(false));
               await dispatch(SetLoaderFalse(false));
             } else if (
