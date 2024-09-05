@@ -1855,6 +1855,25 @@ const NewMeeting = () => {
     NewMeetingreducer.mqtMeetingPrRemoved,
   ]);
   useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingAcRemoved !== null &&
+      NewMeetingreducer.mqttMeetingAcRemoved !== undefined
+    ) {
+      let meetingData = NewMeetingreducer.mqttMeetingAcRemoved;
+      try {
+        const updatedRows = rows.filter(
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+        );
+        setRow(updatedRows);
+        // dispatch(meetingAgendaContributorAdded(null));
+        // dispatch(meetingAgendaContributorRemoved(null));
+        // dispatch(meetingOrganizerAdded(null));
+        // dispatch(meetingOrganizerRemoved(null));
+      } catch {}
+    }
+  }, [NewMeetingreducer.mqttMeetingAcRemoved]);
+
+  useEffect(() => {
     try {
       if (
         getALlMeetingTypes.meetingTypes !== null &&

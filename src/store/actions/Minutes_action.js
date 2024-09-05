@@ -1351,11 +1351,7 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
                   "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-                  ""
-                )
-              );
+              dispatch(GetMinuteReviewDetailsByOrganizerByMinuteId_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1703,7 +1699,6 @@ const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
                   t("Record-available")
                 )
               );
-
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

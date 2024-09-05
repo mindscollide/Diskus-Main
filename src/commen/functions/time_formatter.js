@@ -234,32 +234,25 @@ export const newGMTFormatter = (meetingDate, time) => {
 
 export const convertToGMTMinuteTime = (timeStr) => {
   try {
-    // Extract hours, minutes, and seconds from the input string
-    let hours = parseInt(timeStr.substring(0, 2), 10);
-    let minutes = parseInt(timeStr.substring(2, 4), 10);
-    let seconds = parseInt(timeStr.substring(4, 6), 10);
-
+    let fullDateyear =
+      timeStr.slice(0, 4) +
+      "-" +
+      timeStr.slice(4, 6) +
+      "-" +
+      timeStr.slice(6, 8) +
+      "T" +
+      timeStr.slice(8, 10) +
+      ":" +
+      timeStr.slice(10, 12) +
+      ":" +
+      timeStr.slice(12, 14) +
+      ".000Z";
     // Create a Date object
-    let date = new Date();
-    console.log(date, "convertToGMTMinuteTimeconvertToGMTMinuteTime")
-    // date.setUTCHours(hours);
-    // date.setUTCMinutes(minutes);
-    // date.setUTCSeconds(seconds);
+    let date = new Date(fullDateyear).toString();
 
-    // Get the GMT hours, minutes, and seconds
-    let gmtHours = date.getHours();
-    let gmtMinutes = date.getMinutes();
-    let gmtSeconds = date.getSeconds();
 
-    // Format the time in 12-hour format with AM/PM
-    let period = gmtHours >= 12 ? "pm" : "am";
-    gmtHours = gmtHours % 12;
-    gmtHours = gmtHours ? gmtHours : 12; // the hour '0' should be '12'
-
-    let formattedTime = `${gmtHours}:${
-      gmtMinutes < 10 ? "0" + gmtMinutes : gmtMinutes
-    }${period}`;
-
+    let formattedTime = moment(date).format("hh:mm a")
+    console.log(formattedTime, "formattedTime")
     return formattedTime;
   } catch {}
 };

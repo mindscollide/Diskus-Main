@@ -8,6 +8,8 @@
   border: 1px solid #e1e1e1;
   margin-bottom: 10px;
   padding: 15px;
+  display: grid;
+  align-items: center;
 }
 
 .CalendarBox {

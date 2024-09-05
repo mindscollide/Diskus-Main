@@ -48,8 +48,8 @@ const FullScreenAgendaModal = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
+  const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
+    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
   );
 
   const cancelMeetingMaterial = useSelector(
@@ -90,7 +90,7 @@ const FullScreenAgendaModal = ({
   //   let Data = {
   //     MeetingID: Number(advanceMeetingModalID),
   //   };
-  //   dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+  //   dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
   //   return () => {
   //     dispatch(clearAgendaReducerState());
   //     setRows([]);
@@ -123,13 +123,13 @@ const FullScreenAgendaModal = ({
 
   // useEffect(() => {
   //   if (
-  //     GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-  //     GetAdvanceMeetingAgendabyMeetingIDData !== undefined &&
-  //     GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+  //     GetAdvanceMeetingAgendabyMeetingIDForViewData !== null &&
+  //     GetAdvanceMeetingAgendabyMeetingIDForViewData !== undefined &&
+  //     GetAdvanceMeetingAgendabyMeetingIDForViewData.length !== 0
   //   ) {
-  //     setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
+  //     setRows(GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList);
   //   }
-  // }, [GetAdvanceMeetingAgendabyMeetingIDData]);
+  // }, [GetAdvanceMeetingAgendabyMeetingIDForViewData]);
 
   useEffect(() => {
     if (rows.length !== 0) {

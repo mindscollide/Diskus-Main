@@ -54,8 +54,8 @@ const PrintExportAgendaModal = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
+  const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
+    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
   );
 
   const cancelMeetingMaterial = useSelector(

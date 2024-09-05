@@ -4362,15 +4362,15 @@ const GetAllAgendaWiseMinutesApiFunc = (
                 "Meeting_MeetingServiceManager_GetAllMeetingAgendaWiseMinutes_01".toLowerCase()
               )
           ) {
-            await dispatch(
-              GetAllGeneralMinutesApiFunc(
-                navigate,
-                t,
-                Data,
-                Number(currentMeeting),
-                true
-              )
-            );
+            // await dispatch(
+            //   GetAllGeneralMinutesApiFunc(
+            //     navigate,
+            //     t,
+            //     Data,
+            //     Number(currentMeeting),
+            //     true
+            //   )
+            // );
             let allAgendaWiseDocs = {
               MDID: Number(currentMeeting),
             };
