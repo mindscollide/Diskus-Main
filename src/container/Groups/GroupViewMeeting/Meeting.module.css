@@ -137,3 +137,7 @@
   align-items: center !important;
   justify-content: space-between !important;
 }
+
+.iconsWidth {
+  min-width: 25px !important;
+}

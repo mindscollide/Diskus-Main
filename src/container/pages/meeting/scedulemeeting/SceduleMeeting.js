@@ -457,6 +457,8 @@ const SceduleMeeting = ({
       }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
+  console.log(typeof editorRole.role, "editorRoleeditorRole");
+  console.log(currentMeeting, "editorRoleeditorRole");
   return (
     <section>
       <Row className="mt-2">
@@ -494,39 +496,45 @@ const SceduleMeeting = ({
                 {Number(currentMeeting) !== 0 && (
                   <>
                     {" "}
-                    <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
-                      text={t("Organizers")}
-                      className={
-                        organizers === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      // onClick={handleClickOrganizers}
-                      onClick={showOrganizers}
-                    />
+                    {editorRole.role === "Agenda Contributor" ? null : (
+                      <Button
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        text={t("Organizers")}
+                        className={
+                          organizers === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        // onClick={handleClickOrganizers}
+                        onClick={showOrganizers}
+                      />
+                    )}
                     {/* {checkFeatureIDAvailability(11) ? ( */}
-                    <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
-                      text={t("Agenda-contributors")}
-                      className={
-                        agendaContributors === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showAgendaContributers}
-                    />
+                    {editorRole.role === "Agenda Contributor" ? null : (
+                      <Button
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        text={t("Agenda-contributors")}
+                        className={
+                          agendaContributors === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showAgendaContributers}
+                      />
+                    )}
                     {/* ) : null} */}
-                    <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
-                      text={t("Participants")}
-                      className={
-                        participants === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showParticipants}
-                    />
+                    {editorRole.role === "Agenda Contributor" ? null : (
+                      <Button
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        text={t("Participants")}
+                        className={
+                          participants === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showParticipants}
+                      />
+                    )}
                     {/* {checkFeatureIDAvailability(10) ? ( */}
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
@@ -549,22 +557,24 @@ const SceduleMeeting = ({
                       }
                       onClick={showMeetingMaterial}
                     />
-                    <Button
-                      // disableBtn={Number(currentMeeting) === 0 ? true : false}
-                      disableBtn={
-                        Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
-                          ? false
-                          : true
-                      }
-                      text={t("Minutes")}
-                      className={
-                        minutes === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showMinutes}
-                    />
+                    {editorRole.role === "Agenda Contributor" ? null : (
+                      <Button
+                        // disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        disableBtn={
+                          Number(editorRole.status) === 10 ||
+                          Number(editorRole.status) === 9
+                            ? false
+                            : true
+                        }
+                        text={t("Minutes")}
+                        className={
+                          minutes === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showMinutes}
+                      />
+                    )}
                     {checkFeatureIDAvailability(14) ? (
                       <Button
                         disableBtn={

@@ -29,6 +29,7 @@ const BoardDeckSendEmail = ({
   boarddeckOptions,
   radioValue,
   setBoarddeckOptions,
+  editorRole,
 }) => {
   console.log(boardDeckMeetingID, "radioValueradioValue");
   const { t } = useTranslation();
