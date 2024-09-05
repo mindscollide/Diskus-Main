@@ -2171,6 +2171,12 @@
   "Upload-image": "Photos & videos",
   "Please-at-least-one-partcipant-required": "Please at least one partcipant required",
   "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED": "You have been removed as a Agenda Contributor from this [Place holder]",
+  "Publish-anyway": "Publish anyway",
+  "Approval-status-is-incomplete-do-you-want-to-proceed-with-publishing-the-minutes": "Approval status is incomplete. Do you want to proceed with publishing the minutes?",
+  "Total-rejected": "Total Rejected",
+  "Total-pending": "Total Pending",
+  "All-minutes-reviewed-go-publish": "All meeting minutes have been successfully reviewed. Now you can publish them.",
+  "Published-successful": "Minutes published successfully",
   "Add-reminders": "Add Reminders",
   "Add-notes": "Add Notes"
 }

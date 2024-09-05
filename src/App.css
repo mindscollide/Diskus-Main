@@ -8195,3 +8195,15 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
   padding: 8px;
   z-index: 0 !important;
 }
+
+::marker {
+  color: #5a5a5a !important;
+}
+
+.fade.AllReviewedModal.modal.show .modal-content {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 3px;
+  min-width: 600px !important;
+  max-width: 600px !important;
+  padding: 0px 60px;
+}
