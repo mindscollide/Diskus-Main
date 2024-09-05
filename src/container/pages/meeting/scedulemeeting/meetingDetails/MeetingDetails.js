@@ -1144,10 +1144,15 @@ const MeetingDetails = ({
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
+                    label={
+                      <span className={styles["Meeting_type_heading"]}>
+                        {t("Meeting-title")}
+                        <span className={styles["steric"]}>*</span>
+                      </span>
+                    }
                     placeholder={t("Meeting-title") + "*"}
                     applyClass={"meetinInnerSearch"}
                     name={"Meetingtitle"}
-                    labelClass="d-none"
                     maxLength={245}
                     change={HandleChange}
                     value={meetingDetails.MeetingTitle}
@@ -1279,33 +1284,46 @@ const MeetingDetails = ({
                   </Row>
                 </Col>
               </Row>
+
               <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <TextField
-                    applyClass="text-area-create-meeting"
-                    type="text"
-                    as={"textarea"}
-                    rows="5"
-                    name={"Notes"}
-                    change={HandleChange}
-                    placeholder={t("Note-for-this-meeting")}
-                    required={true}
-                    maxLength={1100}
-                    value={meetingDetails.Notes}
-                    disable={
-                      (Number(editorRole.status) === 9 ||
-                        Number(editorRole.status) === 8 ||
-                        Number(editorRole.status) === 10) &&
-                      editorRole.role === "Organizer" &&
-                      isEditMeeting === true
-                        ? true
-                        : editorRole.role === "Agenda Contributor" &&
-                          isEditMeeting === true
-                        ? true
-                        : false
-                    }
-                  />
-                  {/* <Row>
+                <Row className="mt-1">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex flex-column flex-wrap"
+                  >
+                    <TextField
+                      label={
+                        <span className={styles["Meeting_type_heading"]}>
+                          {t("Notes")}
+                          <span className={styles["steric"]}>*</span>
+                        </span>
+                      }
+                      applyClass="text-area-create-meeting"
+                      type="text"
+                      as={"textarea"}
+                      rows="5"
+                      name={"Notes"}
+                      change={HandleChange}
+                      placeholder={t("Note-for-this-meeting")}
+                      required={true}
+                      maxLength={1100}
+                      value={meetingDetails.Notes}
+                      disable={
+                        (Number(editorRole.status) === 9 ||
+                          Number(editorRole.status) === 8 ||
+                          Number(editorRole.status) === 10) &&
+                        editorRole.role === "Organizer" &&
+                        isEditMeeting === true
+                          ? true
+                          : editorRole.role === "Agenda Contributor" &&
+                            isEditMeeting === true
+                          ? true
+                          : false
+                      }
+                    />
+                    {/* <Row>
                     <Col>
                       <p
                         className={
@@ -1318,7 +1336,8 @@ const MeetingDetails = ({
                       </p>
                     </Col>
                   </Row> */}
-                </Col>
+                  </Col>
+                </Row>
               </Row>
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
@@ -1603,6 +1622,14 @@ const MeetingDetails = ({
             {/* Second Half */}
             <Col lg={5} md={5} sm={12} className="mt-3">
               <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["Meeting_type_heading"]}>
+                    {t("Reminder")}
+                    <span className={styles["steric"]}>*</span>
+                  </span>
+                </Col>
+              </Row>
+              <Row>
                 <Col lg={4} md={4} sm={12}>
                   <Select
                     placeholder={t("Reminder*")}
@@ -1711,6 +1738,12 @@ const MeetingDetails = ({
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <TextField
+                    label={
+                      <span className={styles["Meeting_type_heading"]}>
+                        {t("Description")}
+                        <span className={styles["steric"]}>*</span>
+                      </span>
+                    }
                     applyClass="text-area-create-resolution"
                     type="text"
                     as={"textarea"}
