@@ -1746,6 +1746,9 @@ const getAdvanceMeetingAgendabyMeetingIDForView = {
 const getStatsForPublishingMinutesByWorkFlowId = {
   RequestMethod: "ServiceManager.GetStatsForPublishingMinutesByWorkFlowId",
 };
+const getMinutesPublishedStatus = {
+  RequestMethod: "ServiceManager.GetMeetingMinutesStatus",
+};
 
 export {
   ValidateEncryptedStringForOTPEmailLinkRM,
@@ -2211,4 +2214,5 @@ export {
   validateVideoRecordingURL,
   getAdvanceMeetingAgendabyMeetingIDForView,
   getStatsForPublishingMinutesByWorkFlowId,
+  getMinutesPublishedStatus,
 };

@@ -2178,5 +2178,6 @@
   "All-minutes-reviewed-go-publish": "All meeting minutes have been successfully reviewed. Now you can publish them.",
   "Published-successful": "Minutes published successfully",
   "Add-reminders": "Add Reminders",
-  "Add-notes": "Add Notes"
+  "Add-notes": "Add Notes",
+  "Minutes-will-be-available-when-published": "Minutes will be available when Published"
 }
