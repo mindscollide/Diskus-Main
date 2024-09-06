@@ -12,7 +12,10 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import { Checkbox, Radio } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
-import { BoardDeckPDFDownloadApi } from "../../../store/actions/UserManagementActions";
+import {
+  BoardDeckPDFDownloadApi,
+  BoardDeckValidateIsMinutesPublishedAPI,
+} from "../../../store/actions/UserManagementActions";
 const BoardDeckModal = ({
   boarddeckOptions,
   setBoarddeckOptions,
@@ -25,9 +28,39 @@ const BoardDeckModal = ({
 
   const navigate = useNavigate();
 
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, UserMangementReducer } = useSelector(
+    (state) => state
+  );
+
+  console.log(UserMangementReducer, "getMinutesPublishedData");
 
   const [radioValue, setRadioValue] = useState(1);
+
+  //Minutes Published API
+  useEffect(() => {
+    try {
+      let data = { PK_mdid: Number(boardDeckMeetingID) };
+      dispatch(BoardDeckValidateIsMinutesPublishedAPI(navigate, t, data));
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (
+        UserMangementReducer.getMinutesPublishedData !== null &&
+        UserMangementReducer.getMinutesPublishedData !== undefined
+      ) {
+        console.log(
+          UserMangementReducer.getMinutesPublishedData,
+          "UserMangementReducer"
+        );
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [UserMangementReducer.getMinutesPublishedData]);
 
   const onChangeSelectAll = (e) => {
     let value = e.target.checked;
@@ -161,7 +194,7 @@ const BoardDeckModal = ({
     };
     dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
   };
-  console.log(editorRole.role, "rolerolerolerole");
+
   return (
     <>
       <Container>
