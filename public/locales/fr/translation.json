@@ -2045,5 +2045,6 @@
   "Unable-to-add-user-due-to-some-error": "Unable to Add user due to some error",
   "User-not-added-user-already-exists": "User not added. User already exists",
   "Add-reminders": "Add Reminders",
-  "Add-notes": "Add Notes"
+  "Add-notes": "Add Notes",
+  "Minutes-will-be-available-when-published": "Minutes will be available when Published"
 }

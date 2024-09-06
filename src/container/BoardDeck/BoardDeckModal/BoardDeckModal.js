@@ -16,6 +16,7 @@ import {
   BoardDeckPDFDownloadApi,
   BoardDeckValidateIsMinutesPublishedAPI,
 } from "../../../store/actions/UserManagementActions";
+import warningImage from "../../../assets/images/warning.png";
 const BoardDeckModal = ({
   boarddeckOptions,
   setBoarddeckOptions,
@@ -32,9 +33,8 @@ const BoardDeckModal = ({
     (state) => state
   );
 
-  console.log(UserMangementReducer, "getMinutesPublishedData");
-
   const [radioValue, setRadioValue] = useState(1);
+  const [publishedMinutes, setPublishedMinutes] = useState(false);
 
   //Minutes Published API
   useEffect(() => {
@@ -53,9 +53,9 @@ const BoardDeckModal = ({
         UserMangementReducer.getMinutesPublishedData !== null &&
         UserMangementReducer.getMinutesPublishedData !== undefined
       ) {
-        console.log(
-          UserMangementReducer.getMinutesPublishedData,
-          "UserMangementReducer"
+        setPublishedMinutes(
+          UserMangementReducer.getMinutesPublishedData.minutesStatus
+            .isMinutesPublished
         );
       }
     } catch (error) {
@@ -185,7 +185,7 @@ const BoardDeckModal = ({
       fetchOrganizers: boarddeckOptions.Organizer,
       fetchAgendaContributors: boarddeckOptions.AgendaContributor,
       fetchParticipants: boarddeckOptions.Participants,
-      fetchMinutes: boarddeckOptions.Minutes,
+      fetchMinutes: publishedMinutes ? boarddeckOptions.Minutes : false,
       fetchTasks: boarddeckOptions.Task,
       fetchPolls: boarddeckOptions.polls,
       fetchAttendance: boarddeckOptions.attendeceReport,
@@ -282,14 +282,48 @@ const BoardDeckModal = ({
                   </Checkbox>
                 </Col>
                 <Col lg={4} md={4} sm={4}>
-                  <Checkbox
-                    onChange={onChangeMinutes}
-                    checked={boarddeckOptions.Minutes}
-                  >
-                    <span className={styles["Box_options"]}>
-                      {t("Minutes")}
-                    </span>
-                  </Checkbox>
+                  {publishedMinutes ? (
+                    <>
+                      {" "}
+                      <Checkbox
+                        onChange={onChangeMinutes}
+                        checked={boarddeckOptions.Minutes}
+                      >
+                        <span className={styles["Box_options"]}>
+                          {t("Minutes")}
+                        </span>
+                      </Checkbox>
+                    </>
+                  ) : (
+                    <>
+                      <Col lg={4} md={4} sm={4}>
+                        <Row>
+                          <Col
+                            lg={3}
+                            md={3}
+                            sm={3}
+                            className="d-flex align-items-center"
+                          >
+                            <img
+                              src={warningImage}
+                              alt=""
+                              className="cursor-pointer"
+                              title={t(
+                                "Minutes-will-be-available-when-published"
+                              )}
+                            />
+                          </Col>
+                          <Col lg={9} md={9} sm={9}>
+                            <span
+                              className={styles["Box_options_MinutesDisabled"]}
+                            >
+                              {t("Minutes")}
+                            </span>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </>
+                  )}
                 </Col>
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox
