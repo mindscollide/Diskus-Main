@@ -71,6 +71,8 @@ const AgendaViewer = ({
   editorRole,
   setEdiorRole,
   setactionsPage,
+  videoTalk,
+  setVideoTalk,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

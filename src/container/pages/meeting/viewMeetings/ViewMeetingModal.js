@@ -50,6 +50,8 @@ const ViewMeetingModal = ({
   dataroomMapFolderId,
   setDataroomMapFolderId,
   setCurrentMeetingID,
+  videoTalk,
+  setVideoTalk,
 }) => {
   console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
   const { t } = useTranslation();
@@ -614,6 +616,8 @@ const ViewMeetingModal = ({
                   editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
                   setactionsPage={setactionsPage}
+                  videoTalk={videoTalk}
+                  setVideoTalk={setVideoTalk}
                 />
               )}
               {unPublish ? null : (

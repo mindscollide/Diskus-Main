@@ -82,6 +82,8 @@ const UnpublishedProposedMeeting = ({
   editorRole,
   setDataroomMapFolderId,
   setResponseByDate,
+  setVideoTalk,
+  videoTalk,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -235,6 +237,11 @@ const UnpublishedProposedMeeting = ({
                   : record.isAgendaContributor
                   ? "Agenda Contributor"
                   : "Organizer",
+              });
+              setVideoTalk({
+                isChat: record.isChat,
+                isVideoCall: record.isVideoCall,
+                talkGroupID: record.talkGroupID,
               });
               handleOpenViewModal(record);
               dispatch(viewMeetingFlag(true));
@@ -468,6 +475,11 @@ const UnpublishedProposedMeeting = ({
                           // record.isAgendaContributor,
                           record
                         );
+                        setVideoTalk({
+                          isChat: record.isChat,
+                          isVideoCall: record.isVideoCall,
+                          talkGroupID: record.talkGroupID,
+                        });
                         setEdiorRole({
                           status: record.status,
                           role: "Agenda Contributor",
@@ -505,7 +517,11 @@ const UnpublishedProposedMeeting = ({
                             // record.isAgendaContributor,
                             record
                           );
-
+                          setVideoTalk({
+                            isChat: record.isChat,
+                            isVideoCall: record.isVideoCall,
+                            talkGroupID: record.talkGroupID,
+                          });
                           setEdiorRole({
                             status: record.status,
                             role: "Organizer",
@@ -570,7 +586,13 @@ const UnpublishedProposedMeeting = ({
                       className={styles["publish_meeting_btn"]}
                       onClick={() =>
                         dispatch(
-                          UpdateOrganizersMeeting(false, navigate, t, 5, apiData)
+                          UpdateOrganizersMeeting(
+                            false,
+                            navigate,
+                            t,
+                            5,
+                            apiData
+                          )
                         )
                       }
                     />
