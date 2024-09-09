@@ -30,26 +30,39 @@ import { onDragEnd } from "./../drageFunction";
 import CollapseAgendaIcon from "./../AV-Images/Collapse-Agenda-Icon.png";
 import VideocameraIcon from "./../AV-Images/Videocamera-Icon.png";
 import { Tooltip } from "antd";
+import MenuIcon from "./../AV-Images/Menu-Icon.png";
+import PrintIcon from "./../AV-Images/Print-Icon.png";
+import ExportIcon from "./../AV-Images/Export-Icon.png";
+import ShareIcon from "./../AV-Images/Share-Icon.png";
+import ParticipantsInfo from "./../AV-Images/Participants-Icon.png";
+import ParticipantsInfoDisabled from "./../AV-Images/Participants-Icon-disabled.png";
+import LeaveMeetingIcon from "./../AV-Images/Leave-Meeting.svg";
+import TalkInactiveIcon from "./../AV-Images/Talk Inactive.svg";
+import {
+  exportAgenda,
+  printAgenda,
+} from "../../../../../../store/actions/MeetingAgenda_action";
 
 const FullScreenAgendaModal = ({
   setFullScreenView,
-  setViewAdvanceMeetingModal,
   advanceMeetingModalID,
-  setAdvanceMeetingModalID,
-  setMeetingMaterial,
-  setMinutes,
   editorRole,
-  setEdiorRole,
-  setactionsPage,
   rows,
   setRows,
+  setParticipantInfoView,
+  participantInfoView,
+  setAgendaSelectOptionView,
+  agendaSelectOptionView,
+  setShareEmailView,
+  shareEmailView,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
+    (state) =>
+      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
   );
 
   const cancelMeetingMaterial = useSelector(
@@ -59,6 +72,7 @@ const FullScreenAgendaModal = ({
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
+  const [menuAgendaFull, setMenuAgendaFull] = useState(false);
 
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -76,6 +90,8 @@ const FullScreenAgendaModal = ({
 
   let callerID = Number(localStorage.getItem("callerID"));
 
+  const closeMenuAgenda = useRef(null);
+
   // const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
@@ -86,57 +102,9 @@ const FullScreenAgendaModal = ({
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
-  // useEffect(() => {
-  //   let Data = {
-  //     MeetingID: Number(advanceMeetingModalID),
-  //   };
-  //   dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
-  //   return () => {
-  //     dispatch(clearAgendaReducerState());
-  //     setRows([]);
-  //   };
-  // }, []);
-
-  const handleCancelMeetingNoPopup = () => {
-    // let searchData = {
-    //   Date: "",
-    //   Title: "",
-    //   HostName: "",
-    //   UserID: Number(userID),
-    //   PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-    //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-    //   PublishedMeetings:
-    //     currentView && Number(currentView) === 1 ? true : false,
-    // };
-    // dispatch(searchNewUserMeeting(navigate, searchData, t));
-    // localStorage.removeItem("folderDataRoomMeeting");
-    // setViewAdvanceMeetingModal(false);
-    // dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    // setactionsPage(false);
-  };
-
-  const handleClickSave = () => {
-    setMinutes(true);
-    setMeetingMaterial(false);
-  };
-
-  // useEffect(() => {
-  //   if (
-  //     GetAdvanceMeetingAgendabyMeetingIDForViewData !== null &&
-  //     GetAdvanceMeetingAgendabyMeetingIDForViewData !== undefined &&
-  //     GetAdvanceMeetingAgendabyMeetingIDForViewData.length !== 0
-  //   ) {
-  //     setRows(GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList);
-  //   }
-  // }, [GetAdvanceMeetingAgendabyMeetingIDForViewData]);
-
   useEffect(() => {
     if (rows.length !== 0) {
-      // Check if any of the canView values is true
       const anyCanViewTrue = rows.some((row) => row.canView);
-
-      // Update the emptyStateRows state based on the condition
       setEmptyStateRows(!anyCanViewTrue);
     } else {
       setEmptyStateRows(false);
@@ -231,6 +199,45 @@ const FullScreenAgendaModal = ({
     }
   };
 
+  const menuPopupAgenda = () => {
+    setMenuAgendaFull(!menuAgendaFull);
+  };
+
+  const participantModal = () => {
+    setParticipantInfoView(!participantInfoView);
+  };
+
+  const printModal = () => {
+    dispatch(printAgenda(true));
+    setAgendaSelectOptionView(!agendaSelectOptionView);
+  };
+
+  const exportModal = () => {
+    dispatch(exportAgenda(true));
+    setAgendaSelectOptionView(!agendaSelectOptionView);
+  };
+
+  const shareEmailModal = () => {
+    setShareEmailView(!shareEmailView);
+  };
+
+  const handleOutsideClick = (event) => {
+    if (
+      closeMenuAgenda.current &&
+      !closeMenuAgenda.current.contains(event.target) &&
+      menuAgendaFull
+    ) {
+      setMenuAgendaFull(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [menuAgendaFull]);
+
   return (
     <Modal
       show={true}
@@ -252,26 +259,99 @@ const FullScreenAgendaModal = ({
               className={styles["agendaViewerHeader"]}
             >
               <p className={styles["FileModalTitle"]}>{t("Agenda-viewer")}</p>
-
-              <Tooltip placement="topRight" title={t("Collapse")}>
-                <div
-                  className={styles["box-agendas"]}
-                  onClick={() => setFullScreenView(false)}
-                >
-                  <img src={CollapseAgendaIcon} alt="" />
-                </div>
-              </Tooltip>
-
-              {editorRole.status === "10" || editorRole.status === 10 ? (
-                <Tooltip placement="topRight" title={t("Enable-video-call")}>
-                  <div
-                    className={styles["box-agendas-camera"]}
-                    onClick={joinMeetingCall}
-                  >
-                    <img src={VideocameraIcon} alt="" />
+              <div className={styles["icons-block"]}>
+                <Tooltip placement="topRight" title={t("Start-chat")}>
+                  <div className={styles["box-agendas-leave"]}>
+                    <img src={TalkInactiveIcon} alt="" />
                   </div>
                 </Tooltip>
-              ) : null}
+
+                <Tooltip placement="topRight" title={t("Leave-meeting")}>
+                  <div className={styles["box-agendas-leave"]}>
+                    <img src={LeaveMeetingIcon} alt="" />
+                  </div>
+                </Tooltip>
+
+                {editorRole.status === "10" || editorRole.status === 10 ? (
+                  <Tooltip placement="topRight" title={t("Enable-video-call")}>
+                    <div
+                      className={styles["box-agendas-camera"]}
+                      onClick={joinMeetingCall}
+                    >
+                      <img src={VideocameraIcon} alt="" />
+                    </div>
+                  </Tooltip>
+                ) : null}
+
+                <Tooltip placement="topRight" title={t("Collapse")}>
+                  <div
+                    className={styles["box-agendas"]}
+                    onClick={() => setFullScreenView(false)}
+                  >
+                    <img src={CollapseAgendaIcon} alt="" />
+                  </div>
+                </Tooltip>
+
+                <div
+                  onClick={menuPopupAgenda}
+                  className={styles["box-agendas"]}
+                  ref={closeMenuAgenda}
+                >
+                  <Tooltip placement="topRight" title={t("More")}>
+                    <img src={MenuIcon} alt="" />
+                  </Tooltip>
+                  <div
+                    className={
+                      menuAgendaFull
+                        ? `${
+                            styles["popup-agenda-menu"]
+                          } ${"opacity-1 pe-auto"}`
+                        : `${
+                            styles["popup-agenda-menu"]
+                          } ${"opacity-0 pe-none"}`
+                    }
+                  >
+                    <span
+                      className={
+                        editorRole.status === 9 || editorRole.status === "9"
+                          ? null
+                          : styles["disabledEntity"]
+                      }
+                      onClick={
+                        editorRole.status === 9 || editorRole.status === "9"
+                          ? participantModal
+                          : null
+                      }
+                    >
+                      <img
+                        width={20}
+                        src={
+                          editorRole.status === 9 || editorRole.status === "9"
+                            ? ParticipantsInfo
+                            : ParticipantsInfoDisabled
+                        }
+                        alt=""
+                      />
+                      {t("Participants-info")}
+                    </span>
+                    <span onClick={printModal}>
+                      <img width={20} src={PrintIcon} alt="" />
+                      {t("Print")}
+                    </span>
+                    <span onClick={exportModal}>
+                      <img width={20} src={ExportIcon} alt="" />
+
+                      {t("Export-pdf")}
+                    </span>
+                    <span onClick={shareEmailModal} className="border-0">
+                      <img width={20} src={ShareIcon} alt="" />
+                      {t("Share-email")}
+                    </span>
+                  </div>
+
+                  {/* ) : null} */}
+                </div>
+              </div>
             </Col>
           </Row>
         </>
