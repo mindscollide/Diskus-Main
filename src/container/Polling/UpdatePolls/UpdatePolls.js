@@ -734,7 +734,7 @@ const UpdatePolls = () => {
                             <TextField
                               placeholder={t("Title") + "*"}
                               applyClass={"PollingCreateModal"}
-                              labelClass="d-none"
+                              labelclass="d-none"
                               name={"TypingTitle"}
                               maxLength={140}
                               value={UpdatePolls.TypingTitle}
@@ -822,7 +822,7 @@ const UpdatePolls = () => {
                                                   applyClass={
                                                     "PollingCreateModal"
                                                   }
-                                                  labelClass="d-none"
+                                                  labelclass="d-none"
                                                   maxLength={100}
                                                   name={data.name}
                                                   value={data.value}
@@ -853,7 +853,7 @@ const UpdatePolls = () => {
                                                 applyClass={
                                                   "PollingCreateModal"
                                                 }
-                                                labelClass="d-none"
+                                                labelclass="d-none"
                                                 maxLength={100}
                                                 name={data.name}
                                                 value={data.value}
@@ -879,7 +879,7 @@ const UpdatePolls = () => {
                                                     }
                                                   />
                                                 }
-                                                iconClassName={
+                                                iconclassname={
                                                   styles[
                                                     "polling_Options_backGround"
                                                   ]

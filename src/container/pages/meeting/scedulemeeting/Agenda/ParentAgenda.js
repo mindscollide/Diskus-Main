@@ -581,7 +581,7 @@ const ParentAgenda = ({
                               <TextField
                                 applyClass={"AgendaTextField"}
                                 name={"title"}
-                                labelClass={"d-none"}
+                                labelclass={"d-none"}
                                 placeholder={t("Agenda-title")}
                                 maxLength={290}
                                 value={data.title}

@@ -1490,7 +1490,7 @@ const EditResolution = ({ setCancelresolution }) => {
                               {/* <TextFieldTime
                                 type="time"
                                 name="circulation"
-                                labelClass="d-none"
+                                labelclass="d-none"
                                 onKeyDown={(e) => e.preventDefault()}
                                 applyClass={"search_voterInput"}
                                 value={circulationDateTime.time}
@@ -1603,7 +1603,7 @@ const EditResolution = ({ setCancelresolution }) => {
                               className='CreateMeetingReminder  resolution-search-input FontArabicRegular'>
                               {/* <TextField
                                 type="time"
-                                labelClass="d-none"
+                                labelclass="d-none"
                                 name="voting"
                                 onKeyDown={(e) => e.preventDefault()}
                                 applyClass={"search_voterInput"}
@@ -1716,7 +1716,7 @@ const EditResolution = ({ setCancelresolution }) => {
                               className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
                               {/* <TextField
                                 type="time"
-                                labelClass="d-none"
+                                labelclass="d-none"
                                 name="decision"
                                 onKeyDown={(e) => e.preventDefault()}
                                 applyClass={"search_voterInput"}

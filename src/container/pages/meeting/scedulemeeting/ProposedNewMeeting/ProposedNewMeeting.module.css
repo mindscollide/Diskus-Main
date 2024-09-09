@@ -175,3 +175,12 @@ body[dir="rtl"] .errorMessage-inLogin {
   background: #5f78d6 !important;
   color: #fff !important;
 }
+.Add_participants {
+  padding: 10px 25px !important;
+  font-size: 12px !important;
+  border: none !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}

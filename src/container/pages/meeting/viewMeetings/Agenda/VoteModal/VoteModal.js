@@ -572,7 +572,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                           ? "text-area-close-New_meeting_error"
                           : "text-area-close-New_meeting"
                       }
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       type="text"
                       as={"textarea"}
                       value={voteModalAttrbutes.VoteQuestion}
@@ -610,7 +610,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                     <Row>
                       <Col lg={8} md={8} sm={8}>
                         <TextField
-                          labelClass={"d-none"}
+                          labelclass={"d-none"}
                           applyClass={"NewMeetingFileds"}
                           value={saveOptions.text}
                           change={(e) => handleOptionTextChange(e)}
@@ -693,7 +693,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                               className="d-flex gap-2 "
                             >
                               <TextField
-                                labelClass={"d-none"}
+                                labelclass={"d-none"}
                                 applyClass={"NewMeetingFileds"}
                                 width={"145px"}
                                 name={"YesAnswers"}
@@ -701,7 +701,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                                 change={HandleChange}
                               />
                               <TextField
-                                labelClass={"d-none"}
+                                labelclass={"d-none"}
                                 applyClass={"NewMeetingFileds"}
                                 width={"145px"}
                                 name={"NOAnswers"}
@@ -709,7 +709,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                                 change={HandleChange}
                               />
                               <TextField
-                                labelClass={"d-none"}
+                                labelclass={"d-none"}
                                 applyClass={"NewMeetingFileds"}
                                 width={"145px"}
                                 name={"AbstainAnswers"}
@@ -726,14 +726,14 @@ const VoteModal = ({ setenableVotingPage }) => {
                                             <>
                                               <span className="position-relative">
                                                 <TextField
-                                                  labelClass={"d-none"}
+                                                  labelclass={"d-none"}
                                                   applyClass={
                                                     "NewMeetingFileds_withIcon"
                                                   }
                                                   width={"145px"}
                                                   value={data}
                                                   name={"OptionsAdded"}
-                                                  iconClassName={
+                                                  iconclassname={
                                                     styles["ResCrossIcon"]
                                                   }
                                                   inputicon={

@@ -633,7 +633,7 @@ const ManageUsers = () => {
               value={manangeUserSearch.searchValue}
               onKeyDown={handleKeyDownSearchManageUsers}
               applyClass={"PollingSearchInput"}
-              labelClass="d-none"
+              labelclass="d-none"
               change={handleSeachFieldManageUsers}
               inputicon={
                 <>
@@ -666,7 +666,7 @@ const ManageUsers = () => {
                   </Row>
                 </>
               }
-              iconClassName={styles["SearchIconClass"]}
+              iconclassname={styles["SearchIconClass"]}
             />
 
             {searchbox ? (
@@ -698,7 +698,7 @@ const ManageUsers = () => {
                     <Row className="mt-4">
                       <Col lg={12} md={12} sm={12} xs={12}>
                         <TextField
-                          labelClass={"d-none"}
+                          labelclass={"d-none"}
                           placeholder={t("Name")}
                           name={"Name"}
                           value={searchDetails.Name}
@@ -711,7 +711,7 @@ const ManageUsers = () => {
                     <Row className="mt-4">
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <TextField
-                          labelClass={"d-none"}
+                          labelclass={"d-none"}
                           placeholder={t("Email")}
                           name={"Email"}
                           applyClass={"usermanagementTextField"}

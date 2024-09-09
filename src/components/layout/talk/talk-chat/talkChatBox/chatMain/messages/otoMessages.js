@@ -1025,7 +1025,7 @@ const OtoMessages = () => {
                               change={(e) => setSearchChatWord(e.target.value)}
                               value={searchChatWord}
                               placeholder={t("Search Chat")}
-                              labelClass={"d-none"}
+                              labelclass={"d-none"}
                             />
                           </Col>
                         </Row>
@@ -1351,7 +1351,7 @@ const OtoMessages = () => {
                               change={(e) => setSearchChatWord(e.target.value)}
                               value={searchChatWord}
                               placeholder="Search Chat"
-                              labelClass={"d-none"}
+                              labelclass={"d-none"}
                             />
                           </Col>
                         </Row>

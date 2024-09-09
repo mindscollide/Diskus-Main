@@ -58,6 +58,7 @@ import {
   GetMinuteReviewFlowByMeetingId,
   GetDataForResendMinuteReview,
   MeetingPublishedMinutesApi,
+  GetStatsForPublishingMinutesByWorkFlowId,
 } from "../../../../../store/actions/Minutes_action";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
@@ -66,6 +67,8 @@ import {
   removeHTMLTags,
   removeHTMLTagsAndTruncate,
 } from "../../../../../commen/functions/utils";
+import ApprovalIncompleteModal from "./approvalIncompleteModal/ApprovalIncompleteModal";
+import PublishAnywayModal from "./publishAnywayModal/PublishAnywayModal";
 
 const Minutes = ({
   setMinutes,
@@ -852,9 +855,10 @@ const Minutes = ({
 
   const [addReviewers, setAddReviewers] = useState(false);
 
-  const [showPublishButton, setShowPublishButton] = useState(false);
-
   const [deadLineDate, setDeadLineDate] = useState(null);
+
+  const [approvalModal, setApprovalModal] = useState(false);
+  const [publishAnywayModal, setPublishAnywayModal] = useState(false);
 
   const closeMenuMinute = useRef(null);
 
@@ -867,9 +871,7 @@ const Minutes = ({
       GetAllOrganizationUsersForReview(navigate, t, setAllReviewers)
     );
 
-    await dispatch(
-      GetMinuteReviewFlowByMeetingId(newData, navigate, t, setAddReviewers)
-    );
+    await dispatch(GetMinuteReviewFlowByMeetingId(newData, navigate, t));
 
     await dispatch(
       GetAllGeneralMinutesApiFunc(
@@ -891,6 +893,8 @@ const Minutes = ({
         true
       )
     );
+
+    await setAddReviewers(true);
   };
 
   const accordianClick = (data, id, index) => {
@@ -1154,8 +1158,21 @@ const Minutes = ({
   };
 
   const publishMeetingMinutes = () => {
-    let Data = { MeetingID: Number(advanceMeetingModalID) };
-    dispatch(MeetingPublishedMinutesApi(Data, navigate, t));
+    // let Data = { MeetingID: Number(advanceMeetingModalID) };
+    let workFlowID =
+      MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow.workFlow
+        .pK_WorkFlow_ID;
+    let Data = { WorkFlowID: workFlowID };
+    dispatch(
+      GetStatsForPublishingMinutesByWorkFlowId(
+        Data,
+        navigate,
+        t,
+        setApprovalModal,
+        setPublishAnywayModal
+      )
+    );
+    // dispatch(MeetingPublishedMinutesApi(Data, navigate, t));
   };
 
   useEffect(() => {
@@ -2572,7 +2589,6 @@ const Minutes = ({
             />
           </Col>
         </Row>
-
         {unsaveFileUploadMinutes && (
           <UnsavedMinutes
             setMinutes={setMinutes}
@@ -2583,7 +2599,6 @@ const Minutes = ({
             setMeetingMaterial={setMeetingMaterial}
           />
         )}
-
         {addReviewers && (
           <AddReviewers
             addReviewers={addReviewers}
@@ -2592,14 +2607,12 @@ const Minutes = ({
             advanceMeetingModalID={advanceMeetingModalID}
           />
         )}
-
         {showVersionHistory && (
           <VersionHistory
             showVersionHistory={showVersionHistory}
             setShowVersionHistory={setShowVersionHistory}
           />
         )}
-
         {showRevisionHistory && (
           <RevisionHistory
             showRevisionHistory={showRevisionHistory}
@@ -2608,7 +2621,6 @@ const Minutes = ({
             advanceMeetingModalID={advanceMeetingModalID}
           />
         )}
-
         {MinutesReducer.deleteMinuteGeneral && (
           <DeleteCommentGeneral
             advanceMeetingModalID={advanceMeetingModalID}
@@ -2617,6 +2629,23 @@ const Minutes = ({
             setFileAttachments={setFileAttachments}
           />
         )}
+        {approvalModal ? (
+          <ApprovalIncompleteModal
+            approvalModal={approvalModal}
+            setApprovalModal={setApprovalModal}
+            setPublishAnywayModal={setPublishAnywayModal}
+            advanceMeetingModalID={advanceMeetingModalID}
+          />
+        ) : null}
+
+        {publishAnywayModal ? (
+          <PublishAnywayModal
+            publishAnywayModal={publishAnywayModal}
+            setPublishAnywayModal={setPublishAnywayModal}
+            setApprovalModal={setApprovalModal}
+            advanceMeetingModalID={advanceMeetingModalID}
+          />
+        ) : null}
 
         <Notification
           setOpen={setOpen}

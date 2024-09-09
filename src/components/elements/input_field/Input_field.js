@@ -30,9 +30,9 @@ const TextField = ({
   name,
   applyClass,
   inputicon,
-  iconClassName,
+  iconclassname,
   formParentClass,
-  labelClass,
+  labelclass,
   clickIcon,
   min,
   max,
@@ -51,7 +51,7 @@ const TextField = ({
   return (
     <>
       <FormGroup className={styles[formParentClass]}>
-        <Form.Label className={labelClass}>{label}</Form.Label>
+        <Form.Label className={labelclass}>{label}</Form.Label>
         <Form.Control
           onBlur={onBlur}
           autoComplete={autoComplete}
@@ -85,7 +85,7 @@ const TextField = ({
           onClick={onClick}
           onKeyDown={onKeyDown}
         />
-        <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
+        <FormControl.Feedback className={iconclassname} onClick={clickIcon}>
           {/* <span
                      ref={iconRef}
                      onDragStart={preventDrag} // Prevent drag start

@@ -695,7 +695,7 @@ const CreatePolling = () => {
                           <TextField
                             placeholder={t("Title") + "*"}
                             applyClass={"PollingCreateModal"}
-                            labelClass="d-none"
+                            labelclass="d-none"
                             maxLength={140}
                             name={"TypingTitle"}
                             value={createPollData.TypingTitle}
@@ -739,7 +739,7 @@ const CreatePolling = () => {
                                                 "*"
                                               }
                                               applyClass={"PollingCreateModal"}
-                                              labelClass="d-none"
+                                              labelclass="d-none"
                                               name={data.name}
                                               maxLength={100}
                                               value={data.value}
@@ -762,7 +762,7 @@ const CreatePolling = () => {
                                                 "*"
                                               }
                                               applyClass={"PollingCreateModal"}
-                                              labelClass="d-none"
+                                              labelclass="d-none"
                                               name={data.name}
                                               value={data.value}
                                               maxLength={100}
@@ -786,7 +786,7 @@ const CreatePolling = () => {
                                                   draggable="false"
                                                 />
                                               }
-                                              iconClassName={
+                                              iconclassname={
                                                 styles[
                                                   "polling_Options_backGround"
                                                 ]

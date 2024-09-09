@@ -32,6 +32,7 @@ const initialState = {
   boardDeckSendEmailData: null,
   downloadBoardDeckPDF: null,
   videoURLData: null,
+  getMinutesPublishedData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -659,6 +660,31 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         videoURLData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MINUTES_PUBLISHED_STATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_MINUTES_PUBLISHED_STATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getMinutesPublishedData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MINUTES_PUBLISHED_STATUS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getMinutesPublishedData: null,
         ResponseMessage: action.message,
       };
     }

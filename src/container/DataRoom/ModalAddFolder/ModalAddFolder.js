@@ -98,7 +98,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
                       value={FolderName.content}
                       maxLength={290}
                       placeholder={t("Folder-name")}
-                      labelClass="textFieldSearch d-none"
+                      labelclass="textFieldSearch d-none"
                       change={handleChangeFolderName}
                     />
                   </Col>

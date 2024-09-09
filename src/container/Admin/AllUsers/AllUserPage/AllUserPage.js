@@ -712,7 +712,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             applyClass="form-control2"
             placeholder={t("Title")}
             className="mx-2"
-            labelClass="filter"
+            labelclass="filter"
             change={onAllSearch}
           />
           <div className={styles["filterModal"]}>

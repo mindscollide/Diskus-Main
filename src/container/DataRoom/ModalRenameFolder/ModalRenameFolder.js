@@ -72,7 +72,7 @@ const ModalRenameFolder = ({
                     <TextField
                       value={folderData.FolderName}
                       placeholder={t("Rename")}
-                      labelClass="textFieldSearch d-none"
+                      labelclass="textFieldSearch d-none"
                       maxLength={290}
                       change={(e) =>
                         setFolderData({

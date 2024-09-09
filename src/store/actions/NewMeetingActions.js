@@ -5801,6 +5801,21 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   id
                 )
               );
+              let newData = {
+                MeetingID: currentMeeting,
+              };
+  
+              // Call GetAllAgendaWiseMinutesApiFunc and wait for it to complete
+              await dispatch(
+                GetAllAgendaWiseMinutesApiFunc(
+                  navigate,
+                  newData,
+                  t,
+                  currentMeeting,
+                  false,
+                  false
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

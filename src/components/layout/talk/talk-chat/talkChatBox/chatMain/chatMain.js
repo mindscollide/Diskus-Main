@@ -3504,7 +3504,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         change={chatSearchChange}
                         value={searchChatWord}
                         placeholder={t("Search-Chat")}
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                         inputicon={
                           <span className="background-close-search">
                             <img
@@ -5941,7 +5941,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       }}
                       value={searchUserValue}
                       placeholder="Search Users"
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                     />
                   </Col>
                 </Row>
@@ -6085,7 +6085,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       }}
                       value={searchGroupUserInfoValue}
                       placeholder="Search Users"
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                     />
                   </Col>
                 </Row>
@@ -6195,7 +6195,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         maxLength={200}
                         change={groupNameHandler}
                         autoComplete="off"
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   )}
@@ -6212,7 +6212,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       }}
                       value={searchGroupUserInfoValue}
                       placeholder="Search Users"
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                     />
                   </Col>
                 </Row>
@@ -6345,7 +6345,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         maxLength={200}
                         change={shoutNameHandler}
                         autoComplete="off"
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   )}
@@ -6362,7 +6362,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       }}
                       value={searchUserShoutValue}
                       placeholder="Search Users"
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                     />
                   </Col>
                 </Row>

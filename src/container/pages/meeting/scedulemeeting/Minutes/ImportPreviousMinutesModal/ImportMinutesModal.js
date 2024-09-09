@@ -160,7 +160,7 @@ const ImportMinutesModal = () => {
                         sm={10}
                         className="ImportPreviousMinutes m-0 p-0"
                       >
-                        <InputSearchFilter labelClass={"d-none"} />
+                        <InputSearchFilter labelclass={"d-none"} />
                       </Col>
                       <Col lg={2} md={2} sm={2}>
                         <Button

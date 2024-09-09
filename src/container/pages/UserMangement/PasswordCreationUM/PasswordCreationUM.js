@@ -274,7 +274,7 @@ const PasswordCreationUM = () => {
                         onChange={passwordChangeHandler}
                         placeholder={t("New-password")}
                         autoComplete="false"
-                        iconClassName={styles["IconStyle"]}
+                        iconclassname={styles["IconStyle"]}
                       />
                       <span
                         className={styles["passwordIcon"]}
@@ -306,7 +306,7 @@ const PasswordCreationUM = () => {
                         value={passwordDetails.ConfirmPassword || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Re-enter-password")}
-                        iconClassName={styles["IconStyle"]}
+                        iconclassname={styles["IconStyle"]}
                       />
                       <span
                         className={styles["passwordIcon"]}

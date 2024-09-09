@@ -12,7 +12,11 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import { Checkbox, Radio } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
-import { BoardDeckPDFDownloadApi } from "../../../store/actions/UserManagementActions";
+import {
+  BoardDeckPDFDownloadApi,
+  BoardDeckValidateIsMinutesPublishedAPI,
+} from "../../../store/actions/UserManagementActions";
+import warningImage from "../../../assets/images/warning.png";
 const BoardDeckModal = ({
   boarddeckOptions,
   setBoarddeckOptions,
@@ -25,9 +29,39 @@ const BoardDeckModal = ({
 
   const navigate = useNavigate();
 
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, UserMangementReducer } = useSelector(
+    (state) => state
+  );
 
   const [radioValue, setRadioValue] = useState(1);
+  const [publishedMinutes, setPublishedMinutes] = useState(false);
+
+  //Minutes Published API
+  useEffect(() => {
+    try {
+      let data = { PK_mdid: Number(boardDeckMeetingID) };
+      dispatch(BoardDeckValidateIsMinutesPublishedAPI(navigate, t, data));
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, []);
+
+  //Minutes Published API Data
+  useEffect(() => {
+    try {
+      if (
+        UserMangementReducer.getMinutesPublishedData !== null &&
+        UserMangementReducer.getMinutesPublishedData !== undefined
+      ) {
+        setPublishedMinutes(
+          UserMangementReducer.getMinutesPublishedData.minutesStatus
+            .isMinutesPublished
+        );
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [UserMangementReducer.getMinutesPublishedData]);
 
   const onChangeSelectAll = (e) => {
     let value = e.target.checked;
@@ -151,7 +185,7 @@ const BoardDeckModal = ({
       fetchOrganizers: boarddeckOptions.Organizer,
       fetchAgendaContributors: boarddeckOptions.AgendaContributor,
       fetchParticipants: boarddeckOptions.Participants,
-      fetchMinutes: boarddeckOptions.Minutes,
+      fetchMinutes: publishedMinutes ? boarddeckOptions.Minutes : false,
       fetchTasks: boarddeckOptions.Task,
       fetchPolls: boarddeckOptions.polls,
       fetchAttendance: boarddeckOptions.attendeceReport,
@@ -161,7 +195,7 @@ const BoardDeckModal = ({
     };
     dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
   };
-  console.log(editorRole.role, "rolerolerolerole");
+
   return (
     <>
       <Container>
@@ -248,14 +282,48 @@ const BoardDeckModal = ({
                   </Checkbox>
                 </Col>
                 <Col lg={4} md={4} sm={4}>
-                  <Checkbox
-                    onChange={onChangeMinutes}
-                    checked={boarddeckOptions.Minutes}
-                  >
-                    <span className={styles["Box_options"]}>
-                      {t("Minutes")}
-                    </span>
-                  </Checkbox>
+                  {publishedMinutes ? (
+                    <>
+                      {" "}
+                      <Checkbox
+                        onChange={onChangeMinutes}
+                        checked={boarddeckOptions.Minutes}
+                      >
+                        <span className={styles["Box_options"]}>
+                          {t("Minutes")}
+                        </span>
+                      </Checkbox>
+                    </>
+                  ) : (
+                    <>
+                      <Col lg={4} md={4} sm={4}>
+                        <Row>
+                          <Col
+                            lg={3}
+                            md={3}
+                            sm={3}
+                            className="d-flex align-items-center"
+                          >
+                            <img
+                              src={warningImage}
+                              alt=""
+                              className="cursor-pointer"
+                              title={t(
+                                "Minutes-will-be-available-when-published"
+                              )}
+                            />
+                          </Col>
+                          <Col lg={9} md={9} sm={9}>
+                            <span
+                              className={styles["Box_options_MinutesDisabled"]}
+                            >
+                              {t("Minutes")}
+                            </span>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </>
+                  )}
                 </Col>
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import CrossIcon from "./../../../../../../../MinutesNewFlow/Images/Cross_Icon.png";
 import ReactQuill, { Quill } from "react-quill";
+import { removeHTMLTagsAndTruncate } from "../../../../../../../../commen/functions/utils";
 
 // Functional component for editing a comment
 const EditCommentModal = ({
@@ -69,11 +70,20 @@ const EditCommentModal = ({
       }));
     } else {
       if (source === "user") {
-        const isEmptyContent = content === "<p><br></p>";
-        setUpdateMinutedata((prevState) => ({
-          ...prevState,
-          MinuteText: isEmptyContent ? "" : content,
-        }));
+        let isEmptyContent = content === "<p><br></p>";
+        if (String(content).length >= 501) {
+          setUpdateMinutedata((prevState) => ({
+            ...prevState,
+            MinuteText: isEmptyContent
+              ? ""
+              : removeHTMLTagsAndTruncate(String(content)),
+          }));
+        } else {
+          setUpdateMinutedata((prevState) => ({
+            ...prevState,
+            MinuteText: isEmptyContent ? "" : content,
+          }));
+        }
       }
     }
   };
@@ -98,9 +108,9 @@ const EditCommentModal = ({
       <h1 className={styles["Edit-Heading"]}>{t("Edit-minute")}</h1>
       {/* Text area for entering comment */}
       <TextField
-        name="textField-RejectComment"
+        name='textField-RejectComment'
         applyClass={"textField-RejectComment"} // CSS class for text area
-        type="text"
+        type='text'
         value={
           currentMeetingMinutesToReviewData.agendaDetails !== null
             ? // currentMeetingMinutesToReviewData.agendaDetails !== undefined
@@ -113,7 +123,7 @@ const EditCommentModal = ({
 
       <ReactQuill
         ref={editorRef}
-        theme="snow"
+        theme='snow'
         value={updateMinuteData.MinuteText || ""}
         placeholder={t("Minutes-details")}
         onChange={onTextChange}
@@ -134,12 +144,12 @@ const EditCommentModal = ({
         onChange={handleChange}
       /> */}
 
-      <Row className="mt-4">
+      <Row className='mt-4'>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className="d-flex justify-content-end gap-2" // CSS class for flex layout
+          className='d-flex justify-content-end gap-2' // CSS class for flex layout
         >
           {/* Button for saving changes */}
           <Button

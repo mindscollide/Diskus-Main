@@ -1262,7 +1262,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             applyClass="form-control2"
             placeholder={t("Title")}
             className="mx-2 p-0"
-            labelClass="filter"
+            labelclass="filter"
             change={onAllSearch}
           />
           <div className={styles["filterModal"]}>
@@ -1595,7 +1595,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
-                        labelClass="d-none"
+                        labelclass="d-none"
                         className={styles["formcontrol-fieldfor-filtermodal"]}
                         ref={Names}
                         onKeyDown={(event) => enterKeyHandler(event, Emails)}
@@ -1608,7 +1608,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
-                        labelClass="d-none"
+                        labelclass="d-none"
                         className={styles["formcontrol-fieldfor-filtermodal"]}
                         ref={Emails}
                         onKeyDown={(event) =>

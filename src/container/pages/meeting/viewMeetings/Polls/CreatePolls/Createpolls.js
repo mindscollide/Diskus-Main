@@ -593,7 +593,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <TextField
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       name={"TitlePolls"}
                       maxLength={140}
                       value={pollsData.Title}
@@ -628,7 +628,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                           index + 1
                                         )}`}
                                         applyClass={"PollingCreateModal"}
-                                        labelClass="d-none"
+                                        labelclass="d-none"
                                         name={data.name}
                                         maxLength={100}
                                         value={data.value}
@@ -646,7 +646,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                           "Option" + " " + parseInt(index + 1)
                                         }
                                         applyClass={"PollingCreateModal"}
-                                        labelClass="d-none"
+                                        labelclass="d-none"
                                         name={data.name}
                                         value={data.value}
                                         maxLength={100}
@@ -666,7 +666,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                             }
                                           />
                                         }
-                                        iconClassName={
+                                        iconclassname={
                                           styles["polling_Options_backGround"]
                                         }
                                       />

@@ -22,6 +22,7 @@ import {
   DownloadBoarddeckPDF,
   BoardDeckSendEmail,
   validateVideoRecordingURL,
+  getMinutesPublishedStatus,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -734,10 +735,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                allOrganizationUsersSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                allOrganizationUsersSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -747,10 +745,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                allOrganizationUsersSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                allOrganizationUsersSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2438,9 +2433,7 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
                   "Admin_AdminServiceManager_DowngradeOrganizationSubscription_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                downgradeOrganizationSubscriptionSuccess("")
-              );
+              dispatch(downgradeOrganizationSubscriptionSuccess(""));
               navigate("/Admin/subscriptionDetailsUserManagement");
             } else if (
               response.data.responseResult.responseMessage
@@ -2754,7 +2747,6 @@ const BoardDeckValidateURL_init = () => {
 };
 
 const BoardDeckValidateURL_success = (response, message) => {
-  console.log(response, "responseresponseresponse");
   return {
     type: actions.VALIDATE_VIDEO_URL_SUCCESS,
     response: response,
@@ -2834,6 +2826,112 @@ const BoardDeckValidateURLAPI = (navigate, t, data) => {
   };
 };
 
+//validate Minutes Published BoardDeck
+
+const BoardDeckValidateIsMinutesPublished_init = () => {
+  return {
+    type: actions.GET_MINUTES_PUBLISHED_STATUS_INIT,
+  };
+};
+
+const BoardDeckValidateIsMinutesPublished_success = (response, message) => {
+  return {
+    type: actions.GET_MINUTES_PUBLISHED_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const BoardDeckValidateIsMinutesPublished_failed = (message) => {
+  return {
+    type: actions.GET_MINUTES_PUBLISHED_STATUS_FAIL,
+    message: message,
+  };
+};
+
+const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(BoardDeckValidateIsMinutesPublished_init());
+    let form = new FormData();
+    form.append("RequestMethod", getMinutesPublishedStatus.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(BoardDeckValidateIsMinutesPublishedAPI(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingMinutesStatus_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                BoardDeckValidateIsMinutesPublished_success(
+                  response.data.responseResult,
+                  t("Record-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingMinutesStatus_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                BoardDeckValidateIsMinutesPublished_success(
+                  response.data.responseResult,
+                  t("Record-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingMinutesStatus_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                BoardDeckValidateIsMinutesPublished_failed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              BoardDeckValidateIsMinutesPublished_failed(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            BoardDeckValidateIsMinutesPublished_failed(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          BoardDeckValidateIsMinutesPublished_failed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   changeSelectPacakgeApi,
   signUpOrganizationAndPakageSelection,
@@ -2865,4 +2963,5 @@ export {
   BoardDeckPDFDownloadApi,
   BoardDeckSendEmailApi,
   BoardDeckValidateURLAPI,
+  BoardDeckValidateIsMinutesPublishedAPI,
 };

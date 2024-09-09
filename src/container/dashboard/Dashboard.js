@@ -526,9 +526,9 @@ const Dashboard = () => {
                 ...notification,
                 notificationShow: true,
                 message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
+                  t("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED"),
                   "[Place holder]",
-                  data.payload.meetingTitle.substring(0, 100)
+                  data.payload.title.substring(0, 100)
                 ),
               });
               setNotificationID(id);

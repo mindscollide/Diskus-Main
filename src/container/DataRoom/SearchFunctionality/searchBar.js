@@ -1337,7 +1337,7 @@ const SearchBarComponent = ({
         change={handleTitleSearch}
         placeholder={t("Search")}
         applyClass={"dataRoomSearchInput"}
-        labelClass="d-none"
+        labelclass="d-none"
         onClick={searchbardropdownShow}
         onKeyDown={handleOnEnterTitleSearch}
         inputicon={
@@ -1375,7 +1375,7 @@ const SearchBarComponent = ({
           )
         }
         // clickIcon={SearchiconClickOptions}
-        iconClassName={
+        iconclassname={
           searchTabOpen
             ? styles["dataroom_searchinput"]
             : styles["dataroom_searchinput2"]
@@ -1447,7 +1447,7 @@ const SearchBarComponent = ({
               <Row className="mt-2 Inputfield_for_data_room">
                 <Col lg={12} md={12} sm={12}>
                   <TextField
-                    labelClass="textFieldSearch d-none"
+                    labelclass="textFieldSearch d-none"
                     placeholder={t(
                       "Enter-a-team-the-matches-part-of-the-file-name"
                     )}

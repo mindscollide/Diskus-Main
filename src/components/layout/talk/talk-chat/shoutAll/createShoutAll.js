@@ -171,7 +171,7 @@ const CreateNewShoutAll = () => {
                 setShoutNameValue(e.target.value);
               }}
               value={shoutNameValue}
-              labelClass={"d-none"}
+              labelclass={"d-none"}
             />
           </Col>
         </Row>
@@ -186,7 +186,7 @@ const CreateNewShoutAll = () => {
                 searchShoutAllUserUser(e.target.value);
               }}
               value={searchShoutAllUserValue}
-              labelClass={"d-none"}
+              labelclass={"d-none"}
             />
           </Col>
         </Row>

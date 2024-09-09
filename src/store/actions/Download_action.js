@@ -221,7 +221,7 @@ const downlooadUserloginHistoryApi = (navigate, t, Data) => {
 
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "user-login-history.xlsx");
+          link.setAttribute("download", "Login History Report.xlsx");
           document.body.appendChild(link);
           link.click();
           dispatch(

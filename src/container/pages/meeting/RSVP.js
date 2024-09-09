@@ -185,7 +185,7 @@ const RSVP = () => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
-                    labelClass={"d-none"}
+                    labelclass={"d-none"}
                     name={"MeetingTitle"}
                     value={rsvpData.meetingTitle}
                     disable={true}
@@ -204,7 +204,7 @@ const RSVP = () => {
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <TextField
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                         name={"MeetingDateAndTime"}
                         value={convertDateTimeRangeToGMT(
                           rsvpData.meetingDate + rsvpData.startTime,
@@ -224,7 +224,7 @@ const RSVP = () => {
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <TextField
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                         name={"DateOfSubmissionResponse"}
                         value={newTimeFormaterAsPerUTCTalkDateTime(
                           rsvpData.responseDate + rsvpData.responseTime
@@ -245,7 +245,7 @@ const RSVP = () => {
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <TextField
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                         name={"MeetingLocation"}
                         value={rsvpData.meetingLocation}
                         disable={true}
@@ -262,7 +262,7 @@ const RSVP = () => {
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <TextField
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                         name={"ConfirmedAttendance"}
                         value={rsvpData.userResponse}
                         disable={true}

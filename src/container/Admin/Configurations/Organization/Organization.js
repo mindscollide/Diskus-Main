@@ -813,7 +813,7 @@ const Organization = () => {
                         });
                       }}
                       maxLength={360}
-                      labelClass="d-none"
+                      labelclass="d-none"
                       width="80px"
                     />
                   </Col>
@@ -846,7 +846,7 @@ const Organization = () => {
                       change={handleChangeMaximumMeeting}
                       value={organizationStates.MaximumMeetingDuration}
                       name={"maximumduration"}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       width="80px"
                     />
                     {/* <Select
@@ -1868,7 +1868,7 @@ const Organization = () => {
                         });
                       }}
                       maxLength={360}
-                      labelClass="d-none"
+                      labelclass="d-none"
                       width="80px"
                     />
                   </Col>

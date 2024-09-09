@@ -2282,7 +2282,7 @@ const OrganizationLevelSetting = () => {
                           change={changeMeetingDuration}
                           value={userOrganizationSetting.MaximumMeetingDuration}
                           name={"maximumduration"}
-                          labelClass={"d-none"}
+                          labelclass={"d-none"}
                           width="80px"
                         />
                         {/* <Select options={MonthValues} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} /> */}

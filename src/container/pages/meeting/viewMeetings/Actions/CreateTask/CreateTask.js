@@ -707,7 +707,7 @@ const CreateTask = ({
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       placeholder={t("Task-title")}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       change={HandleChange}
                       maxLength={195}
                       name={"ActionsToTake"}
@@ -852,7 +852,7 @@ const CreateTask = ({
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <TextField
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       change={HandleChange}
                       name={"Description"}
                       value={createTaskDetails.Description}
