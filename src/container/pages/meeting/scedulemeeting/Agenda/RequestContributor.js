@@ -157,7 +157,7 @@ const RequestContributor = ({
           />
           {/* <TextField
             applyClass={"AgendaTextField"}
-            labelClass={"d-none"}
+            labelclass={"d-none"}
             placeholder={t("Enter-email-address-here")}
             name={"MainRequestContributorName"}
             value={data.requestContributorURl}

@@ -551,7 +551,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <Form onSubmit={handleSubmitSearchInvoice}>
               <Form.Control
                 className={styles["paymenthistory_searchbar"]}
-                labelClass="filter"
+                labelclass="filter"
                 name="InvoiceNum"
                 value={InvoiceNumber || ""}
                 onChange={handleSearchInvoice}

@@ -759,7 +759,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               applyClass='form-control2'
               className='mx-1'
               placeholder={t("Title")}
-              labelClass='filter'
+              labelclass='filter'
               change={onAllSearch}
             />
             <div className={styles["MeetingfilterModal"]}>

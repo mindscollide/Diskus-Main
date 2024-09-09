@@ -197,7 +197,7 @@ const AgendaContributers = ({
                   <TextField
                     disable={record.isEdit ? true : false}
                     placeholder={t("Contributor-title")}
-                    labelClass={"d-none"}
+                    labelclass={"d-none"}
                     width={"100%"}
                     maxLength={140}
                     applyClass={"Organizer_table"}
@@ -434,7 +434,7 @@ const AgendaContributers = ({
                   <TextField
                     disable={record.isEdit ? true : false}
                     placeholder={t("Contributor-title")}
-                    labelClass={"d-none"}
+                    labelclass={"d-none"}
                     width={"100%"}
                     maxLength={140}
                     applyClass={"Organizer_table"}

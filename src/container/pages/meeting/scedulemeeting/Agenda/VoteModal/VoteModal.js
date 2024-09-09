@@ -821,7 +821,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                           ? "text-area-close-New_meeting_error"
                           : "text-area-close-New_meeting"
                       }
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       type="text"
                       as={"textarea"}
                       value={agendaDetails.voteQuestion}
@@ -859,7 +859,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     <Row>
                       <Col lg={8} md={8} sm={8}>
                         <TextField
-                          labelClass={"d-none"}
+                          labelclass={"d-none"}
                           applyClass={"NewMeetingFileds"}
                           value={saveOptions.votingAnswer}
                           change={(e) => handleOptionTextChange(e)}
@@ -950,7 +950,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                                       >
                                         {data.votingAnswer === "Pending" ? (
                                           <TextField
-                                            labelClass={"d-none"}
+                                            labelclass={"d-none"}
                                             applyClass={
                                               "NewMeetingFileds_withIcon"
                                             }
@@ -960,14 +960,14 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                                             }
                                             value={data.votingAnswer}
                                             name={"OptionsAdded"}
-                                            iconClassName={
+                                            iconclassname={
                                               styles["ResCrossIcon"]
                                             }
                                             disable={true}
                                           />
                                         ) : (
                                           <TextField
-                                            labelClass={"d-none"}
+                                            labelclass={"d-none"}
                                             applyClass={
                                               "NewMeetingFileds_withIcon"
                                             }
@@ -977,7 +977,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                                             width={"145px"}
                                             value={data.votingAnswer}
                                             name={"OptionsAdded"}
-                                            iconClassName={
+                                            iconclassname={
                                               styles["ResCrossIcon"]
                                             }
                                             inputicon={

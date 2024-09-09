@@ -22,7 +22,7 @@ const Urls = ({ data, index, setRows, rows, editorRole }) => {
       <Col lg={12} md={12} sm={12}>
         <TextField
           applyClass={"AgendaTextField"}
-          labelClass={"d-none"}
+          labelclass={"d-none"}
           placeholder={t("Enter-url")}
           name={"UrlMainAgenda"}
           value={data.urlFieldMain}

@@ -393,7 +393,7 @@ const Createpolls = ({ setCreatepoll }) => {
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <TextField
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       name={"TitlePolls"}
                       maxLength={140}
                       value={pollsData.Title}
@@ -432,7 +432,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                           "*"
                                         }
                                         applyClass={"pollingCreateTitle"}
-                                        labelClass="d-none"
+                                        labelclass="d-none"
                                         name={data.name}
                                         maxLength={100}
                                         value={data.value}
@@ -453,7 +453,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                           "*"
                                         }
                                         applyClass={"pollingCreateTitle"}
-                                        labelClass="d-none"
+                                        labelclass="d-none"
                                         name={data.name}
                                         value={data.value}
                                         maxLength={500}
@@ -472,7 +472,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                             }
                                           />
                                         }
-                                        iconClassName={
+                                        iconclassname={
                                           styles["polling_Options_backGround"]
                                         }
                                       />

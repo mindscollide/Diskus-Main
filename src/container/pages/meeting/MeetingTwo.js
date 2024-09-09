@@ -2533,7 +2533,7 @@ const NewMeeting = () => {
                     placeholder={t("Search")}
                     applyClass={"meetingSearch"}
                     name={"SearchVal"}
-                    labelClass='d-none'
+                    labelclass='d-none'
                     value={searchText}
                     change={handleSearchChange}
                     onKeyDown={handleKeyPress}
@@ -2567,7 +2567,7 @@ const NewMeeting = () => {
                         </Col>
                       </Row>
                     }
-                    iconClassName={styles["polling_searchinput"]}
+                    iconclassname={styles["polling_searchinput"]}
                   />
                   {searchMeeting ? (
                     <>
@@ -2599,7 +2599,7 @@ const NewMeeting = () => {
                               <TextField
                                 placeholder={t("Meeting-title")}
                                 applyClass={"meetinInnerSearch"}
-                                labelClass='d-none'
+                                labelclass='d-none'
                                 name='MeetingTitle'
                                 value={searchFields.MeetingTitle}
                                 change={searchMeetingChangeHandler}
@@ -2631,7 +2631,7 @@ const NewMeeting = () => {
                             <Col lg={6} md={6} sm={12}>
                               <TextField
                                 placeholder={t("Organizer-name")}
-                                labelClass='d-none'
+                                labelclass='d-none'
                                 name='OrganizerName'
                                 applyClass={"meetinInnerSearch"}
                                 value={searchFields.OrganizerName}

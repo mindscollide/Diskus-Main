@@ -1695,7 +1695,7 @@ const SignatureViewer = () => {
                         type='email'
                         disable={true}
                         // disable={index !== 0 ? true : false}
-                        labelClass={"inputlabel_style"}
+                        labelclass={"inputlabel_style"}
                         applyClass={"signatureflow_input"}
                         placeholder={t("Email")}
                         value={signers.EmailAddress}
@@ -1746,7 +1746,7 @@ const SignatureViewer = () => {
                                               <Col sm={6} md={6} lg={6}>
                                                 <TextField
                                                   placeholder={t("Full-name")}
-                                                  labelClass={
+                                                  labelclass={
                                                     "inputlabel_style"
                                                   }
                                                   width={"100%"}
@@ -1766,7 +1766,7 @@ const SignatureViewer = () => {
                                                   name={"EmailAddress"}
                                                   type='email'
                                                   disable={true}
-                                                  labelClass={
+                                                  labelclass={
                                                     "inputlabel_style"
                                                   }
                                                   applyClass={

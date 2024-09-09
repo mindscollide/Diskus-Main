@@ -235,7 +235,7 @@ const ImportPrevious = () => {
                     <InputSearchFilter
                       value={importAgendaData.InputSearchVal}
                       change={handleSearchFilter}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                     />
                   </Col>
                   <Col lg={2} md={2} sm={12}>

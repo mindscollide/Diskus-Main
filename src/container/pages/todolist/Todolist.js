@@ -781,7 +781,7 @@ const TodoList = () => {
                         value={searchData.AssignedToName}
                         className="mx-2 "
                         placeholder={t("Assigned-to")}
-                        labelClass="textFieldSearch"
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <TextField
@@ -790,7 +790,7 @@ const TodoList = () => {
                         value={searchData.Title}
                         // className="mx-4"
                         placeholder={t("Task")}
-                        labelClass="textFieldSearch"
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
 
@@ -833,7 +833,7 @@ const TodoList = () => {
                         value={searchData.Title}
                         className="mx-2"
                         placeholder={t("Task")}
-                        labelClass="textFieldSearch"
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <TextField
@@ -843,7 +843,7 @@ const TodoList = () => {
                         value={searchData.AssignedToName}
                         className="mx-2"
                         placeholder={t("Assigned-to")}
-                        labelClass="textFieldSearch"
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <Button

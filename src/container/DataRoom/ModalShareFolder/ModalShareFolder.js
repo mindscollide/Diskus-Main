@@ -490,7 +490,7 @@ const ModalShareFolder = ({
                         onChange={onChangeSearch}
                       />
                       {/* <InputSearchFilter
-                        labelClass='d-none'
+                        labelclass='d-none'
                         flag={flag}
                         applyClass='sharefoldersearchInput'
                         placeholder={t("Search-member-here")}

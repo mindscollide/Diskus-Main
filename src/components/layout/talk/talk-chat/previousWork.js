@@ -5964,7 +5964,7 @@ const TalkChat = () => {
                           searchChatUsers(e.target.value);
                         }}
                         value={searchChatUserValue}
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   </Row>
@@ -6068,7 +6068,7 @@ const TalkChat = () => {
                           setGroupNameValue(e.target.value);
                         }}
                         value={groupNameValue}
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   </Row>
@@ -6083,7 +6083,7 @@ const TalkChat = () => {
                           searchGroupUser(e.target.value);
                         }}
                         value={searchGroupUserValue}
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   </Row>
@@ -6202,7 +6202,7 @@ const TalkChat = () => {
                           setShoutNameValue(e.target.value);
                         }}
                         value={shoutNameValue}
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   </Row>
@@ -6217,7 +6217,7 @@ const TalkChat = () => {
                           searchShoutAllUserUser(e.target.value);
                         }}
                         value={searchShoutAllUserValue}
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   </Row>
@@ -6365,7 +6365,7 @@ const TalkChat = () => {
                           }}
                           value={searchChatValue}
                           placeholder="Search Chat"
-                          labelClass={"d-none"}
+                          labelclass={"d-none"}
                         />
                       </Col>
                     </Row>
@@ -6939,7 +6939,7 @@ const TalkChat = () => {
                           change={(e) => setSearchChatWord(e.target.value)}
                           value={searchChatWord}
                           placeholder="Search Chat"
-                          labelClass={"d-none"}
+                          labelclass={"d-none"}
                         />
                       </Col>
                     </Row>
@@ -9230,7 +9230,7 @@ const TalkChat = () => {
                         }}
                         value={searchChatValue}
                         placeholder="Search Users"
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   </Row>
@@ -9387,7 +9387,7 @@ const TalkChat = () => {
                         }}
                         value={searchGroupUserInfoValue}
                         placeholder="Search Users"
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   </Row>
@@ -9493,7 +9493,7 @@ const TalkChat = () => {
                           maxLength={200}
                           change={groupNameHandler}
                           autoComplete="off"
-                          labelClass={"d-none"}
+                          labelclass={"d-none"}
                         />
                       </Col>
                     )}
@@ -9515,7 +9515,7 @@ const TalkChat = () => {
                         }}
                         value={searchGroupUserInfoValue}
                         placeholder="Search Users"
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   </Row>
@@ -9649,7 +9649,7 @@ const TalkChat = () => {
                           maxLength={200}
                           change={shoutNameHandler}
                           autoComplete="off"
-                          labelClass={"d-none"}
+                          labelclass={"d-none"}
                         />
                       </Col>
                     )}
@@ -9671,7 +9671,7 @@ const TalkChat = () => {
                         }}
                         value={searchUserShoutValue}
                         placeholder="Search Users"
-                        labelClass={"d-none"}
+                        labelclass={"d-none"}
                       />
                     </Col>
                   </Row>

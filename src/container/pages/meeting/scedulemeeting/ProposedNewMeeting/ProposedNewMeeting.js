@@ -867,7 +867,7 @@ const ProposedNewMeeting = ({
                 <Row className='mt-1'>
                   <Col lg={12} md={12} sm={12}>
                     <TextField
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       name={"MeetingTitle"}
                       change={HandleChange}
                       value={proposedMeetingDetails.MeetingTitle}
@@ -904,7 +904,7 @@ const ProposedNewMeeting = ({
                       type='text'
                       placeholder={t("Description")}
                       as={"textarea"}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       rows='7'
                       value={proposedMeetingDetails.Description}
                       change={HandleChange}

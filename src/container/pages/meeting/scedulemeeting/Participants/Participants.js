@@ -292,7 +292,7 @@ const Participants = ({
                     <TextField
                       disable={record.isComingApi === true ? true : false}
                       placeholder={t("Participant-title")}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       applyClass={"Organizer_table"}
                       maxLength={140}
                       value={
@@ -540,7 +540,7 @@ const Participants = ({
                     <TextField
                       disable={record.isComingApi === true ? true : false}
                       placeholder={t("Participant-title")}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       applyClass={"Organizer_table"}
                       maxLength={140}
                       value={

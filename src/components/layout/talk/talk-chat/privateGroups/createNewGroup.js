@@ -169,7 +169,7 @@ const CreateNewGroup = () => {
                 setGroupNameValue(e.target.value)
               }}
               value={groupNameValue}
-              labelClass={'d-none'}
+              labelclass={'d-none'}
             />
           </Col>
         </Row>
@@ -184,7 +184,7 @@ const CreateNewGroup = () => {
                 searchGroupUser(e.target.value)
               }}
               value={searchGroupUserValue}
-              labelClass={'d-none'}
+              labelclass={'d-none'}
             />
           </Col>
         </Row>

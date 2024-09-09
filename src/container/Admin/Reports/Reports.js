@@ -571,9 +571,9 @@ const Reports = () => {
                 <section className={styles["report_search_Box"]}>
                   <TextField
                     applyClass={"user-login-history-searchbar"}
-                    labelClass={"d-none"}
+                    labelclass={"d-none"}
                     width={"100%"}
-                    iconClassName={"d-block"}
+                    iconclassname={"d-block"}
                     placeholder={`${t("Title")}...`}
                     onKeyDown={handleKeyDown}
                     name={"Title"}
@@ -825,7 +825,7 @@ const Reports = () => {
                             change={handleChangeSearchBoxValues}
                             name={"IpAddress"}
                             placeholder={t("Ip-address")}
-                            labelClass={"d-none"}
+                            labelclass={"d-none"}
                             value={userLoginHistorySearch.IpAddress}
                           />
                         </Col>

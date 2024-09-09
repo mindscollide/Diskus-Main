@@ -10,7 +10,7 @@ const InputSearchFilter = ({
   disable,
   applyClass,
   placeholder,
-  labelClass,
+  labelclass,
   flag,
 }) => {
   //For Localization
@@ -21,7 +21,7 @@ const InputSearchFilter = ({
         <TextField
           type="text"
           width={"100%"}
-          labelClass={labelClass}
+          labelclass={labelclass}
           value={value}
           change={change}
           placeholder={placeholder}

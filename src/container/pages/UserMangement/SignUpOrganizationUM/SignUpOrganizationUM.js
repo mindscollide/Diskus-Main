@@ -880,7 +880,7 @@ const SignUpOrganizationUM = () => {
                           );
                         }}
                         autofill
-                        labelClass="d-none"
+                        labelclass="d-none"
                         applyClass={"sign-up-textfield-input MontserratMedium"}
                         placeholder={t("Company-name")}
                         change={signupValuesChangeHandler}
@@ -957,7 +957,7 @@ const SignUpOrganizationUM = () => {
                         </span>
                       </Row>
                       <TextField
-                        labelClass="d-none"
+                        labelclass="d-none"
                         placeholder={t("Address")}
                         maxLength={100}
                         change={signupValuesChangeHandler}
@@ -970,7 +970,7 @@ const SignUpOrganizationUM = () => {
                   {/* <Row className="mb-3">
                     <Col sm={12} md={12} lg={12}>
                       <TextField
-                        labelClass="d-none"
+                        labelclass="d-none"
                         placeholder={t("Address-2")}
                         maxLength={100}
                         change={signupValuesChangeHandler}
@@ -988,7 +988,7 @@ const SignUpOrganizationUM = () => {
                         </span>
                       </Row>
                       <TextField
-                        labelClass="d-none"
+                        labelclass="d-none"
                         placeholder={t("State-province")}
                         maxLength={70}
                         change={signupValuesChangeHandler}
@@ -1009,7 +1009,7 @@ const SignUpOrganizationUM = () => {
                         <span className={styles["Heading"]}>{t("City")}</span>
                       </Row>
                       <TextField
-                        labelClass="d-none"
+                        labelclass="d-none"
                         placeholder={t("City")}
                         name="City"
                         maxLength={70}
@@ -1032,7 +1032,7 @@ const SignUpOrganizationUM = () => {
                         </span>
                       </Row>
                       <TextField
-                        labelClass="d-none"
+                        labelclass="d-none"
                         placeholder={t("Postal-zipcode")}
                         maxLength={10}
                         change={signupValuesChangeHandler}
@@ -1062,7 +1062,7 @@ const SignUpOrganizationUM = () => {
                         </span>
                       </Row>
                       <TextField
-                        labelClass="d-none"
+                        labelclass="d-none"
                         placeholder={t("Full-name")}
                         name="FullName"
                         change={signupValuesChangeHandler}
@@ -1101,7 +1101,7 @@ const SignUpOrganizationUM = () => {
                         onBlur={() => {
                           handeEmailvlidate();
                         }}
-                        labelClass="d-none"
+                        labelclass="d-none"
                         placeholder={t("Work-email-address")}
                         name="Email"
                         type="email"

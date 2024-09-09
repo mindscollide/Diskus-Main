@@ -257,7 +257,7 @@ const PakageDetailsUMUpgrade = () => {
               <Row>
                 <Col className="d-flex justify-content-center">
                   <TextField
-                    labelClass="d-none"
+                    labelclass="d-none"
                     applyClass="PakageDetails_UMUpgrade"
                     name="noofLisence"
                     maxLength={3}

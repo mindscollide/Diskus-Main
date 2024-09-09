@@ -465,7 +465,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
           <Row className="mt-1">
             <Col lg={12} md={12} sm={12}>
               <TextField
-                labelClass={"d-none"}
+                labelclass={"d-none"}
                 value={updatePolls.Title}
                 name={"UpdatePollsTitle"}
                 maxLength={140}
@@ -501,7 +501,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                                     "Option" + " " + parseInt(index + 1)
                                   }
                                   applyClass={"PollingCreateModal"}
-                                  labelClass="d-none"
+                                  labelclass="d-none"
                                   name={data.name}
                                   disable={checkForPollStatus}
                                   maxLength={100}
@@ -520,7 +520,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                                     "Option" + " " + parseInt(index + 1)
                                   }
                                   applyClass={"PollingCreateModal"}
-                                  labelClass="d-none"
+                                  labelclass="d-none"
                                   name={data.name}
                                   disable={checkForPollStatus}
                                   value={data.value}
@@ -543,7 +543,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                                       />
                                     )
                                   }
-                                  iconClassName={
+                                  iconclassname={
                                     styles["polling_Options_backGround"]
                                   }
                                 />

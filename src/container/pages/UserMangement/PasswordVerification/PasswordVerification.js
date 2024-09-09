@@ -301,8 +301,8 @@ const PasswordVerification = () => {
                         value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Password")}
-                        iconClassName={styles["IconStyle"]}
-                        labelClass='lightLabel'
+                        iconclassname={styles["IconStyle"]}
+                        labelclass='lightLabel'
                         autoComplete='off'
                         maxLength={200}
                       />
