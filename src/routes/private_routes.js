@@ -47,7 +47,7 @@ const PrivateRoutes = () => {
     }
 
     // Action: Meeting Proposed
-    if (currentUrl.includes("DisKus/Meeting/Meetingproposed?action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Meetingproposed_action=")) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("meetingprop", parts);
