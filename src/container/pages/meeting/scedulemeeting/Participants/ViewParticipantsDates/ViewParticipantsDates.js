@@ -348,6 +348,7 @@ const ViewParticipantsDates = ({
       PublishedMeetings: false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.setItem("MeetingCurrentView", 2);
     setViewProposeDatePoll(false);
     dispatch(viewProposeDateMeetingPageFlag(false));
   };
