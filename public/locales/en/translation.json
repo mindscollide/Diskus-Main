@@ -480,7 +480,7 @@
   "Push-notification": "Push notification",
   "Terms-and-conditions": "Terms and conditions",
   "Title-limit-is-200": "Title limit is 200",
-  "Description-limit-is-300": "Description limit is 300",
+  "Description-limit-is-300": "Description limit is 2000",
   "Only-one-assignee-allow": "Only one assignee allow",
   "Update-general-setting-successfully": "Update general setting successfully",
   "Update-user-profile-successfully": "Update user profile successfully",
