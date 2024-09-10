@@ -1316,9 +1316,9 @@ const NewMeeting = () => {
                 )}
               </Col>
               <Col lg={3} md={3} sm={3}>
-                {/* Commented This condition for time being */}
-                {/* record.isRecordingAvailable */}
-                {record.status === "9" && record.isQuickMeeting === false ? (
+                {record.status === "9" &&
+                record.isQuickMeeting === false &&
+                record.isRecordingAvailable ? (
                   <Tooltip
                     placement="topLeft"
                     title={t("Download-video-recording")}
