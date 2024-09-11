@@ -11,7 +11,10 @@ import {
   callRequestReceivedMQTT,
   LeaveCall,
 } from "../../../../../../store/actions/VideoMain_actions";
-import { FetchMeetingURLApi } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  FetchMeetingURLApi,
+  LeaveCurrentMeeting,
+} from "../../../../../../store/actions/NewMeetingActions";
 import {
   normalizeVideoPanelFlag,
   videoChatPanel,
@@ -42,6 +45,23 @@ import {
   exportAgenda,
   printAgenda,
 } from "../../../../../../store/actions/MeetingAgenda_action";
+import {
+  GetAllUsers,
+  GetGroupMessages,
+  activeChat,
+} from "../../../../../../store/actions/Talk_action";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+} from "../../../../../../store/actions/Talk_Feature_actions";
+import { getCurrentDateTimeUTC } from "../../../../../../commen/functions/date_formater";
 
 const FullScreenAgendaModal = ({
   setFullScreenView,
@@ -55,10 +75,16 @@ const FullScreenAgendaModal = ({
   agendaSelectOptionView,
   setShareEmailView,
   shareEmailView,
+  videoTalk,
+  setEdiorRole,
+  setAdvanceMeetingModalID,
+  setViewAdvanceMeetingModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { talkStateData } = useSelector((state) => state);
 
   const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
     (state) =>
@@ -191,11 +217,11 @@ const FullScreenAgendaModal = ({
         )
       );
       localStorage.setItem("meetingTitle", meetingTitle);
-      setFullScreenView(false);
+      // setFullScreenView(false);
     } else if (activeCall === true && isMeeting === false) {
       setInitiateVideoModalOto(true);
       dispatch(callRequestReceivedMQTT({}, ""));
-      setFullScreenView(false);
+      // setFullScreenView(false);
     }
   };
 
@@ -221,6 +247,66 @@ const FullScreenAgendaModal = ({
     setShareEmailView(!shareEmailView);
   };
 
+  const groupChatInitiation = (talkGroupID) => {
+    if (
+      talkGroupID !== 0 &&
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+    ) {
+      dispatch(createShoutAllScreen(false));
+      dispatch(addNewChatScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(createGroupScreen(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(recentChatFlag(true));
+      dispatch(activeChatBoxGS(true));
+      dispatch(chatBoxActiveFlag(true));
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
+      let chatGroupData = {
+        UserID: parseInt(currentUserID),
+        ChannelID: currentOrganization,
+        GroupID: talkGroupID,
+        NumberOfMessages: 50,
+        OffsetMessage: 0,
+      };
+      dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      dispatch(
+        GetAllUsers(navigate, parseInt(currentUserID), currentOrganization, t)
+      );
+
+      let allChatMessages =
+        talkStateData.AllUserChats.AllUserChatsData.allMessages;
+      const foundRecord = allChatMessages.find(
+        (item) => item.id === talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+      }
+      localStorage.setItem("activeOtoChatID", talkGroupID);
+    }
+  };
+
+  const leaveMeeting = () => {
+    let leaveMeetingData = {
+      FK_MDID: currentMeeting,
+      DateTime: getCurrentDateTimeUTC(),
+    };
+    dispatch(
+      LeaveCurrentMeeting(
+        navigate,
+        t,
+        leaveMeetingData,
+        false,
+        false,
+        setEdiorRole,
+        setAdvanceMeetingModalID,
+        setViewAdvanceMeetingModal
+      )
+    );
+  };
+
   const handleOutsideClick = (event) => {
     if (
       closeMenuAgenda.current &&
@@ -237,6 +323,8 @@ const FullScreenAgendaModal = ({
       document.removeEventListener("click", handleOutsideClick);
     };
   }, [menuAgendaFull]);
+
+  console.log("videoTalkvideoTalk", videoTalk);
 
   return (
     <Modal
@@ -260,17 +348,30 @@ const FullScreenAgendaModal = ({
             >
               <p className={styles["FileModalTitle"]}>{t("Agenda-viewer")}</p>
               <div className={styles["icons-block"]}>
-                <Tooltip placement="topRight" title={t("Start-chat")}>
-                  <div className={styles["box-agendas-leave"]}>
-                    <img src={TalkInactiveIcon} alt="" />
-                  </div>
-                </Tooltip>
+                {videoTalk?.isChat ? (
+                  <Tooltip placement="topRight" title={t("Start-chat")}>
+                    <div
+                      className={styles["box-agendas-leave"]}
+                      onClick={() =>
+                        groupChatInitiation(videoTalk?.talkGroupID)
+                      }
+                    >
+                      <img src={TalkInactiveIcon} alt="" />
+                    </div>
+                  </Tooltip>
+                ) : null}
 
-                <Tooltip placement="topRight" title={t("Leave-meeting")}>
-                  <div className={styles["box-agendas-leave"]}>
-                    <img src={LeaveMeetingIcon} alt="" />
-                  </div>
-                </Tooltip>
+                {(editorRole.status === "10" || editorRole.status === 10) &&
+                videoTalk?.isVideoCall ? (
+                  <Tooltip placement="topRight" title={t("Leave-meeting")}>
+                    <div
+                      className={styles["box-agendas-leave"]}
+                      onClick={leaveMeeting}
+                    >
+                      <img src={LeaveMeetingIcon} alt="" />
+                    </div>
+                  </Tooltip>
+                ) : null}
 
                 {editorRole.status === "10" || editorRole.status === 10 ? (
                   <Tooltip placement="topRight" title={t("Enable-video-call")}>

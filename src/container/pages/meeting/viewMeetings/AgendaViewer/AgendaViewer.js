@@ -61,6 +61,22 @@ import ShareIcon from "./AV-Images/Share-Icon.png";
 import LeaveMeetingIcon from "./AV-Images/Leave-Meeting.svg";
 import TalkInactiveIcon from "./AV-Images/Talk Inactive.svg";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
+import {
+  GetAllUsers,
+  GetGroupMessages,
+  activeChat,
+} from "../../../../../store/actions/Talk_action";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+} from "../../../../../store/actions/Talk_Feature_actions";
 
 const AgendaViewer = ({
   setViewAdvanceMeetingModal,
@@ -78,7 +94,7 @@ const AgendaViewer = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { MeetingAgendaReducer } = useSelector((state) => state);
+  const { MeetingAgendaReducer, talkStateData } = useSelector((state) => state);
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -370,6 +386,45 @@ const AgendaViewer = ({
     );
   };
 
+  const groupChatInitiation = (talkGroupID) => {
+    if (
+      talkGroupID !== 0 &&
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+    ) {
+      dispatch(createShoutAllScreen(false));
+      dispatch(addNewChatScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(createGroupScreen(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(recentChatFlag(true));
+      dispatch(activeChatBoxGS(true));
+      dispatch(chatBoxActiveFlag(true));
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
+      let chatGroupData = {
+        UserID: parseInt(userID),
+        ChannelID: currentOrganization,
+        GroupID: talkGroupID,
+        NumberOfMessages: 50,
+        OffsetMessage: 0,
+      };
+      dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      dispatch(GetAllUsers(navigate, parseInt(userID), currentOrganization, t));
+
+      let allChatMessages =
+        talkStateData.AllUserChats.AllUserChatsData.allMessages;
+      const foundRecord = allChatMessages.find(
+        (item) => item.id === talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+      }
+      localStorage.setItem("activeOtoChatID", talkGroupID);
+    }
+  };
+
   useEffect(() => {
     if (agendaResponseMessage === t("Success")) {
       setTimeout(
@@ -577,23 +632,34 @@ const AgendaViewer = ({
                     className="d-flex justify-content-end align-items-center text-end gap-2 mt-3"
                   >
                     <div className={styles["icons-block"]}>
-                      <Tooltip placement="topRight" title={t("Start-chat")}>
-                        <div className={styles["box-agendas-leave"]}>
-                          <img src={TalkInactiveIcon} alt="" />
-                        </div>
-                      </Tooltip>
+                      {videoTalk?.isChat ? (
+                        <Tooltip placement="topRight" title={t("Start-chat")}>
+                          <div
+                            className={styles["box-agendas-leave"]}
+                            onClick={() =>
+                              groupChatInitiation(videoTalk?.talkGroupID)
+                            }
+                          >
+                            <img src={TalkInactiveIcon} alt="" />
+                          </div>
+                        </Tooltip>
+                      ) : null}
 
-                      {/* {editorRole.status === "10" ||
-                      editorRole.status === 10 ? ( */}
-                      <Tooltip placement="topRight" title={t("Leave-meeting")}>
-                        <div
-                          className={styles["box-agendas-leave"]}
-                          onClick={leaveMeeting}
+                      {(editorRole.status === "10" ||
+                        editorRole.status === 10) &&
+                      videoTalk?.isVideoCall ? (
+                        <Tooltip
+                          placement="topRight"
+                          title={t("Leave-meeting")}
                         >
-                          <img src={LeaveMeetingIcon} alt="" />
-                        </div>
-                      </Tooltip>
-                      {/* // ) : null} */}
+                          <div
+                            className={styles["box-agendas-leave"]}
+                            onClick={leaveMeeting}
+                          >
+                            <img src={LeaveMeetingIcon} alt="" />
+                          </div>
+                        </Tooltip>
+                      ) : null}
 
                       {editorRole.status === "10" ||
                       editorRole.status === 10 ? (
@@ -853,6 +919,7 @@ const AgendaViewer = ({
           agendaSelectOptionView={agendaSelectOptionView}
           setShareEmailView={setShareEmailView}
           shareEmailView={shareEmailView}
+          videoTalk={videoTalk}
         />
       ) : null}
       {agendaSelectOptionView ? (

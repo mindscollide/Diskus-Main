@@ -2519,6 +2519,8 @@ const NewMeeting = () => {
             setEdiorRole={setEdiorRole}
             dataroomMapFolderId={dataroomMapFolderId}
             setDataroomMapFolderId={setDataroomMapFolderId}
+            setVideoTalk={setVideoTalk}
+            videoTalk={videoTalk}
           />
         ) : viewProposeOrganizerPoll &&
           NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ? (

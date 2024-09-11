@@ -54,6 +54,7 @@ const ViewMeetingModal = ({
   setVideoTalk,
 }) => {
   console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
+  console.log(videoTalk, "videoTalkvideoTalk");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
