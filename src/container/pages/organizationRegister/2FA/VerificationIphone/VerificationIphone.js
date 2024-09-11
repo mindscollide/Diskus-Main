@@ -133,12 +133,14 @@ const VerificationIphone = () => {
 
   let newClient = Helper.socket;
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
     } else {
       let userID = localStorage.getItem("userID");
-      mqttConnection(userID);
+      if (userID !== null) {
+        mqttConnection(userID);
+      }
     }
-  }, [Helper.socket]);
+  }, [newClient]);
 
   //handle Go back Functionality
   const handleGoback = () => {
