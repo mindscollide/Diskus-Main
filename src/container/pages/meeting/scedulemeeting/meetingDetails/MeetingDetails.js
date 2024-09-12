@@ -1297,7 +1297,6 @@ const MeetingDetails = ({
                       label={
                         <span className={styles["Meeting_type_heading"]}>
                           {t("Add-notes")}
-                          <span className={styles["steric"]}>*</span>
                         </span>
                       }
                       applyClass="text-area-create-meeting"
@@ -1625,7 +1624,6 @@ const MeetingDetails = ({
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Meeting_type_heading"]}>
                     {t("Add-reminders")}
-                    <span className={styles["steric"]}>*</span>
                   </span>
                 </Col>
               </Row>
@@ -1741,7 +1739,6 @@ const MeetingDetails = ({
                     label={
                       <span className={styles["Meeting_type_heading"]}>
                         {t("Add-description")}
-                        <span className={styles["steric"]}>*</span>
                       </span>
                     }
                     applyClass="text-area-create-resolution"
