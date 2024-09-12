@@ -124,7 +124,7 @@ const ImportPrevious = () => {
   useEffect(() => {
     let Data = {
       PageNumber: 1,
-      Length: 8,
+      Length: 20,
     };
 
     dispatch(GetAllMeetingForAgendaImport(Data, navigate, t));

@@ -770,7 +770,7 @@ p.agendaCreaterTime {
 .Empty_state_Subheading {
   color: #5a5a5a !important;
   font-size: 12px !important;
-font-weight: 500;
+  font-weight: 500;
 }
 
 img.Image-Add-Agenda {
@@ -822,10 +822,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  position: absolute;
   cursor: pointer;
-  right: 21px;
-  top: 0;
 }
 
 body[dir="rtl"] .box-agendas {
@@ -837,11 +834,7 @@ body[dir="rtl"] .box-agendas {
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  position: absolute;
   cursor: pointer;
-  right: auto;
-  left: 30px;
-  top: 0;
 }
 
 .box-agendas-camera {
@@ -854,10 +847,7 @@ body[dir="rtl"] .box-agendas {
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  position: absolute;
   cursor: pointer;
-  right: 80px;
-  top: 0;
 }
 
 body[dir="rtl"] .box-agendas-camera {
@@ -870,20 +860,27 @@ body[dir="rtl"] .box-agendas-camera {
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  position: absolute;
   cursor: pointer;
-  right: auto;
-  left: 90px;
-  top: 0;
+}
+
+.box-agendas-leave {
+  border-radius: 4px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  cursor: pointer;
 }
 
 .popup-agenda-menu {
   position: absolute;
   background-color: #fff;
   border: 1px solid #e1e1e1;
-  z-index: 9;
-  top: 32px;
-  right: 0;
+  z-index: 99 !important;
+  top: 65px;
+  right: 21px;
   transition: opacity 0.3s ease;
   display: block;
   filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.25));
@@ -892,14 +889,19 @@ body[dir="rtl"] .box-agendas-camera {
   padding: 7px;
 }
 
+.popup-agenda-menu span.disabledEntity {
+  color: #c6c6c6 !important;
+  cursor: default !important;
+}
+
 body[dir="rtl"] .popup-agenda-menu {
   position: absolute;
   background-color: #fff;
   border: 1px solid #e1e1e1;
-  z-index: 9;
-  top: 32px;
+  z-index: 99 !important;
+  top: 65px;
   right: auto;
-  left: 0;
+  left: 21px;
   transition: opacity 0.3s ease;
   display: block;
   filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.25));
@@ -1074,7 +1076,14 @@ body[dir="rtl"] img.image-close {
 }
 
 .agendaViewerHeader {
-  position: relative;
   padding-left: 22px;
   padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center !important;
+}
+
+.icons-block {
+  display: flex;
+  gap: 20px;
 }

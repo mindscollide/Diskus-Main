@@ -2180,5 +2180,7 @@
   "Add-reminders": "Add Reminders",
   "Add-notes": "Add Notes",
   "Minutes-will-be-available-when-published": "Minutes will be available when Published",
-  "Allow-changes-in-the-agenda-items-after-the-meeting-has-been-started": "Allow changes in the Agenda items after the meeting has been started"
+  "Allow-changes-in-the-agenda-items-after-the-meeting-has-been-started": "Allow changes in the Agenda items after the meeting has been started",
+  "Start-chat": "Start Chat",
+  "Join-Log-Not-Found": "Join Log Not Found"
 }
