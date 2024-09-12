@@ -676,6 +676,8 @@ const NewMeeting = () => {
       OrganizerName: "",
     });
     setSearchMeeting(false);
+    setentereventIcon(false);
+
   };
 
   const handleSearch = async () => {
