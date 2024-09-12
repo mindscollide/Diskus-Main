@@ -391,8 +391,6 @@ const NewMeeting = () => {
     }
   }, [location.state]);
 
-
-
   useEffect(() => {
     if (AgCont !== null) {
       // Usage example:
@@ -686,13 +684,13 @@ const NewMeeting = () => {
         currentView && Number(currentView) === 1 ? true : false,
     };
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setSearchFeilds({
-      ...searchFields,
-      Date: "",
-      DateView: "",
-      MeetingTitle: "",
-      OrganizerName: "",
-    });
+    // setSearchFeilds({
+    //   ...searchFields,
+    //   Date: "",
+    //   DateView: "",
+    //   MeetingTitle: "",
+    //   OrganizerName: "",
+    // });
     setSearchMeeting(false);
     setentereventIcon(true);
   };
@@ -706,6 +704,7 @@ const NewMeeting = () => {
       OrganizerName: "",
     });
     setSearchMeeting(false);
+
   };
 
   const meetingDateChangeHandler = (date) => {
@@ -1276,8 +1275,7 @@ const NewMeeting = () => {
                 )}
               </Col>
               <Col lg={3} md={3} sm={3}>
-                {(record.status === "9" && record.isOrganizer) ||
-                record.isQuickMeeting === true ? (
+                {record.status === "9" && record.isOrganizer ? (
                   <Tooltip placement='topLeft' title={t("Attendance")}>
                     <img
                       src={member}

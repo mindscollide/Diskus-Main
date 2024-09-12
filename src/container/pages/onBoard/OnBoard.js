@@ -145,6 +145,7 @@ const OnBoard = () => {
         showCloseButton={false}
         highlightedMaskClassName="hightlightmask"
         disableInteraction={false}
+        disableBodyScroll={true}
       >
         <OnBoardRoute show={show} setShow={setShow} />
       </TourProvider>
