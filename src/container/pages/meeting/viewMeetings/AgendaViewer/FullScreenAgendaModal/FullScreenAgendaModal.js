@@ -11,7 +11,10 @@ import {
   callRequestReceivedMQTT,
   LeaveCall,
 } from "../../../../../../store/actions/VideoMain_actions";
-import { FetchMeetingURLApi } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  FetchMeetingURLApi,
+  LeaveCurrentMeeting,
+} from "../../../../../../store/actions/NewMeetingActions";
 import {
   normalizeVideoPanelFlag,
   videoChatPanel,
@@ -30,26 +33,62 @@ import { onDragEnd } from "./../drageFunction";
 import CollapseAgendaIcon from "./../AV-Images/Collapse-Agenda-Icon.png";
 import VideocameraIcon from "./../AV-Images/Videocamera-Icon.png";
 import { Tooltip } from "antd";
+import MenuIcon from "./../AV-Images/Menu-Icon.png";
+import PrintIcon from "./../AV-Images/Print-Icon.png";
+import ExportIcon from "./../AV-Images/Export-Icon.png";
+import ShareIcon from "./../AV-Images/Share-Icon.png";
+import ParticipantsInfo from "./../AV-Images/Participants-Icon.png";
+import ParticipantsInfoDisabled from "./../AV-Images/Participants-Icon-disabled.png";
+import LeaveMeetingIcon from "./../AV-Images/Leave-Meeting.svg";
+import TalkInactiveIcon from "./../AV-Images/Talk Inactive.svg";
+import {
+  exportAgenda,
+  printAgenda,
+} from "../../../../../../store/actions/MeetingAgenda_action";
+import {
+  GetAllUsers,
+  GetGroupMessages,
+  activeChat,
+} from "../../../../../../store/actions/Talk_action";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+} from "../../../../../../store/actions/Talk_Feature_actions";
+import { getCurrentDateTimeUTC } from "../../../../../../commen/functions/date_formater";
 
 const FullScreenAgendaModal = ({
   setFullScreenView,
-  setViewAdvanceMeetingModal,
   advanceMeetingModalID,
-  setAdvanceMeetingModalID,
-  setMeetingMaterial,
-  setMinutes,
   editorRole,
-  setEdiorRole,
-  setactionsPage,
   rows,
   setRows,
+  setParticipantInfoView,
+  participantInfoView,
+  setAgendaSelectOptionView,
+  agendaSelectOptionView,
+  setShareEmailView,
+  shareEmailView,
+  videoTalk,
+  setEdiorRole,
+  setAdvanceMeetingModalID,
+  setViewAdvanceMeetingModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { talkStateData } = useSelector((state) => state);
+
   const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
+    (state) =>
+      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
   );
 
   const cancelMeetingMaterial = useSelector(
@@ -59,6 +98,7 @@ const FullScreenAgendaModal = ({
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
+  const [menuAgendaFull, setMenuAgendaFull] = useState(false);
 
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -76,6 +116,8 @@ const FullScreenAgendaModal = ({
 
   let callerID = Number(localStorage.getItem("callerID"));
 
+  const closeMenuAgenda = useRef(null);
+
   // const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
@@ -86,57 +128,9 @@ const FullScreenAgendaModal = ({
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
-  // useEffect(() => {
-  //   let Data = {
-  //     MeetingID: Number(advanceMeetingModalID),
-  //   };
-  //   dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
-  //   return () => {
-  //     dispatch(clearAgendaReducerState());
-  //     setRows([]);
-  //   };
-  // }, []);
-
-  const handleCancelMeetingNoPopup = () => {
-    // let searchData = {
-    //   Date: "",
-    //   Title: "",
-    //   HostName: "",
-    //   UserID: Number(userID),
-    //   PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-    //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-    //   PublishedMeetings:
-    //     currentView && Number(currentView) === 1 ? true : false,
-    // };
-    // dispatch(searchNewUserMeeting(navigate, searchData, t));
-    // localStorage.removeItem("folderDataRoomMeeting");
-    // setViewAdvanceMeetingModal(false);
-    // dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    // setactionsPage(false);
-  };
-
-  const handleClickSave = () => {
-    setMinutes(true);
-    setMeetingMaterial(false);
-  };
-
-  // useEffect(() => {
-  //   if (
-  //     GetAdvanceMeetingAgendabyMeetingIDForViewData !== null &&
-  //     GetAdvanceMeetingAgendabyMeetingIDForViewData !== undefined &&
-  //     GetAdvanceMeetingAgendabyMeetingIDForViewData.length !== 0
-  //   ) {
-  //     setRows(GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList);
-  //   }
-  // }, [GetAdvanceMeetingAgendabyMeetingIDForViewData]);
-
   useEffect(() => {
     if (rows.length !== 0) {
-      // Check if any of the canView values is true
       const anyCanViewTrue = rows.some((row) => row.canView);
-
-      // Update the emptyStateRows state based on the condition
       setEmptyStateRows(!anyCanViewTrue);
     } else {
       setEmptyStateRows(false);
@@ -223,13 +217,114 @@ const FullScreenAgendaModal = ({
         )
       );
       localStorage.setItem("meetingTitle", meetingTitle);
-      setFullScreenView(false);
+      // setFullScreenView(false);
     } else if (activeCall === true && isMeeting === false) {
       setInitiateVideoModalOto(true);
       dispatch(callRequestReceivedMQTT({}, ""));
-      setFullScreenView(false);
+      // setFullScreenView(false);
     }
   };
+
+  const menuPopupAgenda = () => {
+    setMenuAgendaFull(!menuAgendaFull);
+  };
+
+  const participantModal = () => {
+    setParticipantInfoView(!participantInfoView);
+  };
+
+  const printModal = () => {
+    dispatch(printAgenda(true));
+    setAgendaSelectOptionView(!agendaSelectOptionView);
+  };
+
+  const exportModal = () => {
+    dispatch(exportAgenda(true));
+    setAgendaSelectOptionView(!agendaSelectOptionView);
+  };
+
+  const shareEmailModal = () => {
+    setShareEmailView(!shareEmailView);
+  };
+
+  const groupChatInitiation = (talkGroupID) => {
+    if (
+      talkGroupID !== 0 &&
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+    ) {
+      dispatch(createShoutAllScreen(false));
+      dispatch(addNewChatScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(createGroupScreen(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(recentChatFlag(true));
+      dispatch(activeChatBoxGS(true));
+      dispatch(chatBoxActiveFlag(true));
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
+      let chatGroupData = {
+        UserID: parseInt(currentUserID),
+        ChannelID: currentOrganization,
+        GroupID: talkGroupID,
+        NumberOfMessages: 50,
+        OffsetMessage: 0,
+      };
+      dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      dispatch(
+        GetAllUsers(navigate, parseInt(currentUserID), currentOrganization, t)
+      );
+
+      let allChatMessages =
+        talkStateData.AllUserChats.AllUserChatsData.allMessages;
+      const foundRecord = allChatMessages.find(
+        (item) => item.id === talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+      }
+      localStorage.setItem("activeOtoChatID", talkGroupID);
+    }
+  };
+
+  const leaveMeeting = () => {
+    let leaveMeetingData = {
+      FK_MDID: currentMeeting,
+      DateTime: getCurrentDateTimeUTC(),
+    };
+    dispatch(
+      LeaveCurrentMeeting(
+        navigate,
+        t,
+        leaveMeetingData,
+        false,
+        false,
+        setEdiorRole,
+        setAdvanceMeetingModalID,
+        setViewAdvanceMeetingModal
+      )
+    );
+  };
+
+  const handleOutsideClick = (event) => {
+    if (
+      closeMenuAgenda.current &&
+      !closeMenuAgenda.current.contains(event.target) &&
+      menuAgendaFull
+    ) {
+      setMenuAgendaFull(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [menuAgendaFull]);
+
+  console.log("videoTalkvideoTalk", videoTalk);
 
   return (
     <Modal
@@ -252,26 +347,112 @@ const FullScreenAgendaModal = ({
               className={styles["agendaViewerHeader"]}
             >
               <p className={styles["FileModalTitle"]}>{t("Agenda-viewer")}</p>
+              <div className={styles["icons-block"]}>
+                {videoTalk?.isChat ? (
+                  <Tooltip placement="topRight" title={t("Start-chat")}>
+                    <div
+                      className={styles["box-agendas-leave"]}
+                      onClick={() =>
+                        groupChatInitiation(videoTalk?.talkGroupID)
+                      }
+                    >
+                      <img src={TalkInactiveIcon} alt="" />
+                    </div>
+                  </Tooltip>
+                ) : null}
 
-              <Tooltip placement="topRight" title={t("Collapse")}>
-                <div
-                  className={styles["box-agendas"]}
-                  onClick={() => setFullScreenView(false)}
-                >
-                  <img src={CollapseAgendaIcon} alt="" />
-                </div>
-              </Tooltip>
+                {(editorRole.status === "10" || editorRole.status === 10) &&
+                videoTalk?.isVideoCall ? (
+                  <Tooltip placement="topRight" title={t("Leave-meeting")}>
+                    <div
+                      className={styles["box-agendas-leave"]}
+                      onClick={leaveMeeting}
+                    >
+                      <img src={LeaveMeetingIcon} alt="" />
+                    </div>
+                  </Tooltip>
+                ) : null}
 
-              {editorRole.status === "10" || editorRole.status === 10 ? (
-                <Tooltip placement="topRight" title={t("Enable-video-call")}>
+                {editorRole.status === "10" || editorRole.status === 10 ? (
+                  <Tooltip placement="topRight" title={t("Enable-video-call")}>
+                    <div
+                      className={styles["box-agendas-camera"]}
+                      onClick={joinMeetingCall}
+                    >
+                      <img src={VideocameraIcon} alt="" />
+                    </div>
+                  </Tooltip>
+                ) : null}
+
+                <Tooltip placement="topRight" title={t("Collapse")}>
                   <div
-                    className={styles["box-agendas-camera"]}
-                    onClick={joinMeetingCall}
+                    className={styles["box-agendas"]}
+                    onClick={() => setFullScreenView(false)}
                   >
-                    <img src={VideocameraIcon} alt="" />
+                    <img src={CollapseAgendaIcon} alt="" />
                   </div>
                 </Tooltip>
-              ) : null}
+
+                <div
+                  onClick={menuPopupAgenda}
+                  className={styles["box-agendas"]}
+                  ref={closeMenuAgenda}
+                >
+                  <Tooltip placement="topRight" title={t("More")}>
+                    <img src={MenuIcon} alt="" />
+                  </Tooltip>
+                  <div
+                    className={
+                      menuAgendaFull
+                        ? `${
+                            styles["popup-agenda-menu"]
+                          } ${"opacity-1 pe-auto"}`
+                        : `${
+                            styles["popup-agenda-menu"]
+                          } ${"opacity-0 pe-none"}`
+                    }
+                  >
+                    <span
+                      className={
+                        editorRole.status === 9 || editorRole.status === "9"
+                          ? null
+                          : styles["disabledEntity"]
+                      }
+                      onClick={
+                        editorRole.status === 9 || editorRole.status === "9"
+                          ? participantModal
+                          : null
+                      }
+                    >
+                      <img
+                        width={20}
+                        src={
+                          editorRole.status === 9 || editorRole.status === "9"
+                            ? ParticipantsInfo
+                            : ParticipantsInfoDisabled
+                        }
+                        alt=""
+                      />
+                      {t("Participants-info")}
+                    </span>
+                    <span onClick={printModal}>
+                      <img width={20} src={PrintIcon} alt="" />
+                      {t("Print")}
+                    </span>
+                    <span onClick={exportModal}>
+                      <img width={20} src={ExportIcon} alt="" />
+
+                      {t("Export-pdf")}
+                    </span>
+                    <span onClick={shareEmailModal} className="border-0">
+                      <img width={20} src={ShareIcon} alt="" />
+                      {t("Share-email")}
+                    </span>
+                  </div>
+
+                  {/* ) : null} */}
+                </div>
+              </div>
             </Col>
           </Row>
         </>

@@ -173,7 +173,9 @@ const AdminHome = () => {
     // if (!flagForStopRerendring) {
     if (Helper.socket === null) {
       let userID = localStorage.getItem("userID");
-      mqttConnection(userID);
+      if (userID !== null) {
+        mqttConnection(userID);
+      }
     }
     if (newClient != null) {
       // newClient.onConnected = onConnected; // Callback when connected

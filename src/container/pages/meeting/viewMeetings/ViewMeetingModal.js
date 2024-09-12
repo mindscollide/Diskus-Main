@@ -50,8 +50,11 @@ const ViewMeetingModal = ({
   dataroomMapFolderId,
   setDataroomMapFolderId,
   setCurrentMeetingID,
+  videoTalk,
+  setVideoTalk,
 }) => {
   console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
+  console.log(videoTalk, "videoTalkvideoTalk");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
@@ -617,6 +620,8 @@ const ViewMeetingModal = ({
                   editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
                   setactionsPage={setactionsPage}
+                  videoTalk={videoTalk}
+                  setVideoTalk={setVideoTalk}
                 />
               )}
               {unPublish ? null : (

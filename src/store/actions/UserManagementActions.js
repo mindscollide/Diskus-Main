@@ -2047,7 +2047,7 @@ const paymentStatusApi = (navigate, t, data) => {
                 )
             ) {
               await handleLoginResponse(
-                response.data.responseResult.userAuthData
+                response.data.responseResult.userAuthData, dispatch
               );
               await dispatch(
                 paymentStatusSuccess(

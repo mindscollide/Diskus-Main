@@ -236,6 +236,12 @@ const NewMeeting = () => {
 
   const [dashboardEventData, setDashboardEventData] = useState(null);
 
+  const [videoTalk, setVideoTalk] = useState({
+    isChat: false,
+    isVideoCall: false,
+    talkGroupID: 0,
+  });
+
   useEffect(() => {
     return () => {
       setBoarddeckOptions({
@@ -275,12 +281,12 @@ const NewMeeting = () => {
           UserID: Number(userID),
           PageNumber: Number(meetingPageCurrent),
           Length: Number(meetingpageRow),
-          PublishedMeetings: true,
+          PublishedMeetings: MeetingProp !== null ? false : true,
         };
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.setItem("MeetingCurrentView", 1);
+        // localStorage.setItem("MeetingCurrentView", 1);
       } else {
         let searchData = {
           Date: "",
@@ -289,14 +295,14 @@ const NewMeeting = () => {
           UserID: Number(userID),
           PageNumber: 1,
           Length: 30,
-          PublishedMeetings: true,
+          PublishedMeetings: MeetingProp !== null ? false : true,
         };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
+        // localStorage.setItem("MeetingPageRows", 30);
+        // localStorage.setItem("MeetingPageCurrent", 1);
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.setItem("MeetingCurrentView", 1);
+        // localStorage.setItem("MeetingCurrentView", 1);
       }
     } catch (error) {}
   };
@@ -391,25 +397,6 @@ const NewMeeting = () => {
       dispatch(proposeNewMeetingPageFlag(false));
     }
   }, [location.state]);
-
-  useEffect(() => {
-    if (MeetingProp !== null) {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber: 1,
-        Length: 30,
-        PublishedMeetings: false,
-      };
-      // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
-      localStorage.setItem("MeetingCurrentView", 2);
-      localStorage.setItem("MeetingPageRows", 30);
-      localStorage.setItem("MeetingPageCurrent", 1);
-    }
-  }, [MeetingProp]);
 
   useEffect(() => {
     if (AgCont !== null) {
@@ -565,13 +552,18 @@ const NewMeeting = () => {
         });
     }
   }, [MeetinUpd]);
-  // useEffect(() => {
-  //   if (Meetingprop !== null) {
-  //     localStorage.setItem("MeetingCurrentView", 2);
-  //     localStorage.setItem("MeetingPageRows", 50);
-  //     localStorage.setItem("MeetingPageCurrent", 1);
-  //   }
-  // }, [Meetingprop]);
+
+  useEffect(() => {
+    if (MeetingProp !== null) {
+      localStorage.setItem("MeetingCurrentView", 2);
+      localStorage.setItem("MeetingPageRows", 30);
+      localStorage.setItem("MeetingPageCurrent", 1);
+    } else {
+      localStorage.setItem("MeetingCurrentView", 1);
+      localStorage.setItem("MeetingPageRows", 30);
+      localStorage.setItem("MeetingPageCurrent", 1);
+    }
+  }, [MeetingProp]);
 
   useEffect(() => {
     if (MeetingMin !== null) {
@@ -685,6 +677,7 @@ const NewMeeting = () => {
       OrganizerName: "",
     });
     setSearchMeeting(false);
+    setentereventIcon(false);
   };
 
   const handleSearch = async () => {
@@ -699,13 +692,13 @@ const NewMeeting = () => {
         currentView && Number(currentView) === 1 ? true : false,
     };
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setSearchFeilds({
-      ...searchFields,
-      Date: "",
-      DateView: "",
-      MeetingTitle: "",
-      OrganizerName: "",
-    });
+    // setSearchFeilds({
+    //   ...searchFields,
+    //   Date: "",
+    //   DateView: "",
+    //   MeetingTitle: "",
+    //   OrganizerName: "",
+    // });
     setSearchMeeting(false);
     setentereventIcon(true);
   };
@@ -1066,6 +1059,11 @@ const NewMeeting = () => {
                 record.isQuickMeeting,
                 record.status
               );
+              setVideoTalk({
+                isChat: record.isChat,
+                isVideoCall: record.isVideoCall,
+                talkGroupID: record.talkGroupID,
+              });
               setEdiorRole({
                 status: record.status,
                 role: record.isParticipant
@@ -1293,8 +1291,7 @@ const NewMeeting = () => {
                 )}
               </Col>
               <Col lg={3} md={3} sm={3}>
-                {(record.status === "9" && record.isOrganizer) ||
-                record.isQuickMeeting === true ? (
+                {record.status === "9" && record.isOrganizer ? (
                   <Tooltip placement="topLeft" title={t("Attendance")}>
                     <img
                       src={member}
@@ -1326,7 +1323,7 @@ const NewMeeting = () => {
                   >
                     <img
                       src={VideoRecordIcon}
-                      className="cursor-pointer"
+                      className="cursor-pointer mx-2"
                       width="17.1px"
                       height="16.72px"
                       alt=""
@@ -1418,6 +1415,11 @@ const NewMeeting = () => {
                         setEditFlag
                       )
                     );
+                    setVideoTalk({
+                      isChat: record.isChat,
+                      isVideoCall: record.isVideoCall,
+                      talkGroupID: record.talkGroupID,
+                    });
                     localStorage.setItem("meetingTitle", record.title);
                     localStorage.setItem(
                       "isMinutePublished",
@@ -1454,6 +1456,11 @@ const NewMeeting = () => {
                         record.isPrimaryOrganizer
                       )
                     );
+                    setVideoTalk({
+                      isChat: record.isChat,
+                      isVideoCall: record.isVideoCall,
+                      talkGroupID: record.talkGroupID,
+                    });
                     localStorage.setItem("currentMeetingID", record.pK_MDID);
                     localStorage.setItem(
                       "isMinutePublished",
@@ -1492,6 +1499,11 @@ const NewMeeting = () => {
                     role: "Participant",
                     isPrimaryOrganizer: false,
                   });
+                  setVideoTalk({
+                    isChat: record.isChat,
+                    isVideoCall: record.isVideoCall,
+                    talkGroupID: record.talkGroupID,
+                  });
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
                     "isMinutePublished",
@@ -1518,6 +1530,11 @@ const NewMeeting = () => {
                     role: "Agenda Contributor",
                     isPrimaryOrganizer: false,
                   });
+                  setVideoTalk({
+                    isChat: record.isChat,
+                    isVideoCall: record.isVideoCall,
+                    talkGroupID: record.talkGroupID,
+                  });
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
                     "isMinutePublished",
@@ -1543,6 +1560,11 @@ const NewMeeting = () => {
                     status: record.status,
                     role: "Organizer",
                     isPrimaryOrganizer: record.isPrimaryOrganizer,
+                  });
+                  setVideoTalk({
+                    isChat: record.isChat,
+                    isVideoCall: record.isVideoCall,
+                    talkGroupID: record.talkGroupID,
                   });
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
@@ -1574,6 +1596,11 @@ const NewMeeting = () => {
                       ? "Agenda Contributor"
                       : "Organizer",
                     isPrimaryOrganizer: record.isPrimaryOrganizer,
+                  });
+                  setVideoTalk({
+                    isChat: record.isChat,
+                    isVideoCall: record.isVideoCall,
+                    talkGroupID: record.talkGroupID,
                   });
                 }}
               />
@@ -1616,14 +1643,19 @@ const NewMeeting = () => {
                             height="17.11px"
                             alt=""
                             draggable="false"
-                            onClick={() =>
+                            onClick={() => {
                               handleEditMeeting(
                                 record.pK_MDID,
                                 record.isQuickMeeting,
                                 "Organizer",
                                 record
-                              )
-                            }
+                              );
+                              setVideoTalk({
+                                isChat: record.isChat,
+                                isVideoCall: record.isVideoCall,
+                                talkGroupID: record.talkGroupID,
+                              });
+                            }}
                           />
                         </Tooltip>
                       </Col>
@@ -1660,6 +1692,11 @@ const NewMeeting = () => {
                               "Organizer",
                               record
                             );
+                            setVideoTalk({
+                              isChat: record.isChat,
+                              isVideoCall: record.isVideoCall,
+                              talkGroupID: record.talkGroupID,
+                            });
                             setEdiorRole({
                               status: record.status,
                               role: "Organizer",
@@ -1700,6 +1737,11 @@ const NewMeeting = () => {
                               "Agenda Contributor",
                               record
                             );
+                            setVideoTalk({
+                              isChat: record.isChat,
+                              isVideoCall: record.isVideoCall,
+                              talkGroupID: record.talkGroupID,
+                            });
                             setEdiorRole({
                               status: record.status,
                               role: "Agenda Contributor",
@@ -2239,10 +2281,16 @@ const NewMeeting = () => {
                 meeting.isQuickMeeting,
                 meeting.status
               );
+
               setEdiorRole({
                 status: meeting.status,
                 role: "Participant",
                 isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: meeting.isChat,
+                isVideoCall: meeting.isVideoCall,
+                talkGroupID: meeting.talkGroupID,
               });
               dispatch(viewMeetingFlag(true));
             } else if (
@@ -2254,6 +2302,11 @@ const NewMeeting = () => {
                 meeting.isQuickMeeting,
                 meeting.status
               );
+              setVideoTalk({
+                isChat: meeting.isChat,
+                isVideoCall: meeting.isVideoCall,
+                talkGroupID: meeting.talkGroupID,
+              });
               setEdiorRole({
                 status: meeting.status,
                 role: "Agenda Contributor",
@@ -2268,6 +2321,11 @@ const NewMeeting = () => {
                 status: meeting.status,
                 role: "Organizer",
                 isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: meeting.isChat,
+                isVideoCall: meeting.isVideoCall,
+                talkGroupID: meeting.talkGroupID,
               });
               dispatch(viewMeetingFlag(true));
               handleViewMeeting(
@@ -2437,6 +2495,8 @@ const NewMeeting = () => {
             dataroomMapFolderId={dataroomMapFolderId}
             setDataroomMapFolderId={setDataroomMapFolderId}
             setCurrentMeetingID={setCurrentMeetingID}
+            setVideoTalk={setVideoTalk}
+            videoTalk={videoTalk}
           />
         ) : viewAdvanceMeetingModalUnpublish &&
           NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ? (
@@ -2449,6 +2509,8 @@ const NewMeeting = () => {
             setEdiorRole={setEdiorRole}
             dataroomMapFolderId={dataroomMapFolderId}
             setDataroomMapFolderId={setDataroomMapFolderId}
+            setVideoTalk={setVideoTalk}
+            videoTalk={videoTalk}
           />
         ) : viewProposeOrganizerPoll &&
           NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ? (
@@ -2733,6 +2795,8 @@ const NewMeeting = () => {
                       currentMeeting={currentMeetingID}
                       editorRole={editorRole}
                       setDataroomMapFolderId={setDataroomMapFolderId}
+                      videoTalk={videoTalk}
+                      setVideoTalk={setVideoTalk}
                     />
                   ) : Number(currentView) === 1 ? (
                     <Row className="mt-2">

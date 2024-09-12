@@ -294,7 +294,7 @@ const Task = () => {
                   },
                 };
               }}
-              scroll={{ y: "70vh" }}
+              scroll={{ y: 550 }}
             />
           </>
         ) : (

@@ -135,7 +135,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   // t("User-doesnt-have-saved-devices")
                 )
               );
-              //localStorage.setItem("LoginFlowPageRoute", 4);
+              localStorage.setItem("LoginFlowPageRoute", 4);
               dispatch(LoginFlowRoutes(4));
               // navigate("/twofac");
             } else if (
@@ -702,7 +702,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                 } else if (hasAdminRights === "true") {
                   navigate("/Admin/ManageUsers");
                 } else if (hasUserRights === "true") {
-                  navigate("/onboard/");
+                  navigate("/onboard");
                 }
               } else {
                 if (RSVP !== undefined && RSVP !== null) {

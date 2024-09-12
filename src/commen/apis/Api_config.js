@@ -1750,7 +1750,13 @@ const getMinutesPublishedStatus = {
   RequestMethod: "ServiceManager.GetMeetingMinutesStatus",
 };
 
+const validateEncryptedStringParticipantProposedRM = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringUserMeetingProposeDatesSelection",
+};
+
 export {
+  validateEncryptedStringParticipantProposedRM,
   ValidateEncryptedStringForOTPEmailLinkRM,
   getDashboardMeetingStatsRM,
   getDashboardTaskStatsRM,

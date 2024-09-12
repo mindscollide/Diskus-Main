@@ -12,10 +12,8 @@ import Header2 from "../../../components/layout/header2/Header2";
 import "./../../../steps.css";
 
 const OnBoardRoute = () => {
-  const { currentStep, setCurrentStep } = useTour();
-  const [show, setShow] = useState(false);
+  const { currentStep } = useTour();
   const navigate = useNavigate();
-  console.log("main show", show);
   return (
     <Row className="m-0 ">
       <Col className="m-0 p-0">

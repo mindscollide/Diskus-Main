@@ -124,6 +124,7 @@ const OrganizationLevelConfigUM = () => {
     EmailWhenNewTODOAssigned: false,
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
+    EmailWhenActiveMeetingAgendaUpdated: false
   });
 
   useEffect(() => {
@@ -295,6 +296,7 @@ const OrganizationLevelConfigUM = () => {
             organizationSettings.emailWhenNewTODOAssigned,
           EmailWhenNewTODODeleted: organizationSettings.emailWhenNewTODODeleted,
           EmailWhenNewTODOEdited: organizationSettings.emailWhenNewTODOEdited,
+          EmailWhenActiveMeetingAgendaUpdated: organizationSettings.emailWhenActiveMeetingAgendaUpdated
         });
         let timeZoneCode = {
           label: organizationSettings.timeZones
@@ -820,6 +822,15 @@ const OrganizationLevelConfigUM = () => {
     });
   };
 
+  
+  const handleChangeAgendaUpdateEmail = () => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      EmailWhenActiveMeetingAgendaUpdated:
+        !userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated,
+    });
+  };
+
   const updateOrganizationLevelSettings = async () => {
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
@@ -929,6 +940,7 @@ const OrganizationLevelConfigUM = () => {
         userOrganizationSetting.EmailWhenNewTODOAssigned,
       EmailWhenNewTODODeleted: userOrganizationSetting.EmailWhenNewTODODeleted,
       EmailWhenNewTODOEdited: userOrganizationSetting.EmailWhenNewTODOEdited,
+      EmailWhenActiveMeetingAgendaUpdated: userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated
     };
     dispatch(updateOrganizationLevelSetting(navigate, Data, t));
   };
@@ -1495,6 +1507,21 @@ const OrganizationLevelConfigUM = () => {
                       </Checkbox>
                     </Col>
                   </Row>
+                  <Row className='mt-3'>
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={handleChangeAgendaUpdateEmail}
+                          checked={
+                            userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated
+                          }>
+                          <span className={styles["Class_CheckBox"]}>
+                            {t(
+                              "Allow-changes-in-the-agenda-items-after-the-meeting-has-been-started"
+                            )}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
                 </>
               ) : null}
               {calender ? (
