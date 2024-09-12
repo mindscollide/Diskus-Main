@@ -152,6 +152,7 @@ const initialState = {
   boarddeckShareModal: false,
   boardDeckEmailModal: false,
   getDashboardMeetingData: null,
+  validateEncryptedStringParticipantProposed: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2350,7 +2351,28 @@ const NewMeetingreducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-
+    case actions.VALIDATEENCRYPTEDSTRINGPARTICIPANTPROPOSED_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGPARTICIPANTPROPOSED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        validateEncryptedStringParticipantProposed: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGPARTICIPANTPROPOSED_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        validateEncryptedStringParticipantProposed: null,
+        ResponseMessage: action.message,
+      };
+    }
     default:
       return {
         ...state,

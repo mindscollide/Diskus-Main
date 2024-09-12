@@ -280,12 +280,12 @@ const NewMeeting = () => {
           UserID: Number(userID),
           PageNumber: Number(meetingPageCurrent),
           Length: Number(meetingpageRow),
-          PublishedMeetings: true,
+          PublishedMeetings: MeetingProp !== null ? false : true,
         };
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.setItem("MeetingCurrentView", 1);
+        // localStorage.setItem("MeetingCurrentView", 1);
       } else {
         let searchData = {
           Date: "",
@@ -294,14 +294,14 @@ const NewMeeting = () => {
           UserID: Number(userID),
           PageNumber: 1,
           Length: 30,
-          PublishedMeetings: true,
+          PublishedMeetings: MeetingProp !== null ? false : true,
         };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
+        // localStorage.setItem("MeetingPageRows", 30);
+        // localStorage.setItem("MeetingPageCurrent", 1);
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.setItem("MeetingCurrentView", 1);
+        // localStorage.setItem("MeetingCurrentView", 1);
       }
     } catch (error) {}
   };
@@ -397,24 +397,7 @@ const NewMeeting = () => {
     }
   }, [location.state]);
 
-  useEffect(() => {
-    if (MeetingProp !== null) {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber: 1,
-        Length: 30,
-        PublishedMeetings: false,
-      };
-      // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
-      localStorage.setItem("MeetingCurrentView", 2);
-      localStorage.setItem("MeetingPageRows", 30);
-      localStorage.setItem("MeetingPageCurrent", 1);
-    }
-  }, [MeetingProp]);
+
 
   useEffect(() => {
     if (AgCont !== null) {
@@ -570,13 +553,18 @@ const NewMeeting = () => {
         });
     }
   }, [MeetinUpd]);
-  // useEffect(() => {
-  //   if (Meetingprop !== null) {
-  //     localStorage.setItem("MeetingCurrentView", 2);
-  //     localStorage.setItem("MeetingPageRows", 50);
-  //     localStorage.setItem("MeetingPageCurrent", 1);
-  //   }
-  // }, [Meetingprop]);
+
+  useEffect(() => {
+    if (MeetingProp !== null) {
+      localStorage.setItem("MeetingCurrentView", 2);
+      localStorage.setItem("MeetingPageRows", 30);
+      localStorage.setItem("MeetingPageCurrent", 1);
+    } else {
+      localStorage.setItem("MeetingCurrentView", 1);
+      localStorage.setItem("MeetingPageRows", 30);
+      localStorage.setItem("MeetingPageCurrent", 1);
+    }
+  }, [MeetingProp]);
 
   useEffect(() => {
     if (MeetingMin !== null) {

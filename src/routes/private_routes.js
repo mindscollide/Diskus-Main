@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
-  console.log(currentUrl , "currentUrlcurrentUrlcurrentUrl")
-  const navigate = useNavigate()
+  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
+  const navigate = useNavigate();
 
   // Effect hook to perform actions based on the current URL
   useEffect(() => {
@@ -47,7 +47,7 @@ const PrivateRoutes = () => {
     }
 
     // Action: Meeting Proposed
-    if (currentUrl.includes("DisKus/Meeting/Meetingproposed?action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Meetingproposed_action=")) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("meetingprop", parts);
@@ -66,7 +66,6 @@ const PrivateRoutes = () => {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("Updateagendacontributor_action=")[1];
       localStorage.setItem("UpCont", parts);
-
     }
 
     // Action: Add Organizer
@@ -87,15 +86,13 @@ const PrivateRoutes = () => {
     // Action: Cancel Meeting
     if (currentUrl.includes("DisKus/Meeting?Cancelmeeting_action=")) {
       // Add action-specific logic here if needed
-      navigate("/Diskus/Meeting")
-
+      navigate("/Diskus/Meeting");
     }
 
     // Action: Delete Meeting
     if (currentUrl.includes("DisKus/Meeting?Deletemeeting_action=")) {
       // Add action-specific logic here if needed
-      navigate("/Diskus/Meeting")
-      
+      navigate("/Diskus/Meeting");
     }
 
     // Action: Update Meeting
@@ -187,7 +184,11 @@ const PrivateRoutes = () => {
         (currentUrl.includes(
           "DisKus/Meeting/Useravailabilityformeeting?action="
         ) ||
-          currentUrl.includes("DisKus/dataroom?action="))
+          currentUrl.includes("DisKus/dataroom") ||
+          currentUrl.includes("DisKus/Meeting") ||
+          currentUrl.includes("DisKus/polling") ||
+          currentUrl.includes("DisKus/groups") ||
+          currentUrl.includes("DisKus/committee"))
           ? "/"
           : "*"
       }

@@ -1,3 +1,4 @@
+import { getPackageExpiryDetail } from "../../store/actions/GetPackageExpirtyDetails";
 import {
   LoginFlowRoutes,
   signUpFlowRoutes,
@@ -139,7 +140,7 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
 
 // for enter posword state management and routes management
 // Export the handleLoginResponse function
-export async function handleLoginResponse(response) {
+export async function handleLoginResponse(response, dispatch, navigate, t) {
   try {
     if (response.organizationID) {
       localStorage.setItem("organizationID", response.organizationID);
@@ -190,6 +191,11 @@ export async function handleLoginResponse(response) {
     }
 
     localStorage.setItem("isTrial", response.isTrial);
+    if (response.isTrial) {
+      await dispatch(
+        getPackageExpiryDetail(navigate, response.organizationID, t)
+      );
+    }
 
     localStorage.setItem(
       "organizationSelectedUserPackageID",
@@ -379,4 +385,38 @@ export const removeHTMLTagsAndTruncate = (String, maxLength = 500) => {
   }
 
   return String;
+};
+
+// XOR Encrypt/Decrypt Function
+export const xorEncryptDecrypt = (input, key) => {
+  let out = "";
+  for (let i = 0; i < input.length; i++) {
+    out += String.fromCharCode(
+      input.charCodeAt(i) ^ key.charCodeAt(i % key.length)
+    );
+  }
+  return out;
+};
+
+// Encrypt Function
+export const encrypt = (data, key) =>
+  xorEncryptDecrypt(JSON.stringify(data), key);
+
+// Decrypt Function
+export const decrypt = (data, key) => {
+  try {
+    return JSON.parse(xorEncryptDecrypt(data, key));
+  } catch (e) {
+    return xorEncryptDecrypt(data, key);
+  }
+};
+
+// Save Encrypted Data to localStorage
+export const setData = (key, data) =>
+  localStorage.setItem(key, encrypt(data, process.env.REACT_APP_SECERETKEY));
+
+// Retrieve and Decrypt Data from localStorage
+export const getData = (key) => {
+  const data = localStorage.getItem(key);
+  return data ? decrypt(data, process.env.REACT_APP_SECERETKEY) : null;
 };
