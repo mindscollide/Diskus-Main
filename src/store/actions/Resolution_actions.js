@@ -16,6 +16,7 @@ import {
   getVoterResolutionRequestMethod,
   uploadDocumentsRequestMethod,
   saveFilesRequestMethod,
+  validateEncryptedStringResolutionRelatedEmailDataRM,
 } from "../../commen/apis/Api_config";
 import {
   dataRoomApi,
@@ -747,10 +748,7 @@ const getResolutions = (
               "Resolution_ResolutionServiceManager_SearchResolutions_01".toLowerCase()
             ) {
               dispatch(
-                getResolutions_Success(
-                  response.data.responseResult,
-                  ""
-                )
+                getResolutions_Success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1242,10 +1240,7 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
               "Resolution_ResolutionServiceManager_GetResultDetails_01".toLowerCase()
             ) {
               dispatch(
-                getResolutionResult_Success(
-                  response.data.responseResult,
-                  ""
-                )
+                getResolutionResult_Success(response.data.responseResult, "")
               );
               setResultresolution(true);
               dispatch(resultResolutionFlag(true));
@@ -1323,10 +1318,7 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
               "Resolution_ResolutionServiceManager_GetVoteDetailsByID_01".toLowerCase()
             ) {
               dispatch(
-                getVotesDetail_Success(
-                  response.data.responseResult,
-                  ""
-                )
+                getVotesDetail_Success(response.data.responseResult, "")
               );
               if (typeof setVoteresolution === "function") {
                 setVoteresolution(true);
@@ -1710,10 +1702,7 @@ const getVoterResolution = (
               "Resolution_ResolutionServiceManager_SearchVoterResolutions_01".toLowerCase()
             ) {
               dispatch(
-                getVoterResolution_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getVoterResolution_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1737,6 +1726,129 @@ const getVoterResolution = (
         dispatch(getVoterResolution_fail(t("Something-went-wrong")));
       });
   };
+};
+
+const resoltionEmailRouteID = (id) => {
+  return {
+    type: actions.RESOLUTION_EMAIL_ROUTE,
+    response: id,
+  };
+};
+const validateStringResolution_init = () => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_INIT,
+  };
+};
+const validateStringResolution_success = (response, message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const validateStringResolution_fail = (message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_FAIL,
+    message: message,
+  };
+};
+const validateStringResolutionApi = (
+  emailString,
+  navigate,
+  t,
+  RouteNo,
+  dispatch
+) => {
+  return new Promise((resolve, reject) => {
+    let Data = {
+      EncryptedString: emailString,
+    };
+    let token = JSON.parse(localStorage.getItem("token"));
+
+    dispatch(validateStringResolution_init());
+
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      validateEncryptedStringResolutionRelatedEmailDataRM.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: getResolutionApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          // Retry the API call
+          resolve(
+            dispatch(
+              validateStringResolutionApi(
+                emailString,
+                navigate,
+                t,
+                RouteNo,
+                dispatch
+              )
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Resolution_ResolutionServiceManager_ValidateEncryptedStringResolutionRelatedEmailData_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                validateStringResolution_success(
+                  response.data.responseResult?.data,
+                  t("Successfully")
+                )
+              );
+              dispatch(resoltionEmailRouteID(RouteNo));
+              resolve(response.data.responseResult.data);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Resolution_ResolutionServiceManager_ValidateEncryptedStringResolutionRelatedEmailData_02".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringResolution_fail(t("Unsuccessful")));
+              reject("Unsuccessful");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Resolution_ResolutionServiceManager_ValidateEncryptedStringResolutionRelatedEmailData_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                validateStringResolution_fail(t("Something-went-wrong"))
+              );
+              reject("Something-went-wrong");
+            }
+          } else {
+            dispatch(validateStringResolution_fail(t("Something-went-wrong")));
+            reject("Something-went-wrong");
+          }
+        } else {
+          dispatch(validateStringResolution_fail(t("Something-went-wrong")));
+          reject("Something-went-wrong");
+        }
+      })
+      .catch((error) => {
+        dispatch(validateStringResolution_fail("Something-went-wrong"));
+        reject(error);
+      });
+  });
 };
 const currentResolutionView = (response) => {
   return {
@@ -1852,4 +1964,5 @@ export {
   resultResolutionFlag,
   voteResolutionFlag,
   viewAttachmentFlag,
+  validateStringResolutionApi,
 };
