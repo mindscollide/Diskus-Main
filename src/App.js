@@ -28,14 +28,41 @@ import { RouterProvider } from "react-router-dom";
 import axios from "axios";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 import { useSelector } from "react-redux";
+import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
+import { useDispatch } from "react-redux";
 
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
+  const dispatch = useDispatch();
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
   const { paymentProcessModal } = useSelector(
     (state) => state.UserManagementModals
   );
+
+  // // Detect mobile device function
+  // const isMobileDevice = () => {
+  //   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  //   const isAndroid = /android/i.test(userAgent);
+  //   const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+
+  //   // Debugging output
+  //   console.log("User Agent:", userAgent);
+  //   console.log("Is Android:", isAndroid);
+  //   console.log("Is iOS:", isIOS);
+
+  //   return isAndroid || isIOS;
+  // };
+
+  // // Show modal if accessed on a mobile browser
+  // useEffect(() => {
+  //   if (isMobileDevice()) {
+  //     console.log("Mobile device detected. Showing modal.");
+  //     dispatch(mobileAppPopModal(true));
+  //   } else {
+  //     console.log("Not a mobile device. Modal not shown.");
+  //   }
+  // }, []);
 
   useEffect(() => {
     // Function to fetch the current version from version.json
