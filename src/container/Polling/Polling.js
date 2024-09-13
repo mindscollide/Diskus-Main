@@ -870,7 +870,7 @@ const Polling = () => {
                 value={pollsState.searchValue}
                 change={HandleSearchPollsMain}
                 onKeyDown={handleKeyDownSearch}
-                labelClass="d-none"
+                labelclass="d-none"
                 clickIcon={HandleShowSearch}
                 inputicon={
                   <>
@@ -907,7 +907,7 @@ const Polling = () => {
                     </Row>
                   </>
                 }
-                iconClassName={styles["polling_searchinput"]}
+                iconclassname={styles["polling_searchinput"]}
               />
               {searchpoll ? (
                 <>
@@ -941,7 +941,7 @@ const Polling = () => {
                           <TextField
                             placeholder={t("Search-by-title")}
                             applyClass={"Search_Modal_Fields"}
-                            labelClass="d-none"
+                            labelclass="d-none"
                             // onKeyDown={handleKeyDownSearchModal}
                             name={"searchbytitle"}
                             value={searchBoxState.searchByTitle}
@@ -952,7 +952,7 @@ const Polling = () => {
                           <TextField
                             placeholder={t("Search-by-name")}
                             applyClass={"Search_Modal_Fields"}
-                            labelClass="d-none"
+                            labelclass="d-none"
                             // onKeyDown={handleKeyDownSearchModal}
                             name={"seachbyname"}
                             value={searchBoxState.searchByName}

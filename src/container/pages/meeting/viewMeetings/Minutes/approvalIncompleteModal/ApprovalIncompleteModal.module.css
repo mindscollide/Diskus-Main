@@ -1,0 +1,119 @@
+.Button_Cancel,
+.Button_Cancel:is(:hover, :active, :focus, :focus-visible) {
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 700 !important;
+  width: 103px !important;
+  height: 38px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.Button_Publish,
+.Button_Publish:is(:hover, :active, :focus, :focus-visible) {
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 700 !important;
+  width: 161px !important;
+  height: 38px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+p.approval-confirmation {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  margin: 0 !important;
+  padding: 0px 20px !important;
+}
+
+.list-section {
+  background: #f6f9fc !important;
+  height: 240px;
+  margin-top: -15px;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 20px;
+  overflow: hidden auto;
+  border-radius: 4px;
+}
+
+.list-section::-webkit-scrollbar {
+  width: 5px !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
+}
+.list-section::-webkit-scrollbar-thumb {
+  border-radius: 20px !important;
+  background: #a2a2a2 !important;
+  margin-left: -15px !important;
+}
+
+p.rejected-heading {
+  font-weight: 600;
+  font-size: 16px;
+  color: #f16b6b;
+  margin: 0 !important;
+}
+
+ol.ordered-list {
+  list-style: disc;
+  font-size: 12px;
+  color: #5a5a5a;
+  padding-left: 1.4rem;
+}
+
+p.users {
+  font-weight: 600;
+  font-size: 12px;
+  color: #5a5a5a;
+}
+
+.separator {
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  margin-bottom: 15px;
+}
+
+p.pending-heading {
+  font-weight: 600;
+  font-size: 16px;
+  color: #ddb227;
+  margin: 0 !important;
+}
+
+.remove-p-margin p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0 !important;
+}
+
+.deadline-section {
+  background: #ffdede !important;
+  border-radius: 4px;
+  height: 37px;
+  margin-top: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+p.deadline-text {
+  font-weight: 600;
+  font-size: 12px;
+  color: #f16b6b;
+  margin: 0 !important;
+}

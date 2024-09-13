@@ -16,9 +16,10 @@ import {
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   FetchMeetingURLApi,
+  LeaveCurrentMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
-  GetAdvanceMeetingAgendabyMeetingID,
+  GetAdvanceMeetingAgendabyMeetingIDForView,
   clearAgendaReducerState,
   printAgenda,
   exportAgenda,
@@ -57,6 +58,25 @@ import PrintIcon from "./AV-Images/Print-Icon.png";
 import ExportIcon from "./AV-Images/Export-Icon.png";
 import VideocameraIcon from "./AV-Images/Videocamera-Icon.png";
 import ShareIcon from "./AV-Images/Share-Icon.png";
+import LeaveMeetingIcon from "./AV-Images/Leave-Meeting.svg";
+import TalkInactiveIcon from "./AV-Images/Talk Inactive.svg";
+import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
+import {
+  GetAllUsers,
+  GetGroupMessages,
+  activeChat,
+} from "../../../../../store/actions/Talk_action";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+} from "../../../../../store/actions/Talk_Feature_actions";
 
 const AgendaViewer = ({
   setViewAdvanceMeetingModal,
@@ -67,12 +87,14 @@ const AgendaViewer = ({
   editorRole,
   setEdiorRole,
   setactionsPage,
+  videoTalk,
+  setVideoTalk,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { MeetingAgendaReducer } = useSelector((state) => state);
+  const { MeetingAgendaReducer, talkStateData } = useSelector((state) => state);
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -90,8 +112,11 @@ const AgendaViewer = ({
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let meetingTitle = localStorage.getItem("meetingTitle");
 
-  const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
+  console.log("MeetingAgendaReducerMeetingAgendaReducer", MeetingAgendaReducer);
+
+  const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
+    (state) =>
+      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
   );
 
   const cancelMeetingMaterial = useSelector(
@@ -152,7 +177,7 @@ const AgendaViewer = ({
           ? currentMeeting
           : Number(advanceMeetingModalID),
     };
-    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+    dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
     return () => {
       dispatch(clearAgendaReducerState());
       setRows([]);
@@ -184,14 +209,22 @@ const AgendaViewer = ({
   };
 
   useEffect(() => {
+    console.log(
+      "AgendaDataAgendaDataAgendaDataAgendaDataAgendaDataAgendaData",
+      GetAdvanceMeetingAgendabyMeetingIDForViewData
+    );
     if (
-      GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-      GetAdvanceMeetingAgendabyMeetingIDData !== undefined &&
-      GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+      GetAdvanceMeetingAgendabyMeetingIDForViewData !== null &&
+      GetAdvanceMeetingAgendabyMeetingIDForViewData !== undefined &&
+      GetAdvanceMeetingAgendabyMeetingIDForViewData.length !== 0
     ) {
-      setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
+      console.log(
+        "AgendaDataAgendaDataAgendaDataAgendaDataAgendaDataAgendaData",
+        GetAdvanceMeetingAgendabyMeetingIDForViewData
+      );
+      setRows(GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList);
     }
-  }, [GetAdvanceMeetingAgendabyMeetingIDData]);
+  }, [GetAdvanceMeetingAgendabyMeetingIDForViewData]);
 
   useEffect(() => {
     if (rows.length !== 0) {
@@ -235,7 +268,6 @@ const AgendaViewer = ({
   };
 
   const printModal = () => {
-    // setPrintAgendaView(!printAgendaView);
     dispatch(printAgenda(true));
     setAgendaSelectOptionView(!agendaSelectOptionView);
   };
@@ -332,6 +364,64 @@ const AgendaViewer = ({
     } else if (activeCall === true && isMeeting === false) {
       setInitiateVideoModalOto(true);
       dispatch(callRequestReceivedMQTT({}, ""));
+    }
+  };
+
+  const leaveMeeting = () => {
+    let leaveMeetingData = {
+      FK_MDID: currentMeeting,
+      DateTime: getCurrentDateTimeUTC(),
+    };
+    dispatch(
+      LeaveCurrentMeeting(
+        navigate,
+        t,
+        leaveMeetingData,
+        false,
+        false,
+        setEdiorRole,
+        setAdvanceMeetingModalID,
+        setViewAdvanceMeetingModal
+      )
+    );
+  };
+
+  const groupChatInitiation = (talkGroupID) => {
+    if (
+      talkGroupID !== 0 &&
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+    ) {
+      dispatch(createShoutAllScreen(false));
+      dispatch(addNewChatScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(createGroupScreen(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(recentChatFlag(true));
+      dispatch(activeChatBoxGS(true));
+      dispatch(chatBoxActiveFlag(true));
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
+      let chatGroupData = {
+        UserID: parseInt(userID),
+        ChannelID: currentOrganization,
+        GroupID: talkGroupID,
+        NumberOfMessages: 50,
+        OffsetMessage: 0,
+      };
+      dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      dispatch(GetAllUsers(navigate, parseInt(userID), currentOrganization, t));
+
+      let allChatMessages =
+        talkStateData.AllUserChats.AllUserChatsData.allMessages;
+      const foundRecord = allChatMessages.find(
+        (item) => item.id === talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+      }
+      localStorage.setItem("activeOtoChatID", talkGroupID);
     }
   };
 
@@ -483,15 +573,12 @@ const AgendaViewer = ({
               ? currentMeeting
               : Number(advanceMeetingModalID),
         };
-        dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+        dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
       }
     }
   }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
 
-  console.log(
-    "agendaResponseMessageagendaResponseMessage",
-    agendaResponseMessage
-  );
+  console.log("AgendaDataAgendaDataAgendaData", rows);
 
   return (
     <>
@@ -544,36 +631,68 @@ const AgendaViewer = ({
                     sm={12}
                     className="d-flex justify-content-end align-items-center text-end gap-2 mt-3"
                   >
-                    {editorRole.status === "10" || editorRole.status === 10 ? (
-                      <Tooltip
-                        placement="topRight"
-                        title={t("Enable-video-call")}
-                      >
-                        <div
-                          className={styles["box-agendas-camera"]}
-                          onClick={joinMeetingCall}
+                    <div className={styles["icons-block"]}>
+                      {videoTalk?.isChat ? (
+                        <Tooltip placement="topRight" title={t("Start-chat")}>
+                          <div
+                            className={styles["box-agendas-leave"]}
+                            onClick={() =>
+                              groupChatInitiation(videoTalk?.talkGroupID)
+                            }
+                          >
+                            <img src={TalkInactiveIcon} alt="" />
+                          </div>
+                        </Tooltip>
+                      ) : null}
+
+                      {(editorRole.status === "10" ||
+                        editorRole.status === 10) &&
+                      videoTalk?.isVideoCall ? (
+                        <Tooltip
+                          placement="topRight"
+                          title={t("Leave-meeting")}
                         >
-                          <img src={VideocameraIcon} alt="" />
+                          <div
+                            className={styles["box-agendas-leave"]}
+                            onClick={leaveMeeting}
+                          >
+                            <img src={LeaveMeetingIcon} alt="" />
+                          </div>
+                        </Tooltip>
+                      ) : null}
+
+                      {editorRole.status === "10" ||
+                      editorRole.status === 10 ? (
+                        <Tooltip
+                          placement="topRight"
+                          title={t("Enable-video-call")}
+                        >
+                          <div
+                            className={styles["box-agendas-camera"]}
+                            onClick={joinMeetingCall}
+                          >
+                            <img src={VideocameraIcon} alt="" />
+                          </div>
+                        </Tooltip>
+                      ) : null}
+
+                      <Tooltip placement="topRight" title={t("Expand")}>
+                        <div
+                          className={styles["box-agendas"]}
+                          onClick={fullScreenModal}
+                        >
+                          <img src={ExpandAgendaIcon} alt="" />
                         </div>
                       </Tooltip>
-                    ) : null}
 
-                    <Tooltip placement="topRight" title={t("Expand")}>
-                      <div
-                        className={styles["box-agendas"]}
-                        onClick={fullScreenModal}
-                      >
-                        <img src={ExpandAgendaIcon} alt="" />
-                      </div>
-                    </Tooltip>
-
-                    <Tooltip placement="topRight" title={t("More")}>
                       <div
                         onClick={menuPopupAgenda}
                         className={styles["box-agendas"]}
                         ref={closeMenuAgenda}
                       >
-                        <img src={MenuIcon} alt="" />
+                        <Tooltip placement="topRight" title={t("More")}>
+                          <img src={MenuIcon} alt="" />
+                        </Tooltip>
                         <div
                           className={
                             menuAgenda
@@ -625,9 +744,8 @@ const AgendaViewer = ({
                             {t("Share-email")}
                           </span>
                         </div>
-                        {/* ) : null} */}
                       </div>
-                    </Tooltip>
+                    </div>
                   </Col>
                 </Row>
               ) : null}
@@ -793,6 +911,15 @@ const AgendaViewer = ({
           setEdiorRole={setEdiorRole}
           rows={rows}
           setRows={setRows}
+          setMenuAgenda={setMenuAgenda}
+          menuAgenda={menuAgenda}
+          setParticipantInfoView={setParticipantInfoView}
+          participantInfoView={participantInfoView}
+          setAgendaSelectOptionView={setAgendaSelectOptionView}
+          agendaSelectOptionView={agendaSelectOptionView}
+          setShareEmailView={setShareEmailView}
+          shareEmailView={shareEmailView}
+          videoTalk={videoTalk}
         />
       ) : null}
       {agendaSelectOptionView ? (

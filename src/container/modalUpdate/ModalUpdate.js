@@ -631,117 +631,96 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
-    const uploadedFile = data.target.files[0];
-    let fileSizeArr;
-    let files = meetingAgendaAttachments.MeetingAgendaAttachments;
-    let ext = uploadedFile.name.split(".").pop();
-    let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
-    let mergeFileSizes = ConvertFileSizeInMB(fileSize);
-    // MB;
-    if (Object.keys(files).length === 10) {
-      setTimeout(
+    let filesArray = Object.values(data.target.files);
+    let currentFiles = meetingAgendaAttachments.MeetingAgendaAttachments;
+    let fileSizeArr = fileSize;
+
+    // Check if adding the new files exceeds the limit
+    if (currentFiles.length + filesArray.length > 10) {
+      setTimeout(() => {
         setOpen({
           flag: true,
           message: t("You-can-not-upload-more-then-10-files"),
-        }),
-        3000
-      );
-    } else if (mergeFileSizes === 10) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("You-can-not-upload-more-then-100MB-files"),
-        }),
-        3000
-      );
-    } else {
-      if (
-        ext === "doc" ||
-        ext === "docx" ||
-        ext === "xls" ||
-        ext === "xlsx" ||
-        ext === "pdf" ||
-        ext === "png" ||
-        ext === "txt" ||
-        ext === "jpg" ||
-        ext === "jpeg" ||
-        ext === "gif" ||
-        ext === "csv"
-      ) {
-        let data;
-        let sizezero;
-        let size;
-        if (files.length > 0) {
-          files.forEach((filename, index) => {
-            if (filename.DisplayAttachmentName === uploadedFile.name) {
-              data = false;
-            }
-          });
-          if (fileSizeinMB > 10) {
-            size = false;
-          } else if (fileSizeinMB === 0) {
-            sizezero = false;
-          }
-          if (data === false) {
-            setTimeout(
-              setOpen({
-                flag: true,
-                message: t("File-already-exist"),
-              }),
-              3000
-            );
-          } else if (size === false) {
-            setTimeout(
-              setOpen({
-                flag: true,
-                message: t("You-can-not-upload-more-then-10MB-file"),
-              }),
-              3000
-            );
-          } else if (sizezero === false) {
-            setOpen({
-              ...open,
-              flag: true,
-              message: t("File-size-is-0mb"),
-            });
-          } else {
-            dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileSize(fileSizeArr);
-          }
-        } else {
-          let size;
-          let sizezero;
+        });
+      }, 3000);
+      return;
+    }
 
-          if (fileSizeinMB === 0) {
-            sizezero = false;
-          }
-          if (fileSizeinMB > 10) {
-            size = false;
-          }
-          if (size === false) {
-            setTimeout(
-              setOpen({
-                flag: true,
-                message: t("You-can-not-upload-more-then-10MB-file"),
-              }),
-              3000
-            );
-          } else if (sizezero === false) {
+    filesArray.forEach((uploadedFile) => {
+      let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
+      let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
+      let ext = uploadedFile.name.split(".").pop().toLowerCase();
+
+      // Check total size after adding each file
+      if (mergeFileSizes + fileSizeinMB > 100) {
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("You-can-not-upload-more-then-100MB-files"),
+          });
+        }, 3000);
+        return;
+      }
+
+      if (
+        [
+          "doc",
+          "docx",
+          "xls",
+          "xlsx",
+          "pdf",
+          "png",
+          "txt",
+          "jpg",
+          "jpeg",
+          "gif",
+          "csv",
+        ].includes(ext)
+      ) {
+        let fileExists = currentFiles.some(
+          (filename) => filename.DisplayAttachmentName === uploadedFile.name
+        );
+
+        if (fileExists) {
+          setOpen({
+            ...open,
+            flag: true,
+            message: t("This-file-already-exist"),
+          });
+        } else if (fileSizeinMB > 10) {
+          setTimeout(() => {
             setOpen({
-              ...open,
               flag: true,
-              message: t("File-size-is-0mb"),
+              message: t("You-can-not-upload-more-then-10MB-file"),
             });
-          } else {
-            dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileSize(fileSizeArr);
-          }
+          }, 3000);
+        } else if (fileSizeinMB === 0) {
+          setOpen({
+            ...open,
+            flag: true,
+            message: t("File-size-is-0mb"),
+          });
+        } else {
+          dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
+          fileSizeArr += uploadedFile.size;
+          currentFiles.push({
+            PK_MAAID: 0,
+            DisplayAttachmentName: uploadedFile.name,
+            OriginalAttachmentName: uploadedFile.name,
+            CreationDateTime: "111111",
+            FK_MAID: 0,
+          });
+          setFileSize(fileSizeArr);
         }
       }
-    }
+    });
+
+    setMeetingAgendaAttachments({
+      ...meetingAgendaAttachments,
+      MeetingAgendaAttachments: currentFiles,
+    });
   };
+
   const downloadClick = (e, record) => {
     let data = {
       OriginalFileName: record.OriginalAttachmentName,
@@ -834,11 +813,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         }
       } else {
         setModalField(true);
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Enter-Title-Information"),
-        });
+        // setOpen({
+        //   ...open,
+        //   flag: true,
+        //   message: t("Enter-Title-Information"),
+        // });
       }
     } else {
       if (objMeetingAgenda.Title !== "") {
@@ -891,12 +870,31 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setFileSize(0);
         }
       } else {
-        setModalField(true);
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Enter-Title-Information"),
+        // If Title is empty, create a numbered title and append the object
+        const agendaCount = createMeeting.MeetingAgendas.length + 1;
+        const newObjMeetingAgenda = {
+          ...objMeetingAgenda,
+          Title: `Agenda ${agendaCount}`,
+        };
+
+        let previousAdendas = [...createMeeting.MeetingAgendas];
+        let newData = {
+          ObjMeetingAgenda: newObjMeetingAgenda,
+          MeetingAgendaAttachments: [],
+        };
+        previousAdendas.push(newData);
+        setCreateMeeting({
+          ...createMeeting,
+          MeetingAgendas: previousAdendas,
         });
+
+        // Show the modal and message if necessary
+        setModalField(true);
+        // setOpen({
+        //   ...open,
+        //   flag: true,
+        //   message: t("Enter-Title-Information"),
+        // });
       }
     }
   };
@@ -2435,7 +2433,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       />
                       {/* <TextFieldTime
                         type="time"
-                        labelClass="d-none"
+                        labelclass="d-none"
                         value={createMeetingTime}
                         name="MeetingStartTime"
                         onKeyDown={(e) => e.preventDefault()}
@@ -2560,10 +2558,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {modalField === true &&
+                      {/* {modalField === true &&
                       createMeeting.MeetingLocation === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
-                      ) : null}
+                      ) : null} */}
                     </Col>
                     <Col
                       lg={4}
@@ -2604,10 +2602,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {modalField === true &&
+                      {/* {modalField === true &&
                       createMeeting.MeetingTitle === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
-                      ) : null}
+                      ) : null} */}
                     </Col>
                   </Row>
 
@@ -2678,10 +2676,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               type="text"
                               placeholder={t("Agenda-title") + "*"}
                             />
-                            {modalField === true &&
+                            {/* {modalField === true &&
                             objMeetingAgenda.Title === "" ? (
                               <ErrorBar errorText={t("This-field-is-empty")} />
-                            ) : null}
+                            ) : null} */}
                           </Col>
                           <Col
                             lg={5}
@@ -2748,6 +2746,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             <span className="custom-upload-input">
                               <CustomUpload
                                 change={uploadFilesAgenda}
+                                multiple={true}
                                 onClick={(event) => {
                                   event.target.value = null;
                                 }}

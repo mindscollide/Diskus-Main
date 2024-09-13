@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   max-height: calc(100vh - 90vh);
-  
+
   /* height: 89px; */
   width: 100%;
   padding: 10px 0 !important;
@@ -280,7 +280,7 @@ button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
 }
 
 .user-name {
-  margin: 2px 10px 0 0 !important;
+  margin: 0px 10px 0 0 !important;
   padding: 0 !important;
   font-size: 13px !important;
   font-weight: 600;
@@ -291,6 +291,10 @@ button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
   white-space: nowrap;
 }
 
+.user-name.orgStyle {
+  font-weight: 500 !important;
+  font-size: 11px !important;
+}
 body[dir="rtl"] .user-name {
   font-weight: 600;
 }

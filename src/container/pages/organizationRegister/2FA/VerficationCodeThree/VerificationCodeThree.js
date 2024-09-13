@@ -144,7 +144,9 @@ const VerificationCodeThree = () => {
       newClient.onMessageArrived = onMessageArrived;
     } else {
       let userID = localStorage.getItem("userID");
-      mqttConnection(userID);
+      if (userID !== null) {
+        mqttConnection(userID);
+      }
     }
   }, [Helper.socket]);
 

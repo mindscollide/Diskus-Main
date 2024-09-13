@@ -182,8 +182,8 @@ const ChangePassword = () => {
                       <img draggable="false" src={PasswordEyeIcon} />
                     )
                   }
-                  iconClassName="eye_icon"
-                  labelClass="d-none"
+                  iconclassname="eye_icon"
+                  labelclass="d-none"
                   autoComplete="false"
                   clickIcon={handleshowOldPassword}
                 />
@@ -222,8 +222,8 @@ const ChangePassword = () => {
                       <img draggable="false" src={PasswordEyeIcon} />
                     )
                   }
-                  iconClassName="eye_icon"
-                  labelClass="d-none"
+                  iconclassname="eye_icon"
+                  labelclass="d-none"
                   autoComplete="false"
                   clickIcon={showNewPassowrd}
                 />
@@ -269,8 +269,8 @@ const ChangePassword = () => {
                       <img draggable="false" src={PasswordEyeIcon} />
                     )
                   }
-                  iconClassName="eye_icon"
-                  labelClass="d-none"
+                  iconclassname="eye_icon"
+                  labelclass="d-none"
                   autoComplete="false"
                   clickIcon={showConfirmPassowrd}
                 />

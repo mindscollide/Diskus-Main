@@ -57,6 +57,8 @@ const SignatureViewer = () => {
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [orderCheckBox, setOrderCheckbox] = useState(false);
+  const [copyOfSigners, setCopyOfSigners] = useState([]);
+  console.log(copyOfSigners, "copyOfSignerscopyOfSigners");
 
   // Document Send Modal Work
   // Start From there
@@ -106,6 +108,7 @@ const SignatureViewer = () => {
   const participantsRef = useRef(participants);
   const annotationsColorRecordRef = useRef(annotationsColorRecord);
   const orderButtonChecked = useRef(orderCheckBox);
+  const copySignersData = useRef(copyOfSigners);
   console.log(orderButtonChecked, "orderButtonCheckedorderButtonChecked");
 
   // ===== this use for current state update get =====//
@@ -113,6 +116,10 @@ const SignatureViewer = () => {
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
+
+  useEffect(() => {
+    copySignersData.current = copyOfSigners;
+  }, [copyOfSigners]);
 
   useEffect(() => {
     userAnnotationsRef.current = userAnnotations;
@@ -284,7 +291,7 @@ const SignatureViewer = () => {
             (bundleData, index) => bundleData.dependencies.length > 0
           );
           console.log(isOrderChecked, "isOrderCheckedisOrderChecked");
-          setOrderCheckbox(isOrderChecked)
+          setOrderCheckbox(isOrderChecked);
           bundleModels.forEach((users, index) => {
             users.actors.forEach((usersData, index) => {
               listOfUsers.push({
@@ -298,6 +305,10 @@ const SignatureViewer = () => {
               });
             });
           });
+          console.log(signersData, "signersDatasignersData");
+
+          setCopyOfSigners(signersData);
+
           setSignerData(signersData);
           setParticipants(listOfUsers);
           setLastParticipants(listOfUsers);
@@ -475,6 +486,9 @@ const SignatureViewer = () => {
             });
           });
         });
+        console.log(signersData, "signersDatasignersData");
+
+        setCopyOfSigners(signersData);
         setSignerData(signersData);
         setParticipants(listOfUsers);
         let deletedData = getRemovedData(userAnnotations, selectedUserList);
@@ -486,6 +500,7 @@ const SignatureViewer = () => {
     } catch (error) {}
   }, [saveWorkFlowResponse]);
   // === End === //
+  console.log(saveWorkFlowResponse, "saveWorkFlowResponsesaveWorkFlowResponse");
 
   //===  this is for covert blob file ===//
   function handleBlobFiles(base64) {
@@ -638,7 +653,7 @@ const SignatureViewer = () => {
           selectedUserRef.current = newSelectedUser; // Update the ref
         };
         const openCustomModal = () => {
-          setOpenAddParticipentModal(true); // Open the custom modal
+          handleOpenModal();
         };
 
         console.log("selectedUserRef.current", selectedUserRef.current);
@@ -868,17 +883,16 @@ const SignatureViewer = () => {
           return (
             <div>
               <div>
-                <label htmlFor="participantDropdown">{t("Participant")}</label>
+                <label htmlFor='participantDropdown'>{t("Participant")}</label>
               </div>
-              <div className="w-100 d-flex justify-content-center">
+              <div className='w-100 d-flex justify-content-center'>
                 <select
                   style={{
                     width: "100%",
                     padding: "12px 5px",
                     margin: "8px 0",
                   }}
-                  onChange={handleChangeUser}
-                >
+                  onChange={handleChangeUser}>
                   {participantsRef.current.map((userData, index) => {
                     return (
                       <option value={userData.pk_UID}>{userData.name}</option>
@@ -886,7 +900,7 @@ const SignatureViewer = () => {
                   })}
                 </select>
               </div>
-              <div className="w-100">
+              <div className='w-100'>
                 <button
                   style={{
                     width: "100%",
@@ -897,8 +911,7 @@ const SignatureViewer = () => {
                     color: "#fff",
                     cursor: "pointer",
                   }}
-                  onClick={openCustomModal}
-                >
+                  onClick={openCustomModal}>
                   {t("Add-Signaturies")}
                 </button>
               </div>
@@ -908,8 +921,7 @@ const SignatureViewer = () => {
                   justifyContent: "center",
                   gap: "10px",
                   alignItems: "center",
-                }}
-              >
+                }}>
                 <button
                   style={{
                     width: "100%",
@@ -918,8 +930,7 @@ const SignatureViewer = () => {
                     background: "#ffffff",
                     border: "1px solid #e1e1e1",
                   }}
-                  onClick={handleClickTItle}
-                >
+                  onClick={handleClickTItle}>
                   {t("Title")}
                 </button>
                 <button
@@ -929,8 +940,7 @@ const SignatureViewer = () => {
                     background: "#ffffff",
                     border: "1px solid #e1e1e1",
                   }}
-                  onClick={handleClickName}
-                >
+                  onClick={handleClickName}>
                   {t("Name")}
                 </button>
                 <button
@@ -941,8 +951,7 @@ const SignatureViewer = () => {
                     background: "#ffffff",
                     border: "1px solid #e1e1e1",
                   }}
-                  onClick={handleClickEmail}
-                >
+                  onClick={handleClickEmail}>
                   {t("Email")}
                 </button>
               </div>
@@ -1108,6 +1117,14 @@ const SignatureViewer = () => {
   //   console.log("removeHandlerForPrticipantDelete", modifiedXFDFString);
 
   //   return modifiedXFDFString;
+  const handleOpenModal = () => {
+    console.log(copySignersData, "copySignersDatacopySignersDatacopySignersData")
+    console.log(copyOfSigners, "copyOfSignerscopyOfSigners");
+    if (copySignersData.current.length > 0) {
+      setSignerData(copySignersData.current);
+    }
+    setOpenAddParticipentModal(true); // Open the custom modal
+  };
   // }
   function removeSignatureAnnotationsFromXFDF(xfdfString) {
     const parser = new DOMParser();
@@ -1301,14 +1318,13 @@ const SignatureViewer = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
+                    className='d-flex gap-2 align-items-center'>
                     <img
                       src={`data:image/jpeg;base64,${allData?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                      alt=''
                     />
                     <span>{allData.name}</span>
                   </Col>
@@ -1421,6 +1437,15 @@ const SignatureViewer = () => {
         message: "Data Must Required",
         open: true,
       });
+    }
+  };
+
+  // this is for Close Button
+  const handleClickCancel = () => {
+    if (participantsRef.current?.length > 0) {
+      setOpenAddParticipentModal(false);
+    } else {
+      window.close();
     }
   };
 
@@ -1623,8 +1648,8 @@ const SignatureViewer = () => {
 
   return (
     <>
-      <div className="documnetviewer">
-        <div className="webviewer" ref={viewer}></div>
+      <div className='documnetviewer'>
+        <div className='webviewer' ref={viewer}></div>
       </div>
       <Modal
         show={openAddParticipentModal}
@@ -1636,25 +1661,25 @@ const SignatureViewer = () => {
         size={"md"}
         modalFooterClassName={"d-block"}
         modalBodyClassName={"Signers_modal_body"}
-        modalHeaderClassName="Signers_modal_header"
+        modalHeaderClassName='Signers_modal_header'
         ModalBody={
           <>
             <>
-              <Row className="mb-1">
+              <Row className='mb-1'>
                 <Col lg={12} md={12} xs={12} sm={12}>
-                  <span className="Signers_heading">{t("Signers")}</span>
+                  <span className='Signers_heading'>{t("Signers")}</span>
                 </Col>
-                <Col lg={12} md={12} xs={12} sm={12} className="mt-4 mb-3">
-                  <span className="Signers_tagLine">
+                <Col lg={12} md={12} xs={12} sm={12} className='mt-4 mb-3'>
+                  <span className='Signers_tagLine'>
                     {t("Add-the-people-who-need-to-sign-this-document")}
                   </span>
                 </Col>
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col sm={6} md={6} lg={6}>
-                      <p className="pb-1 m-0 inputlabel_style">{"Full Name"}</p>
+                      <p className='pb-1 m-0 inputlabel_style'>{"Full Name"}</p>
                       <Select
-                        placeholder="Full Name"
+                        placeholder='Full Name'
                         onChange={handleChangeFllName}
                         options={userList}
                         filterOption={filterFunc}
@@ -1667,10 +1692,10 @@ const SignatureViewer = () => {
                       <TextField
                         width={"100%"}
                         name={"EmailAddress"}
-                        type="email"
+                        type='email'
                         disable={true}
                         // disable={index !== 0 ? true : false}
-                        labelClass={"inputlabel_style"}
+                        labelclass={"inputlabel_style"}
                         applyClass={"signatureflow_input"}
                         placeholder={t("Email")}
                         value={signers.EmailAddress}
@@ -1678,31 +1703,28 @@ const SignatureViewer = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className="d-flex align-items-center">
-                    <Col sm={12} md={12} lg={12} className="signersList">
+                  <Row className='d-flex align-items-center'>
+                    <Col sm={12} md={12} lg={12} className='signersList'>
                       <DragDropContext onDragEnd={handleOnDragEnd}>
-                        <Droppable droppableId="signers">
+                        <Droppable droppableId='signers'>
                           {(provided) => (
                             <Row
                               {...provided.droppableProps}
-                              ref={provided.innerRef}
-                            >
+                              ref={provided.innerRef}>
                               {signerData.length > 0 &&
                                 signerData.map((fieldsData, index) => {
                                   return (
                                     <Draggable
                                       key={index}
                                       draggableId={index.toString()}
-                                      index={index}
-                                    >
+                                      index={index}>
                                       {(provided) => (
                                         <>
                                           <Col
                                             sm={1}
                                             md={1}
                                             lg={1}
-                                            className="my-1 d-flex align-items-end mb-2"
-                                          >
+                                            className='my-1 d-flex align-items-end mb-2'>
                                             <img
                                               src={DragIcon}
                                               width={20}
@@ -1715,7 +1737,7 @@ const SignatureViewer = () => {
                                             sm={10}
                                             md={10}
                                             lg={10}
-                                            className="my-1"
+                                            className='my-1'
                                             // ref={provided.innerRef}
                                             // {...provided.draggableProps}
                                             // {...provided.dragHandleProps}
@@ -1724,7 +1746,7 @@ const SignatureViewer = () => {
                                               <Col sm={6} md={6} lg={6}>
                                                 <TextField
                                                   placeholder={t("Full-name")}
-                                                  labelClass={
+                                                  labelclass={
                                                     "inputlabel_style"
                                                   }
                                                   width={"100%"}
@@ -1732,7 +1754,7 @@ const SignatureViewer = () => {
                                                     "signatureflow_input"
                                                   }
                                                   name={"Name"}
-                                                  type="text"
+                                                  type='text'
                                                   disable={true}
                                                   value={fieldsData.Name}
                                                   label={"Name"}
@@ -1742,9 +1764,9 @@ const SignatureViewer = () => {
                                                 <TextField
                                                   width={"100%"}
                                                   name={"EmailAddress"}
-                                                  type="email"
+                                                  type='email'
                                                   disable={true}
-                                                  labelClass={
+                                                  labelclass={
                                                     "inputlabel_style"
                                                   }
                                                   applyClass={
@@ -1763,11 +1785,10 @@ const SignatureViewer = () => {
                                             sm={1}
                                             md={1}
                                             lg={1}
-                                            className="my-1 d-flex align-items-end mb-3"
-                                          >
+                                            className='my-1 d-flex align-items-end mb-3'>
                                             <img
                                               src={DeleteIcon}
-                                              className="cursor-pointer"
+                                              className='cursor-pointer'
                                               onClick={() =>
                                                 handleRemoveSigner(index)
                                               }
@@ -1789,7 +1810,7 @@ const SignatureViewer = () => {
                 </Col>
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Button
-                    className="addOther_field"
+                    className='addOther_field'
                     text={t("Add-another-signer")}
                     onClick={handleClickAdd}
                     icon={<img src={PlusSignSignatureFlow} />}
@@ -1806,8 +1827,7 @@ const SignatureViewer = () => {
                 sm={6}
                 md={6}
                 lg={6}
-                className="d-flex justify-content-start px-0"
-              >
+                className='d-flex justify-content-start px-0'>
                 <Checkbox
                   label2={t("Set-signer-order")}
                   checked={orderCheckBox}
@@ -1819,16 +1839,19 @@ const SignatureViewer = () => {
                 sm={6}
                 md={6}
                 lg={6}
-                className="d-flex justify-content-end gap-2 px-0"
-              >
+                className='d-flex justify-content-end gap-2 px-0'>
                 <Button
                   className={"CancelBtn"}
-                  text={t("Cancel")}
-                  onClick={handleHideModal}
+                  text={
+                    participantsRef.current?.length > 0
+                      ? t("Cancel")
+                      : t("Close")
+                  }
+                  onClick={handleClickCancel}
                 />
                 <Button
                   className={"Add"}
-                  text={t("Add")}
+                  text={t("Save")}
                   onClick={clickSaveSigners}
                 />
               </Col>

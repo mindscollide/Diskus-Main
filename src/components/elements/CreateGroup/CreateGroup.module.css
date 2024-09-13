@@ -70,10 +70,10 @@ body[dir="rtl"] .Designation-create-group {
   font-weight: 600;
 }
 .no-members-found {
-  font-weight: 500;
+  font-weight: 600;
 }
 body[dir="rtl"] .no-members-found {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .email-create-group {

@@ -263,7 +263,7 @@ const Organizers = ({
                 <Col lg={12} md={12} sm={12}>
                   <TextField
                     placeholder={t("Organizer-title")}
-                    labelClass={"d-none"}
+                    labelclass={"d-none"}
                     applyClass={"Organizer_table"}
                     maxLength={140}
                     value={text} // Use the controlled value
@@ -524,7 +524,7 @@ const Organizers = ({
                 <Col lg={12} md={12} sm={12}>
                   <TextField
                     placeholder={t("Organizer-title")}
-                    labelClass={"d-none"}
+                    labelclass={"d-none"}
                     applyClass={"Organizer_table"}
                     maxLength={140}
                     value={text} // Use the controlled value

@@ -1029,7 +1029,6 @@ const Resolution = () => {
   useEffect(() => {
     if (
       ResolutionReducer.ResponseMessage !== "" &&
-      ResolutionReducer.ResponseMessage !== t("Data-available") &&
       ResolutionReducer.ResponseMessage !== t("No-data-available") &&
       ResolutionReducer.ResponseMessage !== undefined
     ) {
@@ -1320,13 +1319,13 @@ const Resolution = () => {
                         width="455px"
                         name="Title"
                         placeholder={t("Search")}
-                        labelClass="textFieldSearch d-none"
+                        labelclass="textFieldSearch d-none"
                         value={allSearchInput}
                         change={(e) => filterResolution(e)}
                         // onClick={handleClickSearch}
                         onKeyDown={handleClickSearch}
                         applyClass={"resolution-search-input"}
-                        iconClassName={styles["Search_Icon"]}
+                        iconclassname={styles["Search_Icon"]}
                         inputicon={
                           <>
                             <Tooltip

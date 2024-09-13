@@ -3,11 +3,11 @@
   color: #6172d6;
   font-size: 14px !important;
   cursor: pointer;
-  /* overflow: hidden !important;
-  width: 180px !important;
+  overflow: hidden !important;
+  /* width: 180px !important; */
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
-  display: block !important; */
+  display: block !important;
 }
 
 .Start-Meeting {
@@ -130,4 +130,14 @@
 .meeting-start {
   font-size: 14px;
   font-weight: 400 !important;
+}
+
+.IconAlignment {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.iconsWidth {
+  min-width: 25px !important;
 }

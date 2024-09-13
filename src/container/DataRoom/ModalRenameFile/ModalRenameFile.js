@@ -74,7 +74,7 @@ const ModalRenameFile = ({
                     <TextField
                       value={fileData.FileName}
                       placeholder={t("Rename")}
-                      labelClass="textFieldSearch d-none"
+                      labelclass="textFieldSearch d-none"
                       maxLength={290}
                       change={(e) =>
                         setFileData({

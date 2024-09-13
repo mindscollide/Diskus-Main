@@ -911,6 +911,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       PublishedMeetings: true,
     };
     await dispatch(StartMeeting(navigate, Data, t, Data2));
+    localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
   };
 
   const endMeeting = async () => {

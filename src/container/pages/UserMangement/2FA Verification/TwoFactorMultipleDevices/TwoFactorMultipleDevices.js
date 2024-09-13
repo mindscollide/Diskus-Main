@@ -177,7 +177,9 @@ const TwoFactorMultipleDevices = () => {
     if (newClient != null && newClient != "" && newClient != undefined) {
     } else {
       let userID = localStorage.getItem("userID");
-      mqttConnection(userID);
+      if (userID !== null) {
+        mqttConnection(userID);
+      }
     }
   }, [Helper.socket]);
 
@@ -189,7 +191,7 @@ const TwoFactorMultipleDevices = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
-        <Row className="position-relative">
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -201,27 +203,24 @@ const TwoFactorMultipleDevices = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center align-items-center min-vh-100"
-              >
+                className='d-flex justify-content-center align-items-center min-vh-100'>
                 <Paper className={styles["Send_Email_multipleDevice"]}>
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className={styles["EmailVerifyBoxSendEmail"]}
-                  >
+                    className={styles["EmailVerifyBoxSendEmail"]}>
                     <Row>
                       <Col
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center "
-                      >
+                        className='d-flex justify-content-center '>
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={img1}
                           width={220}
-                          alt="diskus_logo"
+                          alt='diskus_logo'
                         />
                       </Col>
                     </Row>
@@ -232,15 +231,13 @@ const TwoFactorMultipleDevices = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-center flex-column"
-                        >
+                          className='d-flex justify-content-center flex-column'>
                           <span
                             className={
                               styles[
                                 "VerifyHeadingTwofacSendEmail_twofacmultidevice"
                               ]
-                            }
-                          >
+                            }>
                             {t("2fa-verification")}
                           </span>
                           <span
@@ -248,8 +245,7 @@ const TwoFactorMultipleDevices = () => {
                               styles[
                                 "SelectLineTwofacSendEmail_twofacmultidevice"
                               ]
-                            }
-                          >
+                            }>
                             {t("Select-any-one-option")}
                           </span>
                         </Col>
@@ -258,13 +254,12 @@ const TwoFactorMultipleDevices = () => {
                       <Row
                         className={
                           styles["EmailBoxSendRealme_twofacmultidevice"]
-                        }
-                      >
-                        <Col sm={12} md={12} lg={12} className="mx-2">
+                        }>
+                        <Col sm={12} md={12} lg={12} className='mx-2'>
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 width={"15px"}
                                 className={
                                   !notificationdevice
@@ -272,7 +267,7 @@ const TwoFactorMultipleDevices = () => {
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img10}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -282,26 +277,25 @@ const TwoFactorMultipleDevices = () => {
                                   !notificationdevice
                                     ? styles["SendEmailOnDeiveColor_active"]
                                     : styles["SendEmailOnDeiveColor"]
-                                }
-                              >
+                                }>
                                 {t("Send-notification-on-device")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
-                                type="radio"
+                                type='radio'
                                 onChange={changeHandler1}
                                 value={"SEND NOTIFICATION ON DEVICE"}
-                                name="2faverificationSendEmail"
+                                name='2faverificationSendEmail'
                               />
                             </Col>
                           </Row>
                           {/* </Col>
                         <Col sm={12} md={12} lg={12} className="my-2"> */}
-                          <Row className="my-2">
+                          <Row className='my-2'>
                             <Col sm={12} md={1} lg={1}>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 width={"17px"}
                                 className={
                                   !notificationemail
@@ -309,7 +303,7 @@ const TwoFactorMultipleDevices = () => {
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img5}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -319,8 +313,7 @@ const TwoFactorMultipleDevices = () => {
                                   !notificationemail
                                     ? styles["SendEmailOnDeiveColor_active"]
                                     : styles["SendEmailOnDeiveColor"]
-                                }
-                              >
+                                }>
                                 {t("Send-code-on-email")}
                               </span>
                             </Col>
@@ -328,9 +321,9 @@ const TwoFactorMultipleDevices = () => {
                               {" "}
                               <Form.Check
                                 onChange={changeHandler2}
-                                type="radio"
+                                type='radio'
                                 value={"SEND CODE ON EMAIL"}
-                                name="2faverificationSendEmail"
+                                name='2faverificationSendEmail'
                               />
                             </Col>
                           </Row>
@@ -340,7 +333,7 @@ const TwoFactorMultipleDevices = () => {
                             <Col sm={12} md={1} lg={1}>
                               {" "}
                               <img
-                                draggable="false"
+                                draggable='false'
                                 width={"17px"}
                                 className={
                                   !notificationsms
@@ -348,7 +341,7 @@ const TwoFactorMultipleDevices = () => {
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img6}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -358,8 +351,7 @@ const TwoFactorMultipleDevices = () => {
                                   !notificationsms
                                     ? styles["SendEmailOnDeiveColor_active"]
                                     : styles["SendEmailOnDeiveColor"]
-                                }
-                              >
+                                }>
                                 {t("Send-code-on-sms")}
                               </span>
                             </Col>
@@ -367,8 +359,8 @@ const TwoFactorMultipleDevices = () => {
                               <Form.Check
                                 onChange={changeHandler3}
                                 value={"SEND CODE ON SMS"}
-                                type="radio"
-                                name="2faverificationSendEmail"
+                                type='radio'
+                                name='2faverificationSendEmail'
                               />{" "}
                             </Col>
                           </Row>
@@ -379,8 +371,7 @@ const TwoFactorMultipleDevices = () => {
                           sm={12}
                           lg={12}
                           md={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <Button
                             text={t("Send-code")}
                             className={
@@ -401,17 +392,15 @@ const TwoFactorMultipleDevices = () => {
                       </Row>
                     </Form>
                   </Col>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center"
-                    >
+                      className='d-flex justify-content-center'>
                       <span
                         onClick={handleGoback}
-                        className={styles["forogt_email_link"]}
-                      >
+                        className={styles["forogt_email_link"]}>
                         {t("Go-back")}
                       </span>
                     </Col>
@@ -420,23 +409,23 @@ const TwoFactorMultipleDevices = () => {
               </Col>
             </Row>
           </Col>
-          <Col md={7} lg={7} sm={12} className="">
+          <Col md={7} lg={7} sm={12} className=''>
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative">
+              <Col sm={12} md={6} lg={6} className='position-relative'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={img2}
-                  alt="auth_icon"
+                  alt='auth_icon'
                   // width="380px"
                   className={styles["phone-image"]}
                 />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+              <Col sm={12} md={6} lg={6} className='position-relative vh-100'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={DiskusAuthPageLogo}
-                  alt="auth_icon"
-                  width="600px"
+                  alt='auth_icon'
+                  width='600px'
                   className={styles["MultiFac_Auth_Icon"]}
                 />
               </Col>

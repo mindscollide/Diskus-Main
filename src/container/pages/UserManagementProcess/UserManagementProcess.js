@@ -15,7 +15,10 @@ import ForgotPasswordVerificationUM from "../UserMangement/ForgotPasswordVerific
 import TwoFactorMultipleDevices from "../UserMangement/2FA Verification/TwoFactorMultipleDevices/TwoFactorMultipleDevices";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { cleareMessage } from "../../../store/actions/Auth2_actions";
+import {
+  cleareMessage,
+  validateStringOTPEmail_Api,
+} from "../../../store/actions/Auth2_actions";
 import { Notification } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
@@ -23,7 +26,7 @@ import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import Helper from "../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
 
 const UserManagementProcess = () => {
@@ -31,7 +34,13 @@ const UserManagementProcess = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-
+  const currentUrl = window.location.href.split("?verifyOTPaction=")[1];
+  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
+  let userManagementRoute = Number(localStorage.getItem("LoginFlowPageRoute"));
+  console.log(
+    userManagementRoute,
+    "userManagementuserManagementuserManagement"
+  );
   const { UserMangementReducer, Authreducer } = useSelector((state) => state);
 
   //state to show snackbar
@@ -42,31 +51,50 @@ const UserManagementProcess = () => {
   const [storedStep, setStoredStep] = useState(
     Number(localStorage.getItem("LoginFlowPageRoute"))
   );
+
   // Retrieve currentStep value from localStorage, default to 1 if not found
   // let storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
   useEffect(() => {
-    // Retrieve current step from local storage
-    if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
-      if (storedStep) {
-        dispatch(LoginFlowRoutes(storedStep));
+    if (currentUrl === undefined) {
+      // Retrieve current step from local storage
+      if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+        if (storedStep) {
+          dispatch(LoginFlowRoutes(storedStep));
+        }
+      } else {
+        console.log("LoginFlowPageRoute");
+        localStorage.setItem("LoginFlowPageRoute", 1);
+        setStoredStep(1);
+        dispatch(LoginFlowRoutes(1));
       }
-    } else {
-      console.log("LoginFlowPageRoute");
-      localStorage.setItem("LoginFlowPageRoute", 1);
-      setStoredStep(1);
-      dispatch(LoginFlowRoutes(1));
     }
   }, []);
 
   useEffect(() => {
+    if (currentUrl !== undefined) {
+      let Data = { EncryptedString: currentUrl };
+      dispatch(validateStringOTPEmail_Api(Data, navigate, t, setStoredStep));
+    }
+  }, [currentUrl]);
+
+  useEffect(() => {
     if (UserMangementReducer.defaultRoutingValue) {
       // Update local storage with the current step
-      localStorage.setItem(
-        "LoginFlowPageRoute",
-        UserMangementReducer.defaultRoutingValue
-      );
+      // localStorage.setItem(
+      //   "LoginFlowPageRoute",
+      //   UserMangementReducer.defaultRoutingValue
+      // );
     }
   }, [UserMangementReducer.defaultRoutingValue]);
+
+  useEffect(() => {
+    if (userManagementRoute !== null) {
+      setStoredStep(userManagementRoute);
+    } else {
+      setStoredStep(1);
+      localStorage.setItem("LoginFlowPageRoute", 1);
+    }
+  }, [userManagementRoute]);
 
   useEffect(() => {
     if (
@@ -168,7 +196,9 @@ const UserManagementProcess = () => {
       newClient.onMessageArrived = onMessageArrived;
     } else {
       let userID = localStorage.getItem("userID");
-      mqttConnection(userID);
+      if (userID !== null) {
+        mqttConnection(userID);
+      }
     }
   }, [Helper.socket]);
 
@@ -233,6 +263,11 @@ const UserManagementProcess = () => {
   }, [Authreducer?.AuthenticateAFAResponseMessage]);
 
   let componentToRender;
+  console.log(
+    UserMangementReducer.defaultRoutingValue,
+    { storedStep, userManagementRoute },
+    "storedStepstoredStep"
+  );
 
   if (UserMangementReducer.defaultRoutingValue === 1 && storedStep === 1) {
     componentToRender = <SignInComponent />;

@@ -798,7 +798,6 @@ const ScheduleNewResolution = () => {
   useEffect(() => {
     if (
       ResolutionReducer.ResponseMessage !== "" &&
-      ResolutionReducer.ResponseMessage !== t("Data-available") &&
       ResolutionReducer.ResponseMessage !== undefined &&
       ResolutionReducer.ResponseMessage !== t("No-data-available")
     ) {
@@ -1136,7 +1135,7 @@ const ScheduleNewResolution = () => {
                           </div>
                           {/* <TextFieldDateTime
                             min={minDate}
-                            labelClass="d-none"
+                            labelclass="d-none"
                             name={"circulation"}
                             applyClass={"search_voterInput"}
                             change={(e) => {
@@ -1270,7 +1269,7 @@ const ScheduleNewResolution = () => {
                           {/* <TextFieldTime
                             type="time"
                             applyClass={"search_voterInput"}
-                            labelClass="d-none"
+                            labelclass="d-none"
                             value={votingDateTime.time}
                             name="voting"
                             onKeyDown={(e) => e.preventDefault()}
@@ -1388,7 +1387,7 @@ const ScheduleNewResolution = () => {
                             onKeyDown={(e) => e.preventDefault()}
                             value={decisionDateTime.time}
                             name="decision"
-                            labelClass="d-none"
+                            labelclass="d-none"
                             change={(e) => {
                               handleChangeTimeSelection(e);
                             }}

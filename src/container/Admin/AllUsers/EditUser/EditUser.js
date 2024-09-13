@@ -870,10 +870,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
-      adminReducer.UpdateOrganizationMessageResponseMessage !==
-        "" &&
-      adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Data-available") &&
+   
       adminReducer.UpdateOrganizationMessageResponseMessage !==
         t("The-user-has-been-edited-successfully")
     ) {
@@ -895,7 +892,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !== "" &&
-      adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
       adminReducer.AllOrganizationResponseMessage !==
         t("The-user-has-been-edited-successfully")
     ) {
@@ -918,9 +914,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        "" &&
-      adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Data-available")
+        "" 
     ) {
       console.log("checkreponce");
 
@@ -941,7 +935,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("Data-available") &&
       adminReducer.ResponseMessage !==
         t("The-user-has-been-edited-successfully") &&
       adminReducer.ResponseMessage !==
@@ -1269,7 +1262,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             applyClass="form-control2"
             placeholder={t("Title")}
             className="mx-2 p-0"
-            labelClass="filter"
+            labelclass="filter"
             change={onAllSearch}
           />
           <div className={styles["filterModal"]}>
@@ -1602,7 +1595,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
-                        labelClass="d-none"
+                        labelclass="d-none"
                         className={styles["formcontrol-fieldfor-filtermodal"]}
                         ref={Names}
                         onKeyDown={(event) => enterKeyHandler(event, Emails)}
@@ -1615,7 +1608,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
-                        labelClass="d-none"
+                        labelclass="d-none"
                         className={styles["formcontrol-fieldfor-filtermodal"]}
                         ref={Emails}
                         onKeyDown={(event) =>

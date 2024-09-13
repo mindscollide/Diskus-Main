@@ -246,12 +246,24 @@ const VideoPanelNormal = () => {
             className={
               videoFeatureReducer.NormalizeVideoFlag === true &&
               videoFeatureReducer.MinimizeVideoFlag === false &&
-              videoFeatureReducer.MaximizeVideoFlag === false
+              videoFeatureReducer.MaximizeVideoFlag === false &&
+              videoFeatureReducer.VideoChatPanel === true
                 ? "videoCallScreen"
+                : videoFeatureReducer.NormalizeVideoFlag === true &&
+                  videoFeatureReducer.MinimizeVideoFlag === false &&
+                  videoFeatureReducer.MaximizeVideoFlag === false &&
+                  videoFeatureReducer.VideoChatPanel === false
+                ? "videoCallScreen more-zindex"
                 : videoFeatureReducer.NormalizeVideoFlag === false &&
                   videoFeatureReducer.MinimizeVideoFlag === false &&
-                  videoFeatureReducer.MaximizeVideoFlag === true
+                  videoFeatureReducer.MaximizeVideoFlag === true &&
+                  videoFeatureReducer.VideoChatPanel === true
                 ? "max-video-panel"
+                : videoFeatureReducer.NormalizeVideoFlag === false &&
+                  videoFeatureReducer.MinimizeVideoFlag === false &&
+                  videoFeatureReducer.MaximizeVideoFlag === true &&
+                  videoFeatureReducer.VideoChatPanel === false
+                ? "max-video-panel more-zindex"
                 : ""
             }
           >
@@ -315,43 +327,6 @@ const VideoPanelNormal = () => {
                     </Col>
                   </>
                 </Row>
-
-                {/* <>
-                          <Col lg={1} md={1} sm={1} className="video-side-icons">
-                            <div>
-                              {isActiveIcon ? (
-                                <img src={ActiveChat} onClick={onClickCloseChatHandler} />
-                              ) : (
-                                <img
-                                  src={ChatNonActive}
-                                  onClick={onClickCloseChatHandler}
-                                />
-                              )}
-                            </div>
-          
-                            <div>
-                              {isNoteActive ? (
-                                <img src={ActiveNote} onClick={onClickNoteIconHandler} />
-                              ) : (
-                                <img
-                                  src={NoteNonActive}
-                                  onClick={onClickNoteIconHandler}
-                                />
-                              )}
-                            </div>
-          
-                            <div onClick={() => setIsNote2Active(!isNote2Active)}>
-                              {isNote2Active ? (
-                                <img src={ActiveNote2} onClick={onClickMinutesHandler} />
-                              ) : (
-                                <img
-                                  src={Note_2NonActive}
-                                  onClick={onClickMinutesHandler}
-                                />
-                              )}
-                            </div>
-                          </Col>
-                        </> */}
                 <Row>
                   <Col lg={8} md={8} sm={12}></Col>
                   <Col lg={4} md={4} sm={12}>

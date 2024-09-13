@@ -813,7 +813,7 @@ const Organization = () => {
                         });
                       }}
                       maxLength={360}
-                      labelClass="d-none"
+                      labelclass="d-none"
                       width="80px"
                     />
                   </Col>
@@ -846,7 +846,7 @@ const Organization = () => {
                       change={handleChangeMaximumMeeting}
                       value={organizationStates.MaximumMeetingDuration}
                       name={"maximumduration"}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       width="80px"
                     />
                     {/* <Select
@@ -1670,7 +1670,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="organization-labels">
-                      {t("User-Allow-Google-Calendar-Synch")}
+                      {t("User-allow-google-calendar-synch")}
                     </label>
                   </Col>
                   <Col
@@ -1699,7 +1699,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="organization-labels">
-                      {t("User-Allow-Microsoft-Calendar-Synch")}
+                      {t("User-allow-microsoft-calendar-synch")}
                     </label>
                   </Col>
                   <Col
@@ -1868,7 +1868,7 @@ const Organization = () => {
                         });
                       }}
                       maxLength={360}
-                      labelClass="d-none"
+                      labelclass="d-none"
                       width="80px"
                     />
                   </Col>

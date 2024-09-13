@@ -567,7 +567,7 @@ const SubAgendaMappingDragging = ({
                                               </Row>
                                               <TextField
                                                 applyClass={"AgendaTextField"}
-                                                labelClass={"d-none"}
+                                                labelclass={"d-none"}
                                                 name={"subTitle"}
                                                 maxLength={290}
                                                 disable={

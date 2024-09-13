@@ -736,13 +736,15 @@ const GetAnnotationsOfDataroomAttachementinit = () => {
 const GetAnnotationsOfDataroomAttachementSuccess = (
   message,
   xfdfData,
-  attachmentBlob
+  attachmentBlob,
+  html
 ) => {
   return {
     type: actions.GETANNOTATIONSOFDATAROOMATTACHEMENT_SUCCESS,
     xfdfData: xfdfData,
     attachmentBlob: attachmentBlob,
     message: message,
+    checking: html,
   };
 };
 
@@ -753,7 +755,7 @@ const GetAnnotationsOfDataroomAttachementFail = (message) => {
   };
 };
 
-const getAnnotationsOfDataroomAttachement = (navigate, t, data) => {
+const getAnnotationsOfDataroomAttachement = (navigate, t, data, html = false) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(GetAnnotationsOfDataroomAttachementinit());
@@ -774,7 +776,7 @@ const getAnnotationsOfDataroomAttachement = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAnnotationsOfDataroomAttachement(navigate, t, data));
+          dispatch(getAnnotationsOfDataroomAttachement(navigate, t, data, html));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -791,7 +793,8 @@ const getAnnotationsOfDataroomAttachement = (navigate, t, data) => {
                 GetAnnotationsOfDataroomAttachementSuccess(
                   t("Annotation-available"),
                   xfdfData,
-                  attachmentBlob
+                  attachmentBlob,
+                  html
                 )
               );
             } else if (

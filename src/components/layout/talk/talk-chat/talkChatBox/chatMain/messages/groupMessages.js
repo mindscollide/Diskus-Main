@@ -111,7 +111,7 @@ const GroupMessages = () => {
                       change={(e) => setSearchChatWord(e.target.value)}
                       value={searchChatWord}
                       placeholder={t("Search-Chat")}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                     />
                   </Col>
                 </Row>
@@ -295,7 +295,7 @@ const GroupMessages = () => {
                       change={(e) => setSearchChatWord(e.target.value)}
                       value={searchChatWord}
                       placeholder={t("Search Chat")}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                     />
                   </Col>
                 </Row>

@@ -50,8 +50,11 @@ const ViewMeetingModal = ({
   dataroomMapFolderId,
   setDataroomMapFolderId,
   setCurrentMeetingID,
+  videoTalk,
+  setVideoTalk,
 }) => {
   console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
+  console.log(videoTalk, "videoTalkvideoTalk");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
@@ -85,6 +88,8 @@ const ViewMeetingModal = ({
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+
+  let meetingTitle = localStorage.getItem("meetingTitle");
 
   const dispatch = useDispatch();
 
@@ -372,7 +377,7 @@ const ViewMeetingModal = ({
         <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
-              {t("Meeting-view")}
+              {meetingTitle ? meetingTitle : ""}
             </span>
           </Col>
         </Row>
@@ -612,6 +617,8 @@ const ViewMeetingModal = ({
                   editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
                   setactionsPage={setactionsPage}
+                  videoTalk={videoTalk}
+                  setVideoTalk={setVideoTalk}
                 />
               )}
               {unPublish ? null : (

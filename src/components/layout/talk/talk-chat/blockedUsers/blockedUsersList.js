@@ -131,7 +131,7 @@ const BlockedUsersList = () => {
               }}
               value={searchChatValue}
               placeholder={t("Search-Chat")}
-              labelClass={"d-none"}
+              labelclass={"d-none"}
             />
           </Col>
         </Row>

@@ -873,7 +873,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   position: absolute;
   background-color: #fff;
   border: 1px solid #e1e1e1;
-  z-index: 9;
+  z-index: 999 !important;
   top: 32px;
   right: 0;
   transition: opacity 0.3s ease;
@@ -1087,4 +1087,20 @@ body[dir="rtl"] .box-agendas-camera {
   right: auto;
   left: 90px;
   top: 0;
+}
+
+.icons-block {
+  display: flex;
+  gap: 20px;
+}
+
+.box-agendas-leave {
+  border-radius: 4px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  cursor: pointer;
 }

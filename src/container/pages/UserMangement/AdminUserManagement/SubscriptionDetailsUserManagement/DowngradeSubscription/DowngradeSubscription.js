@@ -365,7 +365,7 @@ const DowngradeSubscription = () => {
                   className="d-flex justify-content-center"
                 >
                   <TextField
-                    labelClass="d-none"
+                    labelclass="d-none"
                     applyClass="PakageDetails"
                     value={
                       textFieldValues[

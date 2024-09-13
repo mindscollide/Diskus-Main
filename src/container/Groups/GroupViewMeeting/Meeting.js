@@ -41,6 +41,7 @@ import {
   createGroupMeeting,
   getMeetingStatusfromSocket,
 } from "../../../store/actions/GetMeetingUserId";
+import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 const CommitteeMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
@@ -50,8 +51,15 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
   );
-  const { GroupMeetingMQTT, MeetingStatusSocket } = useSelector(
-    (state) => state.meetingIdReducer
+  const {
+    GroupMeetingMQTT,
+    MeetingStatusSocket,
+    allMeetingsSocketData,
+    MeetingStatusEnded,
+  } = useSelector((state) => state.meetingIdReducer);
+  console.log(
+    allMeetingsSocketData,
+    "allMeetingsSocketDataallMeetingsSocketData"
   );
   const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
@@ -199,7 +207,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
-      width: "115px",
+      width: "120px",
+      ellipsis: true,
       render: (text, record) => {
         return (
           <span
@@ -208,8 +217,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
             }}
           >
-            {truncateString(text, 30)}
-            {/* {text} */}
+            {text}
           </span>
         );
       },
@@ -221,7 +229,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "50px",
+      width: "90px",
       filters: [
         {
           text: t("Active"),
@@ -263,7 +271,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       title: t("Organizer"),
       dataIndex: "host",
       key: "host",
-      width: "60px",
+      width: "90px",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
@@ -276,6 +284,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "115px",
+      ellipsis: true,
+
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
@@ -300,7 +310,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     {
       dataIndex: "Chat",
       key: "Chat",
-      width: "36px",
+      width: "70px",
       render: (text, record) => {
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
@@ -310,15 +320,14 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         return (
           <>
             <Row>
-              <Col sm={12} md={12} lg={12}>
-                {record.isAttachment ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-right-10"
-                    }
-                  >
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex justify-content-center gap-3"
+              >
+                <span className={styles["iconsWidth"]}>
+                  {record.isAttachment ? (
                     <Tooltip placement="topRight" title={t("ClipIcon")}>
                       <img
                         src={ClipIcon}
@@ -327,77 +336,44 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                         draggable="false"
                       />
                     </Tooltip>
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-                {record.isChat ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-right-10"
-                    }
-                    // onClick={(e) => groupChatInitiation(record)}
-                  >
-                    <Tooltip placement="topLeft" title={t("Chat")}>
-                      <img
-                        src={CommentIcon}
-                        className="cursor-pointer"
-                        // width="20.06px"
-                        // height="15.95px"
-                        alt=""
-                        draggable="false"
-                      />
-                    </Tooltip>
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-                {record.isVideoCall ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-right-10"
-                    }
-                  >
-                    <img src={VideoIcon} alt="" draggable="false" />
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-                {record.status === "9" && isOrganiser && (
-                  <Tooltip placement="topLeft" title={t("member")}>
+                  ) : null}
+                </span>
+
+                <span className={styles["iconsWidth"]}>
+                  {record.isChat ? (
+                    <img
+                      src={CommentIcon}
+                      className="cursor-pointer"
+                      // width="20.06px"
+                      // height="15.95px"
+                      alt=""
+                      draggable="false"
+                    />
+                  ) : null}
+                </span>
+
+                <span className={styles["iconsWidth"]}>
+                  {record.isVideoCall ? (
+                    <img
+                      src={VideoIcon}
+                      alt=""
+                      title={t("Video")}
+                      draggable="false"
+                    />
+                  ) : null}
+                </span>
+                <span className={styles["iconsWidth"]}>
+                  {record.status === "9" && isOrganiser && (
                     <img
                       src={member}
                       className="cursor-pointer"
-                      width="17.1px"
-                      height="16.72px"
                       alt=""
+                      title={t("Member")}
                       draggable="false"
                       onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
-                  </Tooltip>
-                )}
+                  )}
+                </span>
               </Col>
             </Row>
           </>
@@ -488,6 +464,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                             // setEditFlag
                           )
                         );
+                        localStorage.setItem("meetingTitle", record.title);
                       }}
                     />
                   </Col>
@@ -503,6 +480,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
@@ -512,6 +490,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
+                  localStorage.setItem("meetingTitle", record.title);
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
                 }}
               />
@@ -523,6 +502,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  localStorage.setItem("meetingTitle", record.title);
                 }}
               />
             );
@@ -540,7 +520,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
-        console.log(record, "GroupMeetingTable")
+        console.log(record, "GroupMeetingTable");
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -560,7 +540,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           record.status === "4"
         ) {
           return null;
-        } else  {
+        } else {
           if (isQuickMeeting) {
             if (isOrganiser) {
               if (
@@ -640,12 +620,39 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   }, [meetingStatusNotConductedMqttData, rows]);
 
   useEffect(() => {
+    if (allMeetingsSocketData !== null) {
+      try {
+        const updateMeeting = async () => {
+          let meetingID = allMeetingsSocketData.pK_MDID;
+          let meetingData = allMeetingsSocketData;
+          setRow((rowsData) => {
+            return rowsData.map((item) => {
+              if (item.pK_MDID === meetingID) {
+                return meetingData;
+              } else {
+                return item; // Return the original item if the condition is not met
+              }
+            });
+          });
+        };
+        updateMeeting();
+      } catch (error) {
+        console.log(error, "error");
+      }
+    }
+  }, [allMeetingsSocketData]);
+
+  useEffect(() => {
     try {
       if (GroupMeetingMQTT !== null) {
         if (Number(ViewGroupID) === Number(GroupMeetingMQTT.groupID)) {
           let meetingData = GroupMeetingMQTT.meeting;
           let findIsExist = rows.findIndex(
             (data, index) => data.pK_MDID === meetingData.pK_MDID
+          );
+          console.log(
+            GroupMeetingMQTT,
+            "GroupMeetingMQTTGroupMeetingMQTTGroupMeetingMQTT"
           );
           if (findIsExist !== -1) {
             setRow((rowsData) => {
@@ -663,7 +670,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         }
         dispatch(createGroupMeeting(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [GroupMeetingMQTT]);
 
   const handelCreateMeeting = () => {
@@ -718,7 +727,20 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
       ) {
-        let meetingID = MeetingStatusSocket.meeting.pK_MDID;
+        let meetingID = MeetingStatusSocket?.meeting?.pK_MDID;
+        setRow((meetingRow) => {
+          return meetingRow.map((meetingData) => {
+            if (Number(meetingData?.pK_MDID) === Number(meetingID)) {
+              return {
+                ...meetingData,
+                status: "10",
+              };
+            } else {
+              // If the condition isn't met, return the original value
+              return meetingData;
+            }
+          });
+        });
       }
 
       dispatch(getMeetingStatusfromSocket(null));
@@ -727,6 +749,36 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       // }
     }
   }, [MeetingStatusSocket]);
+
+  useEffect(() => {
+    if (MeetingStatusEnded !== null) {
+      console.log(MeetingStatusEnded, "MeetingStatusEndedMeetingStatusEnded");
+      try {
+        if (
+          MeetingStatusEnded.message.toLowerCase() ===
+          "MEETING_STATUS_EDITED_END".toLowerCase()
+        ) {
+          let meetingID = MeetingStatusEnded.meeting.pK_MDID;
+
+          setRow((meetingRow) => {
+            return meetingRow.map((meetingData) => {
+              if (Number(meetingData.pK_MDID) === Number(meetingID)) {
+                return {
+                  ...meetingData,
+                  status: "9",
+                };
+              } else {
+                // If the condition isn't met, return the original value
+                return meetingData;
+              }
+            });
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [MeetingStatusEnded]);
 
   return (
     <>
@@ -768,7 +820,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         <Col sm={12} md={12} lg={12}>
           <Table
             column={MeetingColoumns}
-            scroll={{ y: "39vh", x: true }}
+            scroll={{ y: "39vh", x: "max-content" }}
             rows={rows}
             pagination={false}
             size="small"

@@ -30,6 +30,7 @@ const initialState = {
   MeetingAgendaParticipants: [],
   SendAgendaAsPDFEmail: null,
   PrintCurrentAgenda: null,
+  GetAdvanceMeetingAgendabyMeetingIDForViewData: null,
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -555,6 +556,29 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         PrintCurrentAgenda: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ADVANCEMEETINGAGENDAFORVIEW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_ADVANCEMEETINGAGENDAFORVIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetAdvanceMeetingAgendabyMeetingIDForViewData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ADVANCEMEETINGAGENDAFORVIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetAdvanceMeetingAgendabyMeetingIDForViewData: null,
         ResponseMessage: action.message,
       };
     }

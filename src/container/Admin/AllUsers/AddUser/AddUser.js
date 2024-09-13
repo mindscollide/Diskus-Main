@@ -622,7 +622,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
-      adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
       adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !==
         t(
@@ -683,8 +682,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("Data-available") &&
       adminReducer.ResponseMessage !==
         t(
           "The-organization-has-been-created-successfully-and-the-otp-has-been-generated-please-verfiy-you-email"

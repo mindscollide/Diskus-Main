@@ -246,7 +246,7 @@ const ModalMarketingTeamCommittee = ({
                       className="d-flex justify-content-start Saved_money_Tagline"
                     >
                       <InputSearchFilter
-                        labelClass="d-none"
+                        labelclass="d-none"
                         value={groupName}
                         filteredDataHandler={searchFilterHandler(groupName)}
                         change={onChangeSearch}

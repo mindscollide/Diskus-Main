@@ -19,6 +19,7 @@ import {
   UserLogout,
   GetInvoiceHTMLByOrganizatonID,
   DownloadInvoiceRM,
+  ValidateEncryptedStringForOTPEmailLinkRM,
 } from "../../commen/apis/Api_config";
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
@@ -335,7 +336,7 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created")
                 )
               );
-              //localStorage.setItem("LoginFlowPageRoute", 2);
+              localStorage.setItem("LoginFlowPageRoute", 2);
               dispatch(LoginFlowRoutes(2));
               // navigate("/enterPassword");
             } else if (
@@ -538,7 +539,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
         dispatch(enterPasswordFail("Something-went-wrong"));
         return;
       }
-      await handleLoginResponse(response.data.responseResult);
+      await handleLoginResponse(
+        response.data.responseResult,
+        dispatch,
+        navigate,
+        t
+      );
       // await dispatch(
       //   getPackageExpiryDetail(
       //     navigate,
@@ -1696,7 +1702,8 @@ const verificationEmailOTP = (
   setMinutes
 ) => {
   let userID = localStorage.getItem("userID");
-  let email = localStorage.getItem("userEmail");
+  let email =
+    localStorage.getItem("userEmail") || localStorage.getItem("email");
   let data = { UserID: JSON.parse(userID), Email: email, OTP: OTPValue };
   return (dispatch) => {
     dispatch(verifyOTPInit());
@@ -1848,14 +1855,19 @@ const createPasswordAction = (value, navigate, t) => {
         dispatch(createPasswordFail("Something-went-wrong"));
         return;
       }
-      await handleLoginResponse(response.data.responseResult);
-      await dispatch(
-        getPackageExpiryDetail(
-          navigate,
-          response.data.responseResult.organizationID,
-          t
-        )
+      await handleLoginResponse(
+        response.data.responseResult,
+        dispatch,
+        navigate,
+        t
       );
+      // await dispatch(
+      //   getPackageExpiryDetail(
+      //     navigate,
+      //     response.data.responseResult.organizationID,
+      //     t
+      //   )
+      // );
       let packageFeatureIDs = [];
       switch (responseMessage.toLowerCase()) {
         case USERSPASSWORDCREATION.CREATION_01:
@@ -2916,7 +2928,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
               let TenureID =
@@ -2935,7 +2947,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("No-data-available")
+                  ""
                 )
               );
             } else if (
@@ -2948,17 +2960,17 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("No-data-available")
+                  ""
                 )
               );
             }
           } else {
-            dispatch(getSelectedPackageandDetailsFail(t("No-data-available")));
+            dispatch(getSelectedPackageandDetailsFail(""));
           }
         }
       })
       .catch((response) => {
-        dispatch(getSelectedPackageandDetailsFail(t("No-data-available")));
+        dispatch(getSelectedPackageandDetailsFail(""));
       });
   };
 };
@@ -3493,6 +3505,125 @@ const DownlaodInvoiceLApi = (navigate, t, Data) => {
       });
   };
 };
+
+const validateStringOTPEmail_init = () => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_INIT,
+  };
+};
+const validateStringOTPEmail_success = (response, message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const validateStringOTPEmail_fail = (message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_FAIL,
+    message: message,
+  };
+};
+const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
+  return (dispatch) => {
+    dispatch(validateStringOTPEmail_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      ValidateEncryptedStringForOTPEmailLinkRM.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                validateStringOTPEmail_success(
+                  response.data.responseResult,
+                  t("Successfully-updated")
+                )
+              );
+
+              localStorage.setItem(
+                "email",
+                response?.data?.responseResult?.data?.email
+              );
+              localStorage.setItem(
+                "userID",
+                Number(response?.data?.responseResult?.data?.userID)
+              );
+              localStorage.setItem(
+                "organizationID",
+                response?.data?.responseResult?.data?.organizationID
+              );
+              localStorage.setItem("LoginFlowPageRoute", 3);
+              setStoredStep(3);
+              dispatch(LoginFlowRoutes(3));
+              const currentUrl = window.location.href;
+              const baseUrl = currentUrl.split("?")[0];
+              const hashPart = currentUrl.split("#")[1];
+              const newUrl = `${baseUrl}`;
+              window.history.replaceState({}, "", newUrl);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_02".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringOTPEmail_fail(t("Validation-Failed")));
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              setStoredStep(1);
+              dispatch(LoginFlowRoutes(1));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_03".toLowerCase()
+                )
+            ) {
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              setStoredStep(1);
+              dispatch(LoginFlowRoutes(1));
+              dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+            } else {
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              setStoredStep(1);
+              dispatch(LoginFlowRoutes(1));
+              dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+            }
+          } else {
+            localStorage.setItem("LoginFlowPageRoute", 1);
+            setStoredStep(1);
+            dispatch(LoginFlowRoutes(1));
+            dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+          }
+        } else {
+          localStorage.setItem("LoginFlowPageRoute", 1);
+          setStoredStep(1);
+          dispatch(LoginFlowRoutes(1));
+          dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        localStorage.setItem("LoginFlowPageRoute", 1);
+        setStoredStep(1);
+        dispatch(LoginFlowRoutes(1));
+        dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
+      });
+  };
+};
 const setClient = (response) => {
   return {
     type: actions.SET_MQTT_CLIENT,
@@ -3501,6 +3632,7 @@ const setClient = (response) => {
 };
 
 export {
+  validateStringOTPEmail_Api,
   DownlaodInvoiceLApi,
   getInvocieHTMLApi,
   setClient,

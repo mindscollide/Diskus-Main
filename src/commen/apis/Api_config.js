@@ -1726,15 +1726,38 @@ const getMinuteAndSignatureApprovalThisWeekRM = {
   RequestMethod: "ServiceManager.GetMinuteAndSignatureApprovalsThisWeek",
 };
 const getDashboardMeetingStatsRM = {
-  RequestMethod: "ServiceManager.GetDashboardMeetingData"
-}
+  RequestMethod: "ServiceManager.GetDashboardMeetingData",
+};
 const getDashboardTaskStatsRM = {
-  RequestMethod: "ServiceManager.GetDashboardToDoListData"
-}
+  RequestMethod: "ServiceManager.GetDashboardToDoListData",
+};
 const getDashboardPendingApprovalStatsRM = {
-  RequestMethod: "ServiceManager.GetDashboardMinuteAndSignatureApprovals"
-}
+  RequestMethod: "ServiceManager.GetDashboardMinuteAndSignatureApprovals",
+};
+
+const ValidateEncryptedStringForOTPEmailLinkRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringForOTPEmailLink",
+};
+
+const getAdvanceMeetingAgendabyMeetingIDForView = {
+  RequestMethod: "ServiceManager.GetAdvanceMeetingAgendabyMeetingIDForView",
+};
+
+const getStatsForPublishingMinutesByWorkFlowId = {
+  RequestMethod: "ServiceManager.GetStatsForPublishingMinutesByWorkFlowId",
+};
+const getMinutesPublishedStatus = {
+  RequestMethod: "ServiceManager.GetMeetingMinutesStatus",
+};
+
+const validateEncryptedStringParticipantProposedRM = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringUserMeetingProposeDatesSelection",
+};
+
 export {
+  validateEncryptedStringParticipantProposedRM,
+  ValidateEncryptedStringForOTPEmailLinkRM,
   getDashboardMeetingStatsRM,
   getDashboardTaskStatsRM,
   getDashboardPendingApprovalStatsRM,
@@ -2195,4 +2218,7 @@ export {
   publishMeetingMinutes,
   getDataForResendMinuteReview,
   validateVideoRecordingURL,
+  getAdvanceMeetingAgendabyMeetingIDForView,
+  getStatsForPublishingMinutesByWorkFlowId,
+  getMinutesPublishedStatus,
 };

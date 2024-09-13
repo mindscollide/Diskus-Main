@@ -21,9 +21,9 @@ const TextFieldDateTime = ({
   name,
   applyClass,
   inputicon,
-  iconClassName,
+  iconclassname,
   formParentClass,
-  labelClass,
+  labelclass,
   clickIcon,
   max,
   min,
@@ -40,7 +40,7 @@ const TextFieldDateTime = ({
   return (
     <>
       <FormGroup className={styles[formParentClass]}>
-        <Form.Label className={labelClass}>{label}</Form.Label>
+        <Form.Label className={labelclass}>{label}</Form.Label>
         <Form.Control
           className={
             applyClass !== undefined && applyClass !== null
@@ -67,7 +67,7 @@ const TextFieldDateTime = ({
           onPaste={(event) => event.preventDefault()}
           // readOnly
         />
-        <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
+        <FormControl.Feedback className={iconclassname} onClick={clickIcon}>
           {inputicon}
         </FormControl.Feedback>
       </FormGroup>

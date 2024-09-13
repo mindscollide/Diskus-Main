@@ -39,7 +39,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   background-color: #6172d6 !important;
   border-radius: 25px !important;
   text-align: right;
-  padding-right: 10px;
+  padding: 0 10px;
 }
 .dashboard_progress_upcomingmeeting_R {
   height: 25px !important;
@@ -57,7 +57,7 @@ body[dir="rtl"] .ProgressBarContains::before {
 }
 /* Upcoming Task this week */
 
-.dashboard_progress_upcomingTask {
+.dashboard_progress_upcomingTask  {
   height: 25px !important;
   border-radius: 25px !important;
   color: #fff;
@@ -68,7 +68,7 @@ body[dir="rtl"] .ProgressBarContains::before {
   background-color: #ffc300 !important;
   border-radius: 25px !important;
   text-align: right;
-  padding-right: 10px;
+  padding: 0 10px;
 }
 
 .dashboard_progress_upcomingTask_R {
@@ -87,7 +87,7 @@ body[dir="rtl"] .ProgressBarContains::before {
 }
 /* Upcoming Pending Approval this week */
 
-.dashboard_progress_upcomingApproval {
+.dashboard_progress_upcomingApproval  {
   height: 25px !important;
   border-radius: 25px !important;
   color: #fff;
@@ -99,7 +99,8 @@ body[dir="rtl"] .ProgressBarContains::before {
   background-color: #55ce5c !important;
   border-radius: 25px !important;
   text-align: right;
-  padding-right: 10px;
+  padding: 0 10px;
+
 }
 .dashboard_progress_upcomingApproval_R {
   height: 25px !important;

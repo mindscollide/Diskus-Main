@@ -49,12 +49,7 @@ const TodoList = () => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const state = useSelector((state) => state);
-  const {
-    toDoListReducer,
-    todoStatus,
-    assignees,
-    getTodosStatus,
-  } = state;
+  const { toDoListReducer, todoStatus, assignees, getTodosStatus } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
@@ -228,9 +223,7 @@ const TodoList = () => {
   // for view modal  handler
   const viewModalHandler = (id) => {
     let Data = { ToDoListID: id };
-    dispatch(
-      ViewToDoList(navigate, Data, t, setViewFlagToDo)
-    );
+    dispatch(ViewToDoList(navigate, Data, t, setViewFlagToDo));
   };
 
   const deleteTodolist = async (record) => {
@@ -618,7 +611,8 @@ const TodoList = () => {
     } else if (
       assignees.ResponseMessage !== "" &&
       assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== t("No-records-found")
+      assignees.ResponseMessage !== t("No-records-found") &&
+      assignees.ResponseMessage !== t("The-meeting-has-been-cancelled")
     ) {
       setOpen({
         ...open,
@@ -787,7 +781,7 @@ const TodoList = () => {
                         value={searchData.AssignedToName}
                         className="mx-2 "
                         placeholder={t("Assigned-to")}
-                        labelClass="textFieldSearch"
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <TextField
@@ -796,7 +790,7 @@ const TodoList = () => {
                         value={searchData.Title}
                         // className="mx-4"
                         placeholder={t("Task")}
-                        labelClass="textFieldSearch"
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
 
@@ -839,7 +833,7 @@ const TodoList = () => {
                         value={searchData.Title}
                         className="mx-2"
                         placeholder={t("Task")}
-                        labelClass="textFieldSearch"
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <TextField
@@ -849,7 +843,7 @@ const TodoList = () => {
                         value={searchData.AssignedToName}
                         className="mx-2"
                         placeholder={t("Assigned-to")}
-                        labelClass="textFieldSearch"
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <Button

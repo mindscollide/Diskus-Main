@@ -593,7 +593,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                       placeholder={t("Type-in")}
                       applyClass='todoviewmodalcomments'
                       width={"460"}
-                      labelClass={"d-none"}
+                      labelclass={"d-none"}
                       value={assgineeComments}
                       change={(e) => setAssgieeComments(e.target.value)}
                       maxLength={100}

@@ -28,6 +28,8 @@ const BoardDeckSendEmail = ({
   boardDeckMeetingID,
   boarddeckOptions,
   radioValue,
+  setBoarddeckOptions,
+  editorRole,
 }) => {
   console.log(boardDeckMeetingID, "radioValueradioValue");
   const { t } = useTranslation();
@@ -141,7 +143,7 @@ const BoardDeckSendEmail = ({
         },
       };
       console.log(data, "datadatadatadatadata");
-      dispatch(BoardDeckSendEmailApi(navigate, t, data));
+      dispatch(BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions));
     } else {
       setTimeout(
         setOpen({

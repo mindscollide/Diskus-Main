@@ -71,8 +71,8 @@ const PendingApproval = () => {
     await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
     let newData = { IsCreator: false };
     await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
-    let Data = { sRow: 0, Length: 10 };
-    await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+    // let Data = { sRow: 0, Length: 10 };
+    // await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
 
     setReviewMinutesActive(false); // Set Review Minutes button to inactive
     setReviewAndSignActive(true); // Set Review & Sign button to active

@@ -74,13 +74,7 @@ const PackageUpgradeDetail = () => {
       dispatch(cleareMessage());
     }
   }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage]);
-  useEffect(() => {
-    if (
-      Authreducer.ResponseMessage !== "" &&
-      Authreducer.ResponseMessage !== t("Data-available")
-    ) {
-    }
-  }, [Authreducer?.ResponseMessage]);
+
   return (
     <>
       <Container className="py-4">

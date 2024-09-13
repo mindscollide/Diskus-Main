@@ -66,7 +66,7 @@ const getMeetingTaskMainApi = (navigate, t, meetingTaskData) => {
               dispatch(
                 getMeetingTask_Success(
                   response.data.responseResult,
-                  t("Data-Available")
+                  ""
                 )
               );
               dispatch(showCancelActions(false));
@@ -77,7 +77,7 @@ const getMeetingTaskMainApi = (navigate, t, meetingTaskData) => {
                   "ToDoList_ToDoListServiceManager_GetMeetingTasks_02".toLowerCase()
                 )
             ) {
-              dispatch(getMeetingTask_Fail(t("No-Data-Available")));
+              dispatch(getMeetingTask_Fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

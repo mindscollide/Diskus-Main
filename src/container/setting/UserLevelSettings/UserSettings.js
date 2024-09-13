@@ -462,6 +462,7 @@ const UserSettings = () => {
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
     const value = e.target.checked;
+    console.log("onChangeAllowMicrosoftCalenderSync", value);
     if (value) {
       await redirectToUrl();
     }
@@ -1152,7 +1153,7 @@ const UserSettings = () => {
                                 : styles["Options_headings"]
                             }
                           >
-                            {t("Calender")}
+                            {t("Calendar")}
                           </span>
                         </Col>
                       </Row>
@@ -1587,15 +1588,15 @@ const UserSettings = () => {
                             }
                           >
                             <span className={styles["Class_CheckBox"]}>
-                              {t("Allow-calender-sync")}
+                              {t("Allow-calendar-sync")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                    roleID !== 1 &&
+                    roleID !== 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
@@ -1605,7 +1606,7 @@ const UserSettings = () => {
                             }
                           >
                             <span className={styles["Class_CheckBox"]}>
-                              {t("Allow-microsoft-calender-sync")}
+                              {t("Allow-microsoft-calendar-sync")}
                             </span>
                           </Checkbox>
                         </Col>
@@ -2216,7 +2217,7 @@ const UserSettings = () => {
                             className="d-flex align-items-center justify-content-center"
                           >
                             <span className={styles["Diskus_calender"]}>
-                              {t("Diskus-calender")}
+                              {t("Diskus-calendar")}
                             </span>
                           </Col>
                           <Col
@@ -2254,7 +2255,7 @@ const UserSettings = () => {
                               className="d-flex align-items-center justify-content-center"
                             >
                               <span className={styles["Diskus_calender"]}>
-                                {t("Google-calender")}
+                                {t("Google-calendar")}
                               </span>
                             </Col>
                             <Col
@@ -2293,7 +2294,7 @@ const UserSettings = () => {
                               className="d-flex align-items-center justify-content-center"
                             >
                               <span className={styles["Diskus_calender"]}>
-                                {t("Microsoft-calender")}
+                                {t("Microsoft-calendar")}
                               </span>
                             </Col>
                             <Col lg={3} md={3} sm={3} className="">

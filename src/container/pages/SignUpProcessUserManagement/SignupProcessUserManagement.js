@@ -331,8 +331,7 @@ const SignupProcessUserManagement = () => {
   //User Management PakageDetails Messeges SignUp Process Response Messeges Controller
   useEffect(() => {
     if (
-      UserMangementReducer.ResponseMessage !== "" &&
-      UserMangementReducer.ResponseMessage !== t("Data-available")
+      UserMangementReducer.ResponseMessage !== "" 
     ) {
       setOpen({
         open: true,
@@ -400,7 +399,9 @@ const SignupProcessUserManagement = () => {
       newClient.onMessageArrived = onMessageArrived;
     } else {
       let userID = localStorage.getItem("userID");
-      mqttConnection(userID);
+      if (userID !== null) {
+        mqttConnection(userID);
+      }
     }
   }, [Helper.socket]);
 

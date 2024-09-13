@@ -492,7 +492,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("Data-available") &&
       adminReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
@@ -511,7 +510,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       OrganizationBillingReducer.ResponseMessage !== "" &&
-      OrganizationBillingReducer.ResponseMessage !== t("Data-available") &&
       OrganizationBillingReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
@@ -553,7 +551,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <Form onSubmit={handleSubmitSearchInvoice}>
               <Form.Control
                 className={styles["paymenthistory_searchbar"]}
-                labelClass="filter"
+                labelclass="filter"
                 name="InvoiceNum"
                 value={InvoiceNumber || ""}
                 onChange={handleSearchInvoice}

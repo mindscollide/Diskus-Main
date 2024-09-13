@@ -8,7 +8,10 @@ import {
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { LoginFlowRoutes } from "./UserManagementActions";
-import { clearLocalStorageAtloginresponce } from "../../commen/functions/utils";
+import {
+  clearLocalStorageAtloginresponce,
+  handleLoginResponse,
+} from "../../commen/functions/utils";
 const TwoFaAuthenticateInit = () => {
   return {
     type: actions.CHECKINGAUTHENTICATEAFA_INIT,
@@ -132,7 +135,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   // t("User-doesnt-have-saved-devices")
                 )
               );
-              //localStorage.setItem("LoginFlowPageRoute", 4);
+              localStorage.setItem("LoginFlowPageRoute", 4);
               dispatch(LoginFlowRoutes(4));
               // navigate("/twofac");
             } else if (
@@ -740,47 +743,6 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                 Boolean(isFirstLogin),
                 "PrivateRoutesPrivateRoutesPrivateRoutes"
               );
-              // if (RSVP !== undefined && RSVP !== null) {
-              //   navigate("/DisKus/Meeting/Useravailabilityformeeting");
-              // } else if (
-              //   dataroomValue !== null &&
-              //   dataroomValue !== undefined
-              // ) {
-              //   navigate("/Diskus/dataroom");
-              // } else {
-              //   navigate("/Diskus/");
-              // }
-              //  else {
-              //     dispatch(
-              //       verifyOtpFacFail(t("User-not-authorised-contact-admin"))
-              //     );
-              //     clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-              //     console.log("TowApproval");
-              //   }
-
-              // if (JSON.parse(localStorage.getItem("roleID")) === 1) {
-              //   navigate("/Admin/");
-              // } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
-              //   navigate("/Admin/");
-              // } else if (JSON.parse(localStorage.getItem("roleID")) === 3) {
-              //   if (JSON.parse(localStorage.getItem("isFirstLogin"))) {
-              //     navigate("/onboard");
-              //   } else {
-              //     let RSVP = localStorage.getItem("RSVP");
-              //     let dataroomValue = localStorage.getItem("DataRoomEmail");
-
-              //     if (RSVP !== undefined && RSVP !== null) {
-              //       navigate("/DisKus/Meeting/Useravailabilityformeeting");
-              //     } else if (
-              //       dataroomValue !== null &&
-              //       dataroomValue !== undefined
-              //     ) {
-              //       navigate("/Diskus/dataroom");
-              //     } else {
-              //       navigate("/Diskus/");
-              //     }
-              //   }
-              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

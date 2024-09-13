@@ -160,7 +160,7 @@ const AddNewChat = () => {
                 searchChatUsers(e.target.value);
               }}
               value={searchChatUserValue}
-              labelClass={"d-none"}
+              labelclass={"d-none"}
             />
           </Col>
         </Row>
