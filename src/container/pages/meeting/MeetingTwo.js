@@ -1140,14 +1140,11 @@ const NewMeeting = () => {
     },
     {
       title: t("Organizer"),
-      dataIndex: "meetingAttendees",
-      key: "meetingAttendees",
+      dataIndex: "host",
+      key: "host",
       width: "110px",
-      sorter: (a, b) => {
-        const nameA = a.userDetails?.name || "";
-        const nameB = b.userDetails?.name || "";
-        return nameA.localeCompare(nameB);
-      },
+      sorter: (a, b) =>
+        a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
       render: (text, record) => {
         return <span className={styles["orgaizer_value"]}>{record?.host}</span>;
       },
