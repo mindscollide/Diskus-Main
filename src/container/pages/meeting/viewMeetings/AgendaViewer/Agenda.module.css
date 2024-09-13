@@ -1088,3 +1088,19 @@ body[dir="rtl"] .box-agendas-camera {
   left: 90px;
   top: 0;
 }
+
+.icons-block {
+  display: flex;
+  gap: 20px;
+}
+
+.box-agendas-leave {
+  border-radius: 4px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  cursor: pointer;
+}

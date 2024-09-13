@@ -27,11 +27,15 @@ import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
 import axios from "axios";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
+import { useSelector } from "react-redux";
 
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
+  const { paymentProcessModal } = useSelector(
+    (state) => state.UserManagementModals
+  );
 
   useEffect(() => {
     // Function to fetch the current version from version.json
@@ -72,7 +76,7 @@ const App = () => {
         {/* Define your routes here */}
         <RouterProvider router={router} />
         {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
-        <OpenPaymentForm />
+        {paymentProcessModal && <OpenPaymentForm />}
         {updateVersion && (
           <UpdateVersionNotifyModal
             setUpdateVersion={setUpdateVersion}

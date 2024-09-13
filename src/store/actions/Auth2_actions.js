@@ -539,7 +539,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
         dispatch(enterPasswordFail("Something-went-wrong"));
         return;
       }
-      await handleLoginResponse(response.data.responseResult);
+      await handleLoginResponse(
+        response.data.responseResult,
+        dispatch,
+        navigate,
+        t
+      );
       // await dispatch(
       //   getPackageExpiryDetail(
       //     navigate,
@@ -1850,14 +1855,19 @@ const createPasswordAction = (value, navigate, t) => {
         dispatch(createPasswordFail("Something-went-wrong"));
         return;
       }
-      await handleLoginResponse(response.data.responseResult);
-      await dispatch(
-        getPackageExpiryDetail(
-          navigate,
-          response.data.responseResult.organizationID,
-          t
-        )
+      await handleLoginResponse(
+        response.data.responseResult,
+        dispatch,
+        navigate,
+        t
       );
+      // await dispatch(
+      //   getPackageExpiryDetail(
+      //     navigate,
+      //     response.data.responseResult.organizationID,
+      //     t
+      //   )
+      // );
       let packageFeatureIDs = [];
       switch (responseMessage.toLowerCase()) {
         case USERSPASSWORDCREATION.CREATION_01:
@@ -3544,7 +3554,7 @@ const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
                   t("Successfully-updated")
                 )
               );
-           
+
               localStorage.setItem(
                 "email",
                 response?.data?.responseResult?.data?.email

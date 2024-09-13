@@ -66,6 +66,7 @@ import {
   leaveMeeting,
   ValidateEmailRelatedString,
   getDashboardMeetingStatsRM,
+  validateEncryptedStringParticipantProposedRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -5804,7 +5805,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               let newData = {
                 MeetingID: currentMeeting,
               };
-  
+
               // Call GetAllAgendaWiseMinutesApiFunc and wait for it to complete
               await dispatch(
                 GetAllAgendaWiseMinutesApiFunc(
@@ -8472,6 +8473,121 @@ const validateStringEmailApi = (
   });
 };
 
+const validateStringParticipantProposed_init = () => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGPARTICIPANTPROPOSED_INIT,
+  };
+};
+const validateStringParticipantProposed_success = (response, message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGPARTICIPANTPROPOSED_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateStringParticipantProposed_fail = (message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGPARTICIPANTPROPOSED_FAIL,
+    message: message,
+  };
+};
+
+const validateStringParticipantProposedApi = (emailString, navigate, t) => {
+  return async (dispatch) => {
+    try {
+      let Data = {
+        EncryptedString: emailString,
+      };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateStringParticipantProposed_init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        validateEncryptedStringParticipantProposedRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(Data));
+
+      let response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        // Token expired, refresh token and retry
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API call
+        return dispatch(
+          validateStringParticipantProposedApi(emailString, navigate, t)
+        );
+      } else if (response.data.responseResult.isExecuted) {
+      } else {
+      }
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "validateencryptedstringusermeetingproposedatesselection_01"
+            )
+          ) {
+            // Success case
+            await dispatch(
+              validateStringParticipantProposed_success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            return responseResult.data;
+          } else if (
+            message.includes(
+              "validateencryptedstringusermeetingproposedatesselection_02"
+            )
+          ) {
+            // Failure case
+            dispatch(validateStringParticipantProposed_fail(t("Unsuccessful")));
+            throw new Error(t("Something-went-wrong"));
+          } else if (
+            message.includes(
+              "validateencryptedstringusermeetingproposedatesselection_03"
+            )
+          ) {
+            // Something went wrong case
+            dispatch(
+              validateStringParticipantProposed_fail(t("Something-went-wrong"))
+            );
+            throw new Error(t("Something-went-wrong"));
+          }
+        } else {
+          dispatch(
+            validateStringParticipantProposed_fail(t("Something-went-wrong"))
+          );
+          throw new Error(t("Something-went-wrong"));
+        }
+      } else {
+        dispatch(
+          validateStringParticipantProposed_fail(t("Something-went-wrong"))
+        );
+        throw new Error(t("Something-went-wrong"));
+      }
+    } catch (error) {
+      dispatch(
+        validateStringParticipantProposed_fail(t("Something-went-wrong"))
+      );
+      throw new Error(t("Something-went-wrong"));
+    }
+  };
+};
+
 const emailRouteID = (id) => {
   return {
     type: actions.EMAIL_ROUTE_ID,
@@ -8525,10 +8641,7 @@ const getDashbardMeetingDataApi = (navigate, t) => {
                 )
             ) {
               dispatch(
-                getDashbardMeetingData_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getDashbardMeetingData_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -8725,4 +8838,5 @@ export {
   boardDeckShareModal,
   boardDeckEmailModal,
   AllDocumentsForAgendaWiseMinutesApiFunc,
+  validateStringParticipantProposedApi,
 };

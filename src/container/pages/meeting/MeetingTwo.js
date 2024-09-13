@@ -235,6 +235,12 @@ const NewMeeting = () => {
 
   const [dashboardEventData, setDashboardEventData] = useState(null);
 
+  const [videoTalk, setVideoTalk] = useState({
+    isChat: false,
+    isVideoCall: false,
+    talkGroupID: 0,
+  });
+
   useEffect(() => {
     return () => {
       setBoarddeckOptions({
@@ -274,12 +280,12 @@ const NewMeeting = () => {
           UserID: Number(userID),
           PageNumber: Number(meetingPageCurrent),
           Length: Number(meetingpageRow),
-          PublishedMeetings: true,
+          PublishedMeetings: MeetingProp !== null ? false : true,
         };
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.setItem("MeetingCurrentView", 1);
+        // localStorage.setItem("MeetingCurrentView", 1);
       } else {
         let searchData = {
           Date: "",
@@ -288,14 +294,14 @@ const NewMeeting = () => {
           UserID: Number(userID),
           PageNumber: 1,
           Length: 30,
-          PublishedMeetings: true,
+          PublishedMeetings: MeetingProp !== null ? false : true,
         };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
+        // localStorage.setItem("MeetingPageRows", 30);
+        // localStorage.setItem("MeetingPageCurrent", 1);
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.setItem("MeetingCurrentView", 1);
+        // localStorage.setItem("MeetingCurrentView", 1);
       }
     } catch (error) {}
   };
@@ -390,25 +396,6 @@ const NewMeeting = () => {
       dispatch(proposeNewMeetingPageFlag(false));
     }
   }, [location.state]);
-
-  useEffect(() => {
-    if (MeetingProp !== null) {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber: 1,
-        Length: 30,
-        PublishedMeetings: false,
-      };
-      // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
-      localStorage.setItem("MeetingCurrentView", 2);
-      localStorage.setItem("MeetingPageRows", 30);
-      localStorage.setItem("MeetingPageCurrent", 1);
-    }
-  }, [MeetingProp]);
 
   useEffect(() => {
     if (AgCont !== null) {
@@ -564,13 +551,18 @@ const NewMeeting = () => {
         });
     }
   }, [MeetinUpd]);
-  // useEffect(() => {
-  //   if (Meetingprop !== null) {
-  //     localStorage.setItem("MeetingCurrentView", 2);
-  //     localStorage.setItem("MeetingPageRows", 50);
-  //     localStorage.setItem("MeetingPageCurrent", 1);
-  //   }
-  // }, [Meetingprop]);
+
+  useEffect(() => {
+    if (MeetingProp !== null) {
+      localStorage.setItem("MeetingCurrentView", 2);
+      localStorage.setItem("MeetingPageRows", 30);
+      localStorage.setItem("MeetingPageCurrent", 1);
+    } else {
+      localStorage.setItem("MeetingCurrentView", 1);
+      localStorage.setItem("MeetingPageRows", 30);
+      localStorage.setItem("MeetingPageCurrent", 1);
+    }
+  }, [MeetingProp]);
 
   useEffect(() => {
     if (MeetingMin !== null) {
@@ -1065,6 +1057,11 @@ const NewMeeting = () => {
                 record.isQuickMeeting,
                 record.status
               );
+              setVideoTalk({
+                isChat: record.isChat,
+                isVideoCall: record.isVideoCall,
+                talkGroupID: record.talkGroupID,
+              });
               setEdiorRole({
                 status: record.status,
                 role: record.isParticipant
@@ -1081,7 +1078,8 @@ const NewMeeting = () => {
               );
               localStorage.setItem("meetingTitle", record.title);
               // setIsOrganisers(isOrganiser);
-            }}>
+            }}
+          >
             {text}
           </span>
         );
@@ -1126,7 +1124,7 @@ const NewMeeting = () => {
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) =>
         record.status.toLowerCase().includes(value.toLowerCase()),
@@ -1136,14 +1134,11 @@ const NewMeeting = () => {
     },
     {
       title: t("Organizer"),
-      dataIndex: "meetingAttendees",
-      key: "meetingAttendees",
+      dataIndex: "host",
+      key: "host",
       width: "110px",
-      sorter: (a, b) => {
-        const nameA = a.userDetails?.name || "";
-        const nameB = b.userDetails?.name || "";
-        return nameA.localeCompare(nameB);
-      },
+      sorter: (a, b) =>
+        a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
       render: (text, record) => {
         return <span className={styles["orgaizer_value"]}>{record?.host}</span>;
       },
@@ -1156,7 +1151,7 @@ const NewMeeting = () => {
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className='text-truncate d-block'>
+            <span className="text-truncate d-block">
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -1185,7 +1180,7 @@ const NewMeeting = () => {
       defaultFilteredValue: defaultFiltersValues || null,
       filterResetToDefaultFilteredValue: true,
       filterIcon: () => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
         const meetingType = Number(record.meetingType);
@@ -1219,13 +1214,14 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }>
-                    <Tooltip placement='topRight' title={t("ClipIcon")}>
+                    }
+                  >
+                    <Tooltip placement="topRight" title={t("ClipIcon")}>
                       <img
                         src={ClipIcon}
-                        className='cursor-pointer'
-                        alt=''
-                        draggable='false'
+                        className="cursor-pointer"
+                        alt=""
+                        draggable="false"
                       />
                     </Tooltip>
                   </span>
@@ -1235,7 +1231,8 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
 
                 {/* {record.isVideoCall ? (
@@ -1266,15 +1263,16 @@ const NewMeeting = () => {
                         ? "margin-left-10"
                         : "margin-right-10"
                     }
-                    onClick={(e) => groupChatInitiation(record)}>
-                    <Tooltip placement='topLeft' title={t("Chat")}>
+                    onClick={(e) => groupChatInitiation(record)}
+                  >
+                    <Tooltip placement="topLeft" title={t("Chat")}>
                       <img
                         src={CommentIcon}
-                        className='cursor-pointer'
+                        className="cursor-pointer"
                         // width="20.06px"
                         // height="15.95px"
-                        alt=''
-                        draggable='false'
+                        alt=""
+                        draggable="false"
                       />
                     </Tooltip>
                   </span>
@@ -1284,20 +1282,21 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
               </Col>
               <Col lg={3} md={3} sm={3}>
                 {(record.status === "9" && record.isOrganizer) ||
                 record.isQuickMeeting === true ? (
-                  <Tooltip placement='topLeft' title={t("Attendance")}>
+                  <Tooltip placement="topLeft" title={t("Attendance")}>
                     <img
                       src={member}
-                      className='cursor-pointer'
-                      width='17.1px'
-                      height='16.72px'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer"
+                      width="17.1px"
+                      height="16.72px"
+                      alt=""
+                      draggable="false"
                       onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
                   </Tooltip>
@@ -1307,7 +1306,8 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
               </Col>
               <Col lg={3} md={3} sm={3}>
@@ -1315,15 +1315,16 @@ const NewMeeting = () => {
                 record.isQuickMeeting === false &&
                 record.isRecordingAvailable ? (
                   <Tooltip
-                    placement='topLeft'
-                    title={t("Download-video-recording")}>
+                    placement="topLeft"
+                    title={t("Download-video-recording")}
+                  >
                     <img
                       src={VideoRecordIcon}
-                      className='cursor-pointer mx-2'
-                      width='17.1px'
-                      height='16.72px'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer mx-2"
+                      width="17.1px"
+                      height="16.72px"
+                      alt=""
+                      draggable="false"
                       // onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
                   </Tooltip>
@@ -1333,7 +1334,8 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
               </Col>
             </Row>
@@ -1410,6 +1412,11 @@ const NewMeeting = () => {
                         setEditFlag
                       )
                     );
+                    setVideoTalk({
+                      isChat: record.isChat,
+                      isVideoCall: record.isVideoCall,
+                      talkGroupID: record.talkGroupID,
+                    });
                     localStorage.setItem("meetingTitle", record.title);
                     localStorage.setItem(
                       "isMinutePublished",
@@ -1446,6 +1453,11 @@ const NewMeeting = () => {
                         record.isPrimaryOrganizer
                       )
                     );
+                    setVideoTalk({
+                      isChat: record.isChat,
+                      isVideoCall: record.isVideoCall,
+                      talkGroupID: record.talkGroupID,
+                    });
                     localStorage.setItem("currentMeetingID", record.pK_MDID);
                     localStorage.setItem(
                       "isMinutePublished",
@@ -1484,6 +1496,11 @@ const NewMeeting = () => {
                     role: "Participant",
                     isPrimaryOrganizer: false,
                   });
+                  setVideoTalk({
+                    isChat: record.isChat,
+                    isVideoCall: record.isVideoCall,
+                    talkGroupID: record.talkGroupID,
+                  });
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
                     "isMinutePublished",
@@ -1510,6 +1527,11 @@ const NewMeeting = () => {
                     role: "Agenda Contributor",
                     isPrimaryOrganizer: false,
                   });
+                  setVideoTalk({
+                    isChat: record.isChat,
+                    isVideoCall: record.isVideoCall,
+                    talkGroupID: record.talkGroupID,
+                  });
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
                     "isMinutePublished",
@@ -1535,6 +1557,11 @@ const NewMeeting = () => {
                     status: record.status,
                     role: "Organizer",
                     isPrimaryOrganizer: record.isPrimaryOrganizer,
+                  });
+                  setVideoTalk({
+                    isChat: record.isChat,
+                    isVideoCall: record.isVideoCall,
+                    talkGroupID: record.talkGroupID,
                   });
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
@@ -1567,6 +1594,11 @@ const NewMeeting = () => {
                       : "Organizer",
                     isPrimaryOrganizer: record.isPrimaryOrganizer,
                   });
+                  setVideoTalk({
+                    isChat: record.isChat,
+                    isVideoCall: record.isVideoCall,
+                    talkGroupID: record.talkGroupID,
+                  });
                 }}
               />
             </>
@@ -1598,23 +1630,29 @@ const NewMeeting = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className='d-flex justify-content-center'>
-                        <Tooltip placement='topRight' title={t("Edit")}>
+                        className="d-flex justify-content-center"
+                      >
+                        <Tooltip placement="topRight" title={t("Edit")}>
                           <img
                             src={EditIcon}
-                            className='cursor-pointer'
-                            width='17.11px'
-                            height='17.11px'
-                            alt=''
-                            draggable='false'
-                            onClick={() =>
+                            className="cursor-pointer"
+                            width="17.11px"
+                            height="17.11px"
+                            alt=""
+                            draggable="false"
+                            onClick={() => {
                               handleEditMeeting(
                                 record.pK_MDID,
                                 record.isQuickMeeting,
                                 "Organizer",
                                 record
-                              )
-                            }
+                              );
+                              setVideoTalk({
+                                isChat: record.isChat,
+                                isVideoCall: record.isVideoCall,
+                                talkGroupID: record.talkGroupID,
+                              });
+                            }}
                           />
                         </Tooltip>
                       </Col>
@@ -1633,15 +1671,16 @@ const NewMeeting = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='d-flex justify-content-center'>
-                      <Tooltip placement='topRight' title={t("Edit")}>
+                      className="d-flex justify-content-center"
+                    >
+                      <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}
-                          className='cursor-pointer'
-                          width='17.11px'
-                          height='17.11px'
-                          alt=''
-                          draggable='false'
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
                           onClick={() => {
                             handleEditMeeting(
                               record.pK_MDID,
@@ -1650,6 +1689,11 @@ const NewMeeting = () => {
                               "Organizer",
                               record
                             );
+                            setVideoTalk({
+                              isChat: record.isChat,
+                              isVideoCall: record.isVideoCall,
+                              talkGroupID: record.talkGroupID,
+                            });
                             setEdiorRole({
                               status: record.status,
                               role: "Organizer",
@@ -1672,15 +1716,16 @@ const NewMeeting = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='d-flex justify-content-center'>
-                      <Tooltip placement='topRight' title={t("Edit")}>
+                      className="d-flex justify-content-center"
+                    >
+                      <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}
-                          className='cursor-pointer'
-                          width='17.11px'
-                          height='17.11px'
-                          alt=''
-                          draggable='false'
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
                           onClick={() => {
                             handleEditMeeting(
                               record.pK_MDID,
@@ -1689,6 +1734,11 @@ const NewMeeting = () => {
                               "Agenda Contributor",
                               record
                             );
+                            setVideoTalk({
+                              isChat: record.isChat,
+                              isVideoCall: record.isVideoCall,
+                              talkGroupID: record.talkGroupID,
+                            });
                             setEdiorRole({
                               status: record.status,
                               role: "Agenda Contributor",
@@ -1897,9 +1947,9 @@ const NewMeeting = () => {
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
           />
         }
         title={t("No-new-meetings")}
@@ -2224,10 +2274,16 @@ const NewMeeting = () => {
                 meeting.isQuickMeeting,
                 meeting.status
               );
+
               setEdiorRole({
                 status: meeting.status,
                 role: "Participant",
                 isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: meeting.isChat,
+                isVideoCall: meeting.isVideoCall,
+                talkGroupID: meeting.talkGroupID,
               });
               dispatch(viewMeetingFlag(true));
             } else if (
@@ -2239,6 +2295,11 @@ const NewMeeting = () => {
                 meeting.isQuickMeeting,
                 meeting.status
               );
+              setVideoTalk({
+                isChat: meeting.isChat,
+                isVideoCall: meeting.isVideoCall,
+                talkGroupID: meeting.talkGroupID,
+              });
               setEdiorRole({
                 status: meeting.status,
                 role: "Agenda Contributor",
@@ -2253,6 +2314,11 @@ const NewMeeting = () => {
                 status: meeting.status,
                 role: "Organizer",
                 isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: meeting.isChat,
+                isVideoCall: meeting.isVideoCall,
+                talkGroupID: meeting.talkGroupID,
               });
               dispatch(viewMeetingFlag(true));
               handleViewMeeting(
@@ -2422,6 +2488,8 @@ const NewMeeting = () => {
             dataroomMapFolderId={dataroomMapFolderId}
             setDataroomMapFolderId={setDataroomMapFolderId}
             setCurrentMeetingID={setCurrentMeetingID}
+            setVideoTalk={setVideoTalk}
+            videoTalk={videoTalk}
           />
         ) : viewAdvanceMeetingModalUnpublish &&
           NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ? (
@@ -2434,6 +2502,8 @@ const NewMeeting = () => {
             setEdiorRole={setEdiorRole}
             dataroomMapFolderId={dataroomMapFolderId}
             setDataroomMapFolderId={setDataroomMapFolderId}
+            setVideoTalk={setVideoTalk}
+            videoTalk={videoTalk}
           />
         ) : viewProposeOrganizerPoll &&
           NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ? (
@@ -2455,27 +2525,30 @@ const NewMeeting = () => {
           />
         ) : (
           <>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col
                 sm={12}
                 md={8}
                 lg={8}
-                className='d-flex gap-3 align-items-center'>
+                className="d-flex gap-3 align-items-center"
+              >
                 <span className={styles["NewMeetinHeading"]}>
                   {t("Meetings")}
                 </span>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <Dropdown
-                      className='SceduleMeetingButton'
-                      onClick={eventClickHandler}>
+                      className="SceduleMeetingButton"
+                      onClick={eventClickHandler}
+                    >
                       <Dropdown.Toggle title={t("Create")}>
                         <Row>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className={styles["schedule_button"]}>
+                            className={styles["schedule_button"]}
+                          >
                             <Plus width={20} height={20} fontWeight={800} />
                             <span> {t("Schedule-a-meeting")}</span>
                           </Col>
@@ -2485,16 +2558,18 @@ const NewMeeting = () => {
                       <Dropdown.Menu>
                         {checkFeatureIDAvailability(1) ? (
                           <Dropdown.Item
-                            className='dropdown-item'
-                            onClick={CreateQuickMeeting}>
+                            className="dropdown-item"
+                            onClick={CreateQuickMeeting}
+                          >
                             {t("Quick-meeting")}
                           </Dropdown.Item>
                         ) : null}
 
                         {checkFeatureIDAvailability(9) ? (
                           <Dropdown.Item
-                            className='dropdown-item'
-                            onClick={openSceduleMeetingPage}>
+                            className="dropdown-item"
+                            onClick={openSceduleMeetingPage}
+                          >
                             {t("Advance-meeting")}
                           </Dropdown.Item>
                         ) : null}
@@ -2503,8 +2578,9 @@ const NewMeeting = () => {
                         {checkFeatureIDAvailability(12) ? (
                           <>
                             <Dropdown.Item
-                              className='dropdown-item'
-                              onClick={openProposedNewMeetingPage}>
+                              className="dropdown-item"
+                              onClick={openProposedNewMeetingPage}
+                            >
                               {t("Propose-new-meeting")}
                             </Dropdown.Item>
                           </>
@@ -2526,14 +2602,15 @@ const NewMeeting = () => {
                 sm={12}
                 md={4}
                 lg={4}
-                className='d-flex justify-content-end align-items-center'>
-                <span className='position-relative'>
+                className="d-flex justify-content-end align-items-center"
+              >
+                <span className="position-relative">
                   <TextField
                     width={"502px"}
                     placeholder={t("Search")}
                     applyClass={"meetingSearch"}
                     name={"SearchVal"}
-                    labelclass='d-none'
+                    labelclass="d-none"
                     value={searchText}
                     change={handleSearchChange}
                     onKeyDown={handleKeyPress}
@@ -2543,25 +2620,27 @@ const NewMeeting = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex gap-2 align-items-center'>
+                          className="d-flex gap-2 align-items-center"
+                        >
                           {entereventIcon === true ? (
                             <img
                               src={BlackCrossIcon}
-                              className='cursor-pointer'
+                              className="cursor-pointer"
                               onClick={handleClearSearch}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           ) : null}
                           <Tooltip
-                            placement='bottomLeft'
-                            title={t("Search-filters")}>
+                            placement="bottomLeft"
+                            title={t("Search-filters")}
+                          >
                             <img
                               src={searchicon}
                               className={styles["Search_Bar_icon_class"]}
                               onClick={HandleShowSearch} // Add click functionality here
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Tooltip>
                         </Col>
@@ -2576,52 +2655,54 @@ const NewMeeting = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Search-Box_meeting"]}>
-                          <Row className='mt-2'>
+                          className={styles["Search-Box_meeting"]}
+                        >
+                          <Row className="mt-2">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-end'>
+                              className="d-flex justify-content-end"
+                            >
                               <img
                                 src={BlackCrossIcon}
                                 className={styles["Cross_Icon_Styling"]}
-                                width='16px'
-                                height='16px'
+                                width="16px"
+                                height="16px"
                                 onClick={HandleCloseSearchModalMeeting}
-                                alt=''
-                                draggable='false'
+                                alt=""
+                                draggable="false"
                               />
                             </Col>
                           </Row>
-                          <Row className='mt-4'>
+                          <Row className="mt-4">
                             <Col lg={12} md={12} sm={12}>
                               <TextField
                                 placeholder={t("Meeting-title")}
                                 applyClass={"meetinInnerSearch"}
-                                labelclass='d-none'
-                                name='MeetingTitle'
+                                labelclass="d-none"
+                                name="MeetingTitle"
                                 value={searchFields.MeetingTitle}
                                 change={searchMeetingChangeHandler}
                               />
                             </Col>
                           </Row>
-                          <Row className='mt-3'>
+                          <Row className="mt-3">
                             <Col lg={6} md={6} sm={12}>
                               <DatePicker
                                 value={searchFields.DateView}
                                 format={"DD/MM/YYYY"}
-                                placeholder='DD/MM/YYYY'
+                                placeholder="DD/MM/YYYY"
                                 render={
                                   <InputIcon
-                                    placeholder='DD/MM/YYYY'
-                                    className='datepicker_input'
+                                    placeholder="DD/MM/YYYY"
+                                    className="datepicker_input"
                                   />
                                 }
                                 editable={false}
-                                className='datePickerTodoCreate2'
+                                className="datePickerTodoCreate2"
                                 onOpenPickNewDate={false}
-                                inputMode=''
+                                inputMode=""
                                 calendar={calendarValue}
                                 locale={localValue}
                                 ref={calendRef}
@@ -2631,20 +2712,21 @@ const NewMeeting = () => {
                             <Col lg={6} md={6} sm={12}>
                               <TextField
                                 placeholder={t("Organizer-name")}
-                                labelclass='d-none'
-                                name='OrganizerName'
+                                labelclass="d-none"
+                                name="OrganizerName"
                                 applyClass={"meetinInnerSearch"}
                                 value={searchFields.OrganizerName}
                                 change={searchMeetingChangeHandler}
                               />
                             </Col>
                           </Row>
-                          <Row className='mt-4'>
+                          <Row className="mt-4">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-end gap-2'>
+                              className="d-flex justify-content-end gap-2"
+                            >
                               <Button
                                 text={t("Reset")}
                                 className={styles["ResetButtonMeeting"]}
@@ -2664,11 +2746,11 @@ const NewMeeting = () => {
                 </span>
               </Col>
             </Row>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <Paper className={styles["PaperStylesMeetingTwoPage"]}>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                       <Button
                         text={t("Published-meetings")}
                         className={
@@ -2706,9 +2788,11 @@ const NewMeeting = () => {
                       currentMeeting={currentMeetingID}
                       editorRole={editorRole}
                       setDataroomMapFolderId={setDataroomMapFolderId}
+                      videoTalk={videoTalk}
+                      setVideoTalk={setVideoTalk}
                     />
                   ) : Number(currentView) === 1 ? (
-                    <Row className='mt-2'>
+                    <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
                         <>
                           {defaultFiltersValues.length > 0 ? (
@@ -2716,7 +2800,7 @@ const NewMeeting = () => {
                               column={MeetingColoumns}
                               scroll={{ y: "54vh", x: false }}
                               pagination={false}
-                              className='newMeetingTable'
+                              className="newMeetingTable"
                               rows={rows}
                               locale={{
                                 emptyText: emptyText(), // Set your custom empty text here
@@ -2729,7 +2813,8 @@ const NewMeeting = () => {
                                       <p
                                         className={
                                           styles["meeting-expanded-row"]
-                                        }>
+                                        }
+                                      >
                                         {data.objMeetingAgenda.title}
                                       </p>
                                     ))
@@ -2748,18 +2833,20 @@ const NewMeeting = () => {
                   ) : null}
                   {rows.length > 0 ? (
                     <>
-                      <Row className='mt-5'>
+                      <Row className="mt-5">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-center '>
+                          className="d-flex justify-content-center "
+                        >
                           <Row className={styles["PaginationStyle-Committee"]}>
                             <Col
                               className={"pagination-groups-table"}
                               sm={12}
                               md={12}
-                              lg={12}>
+                              lg={12}
+                            >
                               <CustomPagination
                                 current={
                                   meetingPageCurrent !== null &&

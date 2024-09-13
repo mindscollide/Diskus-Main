@@ -2179,5 +2179,7 @@
   "Published-successful": "Minutes published successfully",
   "Add-reminders": "Add Reminders",
   "Add-notes": "Add Notes",
-  "Minutes-will-be-available-when-published": "Minutes will be available when Published"
+  "Minutes-will-be-available-when-published": "Minutes will be available when Published",
+  "Start-chat": "Start Chat",
+  "Join-Log-Not-Found": "Join Log Not Found"
 }
