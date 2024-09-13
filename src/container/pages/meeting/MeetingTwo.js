@@ -170,6 +170,7 @@ const NewMeeting = () => {
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
   const [quickMeeting, setQuickMeeting] = useState(false);
+  const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
@@ -1240,9 +1241,8 @@ const NewMeeting = () => {
     {
       dataIndex: "Chat",
       key: "Chat",
-      width: "65px",
+      width: "85px",
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
         return (
           <>
             <Row>
@@ -1323,7 +1323,7 @@ const NewMeeting = () => {
               </Col>
               <Col lg={3} md={3} sm={3}>
                 {record.status === "9" && record.isOrganizer ? (
-                  <Tooltip placement='topLeft' title={t("Attendance")}>
+                  <Tooltip placement="topLeft" title={t("Attendance")}>
                     <img
                       src={member}
                       className='cursor-pointer'
@@ -1829,10 +1829,14 @@ const NewMeeting = () => {
   };
   //Board Deck Onclick function
   const boardDeckOnClick = (record) => {
+    console.log(record, "recordrecordrecord");
     setBoardDeckMeetingID(record.pK_MDID);
+    setBoardDeckMeetingTitle(record.title);
     dispatch(boardDeckModal(true));
     localStorage.setItem("meetingTitle", record.title);
   };
+
+  console.log(boardDeckMeetingTitle, "boardDeckMeetingTitle");
 
   useEffect(() => {
     if (
@@ -2912,6 +2916,7 @@ const NewMeeting = () => {
       )}
       {NewMeetingreducer.boardDeckEmailModal && (
         <BoardDeckSendEmail
+          boardDeckMeetingTitle={boardDeckMeetingTitle}
           boardDeckMeetingID={boardDeckMeetingID}
           boarddeckOptions={boarddeckOptions}
           radioValue={radioValue}

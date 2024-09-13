@@ -203,10 +203,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         [name]: value,
       });
     } else if (name === "Description") {
-      if (valueCheck.length > 299) {
+      if (valueCheck.length > 2000) {
         setOpen({
           flag: true,
-          message: t("Description-limit-is-300"),
+          message: t("Description-limit-is-2000"),
         });
       } else {
         setOpen({
@@ -834,7 +834,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         as={"textarea"}
                         rows="7"
                         placeholder={t("Description")}
-                        maxLength={300}
+                        maxLength={2000}
                       />
                     </Col>
                   </Row>
