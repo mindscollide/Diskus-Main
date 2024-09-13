@@ -40,29 +40,29 @@ const App = () => {
     (state) => state.UserManagementModals
   );
 
-  // // Detect mobile device function
-  // const isMobileDevice = () => {
-  //   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  //   const isAndroid = /android/i.test(userAgent);
-  //   const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+  // Detect mobile device function
+  const isMobileDevice = () => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    const isAndroid = /android/i.test(userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
 
-  //   // Debugging output
-  //   console.log("User Agent:", userAgent);
-  //   console.log("Is Android:", isAndroid);
-  //   console.log("Is iOS:", isIOS);
+    // Debugging output
+    console.log("User Agent:", userAgent);
+    console.log("Is Android:", isAndroid);
+    console.log("Is iOS:", isIOS);
 
-  //   return isAndroid || isIOS;
-  // };
+    return isAndroid || isIOS;
+  };
 
-  // // Show modal if accessed on a mobile browser
-  // useEffect(() => {
-  //   if (isMobileDevice()) {
-  //     console.log("Mobile device detected. Showing modal.");
-  //     dispatch(mobileAppPopModal(true));
-  //   } else {
-  //     console.log("Not a mobile device. Modal not shown.");
-  //   }
-  // }, []);
+  // Show modal if accessed on a mobile browser
+  useEffect(() => {
+    if (isMobileDevice()) {
+      console.log("Mobile device detected. Showing modal.");
+      dispatch(mobileAppPopModal(true));
+    } else {
+      console.log("Not a mobile device. Modal not shown.");
+    }
+  }, []);
 
   useEffect(() => {
     // Function to fetch the current version from version.json

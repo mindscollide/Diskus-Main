@@ -2048,5 +2048,8 @@
   "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED": "You have been removed as a Agenda Contributor from this [Place holder]",
   "Add-reminders": "Add Reminders",
   "Add-notes": "Add Notes",
-  "Minutes-will-be-available-when-published": "Minutes will be available when Published"
+  "Minutes-will-be-available-when-published": "Minutes will be available when Published",
+  "Keep-watching-in-app": "Keep Watching in app",
+  "Open-diskus-app": "Open Diskus app",
+  "Log-in": "Log in"
 }
