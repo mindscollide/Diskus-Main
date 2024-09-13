@@ -15,6 +15,7 @@ const initialState = {
   reasonForleavingModal: false,
   paymentProcessModal: false,
   internetDisconnectModal: false,
+  mobileAppPopUp: false,
 };
 
 const UserManagementModals = (state = initialState, action) => {
@@ -101,6 +102,13 @@ const UserManagementModals = (state = initialState, action) => {
       return {
         ...state,
         internetDisconnectModal: action.response,
+      };
+    }
+
+    case actions.MOBILE_POP_UP_MODAL: {
+      return {
+        ...state,
+        mobileAppPopUp: action.response,
       };
     }
 

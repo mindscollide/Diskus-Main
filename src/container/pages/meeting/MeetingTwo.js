@@ -118,6 +118,7 @@ import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 import BoardDeckModal from "../../BoardDeck/BoardDeckModal/BoardDeckModal";
 import ShareModalBoarddeck from "../../BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
 import BoardDeckSendEmail from "../../BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
+import MobileAppPopUpModal from "../UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -126,9 +127,12 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
 
-  const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
-    (state) => state
-  );
+  const {
+    talkStateData,
+    NewMeetingreducer,
+    meetingIdReducer,
+    UserManagementModals,
+  } = useSelector((state) => state);
 
   const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
     (state) => state.NewMeetingreducer
@@ -1171,14 +1175,11 @@ const NewMeeting = () => {
     },
     {
       title: t("Organizer"),
-      dataIndex: "meetingAttendees",
-      key: "meetingAttendees",
+      dataIndex: "host",
+      key: "host",
       width: "110px",
-      sorter: (a, b) => {
-        const nameA = a.userDetails?.name || "";
-        const nameB = b.userDetails?.name || "";
-        return nameA.localeCompare(nameB);
-      },
+      sorter: (a, b) =>
+        a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
       render: (text, record) => {
         return <span className={styles["orgaizer_value"]}>{record?.host}</span>;
       },

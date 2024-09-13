@@ -27,6 +27,7 @@ import {
   signUpFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
 import { localStorageManage } from "../../../../commen/functions/locallStorageManage";
+import MobileAppPopUpModal from "../ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -37,8 +38,13 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
-  const { Authreducer, adminReducer, LanguageReducer, UserMangementReducer } =
-    useSelector((state) => state);
+  const {
+    Authreducer,
+    adminReducer,
+    LanguageReducer,
+    UserMangementReducer,
+    UserManagementModals,
+  } = useSelector((state) => state);
   const currentUrl = window.location.href;
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
@@ -343,6 +349,7 @@ const SignInUserManagement = () => {
       {getpayemntString && getpayemntString !== "" && UserMangementReducer && (
         <Loader />
       )}
+      {UserManagementModals.mobileAppPopUp && <MobileAppPopUpModal />}
     </>
   );
 };
