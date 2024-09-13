@@ -1,0 +1,41 @@
+.Heading {
+  font-size: 20px !important;
+  color: #000 !important;
+  font-weight: bold !important;
+}
+
+.ButtonClass {
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  padding: 12px 50px !important;
+  border: none !important;
+  font-weight: bold !important;
+  border-radius: 4px !important;
+}
+
+.ButtonClass:is(:hover, :focus, :focus-visible, :active) {
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  padding: 12px 50px !important;
+  border: none !important;
+  font-weight: bold !important;
+  border-radius: 4px !important;
+}
+
+.Login_button {
+  color: #6172d6 !important;
+  background: none !important;
+  font-weight: bold !important;
+  border: none !important;
+  font-size: 14px !important;
+}
+
+.ButtonClass:is(:hover, :focus, :focus-visible, :active) {
+  color: #6172d6 !important;
+  background: none !important;
+  font-weight: bold !important;
+  border: none !important;
+  font-size: 14px !important;
+}

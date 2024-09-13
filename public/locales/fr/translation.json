@@ -481,7 +481,7 @@
   "Push-notification": "Push notification",
   "Terms-and-conditions": "Terms and conditions",
   "Title-limit-is-200": "Title limit is 200",
-  "Description-limit-is-300": "Description limit is 300",
+  "Description-limit-is-300": "Description limit is 2000",
   "Only-one-assignee-allow": "Only one assignee allow",
   "Update-general-setting-successfully": "Update general setting successfully",
   "Update-user-profile-successfully": "Update user profile successfully",
@@ -2000,7 +2000,7 @@
   "Not-an-authentic-user": "Not An Authentic User",
   "Payment-not-settled": "Payment Not Settled",
   "Error-activating-organization-subscription-and-creator": "Error Activating Organization Subscription and Creator",
-  "Board-deck": "Board deck",
+  "Board-deck": "Board Deck",
   "Select-all": "Select all",
   "Attendence-report": "Attendence Report",
   "Agenda-Contributor": "Agenda Contributor",
@@ -2048,5 +2048,8 @@
   "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED": "You have been removed as a Agenda Contributor from this [Place holder]",
   "Add-reminders": "Add Reminders",
   "Add-notes": "Add Notes",
-  "Minutes-will-be-available-when-published": "Minutes will be available when Published"
+  "Minutes-will-be-available-when-published": "Minutes will be available when Published",
+  "Keep-watching-in-app": "Keep Watching in app",
+  "Open-diskus-app": "Open Diskus app",
+  "Log-in": "Log in"
 }

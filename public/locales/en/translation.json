@@ -480,7 +480,7 @@
   "Push-notification": "Push notification",
   "Terms-and-conditions": "Terms and conditions",
   "Title-limit-is-200": "Title limit is 200",
-  "Description-limit-is-300": "Description limit is 300",
+  "Description-limit-is-300": "Description limit is 2000",
   "Only-one-assignee-allow": "Only one assignee allow",
   "Update-general-setting-successfully": "Update general setting successfully",
   "Update-user-profile-successfully": "Update user profile successfully",
@@ -2062,7 +2062,7 @@
   "Payment-not-settled": "Payment Not Settled",
   "Error-activating-organization-subscription-and-creator": "Error Activating Organization Subscription and Creator",
   "Signature": "Signature",
-  "Board-deck": "Board deck",
+  "Board-deck": "Board Deck",
   "Select-all": "Select all",
   "Attendence-report": "Attendence Report",
   "Agenda-Contributor": "Agenda Contributor",
@@ -2180,6 +2180,10 @@
   "Add-reminders": "Add Reminders",
   "Add-notes": "Add Notes",
   "Minutes-will-be-available-when-published": "Minutes will be available when Published",
+  "Allow-changes-in-the-agenda-items-after-the-meeting-has-been-started": "Allow changes in the Agenda items after the meeting has been started",
   "Start-chat": "Start Chat",
-  "Join-Log-Not-Found": "Join Log Not Found"
+  "Join-Log-Not-Found": "Join Log Not Found",
+  "Keep-watching-in-app": "Keep Watching in app",
+  "Open-diskus-app": "Open Diskus app",
+  "Log-in": "Log in"
 }

@@ -702,7 +702,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                 } else if (hasAdminRights === "true") {
                   navigate("/Admin/ManageUsers");
                 } else if (hasUserRights === "true") {
-                  navigate("/onboard/");
+                  navigate("/onboard");
                 }
               } else {
                 if (RSVP !== undefined && RSVP !== null) {

@@ -157,6 +157,13 @@ const PrivateRoutes = () => {
     ) {
       // Add action-specific logic here if needed
     }
+
+    if(currentUrl.includes("DisKus/Meeting?Activeagendaedit_action")) {
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("mtAgUpdate", parts);
+
+    }
+
   }, [currentUrl]);
 
   let Blur = localStorage.getItem("blur");
