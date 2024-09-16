@@ -1314,20 +1314,16 @@ const NewMeeting = () => {
                 {record.status === "9" &&
                 record.isQuickMeeting === false &&
                 record.isRecordingAvailable ? (
-                  <Tooltip
-                    placement="topLeft"
+                  <img
+                    src={VideoRecordIcon}
+                    className="cursor-pointer"
+                    width="17.1px"
+                    height="16.72px"
+                    alt=""
+                    draggable="false"
                     title={t("Download-video-recording")}
-                  >
-                    <img
-                      src={VideoRecordIcon}
-                      className="cursor-pointer mx-2"
-                      width="17.1px"
-                      height="16.72px"
-                      alt=""
-                      draggable="false"
-                      // onClick={() => onClickDownloadIcon(record.pK_MDID)}
-                    />
-                  </Tooltip>
+                    // onClick={() => onClickDownloadIcon(record.pK_MDID)}
+                  />
                 ) : (
                   <span
                     className={
