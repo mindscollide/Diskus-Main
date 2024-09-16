@@ -2182,5 +2182,9 @@
   "Add-notes": "Add Notes",
   "Minutes-will-be-available-when-published": "Minutes will be available when Published",
   "Start-chat": "Start Chat",
-  "Join-Log-Not-Found": "Join Log Not Found"
+  "Join-Log-Not-Found": "Join Log Not Found",
+  "Raise-hand": "Raise Hand",
+  "Lower-hand": "Lower Hand",
+  "Make-host": "Make host",
+  "Hide-video": "Hide video"
 }

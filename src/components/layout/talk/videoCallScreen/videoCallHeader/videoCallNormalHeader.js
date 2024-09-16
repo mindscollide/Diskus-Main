@@ -615,13 +615,107 @@ const VideoCallNormalHeader = ({
             <div
               className={
                 videoFeatureReducer.LeaveCallModalFlag === true
-                  ? "grayScaleImage"
-                  : "screenShare-Toggle inactive-state"
+                  ? "grayScaleImage position-relative"
+                  : "screenShare-Toggle inactive-state position-relative"
               }
             >
               <Tooltip placement="topRight" title={t("Participants")}>
                 <img src={AddParticipant} alt="Add Participants" />
               </Tooltip>
+              <div className="participants-list">
+                {currentParticipants !== undefined &&
+                currentParticipants !== null &&
+                currentParticipants.length > 0
+                  ? currentParticipants.map((participantData, index) => {
+                      console.log("participantStatus", participantStatus[0]);
+                      const matchingStatus = participantStatus[0].find(
+                        (status) =>
+                          status.RecipientID === participantData.userID &&
+                          status.RoomID === initiateRoomID
+                      );
+                      return (
+                        <Row className="m-0" key={index}>
+                          <Col className="p-0" lg={7} md={7} sm={12}>
+                            <p className="participant-name">
+                              {participantData.userName}
+                            </p>
+                          </Col>
+                          <Col
+                            className="d-flex justify-content-end align-items-baseline gap-3 p-0"
+                            lg={5}
+                            md={5}
+                            sm={12}
+                          >
+                            <img src={MenuRaiseHand} alt="" />
+
+                            <Dropdown>
+                              <Dropdown.Toggle className="participant-toggle">
+                                <img src={Menu} alt="" />
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                <Dropdown.Item className="participant-dropdown-item">
+                                  {t("Make-host")}
+                                </Dropdown.Item>
+                                <Dropdown.Item className="participant-dropdown-item">
+                                  {t("Remove")}
+                                </Dropdown.Item>
+                                <Dropdown.Item className="participant-dropdown-item">
+                                  {t("Mute")}
+                                </Dropdown.Item>
+                                <Dropdown.Item className="participant-dropdown-item">
+                                  {t("Hide-video")}
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown>
+
+                            {/* <p className="participant-state">
+                                    {matchingStatus
+                                      ? matchingStatus.CallStatus
+                                      : "Calling..."}
+                                  </p> */}
+                          </Col>
+                        </Row>
+                      );
+                    })
+                  : null}
+                <Row className="hostBorder m-0">
+                  <Col className="p-0" lg={7} md={7} sm={12}>
+                    <p className="participant-name">{currentUserName}</p>
+                  </Col>
+                  <Col
+                    className="
+                        d-flex
+                        justify-content-end
+                        align-items-baseline
+                        gap-3
+                        p-0"
+                    lg={5}
+                    md={5}
+                    sm={12}
+                  >
+                    <img src={MenuRaiseHand} alt="" />
+                    <Dropdown>
+                      <Dropdown.Toggle className="participant-toggle">
+                        <img src={Menu} alt="" />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item className="participant-dropdown-item">
+                          {t("Make-host")}
+                        </Dropdown.Item>
+                        <Dropdown.Item className="participant-dropdown-item">
+                          {t("Remove")}
+                        </Dropdown.Item>
+                        <Dropdown.Item className="participant-dropdown-item">
+                          {t("Mute")}
+                        </Dropdown.Item>
+                        <Dropdown.Item className="participant-dropdown-item">
+                          {t("Hide-video")}
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </Col>
+                </Row>
+              </div>
             </div>
 
             {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
