@@ -9,6 +9,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../container/DataRoom/SearchFunctionality/option";
+import { Tooltip } from "antd";
 const AttachmentViewer = ({
   handleClickDownload,
   handleEyeIcon,
@@ -52,7 +53,9 @@ const AttachmentViewer = ({
                   : styles["fileNameAttachmentNotOpened"]
               }
             >
-              {name}
+              <Tooltip placement="topLeft" title={name}>
+                {name}
+              </Tooltip>
             </span>
           </div>
         </Col>

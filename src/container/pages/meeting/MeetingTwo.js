@@ -118,7 +118,6 @@ import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 import BoardDeckModal from "../../BoardDeck/BoardDeckModal/BoardDeckModal";
 import ShareModalBoarddeck from "../../BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
 import BoardDeckSendEmail from "../../BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
-import MobileAppPopUpModal from "../UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -127,12 +126,9 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
 
-  const {
-    talkStateData,
-    NewMeetingreducer,
-    meetingIdReducer,
-    UserManagementModals,
-  } = useSelector((state) => state);
+  const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
+    (state) => state
+  );
 
   const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
     (state) => state.NewMeetingreducer
@@ -1318,20 +1314,16 @@ const NewMeeting = () => {
                 {record.status === "9" &&
                 record.isQuickMeeting === false &&
                 record.isRecordingAvailable ? (
-                  <Tooltip
-                    placement="topLeft"
+                  <img
+                    src={VideoRecordIcon}
+                    className="cursor-pointer"
+                    width="17.1px"
+                    height="16.72px"
+                    alt=""
+                    draggable="false"
                     title={t("Download-video-recording")}
-                  >
-                    <img
-                      src={VideoRecordIcon}
-                      className="cursor-pointer mx-2"
-                      width="17.1px"
-                      height="16.72px"
-                      alt=""
-                      draggable="false"
-                      // onClick={() => onClickDownloadIcon(record.pK_MDID)}
-                    />
-                  </Tooltip>
+                    // onClick={() => onClickDownloadIcon(record.pK_MDID)}
+                  />
                 ) : (
                   <span
                     className={
