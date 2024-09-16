@@ -389,18 +389,27 @@ export const removeHTMLTagsAndTruncate = (String, maxLength = 500) => {
 
 // XOR Encrypt/Decrypt Function
 export const xorEncryptDecrypt = (input, key) => {
-  let out = "";
-  for (let i = 0; i < input.length; i++) {
-    out += String.fromCharCode(
-      input.charCodeAt(i) ^ key.charCodeAt(i % key.length)
-    );
-  } 
-  return out;
+  try {
+    let out = "";
+    for (let i = 0; i < input.length; i++) {
+      out += String.fromCharCode(
+        input.charCodeAt(i) ^ key.charCodeAt(i % key.length)
+      );
+    }
+    return out;
+  } catch (error) {
+    console.log("ErrorError", error);
+  }
 };
 
 // Encrypt Function
-export const encrypt = (data, key) =>
-  xorEncryptDecrypt(JSON.stringify(data), key);
+export const encrypt = (data, key) => {
+  try {
+    xorEncryptDecrypt(JSON.stringify(data), key);
+  } catch (e) {
+    console.log("ErrorError", e);
+  }
+};
 
 // Decrypt Function
 export const decrypt = (data, key) => {
