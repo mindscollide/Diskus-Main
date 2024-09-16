@@ -53,7 +53,10 @@ const ViewMeetingModal = ({
   videoTalk,
   setVideoTalk,
 }) => {
-  console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
+  console.log(
+    Number(editorRole.status),
+    "editorRoleeditorRoleeditorRoleeditorRole"
+  );
   console.log(videoTalk, "videoTalkvideoTalk");
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -370,7 +373,7 @@ const ViewMeetingModal = ({
       }
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
-
+  console.log(editorRole.role, "editorRoleeditorRole");
   return (
     <>
       <section className="position-relative">
@@ -395,7 +398,8 @@ const ViewMeetingModal = ({
                     }
                     onClick={showMeetingDeitals}
                   />
-                  {editorRole.role === "Participant" ? null : (
+                  {editorRole.role === "Participant" ||
+                  editorRole.role === "Agenda Contributor" ? null : (
                     <Button
                       text={t("Organizers")}
                       className={
@@ -406,7 +410,8 @@ const ViewMeetingModal = ({
                       onClick={showOrganizers}
                     />
                   )}
-                  {editorRole.role === "Participant" ? null : (
+                  {editorRole.role === "Participant" ||
+                  editorRole.role === "Agenda Contributor" ? null : (
                     <Button
                       text={t("Agenda-contributors")}
                       className={
@@ -417,7 +422,8 @@ const ViewMeetingModal = ({
                       onClick={showAgendaContributers}
                     />
                   )}
-                  {editorRole.role === "Participant" ? null : (
+                  {editorRole.role === "Participant" ||
+                  editorRole.role === "Agenda Contributor" ? null : (
                     <Button
                       text={t("Participants")}
                       className={
@@ -449,7 +455,8 @@ const ViewMeetingModal = ({
                     onClick={showMeetingMaterial}
                   />
                   <>
-                    {editorRole.role === "Participant" ? null : (
+                    {editorRole.role === "Participant" ||
+                    editorRole.role === "Agenda Contributor" ? null : (
                       <Button
                         text={t("Minutes")}
                         className={
@@ -519,9 +526,9 @@ const ViewMeetingModal = ({
                         }
                       />
                     ) : null}
-                    {Number(editorRole.status) === 10 &&
-                    editorRole.role !== "Participant" &&
-                    editorRole.role !== "Agenda Contributor" ? (
+                    {Number(editorRole.status) === 10 ||
+                    (Number(editorRole.status) === 9 &&
+                      editorRole.role === "Agenda Contributor") ? null : (
                       <Button
                         text={t("Attendence")}
                         className={
@@ -539,7 +546,7 @@ const ViewMeetingModal = ({
                             : true
                         }
                       />
-                    ) : null}
+                    )}
                   </>
                   {/* )} */}
                 </Col>

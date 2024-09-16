@@ -30,6 +30,7 @@ const BoardDeckSendEmail = ({
   radioValue,
   setBoarddeckOptions,
   editorRole,
+  boardDeckMeetingTitle,
 }) => {
   console.log(boardDeckMeetingID, "radioValueradioValue");
   const { t } = useTranslation();
@@ -262,8 +263,10 @@ const BoardDeckSendEmail = ({
           <>
             <Row>
               <Col lg={12} md={12} sm={12} className="position-relative">
-                <p className={styles["FileModalTitle"]}>{t("Board-deck-IT")}</p>
-                <img
+                <p className={styles["FileModalTitle"]}>
+                  {t("Board-deck")} - {boardDeckMeetingTitle}
+                </p>
+                <i
                   className={styles["image-close"]}
                   src={crossIcon}
                   alt=""

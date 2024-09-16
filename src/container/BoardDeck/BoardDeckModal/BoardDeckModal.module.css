@@ -84,3 +84,7 @@ body[dir="rtl"] .Class_CheckBox {
   background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
 }
+
+.FontsizeToolTip {
+  font-size: 11px !important;
+}

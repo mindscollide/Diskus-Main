@@ -84,6 +84,13 @@ const InsternetDisconnectModal = (response) => {
   };
 };
 
+const mobileAppPopModal = (response) => {
+  return {
+    type: actions.MOBILE_POP_UP_MODAL,
+    response: response,
+  };
+};
+
 export {
   showUpgradeNowModal,
   showRequestExtentionModal,
@@ -97,4 +104,5 @@ export {
   showReasonForLeavingModal,
   openPaymentProcessModal,
   InsternetDisconnectModal,
+  mobileAppPopModal,
 };

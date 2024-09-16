@@ -481,7 +481,7 @@ const CreateTask = ({
 
   // Initialize previousFileList to an empty array
   let previousFileList = [];
- 
+
   const removeFileFunction = (fileData) => {
     setFileForSend((preFileforSend) =>
       preFileforSend.filter(
@@ -858,7 +858,7 @@ const CreateTask = ({
                       value={createTaskDetails.Description}
                       applyClass="Polls_meeting"
                       as={"textarea"}
-                      maxLength={295}
+                      maxLength={2000}
                       rows="4"
                       placeholder={t("Description")}
                       // required={true}

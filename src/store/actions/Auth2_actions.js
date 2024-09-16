@@ -738,7 +738,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               ) {
                 navigate("/Diskus/Meeting");
               } else {
-                navigate("/onboard/");
+                navigate("/onboard");
               }
             } else {
               if (RSVP !== undefined && RSVP !== null) {
