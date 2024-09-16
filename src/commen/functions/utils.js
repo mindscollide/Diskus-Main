@@ -394,7 +394,7 @@ export const xorEncryptDecrypt = (input, key) => {
     out += String.fromCharCode(
       input.charCodeAt(i) ^ key.charCodeAt(i % key.length)
     );
-  }
+  } 
   return out;
 };
 
