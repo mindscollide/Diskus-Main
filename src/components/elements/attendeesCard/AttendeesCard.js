@@ -1,6 +1,10 @@
 import React from "react";
 import styles from "./AttendeesCard.module.css";
 const AttendeesCard = ({ CardData }) => {
+  // Attending = Accepted = 2
+  // Maybe = tentative = 4
+  // Not Attending = declined = 3
+  // Not Responseded =  awaiting = 1
   console.log(CardData, "CardDataCardDataCardData");
   const { user, attendeeAvailability } = CardData;
   let status = 3;

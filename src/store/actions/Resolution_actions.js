@@ -17,10 +17,12 @@ import {
   uploadDocumentsRequestMethod,
   saveFilesRequestMethod,
   validateEncryptedStringResolutionRelatedEmailDataRM,
+  getAllCommittesandGroupsforPolls,
 } from "../../commen/apis/Api_config";
 import {
   dataRoomApi,
   getResolutionApi,
+  pollApi,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
@@ -1937,7 +1939,104 @@ const viewAttachmentFlag = (response) => {
   };
 };
 
+const getAllcommittesandGroups_init = () => {
+  return {
+    type: actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_INIT,
+  };
+};
+const getAllcommittesandGroups_success = (response, message) => {
+  return {
+    type: actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAllcommittesandGroups_fail = (message) => {
+  return {
+    type: actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_FAIL,
+    message: message,
+  };
+};
+const getAllGroupsandCommitteesforResolution = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let OrganizationID = parseInt(localStorage.getItem("organizationID"));
+  let Data = {
+    OrganizationID: OrganizationID,
+  };
+  return (dispatch) => {
+    dispatch(getAllcommittesandGroups_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      getAllCommittesandGroupsforPolls.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllGroupsandCommitteesforResolution(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllcommittesandGroups_success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllcommittesandGroups_fail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllcommittesandGroups_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllcommittesandGroups_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(getAllcommittesandGroups_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getAllcommittesandGroups_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllcommittesandGroups_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+
 export {
+  getAllGroupsandCommitteesforResolution,
   viewResolutionModal,
   saveFilesResolutionApi,
   uploadDocumentsResolutionApi,

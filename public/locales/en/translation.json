@@ -2185,5 +2185,9 @@
   "Join-Log-Not-Found": "Join Log Not Found",
   "Keep-watching-in-app": "Keep Watching in app",
   "Open-diskus-app": "Open Diskus app",
-  "Log-in": "Log in"
+  "Log-in": "Log in",
+  "Attending": "Attending",
+  "Maybe": "Maybe",
+  "Not-attending": "Not Attending",
+  "Not-responded": "Not Responded"
 }

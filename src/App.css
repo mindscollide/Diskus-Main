@@ -4492,7 +4492,6 @@ span.bordertop {
 }
 
 .All-Done-Congrats-Screen {
-  margin-top: -250px !important;
   text-align: center !important;
   justify-content: center !important;
   display: grid !important;
@@ -8206,4 +8205,7 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
   min-width: 600px !important;
   max-width: 600px !important;
   padding: 0px 60px;
+}
+.Polls_Meeting--is-disabled {
+width: 100%;
 }

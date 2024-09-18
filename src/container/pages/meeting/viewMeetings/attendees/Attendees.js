@@ -14,11 +14,11 @@ const Attendees = ({ MeetingID }) => {
   const [organizersData, setOrganizersData] = useState([]);
   const [participantsData, setParticipantsData] = useState([]);
   const [agendaContributorsData, setAgendaContributorsData] = useState([]);
-  const [barStatsValue, setBarStatsValue] = useState({
-    attending: 0,
-    mayBe: 0,
-    notAttending: 0,
-  });
+  const [Attending, setAttending] = useState(0);
+  const [mayBe, setMayBe] = useState(0);
+  const [notAttending, setNotAttending] = useState(0);
+  const [notResponded, setNotResponded] = useState(0);
+
   const { getMeetingUsersRSVP } = useSelector(
     (state) => state.NewMeetingreducer
   );
@@ -44,13 +44,56 @@ const Attendees = ({ MeetingID }) => {
         setOrganizersData(organizers);
         setParticipantsData(participants);
         setAgendaContributorsData(agendaContributors);
+        setAttending(acceptedCount);
+        setMayBe(tentativeCount);
+        setNotAttending(declinedCount);
+        setNotResponded(awaitingCount);
       } catch (error) {}
     }
   }, [getMeetingUsersRSVP]);
   return (
     <Row>
       <Col sm={12} md={12} lg={12} className={` ${"my-2"}`}>
-        <section className={styles["Attendees_bar"]}></section>
+        <section className={styles["Attendees_bar"]}>
+          <Row>
+            <Col sm={12} md={3} lg={3} className={styles["AttendingBox"]}>
+              <span className={styles["AttendeesCount_Attending"]}>
+                {Attending < 10 ? `0${Attending}` : Attending}
+              </span>
+              <span className={styles["AttendeesCount_Attending_tagline"]}>
+                {t("Attending")}
+              </span>
+            </Col>
+            <Col sm={12} md={3} lg={3} className={styles["AttendingBox"]}>
+              <span className={styles["AttendeesCount_Maybe"]}>
+                {" "}
+                {mayBe < 10 ? `0${mayBe}` : mayBe}
+              </span>
+              <span className={styles["AttendeesCount_Maybe_tagline"]}>
+                {t("Maybe")}
+              </span>
+            </Col>
+
+            <Col sm={12} md={3} lg={3} className={styles["AttendingBox"]}>
+              <span className={styles["AttendeesCount_NotAttending"]}>
+                {" "}
+                {notAttending < 10 ? `0${notAttending}` : notAttending}
+              </span>
+              <span className={styles["AttendeesCount_NotAttending_tagline"]}>
+                {t("Not-attending")}
+              </span>
+            </Col>
+
+            <Col sm={12} md={3} lg={3} className={styles["AttendingBox"]}>
+              <span className={styles["AttendeesCount_NotResponded"]}>
+                {notResponded < 10 ? `0${notResponded}` : notResponded}
+              </span>
+              <span className={styles["AttendeesCount_NotResponded_tagline"]}>
+                {t("Not-responded")}
+              </span>
+            </Col>
+          </Row>
+        </section>
       </Col>
 
       <Col
@@ -82,7 +125,7 @@ const Attendees = ({ MeetingID }) => {
           <div className={styles["Cards"]}>
             {participantsData.length > 0 &&
               participantsData.map((data) => {
-                return <AttendeesCard CardData={data}/>;
+                return <AttendeesCard CardData={data} />;
               })}
           </div>
         </section>

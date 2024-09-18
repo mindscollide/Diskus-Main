@@ -32,6 +32,7 @@ const initialState = {
   voteResolutionFlag: false,
   viewAttachmentFlag: false,
   emailEncryptedStringValidate: null,
+  getAllCommitteesAndGroups: null,
 };
 const ResolutionReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -488,8 +489,30 @@ const ResolutionReducer = (state = initialState, action) => {
     case actions.RESOLUTION_EMAIL_ROUTE: {
       return {
         ...state,
-        resolutionRouteID: action.response
-      }
+        resolutionRouteID: action.response,
+      };
+    }
+    case actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllCommitteesAndGroups: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllCommitteesAndGroups: null,
+        ResponseMessage: action.message,
+      };
     }
     default: {
       return { ...state };

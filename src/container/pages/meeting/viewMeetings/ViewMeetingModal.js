@@ -559,7 +559,7 @@ const ViewMeetingModal = ({
                         }
                       />
                     )}
-                    {/* {editorRole.role !== "Organizer" && (
+                    {/* {editorRole.role !== "Organizer" && ( */}
                       <Button
                         text={t("Attendees")}
                         className={
@@ -569,7 +569,7 @@ const ViewMeetingModal = ({
                         }
                         onClick={showAttendees}
                       />
-                    )} */}
+                    {/* )} */}
                   </>
                   {/* )} */}
                 </Col>
