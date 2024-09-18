@@ -67,6 +67,7 @@ import {
   ValidateEmailRelatedString,
   getDashboardMeetingStatsRM,
   validateEncryptedStringParticipantProposedRM,
+  getAllMeetingUsersRSVPDetailsRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -8674,7 +8675,89 @@ const getDashbardMeetingDataApi = (navigate, t) => {
       });
   };
 };
+
+const getAllMeetingUsersRSVP_init = () => {
+  return {
+    type: actions.GETALLMEETINGUSERSRSVPDETAILS_INIT,
+  };
+};
+const getAllMeetingUsersRSVP_success = (response, message) => {
+  return {
+    type: actions.GETALLMEETINGUSERSRSVPDETAILS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAllMeetingUsersRSVP_fail = (message) => {
+  return {
+    type: actions.GETALLMEETINGUSERSRSVPDETAILS_FAIL,
+    message: message,
+  };
+};
+const getAllMeetingUsersRSVPApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(getAllMeetingUsersRSVP_init());
+    let form = new FormData();
+    form.append("RequestMethod", getAllMeetingUsersRSVPDetailsRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(getAllMeetingUsersRSVPApi(navigate, t));
+          dispatch(getAllMeetingUsersRSVPApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingUserRSVPDetails_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllMeetingUsersRSVP_success(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingUserRSVPDetails_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllMeetingUsersRSVP_fail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingUserRSVPDetails_03".toLowerCase()
+                )
+            ) {
+              dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+      });
+  };
+};
 export {
+  getAllMeetingUsersRSVPApi,
   getDashbardMeetingDataApi,
   emailRouteID,
   clearResponseNewMeetingReducerMessage,

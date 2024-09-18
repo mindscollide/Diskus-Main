@@ -1,0 +1,129 @@
+.Attendees_bar {
+  background: #ffffff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 10px 0;
+}
+.Cards {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.AttendeesAreaHeading {
+  color: #6172d6;
+  font-weight: 700;
+  font-size: 12px;
+  font-weight: 700;
+  font-size: 12px;
+}
+.Members_Area {
+  margin-bottom: 20px;
+}
+.Attendees_container {
+  max-height: 40vh;
+  overflow-y: auto;
+}
+.CancelAttendeesBtn {
+  padding: 12px 30px !important;
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+.AttendeesCount_Attending {
+  font-size: 60px;
+  font-weight: 800;
+  color: #55ce5c !important;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.AttendeesCount_Attending_tagline {
+  font-size: 16px;
+  font-weight: 600;
+  color: #55ce5c !important;
+  margin-bottom: 20px;
+}
+
+.AttendeesCount_Maybe {
+  font-size: 60px;
+  font-weight: 800;
+  color: #d8a709 !important;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.AttendeesCount_Maybe_tagline {
+  font-size: 16px;
+  font-weight: 600;
+  color: #d8a709 !important;
+  margin-bottom: 20px;
+}
+
+.AttendeesCount_NotAttending {
+  font-size: 60px;
+  font-weight: 800;
+  color: #55ce5c !important;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.AttendeesCount_NotAttending_tagline {
+  font-size: 16px;
+  font-weight: 600;
+  color: #55ce5c !important;
+  margin-bottom: 20px;
+}
+
+.AttendeesCount_NotResponded {
+  font-size: 60px;
+  font-weight: 800;
+  color: #a2a2a2 !important;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.AttendeesCount_NotResponded_tagline {
+  font-size: 16px;
+  font-weight: 600;
+  color: #a2a2a2 !important;
+  margin-bottom: 20px;
+}
+.AttendingBox {
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px;
+  align-items: flex-end;
+  position: relative;
+  padding-left: 35px;
+}
+.AttendingBox::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 1px;
+  background-color: #5a5a5a;
+  height: 100%;
+}
+@media screen and (max-width: 700px) {
+
+  .AttendingBox::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    margin-right: 27px;
+    height: 1px;
+    background-color: #5a5a5a;
+  }
+}
+.AttendingBox:last-child::after {
+  display: none;
+}

@@ -31,6 +31,8 @@ const initialState = {
   resultResolutionFlag: false,
   voteResolutionFlag: false,
   viewAttachmentFlag: false,
+  emailEncryptedStringValidate: null,
+  getAllCommitteesAndGroups: null,
 };
 const ResolutionReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -462,7 +464,56 @@ const ResolutionReducer = (state = initialState, action) => {
         viewAttachmentFlag: action.payload,
       };
     }
-
+    case actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        emailEncryptedStringValidate: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_FAIL: {
+      return {
+        ...state,
+        Loading: true,
+        emailEncryptedStringValidate: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.RESOLUTION_EMAIL_ROUTE: {
+      return {
+        ...state,
+        resolutionRouteID: action.response,
+      };
+    }
+    case actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllCommitteesAndGroups: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllCommitteesAndGroups: null,
+        ResponseMessage: action.message,
+      };
+    }
     default: {
       return { ...state };
     }
