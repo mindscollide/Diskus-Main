@@ -1320,7 +1320,7 @@ const NewMeeting = () => {
               </Col>
               <Col lg={3} md={3} sm={3}>
                 {record.status === "9" && record.isOrganizer ? (
-                  <Tooltip placement="topLeft" title={t("Attendance")}>
+                  <Tooltip placement='topLeft' title={t("Attendance")}>
                     <img
                       src={member}
                       className='cursor-pointer'
@@ -1346,11 +1346,11 @@ const NewMeeting = () => {
                 record.isRecordingAvailable ? (
                   <img
                     src={VideoRecordIcon}
-                    className="cursor-pointer"
-                    width="17.1px"
-                    height="16.72px"
-                    alt=""
-                    draggable="false"
+                    className='cursor-pointer'
+                    width='17.1px'
+                    height='16.72px'
+                    alt=''
+                    draggable='false'
                     title={t("Download-video-recording")}
                     // onClick={() => onClickDownloadIcon(record.pK_MDID)}
                   />
@@ -1835,12 +1835,144 @@ const NewMeeting = () => {
   useEffect(() => {
     if (
       NewMeetingreducer.CalendarDashboardEventData !== null &&
-      NewMeetingreducer.CalendarDashboardEventData !== undefined &&
-      rows.length !== 0
+      NewMeetingreducer.CalendarDashboardEventData !== undefined
     ) {
-      setDashboardEventData(NewMeetingreducer.CalendarDashboardEventData);
+      try {
+        let dashboardEventData = NewMeetingreducer.CalendarDashboardEventData;
+   
+        let startMeetingRequest = {
+          MeetingID: Number(dashboardEventData.pK_MDID),
+          StatusID: 10,
+        };
+        rows.forEach((meetingData, index) => {
+          console.log(meetingData, "meetingDatameetingData");
+          if (Number(meetingData.pK_MDID) === dashboardEventData.pK_MDID) {
+            if (
+              (dashboardEventData.statusID === "10" ||
+                dashboardEventData.statusID === 10) &&
+              dashboardEventData.participantRoleID === 2
+            ) {
+              handleViewMeeting(
+                dashboardEventData.pK_MDID,
+                dashboardEventData.isQuickMeeting,
+                dashboardEventData.statusID
+              );
+
+              setEdiorRole({
+                status: dashboardEventData.statusID,
+                role: "Participant",
+                isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: meetingData.isChat,
+                isVideoCall: meetingData.isVideoCall,
+                talkGroupID: meetingData.talkGroupID,
+              });
+              dispatch(viewMeetingFlag(true));
+            } else if (
+              (dashboardEventData.statusID === "10" ||
+                dashboardEventData.statusID === 10) &&
+              dashboardEventData.participantRoleID === 4
+            ) {
+              handleViewMeeting(
+                dashboardEventData.pK_MDID,
+                dashboardEventData.isQuickMeeting,
+                dashboardEventData.statusID
+              );
+              setVideoTalk({
+                isChat: meetingData.isChat,
+                isVideoCall: meetingData.isVideoCall,
+                talkGroupID: meetingData.talkGroupID,
+              });
+              setEdiorRole({
+                status: dashboardEventData.statusID,
+                role: "Agenda Contributor",
+                isPrimaryOrganizer: false,
+              });
+              dispatch(viewMeetingFlag(true));
+            } else if (
+              (dashboardEventData.statusID === "10" ||
+                dashboardEventData.statusID === 10) &&
+              dashboardEventData.participantRoleID === 1
+            ) {
+              setEdiorRole({
+                status: dashboardEventData.statusID,
+                role: "Organizer",
+                isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: meetingData.isChat,
+                isVideoCall: meetingData.isVideoCall,
+                talkGroupID: meetingData.talkGroupID,
+              });
+              dispatch(viewMeetingFlag(true));
+              handleViewMeeting(
+                dashboardEventData.pK_MDID,
+                dashboardEventData.isQuickMeeting,
+                dashboardEventData.statusID
+              );
+
+              // setIsOrganisers(isOrganiser);
+            } else if (
+              dashboardEventData.statusID === "1" ||
+              dashboardEventData.statusID === 1
+            ) {
+              if (dashboardEventData.isQuickMeeting === true) {
+                dispatch(
+                  UpdateOrganizersMeeting(
+                    true,
+                    navigate,
+                    t,
+                    4,
+                    startMeetingRequest,
+                    setEdiorRole,
+                    setAdvanceMeetingModalID,
+                    setDataroomMapFolderId,
+                    setSceduleMeeting,
+                    setViewFlag,
+                    setEditFlag
+                  )
+                );
+              } else if (dashboardEventData.isQuickMeeting === false) {
+                dispatch(
+                  UpdateOrganizersMeeting(
+                    false,
+                    navigate,
+                    t,
+                    3,
+                    startMeetingRequest,
+                    setEdiorRole,
+                    setAdvanceMeetingModalID,
+                    setDataroomMapFolderId,
+                    setViewAdvanceMeetingModal
+                  )
+                );
+                localStorage.setItem(
+                  "currentMeetingID",
+                  dashboardEventData.pK_MDID
+                );
+                setAdvanceMeetingModalID(dashboardEventData.pK_MDID);
+                dispatch(viewMeetingFlag(true));
+                setViewAdvanceMeetingModal(true);
+                dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                dispatch(scheduleMeetingPageFlag(false));
+                setEdiorRole({
+                  status: 10,
+                  role: "Organizer",
+                  isPrimaryOrganizer: false,
+                });
+              }
+            }
+          }
+        });
+
+        dispatch(dashboardCalendarEvent(null));
+      } catch (error) {
+        console.log(error);
+        dispatch(dashboardCalendarEvent(null));
+      }
     }
-  }, [rows]);
+  }, [NewMeetingreducer.CalendarDashboardEventData]);
 
   useEffect(() => {
     try {
@@ -2284,6 +2416,7 @@ const NewMeeting = () => {
   useEffect(() => {
     try {
       if (dashboardEventData !== null && dashboardEventData !== undefined) {
+        console.log(dashboardEventData, "dashboardEventDatadashboardEventData");
         let startMeetingRequest = {
           MeetingID: Number(dashboardEventData.pK_MDID),
           StatusID: 10,

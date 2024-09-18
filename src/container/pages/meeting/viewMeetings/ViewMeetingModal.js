@@ -559,7 +559,7 @@ const ViewMeetingModal = ({
                         }
                       />
                     )}
-                    {/* {editorRole.role !== "Organizer" && ( */}
+                    {editorRole.role !== "Organizer" && (
                       <Button
                         text={t("Attendees")}
                         className={
@@ -569,6 +569,7 @@ const ViewMeetingModal = ({
                         }
                         onClick={showAttendees}
                       />
+                    )}
                     {/* )} */}
                   </>
                   {/* )} */}
@@ -587,7 +588,7 @@ const ViewMeetingModal = ({
                   setDataroomMapFolderId={setDataroomMapFolderId}
                 />
               )}
-              {attendees && <Attendees  MeetingID={advanceMeetingModalID}/>}
+              {attendees && <Attendees MeetingID={advanceMeetingModalID} />}
               {organizers && (
                 <Organizers
                   setmeetingDetails={setmeetingDetails}
