@@ -146,6 +146,14 @@ const PrivateRoutes = () => {
       // Add action-specific logic here if needed
     }
 
+    if (currentUrl.includes("DisKus/resolution?ResolutionVoter_action=")) {
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("resVot", parts);
+    }
+    if (currentUrl.includes("DisKus/resolution?ResolutionNonVoter_action=")) {
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("resNonVot", parts);
+    }
     // Action: Organization Status Enable
     if (currentUrl.includes("DisKus/Admin/Organizationstatusenable?action=")) {
       // Add action-specific logic here if needed
@@ -158,12 +166,10 @@ const PrivateRoutes = () => {
       // Add action-specific logic here if needed
     }
 
-    if(currentUrl.includes("DisKus/Meeting?Activeagendaedit_action")) {
+    if (currentUrl.includes("DisKus/Meeting?Activeagendaedit_action")) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("mtAgUpdate", parts);
-
     }
-
   }, [currentUrl]);
 
   let Blur = localStorage.getItem("blur");
@@ -195,7 +201,8 @@ const PrivateRoutes = () => {
           currentUrl.includes("DisKus/Meeting") ||
           currentUrl.includes("DisKus/polling") ||
           currentUrl.includes("DisKus/groups") ||
-          currentUrl.includes("DisKus/committee"))
+          currentUrl.includes("DisKus/committee") ||
+          currentUrl.includes("DisKus/resolution"))
           ? "/"
           : "*"
       }

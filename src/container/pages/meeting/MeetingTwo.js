@@ -151,6 +151,7 @@ const NewMeeting = () => {
   let MeetinUpd = localStorage.getItem("meetingUpd");
   let MeetingMin = localStorage.getItem("meetingMin");
   let MeetingProp = localStorage.getItem("meetingprop");
+  let MtAgUpdate = localStorage.getItem("mtAgUpdate");
   // let AdCont
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
@@ -397,6 +398,41 @@ const NewMeeting = () => {
       dispatch(proposeNewMeetingPageFlag(false));
     }
   }, [location.state]);
+
+  useEffect(() => {
+    if (MtAgUpdate !== null) {
+      try {
+        validateStringEmailApi(MtAgUpdate, navigate, t, 3, dispatch)
+          .then(async (result) => {
+            // Handle the result here
+            if (result.isQuickMeeting === false) {
+              await setAdvanceMeetingModalID(Number(result.meetingID));
+              await setViewAdvanceMeetingModalUnpublish(true);
+              await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+              setEdiorRole({
+                ...editorRole,
+                isPrimaryOrganizer: false,
+                role:
+                  Number(result.attendeeId) === 2
+                    ? "Participant"
+                    : Number(result.attendeeId) === 4
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                status: Number(result.meetingStatusId),
+              });
+            }
+
+            localStorage.removeItem("mtAgUpdate");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            // Handle errors here
+          });
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  }, [MtAgUpdate]);
 
   useEffect(() => {
     if (AgCont !== null) {
@@ -1080,8 +1116,7 @@ const NewMeeting = () => {
               );
               localStorage.setItem("meetingTitle", record.title);
               // setIsOrganisers(isOrganiser);
-            }}
-          >
+            }}>
             {text}
           </span>
         );
@@ -1126,7 +1161,7 @@ const NewMeeting = () => {
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       onFilter: (value, record) =>
         record.status.toLowerCase().includes(value.toLowerCase()),
@@ -1153,7 +1188,7 @@ const NewMeeting = () => {
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className="text-truncate d-block">
+            <span className='text-truncate d-block'>
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -1182,7 +1217,7 @@ const NewMeeting = () => {
       defaultFilteredValue: defaultFiltersValues || null,
       filterResetToDefaultFilteredValue: true,
       filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       onFilter: (value, record) => {
         const meetingType = Number(record.meetingType);
@@ -1215,14 +1250,13 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }
-                  >
-                    <Tooltip placement="topRight" title={t("ClipIcon")}>
+                    }>
+                    <Tooltip placement='topRight' title={t("ClipIcon")}>
                       <img
                         src={ClipIcon}
-                        className="cursor-pointer"
-                        alt=""
-                        draggable="false"
+                        className='cursor-pointer'
+                        alt=''
+                        draggable='false'
                       />
                     </Tooltip>
                   </span>
@@ -1232,8 +1266,7 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }
-                  ></span>
+                    }></span>
                 )}
 
                 {/* {record.isVideoCall ? (
@@ -1264,16 +1297,15 @@ const NewMeeting = () => {
                         ? "margin-left-10"
                         : "margin-right-10"
                     }
-                    onClick={(e) => groupChatInitiation(record)}
-                  >
-                    <Tooltip placement="topLeft" title={t("Chat")}>
+                    onClick={(e) => groupChatInitiation(record)}>
+                    <Tooltip placement='topLeft' title={t("Chat")}>
                       <img
                         src={CommentIcon}
-                        className="cursor-pointer"
+                        className='cursor-pointer'
                         // width="20.06px"
                         // height="15.95px"
-                        alt=""
-                        draggable="false"
+                        alt=''
+                        draggable='false'
                       />
                     </Tooltip>
                   </span>
@@ -1283,8 +1315,7 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }
-                  ></span>
+                    }></span>
                 )}
               </Col>
               <Col lg={3} md={3} sm={3}>
@@ -1292,11 +1323,11 @@ const NewMeeting = () => {
                   <Tooltip placement="topLeft" title={t("Attendance")}>
                     <img
                       src={member}
-                      className="cursor-pointer"
-                      width="17.1px"
-                      height="16.72px"
-                      alt=""
-                      draggable="false"
+                      className='cursor-pointer'
+                      width='17.1px'
+                      height='16.72px'
+                      alt=''
+                      draggable='false'
                       onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
                   </Tooltip>
@@ -1306,8 +1337,7 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }
-                  ></span>
+                    }></span>
                 )}
               </Col>
               <Col lg={3} md={3} sm={3}>
@@ -1330,8 +1360,7 @@ const NewMeeting = () => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }
-                  ></span>
+                    }></span>
                 )}
               </Col>
             </Row>
@@ -1626,16 +1655,15 @@ const NewMeeting = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <Tooltip placement="topRight" title={t("Edit")}>
+                        className='d-flex justify-content-center'>
+                        <Tooltip placement='topRight' title={t("Edit")}>
                           <img
                             src={EditIcon}
-                            className="cursor-pointer"
-                            width="17.11px"
-                            height="17.11px"
-                            alt=""
-                            draggable="false"
+                            className='cursor-pointer'
+                            width='17.11px'
+                            height='17.11px'
+                            alt=''
+                            draggable='false'
                             onClick={() => {
                               handleEditMeeting(
                                 record.pK_MDID,
@@ -1667,16 +1695,15 @@ const NewMeeting = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <Tooltip placement="topRight" title={t("Edit")}>
+                      className='d-flex justify-content-center'>
+                      <Tooltip placement='topRight' title={t("Edit")}>
                         <img
                           src={EditIcon}
-                          className="cursor-pointer"
-                          width="17.11px"
-                          height="17.11px"
-                          alt=""
-                          draggable="false"
+                          className='cursor-pointer'
+                          width='17.11px'
+                          height='17.11px'
+                          alt=''
+                          draggable='false'
                           onClick={() => {
                             handleEditMeeting(
                               record.pK_MDID,
@@ -1712,16 +1739,15 @@ const NewMeeting = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <Tooltip placement="topRight" title={t("Edit")}>
+                      className='d-flex justify-content-center'>
+                      <Tooltip placement='topRight' title={t("Edit")}>
                         <img
                           src={EditIcon}
-                          className="cursor-pointer"
-                          width="17.11px"
-                          height="17.11px"
-                          alt=""
-                          draggable="false"
+                          className='cursor-pointer'
+                          width='17.11px'
+                          height='17.11px'
+                          alt=''
+                          draggable='false'
                           onClick={() => {
                             handleEditMeeting(
                               record.pK_MDID,
@@ -1947,9 +1973,9 @@ const NewMeeting = () => {
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=""
-            draggable="false"
-            className="nodata-table-icon"
+            alt=''
+            draggable='false'
+            className='nodata-table-icon'
           />
         }
         title={t("No-new-meetings")}
@@ -2525,30 +2551,27 @@ const NewMeeting = () => {
           />
         ) : (
           <>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col
                 sm={12}
                 md={8}
                 lg={8}
-                className="d-flex gap-3 align-items-center"
-              >
+                className='d-flex gap-3 align-items-center'>
                 <span className={styles["NewMeetinHeading"]}>
                   {t("Meetings")}
                 </span>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <Dropdown
-                      className="SceduleMeetingButton"
-                      onClick={eventClickHandler}
-                    >
+                      className='SceduleMeetingButton'
+                      onClick={eventClickHandler}>
                       <Dropdown.Toggle title={t("Create")}>
                         <Row>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className={styles["schedule_button"]}
-                          >
+                            className={styles["schedule_button"]}>
                             <Plus width={20} height={20} fontWeight={800} />
                             <span> {t("Schedule-a-meeting")}</span>
                           </Col>
@@ -2558,18 +2581,16 @@ const NewMeeting = () => {
                       <Dropdown.Menu>
                         {checkFeatureIDAvailability(1) ? (
                           <Dropdown.Item
-                            className="dropdown-item"
-                            onClick={CreateQuickMeeting}
-                          >
+                            className='dropdown-item'
+                            onClick={CreateQuickMeeting}>
                             {t("Quick-meeting")}
                           </Dropdown.Item>
                         ) : null}
 
                         {checkFeatureIDAvailability(9) ? (
                           <Dropdown.Item
-                            className="dropdown-item"
-                            onClick={openSceduleMeetingPage}
-                          >
+                            className='dropdown-item'
+                            onClick={openSceduleMeetingPage}>
                             {t("Advance-meeting")}
                           </Dropdown.Item>
                         ) : null}
@@ -2578,9 +2599,8 @@ const NewMeeting = () => {
                         {checkFeatureIDAvailability(12) ? (
                           <>
                             <Dropdown.Item
-                              className="dropdown-item"
-                              onClick={openProposedNewMeetingPage}
-                            >
+                              className='dropdown-item'
+                              onClick={openProposedNewMeetingPage}>
                               {t("Propose-new-meeting")}
                             </Dropdown.Item>
                           </>
@@ -2602,15 +2622,14 @@ const NewMeeting = () => {
                 sm={12}
                 md={4}
                 lg={4}
-                className="d-flex justify-content-end align-items-center"
-              >
-                <span className="position-relative">
+                className='d-flex justify-content-end align-items-center'>
+                <span className='position-relative'>
                   <TextField
                     width={"502px"}
                     placeholder={t("Search")}
                     applyClass={"meetingSearch"}
                     name={"SearchVal"}
-                    labelclass="d-none"
+                    labelclass='d-none'
                     value={searchText}
                     change={handleSearchChange}
                     onKeyDown={handleKeyPress}
@@ -2620,27 +2639,25 @@ const NewMeeting = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
+                          className='d-flex gap-2 align-items-center'>
                           {entereventIcon === true ? (
                             <img
                               src={BlackCrossIcon}
-                              className="cursor-pointer"
+                              className='cursor-pointer'
                               onClick={handleClearSearch}
-                              alt=""
-                              draggable="false"
+                              alt=''
+                              draggable='false'
                             />
                           ) : null}
                           <Tooltip
-                            placement="bottomLeft"
-                            title={t("Search-filters")}
-                          >
+                            placement='bottomLeft'
+                            title={t("Search-filters")}>
                             <img
                               src={searchicon}
                               className={styles["Search_Bar_icon_class"]}
                               onClick={HandleShowSearch} // Add click functionality here
-                              alt=""
-                              draggable="false"
+                              alt=''
+                              draggable='false'
                             />
                           </Tooltip>
                         </Col>
@@ -2655,54 +2672,52 @@ const NewMeeting = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Search-Box_meeting"]}
-                        >
-                          <Row className="mt-2">
+                          className={styles["Search-Box_meeting"]}>
+                          <Row className='mt-2'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-end"
-                            >
+                              className='d-flex justify-content-end'>
                               <img
                                 src={BlackCrossIcon}
                                 className={styles["Cross_Icon_Styling"]}
-                                width="16px"
-                                height="16px"
+                                width='16px'
+                                height='16px'
                                 onClick={HandleCloseSearchModalMeeting}
-                                alt=""
-                                draggable="false"
+                                alt=''
+                                draggable='false'
                               />
                             </Col>
                           </Row>
-                          <Row className="mt-4">
+                          <Row className='mt-4'>
                             <Col lg={12} md={12} sm={12}>
                               <TextField
                                 placeholder={t("Meeting-title")}
                                 applyClass={"meetinInnerSearch"}
-                                labelclass="d-none"
-                                name="MeetingTitle"
+                                labelclass='d-none'
+                                name='MeetingTitle'
                                 value={searchFields.MeetingTitle}
                                 change={searchMeetingChangeHandler}
                               />
                             </Col>
                           </Row>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={6} md={6} sm={12}>
                               <DatePicker
                                 value={searchFields.DateView}
                                 format={"DD/MM/YYYY"}
-                                placeholder="DD/MM/YYYY"
+                                placeholder='DD/MM/YYYY'
                                 render={
                                   <InputIcon
-                                    placeholder="DD/MM/YYYY"
-                                    className="datepicker_input"
+                                    placeholder='DD/MM/YYYY'
+                                    className='datepicker_input'
                                   />
                                 }
                                 editable={false}
-                                className="datePickerTodoCreate2"
+                                className='datePickerTodoCreate2'
                                 onOpenPickNewDate={false}
-                                inputMode=""
+                                inputMode=''
                                 calendar={calendarValue}
                                 locale={localValue}
                                 ref={calendRef}
@@ -2712,21 +2727,20 @@ const NewMeeting = () => {
                             <Col lg={6} md={6} sm={12}>
                               <TextField
                                 placeholder={t("Organizer-name")}
-                                labelclass="d-none"
-                                name="OrganizerName"
+                                labelclass='d-none'
+                                name='OrganizerName'
                                 applyClass={"meetinInnerSearch"}
                                 value={searchFields.OrganizerName}
                                 change={searchMeetingChangeHandler}
                               />
                             </Col>
                           </Row>
-                          <Row className="mt-4">
+                          <Row className='mt-4'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-end gap-2"
-                            >
+                              className='d-flex justify-content-end gap-2'>
                               <Button
                                 text={t("Reset")}
                                 className={styles["ResetButtonMeeting"]}
@@ -2746,11 +2760,11 @@ const NewMeeting = () => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <Paper className={styles["PaperStylesMeetingTwoPage"]}>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Button
                         text={t("Published-meetings")}
                         className={
@@ -2792,7 +2806,7 @@ const NewMeeting = () => {
                       setVideoTalk={setVideoTalk}
                     />
                   ) : Number(currentView) === 1 ? (
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <>
                           {defaultFiltersValues.length > 0 ? (
@@ -2800,7 +2814,7 @@ const NewMeeting = () => {
                               column={MeetingColoumns}
                               scroll={{ y: "54vh", x: false }}
                               pagination={false}
-                              className="newMeetingTable"
+                              className='newMeetingTable'
                               rows={rows}
                               locale={{
                                 emptyText: emptyText(), // Set your custom empty text here
@@ -2813,8 +2827,7 @@ const NewMeeting = () => {
                                       <p
                                         className={
                                           styles["meeting-expanded-row"]
-                                        }
-                                      >
+                                        }>
                                         {data.objMeetingAgenda.title}
                                       </p>
                                     ))
@@ -2833,20 +2846,18 @@ const NewMeeting = () => {
                   ) : null}
                   {rows.length > 0 ? (
                     <>
-                      <Row className="mt-5">
+                      <Row className='mt-5'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center "
-                        >
+                          className='d-flex justify-content-center '>
                           <Row className={styles["PaginationStyle-Committee"]}>
                             <Col
                               className={"pagination-groups-table"}
                               sm={12}
                               md={12}
-                              lg={12}
-                            >
+                              lg={12}>
                               <CustomPagination
                                 current={
                                   meetingPageCurrent !== null &&
