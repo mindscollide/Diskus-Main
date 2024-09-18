@@ -54,7 +54,10 @@ const ViewMeetingModal = ({
   videoTalk,
   setVideoTalk,
 }) => {
-  console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
+  console.log(
+    Number(editorRole.status),
+    "editorRoleeditorRoleeditorRoleeditorRole"
+  );
   console.log(videoTalk, "videoTalkvideoTalk");
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -535,8 +538,9 @@ const ViewMeetingModal = ({
                         }
                       />
                     ) : null}
-                    {Number(editorRole.status) === 10 &&
-                    editorRole.role === "Agenda Contributor" ? null : (
+                    {Number(editorRole.status) === 10 ||
+                    (Number(editorRole.status) === 9 &&
+                      editorRole.role === "Agenda Contributor") ? null : (
                       <Button
                         text={t("Attendence")}
                         className={
