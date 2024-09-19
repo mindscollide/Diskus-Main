@@ -1046,10 +1046,9 @@ img.recent-activity-icon {
 
 .recent-activity-text .ant-result-subtitle {
   color: #e4e4e4;
-  font-size: 26px;
-  line-height: 1.8;
+  font-size: 20px;
+  line-height: 24.38px;
   text-align: center;
-  text-transform: uppercase;
 }
 
 .Notes {
