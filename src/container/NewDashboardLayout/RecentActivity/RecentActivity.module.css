@@ -22,3 +22,29 @@
   overflow: hidden !important;
   padding: 10px 0;
 }
+
+.ReviewMinutesClassButton {
+  height: 20px !important;
+  width: 117px !important;
+  border-radius: 4px !important;
+  background: #ecefff !important;
+  font-size: 8px !important;
+  font-family: "Montserrat" !important;
+  color: #6172d6 !important;
+  line-height: 9.74px !important;
+  font-weight: 600;
+  border: none !important;
+}
+
+.ReviewMinutesClassButton:is(:hover, :active, :focus, :focus-visible) {
+  height: 20px !important;
+  width: 117px !important;
+  border-radius: 4px !important;
+  background: #ecefff !important;
+  border: none !important;
+  font-size: 8px !important;
+  line-height: 9.74px !important;
+  font-family: "Montserrat" !important;
+  color: #6172d6 !important;
+  font-weight: 600;
+}
