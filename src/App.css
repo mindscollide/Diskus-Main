@@ -8207,5 +8207,9 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
   padding: 0px 60px;
 }
 .Polls_Meeting--is-disabled {
-width: 100%;
+  width: 100%;
+}
+
+body.guest-video-call {
+  background: #fff !important;
 }
