@@ -11,21 +11,33 @@ const MobileAppPopUpModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { UserManagementModals } = useSelector((state) => state);
-
   const handleOk = () => {
-    const appLink = "com.axiswork.diskus://home";
-    // Determine the fallback URL based on the user's device
+    // App Link for Android
+    const appLink = "thediskus://thediskus.com";
     const isAndroid = /Android/i.test(navigator.userAgent);
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
+    // Intent URL for Android devices
+    const androidIntentLink =
+      "intent://thediskus.com#Intent;scheme=thediskus;package=com.axiswork.diskus;end";
+
+    // Fallback URLs
     const fallbackLink = isAndroid
       ? "https://play.google.com/store/apps/details?id=com.axiswork.diskus" // Android Play Store link
       : isIOS
       ? "https://apps.apple.com/us/app/diskus/id6475817410" // iOS App Store link
       : "";
 
-    window.location.href = appLink;
+    // Try to open the app
+    if (isAndroid) {
+      // Use intent link for Android
+      window.location.href = androidIntentLink;
+    } else if (isIOS) {
+      // iOS specific: Open the app with URL scheme
+      window.location.href = appLink;
+    }
 
+    // Fallback if app doesn't open within 2.5 seconds
     setTimeout(() => {
       window.location.href = fallbackLink;
     }, 2500);
