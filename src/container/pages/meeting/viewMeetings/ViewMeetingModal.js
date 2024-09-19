@@ -40,6 +40,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
+import Attendees from "./attendees/Attendees";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -53,7 +54,10 @@ const ViewMeetingModal = ({
   videoTalk,
   setVideoTalk,
 }) => {
-  console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
+  console.log(
+    Number(editorRole.status),
+    "editorRoleeditorRoleeditorRoleeditorRole"
+  );
   console.log(videoTalk, "videoTalkvideoTalk");
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -82,6 +86,7 @@ const ViewMeetingModal = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
+  const [attendees, setAttendees] = useState(false);
 
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -137,6 +142,7 @@ const ViewMeetingModal = ({
     setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
+    setAttendees(false);
   };
 
   const showOrganizers = () => {
@@ -150,6 +156,7 @@ const ViewMeetingModal = ({
     setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
+    setAttendees(false);
   };
 
   const showAgendaContributers = () => {
@@ -163,6 +170,7 @@ const ViewMeetingModal = ({
     setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
+    setAttendees(false);
   };
 
   const showParticipants = () => {
@@ -176,10 +184,26 @@ const ViewMeetingModal = ({
     setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
+    setAttendees(false);
   };
 
   const showAgenda = () => {
     setAgenda(true);
+    setParticipants(false);
+    setAgendaContributors(false);
+    setorganizers(false);
+    setmeetingDetails(false);
+    setMinutes(false);
+    setactionsPage(false);
+    setAttendance(false);
+    setPolls(false);
+    setMeetingMaterial(false);
+    setAttendees(false);
+  };
+
+  const showAttendees = () => {
+    setAttendees(true);
+    setAgenda(false);
     setParticipants(false);
     setAgendaContributors(false);
     setorganizers(false);
@@ -202,6 +226,7 @@ const ViewMeetingModal = ({
     setAttendance(false);
     setPolls(false);
     setmeetingDetails(false);
+    setAttendees(false);
   };
 
   const showMinutes = () => {
@@ -214,6 +239,7 @@ const ViewMeetingModal = ({
     setAgenda(false);
     setAttendance(false);
     setPolls(false);
+    setAttendees(false);
     setactionsPage(false);
   };
 
@@ -226,6 +252,7 @@ const ViewMeetingModal = ({
     setAgendaContributors(false);
     setorganizers(false);
     setAttendance(false);
+    setAttendees(false);
     setPolls(false);
     setmeetingDetails(false);
   };
@@ -240,6 +267,7 @@ const ViewMeetingModal = ({
     setAgendaContributors(false);
     setorganizers(false);
     setAttendance(false);
+    setAttendees(false);
     setmeetingDetails(false);
   };
 
@@ -253,6 +281,7 @@ const ViewMeetingModal = ({
     setAgendaContributors(false);
     setorganizers(false);
     setmeetingDetails(false);
+    setAttendees(false);
     setPolls(false);
   };
   useEffect(() => {
@@ -373,8 +402,8 @@ const ViewMeetingModal = ({
   console.log(editorRole.role, "editorRoleeditorRole");
   return (
     <>
-      <section className="position-relative">
-        <Row className="mt-2">
+      <section className='position-relative'>
+        <Row className='mt-2'>
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
@@ -382,10 +411,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <Paper className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -442,6 +471,7 @@ const ViewMeetingModal = ({
                       onClick={showAgenda}
                     />
                   )}
+
                   <Button
                     text={t("Agenda-viewer")}
                     className={
@@ -468,21 +498,6 @@ const ViewMeetingModal = ({
                             ? false
                             : true
                         }
-                        // disableBtn={
-                        //   unPublish
-                        //     ? true
-                        //     : Number(editorRole.status) === 1 ||
-                        //       Number(editorRole.status) === 11 ||
-                        //       Number(editorRole.status) === 12
-                        //     ? true
-                        //     : editorRole.role === "Organizer" &&
-                        //       Number(editorRole.status) === 9
-                        //     ? false
-                        //     : Number(editorRole.status) === 10 &&
-                        //       editorRole.role === "Organizer"
-                        //     ? false
-                        //     : true
-                        // }
                       />
                     )}
                     {checkFeatureIDAvailability(14) ? (
@@ -523,8 +538,9 @@ const ViewMeetingModal = ({
                         }
                       />
                     ) : null}
-                    {Number(editorRole.status) === 10 &&
-                    editorRole.role === "Agenda Contributor" ? null : (
+                    {Number(editorRole.status) === 10 ||
+                    (Number(editorRole.status) === 9 &&
+                      editorRole.role === "Agenda Contributor") ? null : (
                       <Button
                         text={t("Attendence")}
                         className={
@@ -543,6 +559,17 @@ const ViewMeetingModal = ({
                         }
                       />
                     )}
+                    {/* {editorRole.role !== "Organizer" && ( */}
+                      <Button
+                        text={t("Attendees")}
+                        className={
+                          attendees === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showAttendees}
+                      />
+                    {/* )} */}
                   </>
                   {/* )} */}
                 </Col>
@@ -560,6 +587,7 @@ const ViewMeetingModal = ({
                   setDataroomMapFolderId={setDataroomMapFolderId}
                 />
               )}
+              {attendees && <Attendees  MeetingID={advanceMeetingModalID}/>}
               {organizers && (
                 <Organizers
                   setmeetingDetails={setmeetingDetails}

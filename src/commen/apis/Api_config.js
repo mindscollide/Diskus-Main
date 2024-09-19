@@ -1755,7 +1755,18 @@ const validateEncryptedStringParticipantProposedRM = {
     "ServiceManager.ValidateEncryptedStringUserMeetingProposeDatesSelection",
 };
 
+const validateEncryptedStringResolutionRelatedEmailDataRM = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringResolutionRelatedEmailData",
+};
+
+const getAllMeetingUsersRSVPDetailsRM = {
+  RequestMethod: "ServiceManager.GetAllMeetingUserRSVPDetails",
+};
+
 export {
+  getAllMeetingUsersRSVPDetailsRM,
+  validateEncryptedStringResolutionRelatedEmailDataRM,
   validateEncryptedStringParticipantProposedRM,
   ValidateEncryptedStringForOTPEmailLinkRM,
   getDashboardMeetingStatsRM,

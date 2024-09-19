@@ -10,7 +10,7 @@ import {
   boardDeckModal,
   boardDeckShareModal,
 } from "../../../store/actions/NewMeetingActions";
-import { Checkbox, Radio } from "antd";
+import { Checkbox, Radio, Tooltip } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 import {
   BoardDeckPDFDownloadApi,
@@ -304,14 +304,22 @@ const BoardDeckModal = ({
                             sm={3}
                             className="d-flex align-items-center"
                           >
-                            <img
-                              src={warningImage}
-                              alt=""
-                              className="cursor-pointer"
-                              title={t(
-                                "Minutes-will-be-available-when-published"
-                              )}
-                            />
+                            <Tooltip
+                              placement="topLeft"
+                              title={
+                                <span className={styles["FontsizeToolTip"]}>
+                                  {t(
+                                    "Minutes-will-be-available-when-published"
+                                  )}
+                                </span>
+                              }
+                            >
+                              <img
+                                src={warningImage}
+                                alt=""
+                                className="cursor-pointer"
+                              />
+                            </Tooltip>
                           </Col>
                           <Col lg={9} md={9} sm={9}>
                             <span

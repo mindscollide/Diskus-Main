@@ -153,6 +153,7 @@ const initialState = {
   boardDeckEmailModal: false,
   getDashboardMeetingData: null,
   validateEncryptedStringParticipantProposed: null,
+  getMeetingUsersRSVP: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1930,6 +1931,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         CurrentMeetingURL: "",
         getallDocumentsForAgendaWiseMinutes: [],
         getUserProposedOrganizerData: [],
+        getMeeingUsersRSVPDetails: null,
       };
     }
 
@@ -2370,6 +2372,28 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         validateEncryptedStringParticipantProposed: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLMEETINGUSERSRSVPDETAILS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETALLMEETINGUSERSRSVPDETAILS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingUsersRSVP: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLMEETINGUSERSRSVPDETAILS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingUsersRSVP: null,
         ResponseMessage: action.message,
       };
     }

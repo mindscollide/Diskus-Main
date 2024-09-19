@@ -57,11 +57,13 @@ body[dir="rtl"] .borderFileName {
   text-overflow: ellipsis;
   overflow: hidden;
   width: 90px;
+  cursor: pointer !important;
   white-space: nowrap;
 }
 .fileNameAttachmentNotOpened {
   font-size: 12px;
   color: #5a5a5c;
+  cursor: pointer !important;
   font-weight: 500;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -78,6 +80,7 @@ body[dir="rtl"] .fileNameAttachment {
   margin-left: 0;
   margin-right: 10px;
   text-overflow: ellipsis;
+  cursor: pointer !important;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -105,4 +108,8 @@ body[dir="rtl"] .fileNameAttachment {
   right: -5px;
   z-index: -1;
   width: 14px;
+}
+
+.TooltipNameClass {
+  font-size: 10px !important;
 }
