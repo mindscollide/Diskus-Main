@@ -399,13 +399,37 @@ const UpdateOrganizersMeeting = (
                         setViewAdvanceMeetingModal
                       )
                     );
-
                     localStorage.removeItem("folderDataRoomMeeting");
                     setEdiorRole({ status: null, role: null });
                     setAdvanceMeetingModalID(null);
                     setViewAdvanceMeetingModal(false);
                     dispatch(viewAdvanceMeetingPublishPageFlag(false));
                     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+                    let currentView =
+                      localStorage.getItem("MeetingCurrentView");
+                    let meetingpageRow =
+                      localStorage.getItem("MeetingPageRows");
+                    let meetingPageCurrent = parseInt(
+                      localStorage.getItem("MeetingPageCurrent")
+                    );
+                    let userID = localStorage.getItem("userID");
+                    let searchData = {
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber:
+                        meetingPageCurrent !== null
+                          ? Number(meetingPageCurrent)
+                          : 1,
+                      Length:
+                        meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                      PublishedMeetings:
+                        currentView && Number(currentView) === 1 ? true : false,
+                    };
+                    await dispatch(
+                      searchNewUserMeeting(navigate, searchData, t)
+                    );
                   } else {
                     let requestDataForMeetingDetails = {
                       MeetingID: Number(Data.MeetingID),

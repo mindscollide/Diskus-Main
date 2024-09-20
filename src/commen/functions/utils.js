@@ -184,6 +184,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       localStorage.setItem("initiateVideoCall", false);
       localStorage.setItem("activeRoomID", 0);
       localStorage.setItem("isMeeting", false);
+      localStorage.setItem("meetingVideoID", 0);
       localStorage.setItem("newCallerID", 0);
       const emptyArray = [];
       localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
@@ -394,7 +395,7 @@ export const xorEncryptDecrypt = (input, key) => {
     out += String.fromCharCode(
       input.charCodeAt(i) ^ key.charCodeAt(i % key.length)
     );
-  } 
+  }
   return out;
 };
 
