@@ -531,11 +531,12 @@ const getAllVoting_Init = () => {
   };
 };
 
-const getAllVoting_Success = (response, message) => {
+const getAllVoting_Success = (response, message, loader = "false") => {
   return {
     type: actions.GET_ALL_VOTING_METHOD_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -547,7 +548,7 @@ const getAllVoting_Fail = (message) => {
 };
 
 // Get All Voting Methods Api
-const getAllVotingMethods = (navigate, t) => {
+const getAllVotingMethods = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllVoting_Init());
@@ -564,7 +565,7 @@ const getAllVotingMethods = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllVotingMethods(navigate, t));
+          dispatch(getAllVotingMethods(navigate, t, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -574,7 +575,8 @@ const getAllVotingMethods = (navigate, t) => {
               dispatch(
                 getAllVoting_Success(
                   response.data.responseResult.resolutionMethod,
-                  ""
+                  "",
+                  loader
                 )
               );
             } else if (
@@ -607,11 +609,16 @@ const getAllResolutionStatus_Init = () => {
   };
 };
 
-const getAllResolutionStatus_Success = (response, message) => {
+const getAllResolutionStatus_Success = (
+  response,
+  message,
+  loader = "false"
+) => {
   return {
     type: actions.GET_ALL_RESOLUTION_STATUS_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -623,7 +630,7 @@ const getAllResolutionStatus_Fail = (message) => {
 };
 
 // Get All Resolution Status Api
-const getAllResolutionStatus = (navigate, t) => {
+const getAllResolutionStatus = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllResolutionStatus_Init());
@@ -640,7 +647,7 @@ const getAllResolutionStatus = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllResolutionStatus(navigate, t));
+          dispatch(getAllResolutionStatus(navigate, t, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -650,7 +657,8 @@ const getAllResolutionStatus = (navigate, t) => {
               dispatch(
                 getAllResolutionStatus_Success(
                   response.data.responseResult.resolutionStatus,
-                  ""
+                  "",
+                  loader
                 )
               );
             } else if (
@@ -2033,7 +2041,6 @@ const getAllGroupsandCommitteesforResolution = (navigate, t) => {
       });
   };
 };
-
 
 export {
   getAllGroupsandCommitteesforResolution,

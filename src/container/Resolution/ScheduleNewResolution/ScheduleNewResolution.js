@@ -13,6 +13,8 @@ import Select from "react-select";
 import styles from "./ScheduleNewResolution.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import featherupload from "../../../assets/images/featherupload.svg";
+import GroupIcon from "../../../assets/images/GroupSetting.svg";
+import committeeicon from "../../../assets/images/committeedropdown.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { Upload } from "antd";
 import {
@@ -37,6 +39,7 @@ import {
   uploadDocumentsResolutionApi,
   saveFilesResolutionApi,
   updateResolution,
+  getAllGroupsandCommitteesforResolution,
 } from "../../../store/actions/Resolution_actions";
 import {
   createConvert,
@@ -66,6 +69,7 @@ const ScheduleNewResolution = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { ResolutionReducer, assignees } = useSelector((state) => state);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
+  console.log(meetingAttendeesList, "meetingAttendeesListmeetingAttendeesList");
   const [isVoter, setVoter] = useState(true);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [votingMethods, setVotingMethods] = useState([]);
@@ -84,6 +88,11 @@ const ScheduleNewResolution = () => {
   const [nonVoter, setNonVoters] = useState([]);
   const [votersForView, setVotersForView] = useState([]);
   const [nonVoterForView, setNonVotersForView] = useState([]);
+  console.log(
+    nonVoterForView,
+    votersForView,
+    "votersForViewvotersForViewvotersForView"
+  );
   const [VoterName, setVoterName] = useState("");
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
@@ -133,7 +142,6 @@ const ScheduleNewResolution = () => {
     timeDecisionforView: timeforViewScheduleResolution(new Date()),
   });
 
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [isNonVoter, setNonVoter] = useState(false);
   const [resolutioncancel, setResolutioncancel] = useState(false);
@@ -159,11 +167,13 @@ const ScheduleNewResolution = () => {
   const [voterInfo, setVoterInfo] = useState({
     value: 0,
     label: "",
+    type: 0,
   });
 
   const [nonVoterInfo, setNonVoterInfo] = useState({
     value: 0,
     label: "",
+    type: 0,
   });
 
   useEffect(() => {
@@ -179,9 +189,9 @@ const ScheduleNewResolution = () => {
   }, [currentLanguage]);
   useEffect(() => {
     // setMinDate(moment(min_date).format("YYYY-MM-DD"));
-    dispatch(getAllVotingMethods(navigate, t));
-    dispatch(getAllResolutionStatus(navigate, t));
-    dispatch(allAssignessList(navigate, t));
+    dispatch(getAllVotingMethods(navigate, t, true));
+    dispatch(getAllResolutionStatus(navigate, t, true));
+    dispatch(getAllGroupsandCommitteesforResolution(navigate, t));
     return;
   }, []);
 
@@ -199,6 +209,7 @@ const ScheduleNewResolution = () => {
       ...nonVoterInfo,
       value: 0,
       label: "",
+      type: 0,
     });
   };
   const ShowNonVoters = () => {
@@ -209,10 +220,12 @@ const ScheduleNewResolution = () => {
       ...voterInfo,
       value: 0,
       label: "",
+      type: 0,
     });
   };
 
   const removeUserForVoter = (id, name) => {
+    console.log(id, name, "removeUserForVoterremoveUserForVoter");
     setVoterModalRemove(true);
     setVoterID(id);
     setVoterName(name);
@@ -226,11 +239,18 @@ const ScheduleNewResolution = () => {
 
   const RemoveVoterInfo = () => {
     setVotersForView((prevVoterState) =>
-      prevVoterState.filter((data, index) => data.pK_UID !== VoterID)
+      prevVoterState.filter((data, index) => data.userID !== VoterID)
     );
     setVoters((prevVoter) =>
       prevVoter.filter((data, index) => data.FK_UID !== VoterID)
     );
+    console.log(
+      VoterID,
+      voters,
+      votersForView,
+      "removeUserForVoterremoveUserForVoter"
+    );
+
     setVoterID(0);
     setVoterName("");
     setVoterModalRemove(false);
@@ -238,7 +258,7 @@ const ScheduleNewResolution = () => {
 
   const removeNonVoterInfo = () => {
     setNonVotersForView((prevNonVoterState) =>
-      prevNonVoterState.filter((data, index) => data.pK_UID !== VoterID)
+      prevNonVoterState.filter((data, index) => data.userID !== VoterID)
     );
     setNonVoters((prevNonVoter) =>
       prevNonVoter.filter((data, index) => data.FK_UID !== VoterID)
@@ -268,131 +288,439 @@ const ScheduleNewResolution = () => {
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
   };
-
   const addVoters = () => {
-    let findVoter = voters.findIndex(
-      (data, index) => data.FK_UID === voterInfo.value
-    );
-    let findisAlreadyExist = nonVoter.findIndex(
-      (data, index) => data.FK_UID === voterInfo.value
-    );
-    if (findisAlreadyExist === -1) {
-      if (findVoter === -1) {
-        if (taskAssignedToInput !== 0) {
-          if (meetingAttendeesList.length > 0) {
-            meetingAttendeesList
-              .filter((data, index) => data.value === voterInfo.value)
-              .map((voeterdata, index) => {
-                voters.push({
-                  FK_UID: voeterdata.value,
-                  FK_VotingStatus_ID: 3,
-                  Notes: "",
-                  Email: voeterdata.emailAddress,
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+
+    let voters_Data = [...voters];
+    let voters_DataView = [...votersForView];
+    if (newOrganizersData !== null) {
+      try {
+        if (voterInfo.type === 1) {
+          let { groups } = newOrganizersData;
+          // find group data against the group ID which is user selected by the user
+          let findGroupData = groups.find(
+            (VoterGroupData) => VoterGroupData.groupID === voterInfo.value
+          );
+          // if group data finds
+          if (findGroupData !== undefined) {
+            // Filter out voters who do not exist in the findGroupData.groupUsers
+            let checkIfExistInNonVoters = findGroupData.groupUsers.filter(
+              (voterData) => {
+                // Check if the user exists in non voters array
+                let userExists = nonVoter.find(
+                  (findData) => findData.FK_UID === voterData.userID
+                );
+                // Return only users who do not exist in voters array
+                return !userExists;
+              }
+            );
+            
+            console.log(
+              checkIfExistInNonVoters,
+              "checkIfExistInNonVoterscheckIfExistInNonVoters"
+            );
+
+            if (checkIfExistInNonVoters.length > 0) {
+              // Filter out voters who do not exist in the findGroupData.groupUsers
+              let checkIfExistInVoters = checkIfExistInNonVoters.filter(
+                (voterData) => {
+                  // Check if the user exists in voters array
+                  let userExists = voters.find(
+                    (findData) => findData.FK_UID === voterData.userID
+                  );
+                  // Return only users who do not exist in voters array
+                  return !userExists;
+                }
+              );
+
+              console.log(
+                checkIfExistInVoters,
+                "checkIfExistInNonVoterscheckIfExistInNonVoters"
+              );
+
+              if (checkIfExistInVoters.length > 0) {
+                checkIfExistInVoters.forEach((userData, index) => {
+                  console.log(userData, "userDatauserDatauserData");
+                  voters_Data.push({
+                    FK_UID: userData.userID,
+                    FK_VotingStatus_ID: 3,
+                    Notes: "",
+                    Email: userData.emailAddress,
+                  });
+                  voters_DataView.push(userData);
                 });
-                votersForView.push(voeterdata);
+              } else {
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("This-voter-already-exist"),
+                });
+              }
+            } else {
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("This-voter-is-already-exist-in-non-voter-list"),
               });
-            setVoters([...voters]);
-            setVotersForView([...votersForView]);
+            }
+          }
+        } else if (voterInfo.type === 2) {
+          let { committees } = newOrganizersData;
+          // find committee data against the committee ID which is user selected by the user
+
+          let findCommitteeData = committees.find(
+            (VoterCommitteeData) =>
+              VoterCommitteeData.committeeID === voterInfo.value
+          );
+          // if committee finds
+          if (findCommitteeData !== undefined) {
+            // Filter out voters who do not exist in the findGroupData.groupUsers
+            let checkIfExistInNonVoters =
+              findCommitteeData.committeeUsers.filter((voterData) => {
+                // Check if the user exists in voters array
+                let userExists = nonVoter.find(
+                  (findData) => findData.FK_UID === voterData.userID
+                );
+                // Return only users who do not exist in voters array
+                return !userExists;
+              });
+
+            if (checkIfExistInNonVoters.length > 0) {
+              // Filter out voters who do not exist in the findGroupData.groupUsers
+              let checkIfExistInVoters = checkIfExistInNonVoters.filter(
+                (voterData) => {
+                  // Check if the user exists in voters array
+                  let userExists = voters.find(
+                    (findData) => findData.FK_UID === voterData.userID
+                  );
+                  // Return only users who do not exist in voters array
+                  return !userExists;
+                }
+              );
+              if (checkIfExistInVoters.length > 0) {
+                checkIfExistInVoters.forEach((userData, index) => {
+                  voters_Data.push({
+                    FK_UID: userData.userID,
+                    FK_VotingStatus_ID: 3,
+                    Notes: "",
+                    Email: userData.emailAddress,
+                  });
+                  voters_DataView.push(userData);
+                });
+              } else {
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("User-already-exist-voter-list"),
+                });
+              }
+            } else {
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("User-already-exist-non-voter-list"),
+              });
+            }
+          }
+        } else if (voterInfo.type === 3) {
+          let { organizationUsers } = newOrganizersData;
+
+          let isAlreadyExistInNonVoters = nonVoter.findIndex(
+            (data, index) => data.FK_UID === voterInfo.value
+          );
+          let isAlreadyExistInVoters = voters.findIndex(
+            (data, index) => data.FK_UID === voterInfo.value
+          );
+
+          if (isAlreadyExistInNonVoters === -1) {
+            if (isAlreadyExistInVoters === -1) {
+              if (organizationUsers.length > 0) {
+                organizationUsers.forEach((voeterdata, index) => {
+                  if (voeterdata.userID === voterInfo.value) {
+                    voters_Data.push({
+                      FK_UID: voeterdata.userID,
+                      FK_VotingStatus_ID: 3,
+                      Notes: "",
+                      Email: voeterdata.emailAddress,
+                    });
+                    voters_DataView.push(voeterdata);
+                  }
+                });
+              }
+            } else {
+              setOpen({
+                flag: true,
+                message: t("This-user-already-exist-in-voter-list"),
+              });
+            }
           } else {
             setOpen({
+              ...open,
               flag: true,
-              message: t("this-voter-already-exist"),
+              message: t("This-voter-is-already-exist-in-non-voter-list"),
             });
           }
         }
-      } else {
-        setOpen({
-          flag: true,
-          message: t("this-Voter-already-exist"),
-        });
+      } catch (error) {
+        console.log(error);
       }
-    } else {
-      setOpen({
-        flag: true,
-        message: t("This-voter-is-already-exist-in-non-voter-list"),
-      });
     }
+    setVoters(voters_Data);
+    setVotersForView(voters_DataView);
     setVoterInfo({
       ...voterInfo,
       value: 0,
       label: "",
+      type: 0,
     });
     setEmailValue("");
   };
 
   const addNonVoter = () => {
-    let findVoter = nonVoter.findIndex(
-      (data, index) => data.FK_UID === nonVoterInfo.value
-    );
-    let findisAlreadyExist = voters.findIndex(
-      (data, index) => data.FK_UID === nonVoterInfo.value
-    );
-    if (findisAlreadyExist === -1) {
-      if (findVoter === -1) {
-        if (taskAssignedToInput !== 0) {
-          if (meetingAttendeesList.length > 0) {
-            meetingAttendeesList
-              .filter((data, index) => data.value === nonVoterInfo.value)
-              .forEach((voeterdata, index) => {
-                nonVoter.push({
-                  FK_UID: voeterdata.value,
-                  FK_VotingStatus_ID: 3,
-                  Notes: "",
-                  Email: voeterdata.emailAddress,
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+
+    let nonVotersData = [...nonVoter];
+    let nonVotersDataView = [...nonVoterForView];
+    if (newOrganizersData !== null) {
+      try {
+        if (nonVoterInfo.type === 1) {
+          let { groups } = newOrganizersData;
+          let findGroupData = groups.find(
+            (nonVoterGroupData) =>
+              nonVoterGroupData.groupID === nonVoterInfo.value
+          );
+
+          if (findGroupData !== undefined) {
+            // Filter out voters who do not exist in the findGroupData.groupUsers
+            let checkIfExistInVoters = findGroupData.groupUsers.filter(
+              (voterData) => {
+                // Check if the user exists in voters array
+                let userExists = voters.find(
+                  (findData) => findData.FK_UID === voterData.userID
+                );
+                // Return only users who do not exist in voters array
+                return !userExists;
+              }
+            );
+            console.log(
+              checkIfExistInVoters,
+              "checkIfExistInVoterscheckIfExistInVoters"
+            );
+            if (checkIfExistInVoters.length > 0) {
+              // Filter out voters who do not exist in the findGroupData.groupUsers
+              let checkIfExistInNonVoters = checkIfExistInVoters.filter(
+                (voterData) => {
+                  // Check if the user exists in voters array
+                  let userExists = nonVoter.find(
+                    (findData) => findData.FK_UID === voterData.userID
+                  );
+                  // Return only users who do not exist in voters array
+                  return !userExists;
+                }
+              );
+              console.log(
+                checkIfExistInNonVoters,
+                "checkIfExistInVoterscheckIfExistInVoters"
+              );
+              if (checkIfExistInNonVoters.length > 0) {
+                checkIfExistInNonVoters.forEach((userData, index) => {
+                  console.log(userData, "userDatauserDatauserData");
+                  nonVotersData.push({
+                    FK_UID: userData.userID,
+                    FK_VotingStatus_ID: 3,
+                    Notes: "",
+                    Email: userData.emailAddress,
+                  });
+                  nonVotersDataView.push(userData);
                 });
-                nonVoterForView.push(voeterdata);
+              } else {
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("This-voter-is-already-exist-in-non-voter-list"),
+                });
+                console.log("user Already Non Voter List");
+              }
+            } else {
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("This-voter-already-exist"),
               });
-            setNonVoters([...nonVoter]);
-            setNonVotersForView([...nonVoterForView]);
+            }
+          }
+        } else if (nonVoterInfo.type === 2) {
+          let { committees } = newOrganizersData;
+          let findCommitteeData = committees.find(
+            (nonVoterCommitteesData) =>
+              nonVoterCommitteesData.committeeID === nonVoterInfo.value
+          );
+
+          if (findCommitteeData !== undefined) {
+            // Filter out voters who do not exist in the findGroupData.groupUsers
+            let checkIfExistInVoters = findCommitteeData.committeeUsers.filter(
+              (voterData) => {
+                // Check if the user exists in voters array
+                let userExists = voters.find(
+                  (findData) => findData.FK_UID === voterData.userID
+                );
+                // Return only users who do not exist in voters array
+                return !userExists;
+              }
+            );
+
+            if (checkIfExistInVoters.length > 0) {
+              // Filter out voters who do not exist in the findGroupData.groupUsers
+              let checkIfExistInNonVoters = checkIfExistInVoters.filter(
+                (voterData) => {
+                  // Check if the user exists in voters array
+                  let userExists = nonVoter.find(
+                    (findData) => findData.FK_UID === voterData.userID
+                  );
+                  // Return only users who do not exist in voters array
+                  return !userExists;
+                }
+              );
+              console.log(checkIfExistInVoters, "Users not in voters list");
+              if (checkIfExistInNonVoters.length > 0) {
+                checkIfExistInNonVoters.forEach((userData, index) => {
+                  console.log(userData, "userDatauserDatauserData");
+                  nonVotersData.push({
+                    FK_UID: userData.userID,
+                    FK_VotingStatus_ID: 3,
+                    Notes: "",
+                    Email: userData.emailAddress,
+                  });
+                  nonVotersDataView.push(userData);
+                });
+              } else {
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("This-voter-is-already-exist-in-non-voter-list"),
+                });
+              }
+            } else {
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("This-voter-already-exist"),
+              });
+            }
+          }
+        } else if (nonVoterInfo.type === 3) {
+          let { organizationUsers } = newOrganizersData;
+
+          let findVoter = nonVoter.findIndex(
+            (data, index) => data.FK_UID === nonVoterInfo.value
+          );
+          let findisAlreadyExist = voters.findIndex(
+            (data, index) => data.FK_UID === nonVoterInfo.value
+          );
+          if (findisAlreadyExist === -1) {
+            if (findVoter === -1) {
+              if (organizationUsers.length > 0) {
+                organizationUsers.forEach((voeterdata, index) => {
+                  if (voeterdata.userID === nonVoterInfo.value) {
+                    nonVotersData.push({
+                      FK_UID: voeterdata.userID,
+                      FK_VotingStatus_ID: 3,
+                      Notes: "",
+                      Email: voeterdata.emailAddress,
+                    });
+                    nonVotersDataView.push(voeterdata);
+                  }
+                });
+              }
+            } else {
+              setOpen({
+                flag: true,
+                message: t("This-voter-is-already-exist-in-non-voter-list"),
+              });
+            }
+          } else {
+            setOpen({
+              flag: true,
+              message: t("This-voter-already-exist"),
+            });
           }
         }
-      } else {
-        setOpen({
-          flag: true,
-          message: t("This-voter-already-exist"),
-        });
+      } catch (error) {
+        console.log(error);
       }
-    } else {
-      setOpen({
-        flag: true,
-        message: t("This-user-already-exist-in-voter-list"),
-      });
     }
+    setNonVoters(nonVotersData);
+    setNonVotersForView(nonVotersDataView);
     setNonVoterInfo({
       ...nonVoterInfo,
       value: 0,
       label: "",
+      type: 0,
     });
     setEmailValue("");
+    console.log(nonVotersData, nonVotersDataView, "addNonVoteraddNonVoter");
   };
 
   const handleChangeVoter = (event) => {
-    console.log(event);
-    if (meetingAttendeesList.length > 0) {
-      let findAttendeeEmail = meetingAttendeesList.find(
-        (data, index) => data.value === event.value
-      );
-      setEmailValue(findAttendeeEmail.emailAddress);
+    console.log(event, "handleChangeVoterhandleChangeVoterhandleChangeVoter");
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    if (newOrganizersData !== null) {
+      if (event.type === 3) {
+        let { organizationUsers } = newOrganizersData;
+        if (organizationUsers?.length > 0) {
+          let findUserData = organizationUsers.find(
+            (userData, index) => userData.userID === event.value
+          );
+          setEmailValue(findUserData.emailAddress);
+          setVoterInfo({
+            ...voterInfo,
+            label: event.label,
+            value: event.value,
+            type: event.type,
+          });
+        }
+      } else if (event.type === 1 || event.type === 2) {
+        // for Groups and Committees
+        setEmailValue("");
+        setVoterInfo({
+          ...voterInfo,
+          label: event.label,
+          value: event.value,
+          type: event.type,
+        });
+      }
     }
-    setVoterInfo({
-      ...voterInfo,
-      label: event.label,
-      value: event.value,
-    });
   };
+
   const handleChangeNonVoter = (event) => {
-    console.log(event);
-    if (meetingAttendeesList.length > 0) {
-      let findAttendeeEmail = meetingAttendeesList.find(
-        (data, index) => data.value === event.value
-      );
-      setEmailValue(findAttendeeEmail.emailAddress);
+    console.log(event, "eventeventeventevent");
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    if (newOrganizersData !== null) {
+      if (event.type === 3) {
+        let { organizationUsers } = newOrganizersData;
+        if (organizationUsers?.length > 0) {
+          let findUserData = organizationUsers.find(
+            (userData, index) => userData.userID === event.value
+          );
+          setEmailValue(findUserData.emailAddress);
+          setNonVoterInfo({
+            ...voterInfo,
+            label: event.label,
+            value: event.value,
+            type: event.type,
+          });
+        }
+      } else if (event.type === 1 || event.type === 2) {
+        // for Groups and Committees
+        setEmailValue("");
+        setNonVoterInfo({
+          ...voterInfo,
+          label: event.label,
+          value: event.value,
+          type: event.type,
+        });
+      }
     }
-    setNonVoterInfo({
-      ...nonVoterInfo,
-      label: event.label,
-      value: event.value,
-    });
   };
 
   const resolutionSaveHandler = async () => {
@@ -712,49 +1040,114 @@ const ScheduleNewResolution = () => {
     }
   };
 
-  // for api reponce of list of all assignees
   useEffect(() => {
-    try {
-      if (Object.keys(assignees.user).length > 0) {
-        let MembersList = [];
-        assignees.user.forEach((userInfo, index) => {
-          MembersList.push({
-            value: userInfo.pK_UID,
-            label: (
-              <>
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    if (newOrganizersData !== null && newOrganizersData !== undefined) {
+      console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
+      let temp = [];
+      if (Object.keys(newOrganizersData).length > 0) {
+        if (Object.keys(newOrganizersData.groups).length > 0) {
+          newOrganizersData.groups.map((a, index) => {
+            let newData = {
+              value: a.groupID,
+              name: a.groupName,
+              label: (
                 <>
                   <Row>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center justify-content-start'>
+                      className='d-flex gap-2 align-items-center'>
                       <img
-                        src={`data:image/jpeg;base64,${userInfo.displayProfilePictureName}`}
+                        src={GroupIcon}
                         height='16.45px'
                         width='18.32px'
                         draggable='false'
-                        className='rounded-circle'
-                        alt=''
                       />
                       <span className={styles["NameDropDown"]}>
-                        {userInfo.name}
+                        {a.groupName}
                       </span>
                     </Col>
                   </Row>
                 </>
-              </>
-            ),
-            emailAddress: userInfo.emailAddress,
-            profilePic: userInfo.displayProfilePictureName,
-            name: userInfo.name,
+              ),
+              type: 1,
+            };
+            temp.push(newData);
           });
-        });
-        console.log(MembersList, "MembersListMembersList");
-        setMeetingAttendeesList(MembersList);
+        }
+        if (Object.keys(newOrganizersData.committees).length > 0) {
+          newOrganizersData.committees.map((a, index) => {
+            let newData = {
+              value: a.committeeID,
+              name: a.committeeName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={committeeicon}
+                        width='21.71px'
+                        height='18.61px'
+                        draggable='false'
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 2,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
+          newOrganizersData.organizationUsers.map((a, index) => {
+            let newData = {
+              value: a.userID,
+              name: a.userName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
+                        alt=''
+                        className={styles["UserProfilepic"]}
+                        width='18px'
+                        height='18px'
+                        draggable='false'
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 3,
+            };
+            temp.push(newData);
+          });
+        }
+        setMeetingAttendeesList(temp);
+      } else {
+        setMeetingAttendeesList([]);
       }
-    } catch (error) {}
-  }, [assignees.user]);
+    }
+  }, [ResolutionReducer.getAllCommitteesAndGroups]);
 
   const documentsUploadCall = async (folderID) => {
     let newFolder = [];
@@ -1616,7 +2009,8 @@ const ScheduleNewResolution = () => {
                                                         data?.emailAddress
                                                       }
                                                       EmployeePic={
-                                                        data?.profilePic
+                                                        data?.profilePicture
+                                                          ?.displayProfilePictureName
                                                       }
                                                       Icon={
                                                         <img
@@ -1626,8 +2020,8 @@ const ScheduleNewResolution = () => {
                                                           alt=''
                                                           onClick={() =>
                                                             removeUserForVoter(
-                                                              data.pK_UID,
-                                                              data.name
+                                                              data.userID,
+                                                              data.userName
                                                             )
                                                           }
                                                           draggable='false'
@@ -1707,36 +2101,34 @@ const ScheduleNewResolution = () => {
                                                 lg={6}
                                                 md={6}
                                                 sm={6}
+                                                key={data.pK_UID}
                                                 // className="mt-2"
                                               >
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <EmployeeinfoCard
-                                                      Employeename={data?.name}
-                                                      Employeeemail={
-                                                        data?.emailAddress
+                                                <EmployeeinfoCard
+                                                  Employeename={data?.name}
+                                                  Employeeemail={
+                                                    data?.emailAddress
+                                                  }
+                                                  EmployeePic={
+                                                    data?.profilePicture
+                                                      ?.displayProfilePictureName
+                                                  }
+                                                  Icon={
+                                                    <img
+                                                      src={CrossIcon}
+                                                      width='18px'
+                                                      height='18px'
+                                                      alt=''
+                                                      onClick={() =>
+                                                        removeUserForNonVoter(
+                                                          data.userID,
+                                                          data.userName
+                                                        )
                                                       }
-                                                      EmployeePic={
-                                                        data?.profilePic
-                                                      }
-                                                      Icon={
-                                                        <img
-                                                          src={CrossIcon}
-                                                          width='18px'
-                                                          height='18px'
-                                                          alt=''
-                                                          onClick={() =>
-                                                            removeUserForNonVoter(
-                                                              data.pK_UID,
-                                                              data.name
-                                                            )
-                                                          }
-                                                          draggable='false'
-                                                        />
-                                                      }
+                                                      draggable='false'
                                                     />
-                                                  </Col>
-                                                </Row>
+                                                  }
+                                                />
                                               </Col>
                                             </>
                                           );
@@ -1767,44 +2159,17 @@ const ScheduleNewResolution = () => {
                                 lg={12}
                                 className={styles["attachments_height"]}>
                                 <Row>
-                                  {/* <Col lg={1} md={1} sm={1} className="mt-4">
-                                    {tasksAttachments.length > 6 ? (
-                                      <>
-                                        <Button
-                                          icon={
-                                            <img
-                                              src={Leftploygon}
-                                              width="20px"
-                                              height="15px"
-                                              alt=""
-                                              draggable="false"
-                                            />
-                                          }
-                                          onClick={SlideLeft}
-                                          className={styles["Leftpolygon"]}
-                                        />
-                                      </>
-                                    ) : null}
-                                  </Col> */}
                                   <Col lg={12} md={12} sm={12}>
                                     <Row>
                                       {tasksAttachments.length > 0
                                         ? tasksAttachments.map(
                                             (data, index) => {
-                                              var ext =
-                                                data?.DisplayAttachmentName?.split(
-                                                  "."
-                                                ).pop();
-                                              const first =
-                                                data?.DisplayAttachmentName?.split(
-                                                  " "
-                                                )[0];
                                               return (
                                                 <Col
                                                   sm={4}
                                                   lg={4}
                                                   md={4}
-                                                  // className="Scroller-x-resolution"
+                                                  key={data}
                                                   id='Slider'>
                                                   <AttachmentViewer
                                                     data={data}
@@ -1825,153 +2190,12 @@ const ScheduleNewResolution = () => {
                                                     id={0}
                                                   />
                                                 </Col>
-
-                                                // <Col
-                                                //   sm={12}
-                                                //   lg={2}
-                                                //   md={2}
-                                                //   className="modaltodolist-attachment-icon"
-                                                // >
-                                                //   {ext === "doc" ? (
-                                                //     <FileIcon
-                                                //       extension={"docx"}
-                                                //       size={78}
-                                                //       type={"document"}
-                                                //       labelColor={
-                                                //         "rgba(44, 88, 152)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "docx" ? (
-                                                //     <FileIcon
-                                                //       extension={"docx"}
-                                                //       size={78}
-                                                //       type={"font"}
-                                                //       labelColor={
-                                                //         "rgba(44, 88, 152)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "xls" ? (
-                                                //     <FileIcon
-                                                //       extension={"xls"}
-                                                //       type={"spreadsheet"}
-                                                //       size={78}
-                                                //       labelColor={
-                                                //         "rgba(16, 121, 63)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "xlsx" ? (
-                                                //     <FileIcon
-                                                //       extension={"xls"}
-                                                //       type={"spreadsheet"}
-                                                //       size={78}
-                                                //       labelColor={
-                                                //         "rgba(16, 121, 63)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "pdf" ? (
-                                                //     <FileIcon
-                                                //       extension={"pdf"}
-                                                //       size={78}
-                                                //       {...defaultStyles.pdf}
-                                                //     />
-                                                //   ) : ext === "png" ? (
-                                                //     <FileIcon
-                                                //       extension={"png"}
-                                                //       size={78}
-                                                //       type={"image"}
-                                                //       labelColor={
-                                                //         "rgba(102, 102, 224)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "txt" ? (
-                                                //     <FileIcon
-                                                //       extension={"txt"}
-                                                //       size={78}
-                                                //       type={"document"}
-                                                //       labelColor={
-                                                //         "rgba(52, 120, 199)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "jpg" ? (
-                                                //     <FileIcon
-                                                //       extension={"jpg"}
-                                                //       size={78}
-                                                //       type={"image"}
-                                                //       labelColor={
-                                                //         "rgba(102, 102, 224)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "jpeg" ? (
-                                                //     <FileIcon
-                                                //       extension={"jpeg"}
-                                                //       size={78}
-                                                //       type={"image"}
-                                                //       labelColor={
-                                                //         "rgba(102, 102, 224)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "gif" ? (
-                                                //     <FileIcon
-                                                //       extension={"gif"}
-                                                //       size={78}
-                                                //       {...defaultStyles.gif}
-                                                //     />
-                                                //   ) : (
-                                                //     <FileIcon
-                                                //       extension={ext}
-                                                //       size={78}
-                                                //       {...defaultStyles.ext}
-                                                //     />
-                                                //   )}
-                                                //   <span className="deleteBtn">
-                                                //     <img
-                                                //       src={
-                                                //         deleteButtonCreateMeeting
-                                                //       }
-                                                //       width={15}
-                                                //       height={15}
-                                                //       onClick={() =>
-                                                //         deleteFilefromAttachments(
-                                                //           data,
-                                                //           index
-                                                //         )
-                                                //       }
-                                                //       draggable="false"
-                                                //     />
-                                                //   </span>
-                                                //   <p
-                                                //     className="modaltodolist-attachment-text"
-                                                //     title={
-                                                //       data.DisplayAttachmentName
-                                                //     }
-                                                //   >
-                                                //     {first}
-                                                //   </p>
-                                                // </Col>
                                               );
                                             }
                                           )
                                         : null}
                                     </Row>
                                   </Col>
-                                  {/* <Col lg={1} md={1} sm={1} className="mt-4">
-                                    {tasksAttachments.length > 6 ? (
-                                      <>
-                                        <Button
-                                          icon={
-                                            <img
-                                              src={Rightploygon}
-                                              width="20px"
-                                              height="15px"
-                                              draggable="false"
-                                            />
-                                          }
-                                          onClick={Slideright}
-                                          className={styles["Leftpolygon"]}
-                                        />
-                                      </>
-                                    ) : null}
-                                  </Col> */}
                                 </Row>
                               </Col>
                             )}
