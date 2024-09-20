@@ -8,6 +8,7 @@
 .RecentActivity_Title {
   font-weight: 700;
   font-size: 20px;
+  padding-left: 10px !important;
   color: #5a5a5a;
 }
 
@@ -25,7 +26,7 @@
 
 .ReviewMinutesClassButton {
   height: 20px !important;
-  width: 117px !important;
+  width: 120px !important;
   border-radius: 4px !important;
   background: #ecefff !important;
   font-size: 8px !important;
@@ -47,4 +48,40 @@
   font-family: "Montserrat" !important;
   color: #6172d6 !important;
   font-weight: 600;
+}
+
+.DescriptionSpan {
+  width: 330px !important;
+  font-size: 10px !important;
+  line-height: 12.19px !important;
+  font-weight: 400 !important;
+  font-family: "Montserrat" !important;
+  color: #949494 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.SectionPendingApprovals {
+  padding: 0px 10px !important;
+}
+
+.DateTimeStyles {
+  display: flex !important;
+  justify-content: end !important;
+  font-size: 8px !important;
+  font-weight: 400 !important;
+  font-family: "Montserrat" !important;
+  color: #9b9b9b !important;
+  margin-top: -5px !important;
+  margin-bottom: 2px !important;
+}
+
+.LineSpan {
+  display: inline-block !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  margin-bottom: 10px !important;
 }

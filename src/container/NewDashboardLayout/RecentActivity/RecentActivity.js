@@ -13,6 +13,8 @@ import { getNotifications } from "../../../store/actions/GetUserNotification";
 import { useTranslation } from "react-i18next";
 import DemoIcon from "../../../assets/images/Recent Activity Icons/Task/Added In Task.png";
 import approvalEmptyState from "../../../assets/images/Approval Empty state.svg";
+import signatureIcon from "../../../assets/images/Signature.svg";
+import ApprovalIcon from "../../../assets/images/Approval.svg";
 
 const RecentActivity = () => {
   const { settingReducer } = useSelector((state) => state);
@@ -88,51 +90,50 @@ const RecentActivity = () => {
             );
             return (
               <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center align-items-center gap-2"
-                  >
+                <section className={styles["SectionPendingApprovals"]}>
+                  <div className="d-flex justify-content-center align-items-center gap-1">
                     {recentActivityData.notificationTypes.pK_NTID === 1 ? (
-                      <img src={DemoIcon} width={45} height={45} />
+                      <img src={ApprovalIcon} width={45} height={45} />
                     ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
-                      <img src={DemoIcon} width={45} height={45} />
-                    ) : recentActivityData.notificationTypes.pK_NTID === 3 ? (
-                      <img src={DemoIcon} width={45} height={45} />
-                    ) : recentActivityData.notificationTypes.pK_NTID === 4 ? (
-                      <img src={DemoIcon} wi />
-                    ) : recentActivityData.notificationTypes.pK_NTID === 5 ? (
-                      <img src={DemoIcon} width={45} height={45} />
-                    ) : recentActivityData.notificationTypes.pK_NTID === 6 ? (
-                      <img src={DemoIcon} width={45} height={45} />
-                    ) : recentActivityData.notificationTypes.pK_NTID === 7 ? (
-                      <img src={DemoIcon} width={45} height={45} />
-                    ) : recentActivityData.notificationTypes.pK_NTID === 8 ? (
-                      <img src={DemoIcon} width={45} height={45} />
-                    ) : recentActivityData.notificationTypes.pK_NTID === 9 ? (
-                      <img src={DemoIcon} width={45} height={45} />
+                      <img src={signatureIcon} width={45} height={45} />
                     ) : (
-                      <img src={DemoIcon} width={45} height={45} />
+                      <img src={signatureIcon} width={45} height={45} />
                     )}
-                    {recentActivityData.notificationTypes.description}
-                    <Button
-                      text={t("Review Minutes")}
-                      className={styles["ReviewMinutesClassButton"]}
-                    />
-                  </Col>
-                </Row>
-                <p className="d-flex justify-content-end">
-                  {
-                    <TimeAgo
-                      datetime={forRecentActivity(
-                        recentActivityData.creationDateTime
-                      )}
-                      locale="en"
-                    />
-                  }
-                </p>
+                    <span className={styles["DescriptionSpan"]}>
+                      industry. Lorem Ipsum has been the industry's standard
+                      dummy text ever since the 1500s, when an unknown printer
+                      took a galley
+                      {/* {recentActivityData.notificationTypes.description} */}
+                    </span>
+                    {recentActivityData.notificationTypes.pK_NTID === 1 ? (
+                      <>
+                        <Button
+                          text={t("Review-minutes")}
+                          className={styles["ReviewMinutesClassButton"]}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          text={t("Review-document")}
+                          className={styles["ReviewMinutesClassButton"]}
+                        />
+                      </>
+                    )}
+                  </div>
+
+                  <span className={styles["DateTimeStyles"]}>
+                    {
+                      <TimeAgo
+                        datetime={forRecentActivity(
+                          recentActivityData.creationDateTime
+                        )}
+                        locale="en"
+                      />
+                    }
+                  </span>
+                  <span className={styles["LineSpan"]}></span>
+                </section>
               </>
             );
           })

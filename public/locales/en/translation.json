@@ -2189,5 +2189,7 @@
   "Attending": "Attending",
   "Maybe": "Maybe",
   "Not-attending": "Not Attending",
-  "Not-responded": "Not Responded"
+  "Not-responded": "Not Responded",
+  "Review-minutes": "Review Minutes",
+  "Review-document": "Review Document"
 }
