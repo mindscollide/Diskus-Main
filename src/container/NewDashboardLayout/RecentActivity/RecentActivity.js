@@ -15,6 +15,11 @@ import DemoIcon from "../../../assets/images/Recent Activity Icons/Task/Added In
 import approvalEmptyState from "../../../assets/images/Approval Empty state.svg";
 import signatureIcon from "../../../assets/images/Signature.svg";
 import ApprovalIcon from "../../../assets/images/Approval.svg";
+import { GetMinutesForReviewerByMeetingId } from "../../../store/actions/Minutes_action";
+import {
+  AllDocumentsForAgendaWiseMinutesApiFunc,
+  DocumentsOfMeetingGenralMinutesApiFunc,
+} from "../../../store/actions/NewMeetingActions";
 
 const RecentActivity = () => {
   const { settingReducer } = useSelector((state) => state);
@@ -23,9 +28,40 @@ const RecentActivity = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  //onClick HandleReview Minutes Button
+
+  const handleReviewMinutesButton = () => {
+    let allAgendaWiseDocs = {
+      MDID: 3741,
+    };
+    let Data = {
+      MeetingID: 3741,
+    };
+    let record = {
+      title: "DashBoard Pending Approvals ",
+      workFlowID: 281,
+      meetingID: 3741,
+      status: "Pending",
+      statusID: 1,
+      requestedBy: "SAIF UL ISLAM ",
+      requestedById: 1351,
+      deadline: "20240920073059",
+      isMinutePublished: false,
+    };
+    dispatch(
+      AllDocumentsForAgendaWiseMinutesApiFunc(navigate, allAgendaWiseDocs, t)
+    );
+
+    dispatch(
+      DocumentsOfMeetingGenralMinutesApiFunc(navigate, allAgendaWiseDocs, t)
+    );
+
+    dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t, true, record));
+  };
   useEffect(() => {
     dispatch(getNotifications(navigate, Number(createrID), t));
   }, []);
+
   useEffect(() => {
     if (Object.keys(settingReducer.RecentActivityData).length > 0) {
       setRecentActivityData(settingReducer.RecentActivityData);
@@ -84,32 +120,26 @@ const RecentActivity = () => {
           />
         ) : recentActivityData !== null && recentActivityData !== undefined ? (
           recentActivityData.map((recentActivityData, index) => {
-            console.log(
-              recentActivityData,
-              "recentActivityDatarecentActivityData"
-            );
             return (
               <>
                 <section className={styles["SectionPendingApprovals"]}>
                   <div className="d-flex justify-content-center align-items-center gap-1">
                     {recentActivityData.notificationTypes.pK_NTID === 1 ? (
-                      <img src={ApprovalIcon} width={45} height={45} />
+                      <img src={ApprovalIcon} width={45} height={45} alt="" />
                     ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
-                      <img src={signatureIcon} width={45} height={45} />
+                      <img src={signatureIcon} width={45} height={45} alt="" />
                     ) : (
-                      <img src={signatureIcon} width={45} height={45} />
+                      <img src={signatureIcon} width={45} height={45} alt="" />
                     )}
                     <span className={styles["DescriptionSpan"]}>
-                      industry. Lorem Ipsum has been the industry's standard
-                      dummy text ever since the 1500s, when an unknown printer
-                      took a galley
-                      {/* {recentActivityData.notificationTypes.description} */}
+                      {recentActivityData.notificationTypes.description}
                     </span>
                     {recentActivityData.notificationTypes.pK_NTID === 1 ? (
                       <>
                         <Button
                           text={t("Review-minutes")}
                           className={styles["ReviewMinutesClassButton"]}
+                          onClick={handleReviewMinutesButton}
                         />
                       </>
                     ) : (

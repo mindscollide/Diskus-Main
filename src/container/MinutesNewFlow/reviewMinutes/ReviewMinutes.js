@@ -414,7 +414,9 @@ const ReviewMinutes = () => {
         DocumentsOfMeetingGenralMinutesApiFunc(navigate, allAgendaWiseDocs, t)
       );
 
-      dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+      dispatch(
+        GetMinutesForReviewerByMeetingId(Data, navigate, t, false, false)
+      );
     } catch {}
   }, []);
 

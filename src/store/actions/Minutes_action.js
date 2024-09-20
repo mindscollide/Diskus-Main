@@ -593,7 +593,13 @@ const getMinutesForReviewerByMeetingId_Fail = (message, response) => {
 };
 
 //GetMinutesForReviewerByMeetingId
-const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
+const GetMinutesForReviewerByMeetingId = (
+  Data,
+  navigate,
+  t,
+  DashBoardFlag,
+  record
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMinutesForReviewerByMeetingId_Init());
@@ -614,7 +620,15 @@ const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+          dispatch(
+            GetMinutesForReviewerByMeetingId(
+              Data,
+              navigate,
+              t,
+              DashBoardFlag,
+              record
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -630,6 +644,12 @@ const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
                   ""
                 )
               );
+              if (DashBoardFlag) {
+                navigate("/DisKus/Minutes");
+                dispatch(reviewMinutesPage(true));
+                dispatch(pendingApprovalPage(false));
+                dispatch(currentMeetingMinutesToReview(record));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

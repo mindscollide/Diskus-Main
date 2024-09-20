@@ -39,7 +39,7 @@
 
 .ReviewMinutesClassButton:is(:hover, :active, :focus, :focus-visible) {
   height: 20px !important;
-  width: 117px !important;
+  width: 120px !important;
   border-radius: 4px !important;
   background: #ecefff !important;
   border: none !important;
