@@ -763,7 +763,6 @@ const ProposedNewMeeting = ({
   };
 
   //handle change Meeting Type Selector
-
   const handleMeetingSelectChange = (selectedOption) => {
     setMeetingTypeDetails({
       ...meetingTypeDetails,
@@ -795,6 +794,16 @@ const ProposedNewMeeting = ({
     ? today
     : firstSelectedDate;
   const maxSelectableDate = firstSelectedDate;
+
+  //Custom Filter for Selector
+
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const handleClickAddParticipants = () => {
     let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
@@ -911,11 +920,6 @@ const ProposedNewMeeting = ({
       });
     }
   };
-  console.log(
-    membersParticipants,
-    "setMembersParticipantssetMembersParticipants"
-  );
-  console.log(participantUsers, "setMembersParticipantssetMembersParticipants");
 
   return (
     <section>
@@ -1000,14 +1004,17 @@ const ProposedNewMeeting = ({
                   <Col lg={10} md={10} sm={10}>
                     <Select
                       placeholder={t("Add-participant")}
+                      classNamePrefix={"selectMember"}
                       isMulti={true}
                       isDisabled={dropdowndata.length === 0 ? true : false}
                       options={dropdowndata}
                       value={participantUsers}
+                      components={animatedComponents}
                       onChange={onChangeSearch}
+                      filterOption={customFilter}
                       closeMenuOnSelect={false}
                       isClearable={true}
-                      isSearchable={false}
+                      isSearchable={true}
                       hideSelectedOptions={true}
                       maxMenuHeight={180}
                     />
