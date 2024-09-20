@@ -6,6 +6,7 @@ import NavigationButtons from "./navigtionbuttons/NavigationButtons";
 import { useNavigate } from "react-router-dom";
 import { Meeting } from "./Meeting/Meeting";
 import Sidebar from "./Sidebar/Sidebar";
+import { Layout } from "antd";
 // import Home from "../home/Home";
 import OnboardDashboard from "./OnboardDashboard/OnboardDashboard";
 import Header2 from "../../../components/layout/header2/Header2";
@@ -13,24 +14,26 @@ import "./../../../steps.css";
 
 const OnBoardRoute = () => {
   const { currentStep } = useTour();
-  const navigate = useNavigate();
+  const { Content, Sider } = Layout;
   return (
-    <Row className="m-0 ">
-      <Col className="m-0 p-0">
-        <Sidebar />
-      </Col>
-      <Col sm={12}>
-        <Header heading="Hello Welcome" user="Tresmark" />
-        {currentStep === 2 ? (
-          <Meeting style="mt-3 bg-white border" pageSize={3} />
-        ) : (
-          <OnboardDashboard />
-        )}
-      </Col>
-      <Col sm={12} lg={1} md={1}>
-        <NavigationButtons />
-      </Col>
-    </Row>
+    <>
+      <Layout >
+        <Layout>
+          <Sider width={"4%"}>
+            <Sidebar />
+          </Sider>
+          <Content style={{ width: "95%" }}>
+            <Header heading='Hello Welcome' user='Tresmark' />
+            {currentStep === 2 ? (
+              <Meeting style='' pageSize={3} />
+            ) : (
+              <OnboardDashboard />
+            )}
+            <NavigationButtons />
+          </Content>
+        </Layout>
+      </Layout>
+    </>
   );
 };
 

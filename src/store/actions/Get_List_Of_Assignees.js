@@ -53,11 +53,12 @@ const allassignesslistinit = () => {
   };
 };
 
-const allassignesslistsuccess = (response, message) => {
+const allassignesslistsuccess = (response, message, loader = "false") => {
   return {
     type: actions.ASSIGNESS_LIST_SUCCESS,
     response: response,
     message: message,
+    loader: loader
   };
 };
 
@@ -73,7 +74,7 @@ const clearResponseMessage = () => {
   };
 };
 
-const allAssignessList = (navigate, t) => {
+const allAssignessList = (navigate, t, loader= "false") => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
@@ -96,7 +97,7 @@ const allAssignessList = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(allAssignessList(navigate, t));
+          dispatch(allAssignessList(navigate, t,loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -109,7 +110,8 @@ const allAssignessList = (navigate, t) => {
               await dispatch(
                 allassignesslistsuccess(
                   response.data.responseResult.user,
-                  ""
+                  "",
+                  loader
                 )
               );
             } else if (
