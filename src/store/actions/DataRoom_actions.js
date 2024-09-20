@@ -431,7 +431,7 @@ const uploadDocumentsApi = (
             // Handle other errors as needed
           }
 
-          dispatch(uploadDocument_fail(t("Something-went-wrong")));
+          // dispatch(uploadDocument_fail(t("Something-went-wrong")));
         });
     };
   }
