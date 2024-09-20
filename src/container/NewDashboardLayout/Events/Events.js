@@ -123,7 +123,8 @@ const Events = () => {
   }, [meetingIdReducer.MeetingStatusSocket]);
 
   const meetingDashboardCalendarEvent = (data) => {
-    let dashboardData = {
+    // Create a shallow copy of the data object to prevent mutation
+    const dashboardData = {
       pK_MDID: data.meetingDetails.pK_MDID,
       pK_CEID: data.meetingEvent.pK_CEID,
       fK_TZID: 0,
@@ -141,8 +142,14 @@ const Events = () => {
       statusID: data.meetingDetails.statusID,
       participantRoleID: data.participantRoleID,
       isQuickMeeting: data.meetingDetails.isQuickMeeting,
+      isPrimaryOrganizer: data.isPrimaryOrganizer,
+      isChat: data.meetingDetails.isChat,
+      isVideoCall: data.meetingDetails.isVideoCall,
+      talkGroupID: data.talkGroupID,
     };
-    dispatch(dashboardCalendarEvent(dashboardData));
+
+    // Dispatch and navigate with no mutation
+    dispatch(dashboardCalendarEvent({ ...dashboardData }));
     navigate("/DisKus/Meeting");
   };
 
