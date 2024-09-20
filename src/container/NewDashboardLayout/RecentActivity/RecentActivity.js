@@ -58,6 +58,18 @@ const RecentActivity = () => {
 
     dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t, true, record));
   };
+
+  const handleReviewDocumentsButton = () => {
+    let reponseData = JSON.stringify(3629);
+
+    window.open(
+      `/#/DisKus/viewSignDocument?documentID=${encodeURIComponent(
+        reponseData
+      )}`,
+      "_blank",
+      "noopener noreferrer"
+    );
+  };
   useEffect(() => {
     dispatch(getNotifications(navigate, Number(createrID), t));
   }, []);
@@ -147,6 +159,7 @@ const RecentActivity = () => {
                         <Button
                           text={t("Review-document")}
                           className={styles["ReviewMinutesClassButton"]}
+                          onClick={handleReviewDocumentsButton}
                         />
                       </>
                     )}
