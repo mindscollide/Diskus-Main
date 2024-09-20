@@ -320,6 +320,7 @@ const Dashboard = () => {
               .toLowerCase()
               .includes("MEETING_STATUS_EDITED_END".toLowerCase())
           ) {
+            let meetingVideoID = Number(localStorage.getItem("meetingVideoID"));
             if (data.viewable) {
               setNotification({
                 ...notification,
@@ -331,6 +332,20 @@ const Dashboard = () => {
                 ),
               });
               setNotificationID(id);
+              if (meetingVideoID === data.payload.meeting.pK_MDID) {
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+                localStorage.setItem("activeCall", false);
+                localStorage.setItem("isMeeting", false);
+                localStorage.setItem("meetingTitle", "");
+                localStorage.setItem("acceptedRecipientID", 0);
+                localStorage.setItem("acceptedRoomID", 0);
+                localStorage.setItem("activeRoomID", 0);
+                localStorage.setItem("meetingVideoID", 0);
+                localStorage.setItem("MicOff", true);
+                localStorage.setItem("VidOff", true);
+              }
             }
             // let Data2 = {
             //   UserID: Number(createrID),
