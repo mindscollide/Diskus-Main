@@ -177,7 +177,7 @@ export const Meeting = ({ style, pageSize, pagination }) => {
 
       render: (text, record) => (
         <i
-          className="meeting-title"
+          className='meeting-title'
           // onClick={(e) => viewModalHandler(record.pK_MDID)}
         >
           {text}
@@ -305,9 +305,8 @@ export const Meeting = ({ style, pageSize, pagination }) => {
         return (
           <Button
             text={t("Start-meeting")}
-            size="small"
-            className={"start-meeting-btn"}
-          >
+            size='small'
+            className={"start-meeting-btn"}>
             {t("Start-meeting")}
           </Button>
         );
@@ -320,8 +319,8 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       width: "4rem",
       render: (text, record) => {
         return (
-          <i className="meeting-editbutton">
-            <img src={EditIcon} alt="" />
+          <i className='meeting-editbutton'>
+            <img src={EditIcon} alt='' />
           </i>
         );
       },
@@ -329,22 +328,20 @@ export const Meeting = ({ style, pageSize, pagination }) => {
   ];
 
   return (
-    <Container className={style}>
-      <Row className="mt-3">
-        <Col className="Meeting-heading-onboard">{t("Meetings")}</Col>
+    <>
+      <Row className='mt-3'>
+        <Col className='Meeting-heading-onboard'>{t("Meetings")}</Col>
       </Row>
-      <Row className="mx-1 onboard-meeting-row">
+      <Row>
         <Col>
           <Table
             column={columns}
-            className="hello"
+            className='hello'
             rows={rowsData}
             pagination={pagination}
           />
         </Col>
       </Row>
-
-      {/* <Header heading="Meetings" button={true} user="Yaqoob" currentUserImage={userImage}  /> */}
-    </Container>
+    </>
   );
 };
