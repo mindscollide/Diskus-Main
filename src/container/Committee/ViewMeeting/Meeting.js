@@ -128,7 +128,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       PublishedMeetings: true,
     };
     dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
-    dispatch(allAssignessList(navigate, t));
   }, []);
 
   const handleChangePagination = (current, pageSize) => {

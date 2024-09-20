@@ -45,7 +45,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.response,
-        Loading: false,
+        Loading: action.loader,
         ResponseMessage: action.message,
       };
     }
@@ -199,7 +199,7 @@ const assigneesReducer = (state = initialState, action) => {
         ...state,
         RemindersData: action.response.meetingReminders,
         ResponseMessage: action.message,
-        // Loading: false,
+        Loading: false,
       };
     }
     case actions.GET_REMINDERS_FAIL: {

@@ -32,3 +32,6 @@
   /* background: #fff !important; */
   border-radius: 4px;
 }
+.start-meeting-btn span {
+  display: block !important;
+}

@@ -165,7 +165,7 @@ const ResolutionReducer = (state = initialState, action) => {
     case actions.GET_ALL_VOTING_METHOD_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         ResponseMessage: action.message,
         GetAllVotingMethods: action.response,
       };
@@ -187,7 +187,7 @@ const ResolutionReducer = (state = initialState, action) => {
     case actions.GET_ALL_RESOLUTION_STATUS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         GetAllResolutionStatus: action.response,
         ResponseMessage: action.message,
       };

@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import { Loader } from "./components/elements";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { MeetingProvider } from "./context/MeetingContext";
 const root = ReactDOM.createRoot(document.getElementById("root")); // Assuming you're using BrowserRouter
 
 // Disable console.* in production
@@ -19,9 +20,11 @@ const root = ReactDOM.createRoot(document.getElementById("root")); // Assuming y
 root.render(
   <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
     <Provider store={store}>
-      <Suspense fallback={<Loader />}>
-        <App />
-      </Suspense>
+      <MeetingProvider>
+        <Suspense fallback={<Loader />}>
+          <App />
+        </Suspense>
+      </MeetingProvider>
     </Provider>
   </GoogleOAuthProvider>
 );

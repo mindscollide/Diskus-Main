@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./meetingTwo.module.css";
 import searchicon from "../../../assets/images/searchicon.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
@@ -118,6 +118,7 @@ import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 import BoardDeckModal from "../../BoardDeck/BoardDeckModal/BoardDeckModal";
 import ShareModalBoarddeck from "../../BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
 import BoardDeckSendEmail from "../../BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
+import { MeetingContext } from "../../../context/MeetingContext";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -125,7 +126,8 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-
+  const { editorRole, setEdiorRole } = useContext(MeetingContext);
+  console.log(editorRole, setEdiorRole, "editorRoleeditorRole");
   const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
     (state) => state
   );
@@ -225,11 +227,11 @@ const NewMeeting = () => {
   const [responseByDate, setResponseByDate] = useState("");
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [radioValue, setRadioValue] = useState(1);
-  const [editorRole, setEdiorRole] = useState({
-    status: null,
-    role: null,
-    isPrimaryOrganizer: false,
-  });
+  // const [editorRole, setEdiorRole] = useState({
+  //   status: null,
+  //   role: null,
+  //   isPrimaryOrganizer: false,
+  // });
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -285,7 +287,6 @@ const NewMeeting = () => {
           PublishedMeetings: MeetingProp !== null ? false : true,
         };
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-        await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
       } else {
@@ -301,7 +302,6 @@ const NewMeeting = () => {
         // localStorage.setItem("MeetingPageRows", 30);
         // localStorage.setItem("MeetingPageCurrent", 1);
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-        await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
       }
@@ -1839,7 +1839,7 @@ const NewMeeting = () => {
     ) {
       try {
         let dashboardEventData = NewMeetingreducer.CalendarDashboardEventData;
-   
+
         let startMeetingRequest = {
           MeetingID: Number(dashboardEventData.pK_MDID),
           StatusID: 10,
