@@ -46,11 +46,6 @@ const App = () => {
     const isAndroid = /android/i.test(userAgent);
     const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
 
-    // Debugging output
-    console.log("User Agent:", userAgent);
-    console.log("Is Android:", isAndroid);
-    console.log("Is iOS:", isIOS);
-
     return isAndroid || isIOS;
   };
 
