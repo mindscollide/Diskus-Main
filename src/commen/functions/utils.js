@@ -184,6 +184,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       localStorage.setItem("initiateVideoCall", false);
       localStorage.setItem("activeRoomID", 0);
       localStorage.setItem("isMeeting", false);
+      localStorage.setItem("meetingVideoID", 0);
       localStorage.setItem("newCallerID", 0);
       const emptyArray = [];
       localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
@@ -389,17 +390,13 @@ export const removeHTMLTagsAndTruncate = (String, maxLength = 500) => {
 
 // XOR Encrypt/Decrypt Function
 export const xorEncryptDecrypt = (input, key) => {
-  try {
-    let out = "";
-    for (let i = 0; i < input.length; i++) {
-      out += String.fromCharCode(
-        input.charCodeAt(i) ^ key.charCodeAt(i % key.length)
-      );
-    }
-    return out;
-  } catch (error) {
-    console.log("ErrorError", error);
+  let out = "";
+  for (let i = 0; i < input.length; i++) {
+    out += String.fromCharCode(
+      input.charCodeAt(i) ^ key.charCodeAt(i % key.length)
+    );
   }
+  return out;
 };
 
 // Encrypt Function

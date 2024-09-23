@@ -133,7 +133,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       PublishedMeetings: true,
     };
     dispatch(getMeetingbyGroupApi(navigate, t, searchData));
-    dispatch(allAssignessList(navigate, t));
   }, []);
 
   const handleChangePagination = (current, pageSize) => {

@@ -1385,6 +1385,7 @@ const FetchMeetingURLApi = (
     // dispatch(showMeetingURLInit());
     dispatch(MeetingUrlSpinner(true));
     let form = new FormData();
+    let videoMeetingID = Data.MeetingID
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", FetchVideoUrl.RequestMethod);
     axios({
@@ -1452,6 +1453,7 @@ const FetchMeetingURLApi = (
               localStorage.setItem("activeRoomID", match[1]);
               localStorage.setItem("acceptedRecipientID", currentUserID);
               localStorage.setItem("isMeetingVideo", true);
+              localStorage.setItem("meetingVideoID", videoMeetingID);
               localStorage.setItem(
                 "meetingTitle",
                 response.data.responseResult.meetingTitle

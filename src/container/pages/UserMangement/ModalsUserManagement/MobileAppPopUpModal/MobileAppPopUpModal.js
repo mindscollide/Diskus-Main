@@ -13,7 +13,7 @@ const MobileAppPopUpModal = () => {
   const { UserManagementModals } = useSelector((state) => state);
 
   const handleOk = () => {
-    const appLink = "com.axiswork.diskus://home";
+    const appLink = "thediskus://thediskus.com";
     // Determine the fallback URL based on the user's device
     const isAndroid = /Android/i.test(navigator.userAgent);
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);

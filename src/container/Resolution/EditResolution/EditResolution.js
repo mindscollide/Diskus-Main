@@ -6,6 +6,8 @@ import styles from "./EditResolution.module.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { useDispatch, useSelector } from "react-redux";
 import featherupload from "../../../assets/images/featherupload.svg";
+import GroupIcon from "../../../assets/images/GroupSetting.svg";
+import committeeicon from "../../../assets/images/committeedropdown.svg";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { Upload } from "antd";
@@ -36,6 +38,7 @@ import {
   updateResolution,
   uploadDocumentsResolutionApi,
   saveFilesResolutionApi,
+  getAllGroupsandCommitteesforResolution,
 } from "../../../store/actions/Resolution_actions";
 import moment from "moment";
 import {
@@ -64,6 +67,7 @@ const EditResolution = ({ setCancelresolution }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { ResolutionReducer, assignees } = useSelector((state) => state);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
+  const [usersList, setUsersList] = useState([])
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const currentDate = new Date();
@@ -95,7 +99,12 @@ const EditResolution = ({ setCancelresolution }) => {
   const [nonVoter, setNonVoters] = useState([]);
   const [votersForView, setVotersForView] = useState([]);
   const [nonVoterForView, setNonVotersForView] = useState([]);
-
+  console.log(
+    nonVoterForView,
+    votersForView,
+    meetingAttendeesList,
+    "votersForViewvotersForViewvotersForView"
+  );
   const [error, setError] = useState(false);
   const [VoterName, setVoterName] = useState("");
   const [VoterID, setVoterID] = useState(0);
@@ -200,6 +209,12 @@ const EditResolution = ({ setCancelresolution }) => {
     ResolutionStatus: "",
   });
 
+  useEffect(() => {
+    dispatch(getAllVotingMethods(navigate, t, true));
+    dispatch(getAllResolutionStatus(navigate, t, true));
+    dispatch(getAllGroupsandCommitteesforResolution(navigate, t));
+  }, []);
+
   const ShowVoter = () => {
     setVoter(true);
     setNonVoter(false);
@@ -237,6 +252,7 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const removeUserForVoter = (id, name) => {
+    console.log(id, name, "removeUserForVoterremoveUserForVoter")
     setVoterModalRemove(true);
     setVoterID(id);
     setVoterName(name);
@@ -250,7 +266,7 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const RemoveVoterInfo = () => {
     setVotersForView((prevVoterState) =>
-      prevVoterState.filter((data, index) => data.pK_UID !== VoterID)
+      prevVoterState.filter((data, index) => data.userID !== VoterID)
     );
     setVoters((prevVoter) =>
       prevVoter.filter((data, index) => data.FK_UID !== VoterID)
@@ -262,7 +278,7 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const removeNonVoterInfo = () => {
     setNonVotersForView((prevNonVoterState) =>
-      prevNonVoterState.filter((data, index) => data.pK_UID !== VoterID)
+      prevNonVoterState.filter((data, index) => data.userID !== VoterID)
     );
     setNonVoters((prevNonVoter) =>
       prevNonVoter.filter((data, index) => data.FK_UID !== VoterID)
@@ -309,127 +325,438 @@ const EditResolution = ({ setCancelresolution }) => {
     "nonVoterInfononVoterInfo"
   );
   const addVoters = () => {
-    let findVoter = voters.findIndex(
-      (data, index) => data.FK_UID === voterInfo.value
-    );
-    let findisAlreadyExist = nonVoter.findIndex(
-      (data, index) => data.FK_UID === voterInfo.value
-    );
-    if (findisAlreadyExist === -1) {
-      if (findVoter === -1) {
-        if (voterInfo.value !== 0) {
-          if (meetingAttendeesList.length > 0) {
-            meetingAttendeesList
-              .filter((data, index) => data.value === voterInfo.value)
-              .map((voeterdata, index) => {
-                voters.push({
-                  FK_UID: voeterdata.value,
-                  FK_VotingStatus_ID: 3,
-                  Notes: "",
-                  Email: voeterdata.emailAddress,
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+
+    let voters_Data = [...voters];
+    let voters_DataView = [...votersForView];
+    if (newOrganizersData !== null) {
+      try {
+        if (voterInfo.type === 1) {
+          let { groups } = newOrganizersData;
+          // find group data against the group ID which is user selected by the user
+          let findGroupData = groups.find(
+            (VoterGroupData) => VoterGroupData.groupID === voterInfo.value
+          );
+          // if group data finds
+          if (findGroupData !== undefined) {
+            // Filter out voters who do not exist in the findGroupData.groupUsers
+            let checkIfExistInNonVoters = findGroupData.groupUsers.filter(
+              (voterData) => {
+                // Check if the user exists in non voters array
+                let userExists = nonVoter.find(
+                  (findData) => findData.FK_UID === voterData.userID
+                );
+                // Return only users who do not exist in voters array
+                return !userExists;
+              }
+            );
+
+            console.log(
+              checkIfExistInNonVoters,
+              "checkIfExistInNonVoterscheckIfExistInNonVoters"
+            );
+
+            if (checkIfExistInNonVoters.length > 0) {
+              // Filter out voters who do not exist in the findGroupData.groupUsers
+              let checkIfExistInVoters = checkIfExistInNonVoters.filter(
+                (voterData) => {
+                  // Check if the user exists in voters array
+                  let userExists = voters.find(
+                    (findData) => findData.FK_UID === voterData.userID
+                  );
+                  // Return only users who do not exist in voters array
+                  return !userExists;
+                }
+              );
+
+              console.log(
+                checkIfExistInVoters,
+                "checkIfExistInNonVoterscheckIfExistInNonVoters"
+              );
+
+              if (checkIfExistInVoters.length > 0) {
+                checkIfExistInVoters.forEach((userData, index) => {
+                  console.log(userData, "userDatauserDatauserData");
+                  voters_Data.push({
+                    FK_UID: userData.userID,
+                    FK_VotingStatus_ID: 3,
+                    Notes: "",
+                    Email: userData.emailAddress,
+                  });
+                  voters_DataView.push(userData);
                 });
-                votersForView.push(voeterdata);
+              } else {
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("This-voter-already-exist"),
+                });
+              }
+            } else {
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("This-voter-is-already-exist-in-non-voter-list"),
               });
-            setVoters([...voters]);
-            setVotersForView([...votersForView]);
+            }
+          }
+        } else if (voterInfo.type === 2) {
+          let { committees } = newOrganizersData;
+          // find committee data against the committee ID which is user selected by the user
+
+          let findCommitteeData = committees.find(
+            (VoterCommitteeData) =>
+              VoterCommitteeData.committeeID === voterInfo.value
+          );
+          // if committee finds
+          if (findCommitteeData !== undefined) {
+            // Filter out voters who do not exist in the findGroupData.groupUsers
+            let checkIfExistInNonVoters =
+              findCommitteeData.committeeUsers.filter((voterData) => {
+                // Check if the user exists in voters array
+                let userExists = nonVoter.find(
+                  (findData) => findData.FK_UID === voterData.userID
+                );
+                // Return only users who do not exist in voters array
+                return !userExists;
+              });
+
+            if (checkIfExistInNonVoters.length > 0) {
+              // Filter out voters who do not exist in the findGroupData.groupUsers
+              let checkIfExistInVoters = checkIfExistInNonVoters.filter(
+                (voterData) => {
+                  // Check if the user exists in voters array
+                  let userExists = voters.find(
+                    (findData) => findData.FK_UID === voterData.userID
+                  );
+                  // Return only users who do not exist in voters array
+                  return !userExists;
+                }
+              );
+              if (checkIfExistInVoters.length > 0) {
+                checkIfExistInVoters.forEach((userData, index) => {
+                  voters_Data.push({
+                    FK_UID: userData.userID,
+                    FK_VotingStatus_ID: 3,
+                    Notes: "",
+                    Email: userData.emailAddress,
+                  });
+                  voters_DataView.push(userData);
+                });
+              } else {
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("User-already-exist-voter-list"),
+                });
+              }
+            } else {
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("User-already-exist-non-voter-list"),
+              });
+            }
+          }
+        } else if (voterInfo.type === 3) {
+          let { organizationUsers } = newOrganizersData;
+
+          let isAlreadyExistInNonVoters = nonVoter.findIndex(
+            (data, index) => data.FK_UID === voterInfo.value
+          );
+          let isAlreadyExistInVoters = voters.findIndex(
+            (data, index) => data.FK_UID === voterInfo.value
+          );
+
+          if (isAlreadyExistInNonVoters === -1) {
+            if (isAlreadyExistInVoters === -1) {
+              if (organizationUsers.length > 0) {
+                organizationUsers.forEach((voeterdata, index) => {
+                  if (voeterdata.userID === voterInfo.value) {
+                    voters_Data.push({
+                      FK_UID: voeterdata.userID,
+                      FK_VotingStatus_ID: 3,
+                      Notes: "",
+                      Email: voeterdata.emailAddress,
+                    });
+                    voters_DataView.push(voeterdata);
+                  }
+                });
+              }
+            } else {
+              setOpen({
+                flag: true,
+                message: t("This-user-already-exist-in-voter-list"),
+              });
+            }
           } else {
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("This-voter-is-already-exist-in-non-voter-list"),
+            });
           }
         }
-      } else {
-        setOpen({
-          flag: true,
-          message: t("This-voter-already-exist"),
-        });
+      } catch (error) {
+        console.log(error);
       }
-    } else {
-      setOpen({
-        flag: true,
-        message: t("This-voter-is-already-exist-in-non-voter-list"),
-      });
     }
+    setVoters(voters_Data);
+    setVotersForView(voters_DataView);
     setVoterInfo({
       ...voterInfo,
       value: 0,
       label: "",
+      type: 0,
     });
-
     setEmailValue("");
   };
 
   const addNonVoter = () => {
-    let findVoter = nonVoter.findIndex(
-      (data, index) => data.FK_UID === nonVoterInfo.value
-    );
-    let findisAlreadyExist = voters.findIndex(
-      (data, index) => data.FK_UID === nonVoterInfo.value
-    );
-    if (findisAlreadyExist === -1) {
-      if (findVoter === -1) {
-        if (nonVoterInfo.value !== 0) {
-          if (meetingAttendeesList.length > 0) {
-            meetingAttendeesList
-              .filter((data, index) => data.value === nonVoterInfo.value)
-              .map((voeterdata, index) => {
-                nonVoter.push({
-                  FK_UID: voeterdata.value,
-                  FK_VotingStatus_ID: 3,
-                  Notes: "",
-                  Email: voeterdata.emailAddress,
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+
+    let nonVotersData = [...nonVoter];
+    let nonVotersDataView = [...nonVoterForView];
+    if (newOrganizersData !== null) {
+      try {
+        if (nonVoterInfo.type === 1) {
+          let { groups } = newOrganizersData;
+          let findGroupData = groups.find(
+            (nonVoterGroupData) =>
+              nonVoterGroupData.groupID === nonVoterInfo.value
+          );
+
+          if (findGroupData !== undefined) {
+            // Filter out voters who do not exist in the findGroupData.groupUsers
+            let checkIfExistInVoters = findGroupData.groupUsers.filter(
+              (voterData) => {
+                // Check if the user exists in voters array
+                let userExists = voters.find(
+                  (findData) => findData.FK_UID === voterData.userID
+                );
+                // Return only users who do not exist in voters array
+                return !userExists;
+              }
+            );
+            console.log(
+              checkIfExistInVoters,
+              "checkIfExistInVoterscheckIfExistInVoters"
+            );
+            if (checkIfExistInVoters.length > 0) {
+              // Filter out voters who do not exist in the findGroupData.groupUsers
+              let checkIfExistInNonVoters = checkIfExistInVoters.filter(
+                (voterData) => {
+                  // Check if the user exists in voters array
+                  let userExists = nonVoter.find(
+                    (findData) => findData.FK_UID === voterData.userID
+                  );
+                  // Return only users who do not exist in voters array
+                  return !userExists;
+                }
+              );
+              console.log(
+                checkIfExistInNonVoters,
+                "checkIfExistInVoterscheckIfExistInVoters"
+              );
+              if (checkIfExistInNonVoters.length > 0) {
+                checkIfExistInNonVoters.forEach((userData, index) => {
+                  console.log(userData, "userDatauserDatauserData");
+                  nonVotersData.push({
+                    FK_UID: userData.userID,
+                    FK_VotingStatus_ID: 3,
+                    Notes: "",
+                    Email: userData.emailAddress,
+                  });
+                  nonVotersDataView.push(userData);
                 });
-                nonVoterForView.push(voeterdata);
+              } else {
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("This-voter-is-already-exist-in-non-voter-list"),
+                });
+                console.log("user Already Non Voter List");
+              }
+            } else {
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("This-voter-already-exist"),
               });
-            setNonVoters([...nonVoter]);
-            setNonVotersForView([...nonVoterForView]);
+            }
+          }
+        } else if (nonVoterInfo.type === 2) {
+          let { committees } = newOrganizersData;
+          let findCommitteeData = committees.find(
+            (nonVoterCommitteesData) =>
+              nonVoterCommitteesData.committeeID === nonVoterInfo.value
+          );
+
+          if (findCommitteeData !== undefined) {
+            // Filter out voters who do not exist in the findGroupData.groupUsers
+            let checkIfExistInVoters = findCommitteeData.committeeUsers.filter(
+              (voterData) => {
+                // Check if the user exists in voters array
+                let userExists = voters.find(
+                  (findData) => findData.FK_UID === voterData.userID
+                );
+                // Return only users who do not exist in voters array
+                return !userExists;
+              }
+            );
+
+            if (checkIfExistInVoters.length > 0) {
+              // Filter out voters who do not exist in the findGroupData.groupUsers
+              let checkIfExistInNonVoters = checkIfExistInVoters.filter(
+                (voterData) => {
+                  // Check if the user exists in voters array
+                  let userExists = nonVoter.find(
+                    (findData) => findData.FK_UID === voterData.userID
+                  );
+                  // Return only users who do not exist in voters array
+                  return !userExists;
+                }
+              );
+              console.log(checkIfExistInVoters, "Users not in voters list");
+              if (checkIfExistInNonVoters.length > 0) {
+                checkIfExistInNonVoters.forEach((userData, index) => {
+                  console.log(userData, "userDatauserDatauserData");
+                  nonVotersData.push({
+                    FK_UID: userData.userID,
+                    FK_VotingStatus_ID: 3,
+                    Notes: "",
+                    Email: userData.emailAddress,
+                  });
+                  nonVotersDataView.push(userData);
+                });
+              } else {
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("This-voter-is-already-exist-in-non-voter-list"),
+                });
+              }
+            } else {
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("This-voter-already-exist"),
+              });
+            }
+          }
+        } else if (nonVoterInfo.type === 3) {
+          let { organizationUsers } = newOrganizersData;
+
+          let findVoter = nonVoter.findIndex(
+            (data, index) => data.FK_UID === nonVoterInfo.value
+          );
+          let findisAlreadyExist = voters.findIndex(
+            (data, index) => data.FK_UID === nonVoterInfo.value
+          );
+          if (findisAlreadyExist === -1) {
+            if (findVoter === -1) {
+              if (organizationUsers.length > 0) {
+                organizationUsers.forEach((voeterdata, index) => {
+                  if (voeterdata.userID === nonVoterInfo.value) {
+                    nonVotersData.push({
+                      FK_UID: voeterdata.userID,
+                      FK_VotingStatus_ID: 3,
+                      Notes: "",
+                      Email: voeterdata.emailAddress,
+                    });
+                    nonVotersDataView.push(voeterdata);
+                  }
+                });
+              }
+            } else {
+              setOpen({
+                flag: true,
+                message: t("This-voter-is-already-exist-in-non-voter-list"),
+              });
+            }
+          } else {
+            setOpen({
+              flag: true,
+              message: t("This-voter-already-exist"),
+            });
           }
         }
-      } else {
-        setOpen({
-          flag: true,
-          message: t("This-voter-already-exist"),
-        });
+      } catch (error) {
+        console.log(error);
       }
-    } else {
-      setOpen({
-        flag: true,
-        message: t("This-user-already-exist-in-voter-list"),
-      });
     }
+    setNonVoters(nonVotersData);
+    setNonVotersForView(nonVotersDataView);
     setNonVoterInfo({
       ...nonVoterInfo,
       value: 0,
       label: "",
+      type: 0,
     });
     setEmailValue("");
+    console.log(nonVotersData, nonVotersDataView, "addNonVoteraddNonVoter");
   };
-
   const handleChangeVoter = (event) => {
-    console.log(event);
-    if (meetingAttendeesList.length > 0) {
-      let findAttendeeEmail = meetingAttendeesList.find(
-        (data, index) => data.value === event.value
-      );
-      setEmailValue(findAttendeeEmail.emailAddress);
+    console.log(event, "handleChangeVoterhandleChangeVoterhandleChangeVoter");
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    if (newOrganizersData !== null) {
+      if (event.type === 3) {
+        let { organizationUsers } = newOrganizersData;
+        if (organizationUsers?.length > 0) {
+          let findUserData = organizationUsers.find(
+            (userData, index) => userData.userID === event.value
+          );
+          setEmailValue(findUserData.emailAddress);
+          setVoterInfo({
+            ...voterInfo,
+            label: event.label,
+            value: event.value,
+            type: event.type,
+          });
+        }
+      } else if (event.type === 1 || event.type === 2) {
+        // for Groups and Committees
+        setEmailValue("");
+        setVoterInfo({
+          ...voterInfo,
+          label: event.label,
+          value: event.value,
+          type: event.type,
+        });
+      }
     }
-    setVoterInfo({
-      ...voterInfo,
-      label: event.label,
-      value: event.value,
-    });
   };
   const handleChangeNonVoter = (event) => {
-    console.log(event);
-    if (meetingAttendeesList.length > 0) {
-      let findAttendeeEmail = meetingAttendeesList.find(
-        (data, index) => data.value === event.value
-      );
-      setEmailValue(findAttendeeEmail.emailAddress);
+    console.log(event, "eventeventeventevent");
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    if (newOrganizersData !== null) {
+      if (event.type === 3) {
+        let { organizationUsers } = newOrganizersData;
+        if (organizationUsers?.length > 0) {
+          let findUserData = organizationUsers.find(
+            (userData, index) => userData.userID === event.value
+          );
+          setEmailValue(findUserData.emailAddress);
+          setNonVoterInfo({
+            ...voterInfo,
+            label: event.label,
+            value: event.value,
+            type: event.type,
+          });
+        }
+      } else if (event.type === 1 || event.type === 2) {
+        // for Groups and Committees
+        setEmailValue("");
+        setNonVoterInfo({
+          ...voterInfo,
+          label: event.label,
+          value: event.value,
+          type: event.type,
+        });
+      }
     }
-    setNonVoterInfo({
-      ...nonVoterInfo,
-      label: event.label,
-      value: event.value,
-    });
   };
+
   console.log(
     { votersForView, nonVoterForView },
     "nonVoterForViewnonVoterForView"
@@ -919,47 +1246,118 @@ const EditResolution = ({ setCancelresolution }) => {
   };
   // for api reponce of list of all assignees
   useEffect(() => {
-    try {
-      if (Object.keys(assignees.user).length > 0) {
-        let MembersList = [];
-        assignees.user.forEach((userInfo, index) => {
-          MembersList.push({
-            value: userInfo.pK_UID,
-            label: (
-              <>
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    if (newOrganizersData !== null && newOrganizersData !== undefined) {
+      console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
+      let temp = [];
+      let usersData = []
+      if (Object.keys(newOrganizersData).length > 0) {
+        if (Object.keys(newOrganizersData.groups).length > 0) {
+          newOrganizersData.groups.map((a, index) => {
+            let newData = {
+              value: a.groupID,
+              name: a.groupName,
+              label: (
                 <>
                   <Row>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center justify-content-start'>
+                      className='d-flex gap-2 align-items-center'>
                       <img
-                        src={`data:image/jpeg;base64,${userInfo.displayProfilePictureName}`}
+                        src={GroupIcon}
                         height='16.45px'
                         width='18.32px'
                         draggable='false'
-                        className='rounded-circle'
-                        alt=''
                       />
                       <span className={styles["NameDropDown"]}>
-                        {userInfo.name}
+                        {a.groupName}
                       </span>
                     </Col>
                   </Row>
                 </>
-              </>
-            ),
-            emailAddress: userInfo.emailAddress,
-            profilePic: userInfo.displayProfilePictureName,
-            name: userInfo.name,
+              ),
+              type: 1,
+            };
+            temp.push(newData);
           });
-        });
-        console.log(MembersList, "MembersListMembersList");
-        setMeetingAttendeesList(MembersList);
+        }
+        if (Object.keys(newOrganizersData.committees).length > 0) {
+          newOrganizersData.committees.map((a, index) => {
+            let newData = {
+              value: a.committeeID,
+              name: a.committeeName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={committeeicon}
+                        width='21.71px'
+                        height='18.61px'
+                        draggable='false'
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 2,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
+          newOrganizersData.organizationUsers.map((a, index) => {
+            let newData = {
+              value: a.userID,
+              name: a.userName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
+                        alt=''
+                        className={styles["UserProfilepic"]}
+                        width='18px'
+                        height='18px'
+                        draggable='false'
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 3,
+            };
+            usersData.push(a)
+            temp.push(newData);
+          });
+        }
+        setMeetingAttendeesList(temp);
+        setUsersList(usersData)
+      } else {
+        setMeetingAttendeesList([]);
+        setUsersList([])
+
       }
-    } catch (error) {}
-  }, [assignees.user]);
+    }
+  }, [ResolutionReducer.getAllCommitteesAndGroups]);
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
@@ -975,9 +1373,7 @@ const EditResolution = ({ setCancelresolution }) => {
   }, [ResolutionReducer.GetAllVotingMethods]);
 
   useEffect(() => {
-    if (
-      ResolutionReducer.ResponseMessage !== "" 
-    ) {
+    if (ResolutionReducer.ResponseMessage !== "") {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -992,11 +1388,6 @@ const EditResolution = ({ setCancelresolution }) => {
     }
   }, [ResolutionReducer.ResponseMessage]);
 
-  useEffect(() => {
-    dispatch(getAllVotingMethods(navigate, t));
-    dispatch(getAllResolutionStatus(navigate, t));
-    dispatch(allAssignessList(navigate, t));
-  }, []);
   console.log(meetingAttendeesList, "meetingAttendeesListmeetingAttendeesList");
   useEffect(() => {
     try {
@@ -1098,19 +1489,19 @@ const EditResolution = ({ setCancelresolution }) => {
         }
         if (
           votersResolutionMembers.length > 0 &&
-          Object.keys(meetingAttendeesList).length > 0
+          Object.keys(usersList).length > 0
         ) {
           let vTrs = [];
           let vTrsVie = [];
           votersResolutionMembers.forEach((voterMember, index) => {
-            meetingAttendeesList
+            usersList
               .filter(
                 (assigneeData, index) =>
-                  assigneeData.value === voterMember.fK_UID
+                  assigneeData.userID === voterMember.fK_UID
               )
               .forEach((data, index) => {
                 vTrs.push({
-                  FK_UID: data.value,
+                  FK_UID: data.userID,
                   FK_VotingStatus_ID: 3,
                   Notes: "",
                   Email: data.emailAddress,
@@ -1128,14 +1519,14 @@ const EditResolution = ({ setCancelresolution }) => {
 
           // if (nonVoterForView.length === 0 && nonVoter.length === 0) {
           nonVotersResolutionMembers.map((voterMember, index) => {
-            meetingAttendeesList
+            usersList
               .filter(
                 (assigneeData, index) =>
-                  assigneeData.value === voterMember.fK_UID
+                  assigneeData.userID === voterMember.fK_UID
               )
               .forEach((data, index) => {
                 nVtr.push({
-                  FK_UID: data.value,
+                  FK_UID: data.userID,
                   FK_VotingStatus_ID: 3,
                   Notes: "",
                   Email: data.emailAddress,
@@ -1957,7 +2348,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                 data?.emailAddress
                                                               }
                                                               EmployeePic={
-                                                                data?.profilePic
+                                                                data?.profilePicture?.displayProfilePictureName
                                                               }
                                                               Icon={
                                                                 <img
@@ -1969,8 +2360,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                   height='18px'
                                                                   onClick={() =>
                                                                     removeUserForVoter(
-                                                                      data.pK_UID,
-                                                                      data.name
+                                                                      data.userID,
+                                                                      data.userName
                                                                     )
                                                                   }
                                                                   draggable='false'
@@ -2070,7 +2461,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                 data?.emailAddress
                                                               }
                                                               EmployeePic={
-                                                                data?.profilePic
+                                                                data?.profilePicture?.displayProfilePictureName
                                                               }
                                                               Icon={
                                                                 <img
@@ -2082,8 +2473,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                   height='18px'
                                                                   onClick={() =>
                                                                     removeUserForNonVoter(
-                                                                      data.pK_UID,
-                                                                      data.name
+                                                                      data.userID,
+                                                                      data.userName
                                                                     )
                                                                   }
                                                                   draggable='false'
