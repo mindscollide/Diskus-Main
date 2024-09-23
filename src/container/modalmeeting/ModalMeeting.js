@@ -127,7 +127,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [defaultPresenter, setDefaultPresenter] = useState(null);
 
   const [attendeesParticipant, setAttendeesParticipant] = useState([]);
-
+  console.log(attendeesParticipant, "attendeesParticipantattendeesParticipant");
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("Participant");
   const [participantRoleID, setParticipantRoleID] = useState(2);
@@ -282,7 +282,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
       setIsAgenda(false);
       setIsAttendees(false);
-      setIsPublishMeeting(false);
+      setIsPublishMeeting(true);
     } else if (createMeeting.MeetingAgendas.length > 0) {
       setModalField(false);
       setIsDetails(false);
@@ -292,18 +292,34 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
       setIsPublishMeeting(false);
     } else if (createMeeting.MeetingAgendas.length === 0) {
-      setModalField(true);
-      setIsAgenda(true);
-      setCurrentStep(2);
+      // If Title is empty, create a numbered title and append the object
+      const newObjMeetingAgenda = {
+        ...objMeetingAgenda,
+        Title: t("No-agenda-available"),
+      };
 
-      setIsAttendees(false);
+      let previousAdendas = [...createMeeting.MeetingAgendas];
+      let newData = {
+        ObjMeetingAgenda: newObjMeetingAgenda,
+        MeetingAgendaAttachments: [],
+      };
+      previousAdendas.push(newData);
+      setCreateMeeting({
+        ...createMeeting,
+        MeetingAgendas: previousAdendas,
+      });
+      setModalField(true);
+      setIsAgenda(false);
+      setCurrentStep(3);
+
+      setIsAttendees(true);
       setIsDetails(false);
       setIsPublishMeeting(false);
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Please-atleast-add-one-agenda"),
-      });
+      // setOpen({
+      //   ...open,
+      //   flag: true,
+      //   message: t("Please-atleast-add-one-agenda"),
+      // });
     } else {
     }
   };
@@ -1192,6 +1208,32 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           usersList.forEach((user, index) => {
             console.log(user, "useruser");
 
+            PresenterData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{user.name}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: user?.pK_UID,
+              name: user?.name,
+            });
+
             if (Number(user.pK_UID) === Number(createrID)) {
               setDefaultPresenter({
                 label: (
@@ -1276,6 +1318,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             ...createMeeting,
             MeetingAttendees: [userData],
           });
+          if (checkFlag !== 6 && checkFlag !== 7) {
+            setAttendeesParticipant(PresenterData);
+          }
           setAddedParticipantNameList(newMemberData);
         } catch (error) {
           console.log(error);
@@ -1284,7 +1329,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [assignees.user]);
+  }, [assignees.user, checkFlag]);
   console.log(assignees, "assigneesassigneesassignees");
 
   const handleChangeAttenddes = (attendeeData) => {
@@ -1336,6 +1381,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               name: committeesMember?.userName,
             });
           });
+          setAttendeesParticipant(membersData);
         }
       } else if (Number(checkFlag) === 7) {
         // Group Members
@@ -1373,46 +1419,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               name: groupMemberData?.userName,
             });
           });
+          setAttendeesParticipant(membersData);
         }
         // Group MembersData
-      } else {
-        let allAssignees = assignees.user;
-        if (
-          allAssignees !== undefined &&
-          allAssignees !== null &&
-          allAssignees.length !== 0
-        ) {
-          allAssignees.forEach((assigneeMember, index) => {
-            membersData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${assigneeMember?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span>{assigneeMember.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: assigneeMember?.pK_UID,
-              name: assigneeMember?.name,
-            });
-          });
-        }
-        // meeting Members
       }
-      setAttendeesParticipant(membersData);
+      // setAttendeesParticipant(membersData);
     } catch {}
   }, [checkFlag]);
 
@@ -1756,67 +1767,37 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             <>
               {closeConfirmationModal === true ? null : (
                 <Row>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "p-0 margin-left-10"
-                    }
-                  >
+                  <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
                     <Button
                       className={
                         isDetails
-                          ? "btn btn-primary isDetail-Schedule-top-btn"
-                          : "btn btn-outline-primary isDetail-Schedule-top-btn-Outline"
+                          ? "isDetail-Schedule-top-btn_active"
+                          : "isDetail-Schedule-top-btn-NonActive"
                       }
-                      variant={"Primary"}
                       text={t("Details")}
                       onClick={changeSelectDetails}
                     />
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className="agenda-upper-button"
-                  >
                     <Button
                       className={
                         isAgenda
-                          ? "btn btn-primary isAgenda-Schedule-top-btn"
-                          : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
+                          ? "isAgenda-Schedule-top-btn_active"
+                          : "isAgenda-Schedule-top-btn-NonActive"
                       }
-                      variant={"Primary"}
                       text={t("Agenda")}
                       onClick={changeSelectAgenda}
                       datatut="show-agenda"
                     />
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className="attendees-upper-button"
-                  >
                     <Button
                       className={
                         isAttendees
-                          ? "btn btn-primary isAttendee-Schedule-top-btn"
-                          : "btn btn-outline-primary isAttendee-Schedule-top-btn-Outline"
+                          ? "isAttendee-Schedule-top-btn_active"
+                          : "isAttendee-Schedule-top-btn-NonActive"
                       }
-                      variant={"Primary"}
                       text={t("Attendees")}
                       datatut="show-meeting-attendees"
                       onClick={changeSelectAttendees}
-                    ></Button>
+                    />
                   </Col>
-                  <Col lg={6} md={6} sm={3} xs={12} className="p-0"></Col>
                 </Row>
               )}
 
@@ -2348,7 +2329,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       />
                     </Col>
                   </Row>
-                  <div className="participant-scroll-creatingmeeting">
+                  <section className="participant-scroll-creatingmeeting">
                     <Row>
                       <Col
                         lg={12}
@@ -2359,8 +2340,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       >
                         <label className="">{t("Organizer")}</label>
                       </Col>
-                    </Row>
-                    <Row>
                       <Col lg={12} md={12} sm={12} xs={12}>
                         {addedParticipantNameList ? (
                           <>
@@ -2399,9 +2378,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           </>
                         ) : null}
                       </Col>
-                    </Row>
-
-                    <Row>
                       <Col
                         lg={12}
                         md={12}
@@ -2411,8 +2387,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       >
                         <label className="">{t("Participants")}</label>
                       </Col>
-                    </Row>
-                    <Row>
                       <Col lg={12} md={12} sm={12} xs={12}>
                         {addedParticipantNameList ? (
                           <>
@@ -2441,7 +2415,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         ) : null}
                       </Col>
                     </Row>
-                  </div>
+                  </section>
                 </>
               ) : closeConfirmationModal ? (
                 <>
@@ -2468,11 +2442,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className={
-                        currentLanguage === "ar"
-                          ? "d-flex justify-content-end mt-4 p-0"
-                          : "d-flex justify-content-end mt-5 p-0"
-                      }
+                      className="d-flex justify-content-end"
                     >
                       <Button
                         onClick={navigateToAgenda}
@@ -2486,15 +2456,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                 </>
               ) : isAgenda ? (
                 <>
-                  <Row className="display-contents ">
+                  <Row>
                     <Col
-                      lg={6}
-                      md={6}
+                      lg={12}
+                      md={12}
                       sm={12}
                       xs={12}
-                      className={
-                        currentLanguage === "ar" ? "mt-4 p-0" : "mt-5 p-0"
-                      }
+                      className="d-flex justify-content-between"
                     >
                       <Button
                         onClick={addAnOtherAgenda}
@@ -2509,18 +2477,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                             : `${"+"}  ${t("Add-agenda")}`
                         }
                       />
-                    </Col>
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={12}
-                      xs={12}
-                      className={
-                        currentLanguage === "ar"
-                          ? "d-flex justify-content-end mt-4 p-0"
-                          : "d-flex justify-content-end mt-5 p-0"
-                      }
-                    >
                       <Button
                         onClick={navigateToAttendees}
                         className={
@@ -2539,11 +2495,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className={
-                        currentLanguage === "ar"
-                          ? "d-flex justify-content-end mt-4 p-0"
-                          : "d-flex justify-content-end mt-5 p-0"
-                      }
+                      sm={12}
+                      className="d-flex justify-content-end"
                     >
                       <Button
                         className={
