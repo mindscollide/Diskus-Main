@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./ModalMeeting.css";
-import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import {
   convertDateTimeObject,
   createConvert,
   RemoveTimeDashes,
-  resolutionResultTable,
 } from "../../commen/functions/date_formater";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -25,7 +22,6 @@ import {
   Accordian,
   EmployeeCard,
   Notification,
-  InputSearchFilter,
   AttachmentViewer,
 } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
