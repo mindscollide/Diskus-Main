@@ -108,7 +108,12 @@ const GuestVideoHeader = () => {
             </div>
             <div className="Guest-Icons-state">
               {isParticipant ? (
-                <img src={ParticipantSelected} onClick={openParticipant} />
+                <>
+                  <img src={ParticipantSelected} onClick={openParticipant} />
+                  <div className="Additional-Content">
+                    {/* Your additional div content here */}
+                  </div>
+                </>
               ) : (
                 <img src={Participant} onClick={openParticipant} />
               )}
