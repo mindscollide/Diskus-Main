@@ -3,3 +3,20 @@
   font-weight: 600;
   color: #6172d6;
 }
+
+.class-Mic-Active {
+  border: 1px solid #e1e1e1;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  color: white !important;
+  background-color: #6172d6 !important;
+}
+
+.Guest-Icons-state {
+  height: 36px;
+  width: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
