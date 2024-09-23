@@ -1090,12 +1090,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
     }
   };
+
   const callApi = async () => {
-    if (checkFlag !== 6 && checkFlag !== 7) {
-      await dispatch(allAssignessList(navigate, t, true));
-    }
+    await dispatch(allAssignessList(navigate, t, true));
     dispatch(GetAllReminders(navigate, t));
   };
+
   useEffect(() => {
     callApi();
     return () => {
@@ -1161,6 +1161,30 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
           usersList.forEach((user, index) => {
             console.log(user, "useruser");
+            PresenterData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{user.name}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: user?.pK_UID,
+              name: user?.name,
+            });
 
             if (Number(user.pK_UID) === Number(createrID)) {
               setDefaultPresenter({
@@ -1244,6 +1268,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             ...createMeeting,
             MeetingAttendees: [userData],
           });
+          if (checkFlag !== 6 && checkFlag !== 7) {
+            setAttendeesParticipant(PresenterData);
+          }
           setAddedParticipantNameList(newMemberData);
         } catch (error) {
           console.log(error);
@@ -1340,46 +1367,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             });
           });
         }
-        // Group MembersData
-      } else {
-        let allAssignees = assignees.user;
-        if (
-          allAssignees !== undefined &&
-          allAssignees !== null &&
-          allAssignees.length !== 0
-        ) {
-          allAssignees.forEach((assigneeMember, index) => {
-            membersData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${assigneeMember?.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{assigneeMember.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: assigneeMember?.pK_UID,
-              name: assigneeMember?.name,
-            });
-          });
-        }
-        // meeting Members
       }
       setAttendeesParticipant(membersData);
     } catch {}
-  }, [checkFlag]);
+  }, [
+    checkFlag,
+    CommitteeReducer?.getCommitteeByCommitteeID,
+    GroupsReducer?.getGroupByGroupIdResponse,
+  ]);
 
   // for add Attendees handler
   const addAttendees = () => {
