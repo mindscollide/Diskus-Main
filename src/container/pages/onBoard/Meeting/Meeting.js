@@ -17,6 +17,7 @@ import { Button, Table } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { FaSort } from "react-icons/fa";
 import "../Meeting/Onboard-meeting.css";
+import CustomButton from "../../../../components/elements/button/Button";
 
 export const Meeting = ({ style, pageSize, pagination }) => {
   //For Localization
@@ -303,12 +304,10 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       width: "10rem",
       render: (text, record) => {
         return (
-          <Button
-            text={t("Start-meeting")}
-            size='small'
-            className={"start-meeting-btn"}>
-            {t("Start-meeting")}
-          </Button>
+          <CustomButton
+            buttonValue={t("Start-meeting")}
+            className={"start-meeting-btn"}
+          />
         );
       },
     },
