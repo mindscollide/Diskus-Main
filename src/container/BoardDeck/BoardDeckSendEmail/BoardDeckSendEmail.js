@@ -20,7 +20,6 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { validateInput } from "../../../commen/functions/regex";
-import blueCrossIcon from "../../../assets/images/BlueCross.png";
 import { Checkbox } from "antd";
 import { BoardDeckSendEmailApi } from "../../../store/actions/UserManagementActions";
 import { GetAllCommitteesUsersandGroups } from "../../../store/actions/MeetingOrganizers_action";
@@ -97,11 +96,12 @@ const BoardDeckSendEmail = ({
     });
   };
 
-  const customFilter = (option, searchText) => {
-    if (searchText) {
-      return option.label.toLowerCase().includes(searchText.toLowerCase());
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
     }
-    return true;
   };
 
   //Handling removing Email Tags
