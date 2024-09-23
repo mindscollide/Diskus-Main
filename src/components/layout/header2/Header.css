@@ -681,3 +681,8 @@ body[dir="rtl"] .UpgradeButtonsClass {
 .InnerText {
   color: #f16b6b !important;
 }
+.New_folder_shortcutkeys {
+  font-size: 12px !important;
+  font-weight: 600;
+  color: #5a5a5a;
+}

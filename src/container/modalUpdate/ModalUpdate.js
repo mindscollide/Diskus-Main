@@ -2298,17 +2298,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           className={closeConfirmationModal ? null : "meeting_update"}
           ButtonTitle={ModalTitle}
           // modalBodyClassName="modalMeetingUpdateBody"
-          modalFooterClassName={
-            isDetails
-              ? "d-flex "
-              : isAgenda
-              ? "d-block "
-              : isCancelMeetingModal
-              ? "d-block"
-              : closeConfirmationModal
-              ? "d-block"
-              : ""
-          }
+          modalFooterClassName={"d-block"}
           modalHeaderClassName={"d-none"}
           size={
             isPublishMeeting || isCancelMeetingModal || closeConfirmationModal
@@ -2321,7 +2311,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               isCancelMeetingModal === false &&
               closeConfirmationModal === false ? (
                 <Row>
-                  <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-4'>
+                  <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-2'>
                     <Button
                       className={
                         isDetails
@@ -3200,28 +3190,20 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className='d-flex justify-content-end'>
+                        className='d-flex justify-content-end gap-2'>
                         <Button
-                          className={
-                            " btn btn-primary update-modal-discard-btn" +
-                            " " +
-                            currentLanguage
-                          }
+                          className={"UpdateMeeting_discardChangesBtn"}
                           text={t("Discard-changes")}
                           onClick={discardMeeting}
                         />
                         <Button
                           disableBtn={endMeetingStatus}
-                          className={
-                            " btn btn-primary cancel-meeting-btn" +
-                            " " +
-                            currentLanguage
-                          }
+                          className={"UpdateMeeting_cancelMeetingBtn"}
                           text={t("Cancel-meeting")}
                           onClick={cancelMeetingConfirmation}
                         />
                         <Button
-                          className={" btn btn-primary publish-meeting-btn"}
+                          className={"UpdateMeeting_publishMeetingBtn"}
                           text={t("Publish")}
                           onClick={handleSubmit}
                         />
@@ -3251,32 +3233,20 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className='d-flex justify-content-end align-items-center'>
+                        className='d-flex justify-content-end gap-2 align-items-center'>
                         <Button
-                          className={
-                            " btn btn-primary isminutes-discard-btn" +
-                            " " +
-                            currentLanguage
-                          }
+                          className={"UpdateMeeting_discardChangesBtn"}
                           text={t("Discard-changes")}
                           onClick={discardMeeting}
                         />
                         <Button
                           disableBtn={endMeetingStatus}
-                          className={
-                            " btn btn-primary isminutes-cancel-btn" +
-                            " " +
-                            currentLanguage
-                          }
+                          className={"UpdateMeeting_cancelMeetingBtn"}
                           text={t("Cancel-meeting")}
                           onClick={cancelMeetingConfirmation}
                         />
                         <Button
-                          className={
-                            " btn btn-primary ismeeting-finish-btn" +
-                            " " +
-                            currentLanguage
-                          }
+                          className={"UpdateMeeting_publishMeetingBtn"}
                           text={t("Publish")}
                           onClick={navigateToPublish}
                         />
