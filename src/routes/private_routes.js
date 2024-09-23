@@ -142,8 +142,10 @@ const PrivateRoutes = () => {
     }
 
     // Action: Resolution Reminder
-    if (currentUrl.includes("DisKus/reminder?Resolutionreminder_action=")) {
+    if (currentUrl.includes("DisKus/resolution?Resolutionreminder_action=")) {
       // Add action-specific logic here if needed
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("resVot", parts);
     }
 
     if (currentUrl.includes("DisKus/resolution?ResolutionVoter_action=")) {
