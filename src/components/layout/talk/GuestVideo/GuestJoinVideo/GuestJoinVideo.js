@@ -22,6 +22,9 @@ const GuestJoinVideo = () => {
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
 
+  // another red div
+  const [isBigScreen, setIsBigScreen] = useState(false);
+
   const handleToggleWebCam = () => {
     if (!isWebCamEnabled) {
       // Enable webcam
@@ -70,6 +73,44 @@ const GuestJoinVideo = () => {
     } else {
       setErrorMessage(false);
       setGetReady(true);
+
+      setTimeout(() => {
+        setIsBigScreen(true);
+        if (!isWebCamEnabled) {
+          // Enable webcam
+          const mediaDevices = navigator.mediaDevices;
+
+          mediaDevices
+            .getUserMedia({
+              video: true,
+              audio: true,
+            })
+            .then((stream) => {
+              const video = videoRef.current;
+              if (video) {
+                video.srcObject = stream;
+                video.muted = true;
+                video.play();
+              }
+              setStream(stream); // Store the stream to disable later
+              setIsWebCamEnabled(true); // Webcam is now enabled
+            })
+            .catch((error) => {
+              alert(error.message);
+            });
+        } else {
+          // Disable webcam
+          if (stream) {
+            stream.getTracks().forEach((track) => track.stop());
+            setStream(null); // Clear the stream from state
+            const video = videoRef.current;
+            if (video) {
+              video.srcObject = null; // Clear the video source
+            }
+            setIsWebCamEnabled(false); // Webcam is now disabled
+          }
+        }
+      }, 3000);
     }
   };
 
@@ -105,107 +146,130 @@ const GuestJoinVideo = () => {
     };
   }, []);
 
+  const onClickOpenANotherDiv = () => {
+    setIsBigScreen(false);
+    setGetReady(false);
+    setIsWebCamEnabled(false);
+  };
+
   return (
     <Container fluid>
       <Row>
         <Col lg={1} md={1} sm={12} />
         <Col lg={10} md={10} sm={12}>
-          <div className="guest-join-video-main">
-            <Container>
-              <Row>
-                <label className="name-label">
-                  Name<span className="aesterick-name">*</span>
-                </label>
-                <Col lg={5} md={5} sm={12}>
-                  <TextField
-                    name={"name"}
-                    change={handleNameChange}
-                    labelclass="d-none"
-                    placeholder={"Enter your name"}
-                  />
-                  <span>
-                    <p className="name-field-error">
-                      {errorMessage ? "Please enter your name" : null}
-                    </p>
-                  </span>
+          {!isBigScreen ? (
+            <>
+              <div className="guest-join-video-main">
+                <Container>
+                  <Row>
+                    <label className="name-label">
+                      Name<span className="aesterick-name">*</span>
+                    </label>
+                    <Col lg={5} md={5} sm={12}>
+                      <TextField
+                        name={"name"}
+                        change={handleNameChange}
+                        labelclass="d-none"
+                        placeholder={"Enter your name"}
+                      />
+                      <span>
+                        <p className="name-field-error">
+                          {errorMessage ? "Please enter your name" : null}
+                        </p>
+                      </span>
 
-                  <div
-                    className="video-tag-name"
-                    style={{
-                      backgroundImage: `url(${ProfileUser})`,
-                      backgroundSize: "33%",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center center",
-                    }}
-                  >
-                    <div className="gradient-sheet">
-                      <div className="avatar-class">
-                        {/* {isWebCamEnabled ? ( */}
-                        <div
-                          style={{
-                            position: "relative",
-                          }}
-                        >
-                          <video ref={videoRef} className="video-size" />
+                      <div
+                        className="video-tag-name"
+                        style={{
+                          backgroundImage: `url(${ProfileUser})`,
+                          backgroundSize: "33%",
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition: "center center",
+                        }}
+                      >
+                        <div className="gradient-sheet">
+                          <div className="avatar-class">
+                            {/* {isWebCamEnabled ? ( */}
+                            <div
+                              style={{
+                                position: "relative",
+                              }}
+                            >
+                              <video ref={videoRef} className="video-size" />
+                            </div>
+                          </div>
+
+                          <div className="mic-vid-buttons">
+                            {isMikeEnabled ? (
+                              <img src={MicOn} />
+                            ) : (
+                              <img src={MicOff} />
+                            )}
+
+                            {isWebCamEnabled ? (
+                              <img
+                                className="cursor-pointer"
+                                onClick={handleToggleWebCam}
+                                src={VideoOn}
+                              />
+                            ) : (
+                              <img
+                                className="cursor-pointer"
+                                onClick={handleToggleWebCam}
+                                src={VideoOff}
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
+                    </Col>
 
-                      <div className="mic-vid-buttons">
-                        {isMikeEnabled ? (
-                          <img src={MicOn} />
+                    <Col lg={7} md={7} sm={12}>
+                      <div className="guest-video-inside-component">
+                        {!getReady ? (
+                          <>
+                            <p className="ready-to-join">Ready To Join?</p>
+                            <Button
+                              text="Join Now"
+                              className="Join-Now-Btn"
+                              onClick={onJoinNowButton}
+                            />
+                          </>
                         ) : (
-                          <img src={MicOff} />
-                        )}
-
-                        {isWebCamEnabled ? (
-                          <img
-                            className="cursor-pointer"
-                            onClick={handleToggleWebCam}
-                            src={VideoOn}
-                          />
-                        ) : (
-                          <img
-                            className="cursor-pointer"
-                            onClick={handleToggleWebCam}
-                            src={VideoOff}
-                          />
+                          <>
+                            <p className="ready-to-join">Getting Ready!</p>
+                            <Spin
+                              indicator={
+                                <LoadingOutlined
+                                  style={{
+                                    fontSize: 48,
+                                  }}
+                                />
+                              }
+                              size="large"
+                            />
+                          </>
                         )}
                       </div>
-                    </div>
-                  </div>
-                </Col>
-
-                <Col lg={7} md={7} sm={12}>
-                  <div className="guest-video-inside-component">
-                    {!getReady ? (
-                      <>
-                        <p className="ready-to-join">Ready To Join?</p>
-                        <Button
-                          text="Join Now"
-                          className="Join-Now-Btn"
-                          onClick={onJoinNowButton}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <p className="ready-to-join">Getting Ready!</p>
-                        <Spin
-                          indicator={
-                            <LoadingOutlined
-                              style={{
-                                fontSize: 48,
-                              }}
-                            />
-                          }
-                          size="large"
-                        />
-                      </>
-                    )}
-                  </div>
-                </Col>
-              </Row>
-            </Container>
-          </div>
+                    </Col>
+                  </Row>
+                </Container>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="new-div">
+                <div
+                  style={{
+                    position: "relative",
+                  }}
+                >
+                  <video ref={videoRef} className="video-size" />
+                </div>
+              </div>
+              <Button text={"Close Div"} onClick={onClickOpenANotherDiv} />
+            </>
+          )}
         </Col>
         <Col lg={1} md={1} sm={12} />
       </Row>

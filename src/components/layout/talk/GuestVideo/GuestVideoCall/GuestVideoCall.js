@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import "./GuestVideoCall.css";
 import GuestVideoHeader from "../GuestVideoHeader/GuestVideoHeader";
+import GuestVideoEnded from "../GuestVideoEnded/GuestVideoEnded";
 
 const GuestVideoCall = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const GuestVideoCall = () => {
 
       <div className="Main-Guest-Video">
         <GuestJoinVideo />
+        {/* <GuestVideoEnded /> */}
       </div>
     </>
   );

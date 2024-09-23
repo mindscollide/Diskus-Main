@@ -106,12 +106,66 @@ const GuestVideoHeader = () => {
                 <img src={TileView} onClick={openSpeaker} />
               )}
             </div>
-            <div className="Guest-Icons-state">
+            <div className="Guest-Icons-state-Participant">
               {isParticipant ? (
                 <>
                   <img src={ParticipantSelected} onClick={openParticipant} />
-                  <div className="Additional-Content">
+                  <div className="New-List-Participants">
                     {/* Your additional div content here */}
+                    <Row>
+                      <Col
+                        lg={7}
+                        md={7}
+                        sm={12}
+                        className="d-flex justify-content-start"
+                      >
+                        <p>Sarah Thompson</p>
+                      </Col>
+                      <Col
+                        lg={5}
+                        md={5}
+                        sm={12}
+                        className="d-flex justify-content-end"
+                      >
+                        <img src={RaiseHand} width="13px" height="16px" />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col
+                        lg={7}
+                        md={7}
+                        sm={12}
+                        className="d-flex justify-content-start"
+                      >
+                        <p>Michael Davis</p>
+                      </Col>
+                      <Col
+                        lg={5}
+                        md={5}
+                        sm={12}
+                        className="d-flex justify-content-end"
+                      >
+                        <img src={RaiseHand} width="13px" height="16px" />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col
+                        lg={7}
+                        md={7}
+                        sm={12}
+                        className="d-flex justify-content-start"
+                      >
+                        <p>Emily Parkor</p>
+                      </Col>
+                      <Col
+                        lg={5}
+                        md={5}
+                        sm={12}
+                        className="d-flex justify-content-end"
+                      >
+                        <img src={RaiseHand} width="13px" height="16px" />
+                      </Col>
+                    </Row>
                   </div>
                 </>
               ) : (
