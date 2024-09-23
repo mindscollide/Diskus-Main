@@ -365,16 +365,31 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setIsAttendees(true);
       setCurrentStep(3);
     } else {
-      setIsAgenda(true);
-      setCurrentStep(2);
+      // If Title is empty, create a numbered title and append the object
+      const newObjMeetingAgenda = {
+        ...objMeetingAgenda,
+        Title: t("No-agenda-available"),
+      };
 
-      setIsAttendees(false);
-      setIsPublishMeeting(false);
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Please-atleast-add-one-agenda"),
+      let previousAdendas = [...createMeeting.MeetingAgendas];
+      let newData = {
+        ObjMeetingAgenda: newObjMeetingAgenda,
+        MeetingAgendaAttachments: [],
+      };
+      previousAdendas.push(newData);
+      setCreateMeeting({
+        ...createMeeting,
+        MeetingAgendas: previousAdendas,
       });
+      setIsAgenda(false);
+      setCurrentStep(3);
+      setIsAttendees(true);
+      setIsPublishMeeting(false);
+      // setOpen({
+      //   ...open,
+      //   flag: true,
+      //   message: t("Please-atleast-add-one-agenda"),
+      // });
     }
   };
 
@@ -1009,31 +1024,45 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
         // }
       } else {
-        // If Title is empty, create a numbered title and append the object
-        const agendaCount = createMeeting.MeetingAgendas.length + 1;
-        const newObjMeetingAgenda = {
-          ...objMeetingAgenda,
-          Title: `Agenda ${agendaCount}`,
-        };
+        if (createMeeting.MeetingAgendas) {
+          // Get the current count of agendas (starting from 1)
+          const agendaCount = createMeeting.MeetingAgendas.length + 1;
 
-        let previousAdendas = [...createMeeting.MeetingAgendas];
-        let newData = {
-          ObjMeetingAgenda: newObjMeetingAgenda,
-          MeetingAgendaAttachments: [],
-        };
-        previousAdendas.push(newData);
-        setCreateMeeting({
-          ...createMeeting,
-          MeetingAgendas: previousAdendas,
-        });
+          // Modify the existing object to conditionally set the title
+          let previousAdendas = [...createMeeting.MeetingAgendas].map(
+            (agenda, index) => {
+              if (agenda.ObjMeetingAgenda.Title === "No Agenda Available") {
+                return {
+                  ...agenda,
+                  ObjMeetingAgenda: {
+                    ...agenda.ObjMeetingAgenda,
+                    Title: `Agenda ${index + 1}`,
+                  },
+                };
+              }
+              return agenda;
+            }
+          );
 
-        // Show the modal and message if necessary
-        setModalField(true);
-        // setOpen({
-        //   ...open,
-        //   flag: true,
-        //   message: t("Enter-Title-Information"),
-        // });
+          const newObjMeetingAgenda = {
+            ...objMeetingAgenda,
+            Title: `Agenda ${agendaCount}`,
+          };
+
+          let newData = {
+            ObjMeetingAgenda: newObjMeetingAgenda,
+            MeetingAgendaAttachments: [],
+          };
+
+          previousAdendas.push(newData);
+
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingAgendas: previousAdendas,
+          });
+
+          setModalField(true);
+        }
       }
     }
   };
