@@ -415,7 +415,7 @@ const VideoPanelBodyRecent = () => {
     console.log("Data Data Data", data);
     let utcDateTime = resolutionResultTable(data.callDate + data.callTime);
     let utcDate = moment(utcDateTime).format("DDMMYYYY");
-    let utcTime = moment(utcDateTime).format("HHMMSS");
+    let utcTime = moment(utcDateTime).format("HHmmss");
     let Data = { RoomID: data.roomID };
     dispatch(DownloadCallRecording(Data, navigate, t, utcDate, utcTime));
   };
@@ -580,20 +580,22 @@ const VideoPanelBodyRecent = () => {
                       </div>
                     </Col>
                     <Col lg={2} md={2} sm={12} className="video_call_icon">
-                      <Tooltip placement="bottomLeft" title={t("Download")}>
-                        <img
-                          className="cursor-pointer me-2"
-                          src={VideoDownload}
-                          alt=""
-                          onClick={() => downloadVideoCall(recentCallData)}
-                        />
-                      </Tooltip>
+                      {recentCallData.isRecordingAvailable ? (
+                        <Tooltip placement="bottomLeft" title={t("Download")}>
+                          <img
+                            className="cursor-pointer me-2"
+                            src={VideoDownload}
+                            alt=""
+                            onClick={() => downloadVideoCall(recentCallData)}
+                          />
+                        </Tooltip>
+                      ) : null}
                       <Tooltip
                         placement="bottomLeft"
                         title={t("Start-video-call")}
                       >
                         <img
-                          className="cursor-pointer me-4"
+                          className="cursor-pointer"
                           src={VideoCallIcon}
                           onClick={() => otoVideoCall(recentCallData)}
                         />

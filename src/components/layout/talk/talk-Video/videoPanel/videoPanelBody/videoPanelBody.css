@@ -128,9 +128,9 @@ body[dir="rtl"] .video-profile-icon {
 }
 
 .video_call_icon {
+  justify-content: end;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 body[dir="rtl"] .video_call_icon img {

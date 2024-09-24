@@ -288,6 +288,65 @@ const DownloadCallRecording = (Data, navigate, t, utcDate, utcTime) => {
   };
 };
 
+const DownloadMeetingRecording = (
+  Data,
+  navigate,
+  t,
+  meetingTitle,
+  utcDate,
+  utcTime
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let form = new FormData();
+  form.append("RequestMethod", downloadMeetingRecording.RequestMethod);
+  form.append("RequestData", JSON.stringify(Data));
+  return (dispatch) => {
+    dispatch(downloadCallRecording_init());
+    axios({
+      method: "post",
+      url: DataRoomAllFilesDownloads,
+      data: form,
+      headers: {
+        _token: token,
+      },
+      responseType: "blob",
+    })
+      .then(async (response) => {
+        if (response.status === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            DownloadMeetingRecording(
+              Data,
+              navigate,
+              t,
+              meetingTitle,
+              utcDate,
+              utcTime
+            )
+          );
+          dispatch(downloadCallRecording_success());
+        } else if (response.status === 200) {
+          console.log("DownloadMeetingRecording", response);
+          const url = window.URL.createObjectURL(
+            new Blob([response.data], { type: "video/mp4" })
+          );
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute(
+            "download",
+            meetingTitle + "-" + utcDate + "-" + utcTime + "-Recording.mp4"
+          );
+          document.body.appendChild(link);
+          link.click();
+          dispatch(downloadCallRecording_success());
+        }
+      })
+      .catch((response) => {
+        console.error("Error downloading the video", response);
+      });
+  };
+};
+
 export {
   getMeetingAgendas,
   showMinutes,
@@ -296,4 +355,5 @@ export {
   getMeetingAttachments,
   updateAgendaAttachment,
   DownloadCallRecording,
+  DownloadMeetingRecording,
 };
