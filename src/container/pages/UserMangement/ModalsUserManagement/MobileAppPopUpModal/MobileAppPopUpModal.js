@@ -45,7 +45,6 @@ const MobileAppPopUpModal = () => {
         setShow={(show) => dispatch(mobileAppPopModal(show))}
         modalFooterClassName={"d-block"}
         className="MobilePopUpModal"
-        backdrop={false}
         keyboard={false}
         modalHeaderClassName={"d-block"}
         onHide={() => {
