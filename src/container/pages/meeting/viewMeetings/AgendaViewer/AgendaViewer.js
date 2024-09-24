@@ -645,9 +645,8 @@ const AgendaViewer = ({
                         </Tooltip>
                       ) : null}
 
-                      {(editorRole.status === "10" ||
-                        editorRole.status === 10) &&
-                      videoTalk?.isVideoCall ? (
+                      {editorRole.status === "10" ||
+                      editorRole.status === 10 ? (
                         <Tooltip
                           placement="topRight"
                           title={t("Leave-meeting")}
@@ -661,8 +660,9 @@ const AgendaViewer = ({
                         </Tooltip>
                       ) : null}
 
-                      {editorRole.status === "10" ||
-                      editorRole.status === 10 ? (
+                      {(editorRole.status === "10" ||
+                        editorRole.status === 10) &&
+                      videoTalk?.isVideoCall ? (
                         <Tooltip
                           placement="topRight"
                           title={t("Enable-video-call")}

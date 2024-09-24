@@ -18,10 +18,10 @@ import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_form
 
 const Attendees = ({
   MeetingID,
-  setViewFlag,
   setEdiorRole,
   setViewAdvanceMeetingModal,
   editorRole,
+  setAttendees,
 }) => {
   const dispatch = useDispatch();
   const [organizersData, setOrganizersData] = useState([]);
@@ -85,9 +85,10 @@ const Attendees = ({
           false,
           setEdiorRole,
           MeetingID,
-          setViewAdvanceMeetingModal
+          false
         )
       );
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
     } else {
       let searchData = {
         Date: "",
@@ -103,11 +104,11 @@ const Attendees = ({
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEdiorRole({ status: null, role: null });
-      // MeetingID(null);
       setViewAdvanceMeetingModal(false);
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     }
+    setAttendees(false);
   };
 
   return (

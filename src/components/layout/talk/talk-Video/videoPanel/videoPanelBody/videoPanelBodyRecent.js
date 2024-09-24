@@ -21,6 +21,7 @@ import {
 import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
+  resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
 import {
   normalizeVideoPanelFlag,
@@ -37,6 +38,7 @@ import IncomingIcon from "../../../../../../assets/images/Incoming-Icon.png";
 import OutgoingIcon from "../../../../../../assets/images/Outgoing-Icon.png";
 import VideoDownload from "../../../../../../assets/images/Download-Video.png";
 import EmptyRecentCalls from "./emptyRecentCalls";
+import { DownloadCallRecording } from "../../../../../../store/actions/VideoChat_actions";
 
 const VideoPanelBodyRecent = () => {
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
@@ -409,6 +411,15 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("isMeetingVideo", false);
   };
 
+  const downloadVideoCall = (data) => {
+    console.log("Data Data Data", data);
+    let utcDateTime = resolutionResultTable(data.callDate + data.callTime);
+    let utcDate = moment(utcDateTime).format("DDMMYYYY");
+    let utcTime = moment(utcDateTime).format("HHMMSS");
+    let Data = { RoomID: data.roomID };
+    dispatch(DownloadCallRecording(Data, navigate, t, utcDate, utcTime));
+  };
+
   const formatUserNames = (data) => {
     const [firstUser, ...remainingUsers] = data;
     const remainingCount = remainingUsers.length;
@@ -569,11 +580,14 @@ const VideoPanelBodyRecent = () => {
                       </div>
                     </Col>
                     <Col lg={2} md={2} sm={12} className="video_call_icon">
-                      <img
-                        className="cursor-pointer me-2"
-                        src={VideoDownload}
-                        alt=""
-                      />
+                      <Tooltip placement="bottomLeft" title={t("Download")}>
+                        <img
+                          className="cursor-pointer me-2"
+                          src={VideoDownload}
+                          alt=""
+                          onClick={() => downloadVideoCall(recentCallData)}
+                        />
+                      </Tooltip>
                       <Tooltip
                         placement="bottomLeft"
                         title={t("Start-video-call")}

@@ -178,11 +178,11 @@ const NewMeeting = () => {
     value: "0",
     text: t("Quick-meeting"),
   };
-  meetingtypeFilter.push(byDefault);
-  getALlMeetingTypes.meetingTypes.forEach((data, index) => {
-    meetingtypeFilter.push({
-      text: data.type,
-      value: String(data.pK_MTID),
+  meetingtypeFilter?.push(byDefault);
+  getALlMeetingTypes?.meetingTypes?.forEach((data, index) => {
+    meetingtypeFilter?.push({
+      text: data?.type,
+      value: String(data?.pK_MTID),
     });
   });
 
@@ -197,7 +197,7 @@ const NewMeeting = () => {
   const [isMeetingTypeFilter, setMeetingTypeFilter] =
     useState(meetingtypeFilter);
 
-  const meetingTypeFilterData = isMeetingTypeFilter.map((meeting) =>
+  const meetingTypeFilterData = isMeetingTypeFilter?.map((meeting) =>
     String(meeting.value)
   );
 

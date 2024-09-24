@@ -595,6 +595,7 @@ const ViewMeetingModal = ({
                   setEdiorRole={setEdiorRole}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   editorRole={editorRole}
+                  setAttendees={setAttendees}
                 />
               )}
               {organizers && (

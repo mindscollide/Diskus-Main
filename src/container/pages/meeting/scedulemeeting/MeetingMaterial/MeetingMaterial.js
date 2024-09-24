@@ -287,10 +287,8 @@ const MeetingMaterial = ({
                 height={"25px"}
                 className="me-2"
               />
-              <abbr title={`${text} - ${record.agendaID}`}>
-                <span className={styles["docx-name-title"]}>
-                  {text} - {record.agendaID}
-                </span>
+              <abbr title={`${text}`}>
+                <span className={styles["docx-name-title"]}>{text}</span>
               </abbr>
             </section>
           </div>
