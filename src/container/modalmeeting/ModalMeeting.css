@@ -76,9 +76,8 @@ fieldset:disabled .btn {
 }
 
 .modalMeetingCreateBody {
-  padding: 30px 20px;
-  min-height: 80vh !important;
-  max-height: 80vh !important;
+  padding: 20px 20px;
+  min-height: 500px;
 }
 .modalMeetingCreateBody_close_modal {
   height: auto;
@@ -86,7 +85,6 @@ fieldset:disabled .btn {
 .modalMeetingCreateFooter {
   display: inline-block;
 }
-
 
 .modalMeetingCreateHeader {
   display: none;
@@ -812,4 +810,3 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   font-size: 14px !important;
   font-weight: 600 !important;
 }
-
