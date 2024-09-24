@@ -15,6 +15,7 @@ import {
   getIconSource,
 } from "../../../../../DataRoom/SearchFunctionality/option";
 import DownloadIcon from "./../AV-Images/Frame_Download.png";
+import { fileFormatforSignatureFlow } from "../../../../../../commen/functions/utils";
 
 const AllFilesModal = ({
   setShowMoreFilesView,
@@ -67,11 +68,7 @@ const AllFilesModal = ({
     };
     let pdfDataJson = JSON.stringify(Data);
     if (
-      ext === "pdf" ||
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xlx" ||
-      ext === "xlsx"
+      fileFormatforSignatureFlow.includes(ext)
     ) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,

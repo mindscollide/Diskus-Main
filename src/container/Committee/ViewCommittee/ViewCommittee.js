@@ -27,6 +27,7 @@ import {
   getIconSource,
 } from "../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
+import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const { Dragger } = Upload;
   const dispatch = useDispatch();
@@ -127,7 +128,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
     );
   };
   const handleClickOpenDoc = (data) => {
-    let ext = data.DisplayAttachmentName.split(".")[1];
+    let ext = data?.DisplayAttachmentName?.split(".")[1];
     let pdfData = {
       taskId: data.pK_FileID,
       commingFrom: 4,
@@ -135,7 +136,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
       attachmentID: data.pK_FileID,
     };
     const pdfDataJson = JSON.stringify(pdfData);
-    if (ext === "pdf") {
+    if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",

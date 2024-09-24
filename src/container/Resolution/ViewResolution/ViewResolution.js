@@ -17,6 +17,7 @@ import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option";
+import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
   const currentLanguage = localStorage.getItem("i18nextLng");
@@ -78,10 +79,8 @@ const ViewResolution = ({ setViewresolution }) => {
   }, [ResolutionReducer.getResolutionbyID]);
 
   const handleLinkClick = (data, extension) => {
-    let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(
-      extension
-    );
-    if (fileExtension) {
+
+    if (fileFormatforSignatureFlow.includes(extension)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
         "_blank",

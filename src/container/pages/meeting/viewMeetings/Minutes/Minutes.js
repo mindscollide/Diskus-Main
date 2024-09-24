@@ -64,6 +64,7 @@ import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_form
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
 import {
+  fileFormatforSignatureFlow,
   removeHTMLTags,
   removeHTMLTagsAndTruncate,
 } from "../../../../../commen/functions/utils";
@@ -601,11 +602,7 @@ const Minutes = ({
     };
     let pdfDataJson = JSON.stringify(Data);
     if (
-      ext === "pdf" ||
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xlx" ||
-      ext === "xlsx"
+      fileFormatforSignatureFlow.includes(ext)
     ) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,

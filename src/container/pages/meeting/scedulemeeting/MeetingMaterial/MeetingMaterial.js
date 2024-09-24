@@ -41,6 +41,7 @@ import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 
 const MeetingMaterial = ({
   setSceduleMeeting,
@@ -188,7 +189,7 @@ const MeetingMaterial = ({
         editorRole.status === "1")
     ) {
       // if meeting active , proposed, upcoming, unpublished then file should be open with editing rights and download and user should be Agenda Contributor or Organizer
-      if (ext === "pdf") {
+      if (fileFormatforSignatureFlow.includes(ext)) {
         const documentData = {
           taskId: record.agendaID,
           commingFrom: 4,
@@ -217,7 +218,7 @@ const MeetingMaterial = ({
         editorRole.role === "Organizer")
     ) {
       // if meeting has ended and user is Agenda Contribuor or Organizer then user just can view a document
-      if (ext === "pdf") {
+      if (fileFormatforSignatureFlow.includes(ext)) {
         const documentData = {
           taskId: record.agendaID,
           commingFrom: 4,
@@ -278,14 +279,13 @@ const MeetingMaterial = ({
           <div>
             <section
               className={styles["docx-name-title"]}
-              onClick={() => handleDoubeClick(record)}
-            >
+              onClick={() => handleDoubeClick(record)}>
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
-                alt=""
+                alt=''
                 width={"25px"}
                 height={"25px"}
-                className="me-2"
+                className='me-2'
               />
               <abbr title={`${text} - ${record.agendaID}`}>
                 <span className={styles["docx-name-title"]}>
@@ -317,29 +317,16 @@ const MeetingMaterial = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex gap-3 align-items-center justify-content-center"
-              >
+                className='d-flex gap-3 align-items-center justify-content-center'>
                 <Eye
                   fontSize={22}
                   cursor={
-                    ext === "pdf" ||
-                    ext === "doc" ||
-                    ext === "docx" ||
-                    ext === "xls" ||
-                    ext === "xlsx" ||
-                    ext === "rtf"
+                    fileFormatforSignatureFlow.includes(ext)
                       ? "pointer"
                       : "default"
                   }
                   pointerEvents={
-                    ext === "pdf" ||
-                    ext === "doc" ||
-                    ext === "docx" ||
-                    ext === "xls" ||
-                    ext === "xlsx" ||
-                    ext === "rtf"
-                      ? "auto"
-                      : "none"
+                    fileFormatforSignatureFlow.includes(ext) ? "auto" : "none"
                   }
                   onClick={() => handleClickOpenFile(record)}
                 />
@@ -444,15 +431,15 @@ const MeetingMaterial = ({
 
   return (
     <section>
-      <Row className="mt-5">
+      <Row className='mt-5'>
         <Col lg={12} md={12} sm={12}>
           {rows.length === 0 && !Loading ? (
             <>
               <ResultMessage
                 icon={
                   <img
-                    alt="NonMeeting"
-                    draggable="false"
+                    alt='NonMeeting'
+                    draggable='false'
                     src={NoMeetingsIcon}
                     // className="nodata-table-icon"
                   />
@@ -463,8 +450,7 @@ const MeetingMaterial = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["No-meeting-material-title"]}>
                     {t("No-Meeting-Material")}
                   </span>
@@ -477,7 +463,7 @@ const MeetingMaterial = ({
                 column={materialColoumn}
                 scroll={{ y: "46vh" }}
                 pagination={false}
-                className="Polling_table"
+                className='Polling_table'
                 rows={rows}
               />
             </>
@@ -489,8 +475,7 @@ const MeetingMaterial = ({
           lg={12}
           md={12}
           sm={12}
-          className="d-flex justify-content-end gap-2 mt-3"
-        >
+          className='d-flex justify-content-end gap-2 mt-3'>
           {/* <Button
             text={t("Clone-meeting")}
             className={styles["Cancel_Classname"]}

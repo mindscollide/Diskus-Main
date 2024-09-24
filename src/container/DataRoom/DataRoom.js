@@ -910,7 +910,7 @@ const DataRoom = () => {
     if (data.value === 1) {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
-        let ext = record.name.split(".").pop();
+        let ext = record?.name?.split(".").pop();
         if (validationExtension(ext)) {
           window.open(
             `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
