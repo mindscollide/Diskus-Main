@@ -77,21 +77,16 @@ fieldset:disabled .btn {
 
 .modalMeetingCreateBody {
   padding: 30px 20px;
-  height: 70vh !important;
-  max-height: 70vh !important;
+  min-height: 80vh !important;
+  max-height: 80vh !important;
 }
 .modalMeetingCreateBody_close_modal {
   height: auto;
 }
 .modalMeetingCreateFooter {
-  height: 10vh !important;
   display: inline-block;
 }
-/* .modalMeetingCreateFooter {
 
-  height: 80px;
-  padding: 0 35px !important;
-} */
 
 .modalMeetingCreateHeader {
   display: none;

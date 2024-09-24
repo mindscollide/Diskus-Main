@@ -143,7 +143,7 @@ const Sidebar = () => {
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(allAssignessList(navigate, t));
+              dispatch(allAssignessList(navigate, t,false));
         } else {
           let searchData = {
             Date: "",
@@ -157,7 +157,7 @@ const Sidebar = () => {
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(allAssignessList(navigate, t));
+              dispatch(allAssignessList(navigate, t,false));
           // localStorage.setItem("MeetingCurrentView", 1);
         }
         dispatch(viewMeetingFlag(false));

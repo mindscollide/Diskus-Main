@@ -288,7 +288,7 @@ const NewMeeting = () => {
           PublishedMeetings: MeetingProp !== null ? false : true,
         };
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-        // await dispatch(allAssignessList(navigate, t));
+        // await     dispatch(allAssignessList(navigate, t,false));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
       } else {
@@ -304,7 +304,7 @@ const NewMeeting = () => {
         // localStorage.setItem("MeetingPageRows", 30);
         // localStorage.setItem("MeetingPageCurrent", 1);
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-        // await dispatch(allAssignessList(navigate, t));
+        // await     dispatch(allAssignessList(navigate, t,false));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
       }
