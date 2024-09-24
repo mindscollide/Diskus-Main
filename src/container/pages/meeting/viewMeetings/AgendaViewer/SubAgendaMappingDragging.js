@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
-import { AttachmentViewer, Button, Notification } from "../../../../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Notification,
+} from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import profile from "../../../../../assets/images/newprofile.png";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
@@ -42,6 +46,7 @@ import {
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import CollapseIcon from "./AV-Images/Collapse-Icon.png";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
+import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -255,13 +260,7 @@ const SubAgendaMappingDragging = ({
       attachmentID: Number(record.originalAttachmentName),
     };
     let pdfDataJson = JSON.stringify(Data);
-    if (
-      ext === "pdf" ||
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xlx" ||
-      ext === "xlsx"
-    ) {
+    if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
@@ -317,40 +316,33 @@ const SubAgendaMappingDragging = ({
                     editorRole.role === "Participant")
                     ? "d-none"
                     : ""
-                }
-              >
+                }>
                 <Droppable
                   key={`sub-agenda-${index}-${subIndex}`}
                   droppableId={`sub-agenda-${index}-${subIndex}`}
-                  type="SUB_AGENDA"
-                >
+                  type='SUB_AGENDA'>
                   {(provided) => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
                       <Draggable
                         key={subAgendaData.subAgendaID}
                         draggableId={`subAgenda-${subAgendaData.subAgendaID}`}
                         index={subIndex}
-                        isDragDisabled={true}
-                      >
+                        isDragDisabled={true}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.draggableProps}
-                          >
+                            {...provided.draggableProps}>
                             <Row>
                               <Col
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className={styles["Subagenda_Scroller"]}
-                              >
+                                className={styles["Subagenda_Scroller"]}>
                                 <section
-                                  className={styles["Padding_SubAgenda"]}
-                                >
+                                  className={styles["Padding_SubAgenda"]}>
                                   <Row
                                     key={subAgendaData.subAgendaID}
-                                    className="mt-3"
-                                  >
+                                    className='mt-3'>
                                     <Col lg={1} md={1} sm={1}></Col>
                                     <Col
                                       lg={11}
@@ -364,31 +356,29 @@ const SubAgendaMappingDragging = ({
                                             subAgendaData.length === 1
                                           ? `${styles["SubajendaBox"]} ${styles["borderTopNone"]}`
                                           : styles["SubajendaBox"]
-                                      }
-                                    >
+                                      }>
                                       <Row isDragging={snapshot.isDragging}>
                                         <Col
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className={styles["SubAgendaSection"]}
-                                        >
-                                          <Row className="mt-2 mb-2">
+                                          className={
+                                            styles["SubAgendaSection"]
+                                          }>
+                                          <Row className='mt-2 mb-2'>
                                             <Col
                                               lg={8}
                                               md={8}
                                               sm={12}
-                                              className="position-relative p-0"
-                                            >
-                                              <span className="subAgendaBorderClass"></span>
+                                              className='position-relative p-0'>
+                                              <span className='subAgendaBorderClass'></span>
 
                                               <span
                                                 className={
                                                   styles[
                                                     "SubAgendaTitle_Heading"
                                                   ]
-                                                }
-                                              >
+                                                }>
                                                 {index +
                                                   1 +
                                                   "." +
@@ -402,8 +392,7 @@ const SubAgendaMappingDragging = ({
                                                   styles[
                                                     "SubAgenda_Description"
                                                   ]
-                                                }
-                                              >
+                                                }>
                                                 {subAgendaData.description}
                                               </span>
                                             </Col>
@@ -411,34 +400,31 @@ const SubAgendaMappingDragging = ({
                                               lg={3}
                                               md={3}
                                               sm={12}
-                                              className="p-0"
-                                            >
+                                              className='p-0'>
                                               {/* <div className={styles["agendaCreationDetail"]}> */}
-                                              <Row className="m-0">
+                                              <Row className='m-0'>
                                                 <Col
                                                   lg={12}
                                                   md={12}
                                                   sm={12}
-                                                  className="d-flex align-items-center justify-content-end gap-3 p-0"
-                                                >
+                                                  className='d-flex align-items-center justify-content-end gap-3 p-0'>
                                                   <img
                                                     src={`data:image/jpeg;base64,${subAgendaData?.userProfilePicture?.displayProfilePictureName}`}
                                                     className={styles["Image"]}
-                                                    alt=""
+                                                    alt=''
                                                     draggable={false}
                                                   />
                                                   <p
                                                     className={
                                                       styles["agendaCreater"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {
                                                       subAgendaData?.presenterName
                                                     }
                                                   </p>
                                                 </Col>
                                               </Row>
-                                              <Row className="m-0">
+                                              <Row className='m-0'>
                                                 <Col
                                                   lg={12}
                                                   md={12}
@@ -447,11 +433,9 @@ const SubAgendaMappingDragging = ({
                                                     currentLanguage === "ar"
                                                       ? "p-0 text-start"
                                                       : "p-0 text-end"
-                                                  }
-                                                >
+                                                  }>
                                                   <p
-                                                    className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
-                                                  >
+                                                    className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}>
                                                     {moment(
                                                       timeFormatFunction(
                                                         subAgendaData?.startDate
@@ -460,8 +444,7 @@ const SubAgendaMappingDragging = ({
                                                     <span
                                                       className={
                                                         styles["dashMinute"]
-                                                      }
-                                                    >
+                                                      }>
                                                       -----
                                                     </span>
                                                     {moment(
@@ -633,8 +616,7 @@ const SubAgendaMappingDragging = ({
                                               lg={1}
                                               md={1}
                                               sm={12}
-                                              className="p-0"
-                                            ></Col>
+                                              className='p-0'></Col>
                                           </Row>
                                           <>
                                             {
@@ -648,8 +630,7 @@ const SubAgendaMappingDragging = ({
                                                     styles[
                                                       "filesParentClassSubAgenda"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {subAgendaData.subfiles
                                                     .slice(0, 3)
                                                     .map(
@@ -658,23 +639,27 @@ const SubAgendaMappingDragging = ({
                                                         fileIndex
                                                       ) => (
                                                         <AttachmentViewer
-                                                        handleClickDownload={() =>
-                                                          downloadDocument(filesData)
-                                                        }
-                                                        data={filesData}
-                                                        name={filesData?.displayAttachmentName}
-                                                        id={Number(
-                                                          filesData.originalAttachmentName
-                                                        )}
-                                                        handleEyeIcon={() =>
-                                                          pdfData(
-                                                            filesData,
-                                                            getFileExtension(
-                                                              filesData?.displayAttachmentName
+                                                          handleClickDownload={() =>
+                                                            downloadDocument(
+                                                              filesData
                                                             )
-                                                          )
-                                                        }
-                                                      />
+                                                          }
+                                                          data={filesData}
+                                                          name={
+                                                            filesData?.displayAttachmentName
+                                                          }
+                                                          id={Number(
+                                                            filesData.originalAttachmentName
+                                                          )}
+                                                          handleEyeIcon={() =>
+                                                            pdfData(
+                                                              filesData,
+                                                              getFileExtension(
+                                                                filesData?.displayAttachmentName
+                                                              )
+                                                            )
+                                                          }
+                                                        />
                                                       )
                                                     )}
                                                   {subAgendaData.subfiles
@@ -735,8 +720,7 @@ const SubAgendaMappingDragging = ({
                                     lg={11}
                                     md={11}
                                     sm={12}
-                                    className="position-relative"
-                                  >
+                                    className='position-relative'>
                                     {/* <span className="separatorSubAgendaWidth"></span>
                                     <span className="separatorSubAgendaHeight"></span> */}
                                     {hasNextViewFalse ? null : (
@@ -746,15 +730,13 @@ const SubAgendaMappingDragging = ({
                                             isLastIndex
                                               ? "last-width-class"
                                               : ""
-                                          }`}
-                                        ></span>
+                                          }`}></span>
                                         <span
                                           className={`separatorSubAgendaHeight ${
                                             isLastIndex
                                               ? "last-height-class"
                                               : ""
-                                          }`}
-                                        ></span>
+                                          }`}></span>
                                       </React.Fragment>
                                     )}
                                   </Col>

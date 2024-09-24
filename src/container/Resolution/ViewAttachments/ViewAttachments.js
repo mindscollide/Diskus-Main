@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import AttachmentViewer from "../../../components/elements/fileAttachment/attachment";
+import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -21,8 +22,8 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
     dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
   };
   const handleLinkClick = (data, ext) => {
-    let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
-    if (fileExtension) {
+    // let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
+    if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
         "_blank",

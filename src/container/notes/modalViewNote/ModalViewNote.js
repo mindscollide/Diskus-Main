@@ -15,6 +15,7 @@ import {
   _justShowDateformat,
 } from "../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
+import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 
 
 const ModalViewNote = ({
@@ -93,8 +94,8 @@ const ModalViewNote = ({
     setViewNotes(false);
   };
   const handleViewIcon = (data, ext) => {
-    let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
-    if (fileExtension) {
+    // let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
+    if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
         "_blank",

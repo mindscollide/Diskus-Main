@@ -74,31 +74,51 @@ export const validateEmailEnglishAndArabicFormat = (email) => {
 
 export const validationExtension = (ext) => {
   let arrExtension = [
+    "pdf",
+    "fdf",
+    "xfdf",
     "doc",
     "docx",
-    "txt",
     "xls",
     "xlsx",
-    "csv",
     "ppt",
     "pptx",
-    "json",
-    "pdf",
+    "pub",
+    "dwg",
+    "dxf",
+    "dgn",
+    "rvt",
+    "dwf",
+    "rtf",
+    "odt",
+    "ods",
+    "odp",
+    "wpf",
+    "bmp",
+    "wmf",
+    "emf",
+    "gif",
+    "hdp",
+    "jpg",
+    "jp2",
+    "jpc",
+    "png",
+    "tif",
+    "tiff",
   ];
   return arrExtension.includes(ext);
 };
 
 export const validateExtensionsforHTMLPage = (ext) => {
-  let newArrExtensions = ["html", "htm"];
+  let newArrExtensions = ["html", "htm", "mht"];
   return newArrExtensions.includes(ext);
 };
-
 
 export const isBase64 = (str) => {
   if (typeof str !== "string") {
     return false;
   }
-  
+
   // Remove any data URL prefix if present
   const base64Pattern = /^data:image\/(png|jpeg);base64,/;
   if (base64Pattern.test(str)) {

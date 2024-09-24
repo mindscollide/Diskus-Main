@@ -45,7 +45,7 @@ import {
   getFilesandFolderDetailsApi,
 } from "../../../store/actions/DataRoom2_actions";
 import { createWorkflowApi } from "../../../store/actions/workflow_actions";
-import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { checkFeatureIDAvailability, fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 import {
   validateExtensionsforHTMLPage,
   validationExtension,
@@ -806,7 +806,7 @@ const GridViewDataRoom = ({
                                           />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                          {getExtension === "pdf"
+                                          {fileFormatforSignatureFlow.includes(getExtension)
                                             ? optionsforPDFandSignatureFlow(
                                                 t
                                               ).map((data, index) => {
