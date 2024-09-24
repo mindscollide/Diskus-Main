@@ -11,7 +11,8 @@ const MobileAppPopUpModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { UserManagementModals } = useSelector((state) => state);
-
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   const handleOk = () => {
     const appLink = "thediskus://thediskus.com";
     // Determine the fallback URL based on the user's device
@@ -33,12 +34,19 @@ const MobileAppPopUpModal = () => {
     dispatch(mobileAppPopModal(false));
   };
 
+  const handleContinueWithBrowser = () => {
+    dispatch(mobileAppPopModal(false));
+  };
+
   return (
     <section>
       <Modal
         show={UserManagementModals.mobileAppPopUp}
         setShow={(show) => dispatch(mobileAppPopModal(show))}
         modalFooterClassName={"d-block"}
+        className="MobilePopUpModal"
+        backdrop={false}
+        keyboard={false}
         modalHeaderClassName={"d-block"}
         onHide={() => {
           dispatch(mobileAppPopModal(false));
@@ -53,18 +61,8 @@ const MobileAppPopUpModal = () => {
                 sm={12}
                 className="d-flex justify-content-center"
               >
-                <img alt="" src={DiskusIcon} />
-              </Col>
-            </Row>
-            <Row className="mt-4">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <span className={style["Heading"]}>
-                  {t("Keep-watching-in-app")}
+                <span className={style["Experience_heading"]}>
+                  {t("Upgrade-your-experience")}
                 </span>
               </Col>
             </Row>
@@ -75,8 +73,34 @@ const MobileAppPopUpModal = () => {
                 sm={12}
                 className="d-flex justify-content-center"
               >
+                <span className={style["Experiecnce_subHeading"]}>
+                  {t("Download-diskus-app-for-a-smoother")}
+                </span>
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                <span className={style["Experiecnce_subHeading"]}>
+                  {t("And-more-efficient-experience")}
+                </span>
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
                 <Button
-                  text={t("Open-diskus-app")}
+                  text={
+                    isAndroid ? t("Go-to-play-store") : t("Go-to-App-store")
+                  }
                   onClick={handleOk}
                   className={style["ButtonClass"]}
                 />
@@ -89,7 +113,12 @@ const MobileAppPopUpModal = () => {
                 sm={12}
                 className="d-flex justify-content-center"
               >
-                <Button text={t("Log-in")} className={style["Login_button"]} />
+                <span
+                  className={style["ContinueBrowser"]}
+                  onClick={handleContinueWithBrowser}
+                >
+                  {t("Continue-with-browser")}
+                </span>
               </Col>
             </Row>
           </>

@@ -5,20 +5,20 @@
 }
 
 .ButtonClass {
-  background: #6172d6 !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #000 !important;
   font-size: 14px !important;
-  padding: 12px 50px !important;
+  padding: 12px 90px !important;
   border: none !important;
   font-weight: bold !important;
   border-radius: 4px !important;
 }
 
 .ButtonClass:is(:hover, :focus, :focus-visible, :active) {
-  background: #6172d6 !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #000 !important;
   font-size: 14px !important;
-  padding: 12px 50px !important;
+  padding: 12px 90px !important;
   border: none !important;
   font-weight: bold !important;
   border-radius: 4px !important;
@@ -38,4 +38,27 @@
   font-weight: bold !important;
   border: none !important;
   font-size: 14px !important;
+}
+
+.Experience_heading {
+  font-size: 24px !important;
+  color: #fff !important;
+  line-height: 15px !important;
+  font-weight: 600 !important;
+  margin-top: -10px !important;
+}
+
+.Experiecnce_subHeading {
+  font-size: 16px !important;
+  color: #fff !important;
+  white-space: nowrap;
+  line-height: 20px !important;
+}
+
+.ContinueBrowser {
+  font-size: 14px !important;
+  color: #fff !important;
+  white-space: nowrap;
+  cursor: pointer !important;
+  text-decoration: underline !important;
 }

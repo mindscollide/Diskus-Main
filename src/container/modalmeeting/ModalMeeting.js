@@ -1056,10 +1056,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             }
           );
 
-          // Create a new agenda object with the incremented title
           const newObjMeetingAgenda = {
             ...objMeetingAgenda,
-            Title: `Agenda ${agendaCount}`, // Increment the title for the new agenda
+            Title: `Agenda ${agendaCount}`,
           };
 
           let newData = {
@@ -1067,16 +1066,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             MeetingAgendaAttachments: [],
           };
 
-          // Add the new agenda object to the list
           previousAdendas.push(newData);
 
-          // Update the state with the modified list of agendas
           setCreateMeeting({
             ...createMeeting,
             MeetingAgendas: previousAdendas,
           });
 
-          // Open the modal field
           setModalField(true);
         }
       }
