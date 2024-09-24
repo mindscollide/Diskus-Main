@@ -1772,6 +1772,10 @@ const downloadMeetingRecording = {
   RequestMethod: "ServiceManager.DownloadMeetingRecording",
 };
 
+const leaveMeetingVideo = {
+  RequestMethod: "ServiceManager.LeaveMeetingVideo",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2241,5 +2245,6 @@ export {
   getStatsForPublishingMinutesByWorkFlowId,
   getMinutesPublishedStatus,
   downloadCallRecording,
-  downloadMeetingRecording
+  downloadMeetingRecording,
+  leaveMeetingVideo,
 };

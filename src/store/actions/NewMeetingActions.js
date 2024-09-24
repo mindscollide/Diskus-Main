@@ -68,6 +68,7 @@ import {
   getDashboardMeetingStatsRM,
   validateEncryptedStringParticipantProposedRM,
   getAllMeetingUsersRSVPDetailsRM,
+  leaveMeetingVideo,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -1385,7 +1386,7 @@ const FetchMeetingURLApi = (
     // dispatch(showMeetingURLInit());
     dispatch(MeetingUrlSpinner(true));
     let form = new FormData();
-    let videoMeetingID = Data.MeetingID
+    let videoMeetingID = Data.MeetingID;
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", FetchVideoUrl.RequestMethod);
     axios({
@@ -8758,6 +8759,91 @@ const getAllMeetingUsersRSVPApi = (navigate, t, Data) => {
       });
   };
 };
+
+// leaveMeetingVideo new Api
+const leaveMeetingVideoInit = () => {
+  return {
+    type: actions.LEAVE_MEETING_VIDEO_INIT,
+  };
+};
+
+const leaveMeetingVideoSuccess = (response, message) => {
+  return {
+    type: actions.LEAVE_MEETING_VIDEO_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const leaveMeetingVideoFail = (message) => {
+  return {
+    type: actions.LEAVE_MEETING_VIDEO_FAIL,
+    message: message,
+  };
+};
+
+const LeaveMeetingVideo = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(leaveMeetingVideoInit());
+    let form = new FormData();
+    form.append("RequestMethod", leaveMeetingVideo.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(LeaveMeetingVideo(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingVideoSuccess(response, "Successful"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeetingVideo_02".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingVideoFail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeetingVideo_03".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+            } else {
+              dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log("leaveMeetingVideoFail", response);
+        dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllMeetingUsersRSVPApi,
   getDashbardMeetingDataApi,
@@ -8924,4 +9010,5 @@ export {
   boardDeckEmailModal,
   AllDocumentsForAgendaWiseMinutesApiFunc,
   validateStringParticipantProposedApi,
+  LeaveMeetingVideo,
 };

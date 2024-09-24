@@ -81,6 +81,7 @@ import {
   meetingOrganizerRemoved,
   meetingParticipantRemoved,
   meetingParticipantAdded,
+  LeaveMeetingVideo,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -192,6 +193,10 @@ const Dashboard = () => {
     UserManagementModals,
   } = useSelector((state) => state);
 
+  const meetingUrlData = useSelector(
+    (state) => state.NewMeetingreducer.getmeetingURL
+  );
+
   const navigate = useNavigate();
   const [checkInternet, setCheckInternet] = useState(navigator);
   let createrID = localStorage.getItem("userID");
@@ -219,6 +224,7 @@ const Dashboard = () => {
   const [activateBlur, setActivateBlur] = useState(false);
   const [notificationID, setNotificationID] = useState(0);
   const [currentLanguage, setCurrentLanguage] = useState("en");
+  const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
   let Blur = localStorage.getItem("blur");
 
   const cancelModalMeetingDetails = useSelector(
@@ -345,6 +351,11 @@ const Dashboard = () => {
                 localStorage.setItem("meetingVideoID", 0);
                 localStorage.setItem("MicOff", true);
                 localStorage.setItem("VidOff", true);
+                let Data = {
+                  RoomID: meetingURLLocalData?.roomID,
+                  UserGUID: meetingURLLocalData?.userGUID,
+                };
+                dispatch(LeaveMeetingVideo(Data, navigate, t));
               }
             }
             // let Data2 = {
@@ -2318,6 +2329,14 @@ const Dashboard = () => {
   const onConnectionLost = () => {
     setTimeout(mqttConnection, 3000);
   };
+
+  useEffect(() => {
+    if (meetingUrlData !== null && meetingUrlData !== undefined) {
+      setMeetingURLLocalData(meetingUrlData);
+    } else {
+      setMeetingURLLocalData(null);
+    }
+  }, [meetingUrlData]);
 
   useEffect(() => {
     if (Helper.socket === null) {
