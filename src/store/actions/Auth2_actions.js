@@ -44,6 +44,7 @@ import {
   USERPASSWORDVERIFICATION,
   USERSPASSWORDCREATION,
 } from "../../commen/functions/responce_message";
+import { GetAllMeetingTypesNewFunction } from "./NewMeetingActions";
 
 const createOrganizationInit = () => {
   return {
@@ -545,6 +546,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
         navigate,
         t
       );
+
+      dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
       // await dispatch(
       //   getPackageExpiryDetail(
       //     navigate,
