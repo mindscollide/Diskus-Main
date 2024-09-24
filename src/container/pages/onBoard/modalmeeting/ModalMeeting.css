@@ -162,10 +162,6 @@ body[dir="rtl"] .onboard_detail_camera {
   height: 36px !important;
 }
 
-.onboard-details-btn {
-  margin-top: -25px;
-}
-
 .onboard-date-picker {
   margin-top: -12px;
   padding: 0px 10px !important;
@@ -179,7 +175,8 @@ body[dir="rtl"] .onboard_detail_camera {
   font-weight: 600 !important;
 }
 
-/* button.onboard_detail_camera{
-  margin-top: 13px !important;
-  height: 30px;
-} */
+@media (min-width: 576px) {
+  .fade.onboard-modal.modal.show {
+    --bs-modal-margin: 28px !important;
+  }
+}

@@ -33,6 +33,7 @@ import {
 } from "../../../commen/functions/time_formatter";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions.js";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option.js";
+import { fileFormatforSignatureFlow } from "../../../commen/functions/utils.js";
 
 // Functional component for pending approvals section
 const ReviewMinutes = () => {
@@ -365,13 +366,7 @@ const ReviewMinutes = () => {
       attachmentID: record.pK_FileID,
     };
     let pdfDataJson = JSON.stringify(Data);
-    if (
-      ext === "pdf" ||
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xlx" ||
-      ext === "xlsx"
-    ) {
+    if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
@@ -579,7 +574,7 @@ const ReviewMinutes = () => {
   return (
     <section className={styles["pendingApprovalContainer"]}>
       {/* Container for pending approval section */}
-      <Row className="my-3 d-flex align-items-center">
+      <Row className='my-3 d-flex align-items-center'>
         <Col sm={12} md={12} lg={12}>
           <span className={styles["pendingApprovalHeading"]}>
             {MinutesReducer.currentMeetingMinutesToReviewData.title}
@@ -589,7 +584,7 @@ const ReviewMinutes = () => {
       <Paper className={styles["pendingApprovalPaper"]}>
         {/* Paper component for styling */}
         <div className={styles["main-wrapper"]}>
-          <Row className="py-3 mx-50">
+          <Row className='py-3 mx-50'>
             <Col sm={12} md={6} lg={6}>
               <span className={styles["pendingApprovalHeading"]}>
                 {t("Review Minutes")}
@@ -599,8 +594,7 @@ const ReviewMinutes = () => {
               sm={12}
               md={6}
               lg={6}
-              className="justify-content-end d-flex align-items-center"
-            >
+              className='justify-content-end d-flex align-items-center'>
               <span className={styles["No-of-reviews"]}>
                 {t("Remaining-minutes-to-review") + minutesToReview}
               </span>
@@ -618,14 +612,13 @@ const ReviewMinutes = () => {
                 ? styles["review-minutes-wrapper-scroll"]
                 : styles["review-minutes-wrapper"]
             }
-            ref={divRef}
-          >
+            ref={divRef}>
             {/* CONTENT */}
             {minutesAgenda.length > 0
               ? minutesAgenda?.map((data, index) => {
                   return (
                     <>
-                      <Row className="mx-50">
+                      <Row className='mx-50'>
                         <Col lg={12} md={12} sm={12}>
                           <p className={styles["Parent-title-heading"]}>
                             {data.agendaTitle}
@@ -641,8 +634,7 @@ const ReviewMinutes = () => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="position-relative"
-                                >
+                                  className='position-relative'>
                                   {parentMinutedata.agendaMinutesVersionHistory
                                     .length === 0 &&
                                   parentMinutedata.declinedReviews.length ===
@@ -652,8 +644,7 @@ const ReviewMinutes = () => {
                                         styles[
                                           "version-control-wrapper-with-more"
                                         ]
-                                      }
-                                    >
+                                      }>
                                       <span className={styles["with-text"]}>
                                         {parentMinutedata.versionNumber}.0
                                       </span>
@@ -667,8 +658,7 @@ const ReviewMinutes = () => {
                                           4
                                         ? styles["uploaded-details-rejected"]
                                         : styles["uploaded-details"]
-                                    }
-                                  >
+                                    }>
                                     <Row className={styles["inherit-height"]}>
                                       <Col lg={8} md={8} sm={12}>
                                         <p
@@ -676,8 +666,9 @@ const ReviewMinutes = () => {
                                             __html:
                                               parentMinutedata.minutesDetails,
                                           }}
-                                          className={styles["minutes-text"]}
-                                        ></p>
+                                          className={
+                                            styles["minutes-text"]
+                                          }></p>
                                         <Row>
                                           {parentMinutedata
                                             .minuteAttachmentFiles.length > 0 &&
@@ -721,37 +712,34 @@ const ReviewMinutes = () => {
                                         lg={4}
                                         md={4}
                                         sm={12}
-                                        className="position-relative"
-                                      >
-                                        <Row className="m-0">
+                                        className='position-relative'>
+                                        <Row className='m-0'>
                                           <Col
                                             lg={6}
                                             md={6}
                                             sm={12}
-                                            className="p-0"
-                                          >
+                                            className='p-0'>
                                             <span
-                                              className={styles["bar-line"]}
-                                            ></span>
+                                              className={
+                                                styles["bar-line"]
+                                              }></span>
                                             <p
                                               className={
                                                 styles["uploadedbyuser"]
-                                              }
-                                            >
+                                              }>
                                               {t("Uploaded-by")}
                                             </p>
                                             <div className={styles["gap-ti"]}>
                                               <img
                                                 src={`data:image/jpeg;base64,${parentMinutedata?.userProfilePicture?.displayProfilePictureName}`}
                                                 className={styles["Image"]}
-                                                alt=""
+                                                alt=''
                                                 draggable={false}
                                               />
                                               <p
                                                 className={
                                                   styles["agendaCreater"]
-                                                }
-                                              >
+                                                }>
                                                 {parentMinutedata.userName}
                                               </p>
                                             </div>
@@ -760,8 +748,7 @@ const ReviewMinutes = () => {
                                             lg={6}
                                             md={6}
                                             sm={12}
-                                            className="d-grid justify-content-end p-0"
-                                          >
+                                            className='d-grid justify-content-end p-0'>
                                             {parentMinutedata.actorBundleStatusID ===
                                             3 ? (
                                               <Button
@@ -845,8 +832,7 @@ const ReviewMinutes = () => {
                                             <p
                                               className={
                                                 styles["time-uploader"]
-                                              }
-                                            >
+                                              }>
                                               {convertToGMTMinuteTime(
                                                 parentMinutedata.lastUpdatedTime
                                               )}
@@ -855,8 +841,7 @@ const ReviewMinutes = () => {
                                             <p
                                               className={
                                                 styles["date-uploader"]
-                                              }
-                                            >
+                                              }>
                                               {convertDateToGMTMinute(
                                                 parentMinutedata.lastUpdatedDate
                                               )}
@@ -869,7 +854,7 @@ const ReviewMinutes = () => {
                                 </Col>
                               </Row>
                               {parentMinutedata.declinedReviews.length > 0 ? (
-                                <Row className="mx-50">
+                                <Row className='mx-50'>
                                   <Col lg={12} md={12} sm={12}>
                                     <div className={styles["wrapper-userlist"]}>
                                       <p>
@@ -903,13 +888,12 @@ const ReviewMinutes = () => {
                                         )}
                                       </p>
                                       <p
-                                        className="text-decoration-underline cursor-pointer"
+                                        className='text-decoration-underline cursor-pointer'
                                         onClick={() =>
                                           toggleShowHide(
                                             parentMinutedata.minuteID
                                           )
-                                        }
-                                      >
+                                        }>
                                         {visibleParentMinuteIDs.includes(
                                           parentMinutedata.minuteID
                                         )
@@ -937,8 +921,7 @@ const ReviewMinutes = () => {
                                             lg={12}
                                             md={12}
                                             sm={12}
-                                            className="position-relative"
-                                          >
+                                            className='position-relative'>
                                             {declinedData.length === 0 ? (
                                               <div
                                                 className={
@@ -949,8 +932,7 @@ const ReviewMinutes = () => {
                                                     : styles[
                                                         "version-control-wrapper-with-more-last"
                                                       ]
-                                                }
-                                              ></div>
+                                                }></div>
                                             ) : (
                                               <div
                                                 className={
@@ -964,25 +946,21 @@ const ReviewMinutes = () => {
                                                     : styles[
                                                         "version-control-wrapper-last"
                                                       ]
-                                                }
-                                              ></div>
+                                                }></div>
                                             )}
                                             <div
                                               className={
                                                 styles["uploaded-details"]
-                                              }
-                                            >
+                                              }>
                                               <Row
                                                 className={
                                                   styles["inherit-height"]
-                                                }
-                                              >
+                                                }>
                                                 <Col lg={8} md={8} sm={12}>
                                                   <p
                                                     className={
                                                       styles["minutes-text"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {declinedData.reason}
                                                   </p>
                                                 </Col>
@@ -990,40 +968,35 @@ const ReviewMinutes = () => {
                                                   lg={4}
                                                   md={4}
                                                   sm={12}
-                                                  className="position-relative"
-                                                >
-                                                  <Row className="m-0">
+                                                  className='position-relative'>
+                                                  <Row className='m-0'>
                                                     <Col
                                                       lg={6}
                                                       md={6}
                                                       sm={12}
-                                                      className="p-0"
-                                                    >
+                                                      className='p-0'>
                                                       <span
                                                         className={
                                                           styles["bar-line"]
-                                                        }
-                                                      ></span>
+                                                        }></span>
                                                       <p
                                                         className={
                                                           styles[
                                                             "uploadedbyuser"
                                                           ]
-                                                        }
-                                                      >
+                                                        }>
                                                         {t("Reviewed-by")}
                                                       </p>
                                                       <div
                                                         className={
                                                           styles["gap-ti"]
-                                                        }
-                                                      >
+                                                        }>
                                                         <img
                                                           src={`data:image/jpeg;base64,${declinedData?.userProfilePicture?.displayProfilePictureName}`}
                                                           className={
                                                             styles["Image"]
                                                           }
-                                                          alt=""
+                                                          alt=''
                                                           draggable={false}
                                                         />
                                                         <p
@@ -1031,8 +1004,7 @@ const ReviewMinutes = () => {
                                                             styles[
                                                               "agendaCreater"
                                                             ]
-                                                          }
-                                                        >
+                                                          }>
                                                           {
                                                             declinedData.actorName
                                                           }
@@ -1048,8 +1020,7 @@ const ReviewMinutes = () => {
                                                         lg={6}
                                                         md={6}
                                                         sm={12}
-                                                        className="d-grid justify-content-end p-0"
-                                                      >
+                                                        className='d-grid justify-content-end p-0'>
                                                         <Button
                                                           // onClick={() => {
                                                           //   dispatch(
@@ -1122,8 +1093,7 @@ const ReviewMinutes = () => {
                                                         lg={6}
                                                         md={6}
                                                         sm={12}
-                                                        className="d-grid justify-content-end p-0"
-                                                      >
+                                                        className='d-grid justify-content-end p-0'>
                                                         <Button
                                                           // onClick={() => {
                                                           //   dispatch(
@@ -1216,8 +1186,7 @@ const ReviewMinutes = () => {
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className="position-relative"
-                                        >
+                                          className='position-relative'>
                                           <div
                                             className={
                                               historyData.declinedReviews
@@ -1228,11 +1197,9 @@ const ReviewMinutes = () => {
                                                 : styles[
                                                     "version-control-wrapper-with-more-last"
                                                   ]
-                                            }
-                                          >
+                                            }>
                                             <span
-                                              className={styles["with-text"]}
-                                            >
+                                              className={styles["with-text"]}>
                                               {historyData.versionNumber}.0
                                             </span>
                                           </div>
@@ -1251,13 +1218,11 @@ const ReviewMinutes = () => {
                                                     "uploaded-details-rejected"
                                                   ]
                                                 : styles["uploaded-details"]
-                                            }
-                                          >
+                                            }>
                                             <Row
                                               className={
                                                 styles["inherit-height"]
-                                              }
-                                            >
+                                              }>
                                               <Col lg={8} md={8} sm={12}>
                                                 <p
                                                   dangerouslySetInnerHTML={{
@@ -1266,32 +1231,27 @@ const ReviewMinutes = () => {
                                                   }}
                                                   className={
                                                     styles["minutes-text"]
-                                                  }
-                                                ></p>
+                                                  }></p>
                                               </Col>
                                               <Col
                                                 lg={4}
                                                 md={4}
                                                 sm={12}
-                                                className="position-relative"
-                                              >
-                                                <Row className="m-0">
+                                                className='position-relative'>
+                                                <Row className='m-0'>
                                                   <Col
                                                     lg={6}
                                                     md={6}
                                                     sm={12}
-                                                    className="p-0"
-                                                  >
+                                                    className='p-0'>
                                                     <span
                                                       className={
                                                         styles["bar-line"]
-                                                      }
-                                                    ></span>
+                                                      }></span>
                                                     <p
                                                       className={
                                                         styles["uploadedbyuser"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {historyData
                                                         .declinedReviews
                                                         .length === 0
@@ -1301,14 +1261,13 @@ const ReviewMinutes = () => {
                                                     <div
                                                       className={
                                                         styles["gap-ti"]
-                                                      }
-                                                    >
+                                                      }>
                                                       <img
                                                         src={`data:image/jpeg;base64,${minutesAgenda[0]?.minuteData[0]?.userProfilePicture?.displayProfilePictureName}`}
                                                         className={
                                                           styles["Image"]
                                                         }
-                                                        alt=""
+                                                        alt=''
                                                         draggable={false}
                                                       />
                                                       <p
@@ -1316,8 +1275,7 @@ const ReviewMinutes = () => {
                                                           styles[
                                                             "agendaCreater"
                                                           ]
-                                                        }
-                                                      >
+                                                        }>
                                                         {
                                                           minutesAgenda[0]
                                                             ?.minuteData[0]
@@ -1333,8 +1291,7 @@ const ReviewMinutes = () => {
                                                     <p
                                                       className={
                                                         styles["time-uploader"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {convertToGMTMinuteTime(
                                                         historyData.lastUpdatedTime
                                                       )}
@@ -1343,8 +1300,7 @@ const ReviewMinutes = () => {
                                                     <p
                                                       className={
                                                         styles["date-uploader"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {convertDateToGMTMinute(
                                                         historyData.lastUpdatedDate
                                                       )}
@@ -1359,13 +1315,12 @@ const ReviewMinutes = () => {
 
                                       {historyData.declinedReviews.length >
                                       0 ? (
-                                        <Row className="mx-50">
+                                        <Row className='mx-50'>
                                           <Col lg={12} md={12} sm={12}>
                                             <div
                                               className={
                                                 styles["wrapper-userlist"]
-                                              }
-                                            >
+                                              }>
                                               <p>
                                                 {t(
                                                   "This minute is rejected by: "
@@ -1400,13 +1355,12 @@ const ReviewMinutes = () => {
                                                 )}
                                               </p>
                                               <p
-                                                className="text-decoration-underline cursor-pointer"
+                                                className='text-decoration-underline cursor-pointer'
                                                 onClick={() =>
                                                   toggleShowHide(
                                                     historyData.minuteID
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 {visibleParentMinuteIDs.includes(
                                                   historyData.minuteID
                                                 )
@@ -1434,8 +1388,7 @@ const ReviewMinutes = () => {
                                                     lg={12}
                                                     md={12}
                                                     sm={12}
-                                                    className="position-relative"
-                                                  >
+                                                    className='position-relative'>
                                                     {declinedDataHistory.length ===
                                                     0 ? (
                                                       <div
@@ -1447,8 +1400,7 @@ const ReviewMinutes = () => {
                                                             : styles[
                                                                 "version-control-wrapper-with-more-last"
                                                               ]
-                                                        }
-                                                      ></div>
+                                                        }></div>
                                                     ) : (
                                                       <div
                                                         className={
@@ -1459,35 +1411,30 @@ const ReviewMinutes = () => {
                                                             : styles[
                                                                 "version-control-wrapper-last"
                                                               ]
-                                                        }
-                                                      ></div>
+                                                        }></div>
                                                     )}
                                                     <div
                                                       className={
                                                         styles[
                                                           "uploaded-details"
                                                         ]
-                                                      }
-                                                    >
+                                                      }>
                                                       <Row
                                                         className={
                                                           styles[
                                                             "inherit-height"
                                                           ]
-                                                        }
-                                                      >
+                                                        }>
                                                         <Col
                                                           lg={8}
                                                           md={8}
-                                                          sm={12}
-                                                        >
+                                                          sm={12}>
                                                           <p
                                                             className={
                                                               styles[
                                                                 "minutes-text"
                                                               ]
-                                                            }
-                                                          >
+                                                            }>
                                                             {
                                                               declinedDataHistory.reason
                                                             }
@@ -1497,29 +1444,25 @@ const ReviewMinutes = () => {
                                                           lg={4}
                                                           md={4}
                                                           sm={12}
-                                                          className="position-relative"
-                                                        >
-                                                          <Row className="m-0">
+                                                          className='position-relative'>
+                                                          <Row className='m-0'>
                                                             <Col
                                                               lg={6}
                                                               md={6}
                                                               sm={12}
-                                                              className="p-0"
-                                                            >
+                                                              className='p-0'>
                                                               <span
                                                                 className={
                                                                   styles[
                                                                     "bar-line"
                                                                   ]
-                                                                }
-                                                              ></span>
+                                                                }></span>
                                                               <p
                                                                 className={
                                                                   styles[
                                                                     "uploadedbyuser"
                                                                   ]
-                                                                }
-                                                              >
+                                                                }>
                                                                 {t(
                                                                   "Reviewed-by"
                                                                 )}
@@ -1529,8 +1472,7 @@ const ReviewMinutes = () => {
                                                                   styles[
                                                                     "gap-ti"
                                                                   ]
-                                                                }
-                                                              >
+                                                                }>
                                                                 <img
                                                                   src={`data:image/jpeg;base64,${declinedDataHistory?.userProfilePicture?.displayProfilePictureName}`}
                                                                   className={
@@ -1538,7 +1480,7 @@ const ReviewMinutes = () => {
                                                                       "Image"
                                                                     ]
                                                                   }
-                                                                  alt=""
+                                                                  alt=''
                                                                   draggable={
                                                                     false
                                                                   }
@@ -1548,8 +1490,7 @@ const ReviewMinutes = () => {
                                                                     styles[
                                                                       "agendaCreater"
                                                                     ]
-                                                                  }
-                                                                >
+                                                                  }>
                                                                   {
                                                                     declinedDataHistory.actorName
                                                                   }
@@ -1566,8 +1507,7 @@ const ReviewMinutes = () => {
                                                                 lg={6}
                                                                 md={6}
                                                                 sm={12}
-                                                                className="d-grid justify-content-end p-0"
-                                                              >
+                                                                className='d-grid justify-content-end p-0'>
                                                                 <Button
                                                                   // onClick={() => {
                                                                   //   dispatch(
@@ -1648,8 +1588,7 @@ const ReviewMinutes = () => {
                                                                 lg={6}
                                                                 md={6}
                                                                 sm={12}
-                                                                className="d-grid justify-content-end p-0"
-                                                              >
+                                                                className='d-grid justify-content-end p-0'>
                                                                 <Button
                                                                   onClick={() => {
                                                                     dispatch(
@@ -1726,7 +1665,7 @@ const ReviewMinutes = () => {
                           return (
                             <>
                               {subMinuteData.minuteData.length === 0 ? null : (
-                                <Row className="mx-50">
+                                <Row className='mx-50'>
                                   <Col lg={12} md={12} sm={12}>
                                     <p className={styles["SUB-title-heading"]}>
                                       {index +
@@ -1749,14 +1688,12 @@ const ReviewMinutes = () => {
                                           currentLanguage === "ar"
                                             ? "mxr-50"
                                             : "mxl-50"
-                                        }
-                                      >
+                                        }>
                                         <Col
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className="position-relative"
-                                        >
+                                          className='position-relative'>
                                           {minuteDataSubminute
                                             .agendaMinutesVersionHistory
                                             .length === 0 &&
@@ -1767,11 +1704,9 @@ const ReviewMinutes = () => {
                                                 styles[
                                                   "version-control-wrapper-with-more"
                                                 ]
-                                              }
-                                            >
+                                              }>
                                               <span
-                                                className={styles["with-text"]}
-                                              >
+                                                className={styles["with-text"]}>
                                                 {
                                                   minuteDataSubminute.versionNumber
                                                 }
@@ -1792,13 +1727,11 @@ const ReviewMinutes = () => {
                                                     "uploaded-details-rejected"
                                                   ]
                                                 : styles["uploaded-details"]
-                                            }
-                                          >
+                                            }>
                                             <Row
                                               className={
                                                 styles["inherit-height"]
-                                              }
-                                            >
+                                              }>
                                               <Col lg={8} md={8} sm={12}>
                                                 <p
                                                   dangerouslySetInnerHTML={{
@@ -1807,8 +1740,7 @@ const ReviewMinutes = () => {
                                                   }}
                                                   className={
                                                     styles["minutes-text"]
-                                                  }
-                                                ></p>
+                                                  }></p>
                                                 <Row>
                                                   {minuteDataSubminute
                                                     .minuteAttachmentFiles
@@ -1819,8 +1751,7 @@ const ReviewMinutes = () => {
                                                           <Col
                                                             sm={3}
                                                             md={3}
-                                                            lg={3}
-                                                          >
+                                                            lg={3}>
                                                             <AttachmentViewer
                                                               handleClickDownload={() =>
                                                                 downloadDocument(
@@ -1861,38 +1792,33 @@ const ReviewMinutes = () => {
                                                 lg={4}
                                                 md={4}
                                                 sm={12}
-                                                className="position-relative"
-                                              >
-                                                <Row className="m-0">
+                                                className='position-relative'>
+                                                <Row className='m-0'>
                                                   <Col
                                                     lg={6}
                                                     md={6}
                                                     sm={12}
-                                                    className="p-0"
-                                                  >
+                                                    className='p-0'>
                                                     <span
                                                       className={
                                                         styles["bar-line"]
-                                                      }
-                                                    ></span>
+                                                      }></span>
                                                     <p
                                                       className={
                                                         styles["uploadedbyuser"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {t("Uploaded-by")}
                                                     </p>
                                                     <div
                                                       className={
                                                         styles["gap-ti"]
-                                                      }
-                                                    >
+                                                      }>
                                                       <img
                                                         src={`data:image/jpeg;base64,${minuteDataSubminute?.userProfilePicture?.displayProfilePictureName}`}
                                                         className={
                                                           styles["Image"]
                                                         }
-                                                        alt=""
+                                                        alt=''
                                                         draggable={false}
                                                       />
                                                       <p
@@ -1900,8 +1826,7 @@ const ReviewMinutes = () => {
                                                           styles[
                                                             "agendaCreater"
                                                           ]
-                                                        }
-                                                      >
+                                                        }>
                                                         {
                                                           minuteDataSubminute.userName
                                                         }
@@ -1912,8 +1837,7 @@ const ReviewMinutes = () => {
                                                     lg={6}
                                                     md={6}
                                                     sm={12}
-                                                    className="d-grid justify-content-end p-0"
-                                                  >
+                                                    className='d-grid justify-content-end p-0'>
                                                     {minuteDataSubminute.actorBundleStatusID ===
                                                     3 ? (
                                                       <Button
@@ -2015,8 +1939,7 @@ const ReviewMinutes = () => {
                                                     <p
                                                       className={
                                                         styles["time-uploader"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {convertToGMTMinuteTime(
                                                         minuteDataSubminute.lastUpdatedTime
                                                       )}
@@ -2025,8 +1948,7 @@ const ReviewMinutes = () => {
                                                     <p
                                                       className={
                                                         styles["date-uploader"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {convertDateToGMTMinute(
                                                         minuteDataSubminute.lastUpdatedDate
                                                       )}
@@ -2045,16 +1967,14 @@ const ReviewMinutes = () => {
                                             currentLanguage === "ar"
                                               ? "mxr-50"
                                               : "mxl-50"
-                                          }
-                                        >
+                                          }>
                                           <Col lg={12} md={12} sm={12}>
                                             <div
                                               className={
                                                 styles[
                                                   "wrapper-userlist-subagenda"
                                                 ]
-                                              }
-                                            >
+                                              }>
                                               <p>
                                                 {t(
                                                   "This minute is rejected by: "
@@ -2091,13 +2011,12 @@ const ReviewMinutes = () => {
                                                 )}
                                               </p>
                                               <p
-                                                className="text-decoration-underline cursor-pointer"
+                                                className='text-decoration-underline cursor-pointer'
                                                 onClick={() =>
                                                   toggleShowHide(
                                                     minuteDataSubminute.minuteID
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 {visibleParentMinuteIDs.includes(
                                                   minuteDataSubminute.minuteID
                                                 )
@@ -2126,14 +2045,12 @@ const ReviewMinutes = () => {
                                                     currentLanguage === "ar"
                                                       ? "mxr-50"
                                                       : "mxl-50"
-                                                  }
-                                                >
+                                                  }>
                                                   <Col
                                                     lg={12}
                                                     md={12}
                                                     sm={12}
-                                                    className="position-relative"
-                                                  >
+                                                    className='position-relative'>
                                                     {declinedData.length ===
                                                     0 ? (
                                                       <div
@@ -2145,8 +2062,7 @@ const ReviewMinutes = () => {
                                                             : styles[
                                                                 "version-control-wrapper-with-more-last"
                                                               ]
-                                                        }
-                                                      ></div>
+                                                        }></div>
                                                     ) : (
                                                       <div
                                                         className={
@@ -2160,35 +2076,30 @@ const ReviewMinutes = () => {
                                                             : styles[
                                                                 "version-control-wrapper-last"
                                                               ]
-                                                        }
-                                                      ></div>
+                                                        }></div>
                                                     )}
                                                     <div
                                                       className={
                                                         styles[
                                                           "uploaded-details"
                                                         ]
-                                                      }
-                                                    >
+                                                      }>
                                                       <Row
                                                         className={
                                                           styles[
                                                             "inherit-height"
                                                           ]
-                                                        }
-                                                      >
+                                                        }>
                                                         <Col
                                                           lg={8}
                                                           md={8}
-                                                          sm={12}
-                                                        >
+                                                          sm={12}>
                                                           <p
                                                             className={
                                                               styles[
                                                                 "minutes-text"
                                                               ]
-                                                            }
-                                                          >
+                                                            }>
                                                             {
                                                               declinedData.reason
                                                             }
@@ -2198,29 +2109,25 @@ const ReviewMinutes = () => {
                                                           lg={4}
                                                           md={4}
                                                           sm={12}
-                                                          className="position-relative"
-                                                        >
-                                                          <Row className="m-0">
+                                                          className='position-relative'>
+                                                          <Row className='m-0'>
                                                             <Col
                                                               lg={6}
                                                               md={6}
                                                               sm={12}
-                                                              className="p-0"
-                                                            >
+                                                              className='p-0'>
                                                               <span
                                                                 className={
                                                                   styles[
                                                                     "bar-line"
                                                                   ]
-                                                                }
-                                                              ></span>
+                                                                }></span>
                                                               <p
                                                                 className={
                                                                   styles[
                                                                     "uploadedbyuser"
                                                                   ]
-                                                                }
-                                                              >
+                                                                }>
                                                                 {t(
                                                                   "Reviewed-by"
                                                                 )}
@@ -2230,8 +2137,7 @@ const ReviewMinutes = () => {
                                                                   styles[
                                                                     "gap-ti"
                                                                   ]
-                                                                }
-                                                              >
+                                                                }>
                                                                 <img
                                                                   src={`data:image/jpeg;base64,${declinedData?.userProfilePicture?.displayProfilePictureName}`}
                                                                   className={
@@ -2239,7 +2145,7 @@ const ReviewMinutes = () => {
                                                                       "Image"
                                                                     ]
                                                                   }
-                                                                  alt=""
+                                                                  alt=''
                                                                   draggable={
                                                                     false
                                                                   }
@@ -2249,8 +2155,7 @@ const ReviewMinutes = () => {
                                                                     styles[
                                                                       "agendaCreater"
                                                                     ]
-                                                                  }
-                                                                >
+                                                                  }>
                                                                   {
                                                                     declinedData.actorName
                                                                   }
@@ -2268,8 +2173,7 @@ const ReviewMinutes = () => {
                                                                   lg={6}
                                                                   md={6}
                                                                   sm={12}
-                                                                  className="d-grid justify-content-end p-0"
-                                                                >
+                                                                  className='d-grid justify-content-end p-0'>
                                                                   <Button
                                                                     // onClick={() => {
                                                                     //   dispatch(
@@ -2332,8 +2236,7 @@ const ReviewMinutes = () => {
                                                                 lg={6}
                                                                 md={6}
                                                                 sm={12}
-                                                                className="d-grid justify-content-end p-0"
-                                                              >
+                                                                className='d-grid justify-content-end p-0'>
                                                                 <Button
                                                                   // onClick={() => {
                                                                   //   dispatch(
@@ -2435,14 +2338,12 @@ const ReviewMinutes = () => {
                                                   currentLanguage === "ar"
                                                     ? "mxr-50"
                                                     : "mxl-50"
-                                                }
-                                              >
+                                                }>
                                                 <Col
                                                   lg={12}
                                                   md={12}
                                                   sm={12}
-                                                  className="position-relative"
-                                                >
+                                                  className='position-relative'>
                                                   <div
                                                     className={
                                                       historyData
@@ -2455,13 +2356,11 @@ const ReviewMinutes = () => {
                                                         : styles[
                                                             "version-control-wrapper-with-more-last"
                                                           ]
-                                                    }
-                                                  >
+                                                    }>
                                                     <span
                                                       className={
                                                         styles["with-text"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {
                                                         historyData.versionNumber
                                                       }
@@ -2486,18 +2385,15 @@ const ReviewMinutes = () => {
                                                         : styles[
                                                             "uploaded-details"
                                                           ]
-                                                    }
-                                                  >
+                                                    }>
                                                     <Row
                                                       className={
                                                         styles["inherit-height"]
-                                                      }
-                                                    >
+                                                      }>
                                                       <Col
                                                         lg={8}
                                                         md={8}
-                                                        sm={12}
-                                                      >
+                                                        sm={12}>
                                                         <p
                                                           dangerouslySetInnerHTML={{
                                                             __html:
@@ -2507,36 +2403,31 @@ const ReviewMinutes = () => {
                                                             styles[
                                                               "minutes-text"
                                                             ]
-                                                          }
-                                                        ></p>
+                                                          }></p>
                                                       </Col>
                                                       <Col
                                                         lg={4}
                                                         md={4}
                                                         sm={12}
-                                                        className="position-relative"
-                                                      >
-                                                        <Row className="m-0">
+                                                        className='position-relative'>
+                                                        <Row className='m-0'>
                                                           <Col
                                                             lg={6}
                                                             md={6}
                                                             sm={12}
-                                                            className="p-0"
-                                                          >
+                                                            className='p-0'>
                                                             <span
                                                               className={
                                                                 styles[
                                                                   "bar-line"
                                                                 ]
-                                                              }
-                                                            ></span>
+                                                              }></span>
                                                             <p
                                                               className={
                                                                 styles[
                                                                   "uploadedbyuser"
                                                                 ]
-                                                              }
-                                                            >
+                                                              }>
                                                               {historyData
                                                                 .declinedReviews
                                                                 .length === 0
@@ -2550,8 +2441,7 @@ const ReviewMinutes = () => {
                                                             <div
                                                               className={
                                                                 styles["gap-ti"]
-                                                              }
-                                                            >
+                                                              }>
                                                               <img
                                                                 src={`data:image/jpeg;base64,${minutesAgenda[0]?.minuteData[0]?.userProfilePicture?.displayProfilePictureName}`}
                                                                 className={
@@ -2559,7 +2449,7 @@ const ReviewMinutes = () => {
                                                                     "Image"
                                                                   ]
                                                                 }
-                                                                alt=""
+                                                                alt=''
                                                                 draggable={
                                                                   false
                                                                 }
@@ -2569,8 +2459,7 @@ const ReviewMinutes = () => {
                                                                   styles[
                                                                     "agendaCreater"
                                                                   ]
-                                                                }
-                                                              >
+                                                                }>
                                                                 {
                                                                   minutesAgenda[0]
                                                                     ?.minuteData[0]
@@ -2585,15 +2474,13 @@ const ReviewMinutes = () => {
                                                           <Col
                                                             lg={12}
                                                             md={12}
-                                                            sm={12}
-                                                          >
+                                                            sm={12}>
                                                             <p
                                                               className={
                                                                 styles[
                                                                   "time-uploader"
                                                                 ]
-                                                              }
-                                                            >
+                                                              }>
                                                               {convertToGMTMinuteTime(
                                                                 historyData.lastUpdatedTime
                                                               )}
@@ -2604,8 +2491,7 @@ const ReviewMinutes = () => {
                                                                 styles[
                                                                   "date-uploader"
                                                                 ]
-                                                              }
-                                                            >
+                                                              }>
                                                               {convertDateToGMTMinute(
                                                                 historyData.lastUpdatedDate
                                                               )}
@@ -2619,15 +2505,14 @@ const ReviewMinutes = () => {
                                               </Row>
                                               {historyData.declinedReviews
                                                 .length > 0 ? (
-                                                <Row className="mx-50">
+                                                <Row className='mx-50'>
                                                   <Col lg={12} md={12} sm={12}>
                                                     <div
                                                       className={
                                                         styles[
                                                           "wrapper-userlist"
                                                         ]
-                                                      }
-                                                    >
+                                                      }>
                                                       <p>
                                                         {t(
                                                           "This minute is rejected by: "
@@ -2640,8 +2525,7 @@ const ReviewMinutes = () => {
                                                               index
                                                             ) => (
                                                               <React.Fragment
-                                                                key={index}
-                                                              >
+                                                                key={index}>
                                                                 {
                                                                   usersList.actorName
                                                                 }
@@ -2674,13 +2558,12 @@ const ReviewMinutes = () => {
                                                         )}
                                                       </p>
                                                       <p
-                                                        className="text-decoration-underline cursor-pointer"
+                                                        className='text-decoration-underline cursor-pointer'
                                                         onClick={() =>
                                                           toggleShowHide(
                                                             historyData.minuteID
                                                           )
-                                                        }
-                                                      >
+                                                        }>
                                                         {visibleParentMinuteIDs.includes(
                                                           historyData.minuteID
                                                         )
@@ -2713,14 +2596,12 @@ const ReviewMinutes = () => {
                                                             "ar"
                                                               ? "mxr-50"
                                                               : "mxl-50"
-                                                          }
-                                                        >
+                                                          }>
                                                           <Col
                                                             lg={12}
                                                             md={12}
                                                             sm={12}
-                                                            className="position-relative"
-                                                          >
+                                                            className='position-relative'>
                                                             {declinedDataHistory.length ===
                                                             0 ? (
                                                               <div
@@ -2732,8 +2613,7 @@ const ReviewMinutes = () => {
                                                                     : styles[
                                                                         "version-control-wrapper-with-more-last"
                                                                       ]
-                                                                }
-                                                              ></div>
+                                                                }></div>
                                                             ) : (
                                                               <div
                                                                 className={
@@ -2744,35 +2624,30 @@ const ReviewMinutes = () => {
                                                                     : styles[
                                                                         "version-control-wrapper-last"
                                                                       ]
-                                                                }
-                                                              ></div>
+                                                                }></div>
                                                             )}
                                                             <div
                                                               className={
                                                                 styles[
                                                                   "uploaded-details"
                                                                 ]
-                                                              }
-                                                            >
+                                                              }>
                                                               <Row
                                                                 className={
                                                                   styles[
                                                                     "inherit-height"
                                                                   ]
-                                                                }
-                                                              >
+                                                                }>
                                                                 <Col
                                                                   lg={8}
                                                                   md={8}
-                                                                  sm={12}
-                                                                >
+                                                                  sm={12}>
                                                                   <p
                                                                     className={
                                                                       styles[
                                                                         "minutes-text"
                                                                       ]
-                                                                    }
-                                                                  >
+                                                                    }>
                                                                     {
                                                                       declinedDataHistory.reason
                                                                     }
@@ -2782,29 +2657,25 @@ const ReviewMinutes = () => {
                                                                   lg={4}
                                                                   md={4}
                                                                   sm={12}
-                                                                  className="position-relative"
-                                                                >
-                                                                  <Row className="m-0">
+                                                                  className='position-relative'>
+                                                                  <Row className='m-0'>
                                                                     <Col
                                                                       lg={6}
                                                                       md={6}
                                                                       sm={12}
-                                                                      className="p-0"
-                                                                    >
+                                                                      className='p-0'>
                                                                       <span
                                                                         className={
                                                                           styles[
                                                                             "bar-line"
                                                                           ]
-                                                                        }
-                                                                      ></span>
+                                                                        }></span>
                                                                       <p
                                                                         className={
                                                                           styles[
                                                                             "uploadedbyuser"
                                                                           ]
-                                                                        }
-                                                                      >
+                                                                        }>
                                                                         {t(
                                                                           "Reviewed-by"
                                                                         )}
@@ -2814,8 +2685,7 @@ const ReviewMinutes = () => {
                                                                           styles[
                                                                             "gap-ti"
                                                                           ]
-                                                                        }
-                                                                      >
+                                                                        }>
                                                                         <img
                                                                           src={`data:image/jpeg;base64,${declinedDataHistory?.userProfilePicture?.displayProfilePictureName}`}
                                                                           className={
@@ -2823,7 +2693,7 @@ const ReviewMinutes = () => {
                                                                               "Image"
                                                                             ]
                                                                           }
-                                                                          alt=""
+                                                                          alt=''
                                                                           draggable={
                                                                             false
                                                                           }
@@ -2833,8 +2703,7 @@ const ReviewMinutes = () => {
                                                                             styles[
                                                                               "agendaCreater"
                                                                             ]
-                                                                          }
-                                                                        >
+                                                                          }>
                                                                           {
                                                                             declinedDataHistory.actorName
                                                                           }
@@ -2848,8 +2717,7 @@ const ReviewMinutes = () => {
                                                                         lg={6}
                                                                         md={6}
                                                                         sm={12}
-                                                                        className="d-grid justify-content-end p-0"
-                                                                      >
+                                                                        className='d-grid justify-content-end p-0'>
                                                                         <Button
                                                                           // onClick={() => {
                                                                           //   dispatch(
@@ -2934,7 +2802,7 @@ const ReviewMinutes = () => {
             {minutesGeneral?.map((data, index) => {
               return (
                 <>
-                  <Row className="mx-50">
+                  <Row className='mx-50'>
                     <Col lg={12} md={12} sm={12}>
                       <p className={styles["Parent-title-heading"]}>
                         {index + 1 + ". " + t("General-minutes")}
@@ -2947,15 +2815,13 @@ const ReviewMinutes = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="position-relative"
-                      >
+                        className='position-relative'>
                         {data.generalMinutesVersionHistory.length === 0 &&
                         data.declinedReviews.length === 0 ? null : (
                           <div
                             className={
                               styles["version-control-wrapper-with-more"]
-                            }
-                          >
+                            }>
                             <span className={styles["with-text"]}>
                               {data.versionNumber}.0
                             </span>
@@ -2968,16 +2834,14 @@ const ReviewMinutes = () => {
                               : data.actorBundleStatusID === 4
                               ? styles["uploaded-details-rejected"]
                               : styles["uploaded-details"]
-                          }
-                        >
+                          }>
                           <Row className={styles["inherit-height"]}>
                             <Col lg={8} md={8} sm={12}>
                               <p
                                 dangerouslySetInnerHTML={{
                                   __html: data.minutesDetails,
                                 }}
-                                className={styles["minutes-text"]}
-                              ></p>
+                                className={styles["minutes-text"]}></p>
                               <Row>
                                 {data.minuteAttachmentFiles.length > 0 &&
                                   data.minuteAttachmentFiles.map(
@@ -3016,10 +2880,9 @@ const ReviewMinutes = () => {
                               lg={4}
                               md={4}
                               sm={12}
-                              className="position-relative"
-                            >
-                              <Row className="m-0">
-                                <Col lg={6} md={6} sm={12} className="p-0">
+                              className='position-relative'>
+                              <Row className='m-0'>
+                                <Col lg={6} md={6} sm={12} className='p-0'>
                                   <span className={styles["bar-line"]}></span>
                                   <p className={styles["uploadedbyuser"]}>
                                     {t("Uploaded-by")}
@@ -3028,7 +2891,7 @@ const ReviewMinutes = () => {
                                     <img
                                       src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                                       className={styles["Image"]}
-                                      alt=""
+                                      alt=''
                                       draggable={false}
                                     />
                                     <p className={styles["agendaCreater"]}>
@@ -3040,8 +2903,7 @@ const ReviewMinutes = () => {
                                   lg={6}
                                   md={6}
                                   sm={12}
-                                  className="d-grid justify-content-end p-0"
-                                >
+                                  className='d-grid justify-content-end p-0'>
                                   {data.actorBundleStatusID === 3 ? (
                                     <Button
                                       text={t("Accepted")}
@@ -3106,7 +2968,7 @@ const ReviewMinutes = () => {
                       </Col>
                     </Row>
                     {data.declinedReviews.length > 0 ? (
-                      <Row className="mx-50">
+                      <Row className='mx-50'>
                         <Col lg={12} md={12} sm={12}>
                           <div className={styles["wrapper-userlist"]}>
                             <p>
@@ -3132,9 +2994,8 @@ const ReviewMinutes = () => {
                               )}
                             </p>
                             <p
-                              className="text-decoration-underline cursor-pointer"
-                              onClick={() => toggleShowHide(data.minuteID)}
-                            >
+                              className='text-decoration-underline cursor-pointer'
+                              onClick={() => toggleShowHide(data.minuteID)}>
                               {visibleParentMinuteIDs.includes(data.minuteID)
                                 ? t("Hide-comments")
                                 : t("Show-comments")}
@@ -3155,8 +3016,7 @@ const ReviewMinutes = () => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="position-relative"
-                              >
+                                className='position-relative'>
                                 {declinedData.length === 0 ? (
                                   <div
                                     className={
@@ -3167,8 +3027,7 @@ const ReviewMinutes = () => {
                                         : styles[
                                             "version-control-wrapper-with-more-last"
                                           ]
-                                    }
-                                  ></div>
+                                    }></div>
                                 ) : (
                                   <div
                                     className={
@@ -3177,8 +3036,7 @@ const ReviewMinutes = () => {
                                         0
                                         ? styles["version-control-wrapper"]
                                         : styles["version-control-wrapper-last"]
-                                    }
-                                  ></div>
+                                    }></div>
                                 )}
                                 <div className={styles["uploaded-details"]}>
                                   <Row className={styles["inherit-height"]}>
@@ -3191,35 +3049,34 @@ const ReviewMinutes = () => {
                                       lg={4}
                                       md={4}
                                       sm={12}
-                                      className="position-relative"
-                                    >
-                                      <Row className="m-0">
+                                      className='position-relative'>
+                                      <Row className='m-0'>
                                         <Col
                                           lg={6}
                                           md={6}
                                           sm={12}
-                                          className="p-0"
-                                        >
+                                          className='p-0'>
                                           <span
-                                            className={styles["bar-line"]}
-                                          ></span>
+                                            className={
+                                              styles["bar-line"]
+                                            }></span>
                                           <p
-                                            className={styles["uploadedbyuser"]}
-                                          >
+                                            className={
+                                              styles["uploadedbyuser"]
+                                            }>
                                             {t("Reviewed-by")}
                                           </p>
                                           <div className={styles["gap-ti"]}>
                                             <img
                                               src={`data:image/jpeg;base64,${declinedData?.userProfilePicture?.displayProfilePictureName}`}
                                               className={styles["Image"]}
-                                              alt=""
+                                              alt=''
                                               draggable={false}
                                             />
                                             <p
                                               className={
                                                 styles["agendaCreater"]
-                                              }
-                                            >
+                                              }>
                                               {declinedData.actorName}
                                             </p>
                                           </div>
@@ -3232,8 +3089,7 @@ const ReviewMinutes = () => {
                                             lg={6}
                                             md={6}
                                             sm={12}
-                                            className="d-grid justify-content-end p-0"
-                                          >
+                                            className='d-grid justify-content-end p-0'>
                                             <Button
                                               onClick={() => {
                                                 dispatch(
@@ -3282,8 +3138,7 @@ const ReviewMinutes = () => {
                                             lg={6}
                                             md={6}
                                             sm={12}
-                                            className="d-grid justify-content-end p-0"
-                                          >
+                                            className='d-grid justify-content-end p-0'>
                                             <Button
                                               onClick={() => {
                                                 dispatch(
@@ -3349,8 +3204,7 @@ const ReviewMinutes = () => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="position-relative"
-                              >
+                                className='position-relative'>
                                 <div
                                   className={
                                     historyData.declinedReviews.length > 0 ||
@@ -3361,8 +3215,7 @@ const ReviewMinutes = () => {
                                       : styles[
                                           "version-control-wrapper-with-more-last"
                                         ]
-                                  }
-                                >
+                                  }>
                                   <span className={styles["with-text"]}>
                                     {historyData.versionNumber}.0
                                   </span>
@@ -3375,36 +3228,34 @@ const ReviewMinutes = () => {
                                         historyData.declinedReviews.length === 0
                                       ? styles["uploaded-details-rejected"]
                                       : styles["uploaded-details"]
-                                  }
-                                >
+                                  }>
                                   <Row className={styles["inherit-height"]}>
                                     <Col lg={8} md={8} sm={12}>
                                       <p
                                         dangerouslySetInnerHTML={{
                                           __html: historyData.minutesDetails,
                                         }}
-                                        className={styles["minutes-text"]}
-                                      ></p>
+                                        className={styles["minutes-text"]}></p>
                                     </Col>
                                     <Col
                                       lg={4}
                                       md={4}
                                       sm={12}
-                                      className="position-relative"
-                                    >
-                                      <Row className="m-0">
+                                      className='position-relative'>
+                                      <Row className='m-0'>
                                         <Col
                                           lg={6}
                                           md={6}
                                           sm={12}
-                                          className="p-0"
-                                        >
+                                          className='p-0'>
                                           <span
-                                            className={styles["bar-line"]}
-                                          ></span>
+                                            className={
+                                              styles["bar-line"]
+                                            }></span>
                                           <p
-                                            className={styles["uploadedbyuser"]}
-                                          >
+                                            className={
+                                              styles["uploadedbyuser"]
+                                            }>
                                             {historyData.declinedReviews
                                               .length === 0
                                               ? t("Uploaded-by")
@@ -3414,14 +3265,13 @@ const ReviewMinutes = () => {
                                             <img
                                               src={`data:image/jpeg;base64,${minutesAgenda[0]?.minuteData[0]?.userProfilePicture?.displayProfilePictureName}`}
                                               className={styles["Image"]}
-                                              alt=""
+                                              alt=''
                                               draggable={false}
                                             />
                                             <p
                                               className={
                                                 styles["agendaCreater"]
-                                              }
-                                            >
+                                              }>
                                               {
                                                 minutesAgenda[0]?.minuteData[0]
                                                   ?.userName
@@ -3434,16 +3284,14 @@ const ReviewMinutes = () => {
                                       <Row>
                                         <Col lg={12} md={12} sm={12}>
                                           <p
-                                            className={styles["time-uploader"]}
-                                          >
+                                            className={styles["time-uploader"]}>
                                             {convertToGMTMinuteTime(
                                               historyData.lastUpdatedTime
                                             )}
                                             ,
                                           </p>
                                           <p
-                                            className={styles["date-uploader"]}
-                                          >
+                                            className={styles["date-uploader"]}>
                                             {convertDateToGMTMinute(
                                               historyData.lastUpdatedDate
                                             )}
@@ -3457,7 +3305,7 @@ const ReviewMinutes = () => {
                             </Row>
 
                             {historyData.declinedReviews.length > 0 ? (
-                              <Row className="mx-50">
+                              <Row className='mx-50'>
                                 <Col lg={12} md={12} sm={12}>
                                   <div className={styles["wrapper-userlist"]}>
                                     <p>
@@ -3490,11 +3338,10 @@ const ReviewMinutes = () => {
                                       )}
                                     </p>
                                     <p
-                                      className="text-decoration-underline cursor-pointer"
+                                      className='text-decoration-underline cursor-pointer'
                                       onClick={() =>
                                         toggleShowHide(historyData.minuteID)
-                                      }
-                                    >
+                                      }>
                                       {visibleParentMinuteIDs.includes(
                                         historyData.minuteID
                                       )
@@ -3520,8 +3367,7 @@ const ReviewMinutes = () => {
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className="position-relative"
-                                        >
+                                          className='position-relative'>
                                           {declinedDataHistory.length === 0 ? (
                                             <div
                                               className={
@@ -3532,8 +3378,7 @@ const ReviewMinutes = () => {
                                                   : styles[
                                                       "version-control-wrapper-with-more-last"
                                                     ]
-                                              }
-                                            ></div>
+                                              }></div>
                                           ) : (
                                             <div
                                               className={
@@ -3544,25 +3389,21 @@ const ReviewMinutes = () => {
                                                   : styles[
                                                       "version-control-wrapper-last"
                                                     ]
-                                              }
-                                            ></div>
+                                              }></div>
                                           )}
                                           <div
                                             className={
                                               styles["uploaded-details"]
-                                            }
-                                          >
+                                            }>
                                             <Row
                                               className={
                                                 styles["inherit-height"]
-                                              }
-                                            >
+                                              }>
                                               <Col lg={8} md={8} sm={12}>
                                                 <p
                                                   className={
                                                     styles["minutes-text"]
-                                                  }
-                                                >
+                                                  }>
                                                   {declinedDataHistory.reason}
                                                 </p>
                                               </Col>
@@ -3570,38 +3411,33 @@ const ReviewMinutes = () => {
                                                 lg={4}
                                                 md={4}
                                                 sm={12}
-                                                className="position-relative"
-                                              >
-                                                <Row className="m-0">
+                                                className='position-relative'>
+                                                <Row className='m-0'>
                                                   <Col
                                                     lg={6}
                                                     md={6}
                                                     sm={12}
-                                                    className="p-0"
-                                                  >
+                                                    className='p-0'>
                                                     <span
                                                       className={
                                                         styles["bar-line"]
-                                                      }
-                                                    ></span>
+                                                      }></span>
                                                     <p
                                                       className={
                                                         styles["uploadedbyuser"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {t("Reviewed-by")}
                                                     </p>
                                                     <div
                                                       className={
                                                         styles["gap-ti"]
-                                                      }
-                                                    >
+                                                      }>
                                                       <img
                                                         src={`data:image/jpeg;base64,${declinedDataHistory?.userProfilePicture?.displayProfilePictureName}`}
                                                         className={
                                                           styles["Image"]
                                                         }
-                                                        alt=""
+                                                        alt=''
                                                         draggable={false}
                                                       />
                                                       <p
@@ -3609,8 +3445,7 @@ const ReviewMinutes = () => {
                                                           styles[
                                                             "agendaCreater"
                                                           ]
-                                                        }
-                                                      >
+                                                        }>
                                                         {
                                                           declinedDataHistory.actorName
                                                         }
@@ -3623,8 +3458,7 @@ const ReviewMinutes = () => {
                                                       lg={6}
                                                       md={6}
                                                       sm={12}
-                                                      className="d-grid justify-content-end p-0"
-                                                    >
+                                                      className='d-grid justify-content-end p-0'>
                                                       <Button
                                                         onClick={() => {
                                                           dispatch(
@@ -3690,13 +3524,12 @@ const ReviewMinutes = () => {
             })}
           </div>
 
-          <Row className="mx-50">
+          <Row className='mx-50'>
             <Col
               lg={12}
               md={12}
               sm={12}
-              className={currentLanguage === "ar" ? "text-start" : "text-end"}
-            >
+              className={currentLanguage === "ar" ? "text-start" : "text-end"}>
               <Button
                 onClick={() => {
                   dispatch(reviewMinutesPage(false));
