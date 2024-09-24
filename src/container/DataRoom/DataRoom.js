@@ -126,7 +126,10 @@ import {
   getAllSignaturesDocumentsforCreatorApi,
 } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
-import { checkFeatureIDAvailability } from "../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  fileFormatforSignatureFlow,
+} from "../../commen/functions/utils";
 import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
 import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
 import {
@@ -1743,7 +1746,7 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {fileExtension === "pdf"
+                            {fileFormatforSignatureFlow.includes(fileExtension)
                               ? optionsforPDFandSignatureFlow(t).map(
                                   (data, index) => {
                                     return (
@@ -2382,9 +2385,7 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {fileExtension === "pdf" ||
-                            fileExtension === "docx" ||
-                            fileExtension === "doc"
+                            {fileFormatforSignatureFlow.includes(fileExtension)
                               ? optionsforPDFandSignatureFlow(t).map(
                                   (data, index) => {
                                     return (
@@ -2628,7 +2629,6 @@ const DataRoom = () => {
                   <span className={styles["threeDot__Icon"]}>
                     {record.isFolder ? (
                       <Dropdown
-
                         className={`${
                           styles["options_dropdown"]
                         } ${"dataroom_options"}`}>
