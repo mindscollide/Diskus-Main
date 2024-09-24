@@ -142,8 +142,8 @@ const SignatureViewer = () => {
 
   // === Api calling === //
   async function apiCall(Data) {
-    await dispatch(allAssignessList(navigate, t));
     await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
+    await dispatch(allAssignessList(navigate, t, false));
   }
 
   useEffect(() => {
@@ -884,8 +884,8 @@ const SignatureViewer = () => {
   };
   return (
     <>
-      <div className="documnetviewer">
-        <div className="webviewer" ref={viewer}></div>
+      <div className='documnetviewer'>
+        <div className='webviewer' ref={viewer}></div>
       </div>
 
       {reasonModal && (

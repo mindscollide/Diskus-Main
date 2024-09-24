@@ -53,12 +53,12 @@ const allassignesslistinit = () => {
   };
 };
 
-const allassignesslistsuccess = (response, message, loader = "false") => {
+const allassignesslistsuccess = (response, message, loader) => {
   return {
     type: actions.ASSIGNESS_LIST_SUCCESS,
     response: response,
     message: message,
-    loader: loader
+    loader: loader,
   };
 };
 
@@ -74,7 +74,7 @@ const clearResponseMessage = () => {
   };
 };
 
-const allAssignessList = (navigate, t, loader= "false") => {
+const allAssignessList = (navigate, t, loader ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
@@ -97,7 +97,7 @@ const allAssignessList = (navigate, t, loader= "false") => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(allAssignessList(navigate, t,loader));
+          dispatch(allAssignessList(navigate, t, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -504,10 +504,7 @@ const ViewMeeting = (
                 )
             ) {
               await dispatch(
-                ViewMeetingSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                ViewMeetingSuccess(response.data.responseResult, "")
               );
               if (no === 1) {
                 setViewFlag(true);
@@ -945,10 +942,7 @@ const GetAllReminders = (navigate, t) => {
                 )
             ) {
               await dispatch(
-                getAllRemindersSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getAllRemindersSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage

@@ -1764,6 +1764,14 @@ const getAllMeetingUsersRSVPDetailsRM = {
   RequestMethod: "ServiceManager.GetAllMeetingUserRSVPDetails",
 };
 
+const downloadCallRecording = {
+  RequestMethod: "ServiceManager.DownloadCallRecording",
+};
+
+const downloadMeetingRecording = {
+  RequestMethod: "ServiceManager.DownloadMeetingRecording",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2232,4 +2240,6 @@ export {
   getAdvanceMeetingAgendabyMeetingIDForView,
   getStatsForPublishingMinutesByWorkFlowId,
   getMinutesPublishedStatus,
+  downloadCallRecording,
+  downloadMeetingRecording
 };

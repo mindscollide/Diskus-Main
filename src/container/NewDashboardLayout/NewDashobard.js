@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import styles from "./NewDashboard.module.css";
 import "./NewDashbaord.css";
 import { Container, Col, Row } from "react-bootstrap";
@@ -14,12 +15,14 @@ import VerificationFailedIcon from "../../assets/images/failed.png";
 import { useTranslation } from "react-i18next";
 import { cleareMessage, setLoader } from "../../store/actions/Auth2_actions";
 import { useNavigate } from "react-router-dom";
+import { GetAllMeetingTypesNewFunction } from "../../store/actions/NewMeetingActions";
 
 const NewDashobard = () => {
   const [activateBlur, setActivateBlur] = useState(false);
   let Blur = localStorage.getItem("blur");
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   let lang = localStorage.getItem("i18nextLng");
   useEffect(() => {
@@ -42,6 +45,10 @@ const NewDashobard = () => {
     }
   }, [Blur]);
 
+  useEffect(() => {
+    dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+  }, []);
+
   const closeModal = () => {
     setActivateBlur(false);
     setLoader(false);
@@ -60,7 +67,7 @@ const NewDashobard = () => {
         </section>
         <section className={styles["Dashbaords"]}>
           <Row>
-            <Col sm={12} md={4} lg={4} className='d-flex flex-column'>
+            <Col sm={12} md={4} lg={4} className="d-flex flex-column">
               <section className={styles["CalendarBox"]}>
                 <NewCalendar />
               </section>
@@ -71,12 +78,12 @@ const NewDashobard = () => {
                 </section>
               </section>
             </Col>
-            <Col sm={12} md={4} lg={4} className='d-flex '>
+            <Col sm={12} md={4} lg={4} className="d-flex ">
               <section className={styles["Tasks"]}>
                 <Task />
               </section>
             </Col>
-            <Col sm={12} md={4} lg={4} className='d-flex flex-column gap-2'>
+            <Col sm={12} md={4} lg={4} className="d-flex flex-column gap-2">
               <section className={styles["RecentActivity"]}>
                 <RecentActivity />
               </section>
@@ -94,25 +101,25 @@ const NewDashobard = () => {
           ButtonTitle={"Block"}
           centered
           size={"md"}
-          modalHeaderClassName='d-none'
+          modalHeaderClassName="d-none"
           ModalBody={
             <>
               <>
-                <Row className='mb-1'>
+                <Row className="mb-1">
                   <Col lg={12} md={12} xs={12} sm={12}>
                     <Row>
-                      <Col className='d-flex justify-content-center'>
+                      <Col className="d-flex justify-content-center">
                         <img
                           src={VerificationFailedIcon}
                           width={60}
                           className={"allowModalIcon"}
-                          alt=''
-                          draggable='false'
+                          alt=""
+                          draggable="false"
                         />
                       </Col>
                     </Row>
                     <Row>
-                      <Col className='text-center mt-4'>
+                      <Col className="text-center mt-4">
                         <label className={"allow-limit-modal-p"}>
                           {t(
                             "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -128,12 +135,13 @@ const NewDashobard = () => {
           ModalFooter={
             <>
               <Col sm={12} md={12} lg={12}>
-                <Row className='mb-3'>
+                <Row className="mb-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}

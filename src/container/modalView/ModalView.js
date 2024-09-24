@@ -805,7 +805,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   useEffect(() => {
     try {
       if (viewFlag) {
-        // dispatch(allAssignessList(navigate, t));
+        //     dispatch(allAssignessList(navigate, t,false));
       } else {
         setViewFlag(false);
         dispatch(cleareAssigneesState());

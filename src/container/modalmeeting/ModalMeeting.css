@@ -76,22 +76,15 @@ fieldset:disabled .btn {
 }
 
 .modalMeetingCreateBody {
-  padding: 30px 20px;
-  height: 70vh !important;
-  max-height: 70vh !important;
+  padding: 20px 20px;
+  min-height: 500px;
 }
 .modalMeetingCreateBody_close_modal {
   height: auto;
 }
 .modalMeetingCreateFooter {
-  height: 10vh !important;
   display: inline-block;
 }
-/* .modalMeetingCreateFooter {
-
-  height: 80px;
-  padding: 0 35px !important;
-} */
 
 .modalMeetingCreateHeader {
   display: none;
@@ -817,4 +810,3 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   font-size: 14px !important;
   font-weight: 600 !important;
 }
-

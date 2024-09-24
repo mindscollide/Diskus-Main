@@ -110,7 +110,7 @@ const CancelButtonModal = () => {
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(allAssignessList(navigate, t));
+          dispatch(allAssignessList(navigate, t, false));
         } else {
           let searchData = {
             Date: "",
@@ -124,7 +124,7 @@ const CancelButtonModal = () => {
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(allAssignessList(navigate, t));
+          dispatch(allAssignessList(navigate, t, false));
           // localStorage.setItem("MeetingCurrentView", 1);
         }
       }
@@ -194,7 +194,7 @@ const CancelButtonModal = () => {
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(allAssignessList(navigate, t));
+          dispatch(allAssignessList(navigate, t, false));
         } else {
           let searchData = {
             Date: "",
@@ -208,7 +208,7 @@ const CancelButtonModal = () => {
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(allAssignessList(navigate, t));
+          dispatch(allAssignessList(navigate, t, false));
           // localStorage.setItem("MeetingCurrentView", 1);
         }
       }
@@ -244,8 +244,7 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Any-unsaved-changes-will-be")}
                   </span>
@@ -256,8 +255,7 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Lost-continue")}
                   </span>
@@ -272,8 +270,7 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={t("No")}
                     className={styles["Yes_unsave_File_Upload"]}
