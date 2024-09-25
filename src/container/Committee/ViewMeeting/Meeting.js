@@ -163,6 +163,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 isAttachment: data.isAttachment,
                 isChat: data.isChat,
                 isVideoCall: data.isVideoCall,
+                videoCallURL: data.videoCallURL,
                 isQuickMeeting: data.isQuickMeeting,
                 meetingAgenda: data.meetingAgenda,
                 meetingAttendees: data.meetingAttendees,
@@ -214,7 +215,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             onClick={() => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
               localStorage.setItem("meetingTitle", record.title);
-            }}>
+            }}
+          >
             {truncateString(text, 30)}
           </span>
         );
@@ -257,7 +259,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) =>
         record.status.toLowerCase().includes(value.toLowerCase()),
@@ -323,13 +325,14 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }>
-                    <Tooltip placement='topRight' title={t("ClipIcon")}>
+                    }
+                  >
+                    <Tooltip placement="topRight" title={t("ClipIcon")}>
                       <img
                         src={ClipIcon}
-                        className='cursor-pointer'
-                        alt=''
-                        draggable='false'
+                        className="cursor-pointer"
+                        alt=""
+                        draggable="false"
                       />
                     </Tooltip>
                   </span>
@@ -339,7 +342,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
                 {record.isChat ? (
                   <span
@@ -350,14 +354,14 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     }
                     // onClick={(e) => groupChatInitiation(record)}
                   >
-                    <Tooltip placement='topLeft' title={t("Chat")}>
+                    <Tooltip placement="topLeft" title={t("Chat")}>
                       <img
                         src={CommentIcon}
-                        className='cursor-pointer'
+                        className="cursor-pointer"
                         // width="20.06px"
                         // height="15.95px"
-                        alt=''
-                        draggable='false'
+                        alt=""
+                        draggable="false"
                       />
                     </Tooltip>
                   </span>
@@ -367,7 +371,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
                 {record.isVideoCall ? (
                   <span
@@ -375,8 +380,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }>
-                    <img src={VideoIcon} alt='' draggable='false' />
+                    }
+                  >
+                    <img src={VideoIcon} alt="" draggable="false" />
                   </span>
                 ) : (
                   <span
@@ -384,17 +390,18 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
                 {record.status === "9" && isOrganiser && (
-                  <Tooltip placement='topLeft' title={t("member")}>
+                  <Tooltip placement="topLeft" title={t("member")}>
                     <img
                       src={member}
-                      className='cursor-pointer'
-                      width='17.1px'
-                      height='16.72px'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer"
+                      width="17.1px"
+                      height="16.72px"
+                      alt=""
+                      draggable="false"
                       onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
                   </Tooltip>
@@ -572,11 +579,11 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                         {committeeStatus === 3 && (
                           <img
                             src={EditIcon}
-                            className='cursor-pointer'
-                            width='17.11px'
-                            height='17.11px'
-                            alt=''
-                            draggable='false'
+                            className="cursor-pointer"
+                            width="17.11px"
+                            height="17.11px"
+                            alt=""
+                            draggable="false"
                             onClick={() =>
                               handleEditMeeting(
                                 record.pK_MDID,
@@ -641,7 +648,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       console.log(error);
     }
   }, [CommitteeMeetingMQTT]);
-  
+
   useEffect(() => {
     if (MeetingStatusEnded !== null) {
       console.log(MeetingStatusEnded, "MeetingStatusEndedMeetingStatusEnded");
@@ -704,9 +711,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
           />
         }
         title={t("No-new-meetings")}
@@ -815,11 +822,11 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         />
       )}
       <Row>
-        <Col sm={12} md={12} lg={12} className='d-flex justify-content-end'>
+        <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
           {committeeStatus === 3 && (
             <Button
               text={t("Create-Meeting")}
-              icon={<img draggable={false} src={addmore} alt='' />}
+              icon={<img draggable={false} src={addmore} alt="" />}
               className={styles["Create_Meeting_Button"]}
               onClick={handelCreateMeeting}
             />
@@ -833,15 +840,15 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             scroll={{ y: "39vh", x: true }}
             rows={rows}
             pagination={false}
-            size='small'
-            className='newMeetingTable'
+            size="small"
+            className="newMeetingTable"
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
             }}
             expandable={{
               expandedRowRender: (record) => {
                 return record.meetingAgenda.map((data) => (
-                  <p className='meeting-expanded-row'>
+                  <p className="meeting-expanded-row">
                     {data.objMeetingAgenda.title}
                   </p>
                 ));
@@ -858,8 +865,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             lg={12}
             className={
               "pagination-groups-table position-absolute bottom-20  d-flex justify-content-center"
-            }>
-            <span className='PaginationStyle-TodoList'>
+            }
+          >
+            <span className="PaginationStyle-TodoList">
               <CustomPagination
                 current={currentPage}
                 showSizer={true}

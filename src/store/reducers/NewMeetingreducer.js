@@ -143,6 +143,7 @@ const initialState = {
   mqttMeetingOrgRemoved: null,
   joinMeetingResponse: null,
   leaveMeetingResponse: null,
+  leaveMeetingVideoResponse: null,
   currentMeetingStatus: 0,
   mqttMeetingPrAdded: null,
   mqtMeetingPrRemoved: null,
@@ -2254,7 +2255,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.LEAVE_MEETING_SUCCESS_ADVANCED: {
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         leaveMeetingResponse: action.response,
         ResponseMessage: action.message,
       };
@@ -2397,6 +2398,32 @@ const NewMeetingreducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.LEAVE_MEETING_VIDEO_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.LEAVE_MEETING_VIDEO_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        leaveMeetingVideoResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_MEETING_VIDEO_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        leaveMeetingVideoResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     default:
       return {
         ...state,

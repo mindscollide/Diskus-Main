@@ -1144,6 +1144,7 @@ const NewMeeting = () => {
                 record.isQuickMeeting,
                 record.status
               );
+              localStorage.setItem("videoCallURL", record.videoCallURL)
               setVideoTalk({
                 isChat: record.isChat,
                 isVideoCall: record.isVideoCall,
@@ -1509,6 +1510,7 @@ const NewMeeting = () => {
                       isVideoCall: record.isVideoCall,
                       talkGroupID: record.talkGroupID,
                     });
+              localStorage.setItem("videoCallURL", record.videoCallURL)
                     localStorage.setItem("meetingTitle", record.title);
                     localStorage.setItem(
                       "isMinutePublished",
@@ -1550,6 +1552,7 @@ const NewMeeting = () => {
                       isVideoCall: record.isVideoCall,
                       talkGroupID: record.talkGroupID,
                     });
+              localStorage.setItem("videoCallURL", record.videoCallURL)
                     localStorage.setItem("currentMeetingID", record.pK_MDID);
                     localStorage.setItem(
                       "isMinutePublished",
@@ -1593,6 +1596,8 @@ const NewMeeting = () => {
                     isVideoCall: record.isVideoCall,
                     talkGroupID: record.talkGroupID,
                   });
+              localStorage.setItem("videoCallURL", record.videoCallURL)
+
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
                     "isMinutePublished",
@@ -1624,6 +1629,8 @@ const NewMeeting = () => {
                     isVideoCall: record.isVideoCall,
                     talkGroupID: record.talkGroupID,
                   });
+              localStorage.setItem("videoCallURL", record.videoCallURL)
+
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
                     "isMinutePublished",
@@ -1655,6 +1662,8 @@ const NewMeeting = () => {
                     isVideoCall: record.isVideoCall,
                     talkGroupID: record.talkGroupID,
                   });
+              localStorage.setItem("videoCallURL", record.videoCallURL)
+
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
                     "isMinutePublished",
@@ -1691,6 +1700,7 @@ const NewMeeting = () => {
                     isVideoCall: record.isVideoCall,
                     talkGroupID: record.talkGroupID,
                   });
+              localStorage.setItem("videoCallURL", record.videoCallURL)
                 }}
               />
             </>
@@ -1744,6 +1754,8 @@ const NewMeeting = () => {
                                 isVideoCall: record.isVideoCall,
                                 talkGroupID: record.talkGroupID,
                               });
+              localStorage.setItem("videoCallURL", record.videoCallURL)
+
                             }}
                           />
                         </Tooltip>
@@ -1786,6 +1798,7 @@ const NewMeeting = () => {
                               isVideoCall: record.isVideoCall,
                               talkGroupID: record.talkGroupID,
                             });
+              localStorage.setItem("videoCallURL", record.videoCallURL)
                             setEdiorRole({
                               status: record.status,
                               role: "Organizer",
@@ -1831,6 +1844,7 @@ const NewMeeting = () => {
                               isVideoCall: record.isVideoCall,
                               talkGroupID: record.talkGroupID,
                             });
+              localStorage.setItem("videoCallURL", record.videoCallURL)
                             setEdiorRole({
                               status: record.status,
                               role: "Agenda Contributor",
@@ -1935,6 +1949,7 @@ const NewMeeting = () => {
             isVideoCall: dashboardEventData.isVideoCall,
             talkGroupID: dashboardEventData.talkGroupID,
           });
+          localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL)
           dispatch(viewMeetingFlag(true));
         } else if (
           (dashboardEventData.statusID === "10" ||
@@ -1951,6 +1966,7 @@ const NewMeeting = () => {
             isVideoCall: dashboardEventData.isVideoCall,
             talkGroupID: dashboardEventData.talkGroupID,
           });
+          localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL)
           setEdiorRole({
             status: dashboardEventData.statusID,
             role: "Agenda Contributor",
@@ -1976,6 +1992,7 @@ const NewMeeting = () => {
             isVideoCall: dashboardEventData.isVideoCall,
             talkGroupID: dashboardEventData.talkGroupID,
           });
+          localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL)
           dispatch(viewMeetingFlag(true));
           handleViewMeeting(
             dashboardEventData.pK_MDID,
@@ -2077,6 +2094,7 @@ const NewMeeting = () => {
         isAttachment: false,
         isChat: false,
         isVideoCall: false,
+        videoCallURL: meetingData?.videoCallURL,
         isQuickMeeting: meetingData?.isQuickMeeting,
         meetingAgenda: [],
         isOrganizer: meetingData?.attendeeRoleID === 1 ? true : false,
@@ -2511,7 +2529,8 @@ const NewMeeting = () => {
                 isVideoCall: meeting.isVideoCall,
                 talkGroupID: meeting.talkGroupID,
               });
-              dispatch(viewMeetingFlag(true));
+          localStorage.setItem("videoCallURL", meeting.videoCallURL)
+          dispatch(viewMeetingFlag(true));
             } else if (
               (meeting.status === "10" || meeting.status === 10) &&
               dashboardEventData.participantRoleID === 4
@@ -2526,7 +2545,8 @@ const NewMeeting = () => {
                 isVideoCall: meeting.isVideoCall,
                 talkGroupID: meeting.talkGroupID,
               });
-              setEdiorRole({
+          localStorage.setItem("videoCallURL", meeting.videoCallURL)
+          setEdiorRole({
                 status: meeting.status,
                 role: "Agenda Contributor",
                 isPrimaryOrganizer: false,
@@ -2546,7 +2566,8 @@ const NewMeeting = () => {
                 isVideoCall: meeting.isVideoCall,
                 talkGroupID: meeting.talkGroupID,
               });
-              dispatch(viewMeetingFlag(true));
+          localStorage.setItem("videoCallURL", meeting.videoCallURL)
+          dispatch(viewMeetingFlag(true));
               handleViewMeeting(
                 meeting.pK_MDID,
                 meeting.isQuickMeeting,
