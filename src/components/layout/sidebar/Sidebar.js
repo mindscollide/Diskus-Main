@@ -208,7 +208,7 @@ const Sidebar = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
         dispatch(currentMeetingStatus(0));
       }
     }
@@ -245,7 +245,7 @@ const Sidebar = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
         dispatch(currentMeetingStatus(0));
       }
     }
@@ -282,7 +282,7 @@ const Sidebar = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
         dispatch(currentMeetingStatus(0));
       }
     }

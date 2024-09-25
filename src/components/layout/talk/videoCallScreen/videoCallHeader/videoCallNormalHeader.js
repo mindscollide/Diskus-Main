@@ -73,6 +73,7 @@ const VideoCallNormalHeader = ({
   let currentCallType = Number(localStorage.getItem("CallType"));
   let meetingTitle = localStorage.getItem("meetingTitle");
   let isCallerFlag = JSON.parse(localStorage.getItem("isCaller"));
+  let userGUID = localStorage.getItem("userGUID");
 
   const dispatch = useDispatch();
 
@@ -157,8 +158,8 @@ const VideoCallNormalHeader = ({
       localStorage.setItem("activeRoomID", 0);
     } else if (isMeeting === true) {
       let Data = {
-        RoomID: meetingURLLocalData?.roomID,
-        UserGUID: meetingURLLocalData?.userGUID,
+        RoomID: roomID,
+        UserGUID: userGUID,
       };
       dispatch(LeaveMeetingVideo(Data, navigate, t));
       dispatch(normalizeVideoPanelFlag(false));

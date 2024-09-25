@@ -208,6 +208,8 @@ const Dashboard = () => {
 
   // let createrID = 5;
   const dispatch = useDispatch();
+  let userGUID = localStorage.getItem("userGUID");
+  let currentMeetingVideoID = localStorage.getItem("acceptedRoomID");
 
   // for real time Notification
   const [notification, setNotification] = useState({
@@ -352,8 +354,8 @@ const Dashboard = () => {
                 localStorage.setItem("MicOff", true);
                 localStorage.setItem("VidOff", true);
                 let Data = {
-                  RoomID: meetingURLLocalData?.roomID,
-                  UserGUID: meetingURLLocalData?.userGUID,
+                  RoomID: currentMeetingVideoID,
+                  UserGUID: userGUID,
                 };
                 dispatch(LeaveMeetingVideo(Data, navigate, t));
               }

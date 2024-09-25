@@ -919,8 +919,12 @@ const saveAgendaContributorsRM = {
   RequestMethod: "ServiceManager.SaveAgendaContributors",
 };
 
+// const FetchVideoUrl = {
+//   RequestMethod: "ServiceManager.GetMeetingVideoURL",
+// };
+
 const FetchVideoUrl = {
-  RequestMethod: "ServiceManager.GetMeetingVideoURL",
+  RequestMethod: "ServiceManager.GetMeetingVideoURLNew",
 };
 
 const saveParticipantsMeeting = {

@@ -78,6 +78,7 @@ import {
 } from "./VideoMain_actions";
 import {
   maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   videoChatPanel,
 } from "./VideoFeature_actions";
@@ -1379,7 +1380,8 @@ const FetchMeetingURLApi = (
   t,
   currentUserID,
   currentOrganization,
-  flag
+  flag,
+  currentMeetingTitle
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -1407,7 +1409,8 @@ const FetchMeetingURLApi = (
               t,
               currentUserID,
               currentOrganization,
-              flag
+              flag,
+              currentMeetingTitle
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1416,7 +1419,7 @@ const FetchMeetingURLApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_01".toLowerCase()
                 )
             ) {
               dispatch(showMeetingURLSuccess(response.data.responseResult, ""));
@@ -1455,9 +1458,10 @@ const FetchMeetingURLApi = (
               localStorage.setItem("acceptedRecipientID", currentUserID);
               localStorage.setItem("isMeetingVideo", true);
               localStorage.setItem("meetingVideoID", videoMeetingID);
+              localStorage.setItem("meetingTitle", currentMeetingTitle);
               localStorage.setItem(
-                "meetingTitle",
-                response.data.responseResult.meetingTitle
+                "userGUID",
+                response.data.responseResult.userGUID
               );
               dispatch(callRequestReceivedMQTT({}, ""));
               if (flag === 0) {
@@ -1471,7 +1475,7 @@ const FetchMeetingURLApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_02".toLowerCase()
                 )
             ) {
               dispatch(MeetingUrlSpinner(false));
@@ -1481,7 +1485,7 @@ const FetchMeetingURLApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_03".toLowerCase()
                 )
             ) {
               dispatch(MeetingUrlSpinner(false));
@@ -1556,7 +1560,7 @@ const FetchMeetingURLClipboard = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1566,7 +1570,7 @@ const FetchMeetingURLClipboard = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_02".toLowerCase()
                 )
             ) {
               dispatch(clipboardURLMeetingData(""));
@@ -1574,7 +1578,7 @@ const FetchMeetingURLClipboard = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_03".toLowerCase()
                 )
             ) {
               dispatch(clipboardURLMeetingData(""));
@@ -8081,7 +8085,8 @@ const LeaveCurrentMeeting = (
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
+  let roomID = localStorage.getItem("acceptedRoomID");
+  let userGUID = localStorage.getItem("userGUID");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8161,6 +8166,24 @@ const LeaveCurrentMeeting = (
                 dispatch(viewAdvanceMeetingPublishPageFlag(false));
                 dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
               }
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+
+              localStorage.setItem("activeCall", false);
+              localStorage.setItem("isMeeting", false);
+              localStorage.setItem("meetingTitle", "");
+              localStorage.setItem("acceptedRecipientID", 0);
+              localStorage.setItem("acceptedRoomID", 0);
+              localStorage.setItem("activeRoomID", 0);
+              localStorage.setItem("meetingVideoID", 0);
+              localStorage.setItem("MicOff", true);
+              localStorage.setItem("VidOff", true);
+              let Data = {
+                RoomID: roomID,
+                UserGUID: userGUID,
+              };
+              dispatch(LeaveMeetingVideo(Data, navigate, t));
               setViewFlag(false);
             } else if (
               response.data.responseResult.responseMessage
@@ -8204,6 +8227,9 @@ const LeaveCurrentMeeting = (
 
 const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentMeetingVideoID = Number(localStorage.getItem("meetingVideoID"));
+  let roomID = localStorage.getItem("acceptedRoomID");
+  let userGUID = localStorage.getItem("userGUID");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8237,6 +8263,26 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
                   t("Successful")
                 )
               );
+              if (currentMeetingVideoID !== 0) {
+              }
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+
+              localStorage.setItem("activeCall", false);
+              localStorage.setItem("isMeeting", false);
+              localStorage.setItem("meetingTitle", "");
+              localStorage.setItem("acceptedRecipientID", 0);
+              localStorage.setItem("acceptedRoomID", 0);
+              localStorage.setItem("activeRoomID", 0);
+              localStorage.setItem("meetingVideoID", 0);
+              localStorage.setItem("MicOff", true);
+              localStorage.setItem("VidOff", true);
+              let Data = {
+                RoomID: roomID,
+                UserGUID: userGUID,
+              };
+              dispatch(LeaveMeetingVideo(Data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -8785,7 +8831,7 @@ const leaveMeetingVideoFail = (message) => {
 const LeaveMeetingVideo = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
-    await dispatch(leaveMeetingVideoInit());
+    // await dispatch(leaveMeetingVideoInit());
     let form = new FormData();
     form.append("RequestMethod", leaveMeetingVideo.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -8810,7 +8856,7 @@ const LeaveMeetingVideo = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              dispatch(leaveMeetingVideoSuccess(response, "Successful"));
+              // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

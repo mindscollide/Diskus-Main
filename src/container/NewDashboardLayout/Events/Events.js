@@ -145,6 +145,7 @@ const Events = () => {
       isPrimaryOrganizer: data.isPrimaryOrganizer,
       isChat: data.meetingDetails.isChat,
       isVideoCall: data.meetingDetails.isVideoCall,
+      videoCallURL: data.videoCallURL,
       talkGroupID: data.talkGroupID,
     };
 

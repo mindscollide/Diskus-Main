@@ -1369,6 +1369,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           MeetingDate: viewData.meetingEvent.meetingDate,
           IsChat: viewData.meetingDetails.isChat,
           IsVideoCall: viewData.meetingDetails.isVideoCall,
+          VideoCallURL: viewData.meetingDetails.videoCallURL,
           MeetingStartTime: convertTimetoGMT(
             viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
           ),
@@ -2341,7 +2342,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               isCancelMeetingModal === false &&
               closeConfirmationModal === false ? (
                 <Row>
-                  <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-2'>
+                  <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
                     <Button
                       className={
                         isDetails
@@ -3246,7 +3247,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className='d-flex justify-content-end gap-2'>
+                        className="d-flex justify-content-end gap-2"
+                      >
                         <Button
                           className={"UpdateMeeting_discardChangesBtn"}
                           text={t("Discard-changes")}
@@ -3290,7 +3292,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className='d-flex justify-content-end gap-2 align-items-center'>
+                        className="d-flex justify-content-end gap-2 align-items-center"
+                      >
                         <Button
                           className={"UpdateMeeting_discardChangesBtn"}
                           text={t("Discard-changes")}

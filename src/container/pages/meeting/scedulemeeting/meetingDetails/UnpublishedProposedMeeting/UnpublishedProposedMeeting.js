@@ -246,7 +246,8 @@ const UnpublishedProposedMeeting = ({
                 isVideoCall: record.isVideoCall,
                 talkGroupID: record.talkGroupID,
               });
-              handleOpenViewModal(record);
+          localStorage.setItem("videoCallURL", record.videoCallURL)
+          handleOpenViewModal(record);
               dispatch(viewMeetingFlag(true));
               dispatch(
                 GetAllUserChats(
@@ -480,7 +481,8 @@ const UnpublishedProposedMeeting = ({
                           isVideoCall: record.isVideoCall,
                           talkGroupID: record.talkGroupID,
                         });
-                        setEdiorRole({
+          localStorage.setItem("videoCallURL", record.videoCallURL)
+          setEdiorRole({
                           status: record.status,
                           role: "Agenda Contributor",
                         });
@@ -522,7 +524,8 @@ const UnpublishedProposedMeeting = ({
                             isVideoCall: record.isVideoCall,
                             talkGroupID: record.talkGroupID,
                           });
-                          setEdiorRole({
+          localStorage.setItem("videoCallURL", record.videoCallURL)
+          setEdiorRole({
                             status: record.status,
                             role: "Organizer",
                           });

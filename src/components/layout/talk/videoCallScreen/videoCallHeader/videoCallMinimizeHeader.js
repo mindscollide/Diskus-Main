@@ -69,6 +69,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   let callerObject = localStorage.getItem("callerStatusObject");
   let currentCallType = Number(localStorage.getItem("CallType"));
   let meetingTitle = localStorage.getItem("meetingTitle");
+  let userGUID = localStorage.getItem("userGUID");
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
     (state) => state
@@ -159,8 +160,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       localStorage.setItem("isMeetingVideo", false);
     } else if (isMeeting === true) {
       let Data = {
-        RoomID: meetingURLLocalData?.roomID,
-        UserGUID: meetingURLLocalData?.userGUID,
+        RoomID: roomID,
+        UserGUID: userGUID,
       };
       dispatch(LeaveMeetingVideo(Data, navigate, t));
       dispatch(normalizeVideoPanelFlag(false));

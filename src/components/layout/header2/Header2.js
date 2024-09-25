@@ -21,7 +21,7 @@ import {
   proposeNewMeetingPageFlag,
   viewMeetingFlag,
   uploadGlobalFlag,
-  LeaveCurrentMeeting,
+  LeaveCurrentMeetingOtherMenus,
   currentMeetingStatus,
 } from "../../../store/actions/NewMeetingActions";
 import {
@@ -193,7 +193,7 @@ const Header2 = ({ isVideo }) => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
         dispatch(currentMeetingStatus(0));
       }
     }
@@ -227,7 +227,7 @@ const Header2 = ({ isVideo }) => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
           dispatch(currentMeetingStatus(0));
         }
       }
@@ -261,7 +261,7 @@ const Header2 = ({ isVideo }) => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
           dispatch(currentMeetingStatus(0));
         }
       }
@@ -295,7 +295,7 @@ const Header2 = ({ isVideo }) => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
           dispatch(currentMeetingStatus(0));
         }
       }
@@ -329,7 +329,7 @@ const Header2 = ({ isVideo }) => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
           dispatch(currentMeetingStatus(0));
         }
       }
