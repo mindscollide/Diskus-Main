@@ -849,7 +849,7 @@ const UnpublishedProposedMeeting = ({
               "viewProposeDatePollMeetingID",
               getApiResponse.meetingID
             );
-            localStorage.removeItem("meetingprop")
+            localStorage.removeItem("meetingprop");
             setResponseByDate(getApiResponse.deadline);
             setViewProposeDatePoll(true);
             dispatch(viewProposeDateMeetingPageFlag(true));
@@ -912,7 +912,13 @@ const UnpublishedProposedMeeting = ({
         </Col>
       </Row>
       {organizerViewModal && <OrganizerViewModal />}
-      {sceduleproposedMeeting && <SceduleProposedmeeting />}
+      {sceduleproposedMeeting && (
+        <SceduleProposedmeeting
+          setDataroomMapFolderId={setDataroomMapFolderId}
+          setCurrentMeetingID={setCurrentMeetingID}
+          setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
       {deleteMeetingModal && <DeleteMeetingModal />}
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>

@@ -1385,7 +1385,7 @@ const FetchMeetingURLApi = (
     // dispatch(showMeetingURLInit());
     dispatch(MeetingUrlSpinner(true));
     let form = new FormData();
-    let videoMeetingID = Data.MeetingID
+    let videoMeetingID = Data.MeetingID;
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", FetchVideoUrl.RequestMethod);
     axios({
@@ -6478,12 +6478,23 @@ const scheduleMeetingFail = (message) => {
   };
 };
 
-const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
+const scheduleMeetingMainApi = (
+  navigate,
+  t,
+  scheduleMeeting,
+  setDataroomMapFolderId,
+  setCurrentMeetingID,
+  setSceduleMeeting,
+  MeetingID
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let userID = localStorage.getItem("userID");
+  console.log(
+    scheduleMeeting,
+    setDataroomMapFolderId,
+    setCurrentMeetingID,
+    setSceduleMeeting,
+    "scheduleMeetingMainApischeduleMeetingMainApi"
+  );
   return (dispatch) => {
     dispatch(scheduleMeetingInit());
     let form = new FormData();
@@ -6500,7 +6511,17 @@ const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));
+          dispatch(
+            scheduleMeetingMainApi(
+              navigate,
+              t,
+              scheduleMeeting,
+              setDataroomMapFolderId,
+              setCurrentMeetingID,
+              setSceduleMeeting,
+              MeetingID
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -6516,18 +6537,27 @@ const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
                   t("Record-saved")
                 )
               );
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber:
-                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-                PublishedMeetings: false,
-              };
-              await dispatch(searchNewUserMeeting(navigate, searchData, t));
               dispatch(showSceduleProposedMeeting(false));
+              let MeetingData = {
+                MeetingID: Number(MeetingID),
+              };
+              await dispatch(
+                GetAllMeetingDetailsApiFunc(
+                  navigate,
+                  t,
+                  MeetingData,
+                  false,
+                  setCurrentMeetingID,
+                  setSceduleMeeting,
+                  setDataroomMapFolderId,
+                  0,
+                  1
+                )
+              ); //         GetAllMeetingDetailsApiFunc(
+              setSceduleMeeting(true);
+              dispatch(scheduleMeetingPageFlag(true));
+              dispatch(meetingDetailsGlobalFlag(true));
+             
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
