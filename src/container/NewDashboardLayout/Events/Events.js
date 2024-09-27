@@ -145,10 +145,10 @@ const Events = () => {
       isPrimaryOrganizer: data.isPrimaryOrganizer,
       isChat: data.meetingDetails.isChat,
       isVideoCall: data.meetingDetails.isVideoCall,
-      videoCallURL: data.videoCallURL,
+      videoCallURL: data.meetingDetails.videoCallURL,
       talkGroupID: data.talkGroupID,
     };
-
+    console.log("dashboardDatadashboardData", dashboardData);
     // Dispatch and navigate with no mutation
     dispatch(dashboardCalendarEvent({ ...dashboardData }));
     navigate("/DisKus/Meeting");
