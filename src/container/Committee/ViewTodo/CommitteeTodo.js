@@ -120,8 +120,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
   // GET TODOS STATUS
   useEffect(() => {
-    dispatch(getTodoStatus(navigate, t));
-
     if (ViewCommitteeID !== null) {
       let newData = {
         CommitteeID: Number(ViewCommitteeID),
@@ -208,7 +206,11 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     let newOptionsFilter = [];
     let newArrStatus = [""];
 
-    if (todoStatus.Response !== null && todoStatus.Response !== "") {
+    if (
+      todoStatus.Response !== null &&
+      todoStatus.Response !== "" &&
+      todoStatus.Response?.length > 0
+    ) {
       todoStatus.Response.forEach((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
@@ -221,6 +223,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           label: data.status,
         });
       });
+    } else {
+      dispatch(getTodoStatus(navigate, t));
     }
     setStatusValues(newArrStatus);
 
@@ -260,9 +264,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       render: (text, record) => (
         <p
-          className="todolist-title-col"
-          onClick={(e) => viewModalHandler(record.pK_TID)}
-        >
+          className='todolist-title-col'
+          onClick={(e) => viewModalHandler(record.pK_TID)}>
           {text}
         </p>
       ),
@@ -276,13 +279,13 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       // align: "left",
       render: (record, index) => {
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
+          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular'>
             {" "}
             <img
-              draggable="false"
-              className="data-img"
+              draggable='false'
+              className='data-img'
               src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
-              alt="userimage"
+              alt='userimage'
             />
             {record?.name}
           </p>
@@ -308,15 +311,15 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 MontserratRegular color-505050 FontArabicRegular">
+              <p className='m-0 MontserratRegular color-505050 FontArabicRegular'>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-                      alt="userimage"
+                      alt='userimage'
                     />
 
                     {text[0].name}
@@ -324,10 +327,10 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                 ) : (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-                      alt="userimage"
+                      alt='userimage'
                     />
                     {text[0].name}
                   </>
@@ -391,7 +394,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       ],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       onFilter: (value, record) => {
         return record.status.status.toLowerCase().includes(value.toLowerCase());
@@ -403,7 +406,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
               <Select
                 defaultValue={text.status}
                 bordered={false}
-                dropdownClassName="Status-Todo"
+                dropdownClassName='Status-Todo'
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -417,8 +420,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
-              >
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -444,8 +446,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                   : text.pK_TSID === 5
                   ? "Completed custom-class  color-5a5a5a  text-center my-1"
                   : null
-              }
-            >
+              }>
               {text.status}
             </p>
           );
@@ -465,10 +466,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         ) {
           return (
             <i
-              className="meeting-editbutton cursor-pointer"
-              onClick={(e) => deleteTodolist(index)}
-            >
-              <img draggable="false" src={del} alt="" />
+              className='meeting-editbutton cursor-pointer'
+              onClick={(e) => deleteTodolist(index)}>
+              <img draggable='false' src={del} alt='' />
             </i>
           );
         } else {
@@ -678,10 +678,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           sm={12}
           md={12}
           lg={12}
-          className="d-flex flex-column align-items-center"
-        >
-          <img src={TodoMessageIcon1} alt="" />
-          <span className="mt-4"> {t("No-Task")}</span>
+          className='d-flex flex-column align-items-center'>
+          <img src={TodoMessageIcon1} alt='' />
+          <span className='mt-4'> {t("No-Task")}</span>
         </Col>
       </Row>
     );
@@ -689,9 +688,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
   return (
     <>
-      <div className="todolistContainer_Committee">
-        <Row className="my-3">
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
+      <div className='todolistContainer_Committee'>
+        <Row className='my-3'>
+          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end '>
             {committeeStatus === 3 && (
               <Button
                 text={t("Create-a-Task")}
@@ -704,8 +703,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         </Row>
         <Row>
           <Col>
-            <Row className="row-scroll-todolist">
-              <Col className="">
+            <Row className='row-scroll-todolist'>
+              <Col className=''>
                 <TableToDo
                   sortDirections={["descend", "ascend"]}
                   column={columnsToDo}
@@ -772,7 +771,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
-          className="toDoViewModal"
+          className='toDoViewModal'
         />
       ) : viewFlagToDo ? (
         <ModalViewToDo
