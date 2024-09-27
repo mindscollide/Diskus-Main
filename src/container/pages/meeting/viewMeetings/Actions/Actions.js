@@ -89,6 +89,8 @@ const Actions = ({
 
   // dispatch Api in useEffect
   useEffect(() => {
+    dispatch(getTodoStatus(navigate, t));
+
     let meetingTaskData = {
       MeetingID: Number(currentMeeting),
       Date: actionState.Date,
@@ -130,8 +132,6 @@ const Actions = ({
           label: data.status,
         });
       });
-    } else {
-      dispatch(getTodoStatus(navigate, t));
     }
     setStatusValues(newArrStatus);
 
