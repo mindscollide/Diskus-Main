@@ -86,7 +86,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
   // GET TODOS STATUS
   useEffect(() => {
-    dispatch(getTodoStatus(navigate, t));
     if (ViewGroupID !== null) {
       let newData = {
         GroupID: Number(ViewGroupID),
@@ -172,7 +171,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     let newOptionsFilter = [];
     let newArrStatus = [""];
 
-    if (todoStatus.Response !== null && todoStatus.Response !== "") {
+    if (todoStatus.Response !== null && todoStatus.Response !== "" && todoStatus.Response.length > 0) {
       todoStatus.Response.map((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
@@ -185,6 +184,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           label: data.status,
         });
       });
+    } else {
+    dispatch(getTodoStatus(navigate, t));
+
     }
     setStatusValues(newArrStatus);
 

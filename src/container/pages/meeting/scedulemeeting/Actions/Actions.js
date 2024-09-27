@@ -118,7 +118,6 @@ const Actions = ({
     };
 
     dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
-    dispatch(getTodoStatus(navigate, t));
   }, []);
 
   // for pagination in Create Task
@@ -149,7 +148,11 @@ const Actions = ({
     let optionsArr = [];
     let newOptionsFilter = [];
     let newArrStatus = [""];
-    if (todoStatus.Response !== null && todoStatus.Response !== "") {
+    if (
+      todoStatus.Response !== null &&
+      todoStatus.Response !== "" &&
+      todoStatus.Response?.length > 0
+    ) {
       todoStatus.Response.map((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
@@ -161,6 +164,8 @@ const Actions = ({
           label: data.status,
         });
       });
+    } else {
+      dispatch(getTodoStatus(navigate, t));
     }
     setStatusValues(newArrStatus);
     setStatusOptions(optionsArr);
@@ -226,8 +231,7 @@ const Actions = ({
         return (
           <span
             onClick={() => viewActionModal(record)}
-            className={styles["Action_title"]}
-          >
+            className={styles["Action_title"]}>
             {text}
           </span>
         );
@@ -242,13 +246,13 @@ const Actions = ({
       // align: "left",
       render: (record, index) => {
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
+          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
             {" "}
             <img
-              draggable="false"
-              className="data-img"
+              draggable='false'
+              className='data-img'
               src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-              alt=""
+              alt=''
             />
             {record?.name}
           </p>
@@ -274,15 +278,15 @@ const Actions = ({
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
+              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=""
+                      alt=''
                     />
 
                     {text[0].name}
@@ -290,10 +294,10 @@ const Actions = ({
                 ) : (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=""
+                      alt=''
                     />
                     {text[0].name}
                   </>
@@ -369,7 +373,7 @@ const Actions = ({
         "Completed",
       ],
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       onFilter: (value, record) => {
         return record?.status?.status
@@ -383,7 +387,7 @@ const Actions = ({
               <Select
                 defaultValue={text.status}
                 bordered={false}
-                dropdownClassName="Status-Todo"
+                dropdownClassName='Status-Todo'
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -397,8 +401,7 @@ const Actions = ({
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
-              >
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -424,8 +427,7 @@ const Actions = ({
                   : text.pK_TSID === 5
                   ? "Completed  custom-class color-5a5a5a  text-center my-1"
                   : null
-              }
-            >
+              }>
               {text.status}
             </p>
           );
@@ -594,17 +596,16 @@ const Actions = ({
       ) : (
         <>
           <>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Button
                   text={t("Create-task")}
                   className={styles["Create_Task_Button"]}
-                  icon={<img draggable={false} src={addmore} alt="" />}
+                  icon={<img draggable={false} src={addmore} alt='' />}
                   onClick={handleCreateTaskButton}
                 />
               </Col>
@@ -614,31 +615,29 @@ const Actions = ({
               <Col lg={12} md={12} sm={12}>
                 {actionsRows.length === 0 ? (
                   <>
-                    <Row className="mt-0">
+                    <Row className='mt-0'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center"
-                      >
+                        className='d-flex justify-content-center'>
                         <img
                           draggable={false}
                           src={EmptyStates}
-                          width="306.27px"
-                          height="230px"
-                          alt=""
+                          width='306.27px'
+                          height='230px'
+                          alt=''
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center"
-                      >
+                        className='d-flex justify-content-center'>
                         <span className={styles["Empty-State_Heading"]}>
-                        {t("Create-tasks-instantly")}
+                          {t("Create-tasks-instantly")}
                         </span>
                       </Col>
                     </Row>
@@ -647,10 +646,9 @@ const Actions = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center"
-                      >
+                        className='d-flex justify-content-center'>
                         <span className={styles["EmptyState_SubHeading"]}>
-                        {t("The-meeting-wrapped-up-lets-dive-into-some-task")}
+                          {t("The-meeting-wrapped-up-lets-dive-into-some-task")}
                         </span>
                       </Col>
                     </Row>
@@ -671,13 +669,12 @@ const Actions = ({
                       </Row>
 
                       {actionsRows.length > 0 && (
-                        <Row className="">
+                        <Row className=''>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <Row>
                               <Col
                                 lg={12}
@@ -685,9 +682,8 @@ const Actions = ({
                                 sm={12}
                                 className={
                                   "pagination-groups-table d-flex justify-content-center"
-                                }
-                              >
-                                <span className="PaginationStyle-TodoList">
+                                }>
+                                <span className='PaginationStyle-TodoList'>
                                   <CustomPagination
                                     onChange={handleForPagination}
                                     current={currentPage}
@@ -712,13 +708,12 @@ const Actions = ({
                 )}
               </Col>
             </Row>
-            <Row className="mt-5">
+            <Row className='mt-5'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
                   text={t("Cancel")}
                   className={styles["CloneMeetingButton"]}
