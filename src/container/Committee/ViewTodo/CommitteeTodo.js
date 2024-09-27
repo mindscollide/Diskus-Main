@@ -120,6 +120,10 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
   // GET TODOS STATUS
   useEffect(() => {
+    if(!todoStatus.Response?.length > 0){
+      dispatch(getTodoStatus(navigate, t));
+    }
+
     if (ViewCommitteeID !== null) {
       let newData = {
         CommitteeID: Number(ViewCommitteeID),
@@ -223,9 +227,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           label: data.status,
         });
       });
-    } else {
-      dispatch(getTodoStatus(navigate, t));
-    }
+    } 
     setStatusValues(newArrStatus);
 
     setStatusOptions(optionsArr);
