@@ -86,6 +86,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
   // GET TODOS STATUS
   useEffect(() => {
+    if(!todoStatus.Response?.length > 0){
+      dispatch(getTodoStatus(navigate, t));
+    }
     if (ViewGroupID !== null) {
       let newData = {
         GroupID: Number(ViewGroupID),
@@ -184,9 +187,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           label: data.status,
         });
       });
-    } else {
-    dispatch(getTodoStatus(navigate, t));
-
     }
     setStatusValues(newArrStatus);
 

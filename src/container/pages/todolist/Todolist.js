@@ -79,6 +79,9 @@ const TodoList = () => {
 
   // GET TODOS STATUS
   useEffect(() => {
+    if(!todoStatus.Response?.length > 0){
+      dispatch(getTodoStatus(navigate, t));
+    }
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
       dispatch(
         SearchTodoListApi(
@@ -203,9 +206,7 @@ const TodoList = () => {
           label: data.status,
         });
       });
-    } else {
-      dispatch(getTodoStatus(navigate, t));
-    }
+    } 
     setStatusValues(newArrStatus);
     setStatusOptions(optionsArr);
   }, [todoStatus]);
