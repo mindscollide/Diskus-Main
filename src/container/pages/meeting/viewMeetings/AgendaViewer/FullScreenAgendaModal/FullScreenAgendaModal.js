@@ -304,6 +304,7 @@ const FullScreenAgendaModal = ({
       }
       localStorage.setItem("activeOtoChatID", talkGroupID);
     }
+    setFullScreenView(false)
   };
 
   const leaveMeeting = () => {

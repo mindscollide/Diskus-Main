@@ -41,7 +41,7 @@ import {
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
-import { SaveMeetingDetialsNewApiFunction } from "../../../../../store/actions/NewMeetingActions";
+import { SaveMeetingDetialsNewApiFunction, GetAllMeetingTypesNewFunction } from "../../../../../store/actions/NewMeetingActions";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
   setorganizers,
@@ -254,9 +254,14 @@ const ProposedNewMeeting = ({
     } catch {}
   }, [PollsReducer.gellAllCommittesandGroups]);
 
-  // useEffect(() => {
-  //   dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
-  // }, []);
+  useEffect(() => {
+    if (
+      getALlMeetingTypes.length === 0 &&
+      Object.keys(getALlMeetingTypes).length === 0
+    ) {
+      dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    }
+  }, []);
 
   useEffect(() => {
     try {

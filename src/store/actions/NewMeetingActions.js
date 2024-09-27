@@ -93,6 +93,8 @@ import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 import { GetAllUserChats } from "./Talk_action";
+import { endIndexUrl, extractedUrl, generateRandomGuest, generateURLParticipant } from "../../commen/functions/urlVideoCalls";
+import copyToClipboard from "../../hooks/useClipBoard";
 
 const boardDeckModal = (response) => {
   return {
@@ -394,7 +396,6 @@ const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
     dispatch(handlegetAllMeetingTypesInit());
     let form = new FormData();
     form.append("RequestMethod", getallMeetingType.RequestMethod);
-
     try {
       const response = await axios({
         method: "post",
@@ -1515,10 +1516,11 @@ const FetchMeetingURLApi = (
   };
 };
 
-const clipboardURLMeetingData = (response) => {
+const clipboardURLMeetingData = (response, message) => {
   return {
     type: actions.GET_MEETING_URL_CLIPBOARD,
     response: response,
+    message: message,
   };
 };
 
@@ -1563,8 +1565,30 @@ const FetchMeetingURLClipboard = (
                   "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_01".toLowerCase()
                 )
             ) {
+
+              let currentVideoURL = response.data.responseResult.videoURL;
+
+              let match = currentVideoURL.match(/RoomID=([^&]*)/);
+              let roomID = match[1];
+              let dynamicBaseURLCaller = localStorage.getItem(
+                "videoBaseURLParticipant"
+              );
+              let randomGuestName = generateRandomGuest();
+              const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
+              const extractedBaseURLCaller = extractedUrl(
+                dynamicBaseURLCaller,
+                endIndexBaseURLCaller
+              );
+              let resultedVideoURL = generateURLParticipant(
+                extractedBaseURLCaller,
+                randomGuestName,
+                roomID
+              );
+
+              copyToClipboard(resultedVideoURL);
+
               dispatch(
-                clipboardURLMeetingData(response.data.responseResult.videoURL)
+                clipboardURLMeetingData(response.data.responseResult.videoURL, t("Meeting-link-copied"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1573,7 +1597,7 @@ const FetchMeetingURLClipboard = (
                   "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_02".toLowerCase()
                 )
             ) {
-              dispatch(clipboardURLMeetingData(""));
+              dispatch(clipboardURLMeetingData("", t("Unable-to-generate-meeting-link")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -6562,7 +6586,6 @@ const scheduleMeetingMainApi = (
               setSceduleMeeting(true);
               dispatch(scheduleMeetingPageFlag(true));
               dispatch(meetingDetailsGlobalFlag(true));
-             
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
