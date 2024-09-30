@@ -123,7 +123,7 @@ const Minutes = ({
   let previousFileList = [];
   const [fileSize, setFileSize] = useState(0);
   const [useCase, setUseCase] = useState(null);
-
+  const [isMinutePublishable, setIsMinutePublishable] = useState(false);
   const [fileForSend, setFileForSend] = useState([]);
   const [general, setGeneral] = useState(true);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
@@ -601,9 +601,7 @@ const Minutes = ({
       attachmentID: record[0].pK_FileID,
     };
     let pdfDataJson = JSON.stringify(Data);
-    if (
-      fileFormatforSignatureFlow.includes(ext)
-    ) {
+    if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
@@ -1114,6 +1112,9 @@ const Minutes = ({
           0,
           8
         )
+      );
+      setIsMinutePublishable(
+        MinutesReducer.GetMinuteReviewFlowByMeetingIdData.isMinutePublishable
       );
     } else {
       setDeadLineDate(null);
@@ -1870,11 +1871,13 @@ const Minutes = ({
               {(editorRole.role === "Organizer" &&
                 Number(editorRole.status) === 9 &&
                 deadLineDate <= currentDateOnly &&
+                isMinutePublishable === true &&
                 (minutesData.length > 0 || minutesDataAgenda !== null) &&
                 MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null) ||
               (Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer" &&
                 deadLineDate <= currentDateOnly &&
+                isMinutePublishable === true &&
                 (minutesData.length > 0 || minutesDataAgenda !== null) &&
                 MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null) ? (
                 <Button
