@@ -29,7 +29,7 @@
   align-items: center;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
   animation: slideUp 0.5s ease-in-out;
-  z-index: 999999999999999999999999 !important;
+  z-index: 9999 !important;
 }
 
 body[dir="rtl"] .videoCallScreen {
@@ -70,7 +70,7 @@ body[dir="rtl"] .videoCallScreen {
   background-color: #fff !important;
   border: 1px solid #4adede !important;
   border-radius: 4px !important;
-  z-index: 999999999999999999999999 !important;
+  z-index: 9999 !important;
   padding: 0px 30px;
   box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
   width: 90%;

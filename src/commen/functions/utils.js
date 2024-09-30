@@ -184,6 +184,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       localStorage.setItem("initiateVideoCall", false);
       localStorage.setItem("activeRoomID", 0);
       localStorage.setItem("isMeeting", false);
+      localStorage.setItem("meetingVideoID", 0);
       localStorage.setItem("newCallerID", 0);
       const emptyArray = [];
       localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
@@ -394,7 +395,7 @@ export const xorEncryptDecrypt = (input, key) => {
     out += String.fromCharCode(
       input.charCodeAt(i) ^ key.charCodeAt(i % key.length)
     );
-  } 
+  }
   return out;
 };
 
@@ -420,3 +421,52 @@ export const getData = (key) => {
   const data = localStorage.getItem(key);
   return data ? decrypt(data, process.env.REACT_APP_SECERETKEY) : null;
 };
+
+export const fileFormatforSignatureFlow = [
+  // PDF Formats
+  "pdf",
+  "fdf",
+  "xfdf",
+
+  // Microsoft Office Formats
+  "doc",
+  "docx",
+  "xls",
+  "xlsx",
+  "ppt",
+  "pptx",
+  "pub",
+
+  // CAD Formats
+  "dwg",
+  "dxf",
+  "dgn",
+  "rvt",
+  "dwf",
+
+  // Document Formats
+  "rtf",
+  "odt",
+  "ods",
+  "odp",
+  "wpf",
+
+  // Image Formats
+  "bmp",
+  "wmf",
+  "emf",
+  "gif",
+  "hdp",
+  "jpg",
+  "jp2",
+  "jpc",
+  "png",
+  "tif",
+  "tiff",
+
+  // Web Formats
+  "html",
+  "htm",
+  "mht",
+  "svg",
+];

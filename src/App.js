@@ -46,11 +46,6 @@ const App = () => {
     const isAndroid = /android/i.test(userAgent);
     const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
 
-    // Debugging output
-    console.log("User Agent:", userAgent);
-    console.log("Is Android:", isAndroid);
-    console.log("Is iOS:", isIOS);
-
     return isAndroid || isIOS;
   };
 
@@ -81,7 +76,12 @@ const App = () => {
     // Function to check the version and refresh if needed
     const checkVersion = async () => {
       const latestVersion = await fetchVersion();
-      if (latestVersion && currentVersion && currentVersion !== latestVersion) {
+      if (
+        latestVersion &&
+        currentVersion &&
+        currentVersion !== latestVersion &&
+        currentVersion !== null
+      ) {
         setUpdateVersion(true);
       } else if (!currentVersion) {
         // Set the initial version if it's not set
@@ -97,6 +97,7 @@ const App = () => {
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, [currentVersion]);
+  
   return (
     <>
       <Suspense fallback={<Loader />}>

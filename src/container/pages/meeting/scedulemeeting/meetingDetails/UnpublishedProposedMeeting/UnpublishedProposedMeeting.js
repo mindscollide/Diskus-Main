@@ -246,7 +246,8 @@ const UnpublishedProposedMeeting = ({
                 isVideoCall: record.isVideoCall,
                 talkGroupID: record.talkGroupID,
               });
-              handleOpenViewModal(record);
+          localStorage.setItem("videoCallURL", record.videoCallURL)
+          handleOpenViewModal(record);
               dispatch(viewMeetingFlag(true));
               dispatch(
                 GetAllUserChats(
@@ -480,7 +481,8 @@ const UnpublishedProposedMeeting = ({
                           isVideoCall: record.isVideoCall,
                           talkGroupID: record.talkGroupID,
                         });
-                        setEdiorRole({
+          localStorage.setItem("videoCallURL", record.videoCallURL)
+          setEdiorRole({
                           status: record.status,
                           role: "Agenda Contributor",
                         });
@@ -522,7 +524,8 @@ const UnpublishedProposedMeeting = ({
                             isVideoCall: record.isVideoCall,
                             talkGroupID: record.talkGroupID,
                           });
-                          setEdiorRole({
+          localStorage.setItem("videoCallURL", record.videoCallURL)
+          setEdiorRole({
                             status: record.status,
                             role: "Organizer",
                           });
@@ -849,7 +852,7 @@ const UnpublishedProposedMeeting = ({
               "viewProposeDatePollMeetingID",
               getApiResponse.meetingID
             );
-            localStorage.removeItem("meetingprop")
+            localStorage.removeItem("meetingprop");
             setResponseByDate(getApiResponse.deadline);
             setViewProposeDatePoll(true);
             dispatch(viewProposeDateMeetingPageFlag(true));
@@ -912,7 +915,13 @@ const UnpublishedProposedMeeting = ({
         </Col>
       </Row>
       {organizerViewModal && <OrganizerViewModal />}
-      {sceduleproposedMeeting && <SceduleProposedmeeting />}
+      {sceduleproposedMeeting && (
+        <SceduleProposedmeeting
+          setDataroomMapFolderId={setDataroomMapFolderId}
+          setCurrentMeetingID={setCurrentMeetingID}
+          setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
       {deleteMeetingModal && <DeleteMeetingModal />}
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>

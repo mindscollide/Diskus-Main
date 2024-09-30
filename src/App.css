@@ -4492,7 +4492,6 @@ span.bordertop {
 }
 
 .All-Done-Congrats-Screen {
-  margin-top: -250px !important;
   text-align: center !important;
   justify-content: center !important;
   display: grid !important;
@@ -8206,4 +8205,32 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
   min-width: 600px !important;
   max-width: 600px !important;
   padding: 0px 60px;
+}
+.Polls_Meeting--is-disabled {
+  width: 100%;
+}
+
+.MobilePopUpModal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(35%);
+  z-index: 1000;
+}
+
+@media screen and (max-width: 767px) {
+  .MobilePopUpModal {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .MobilePopUpModal {
+    width: 100%;
+  }
+}
+
+.MobilePopUpModal .modal-content {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
 }

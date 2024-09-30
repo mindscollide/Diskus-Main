@@ -105,6 +105,7 @@ const FullScreenAgendaModal = ({
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let meetingTitle = localStorage.getItem("meetingTitle");
+  let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -148,10 +149,18 @@ const FullScreenAgendaModal = ({
     };
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
-      MeetingID: currentMeeting,
+      VideoCallURL: currentMeetingVideoURL,
     };
     dispatch(
-      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
+      FetchMeetingURLApi(
+        Data2,
+        navigate,
+        t,
+        currentUserID,
+        currentOrganization,
+        1,
+        meetingTitle
+      )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
     const emptyArray = [];
@@ -180,10 +189,18 @@ const FullScreenAgendaModal = ({
     };
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
-      MeetingID: currentMeeting,
+      VideoCallURL: currentMeetingVideoURL,
     };
     dispatch(
-      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
+      FetchMeetingURLApi(
+        Data2,
+        navigate,
+        t,
+        currentUserID,
+        currentOrganization,
+        1,
+        meetingTitle
+      )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
     const emptyArray = [];
@@ -204,7 +221,7 @@ const FullScreenAgendaModal = ({
   const joinMeetingCall = () => {
     if (activeCall === false && isMeeting === false) {
       let Data = {
-        MeetingID: currentMeeting,
+        VideoCallURL: currentMeetingVideoURL,
       };
       dispatch(
         FetchMeetingURLApi(
@@ -213,7 +230,8 @@ const FullScreenAgendaModal = ({
           t,
           currentUserID,
           currentOrganization,
-          1
+          1,
+          meetingTitle
         )
       );
       localStorage.setItem("meetingTitle", meetingTitle);
@@ -286,6 +304,7 @@ const FullScreenAgendaModal = ({
       }
       localStorage.setItem("activeOtoChatID", talkGroupID);
     }
+    setFullScreenView(false)
   };
 
   const leaveMeeting = () => {
@@ -361,8 +380,7 @@ const FullScreenAgendaModal = ({
                   </Tooltip>
                 ) : null}
 
-                {(editorRole.status === "10" || editorRole.status === 10) &&
-                videoTalk?.isVideoCall ? (
+                {editorRole.status === "10" || editorRole.status === 10 ? (
                   <Tooltip placement="topRight" title={t("Leave-meeting")}>
                     <div
                       className={styles["box-agendas-leave"]}
@@ -373,7 +391,8 @@ const FullScreenAgendaModal = ({
                   </Tooltip>
                 ) : null}
 
-                {editorRole.status === "10" || editorRole.status === 10 ? (
+                {(editorRole.status === "10" || editorRole.status === 10) &&
+                videoTalk?.isVideoCall ? (
                   <Tooltip placement="topRight" title={t("Enable-video-call")}>
                     <div
                       className={styles["box-agendas-camera"]}

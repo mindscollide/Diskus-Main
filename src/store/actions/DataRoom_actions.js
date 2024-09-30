@@ -36,6 +36,7 @@ import {
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
+import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
@@ -431,7 +432,7 @@ const uploadDocumentsApi = (
             // Handle other errors as needed
           }
 
-          dispatch(uploadDocument_fail(t("Something-went-wrong")));
+          // dispatch(uploadDocument_fail(t("Something-went-wrong")));
         });
     };
   }
@@ -3386,7 +3387,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 let ext = response.data.responseResult.data.name
                   .split(".")
                   .pop();
-                if (ext === "pdf") {
+                if (fileFormatforSignatureFlow.includes(ext)) {
                   const pdfData = {
                     taskId: response.data.responseResult.data.id,
                     commingFrom: 4,
@@ -3436,7 +3437,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 let ext = response.data.responseResult.data.name
                   .split(".")
                   .pop();
-                if (ext === "pdf") {
+                if (fileFormatforSignatureFlow.includes(ext)) {
                   const pdfData = {
                     taskId: response.data.responseResult.data.id,
                     commingFrom: 4,
@@ -3487,7 +3488,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 let ext = response.data.responseResult.data.name
                   .split(".")
                   .pop();
-                if (ext === "pdf") {
+                if (fileFormatforSignatureFlow.includes(ext)) {
                   const pdfData = {
                     taskId: response.data.responseResult.data.id,
                     commingFrom: 4,
@@ -3533,10 +3534,10 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                   )
                 );
               } else {
-                let ext = response.data.responseResult.data.name
+                let ext = response?.data?.responseResult?.data?.name
                   .split(".")
                   .pop();
-                if (ext === "pdf") {
+                if (fileFormatforSignatureFlow.includes(ext)) {
                   const pdfData = {
                     taskId: response.data.responseResult.data.id,
                     commingFrom: 4,

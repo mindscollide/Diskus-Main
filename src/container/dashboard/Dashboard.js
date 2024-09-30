@@ -81,6 +81,7 @@ import {
   meetingOrganizerRemoved,
   meetingParticipantRemoved,
   meetingParticipantAdded,
+  LeaveMeetingVideo,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -192,6 +193,10 @@ const Dashboard = () => {
     UserManagementModals,
   } = useSelector((state) => state);
 
+  const meetingUrlData = useSelector(
+    (state) => state.NewMeetingreducer.getmeetingURL
+  );
+
   const navigate = useNavigate();
   const [checkInternet, setCheckInternet] = useState(navigator);
   let createrID = localStorage.getItem("userID");
@@ -203,6 +208,8 @@ const Dashboard = () => {
 
   // let createrID = 5;
   const dispatch = useDispatch();
+  let userGUID = localStorage.getItem("userGUID");
+  let currentMeetingVideoID = localStorage.getItem("acceptedRoomID");
 
   // for real time Notification
   const [notification, setNotification] = useState({
@@ -219,6 +226,7 @@ const Dashboard = () => {
   const [activateBlur, setActivateBlur] = useState(false);
   const [notificationID, setNotificationID] = useState(0);
   const [currentLanguage, setCurrentLanguage] = useState("en");
+  const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
   let Blur = localStorage.getItem("blur");
 
   const cancelModalMeetingDetails = useSelector(
@@ -320,6 +328,7 @@ const Dashboard = () => {
               .toLowerCase()
               .includes("MEETING_STATUS_EDITED_END".toLowerCase())
           ) {
+            let meetingVideoID = Number(localStorage.getItem("meetingVideoID"));
             if (data.viewable) {
               setNotification({
                 ...notification,
@@ -331,6 +340,25 @@ const Dashboard = () => {
                 ),
               });
               setNotificationID(id);
+              if (meetingVideoID === data.payload.meeting.pK_MDID) {
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+                localStorage.setItem("activeCall", false);
+                localStorage.setItem("isMeeting", false);
+                localStorage.setItem("meetingTitle", "");
+                localStorage.setItem("acceptedRecipientID", 0);
+                localStorage.setItem("acceptedRoomID", 0);
+                localStorage.setItem("activeRoomID", 0);
+                localStorage.setItem("meetingVideoID", 0);
+                localStorage.setItem("MicOff", true);
+                localStorage.setItem("VidOff", true);
+                let Data = {
+                  RoomID: currentMeetingVideoID,
+                  UserGUID: userGUID,
+                };
+                dispatch(LeaveMeetingVideo(Data, navigate, t));
+              }
             }
             // let Data2 = {
             //   UserID: Number(createrID),
@@ -2303,6 +2331,14 @@ const Dashboard = () => {
   const onConnectionLost = () => {
     setTimeout(mqttConnection, 3000);
   };
+
+  useEffect(() => {
+    if (meetingUrlData !== null && meetingUrlData !== undefined) {
+      setMeetingURLLocalData(meetingUrlData);
+    } else {
+      setMeetingURLLocalData(null);
+    }
+  }, [meetingUrlData]);
 
   useEffect(() => {
     if (Helper.socket === null) {

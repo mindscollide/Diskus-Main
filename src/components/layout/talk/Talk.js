@@ -214,14 +214,14 @@ const Talk = () => {
           t
         )
       );
-      // dispatch(
-      //   GetAllUserChats(
-      //     navigate,
-      //     parseInt(currentUserId),
-      //     parseInt(currentOrganizationId),
-      //     t
-      //   )
-      // );
+      dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
       dispatch(headerShowHideStatus(true));
       dispatch(footerShowHideStatus(true));
       dispatch(activeChatBoxGS(true));

@@ -51,7 +51,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let currentUserID = Number(localStorage.getItem("userID"));
-  let currentOrganization = Number(localStorage.getItem("organizationID"));
+  let currentOrganization = Number(localStorage.getItem("acceptedRoomID"));
+  let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+
   const [getMeetID, setMeetID] = useState(0);
   const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
   const [isDetails, setIsDetails] = useState(true);
@@ -305,7 +307,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         );
         let StatusCheck = assignees.ViewMeetingDetails.meetingStatus.pK_MSID;
         let Data2 = {
-          MeetingID: meetingID,
+          VideoCallURL: currentMeetingVideoURL,
         };
         if (check) {
           dispatch(
@@ -805,7 +807,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   useEffect(() => {
     try {
       if (viewFlag) {
-        // dispatch(allAssignessList(navigate, t));
+        //     dispatch(allAssignessList(navigate, t,false));
       } else {
         setViewFlag(false);
         dispatch(cleareAssigneesState());
@@ -971,7 +973,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     // setViewFlag(false);
     if (activeCall === false && isMeeting === false) {
       let Data = {
-        MeetingID: getMeetID,
+        VideoCallURL: currentMeetingVideoURL,
       };
       dispatch(
         FetchMeetingURLApi(
@@ -979,7 +981,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           navigate,
           t,
           currentUserID,
-          currentOrganization
+          currentOrganization,
+          0,
+          createMeeting.MeetingTitle
         )
       );
       localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);

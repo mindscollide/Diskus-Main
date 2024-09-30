@@ -41,7 +41,7 @@ import {
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
-import { SaveMeetingDetialsNewApiFunction } from "../../../../../store/actions/NewMeetingActions";
+import { SaveMeetingDetialsNewApiFunction, GetAllMeetingTypesNewFunction } from "../../../../../store/actions/NewMeetingActions";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
   setorganizers,
@@ -144,8 +144,30 @@ const ProposedNewMeeting = ({
             newParticpantData.groups.forEach((a, index) => {
               let newData = {
                 value: a.groupID,
-                label: a.groupName,
-                profilePic: GroupIcon,
+                name: a.groupName,
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center'>
+                        <img
+                          src={GroupIcon}
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {a.groupName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                // profilePic: GroupIcon,
                 type: 1,
               };
               temp.push(newData);
@@ -155,8 +177,30 @@ const ProposedNewMeeting = ({
             newParticpantData.committees.forEach((a, index) => {
               let newData = {
                 value: a.committeeID,
-                label: a.committeeName,
-                profilePic: committeeicon,
+                name: a.committeeName,
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center'>
+                        <img
+                          src={committeeicon}
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {a.committeeName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                // profilePic: committeeicon,
 
                 type: 2,
               };
@@ -171,8 +215,32 @@ const ProposedNewMeeting = ({
             filterOutCreatorUser.forEach((a, index) => {
               let newData = {
                 value: a.userID,
-                label: a.userName,
-                profilePic: a?.profilePicture?.displayProfilePictureName,
+                name: a.userName,
+                // profilePic: a?.profilePicture?.displayProfilePictureName,
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center'>
+                        <img
+                          src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                          // src={}
+                          alt=''
+                          className={styles["UserProfilepic"]}
+                          width='18px'
+                          height='18px'
+                          draggable='false'
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {a.userName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
                 type: 3,
               };
               temp.push(newData);
@@ -186,9 +254,14 @@ const ProposedNewMeeting = ({
     } catch {}
   }, [PollsReducer.gellAllCommittesandGroups]);
 
-  // useEffect(() => {
-  //   dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
-  // }, []);
+  useEffect(() => {
+    if (
+      getALlMeetingTypes.length === 0 &&
+      Object.keys(getALlMeetingTypes).length === 0
+    ) {
+      dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    }
+  }, []);
 
   useEffect(() => {
     try {
@@ -217,8 +290,8 @@ const ProposedNewMeeting = ({
 
   //onChange function Search
   const onChangeSearch = (event) => {
-    console.log(event, "eventeventeventevent")
-    setParticipantUsers(event)
+    console.log(event, "eventeventeventevent");
+    setParticipantUsers(event);
     // setParticipantUsers(e.target.value.trimStart());
   };
 
@@ -692,7 +765,6 @@ const ProposedNewMeeting = ({
   };
 
   //handle change Meeting Type Selector
-
   const handleMeetingSelectChange = (selectedOption) => {
     setMeetingTypeDetails({
       ...meetingTypeDetails,
@@ -725,10 +797,21 @@ const ProposedNewMeeting = ({
     : firstSelectedDate;
   const maxSelectableDate = firstSelectedDate;
 
+  //Custom Filter for Selector
+
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const handleClickAddParticipants = () => {
     let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
+    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData")
     let tem = [...membersParticipants];
-    if(participantUsers.length > 0 ) {
+    if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
         if (userData.type === 1) {
           // Groups Search
@@ -738,30 +821,36 @@ const ProposedNewMeeting = ({
           if (check1 !== undefined) {
             let groupUsers = check1.groupUsers;
             if (Object.keys(groupUsers).length > 0) {
-              groupUsers.forEach((gUser, index) => {
-                let check2 = membersParticipants.find(
-                  (data, index) => data.UserID === gUser.userID
-                );
-                if (check2 !== undefined) {
-                } else {
-                  let newUser = {
-                    userName: gUser.userName,
-                    userID: gUser.userID,
-                    displayPicture: gUser.profilePicture.displayProfilePictureName,
-                    email: gUser.emailAddress,
-                    IsPrimaryOrganizer: false,
-                    IsOrganizerNotified: false,
-                    Title: "",
-                    isRSVP: false,
-                    participantRole: {
-                      participantRole: "Participant",
-                      participantRoleID: 2,
-                    },
-                    isComingApi: false,
-                  };
-                  tem.push(newUser);
-                }
-              });
+              groupUsers
+                .filter(
+                  (groupFilter, index) =>
+                    Number(groupFilter.userID) !== Number(userID)
+                )
+                .forEach((gUser, index) => {
+                  let check2 = membersParticipants.find(
+                    (data, index) => data.UserID === gUser.userID
+                  );
+                  if (check2 !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: gUser.userName,
+                      userID: gUser.userID,
+                      displayPicture:
+                        gUser.profilePicture.displayProfilePictureName,
+                      email: gUser.emailAddress,
+                      IsPrimaryOrganizer: false,
+                      IsOrganizerNotified: false,
+                      Title: "",
+                      isRSVP: false,
+                      participantRole: {
+                        participantRole: "Participant",
+                        participantRoleID: 2,
+                      },
+                      isComingApi: false,
+                    };
+                    tem.push(newUser);
+                  }
+                });
             }
           }
         } else if (userData.type === 2) {
@@ -769,34 +858,40 @@ const ProposedNewMeeting = ({
           let check1 = newOrganizersData.committees.find(
             (data, index) => data.committeeID === userData.value
           );
-    
+
           if (check1 !== undefined) {
             let committeesUsers = check1.committeeUsers;
             if (Object.keys(committeesUsers).length > 0) {
-              committeesUsers.forEach((cUser, index) => {
-                let check2 = membersParticipants.find(
-                  (data, index) => data.UserID === cUser.userID
-                );
-                if (check2 !== undefined) {
-                } else {
-                  let newUser = {
-                    userName: cUser.userName,
-                    userID: cUser.userID,
-                    displayPicture: cUser.profilePicture.displayProfilePictureName,
-                    email: cUser.emailAddress,
-                    IsPrimaryOrganizer: false,
-                    IsOrganizerNotified: false,
-                    Title: "",
-                    isRSVP: false,
-                    participantRole: {
-                      participantRole: "Participant",
-                      participantRoleID: 2,
-                    },
-                    isComingApi: false,
-                  };
-                  tem.push(newUser);
-                }
-              });
+              committeesUsers
+                .filter(
+                  (filterData, index) =>
+                    Number(filterData.userID) !== Number(userID)
+                )
+                .forEach((cUser, index) => {
+                  let check2 = membersParticipants.find(
+                    (data, index) => data.UserID === cUser.userID
+                  );
+                  if (check2 !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: cUser.userName,
+                      userID: cUser.userID,
+                      displayPicture:
+                        cUser.profilePicture.displayProfilePictureName,
+                      email: cUser.emailAddress,
+                      IsPrimaryOrganizer: false,
+                      IsOrganizerNotified: false,
+                      Title: "",
+                      isRSVP: false,
+                      participantRole: {
+                        participantRole: "Participant",
+                        participantRoleID: 2,
+                      },
+                      isComingApi: false,
+                    };
+                    tem.push(newUser);
+                  }
+                });
             }
           }
         } else if (userData.type === 3) {
@@ -804,7 +899,7 @@ const ProposedNewMeeting = ({
           let check1 = membersParticipants.find(
             (data, index) => data.UserID === userData.value
           );
-    
+
           if (check1 !== undefined) {
           } else {
             let check2 = newOrganizersData.organizationUsers.find(
@@ -831,16 +926,12 @@ const ProposedNewMeeting = ({
           }
         }
         const uniqueData = new Set(tem.map(JSON.stringify));
-    
         const result = Array.from(uniqueData).map(JSON.parse);
         setMembersParticipants(result);
         setParticipantUsers([]);
-      })
+      });
     }
-
-  }
-  console.log(membersParticipants, "setMembersParticipantssetMembersParticipants")
-  console.log(participantUsers, "setMembersParticipantssetMembersParticipants")
+  };
 
   return (
     <section>
@@ -910,8 +1001,6 @@ const ProposedNewMeeting = ({
                       change={HandleChange}
                       required
                     />
-
-                    
                   </Col>
                 </Row>
                 <Row className='mt-3'>
@@ -926,21 +1015,27 @@ const ProposedNewMeeting = ({
                   <Col lg={10} md={10} sm={10}>
                     <Select
                       placeholder={t("Add-participant")}
+                      classNamePrefix={"selectMember"}
                       isMulti={true}
                       isDisabled={dropdowndata.length === 0 ? true : false}
                       options={dropdowndata}
                       value={participantUsers}
+                      components={animatedComponents}
                       onChange={onChangeSearch}
+                      filterOption={customFilter}
                       closeMenuOnSelect={false}
                       isClearable={true}
-                      isSearchable={false}
+                      isSearchable={true}
                       hideSelectedOptions={true}
                       maxMenuHeight={180}
                     />
-                 
                   </Col>
                   <Col lg={2} md={2} sm={2}>
-                    <Button text={t("Add")} onClick={handleClickAddParticipants} className={styles["Add_participants"]} />
+                    <Button
+                      text={t("Add")}
+                      onClick={handleClickAddParticipants}
+                      className={styles["Add_participants"]}
+                    />
                   </Col>
                 </Row>
                 <Row className='mt-2'>

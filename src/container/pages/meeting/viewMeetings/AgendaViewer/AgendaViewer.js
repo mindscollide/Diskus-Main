@@ -105,6 +105,7 @@ const AgendaViewer = ({
   let callTypeID = Number(localStorage.getItem("callTypeID"));
 
   let callerID = Number(localStorage.getItem("callerID"));
+  let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
 
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -292,10 +293,10 @@ const AgendaViewer = ({
     };
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
-      MeetingID: currentMeeting,
+      VideoCallURL: currentMeetingVideoURL,
     };
     dispatch(
-      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
+      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization, 1, meetingTitle)
     );
     localStorage.setItem("meetingTitle", meetingTitle);
     const emptyArray = [];
@@ -324,10 +325,10 @@ const AgendaViewer = ({
     };
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
-      MeetingID: currentMeeting,
+      VideoCallURL: currentMeetingVideoURL,
     };
     dispatch(
-      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
+      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization, 1, meetingTitle)
     );
     localStorage.setItem("meetingTitle", meetingTitle);
     const emptyArray = [];
@@ -348,7 +349,7 @@ const AgendaViewer = ({
   const joinMeetingCall = () => {
     if (activeCall === false && isMeeting === false) {
       let Data = {
-        MeetingID: currentMeeting,
+        VideoCallURL: currentMeetingVideoURL,
       };
       dispatch(
         FetchMeetingURLApi(
@@ -357,7 +358,8 @@ const AgendaViewer = ({
           t,
           currentUserID,
           currentOrganization,
-          1
+          1,
+          meetingTitle
         )
       );
       localStorage.setItem("meetingTitle", meetingTitle);
@@ -645,9 +647,8 @@ const AgendaViewer = ({
                         </Tooltip>
                       ) : null}
 
-                      {(editorRole.status === "10" ||
-                        editorRole.status === 10) &&
-                      videoTalk?.isVideoCall ? (
+                      {editorRole.status === "10" ||
+                      editorRole.status === 10 ? (
                         <Tooltip
                           placement="topRight"
                           title={t("Leave-meeting")}
@@ -661,8 +662,9 @@ const AgendaViewer = ({
                         </Tooltip>
                       ) : null}
 
-                      {editorRole.status === "10" ||
-                      editorRole.status === 10 ? (
+                      {(editorRole.status === "10" ||
+                        editorRole.status === 10) &&
+                      videoTalk?.isVideoCall ? (
                         <Tooltip
                           placement="topRight"
                           title={t("Enable-video-call")}

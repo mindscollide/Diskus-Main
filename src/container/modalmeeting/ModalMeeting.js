@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./ModalMeeting.css";
-import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import {
   convertDateTimeObject,
   createConvert,
   RemoveTimeDashes,
-  resolutionResultTable,
 } from "../../commen/functions/date_formater";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -25,7 +22,6 @@ import {
   Accordian,
   EmployeeCard,
   Notification,
-  InputSearchFilter,
   AttachmentViewer,
 } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -58,6 +54,7 @@ import { Tooltip } from "antd";
 const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
+  // checkFlag 4 is for Meeting
 
   //For Localization
   const { t } = useTranslation();
@@ -130,7 +127,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [defaultPresenter, setDefaultPresenter] = useState(null);
 
   const [attendeesParticipant, setAttendeesParticipant] = useState([]);
-
+  console.log(attendeesParticipant, "attendeesParticipantattendeesParticipant");
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("Participant");
   const [participantRoleID, setParticipantRoleID] = useState(2);
@@ -173,6 +170,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   let OrganizationId = localStorage.getItem("organizationID");
 
   const [allPresenters, setAllPresenters] = useState([]);
+  console.log(allPresenters, "allPresentersallPresenters");
   const [presenterValue, setPresenterValue] = useState({
     value: 0,
     label: "",
@@ -284,7 +282,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
       setIsAgenda(false);
       setIsAttendees(false);
-      setIsPublishMeeting(false);
+      setIsPublishMeeting(true);
     } else if (createMeeting.MeetingAgendas.length > 0) {
       setModalField(false);
       setIsDetails(false);
@@ -294,18 +292,34 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
       setIsPublishMeeting(false);
     } else if (createMeeting.MeetingAgendas.length === 0) {
-      setModalField(true);
-      setIsAgenda(true);
-      setCurrentStep(2);
+      // If Title is empty, create a numbered title and append the object
+      const newObjMeetingAgenda = {
+        ...objMeetingAgenda,
+        Title: t("No-agenda-available"),
+      };
 
-      setIsAttendees(false);
+      let previousAdendas = [...createMeeting.MeetingAgendas];
+      let newData = {
+        ObjMeetingAgenda: newObjMeetingAgenda,
+        MeetingAgendaAttachments: [],
+      };
+      previousAdendas.push(newData);
+      setCreateMeeting({
+        ...createMeeting,
+        MeetingAgendas: previousAdendas,
+      });
+      setModalField(true);
+      setIsAgenda(false);
+      setCurrentStep(3);
+
+      setIsAttendees(true);
       setIsDetails(false);
       setIsPublishMeeting(false);
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Please-atleast-add-one-agenda"),
-      });
+      // setOpen({
+      //   ...open,
+      //   flag: true,
+      //   message: t("Please-atleast-add-one-agenda"),
+      // });
     } else {
     }
   };
@@ -363,16 +377,31 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setIsAttendees(true);
       setCurrentStep(3);
     } else {
-      setIsAgenda(true);
-      setCurrentStep(2);
+      // If Title is empty, create a numbered title and append the object
+      const newObjMeetingAgenda = {
+        ...objMeetingAgenda,
+        Title: t("No-agenda-available"),
+      };
 
-      setIsAttendees(false);
-      setIsPublishMeeting(false);
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Please-atleast-add-one-agenda"),
+      let previousAdendas = [...createMeeting.MeetingAgendas];
+      let newData = {
+        ObjMeetingAgenda: newObjMeetingAgenda,
+        MeetingAgendaAttachments: [],
+      };
+      previousAdendas.push(newData);
+      setCreateMeeting({
+        ...createMeeting,
+        MeetingAgendas: previousAdendas,
       });
+      setIsAgenda(false);
+      setCurrentStep(3);
+      setIsAttendees(true);
+      setIsPublishMeeting(false);
+      // setOpen({
+      //   ...open,
+      //   flag: true,
+      //   message: t("Please-atleast-add-one-agenda"),
+      // });
     }
   };
 
@@ -1007,31 +1036,45 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
         // }
       } else {
-        // If Title is empty, create a numbered title and append the object
-        const agendaCount = createMeeting.MeetingAgendas.length + 1;
-        const newObjMeetingAgenda = {
-          ...objMeetingAgenda,
-          Title: `Agenda ${agendaCount}`,
-        };
+        if (createMeeting.MeetingAgendas) {
+          // Get the current count of agendas (starting from 1)
+          const agendaCount = createMeeting.MeetingAgendas.length + 1;
 
-        let previousAdendas = [...createMeeting.MeetingAgendas];
-        let newData = {
-          ObjMeetingAgenda: newObjMeetingAgenda,
-          MeetingAgendaAttachments: [],
-        };
-        previousAdendas.push(newData);
-        setCreateMeeting({
-          ...createMeeting,
-          MeetingAgendas: previousAdendas,
-        });
+          // Modify the existing object to conditionally set the title
+          let previousAdendas = [...createMeeting.MeetingAgendas].map(
+            (agenda, index) => {
+              if (agenda.ObjMeetingAgenda.Title === "No Agenda Available") {
+                return {
+                  ...agenda,
+                  ObjMeetingAgenda: {
+                    ...agenda.ObjMeetingAgenda,
+                    Title: `Agenda ${index + 1}`,
+                  },
+                };
+              }
+              return agenda;
+            }
+          );
 
-        // Show the modal and message if necessary
-        setModalField(true);
-        // setOpen({
-        //   ...open,
-        //   flag: true,
-        //   message: t("Enter-Title-Information"),
-        // });
+          const newObjMeetingAgenda = {
+            ...objMeetingAgenda,
+            Title: `Agenda ${agendaCount}`,
+          };
+
+          let newData = {
+            ObjMeetingAgenda: newObjMeetingAgenda,
+            MeetingAgendaAttachments: [],
+          };
+
+          previousAdendas.push(newData);
+
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingAgendas: previousAdendas,
+          });
+
+          setModalField(true);
+        }
       }
     }
   };
@@ -1089,207 +1132,201 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
     }
   };
-  useEffect(() => {
-    return () => {
-      dispatch(ResetAllFilesUpload());
-    };
-  }, []);
   const callApi = async () => {
-    await dispatch(allAssignessList(navigate, t));
+    if (checkFlag !== 6 && checkFlag !== 7) {
+      await dispatch(allAssignessList(navigate, t, true));
+    }
     dispatch(GetAllReminders(navigate, t));
   };
-  // for list of all assignees
   useEffect(() => {
-    try {
-      if (show) {
-        callApi();
-      } else {
-        setModalField(false);
-        setShow(false);
-        setIsDetails(true);
-        setCurrentStep(1);
+    callApi();
+    return () => {
+      setModalField(false);
+      setShow(false);
+      setIsDetails(true);
+      setCurrentStep(1);
 
-        setIsAgenda(false);
-        setIsAttendees(false);
-        setIsPublishMeeting(false);
-        setObjMeetingAgenda(defaultMeetingAgenda);
-        setMeetingAgendaAttachments({
-          MeetingAgendaAttachments: [],
-        });
-        setParticipantRoleName("Participant");
-        setCreateMeeting({
-          MeetingTitle: "",
-          MeetingDescription: "",
-          MeetingTypeID: 0,
-          OrganizationId: parseInt(OrganizationId),
-          MeetingDate: "",
-          MeetingStartTime: "",
-          MeetingEndTime: "",
-          MeetingLocation: "",
-          IsVideoCall: false,
-          IsChat: false,
-          MeetingReminderID: [],
-          MeetingAgendas: [],
-          MeetingAttendees: [],
-          ExternalMeetingAttendees: [],
-        });
-        setMeetingAttendees({
-          User: {
-            PK_UID: 0,
-          },
-          MeetingAttendeeRole: {
-            PK_MARID: 2,
-          },
-          AttendeeAvailability: {
-            PK_AAID: 1,
-          },
-        });
-        setAddedParticipantNameList([]);
-        setReminder("");
-        setReminderValue("");
-        setMeetingDate("");
-        setCreateMeetingTime("");
-      }
-    } catch (error) {}
-  }, [show]);
-
-  useEffect(() => {
-    if (meetingAttendeesList.length > 0) {
-      let user1Data = {
+      setIsAgenda(false);
+      setIsAttendees(false);
+      setIsPublishMeeting(false);
+      setObjMeetingAgenda(defaultMeetingAgenda);
+      setMeetingAgendaAttachments({
+        MeetingAgendaAttachments: [],
+      });
+      setParticipantRoleName("Participant");
+      setCreateMeeting({
+        MeetingTitle: "",
+        MeetingDescription: "",
+        MeetingTypeID: 0,
+        OrganizationId: parseInt(OrganizationId),
+        MeetingDate: "",
+        MeetingStartTime: "",
+        MeetingEndTime: "",
+        MeetingLocation: "",
+        IsVideoCall: false,
+        IsChat: false,
+        MeetingReminderID: [],
+        MeetingAgendas: [],
+        MeetingAttendees: [],
+        ExternalMeetingAttendees: [],
+      });
+      setMeetingAttendees({
         User: {
-          PK_UID: parseInt(createrID),
+          PK_UID: 0,
         },
         MeetingAttendeeRole: {
-          PK_MARID: 3,
+          PK_MARID: 2,
         },
         AttendeeAvailability: {
           PK_AAID: 1,
         },
-      };
-
-      let newMemberData = [];
-      // Add the creator's details to the meeting attendees list
-      meetingAttendeesList.forEach((data) => {
-        if (data.pK_UID === parseInt(createrID)) {
-          newMemberData.push({
-            name: data.name,
-            designation: data.designation,
-            profilePicture: data.orignalProfilePictureName,
-            organization: data.organization,
-            role: 3,
-            displayProfilePic: data.displayProfilePictureName,
-          });
-        }
       });
-
-      setCreateMeeting({
-        ...createMeeting,
-        MeetingAttendees: [user1Data],
-      });
-
-      setAddedParticipantNameList(newMemberData);
-    }
-  }, [meetingAttendeesList]);
+      setAddedParticipantNameList([]);
+      setReminder("");
+      setReminderValue("");
+      setMeetingDate("");
+      setCreateMeetingTime("");
+      dispatch(ResetAllFilesUpload());
+    };
+  }, []);
 
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
-      if (Object.keys(assignees.user).length > 0) {
-        setMeetingAttendeesList(assignees.user);
-        let PresenterData = [];
-        let defaultPresenterData = [];
-        assignees.user.forEach((user, index) => {
-          PresenterData.push({
-            label: (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
-                    <img
-                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
-                    />
-                    <span>{user.name}</span>
-                  </Col>
-                </Row>
-              </>
-            ),
-            value: user.pK_UID,
-            name: user.name,
-          });
-          if (Number(user.pK_UID) === Number(createrID)) {
-            setDefaultPresenter({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span>{user?.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: user?.pK_UID,
-              name: user?.name,
-            });
-            setPresenterValue({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span>{user?.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: user?.pK_UID,
-              name: user?.name,
-            });
-            setDefaultObjMeetingAgenda({
-              ...defaultMeetingAgenda,
-              PresenterName: user?.name,
-            });
-            setObjMeetingAgenda({
-              ...objMeetingAgenda,
-              PresenterName: user?.name,
-            });
-          }
-        });
+      if (Object.keys(assignees?.user).length > 0) {
+        try {
+          let usersList = assignees?.user;
+          setMeetingAttendeesList(usersList);
+          let PresenterData = [];
+          let newMemberData = [];
+          let userData;
 
-        setAllPresenters(PresenterData);
+          usersList.forEach((user, index) => {
+            console.log(user, "useruser");
+
+            PresenterData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{user.name}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: user?.pK_UID,
+              name: user?.name,
+            });
+
+            if (Number(user.pK_UID) === Number(createrID)) {
+              setDefaultPresenter({
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
+                        />
+                        <span>{user?.name}</span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                value: user?.pK_UID,
+                name: user?.name,
+              });
+              setPresenterValue({
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
+                        />
+                        <span>{user?.name}</span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                value: user?.pK_UID,
+                name: user?.name,
+              });
+              setDefaultObjMeetingAgenda({
+                ...defaultMeetingAgenda,
+                PresenterName: user?.name,
+              });
+              setObjMeetingAgenda({
+                ...objMeetingAgenda,
+                PresenterName: user?.name,
+              });
+              newMemberData.push({
+                name: user.name,
+                designation: user.designation,
+                profilePicture: user.orignalProfilePictureName,
+                organization: user.organization,
+                role: 3,
+                displayProfilePic: user.displayProfilePictureName,
+              });
+              userData = {
+                User: {
+                  PK_UID: parseInt(createrID),
+                },
+                MeetingAttendeeRole: {
+                  PK_MARID: 3,
+                },
+                AttendeeAvailability: {
+                  PK_AAID: 1,
+                },
+              };
+            }
+          });
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingAttendees: [userData],
+          });
+          if (checkFlag !== 6 && checkFlag !== 7) {
+            setAttendeesParticipant(PresenterData);
+          }
+          setAddedParticipantNameList(newMemberData);
+        } catch (error) {
+          console.log(error);
+        }
       }
-    } catch (error) {}
-  }, [assignees.user]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [assignees.user, checkFlag]);
+  console.log(assignees, "assigneesassigneesassignees");
 
   const handleChangeAttenddes = (attendeeData) => {
     setTaskAssignedToInput({
@@ -1340,8 +1377,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               name: committeesMember?.userName,
             });
           });
+          setAttendeesParticipant(membersData);
         }
       } else if (Number(checkFlag) === 7) {
+        // Group Members
         let GroupMembers =
           GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
         if (
@@ -1376,46 +1415,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               name: groupMemberData?.userName,
             });
           });
+          setAttendeesParticipant(membersData);
         }
         // Group MembersData
-      } else {
-        let allAssignees = assignees.user;
-        if (
-          allAssignees !== undefined &&
-          allAssignees !== null &&
-          allAssignees.length !== 0
-        ) {
-          allAssignees.forEach((assigneeMember, index) => {
-            membersData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${assigneeMember?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span>{assigneeMember.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: assigneeMember?.pK_UID,
-              name: assigneeMember?.name,
-            });
-          });
-        }
-        // meeting Members
       }
-      setAttendeesParticipant(membersData);
+      // setAttendeesParticipant(membersData);
     } catch {}
   }, [checkFlag]);
 
@@ -1562,18 +1566,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       createMeeting.MeetingDate + createMeeting.MeetingStartTime;
     let newDate = finalDateTimeWithoutUTC.slice(0, 8);
     let newTime = finalDateTimeWithoutUTC.slice(8, 14);
-    // let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
-    // let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
+    let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
+    let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
 
     let newData = {
-      // MeetingTitle:
-      //   createMeeting.MeetingTitle !== ""
-      //     ? createMeeting.MeetingTitle
-      //     : `Untitled @ ${ifemptyDate} ${ifemptyTime}`,
       MeetingTitle:
         createMeeting.MeetingTitle !== ""
           ? createMeeting.MeetingTitle
-          : "Quick Meeting",
+          : `Quick Meeting @ ${ifemptyDate} ${ifemptyTime}`,
       MeetingDescription: createMeeting.MeetingDescription,
       MeetingTypeID: 0,
       MeetingDate: finalDateTime.slice(0, 8),
@@ -1763,67 +1763,37 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             <>
               {closeConfirmationModal === true ? null : (
                 <Row>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "p-0 margin-left-10"
-                    }
-                  >
+                  <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
                     <Button
                       className={
                         isDetails
-                          ? "btn btn-primary isDetail-Schedule-top-btn"
-                          : "btn btn-outline-primary isDetail-Schedule-top-btn-Outline"
+                          ? "isDetail-Schedule-top-btn_active"
+                          : "isDetail-Schedule-top-btn-NonActive"
                       }
-                      variant={"Primary"}
                       text={t("Details")}
                       onClick={changeSelectDetails}
                     />
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className="agenda-upper-button"
-                  >
                     <Button
                       className={
                         isAgenda
-                          ? "btn btn-primary isAgenda-Schedule-top-btn"
-                          : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
+                          ? "isAgenda-Schedule-top-btn_active"
+                          : "isAgenda-Schedule-top-btn-NonActive"
                       }
-                      variant={"Primary"}
                       text={t("Agenda")}
                       onClick={changeSelectAgenda}
                       datatut="show-agenda"
                     />
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className="attendees-upper-button"
-                  >
                     <Button
                       className={
                         isAttendees
-                          ? "btn btn-primary isAttendee-Schedule-top-btn"
-                          : "btn btn-outline-primary isAttendee-Schedule-top-btn-Outline"
+                          ? "isAttendee-Schedule-top-btn_active"
+                          : "isAttendee-Schedule-top-btn-NonActive"
                       }
-                      variant={"Primary"}
                       text={t("Attendees")}
                       datatut="show-meeting-attendees"
                       onClick={changeSelectAttendees}
-                    ></Button>
+                    />
                   </Col>
-                  <Col lg={6} md={6} sm={3} xs={12} className="p-0"></Col>
                 </Row>
               )}
 
@@ -2355,7 +2325,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       />
                     </Col>
                   </Row>
-                  <div className="participant-scroll-creatingmeeting">
+                  <section className="participant-scroll-creatingmeeting">
                     <Row>
                       <Col
                         lg={12}
@@ -2366,8 +2336,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       >
                         <label className="">{t("Organizer")}</label>
                       </Col>
-                    </Row>
-                    <Row>
                       <Col lg={12} md={12} sm={12} xs={12}>
                         {addedParticipantNameList ? (
                           <>
@@ -2406,9 +2374,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           </>
                         ) : null}
                       </Col>
-                    </Row>
-
-                    <Row>
                       <Col
                         lg={12}
                         md={12}
@@ -2418,8 +2383,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       >
                         <label className="">{t("Participants")}</label>
                       </Col>
-                    </Row>
-                    <Row>
                       <Col lg={12} md={12} sm={12} xs={12}>
                         {addedParticipantNameList ? (
                           <>
@@ -2448,7 +2411,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         ) : null}
                       </Col>
                     </Row>
-                  </div>
+                  </section>
                 </>
               ) : closeConfirmationModal ? (
                 <>
@@ -2475,11 +2438,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className={
-                        currentLanguage === "ar"
-                          ? "d-flex justify-content-end mt-4 p-0"
-                          : "d-flex justify-content-end mt-5 p-0"
-                      }
+                      className="d-flex justify-content-end"
                     >
                       <Button
                         onClick={navigateToAgenda}
@@ -2493,15 +2452,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                 </>
               ) : isAgenda ? (
                 <>
-                  <Row className="display-contents ">
+                  <Row>
                     <Col
-                      lg={6}
-                      md={6}
+                      lg={12}
+                      md={12}
                       sm={12}
                       xs={12}
-                      className={
-                        currentLanguage === "ar" ? "mt-4 p-0" : "mt-5 p-0"
-                      }
+                      className="d-flex justify-content-between"
                     >
                       <Button
                         onClick={addAnOtherAgenda}
@@ -2516,18 +2473,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                             : `${"+"}  ${t("Add-agenda")}`
                         }
                       />
-                    </Col>
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={12}
-                      xs={12}
-                      className={
-                        currentLanguage === "ar"
-                          ? "d-flex justify-content-end mt-4 p-0"
-                          : "d-flex justify-content-end mt-5 p-0"
-                      }
-                    >
                       <Button
                         onClick={navigateToAttendees}
                         className={
@@ -2546,11 +2491,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className={
-                        currentLanguage === "ar"
-                          ? "d-flex justify-content-end mt-4 p-0"
-                          : "d-flex justify-content-end mt-5 p-0"
-                      }
+                      sm={12}
+                      className="d-flex justify-content-end"
                     >
                       <Button
                         className={

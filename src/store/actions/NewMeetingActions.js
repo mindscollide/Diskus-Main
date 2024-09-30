@@ -67,6 +67,8 @@ import {
   ValidateEmailRelatedString,
   getDashboardMeetingStatsRM,
   validateEncryptedStringParticipantProposedRM,
+  getAllMeetingUsersRSVPDetailsRM,
+  leaveMeetingVideo,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -76,6 +78,7 @@ import {
 } from "./VideoMain_actions";
 import {
   maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   videoChatPanel,
 } from "./VideoFeature_actions";
@@ -90,6 +93,8 @@ import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 import { GetAllUserChats } from "./Talk_action";
+import { endIndexUrl, extractedUrl, generateRandomGuest, generateURLParticipant } from "../../commen/functions/urlVideoCalls";
+import copyToClipboard from "../../hooks/useClipBoard";
 
 const boardDeckModal = (response) => {
   return {
@@ -391,7 +396,6 @@ const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
     dispatch(handlegetAllMeetingTypesInit());
     let form = new FormData();
     form.append("RequestMethod", getallMeetingType.RequestMethod);
-
     try {
       const response = await axios({
         method: "post",
@@ -1377,13 +1381,15 @@ const FetchMeetingURLApi = (
   t,
   currentUserID,
   currentOrganization,
-  flag
+  flag,
+  currentMeetingTitle
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     // dispatch(showMeetingURLInit());
     dispatch(MeetingUrlSpinner(true));
     let form = new FormData();
+    let videoMeetingID = Data.MeetingID;
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", FetchVideoUrl.RequestMethod);
     axios({
@@ -1404,7 +1410,8 @@ const FetchMeetingURLApi = (
               t,
               currentUserID,
               currentOrganization,
-              flag
+              flag,
+              currentMeetingTitle
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1413,7 +1420,7 @@ const FetchMeetingURLApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_01".toLowerCase()
                 )
             ) {
               dispatch(showMeetingURLSuccess(response.data.responseResult, ""));
@@ -1451,9 +1458,11 @@ const FetchMeetingURLApi = (
               localStorage.setItem("activeRoomID", match[1]);
               localStorage.setItem("acceptedRecipientID", currentUserID);
               localStorage.setItem("isMeetingVideo", true);
+              localStorage.setItem("meetingVideoID", videoMeetingID);
+              localStorage.setItem("meetingTitle", currentMeetingTitle);
               localStorage.setItem(
-                "meetingTitle",
-                response.data.responseResult.meetingTitle
+                "userGUID",
+                response.data.responseResult.userGUID
               );
               dispatch(callRequestReceivedMQTT({}, ""));
               if (flag === 0) {
@@ -1467,7 +1476,7 @@ const FetchMeetingURLApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_02".toLowerCase()
                 )
             ) {
               dispatch(MeetingUrlSpinner(false));
@@ -1477,7 +1486,7 @@ const FetchMeetingURLApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_03".toLowerCase()
                 )
             ) {
               dispatch(MeetingUrlSpinner(false));
@@ -1507,10 +1516,11 @@ const FetchMeetingURLApi = (
   };
 };
 
-const clipboardURLMeetingData = (response) => {
+const clipboardURLMeetingData = (response, message) => {
   return {
     type: actions.GET_MEETING_URL_CLIPBOARD,
     response: response,
+    message: message,
   };
 };
 
@@ -1552,25 +1562,47 @@ const FetchMeetingURLClipboard = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_01".toLowerCase()
                 )
             ) {
+
+              let currentVideoURL = response.data.responseResult.videoURL;
+
+              let match = currentVideoURL.match(/RoomID=([^&]*)/);
+              let roomID = match[1];
+              let dynamicBaseURLCaller = localStorage.getItem(
+                "videoBaseURLParticipant"
+              );
+              let randomGuestName = generateRandomGuest();
+              const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
+              const extractedBaseURLCaller = extractedUrl(
+                dynamicBaseURLCaller,
+                endIndexBaseURLCaller
+              );
+              let resultedVideoURL = generateURLParticipant(
+                extractedBaseURLCaller,
+                randomGuestName,
+                roomID
+              );
+
+              copyToClipboard(resultedVideoURL);
+
               dispatch(
-                clipboardURLMeetingData(response.data.responseResult.videoURL)
+                clipboardURLMeetingData(response.data.responseResult.videoURL, t("Meeting-link-copied"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_02".toLowerCase()
                 )
             ) {
-              dispatch(clipboardURLMeetingData(""));
+              dispatch(clipboardURLMeetingData("", t("Unable-to-generate-meeting-link")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_03".toLowerCase()
                 )
             ) {
               dispatch(clipboardURLMeetingData(""));
@@ -6475,12 +6507,23 @@ const scheduleMeetingFail = (message) => {
   };
 };
 
-const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
+const scheduleMeetingMainApi = (
+  navigate,
+  t,
+  scheduleMeeting,
+  setDataroomMapFolderId,
+  setCurrentMeetingID,
+  setSceduleMeeting,
+  MeetingID
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let userID = localStorage.getItem("userID");
+  console.log(
+    scheduleMeeting,
+    setDataroomMapFolderId,
+    setCurrentMeetingID,
+    setSceduleMeeting,
+    "scheduleMeetingMainApischeduleMeetingMainApi"
+  );
   return (dispatch) => {
     dispatch(scheduleMeetingInit());
     let form = new FormData();
@@ -6497,7 +6540,17 @@ const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));
+          dispatch(
+            scheduleMeetingMainApi(
+              navigate,
+              t,
+              scheduleMeeting,
+              setDataroomMapFolderId,
+              setCurrentMeetingID,
+              setSceduleMeeting,
+              MeetingID
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -6513,18 +6566,26 @@ const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
                   t("Record-saved")
                 )
               );
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber:
-                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-                PublishedMeetings: false,
-              };
-              await dispatch(searchNewUserMeeting(navigate, searchData, t));
               dispatch(showSceduleProposedMeeting(false));
+              let MeetingData = {
+                MeetingID: Number(MeetingID),
+              };
+              await dispatch(
+                GetAllMeetingDetailsApiFunc(
+                  navigate,
+                  t,
+                  MeetingData,
+                  false,
+                  setCurrentMeetingID,
+                  setSceduleMeeting,
+                  setDataroomMapFolderId,
+                  0,
+                  1
+                )
+              ); //         GetAllMeetingDetailsApiFunc(
+              setSceduleMeeting(true);
+              dispatch(scheduleMeetingPageFlag(true));
+              dispatch(meetingDetailsGlobalFlag(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -8077,7 +8138,8 @@ const LeaveCurrentMeeting = (
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
+  let roomID = localStorage.getItem("acceptedRoomID");
+  let userGUID = localStorage.getItem("userGUID");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8157,6 +8219,24 @@ const LeaveCurrentMeeting = (
                 dispatch(viewAdvanceMeetingPublishPageFlag(false));
                 dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
               }
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+
+              localStorage.setItem("activeCall", false);
+              localStorage.setItem("isMeeting", false);
+              localStorage.setItem("meetingTitle", "");
+              localStorage.setItem("acceptedRecipientID", 0);
+              localStorage.setItem("acceptedRoomID", 0);
+              localStorage.setItem("activeRoomID", 0);
+              localStorage.setItem("meetingVideoID", 0);
+              localStorage.setItem("MicOff", true);
+              localStorage.setItem("VidOff", true);
+              let Data = {
+                RoomID: roomID,
+                UserGUID: userGUID,
+              };
+              dispatch(LeaveMeetingVideo(Data, navigate, t));
               setViewFlag(false);
             } else if (
               response.data.responseResult.responseMessage
@@ -8200,6 +8280,9 @@ const LeaveCurrentMeeting = (
 
 const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentMeetingVideoID = Number(localStorage.getItem("meetingVideoID"));
+  let roomID = localStorage.getItem("acceptedRoomID");
+  let userGUID = localStorage.getItem("userGUID");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8233,6 +8316,26 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
                   t("Successful")
                 )
               );
+              if (currentMeetingVideoID !== 0) {
+              }
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+
+              localStorage.setItem("activeCall", false);
+              localStorage.setItem("isMeeting", false);
+              localStorage.setItem("meetingTitle", "");
+              localStorage.setItem("acceptedRecipientID", 0);
+              localStorage.setItem("acceptedRoomID", 0);
+              localStorage.setItem("activeRoomID", 0);
+              localStorage.setItem("meetingVideoID", 0);
+              localStorage.setItem("MicOff", true);
+              localStorage.setItem("VidOff", true);
+              let Data = {
+                RoomID: roomID,
+                UserGUID: userGUID,
+              };
+              dispatch(LeaveMeetingVideo(Data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -8674,7 +8777,174 @@ const getDashbardMeetingDataApi = (navigate, t) => {
       });
   };
 };
+
+const getAllMeetingUsersRSVP_init = () => {
+  return {
+    type: actions.GETALLMEETINGUSERSRSVPDETAILS_INIT,
+  };
+};
+const getAllMeetingUsersRSVP_success = (response, message) => {
+  return {
+    type: actions.GETALLMEETINGUSERSRSVPDETAILS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAllMeetingUsersRSVP_fail = (message) => {
+  return {
+    type: actions.GETALLMEETINGUSERSRSVPDETAILS_FAIL,
+    message: message,
+  };
+};
+const getAllMeetingUsersRSVPApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(getAllMeetingUsersRSVP_init());
+    let form = new FormData();
+    form.append("RequestMethod", getAllMeetingUsersRSVPDetailsRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(getAllMeetingUsersRSVPApi(navigate, t));
+          dispatch(getAllMeetingUsersRSVPApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingUserRSVPDetails_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllMeetingUsersRSVP_success(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingUserRSVPDetails_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllMeetingUsersRSVP_fail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingUserRSVPDetails_03".toLowerCase()
+                )
+            ) {
+              dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllMeetingUsersRSVP_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// leaveMeetingVideo new Api
+const leaveMeetingVideoInit = () => {
+  return {
+    type: actions.LEAVE_MEETING_VIDEO_INIT,
+  };
+};
+
+const leaveMeetingVideoSuccess = (response, message) => {
+  return {
+    type: actions.LEAVE_MEETING_VIDEO_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const leaveMeetingVideoFail = (message) => {
+  return {
+    type: actions.LEAVE_MEETING_VIDEO_FAIL,
+    message: message,
+  };
+};
+
+const LeaveMeetingVideo = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    // await dispatch(leaveMeetingVideoInit());
+    let form = new FormData();
+    form.append("RequestMethod", leaveMeetingVideo.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(LeaveMeetingVideo(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
+                )
+            ) {
+              // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeetingVideo_02".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingVideoFail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeetingVideo_03".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+            } else {
+              dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log("leaveMeetingVideoFail", response);
+        dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
+  getAllMeetingUsersRSVPApi,
   getDashbardMeetingDataApi,
   emailRouteID,
   clearResponseNewMeetingReducerMessage,
@@ -8839,4 +9109,5 @@ export {
   boardDeckEmailModal,
   AllDocumentsForAgendaWiseMinutesApiFunc,
   validateStringParticipantProposedApi,
+  LeaveMeetingVideo,
 };

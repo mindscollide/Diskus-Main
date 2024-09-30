@@ -17,6 +17,7 @@ import { Button, Table } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { FaSort } from "react-icons/fa";
 import "../Meeting/Onboard-meeting.css";
+import CustomButton from "../../../../components/elements/button/Button";
 
 export const Meeting = ({ style, pageSize, pagination }) => {
   //For Localization
@@ -177,7 +178,7 @@ export const Meeting = ({ style, pageSize, pagination }) => {
 
       render: (text, record) => (
         <i
-          className="meeting-title"
+          className='meeting-title'
           // onClick={(e) => viewModalHandler(record.pK_MDID)}
         >
           {text}
@@ -303,13 +304,10 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       width: "10rem",
       render: (text, record) => {
         return (
-          <Button
-            text={t("Start-meeting")}
-            size="small"
+          <CustomButton
+            buttonValue={t("Start-meeting")}
             className={"start-meeting-btn"}
-          >
-            {t("Start-meeting")}
-          </Button>
+          />
         );
       },
     },
@@ -320,8 +318,8 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       width: "4rem",
       render: (text, record) => {
         return (
-          <i className="meeting-editbutton">
-            <img src={EditIcon} alt="" />
+          <i className='meeting-editbutton'>
+            <img src={EditIcon} alt='' />
           </i>
         );
       },
@@ -329,22 +327,20 @@ export const Meeting = ({ style, pageSize, pagination }) => {
   ];
 
   return (
-    <Container className={style}>
-      <Row className="mt-3">
-        <Col className="Meeting-heading-onboard">{t("Meetings")}</Col>
+    <>
+      <Row className='mt-3'>
+        <Col className='Meeting-heading-onboard'>{t("Meetings")}</Col>
       </Row>
-      <Row className="mx-1 onboard-meeting-row">
+      <Row>
         <Col>
           <Table
             column={columns}
-            className="hello"
+            className='hello'
             rows={rowsData}
             pagination={pagination}
           />
         </Col>
       </Row>
-
-      {/* <Header heading="Meetings" button={true} user="Yaqoob" currentUserImage={userImage}  /> */}
-    </Container>
+    </>
   );
 };

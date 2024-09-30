@@ -21,7 +21,7 @@ import {
   proposeNewMeetingPageFlag,
   viewMeetingFlag,
   uploadGlobalFlag,
-  LeaveCurrentMeeting,
+  LeaveCurrentMeetingOtherMenus,
   currentMeetingStatus,
 } from "../../../store/actions/NewMeetingActions";
 import {
@@ -193,7 +193,7 @@ const Header2 = ({ isVideo }) => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
         dispatch(currentMeetingStatus(0));
       }
     }
@@ -227,7 +227,7 @@ const Header2 = ({ isVideo }) => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
           dispatch(currentMeetingStatus(0));
         }
       }
@@ -261,7 +261,7 @@ const Header2 = ({ isVideo }) => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
           dispatch(currentMeetingStatus(0));
         }
       }
@@ -295,7 +295,7 @@ const Header2 = ({ isVideo }) => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
           dispatch(currentMeetingStatus(0));
         }
       }
@@ -329,7 +329,7 @@ const Header2 = ({ isVideo }) => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
           dispatch(currentMeetingStatus(0));
         }
       }
@@ -360,11 +360,6 @@ const Header2 = ({ isVideo }) => {
   const openUserTab = () => {
     window.open(window.location.origin + "/#/Diskus/", "_blank");
   };
-  let Data = { userID: 1, name: "Owais Khan" };
-  setData("seceretData", Data);
-
-  let getDataFun = getData("seceretData");
-  console.log(getDataFun, "seceretDataseceretDataseceretData");
 
   return (
     <>
@@ -758,7 +753,9 @@ const Header2 = ({ isVideo }) => {
                                   <Dropdown.Item
                                     className='d-flex title-className'
                                     onClick={openMeetingModal}>
-                                    {t("Quick-meeting")}
+                                    <span className='New_folder_shortcutkeys'>
+                                      {t("Quick-meeting")}
+                                    </span>
                                   </Dropdown.Item>
                                 </>
                               ) : null}
@@ -782,6 +779,7 @@ const Header2 = ({ isVideo }) => {
                                     NewMeetingreducer.viewMeetingFlag ===
                                       false ? (
                                       <div
+                                        className='New_folder_shortcutkeys'
                                         onClick={() => {
                                           dispatch(
                                             showCancelModalmeetingDeitals(true)
@@ -810,7 +808,9 @@ const Header2 = ({ isVideo }) => {
                                   <Dropdown.Item
                                     className='d-flex title-className'
                                     onClick={RecentFilesTab}>
-                                    {t("Recently-added-files")}
+                                    <span className='New_folder_shortcutkeys'>
+                                      {t("Recently-added-files")}
+                                    </span>
                                   </Dropdown.Item>
                                 </>
                               ) : null}
@@ -836,7 +836,9 @@ const Header2 = ({ isVideo }) => {
                                   }
                                   onClick={handleMeetingPendingApprovals}
                                   className='pendingApprovalsNav'>
-                                  {t("Pending-approvals")}
+                                  <span className='New_folder_shortcutkeys'>
+                                    {t("Pending-approvals")}
+                                  </span>
                                 </Nav.Link>
                               </Dropdown.Item>
                             </DropdownButton>
@@ -918,7 +920,7 @@ const Header2 = ({ isVideo }) => {
                               </Nav.Link>
                             </Dropdown.Item>
                             <Dropdown.Item
-                              className={" text-black" + " " + currentLanguage} >
+                              className={" text-black" + " " + currentLanguage}>
                               <Nav.Link
                                 as={Link}
                                 to={"faq's"}

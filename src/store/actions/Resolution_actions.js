@@ -16,10 +16,13 @@ import {
   getVoterResolutionRequestMethod,
   uploadDocumentsRequestMethod,
   saveFilesRequestMethod,
+  validateEncryptedStringResolutionRelatedEmailDataRM,
+  getAllCommittesandGroupsforPolls,
 } from "../../commen/apis/Api_config";
 import {
   dataRoomApi,
   getResolutionApi,
+  pollApi,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
@@ -528,11 +531,12 @@ const getAllVoting_Init = () => {
   };
 };
 
-const getAllVoting_Success = (response, message) => {
+const getAllVoting_Success = (response, message, loader = "false") => {
   return {
     type: actions.GET_ALL_VOTING_METHOD_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -544,7 +548,7 @@ const getAllVoting_Fail = (message) => {
 };
 
 // Get All Voting Methods Api
-const getAllVotingMethods = (navigate, t) => {
+const getAllVotingMethods = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllVoting_Init());
@@ -561,7 +565,7 @@ const getAllVotingMethods = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllVotingMethods(navigate, t));
+          dispatch(getAllVotingMethods(navigate, t, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -571,7 +575,8 @@ const getAllVotingMethods = (navigate, t) => {
               dispatch(
                 getAllVoting_Success(
                   response.data.responseResult.resolutionMethod,
-                  ""
+                  "",
+                  loader
                 )
               );
             } else if (
@@ -604,11 +609,16 @@ const getAllResolutionStatus_Init = () => {
   };
 };
 
-const getAllResolutionStatus_Success = (response, message) => {
+const getAllResolutionStatus_Success = (
+  response,
+  message,
+  loader = "false"
+) => {
   return {
     type: actions.GET_ALL_RESOLUTION_STATUS_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -620,7 +630,7 @@ const getAllResolutionStatus_Fail = (message) => {
 };
 
 // Get All Resolution Status Api
-const getAllResolutionStatus = (navigate, t) => {
+const getAllResolutionStatus = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllResolutionStatus_Init());
@@ -637,7 +647,7 @@ const getAllResolutionStatus = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllResolutionStatus(navigate, t));
+          dispatch(getAllResolutionStatus(navigate, t, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -647,7 +657,8 @@ const getAllResolutionStatus = (navigate, t) => {
               dispatch(
                 getAllResolutionStatus_Success(
                   response.data.responseResult.resolutionStatus,
-                  ""
+                  "",
+                  loader
                 )
               );
             } else if (
@@ -747,10 +758,7 @@ const getResolutions = (
               "Resolution_ResolutionServiceManager_SearchResolutions_01".toLowerCase()
             ) {
               dispatch(
-                getResolutions_Success(
-                  response.data.responseResult,
-                  ""
-                )
+                getResolutions_Success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1242,10 +1250,7 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
               "Resolution_ResolutionServiceManager_GetResultDetails_01".toLowerCase()
             ) {
               dispatch(
-                getResolutionResult_Success(
-                  response.data.responseResult,
-                  ""
-                )
+                getResolutionResult_Success(response.data.responseResult, "")
               );
               setResultresolution(true);
               dispatch(resultResolutionFlag(true));
@@ -1323,10 +1328,7 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
               "Resolution_ResolutionServiceManager_GetVoteDetailsByID_01".toLowerCase()
             ) {
               dispatch(
-                getVotesDetail_Success(
-                  response.data.responseResult,
-                  ""
-                )
+                getVotesDetail_Success(response.data.responseResult, "")
               );
               if (typeof setVoteresolution === "function") {
                 setVoteresolution(true);
@@ -1710,10 +1712,7 @@ const getVoterResolution = (
               "Resolution_ResolutionServiceManager_SearchVoterResolutions_01".toLowerCase()
             ) {
               dispatch(
-                getVoterResolution_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getVoterResolution_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1737,6 +1736,129 @@ const getVoterResolution = (
         dispatch(getVoterResolution_fail(t("Something-went-wrong")));
       });
   };
+};
+
+const resoltionEmailRouteID = (id) => {
+  return {
+    type: actions.RESOLUTION_EMAIL_ROUTE,
+    response: id,
+  };
+};
+const validateStringResolution_init = () => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_INIT,
+  };
+};
+const validateStringResolution_success = (response, message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const validateStringResolution_fail = (message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_FAIL,
+    message: message,
+  };
+};
+const validateStringResolutionApi = (
+  emailString,
+  navigate,
+  t,
+  RouteNo,
+  dispatch
+) => {
+  return new Promise((resolve, reject) => {
+    let Data = {
+      EncryptedString: emailString,
+    };
+    let token = JSON.parse(localStorage.getItem("token"));
+
+    dispatch(validateStringResolution_init());
+
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      validateEncryptedStringResolutionRelatedEmailDataRM.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: getResolutionApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          // Retry the API call
+          resolve(
+            dispatch(
+              validateStringResolutionApi(
+                emailString,
+                navigate,
+                t,
+                RouteNo,
+                dispatch
+              )
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Resolution_ResolutionServiceManager_ValidateEncryptedStringResolutionRelatedEmailData_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                validateStringResolution_success(
+                  response.data.responseResult?.data,
+                  t("Successfully")
+                )
+              );
+              dispatch(resoltionEmailRouteID(RouteNo));
+              resolve(response.data.responseResult.data);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Resolution_ResolutionServiceManager_ValidateEncryptedStringResolutionRelatedEmailData_02".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringResolution_fail(t("Unsuccessful")));
+              reject("Unsuccessful");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Resolution_ResolutionServiceManager_ValidateEncryptedStringResolutionRelatedEmailData_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                validateStringResolution_fail(t("Something-went-wrong"))
+              );
+              reject("Something-went-wrong");
+            }
+          } else {
+            dispatch(validateStringResolution_fail(t("Something-went-wrong")));
+            reject("Something-went-wrong");
+          }
+        } else {
+          dispatch(validateStringResolution_fail(t("Something-went-wrong")));
+          reject("Something-went-wrong");
+        }
+      })
+      .catch((error) => {
+        dispatch(validateStringResolution_fail("Something-went-wrong"));
+        reject(error);
+      });
+  });
 };
 const currentResolutionView = (response) => {
   return {
@@ -1825,7 +1947,103 @@ const viewAttachmentFlag = (response) => {
   };
 };
 
+const getAllcommittesandGroups_init = () => {
+  return {
+    type: actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_INIT,
+  };
+};
+const getAllcommittesandGroups_success = (response, message) => {
+  return {
+    type: actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAllcommittesandGroups_fail = (message) => {
+  return {
+    type: actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_FAIL,
+    message: message,
+  };
+};
+const getAllGroupsandCommitteesforResolution = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let OrganizationID = parseInt(localStorage.getItem("organizationID"));
+  let Data = {
+    OrganizationID: OrganizationID,
+  };
+  return (dispatch) => {
+    dispatch(getAllcommittesandGroups_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      getAllCommittesandGroupsforPolls.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllGroupsandCommitteesforResolution(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllcommittesandGroups_success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllcommittesandGroups_fail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllcommittesandGroups_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllcommittesandGroups_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(getAllcommittesandGroups_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getAllcommittesandGroups_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllcommittesandGroups_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
+  getAllGroupsandCommitteesforResolution,
   viewResolutionModal,
   saveFilesResolutionApi,
   uploadDocumentsResolutionApi,
@@ -1852,4 +2070,5 @@ export {
   resultResolutionFlag,
   voteResolutionFlag,
   viewAttachmentFlag,
+  validateStringResolutionApi,
 };

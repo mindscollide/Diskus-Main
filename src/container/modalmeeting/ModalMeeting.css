@@ -6,23 +6,23 @@
 } */
 
 .createModalMeeting .modal-content {
-  height: 600px !important;
-  width: 700px !important;
+  /* height: 600px !important; */
+  /* width: 700px !important; */
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  padding: 20px 0;
+  /* padding: 20px 0; */
 }
 
-.modal-content:has(.modal-body .row.confirmationDialogue) {
+/* .modal-content:has(.modal-body .row.confirmationDialogue) {
   height: auto !important;
   width: 100% !important;
-}
+} */
 
-.confirmationDialogue-2 {
+/* .confirmationDialogue-2 {
   align-items: center !important;
   width: 450px !important;
   margin: 20px 0 !important;
-}
+} */
 
 /* .modal-header {
   position: absolute;
@@ -76,25 +76,20 @@ fieldset:disabled .btn {
 }
 
 .modalMeetingCreateBody {
-  padding: 0 20px !important;
-  /* margin: 0 20px !important; */
-  max-height: 75% !important;
-  height: 75% !important;
-  min-height: 75% !important;
+  padding: 20px 20px;
+  min-height: 500px;
 }
 .modalMeetingCreateBody_close_modal {
   height: auto;
 }
-
 .modalMeetingCreateFooter {
-  /* height: 20%; */
-  /* max-height: 20%; */
-  /* min-height: 20%; */
-  height: 80px;
-  padding: 0 35px !important;
+  display: inline-block;
 }
 
 .modalMeetingCreateHeader {
+  display: none;
+}
+/* .modalMeetingCreateHeader {
   border-bottom: none;
   border-top: none;
   padding: 10px 20px;
@@ -102,7 +97,7 @@ fieldset:disabled .btn {
   max-height: 5%;
   min-height: 5%;
   margin-top: 15px !important;
-}
+} */
 
 .attendeeParticipant {
   border: 1px solid #e0e0e0;
@@ -115,9 +110,10 @@ fieldset:disabled .btn {
   margin-top: 10px;
 } */
 .participant-scroll-creatingmeeting {
-  height: 48vh !important;
+  min-height: 45vh !important;
   overflow-y: auto !important;
   overflow-x: hidden;
+  max-height: 45vh !important;
 }
 
 .participant-scroll-creatingmeeting::-webkit-scrollbar {
@@ -752,4 +748,65 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
 } */
 .css-qbdosj-Input:after {
   display: none;
+}
+
+/* New Button Classes */
+.isDetail-Schedule-top-btn_active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  padding: 8px 30px !important;
+  color: #fff;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isDetail-Schedule-top-btn-NonActive {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 8px 30px !important;
+  color: #000 !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isAgenda-Schedule-top-btn_active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  padding: 8px 30px !important;
+  color: #fff;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isAgenda-Schedule-top-btn-NonActive {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 8px 30px !important;
+  color: #000 !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isAttendee-Schedule-top-btn_active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  padding: 8px 30px !important;
+  color: #fff;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isAttendee-Schedule-top-btn-NonActive {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 8px 30px !important;
+  color: #000 !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
 }

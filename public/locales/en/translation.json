@@ -2190,5 +2190,19 @@
   "Hide-video": "Hide video",
   "Keep-watching-in-app": "Keep Watching in app",
   "Open-diskus-app": "Open Diskus app",
-  "Log-in": "Log in"
+  "Log-in": "Log in",
+  "Attending": "Attending",
+  "Maybe": "Maybe",
+  "Not-attending": "Not Attending",
+  "Not-responded": "Not Responded",
+  "No-agenda-available": "No Agenda Available",
+  "Upgrade-your-experience": "Upgrade Your Experience!",
+  "Download-diskus-app-for-a-smoother": "Download the Diskus app for a smoother",
+  "And-more-efficient-experience": "and more efficient experience",
+  "Continue-with-browser": "Continue with browser",
+  "Go-to-play-store": "Go to Play store",
+  "Go-to-App-store": "Go to App store",
+  "Generating-meeting-link": "Generating meeting link",
+  "Meeting-link-copied": "Meeting link copied",
+  "Unable-to-generate-meeting-link": "Unable to generate meeting link"
 }

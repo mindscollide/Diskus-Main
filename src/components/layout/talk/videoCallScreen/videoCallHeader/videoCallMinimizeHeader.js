@@ -32,12 +32,17 @@ import ActiveParticipantIcon from "./../../talk-Video/video-images/Users Purple.
 import ParticipantsIcon from "./../../talk-Video/video-images/Users Purple.svg";
 
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
+import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 
 const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const participantPopupDisable = useRef(null);
+
+  const meetingUrlData = useSelector(
+    (state) => state.NewMeetingreducer.getmeetingURL
+  );
 
   // state for participants
   const [currentParticipants, setCurrentParticipants] = useState([]);
@@ -49,6 +54,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
 
   const [localMicStatus, setLocalMicStatus] = useState(micStatus);
   const [localVidStatus, setLocalVidStatus] = useState(vidStatus);
+  const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
@@ -69,6 +75,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   let callerObject = localStorage.getItem("callerStatusObject");
   let currentCallType = Number(localStorage.getItem("CallType"));
   let meetingTitle = localStorage.getItem("meetingTitle");
+  let userGUID = localStorage.getItem("userGUID");
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
     (state) => state
@@ -122,6 +129,14 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   };
 
   useEffect(() => {
+    if (meetingUrlData !== null && meetingUrlData !== undefined) {
+      setMeetingURLLocalData(meetingUrlData);
+    } else {
+      setMeetingURLLocalData(null);
+    }
+  }, [meetingUrlData]);
+
+  useEffect(() => {
     if (
       VideoMainReducer.GroupCallRecipientsData !== undefined &&
       VideoMainReducer.GroupCallRecipientsData !== null &&
@@ -150,6 +165,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       localStorage.setItem("activeCall", false);
       localStorage.setItem("isMeetingVideo", false);
     } else if (isMeeting === true) {
+      let Data = {
+        RoomID: roomID,
+        UserGUID: userGUID,
+      };
+      dispatch(LeaveMeetingVideo(Data, navigate, t));
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));

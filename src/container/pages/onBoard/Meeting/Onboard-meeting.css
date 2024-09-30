@@ -32,3 +32,12 @@
   /* background: #fff !important; */
   border-radius: 4px;
 }
+.start-meeting-btn  {
+  font-weight: 600 !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  background: #6127d6 !important;
+  display: flex !important;
+  justify-content: start !important;
+  align-items: center !important;
+}

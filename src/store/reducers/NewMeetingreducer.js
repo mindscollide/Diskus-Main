@@ -143,6 +143,7 @@ const initialState = {
   mqttMeetingOrgRemoved: null,
   joinMeetingResponse: null,
   leaveMeetingResponse: null,
+  leaveMeetingVideoResponse: null,
   currentMeetingStatus: 0,
   mqttMeetingPrAdded: null,
   mqtMeetingPrRemoved: null,
@@ -153,6 +154,7 @@ const initialState = {
   boardDeckEmailModal: false,
   getDashboardMeetingData: null,
   validateEncryptedStringParticipantProposed: null,
+  getMeetingUsersRSVP: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1716,32 +1718,16 @@ const NewMeetingreducer = (state = initialState, action) => {
         action.response !== undefined &&
         action.response !== null
       ) {
-        let currentVideoURL = action.response;
-
-        let match = currentVideoURL.match(/RoomID=([^&]*)/);
-        let roomID = match[1];
-        let dynamicBaseURLCaller = localStorage.getItem(
-          "videoBaseURLParticipant"
-        );
-        let randomGuestName = generateRandomGuest();
-        const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
-        const extractedBaseURLCaller = extractedUrl(
-          dynamicBaseURLCaller,
-          endIndexBaseURLCaller
-        );
-        let resultedVideoURL = generateURLParticipant(
-          extractedBaseURLCaller,
-          randomGuestName,
-          roomID
-        );
         return {
           ...state,
-          CurrentMeetingURL: resultedVideoURL,
+          CurrentMeetingURL: "",
+          ResponseMessage: action.message,
         };
       } else {
         return {
           ...state,
           CurrentMeetingURL: "",
+          ResponseMessage: action.message,
         };
       }
     }
@@ -1930,6 +1916,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         CurrentMeetingURL: "",
         getallDocumentsForAgendaWiseMinutes: [],
         getUserProposedOrganizerData: [],
+        getMeeingUsersRSVPDetails: null,
       };
     }
 
@@ -2252,7 +2239,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.LEAVE_MEETING_SUCCESS_ADVANCED: {
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         leaveMeetingResponse: action.response,
         ResponseMessage: action.message,
       };
@@ -2373,6 +2360,54 @@ const NewMeetingreducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    case actions.GETALLMEETINGUSERSRSVPDETAILS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETALLMEETINGUSERSRSVPDETAILS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingUsersRSVP: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLMEETINGUSERSRSVPDETAILS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingUsersRSVP: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_MEETING_VIDEO_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.LEAVE_MEETING_VIDEO_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        leaveMeetingVideoResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_MEETING_VIDEO_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        leaveMeetingVideoResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     default:
       return {
         ...state,

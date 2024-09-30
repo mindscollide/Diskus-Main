@@ -88,6 +88,10 @@ export const router = createHashRouter(
       <Route element={<PrivateVideoMeeting />}>
         <Route path='/Diskus/video' element={<VideoMeetingBoardDeck />} />
       </Route>
+
+      <Route>
+        <Route path='/GuestVideoCall' element={<VideoMeetingBoardDeck />} />
+      </Route>
       {/* for all login Routes  */}
       <Route path='/' element={<UserManagementProcess />} />
 

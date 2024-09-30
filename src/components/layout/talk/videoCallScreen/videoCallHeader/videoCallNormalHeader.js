@@ -41,6 +41,7 @@ import {
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 import { useTranslation } from "react-i18next";
+import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -54,6 +55,10 @@ const VideoCallNormalHeader = ({
 }) => {
   const { videoFeatureReducer, VideoMainReducer, talkStateData } = useSelector(
     (state) => state
+  );
+
+  const meetingUrlData = useSelector(
+    (state) => state.NewMeetingreducer.getmeetingURL
   );
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
@@ -76,6 +81,7 @@ const VideoCallNormalHeader = ({
   let currentCallType = Number(localStorage.getItem("CallType"));
   let meetingTitle = localStorage.getItem("meetingTitle");
   let isCallerFlag = JSON.parse(localStorage.getItem("isCaller"));
+  let userGUID = localStorage.getItem("userGUID");
 
   const dispatch = useDispatch();
 
@@ -88,6 +94,8 @@ const VideoCallNormalHeader = ({
 
   const [showNotification, setShowNotification] = useState(true);
 
+  const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
+
   const [isActiveIcon, setIsActiveIcon] = useState(false);
 
   const [currentParticipants, setCurrentParticipants] = useState([]);
@@ -97,6 +105,14 @@ const VideoCallNormalHeader = ({
   const [handStatus, setHandStatus] = useState(false);
 
   const leaveModalPopupRef = useRef(null);
+
+  useEffect(() => {
+    if (meetingUrlData !== null && meetingUrlData !== undefined) {
+      setMeetingURLLocalData(meetingUrlData);
+    } else {
+      setMeetingURLLocalData(null);
+    }
+  }, [meetingUrlData]);
 
   const otoMaximizeVideoPanel = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -141,6 +157,11 @@ const VideoCallNormalHeader = ({
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
     } else if (isMeeting === true) {
+      let Data = {
+        RoomID: roomID,
+        UserGUID: userGUID,
+      };
+      dispatch(LeaveMeetingVideo(Data, navigate, t));
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));

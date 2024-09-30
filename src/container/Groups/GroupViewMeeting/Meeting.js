@@ -133,7 +133,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       PublishedMeetings: true,
     };
     dispatch(getMeetingbyGroupApi(navigate, t, searchData));
-    dispatch(allAssignessList(navigate, t));
   }, []);
 
   const handleChangePagination = (current, pageSize) => {
@@ -165,6 +164,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 isAttachment: data.isAttachment,
                 isChat: data.isChat,
                 isVideoCall: data.isVideoCall,
+                videoCallURL: data.videoCallURL,
                 isQuickMeeting: data.isQuickMeeting,
                 meetingAgenda: data.meetingAgenda,
                 meetingAttendees: data.meetingAttendees,

@@ -1,30 +1,30 @@
 import { Col, Row, Container } from "react-bootstrap";
-import userImage from "./../../../assets/images/user.png";
-import newprofile from "../../../assets/images/newprofile.png";
-import thumbsup from "../../../assets/images/thumbsup.svg";
 import styles from "./EmployeeinfoCard.module.css";
+import { isBase64 } from "../../../commen/functions/validations";
 
 const EmployeeinfoCard = ({
   Employeename,
-  Employeeemail,   
+  Employeeemail,
   Icon,
   EmployeePic,
 }) => {
+  let isBase64Pic = EmployeePic !== undefined && isBase64(EmployeePic);
+  console.log(isBase64Pic, EmployeePic, "EmployeeinfoCardEmployeeinfoCard");
   return (
     <>
       <Row>
         <Col lg={2} md={12} sm={12}>
           <img
-            src={`data:image/jpeg;base64,${EmployeePic}`}
-            width="50px"
-            height="50px"
-            className="rounded-circle"
-            alt=""
-            draggable="false"
+            src={isBase64Pic ? `data:image/jpeg;base64,${EmployeePic}` : null}
+            width='50px'
+            height='50px'
+            className='rounded-circle'
+            alt=''
+            draggable='false'
           />
         </Col>
         <Col lg={7} md={12} sm={12} className={styles["Lineheight"]}>
-          <Row className="mt-1">
+          <Row className='mt-1'>
             <Col lg={12} md={12} sm={12}>
               <span className={styles["name_participant"]}>{Employeename}</span>
             </Col>
@@ -41,8 +41,7 @@ const EmployeeinfoCard = ({
           lg={2}
           md={12}
           sm={12}
-          className="d-flex justify-content-start align-items-center"
-        >
+          className='d-flex justify-content-start align-items-center'>
           <span>{Icon}</span>
           {/* <img src={thumbsup} width="20px" height="20px" /> */}
         </Col>

@@ -26,7 +26,11 @@ export const localStorageManage = (
   let MeetinUpd = localStorage.getItem("meetingUpd");
   let MeetingMin = localStorage.getItem("meetingMin");
   let Meetingprop = localStorage.getItem("meetingprop");
+  let MtAgUpdate = localStorage.getItem("mtAgUpdate");
   let poPub = localStorage.getItem("poPub");
+
+  let resolutionVoter = localStorage.getItem("resVot");
+  let resolutionNonVoter = localStorage.getItem("resNonVot");
   if (RememberEmailLocal === true && RememberPasswordLocal === true) {
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 
@@ -51,6 +55,9 @@ export const localStorageManage = (
     if (MeetingStr) {
       localStorage.setItem("meetingStr", MeetingStr);
     }
+    if (MtAgUpdate) {
+      localStorage.setItem("mtAgUpdate", MtAgUpdate);
+    }
     if (MeetinUpd) {
       localStorage.setItem("meetingUpd", MeetinUpd);
     }
@@ -59,6 +66,12 @@ export const localStorageManage = (
     }
     if (MeetingMin) {
       localStorage.setItem("meetingMin", MeetingMin);
+    }
+    if (resolutionVoter) {
+      localStorage.removeItem("resVot");
+    }
+    if (resolutionNonVoter) {
+      localStorage.removeItem("resNonVot");
     }
     if (AgCont) {
       localStorage.setItem("AgCont", AgCont);
@@ -102,11 +115,20 @@ export const localStorageManage = (
     if (MeetinUpd) {
       localStorage.setItem("meetingUpd", MeetinUpd);
     }
+    if (resolutionVoter) {
+      localStorage.removeItem("resVot");
+    }
+    if (resolutionNonVoter) {
+      localStorage.removeItem("resNonVot");
+    }
     if (Meetingprop) {
       localStorage.setItem("meetingprop", Meetingprop);
     }
     if (MeetingMin) {
       localStorage.setItem("meetingMin", MeetingMin);
+    }
+    if (MtAgUpdate) {
+      localStorage.setItem("mtAgUpdate", MtAgUpdate);
     }
     if (AgCont) {
       localStorage.setItem("AgCont", AgCont);
@@ -151,8 +173,17 @@ export const localStorageManage = (
     if (MeetingStr) {
       localStorage.setItem("meetingStr", MeetingStr);
     }
+    if (resolutionVoter) {
+      localStorage.removeItem("resVot");
+    }
+    if (resolutionNonVoter) {
+      localStorage.removeItem("resNonVot");
+    }
     if (MeetinUpd) {
       localStorage.setItem("meetingUpd", MeetinUpd);
+    }
+    if (MtAgUpdate) {
+      localStorage.setItem("mtAgUpdate", MtAgUpdate);
     }
     if (Meetingprop) {
       localStorage.setItem("meetingprop", Meetingprop);
@@ -197,8 +228,17 @@ export const localStorageManage = (
     if (MeetinUpd) {
       localStorage.setItem("meetingUpd", MeetinUpd);
     }
+    if (MtAgUpdate) {
+      localStorage.setItem("mtAgUpdate", MtAgUpdate);
+    }
     if (Meetingprop) {
       localStorage.setItem("meetingprop", Meetingprop);
+    }
+    if (resolutionVoter) {
+      localStorage.removeItem("resVot");
+    }
+    if (resolutionNonVoter) {
+      localStorage.removeItem("resNonVot");
     }
     if (MeetingMin) {
       localStorage.setItem("meetingMin", MeetingMin);
