@@ -310,15 +310,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           VideoCallURL: currentMeetingVideoURL,
         };
         if (check) {
-          dispatch(
-            FetchMeetingURLClipboard(
-              Data2,
-              navigate,
-              t,
-              currentUserID,
-              currentOrganization
-            )
-          );
+          // dispatch(
+          //   FetchMeetingURLClipboard(
+          //     Data2,
+          //     navigate,
+          //     t,
+          //     currentUserID,
+          //     currentOrganization
+          //   )
+          // );
         }
         setIsVideo(check);
         setMeetID(meetingID);
@@ -550,10 +550,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       if (calendarReducer.eventsDetails !== null) {
         let calendarMeetingData =
           calendarReducer.eventsDetails.diskusCalendarEvent;
-        console.log(
-          calendarMeetingData,
-          "calendarMeetingDatacalendarMeetingDatacalendarMeetingData"
-        );
         let viewData = calendarReducer.eventsDetails;
         let reminder = [];
         let meetingAgenAtc = [];
@@ -946,27 +942,58 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   //Copy link function
 
+  // const copyToClipboardd = () => {
+  //   if (
+  //     NewMeetingreducer.CurrentMeetingURL !== undefined &&
+  //     NewMeetingreducer.CurrentMeetingURL !== null &&
+  //     NewMeetingreducer.CurrentMeetingURL !== ""
+  //   ) {
+  //     copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
+  //     setOpen({
+  //       ...open,
+  //       flag: true,
+  //       message: "URL copied to clipboard",
+  //     });
+  //     setTimeout(() => {
+  //       setOpen({
+  //         ...open,
+  //         flag: false,
+  //         message: "",
+  //       });
+  //     }, 3000);
+  //     dispatch(CleareMessegeNewMeeting());
+  //   }
+  // };
+
   const copyToClipboardd = () => {
-    if (
-      NewMeetingreducer.CurrentMeetingURL !== undefined &&
-      NewMeetingreducer.CurrentMeetingURL !== null &&
-      NewMeetingreducer.CurrentMeetingURL !== ""
-    ) {
-      copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
+    let MeetingData = allMeetingDetails?.meetingDetails;
+    if (MeetingData.isVideoCall === true) {
+      let Data2 = {
+        VideoCallURL: currentMeetingVideoURL,
+      };
+
+      dispatch(
+        FetchMeetingURLClipboard(
+          Data2,
+          navigate,
+          t,
+          currentUserID,
+          currentOrganization
+        )
+      );
+    }
+    setOpen({
+      ...open,
+      flag: true,
+      message: t("Generating-meeting-link"),
+    });
+    setTimeout(() => {
       setOpen({
         ...open,
-        flag: true,
-        message: "URL copied to clipboard",
+        flag: false,
+        message: "",
       });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
-      dispatch(CleareMessegeNewMeeting());
-    }
+    }, 3000);
   };
 
   const joinMeetingCall = () => {
