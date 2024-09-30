@@ -20,6 +20,7 @@ import {
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { Table } from "antd";
+import { off } from "rsuite/esm/DOMHelper";
 const Task = () => {
   const { t } = useTranslation();
   const { toDoListReducer } = useSelector((state) => state);
@@ -34,13 +35,7 @@ const Task = () => {
   const callApiTask = async () => {
     if (checkFeatureIDAvailability(6)) {
       await dispatch(getTodoListInit());
-      let searchData = {
-        Date: "",
-        Title: "",
-        AssignedToName: "",
-        UserID: 0,
-      };
-      await dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+
     }
   };
   useEffect(() => {
@@ -128,12 +123,14 @@ const Task = () => {
   ];
 
   useEffect(() => {
-    if (
-      toDoListReducer.SearchTodolist !== null &&
-      toDoListReducer.SearchTodolist !== undefined
-    ) {
-      if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
-        let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
+    if (toDoListReducer.getDashboardTaskData) {
+      console.log(
+        toDoListReducer.getDashboardTaskData,
+        "getDashboardTaskDatagetDashboardTaskDatagetDashboardTaskData"
+      );
+      const { toDoLists } = toDoListReducer.getDashboardTaskData;
+      if (toDoLists?.length > 0) {
+        let dataToSort = [...toDoLists];
         const sortedTasks = dataToSort.sort((taskA, taskB) => {
           const deadlineA = taskA?.deadlineDateTime;
           const deadlineB = taskB?.deadlineDateTime;
@@ -148,7 +145,8 @@ const Task = () => {
     } else {
       setRowToDo([]);
     }
-  }, [toDoListReducer.SearchTodolist]);
+  }, [toDoListReducer.getDashboardTaskData]);
+
 
   // Add Tasks from MQTT
   useEffect(() => {
