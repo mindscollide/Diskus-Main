@@ -1868,12 +1868,11 @@ const Minutes = ({
               <p></p>
             )}
             <div className={styles["button-block"]}>
-              {(editorRole.role === "Organizer" &&
+              {isMinutePublishable === true ||
+              (editorRole.role === "Organizer" &&
                 Number(editorRole.status) === 9 &&
                 deadLineDate <= currentDateOnly &&
-                isMinutePublishable === true &&
-                (minutesData.length > 0 || minutesDataAgenda !== null) &&
-                MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null) ||
+                (minutesData.length > 0 || minutesDataAgenda !== null)) ||
               (Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer" &&
                 deadLineDate <= currentDateOnly &&
