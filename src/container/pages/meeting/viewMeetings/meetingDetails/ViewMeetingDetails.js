@@ -335,21 +335,6 @@ const ViewMeetingDetails = ({
         setMeetingStatus(Number(getmeetingStatus));
         let getmeetingType = MeetingData.meetingType;
         let wasPublishedFlag = MeetingData.wasMeetingPublished;
-        if (MeetingData.isVideo === true) {
-          let Data2 = {
-            VideoCallURL: currentMeetingVideoURL,
-          };
-
-          dispatch(
-            FetchMeetingURLClipboard(
-              Data2,
-              navigate,
-              t,
-              currentUserID,
-              currentOrganization
-            )
-          );
-        }
         setMeetingDetailsData({
           MeetingTitle: MeetingData.meetingTitle,
           MeetingType: {
@@ -530,11 +515,28 @@ const ViewMeetingDetails = ({
   console.log("NewMeetingreducer.CurrentMeetingURL", NewMeetingreducer);
 
   const copyToClipboardd = () => {
-    copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
+    let MeetingData =
+      NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+    if (MeetingData.isVideo === true) {
+      let Data2 = {
+        VideoCallURL: currentMeetingVideoURL,
+      };
+
+      dispatch(
+        FetchMeetingURLClipboard(
+          Data2,
+          navigate,
+          t,
+          currentUserID,
+          currentOrganization
+        )
+      );
+    }
+    // copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
     setOpen({
       ...open,
       flag: true,
-      message: "URL copied to clipboard",
+      message: t("Generating-meeting-link"),
     });
     setTimeout(() => {
       setOpen({
@@ -543,7 +545,7 @@ const ViewMeetingDetails = ({
         message: "",
       });
     }, 3000);
-    dispatch(CleareMessegeNewMeeting());
+    // dispatch(CleareMessegeNewMeeting());
   };
 
   const groupChatInitiation = (data) => {

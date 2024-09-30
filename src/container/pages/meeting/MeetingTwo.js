@@ -145,6 +145,11 @@ const NewMeeting = () => {
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
+
+  // let getALlMeetingTypes = JSON.parse(
+  //   localStorage.getItem("meetingTypesResult")
+  // );
+
   console.log(getALlMeetingTypes, "getALlMeetingTypesgetALlMeetingTypes");
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
@@ -176,18 +181,18 @@ const NewMeeting = () => {
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
 
-  let meetingtypeFilter = [];
-  let byDefault = {
-    value: "0",
-    text: t("Quick-meeting"),
-  };
-  meetingtypeFilter?.push(byDefault);
-  getALlMeetingTypes?.meetingTypes?.forEach((data, index) => {
-    meetingtypeFilter?.push({
-      text: data?.type,
-      value: String(data?.pK_MTID),
-    });
-  });
+  // let meetingtypeFilter = [];
+  // let byDefault = {
+  //   value: "0",
+  //   text: t("Quick-meeting"),
+  // };
+  // meetingtypeFilter?.push(byDefault);
+  // getALlMeetingTypes?.meetingTypes?.forEach((data, index) => {
+  //   meetingtypeFilter?.push({
+  //     text: data?.type,
+  //     value: String(data?.pK_MTID),
+  //   });
+  // });
 
   //       setMeetingTypeFilter(meetingtypeFilter);
 
@@ -197,16 +202,20 @@ const NewMeeting = () => {
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
 
-  const [isMeetingTypeFilter, setMeetingTypeFilter] =
-    useState(meetingtypeFilter);
+  // const [isMeetingTypeFilter, setMeetingTypeFilter] =
+  //   useState(meetingtypeFilter);
 
-  const meetingTypeFilterData = isMeetingTypeFilter?.map((meeting) =>
-    String(meeting.value)
-  );
+  // const meetingTypeFilterData = isMeetingTypeFilter?.map((meeting) =>
+  //   String(meeting.value)
+  // );
 
-  const [defaultFiltersValues, setDefaultFilterValues] = useState(
-    meetingTypeFilterData
-  );
+  // const [defaultFiltersValues, setDefaultFilterValues] = useState(
+  //   meetingTypeFilterData
+  // );
+
+  const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
+  const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
+
   const [boarddeckOptions, setBoarddeckOptions] = useState({
     selectall: false,
     Organizer: false,
@@ -315,7 +324,12 @@ const NewMeeting = () => {
           Length: Number(meetingpageRow),
           PublishedMeetings: MeetingProp !== null ? false : true,
         };
-        // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+        if (
+          getALlMeetingTypes.length === 0 &&
+          Object.keys(getALlMeetingTypes).length === 0
+        ) {
+          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+        }
         // await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
@@ -331,7 +345,12 @@ const NewMeeting = () => {
         };
         // localStorage.setItem("MeetingPageRows", 30);
         // localStorage.setItem("MeetingPageCurrent", 1);
-        // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+        if (
+          getALlMeetingTypes.length === 0 &&
+          Object.keys(getALlMeetingTypes).length === 0
+        ) {
+          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+        }
         // await dispatch(allAssignessList(navigate, t));
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
@@ -691,38 +710,38 @@ const NewMeeting = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       getALlMeetingTypes.meetingTypes !== null &&
-  //       getALlMeetingTypes.meetingTypes !== undefined
-  //     ) {
-  //       let meetingtypeFilter = [];
-  //       let byDefault = {
-  //         value: "0",
-  //         text: t("Quick-meeting"),
-  //       };
-  //       meetingtypeFilter.push(byDefault);
-  //       getALlMeetingTypes.meetingTypes.forEach((data, index) => {
-  //         meetingtypeFilter.push({
-  //           text: data.type,
-  //           value: String(data.pK_MTID),
-  //         });
-  //       });
+  useEffect(() => {
+    try {
+      if (
+        getALlMeetingTypes?.meetingTypes !== null &&
+        getALlMeetingTypes?.meetingTypes !== undefined
+      ) {
+        let meetingtypeFilter = [];
+        let byDefault = {
+          value: "0",
+          text: t("Quick-meeting"),
+        };
+        meetingtypeFilter.push(byDefault);
+        getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
+          meetingtypeFilter.push({
+            text: data.type,
+            value: String(data.pK_MTID),
+          });
+        });
 
-  //       setMeetingTypeFilter(meetingtypeFilter);
-  //     }
-  //   } catch (error) {}
-  // }, [getALlMeetingTypes.meetingTypes]);
+        setMeetingTypeFilter(meetingtypeFilter);
+      }
+    } catch (error) {}
+  }, [getALlMeetingTypes?.meetingTypes]);
 
-  // useEffect(() => {
-  //   if (isMeetingTypeFilter.length > 0) {
-  //     const newData = isMeetingTypeFilter.map((meeting) =>
-  //       String(meeting.value)
-  //     );
-  //     setDefaultFilterValues(newData);
-  //   }
-  // }, [isMeetingTypeFilter]);
+  useEffect(() => {
+    if (isMeetingTypeFilter.length > 0) {
+      const newData = isMeetingTypeFilter.map((meeting) =>
+        String(meeting.value)
+      );
+      setDefaultFilterValues(newData);
+    }
+  }, [isMeetingTypeFilter]);
 
   const HandleShowSearch = () => {
     setSearchMeeting(!searchMeeting);
@@ -911,7 +930,12 @@ const NewMeeting = () => {
       Length: 30,
       PublishedMeetings: true,
     };
-    // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    if (
+      getALlMeetingTypes.length === 0 &&
+      Object.keys(getALlMeetingTypes).length === 0
+    ) {
+      await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    }
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 30);
@@ -929,7 +953,12 @@ const NewMeeting = () => {
       Length: 30,
       PublishedMeetings: false,
     };
-    // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    if (
+      getALlMeetingTypes.length === 0 &&
+      Object.keys(getALlMeetingTypes).length === 0
+    ) {
+      await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    }
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 30);
@@ -1144,7 +1173,7 @@ const NewMeeting = () => {
                 record.isQuickMeeting,
                 record.status
               );
-              localStorage.setItem("videoCallURL", record.videoCallURL)
+              localStorage.setItem("videoCallURL", record.videoCallURL);
               setVideoTalk({
                 isChat: record.isChat,
                 isVideoCall: record.isVideoCall,
@@ -1510,7 +1539,7 @@ const NewMeeting = () => {
                       isVideoCall: record.isVideoCall,
                       talkGroupID: record.talkGroupID,
                     });
-              localStorage.setItem("videoCallURL", record.videoCallURL)
+                    localStorage.setItem("videoCallURL", record.videoCallURL);
                     localStorage.setItem("meetingTitle", record.title);
                     localStorage.setItem(
                       "isMinutePublished",
@@ -1552,7 +1581,7 @@ const NewMeeting = () => {
                       isVideoCall: record.isVideoCall,
                       talkGroupID: record.talkGroupID,
                     });
-              localStorage.setItem("videoCallURL", record.videoCallURL)
+                    localStorage.setItem("videoCallURL", record.videoCallURL);
                     localStorage.setItem("currentMeetingID", record.pK_MDID);
                     localStorage.setItem(
                       "isMinutePublished",
@@ -1596,7 +1625,7 @@ const NewMeeting = () => {
                     isVideoCall: record.isVideoCall,
                     talkGroupID: record.talkGroupID,
                   });
-              localStorage.setItem("videoCallURL", record.videoCallURL)
+                  localStorage.setItem("videoCallURL", record.videoCallURL);
 
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
@@ -1629,7 +1658,7 @@ const NewMeeting = () => {
                     isVideoCall: record.isVideoCall,
                     talkGroupID: record.talkGroupID,
                   });
-              localStorage.setItem("videoCallURL", record.videoCallURL)
+                  localStorage.setItem("videoCallURL", record.videoCallURL);
 
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
@@ -1662,7 +1691,7 @@ const NewMeeting = () => {
                     isVideoCall: record.isVideoCall,
                     talkGroupID: record.talkGroupID,
                   });
-              localStorage.setItem("videoCallURL", record.videoCallURL)
+                  localStorage.setItem("videoCallURL", record.videoCallURL);
 
                   dispatch(viewMeetingFlag(true));
                   localStorage.setItem(
@@ -1700,7 +1729,7 @@ const NewMeeting = () => {
                     isVideoCall: record.isVideoCall,
                     talkGroupID: record.talkGroupID,
                   });
-              localStorage.setItem("videoCallURL", record.videoCallURL)
+                  localStorage.setItem("videoCallURL", record.videoCallURL);
                 }}
               />
             </>
@@ -1754,8 +1783,10 @@ const NewMeeting = () => {
                                 isVideoCall: record.isVideoCall,
                                 talkGroupID: record.talkGroupID,
                               });
-              localStorage.setItem("videoCallURL", record.videoCallURL)
-
+                              localStorage.setItem(
+                                "videoCallURL",
+                                record.videoCallURL
+                              );
                             }}
                           />
                         </Tooltip>
@@ -1798,7 +1829,10 @@ const NewMeeting = () => {
                               isVideoCall: record.isVideoCall,
                               talkGroupID: record.talkGroupID,
                             });
-              localStorage.setItem("videoCallURL", record.videoCallURL)
+                            localStorage.setItem(
+                              "videoCallURL",
+                              record.videoCallURL
+                            );
                             setEdiorRole({
                               status: record.status,
                               role: "Organizer",
@@ -1844,7 +1878,10 @@ const NewMeeting = () => {
                               isVideoCall: record.isVideoCall,
                               talkGroupID: record.talkGroupID,
                             });
-              localStorage.setItem("videoCallURL", record.videoCallURL)
+                            localStorage.setItem(
+                              "videoCallURL",
+                              record.videoCallURL
+                            );
                             setEdiorRole({
                               status: record.status,
                               role: "Agenda Contributor",
@@ -1949,7 +1986,7 @@ const NewMeeting = () => {
             isVideoCall: dashboardEventData.isVideoCall,
             talkGroupID: dashboardEventData.talkGroupID,
           });
-          localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL)
+          localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL);
           dispatch(viewMeetingFlag(true));
         } else if (
           (dashboardEventData.statusID === "10" ||
@@ -1966,7 +2003,7 @@ const NewMeeting = () => {
             isVideoCall: dashboardEventData.isVideoCall,
             talkGroupID: dashboardEventData.talkGroupID,
           });
-          localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL)
+          localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL);
           setEdiorRole({
             status: dashboardEventData.statusID,
             role: "Agenda Contributor",
@@ -1992,7 +2029,7 @@ const NewMeeting = () => {
             isVideoCall: dashboardEventData.isVideoCall,
             talkGroupID: dashboardEventData.talkGroupID,
           });
-          localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL)
+          localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL);
           dispatch(viewMeetingFlag(true));
           handleViewMeeting(
             dashboardEventData.pK_MDID,
@@ -2161,8 +2198,8 @@ const NewMeeting = () => {
   useEffect(() => {
     try {
       if (
-        getALlMeetingTypes.meetingTypes !== null &&
-        getALlMeetingTypes.meetingTypes !== undefined
+        getALlMeetingTypes?.meetingTypes !== null &&
+        getALlMeetingTypes?.meetingTypes !== undefined
       ) {
         let meetingtypeFilter = [];
         let byDefault = {
@@ -2170,7 +2207,7 @@ const NewMeeting = () => {
           text: t("Quick-meeting"),
         };
         meetingtypeFilter.push(byDefault);
-        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+        getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
           meetingtypeFilter.push({
             text: data.type,
             value: String(data.pK_MTID),
@@ -2181,7 +2218,7 @@ const NewMeeting = () => {
         setMeetingTypeFilter(meetingtypeFilter);
       }
     } catch (error) {}
-  }, [getALlMeetingTypes.meetingTypes]);
+  }, [getALlMeetingTypes?.meetingTypes]);
 
   // Empty text data
   const emptyText = () => {
@@ -2529,8 +2566,8 @@ const NewMeeting = () => {
                 isVideoCall: meeting.isVideoCall,
                 talkGroupID: meeting.talkGroupID,
               });
-          localStorage.setItem("videoCallURL", meeting.videoCallURL)
-          dispatch(viewMeetingFlag(true));
+              localStorage.setItem("videoCallURL", meeting.videoCallURL);
+              dispatch(viewMeetingFlag(true));
             } else if (
               (meeting.status === "10" || meeting.status === 10) &&
               dashboardEventData.participantRoleID === 4
@@ -2545,8 +2582,8 @@ const NewMeeting = () => {
                 isVideoCall: meeting.isVideoCall,
                 talkGroupID: meeting.talkGroupID,
               });
-          localStorage.setItem("videoCallURL", meeting.videoCallURL)
-          setEdiorRole({
+              localStorage.setItem("videoCallURL", meeting.videoCallURL);
+              setEdiorRole({
                 status: meeting.status,
                 role: "Agenda Contributor",
                 isPrimaryOrganizer: false,
@@ -2566,8 +2603,8 @@ const NewMeeting = () => {
                 isVideoCall: meeting.isVideoCall,
                 talkGroupID: meeting.talkGroupID,
               });
-          localStorage.setItem("videoCallURL", meeting.videoCallURL)
-          dispatch(viewMeetingFlag(true));
+              localStorage.setItem("videoCallURL", meeting.videoCallURL);
+              dispatch(viewMeetingFlag(true));
               handleViewMeeting(
                 meeting.pK_MDID,
                 meeting.isQuickMeeting,

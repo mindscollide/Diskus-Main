@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./NewDashboard.module.css";
 import "./NewDashbaord.css";
 import { Container, Col, Row } from "react-bootstrap";
@@ -18,6 +18,11 @@ import { useNavigate } from "react-router-dom";
 import { GetAllMeetingTypesNewFunction } from "../../store/actions/NewMeetingActions";
 
 const NewDashobard = () => {
+
+  const getALlMeetingTypes = useSelector(
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
+  );
+
   const [activateBlur, setActivateBlur] = useState(false);
   let Blur = localStorage.getItem("blur");
   const { t } = useTranslation();
@@ -46,7 +51,12 @@ const NewDashobard = () => {
   }, [Blur]);
 
   useEffect(() => {
-    dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    if (
+      getALlMeetingTypes.length === 0 &&
+      Object.keys(getALlMeetingTypes).length === 0
+    ) {
+      dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    }
   }, []);
 
   const closeModal = () => {

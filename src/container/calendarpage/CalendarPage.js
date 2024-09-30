@@ -139,8 +139,9 @@ const CalendarPage = () => {
       setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
       setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
       await dispatch(getCalendarDataResponse(navigate, t, calendarData));
-
-      await dispatch(getEventsTypes(navigate, t));
+      if (!calendarReducer.getEventTypeIds?.length > 0) {
+        await dispatch(getEventsTypes(navigate, t));
+      }
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -861,10 +862,10 @@ const CalendarPage = () => {
   );
   return (
     <>
-      <div className="calendar_container">
-        <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
+      <div className='calendar_container'>
+        <Row className='d-flex justify-content-start align-items-center margin-bottom-15 mt-2'>
           <Col lg={2} md={2} sm={2} xs={12}>
-            <span className="Calender-heading">{t("Calendar")}</span>
+            <span className='Calender-heading'>{t("Calendar")}</span>
           </Col>
           <Col
             lg={2}
@@ -875,13 +876,12 @@ const CalendarPage = () => {
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Dropdown
-                  className="Calendar_CreateBtn"
+                  className='Calendar_CreateBtn'
                   onClick={eventClickHandler}
-                  align={"start"}
-                >
+                  align={"start"}>
                   <Dropdown.Toggle title={t("Create")}>
                     <Row>
-                      <Col lg={12} md={12} sm={12} className="heading_button">
+                      <Col lg={12} md={12} sm={12} className='heading_button'>
                         <Plus width={20} height={20} fontWeight={800} />
                         <span>{t("Create")}</span>
                       </Col>
@@ -892,9 +892,8 @@ const CalendarPage = () => {
                     {checkFeatureIDAvailability(1) ? (
                       <>
                         <Dropdown.Item
-                          className="dropdown-item"
-                          onClick={handleCreateMeeting}
-                        >
+                          className='dropdown-item'
+                          onClick={handleCreateMeeting}>
                           {t("Schedule-a-meeting")}
                         </Dropdown.Item>
                       </>
@@ -902,9 +901,8 @@ const CalendarPage = () => {
                     {checkFeatureIDAvailability(14) ? (
                       <>
                         <Dropdown.Item
-                          className="dropdown-item"
-                          onClick={handleCreateTodo}
-                        >
+                          className='dropdown-item'
+                          onClick={handleCreateTodo}>
                           {t("Create-a-to-do-list")}
                         </Dropdown.Item>
                       </>
@@ -915,7 +913,7 @@ const CalendarPage = () => {
             </Row>
           </Col>
         </Row>
-        <Row className="align-items-center">
+        <Row className='align-items-center'>
           <Calendar
             events={calenderData}
             startDataUpdate={startDataUpdate}
@@ -923,7 +921,7 @@ const CalendarPage = () => {
             endDataUpdate={endDataUpdate}
             setEndDataUpdate={setEndDataUpdate}
             handleEventSelect={viewModalHandler}
-            className="calendar"
+            className='calendar'
             onChange={onChange}
             handleAddEvent={handleAddEvent}
             setCalendarView={setCalendarView}

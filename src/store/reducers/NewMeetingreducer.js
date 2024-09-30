@@ -1718,32 +1718,16 @@ const NewMeetingreducer = (state = initialState, action) => {
         action.response !== undefined &&
         action.response !== null
       ) {
-        let currentVideoURL = action.response;
-
-        let match = currentVideoURL.match(/RoomID=([^&]*)/);
-        let roomID = match[1];
-        let dynamicBaseURLCaller = localStorage.getItem(
-          "videoBaseURLParticipant"
-        );
-        let randomGuestName = generateRandomGuest();
-        const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
-        const extractedBaseURLCaller = extractedUrl(
-          dynamicBaseURLCaller,
-          endIndexBaseURLCaller
-        );
-        let resultedVideoURL = generateURLParticipant(
-          extractedBaseURLCaller,
-          randomGuestName,
-          roomID
-        );
         return {
           ...state,
-          CurrentMeetingURL: resultedVideoURL,
+          CurrentMeetingURL: "",
+          ResponseMessage: action.message,
         };
       } else {
         return {
           ...state,
           CurrentMeetingURL: "",
+          ResponseMessage: action.message,
         };
       }
     }

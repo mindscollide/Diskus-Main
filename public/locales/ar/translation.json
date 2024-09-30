@@ -2134,5 +2134,8 @@
   "And-more-efficient-experience": "and more efficient experience",
   "Continue-with-browser": "Continue with browser",
   "Go-to-play-store": "Go to Play store",
-  "Go-to-App-store": "Go to App store"
+  "Go-to-App-store": "Go to App store",
+  "Generating-meeting-link": "Generating meeting link",
+  "Meeting-link-copied": "Meeting link copied",
+  "Unable-to-generate-meeting-link": "Unable to generate meeting link"
 }

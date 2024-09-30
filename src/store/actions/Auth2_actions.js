@@ -547,7 +547,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
         t
       );
 
-      dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
+      // dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
       // await dispatch(
       //   getPackageExpiryDetail(
       //     navigate,

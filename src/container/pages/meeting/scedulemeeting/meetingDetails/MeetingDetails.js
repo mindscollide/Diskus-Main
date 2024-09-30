@@ -83,6 +83,11 @@ const MeetingDetails = ({
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
+
+  // let getALlMeetingTypes = JSON.parse(
+  //   localStorage.getItem("meetingTypesResult")
+  // );
+
   const getAllReminderFrequency = useSelector(
     (state) => state.NewMeetingreducer.getAllReminderFrequency
   );
@@ -862,11 +867,11 @@ const MeetingDetails = ({
   useEffect(() => {
     try {
       if (
-        getALlMeetingTypes.meetingTypes !== null &&
-        getALlMeetingTypes.meetingTypes !== undefined
+        getALlMeetingTypes?.meetingTypes !== null &&
+        getALlMeetingTypes?.meetingTypes !== undefined
       ) {
         let Newdata = [];
-        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+        getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
           Newdata.push({
             value: data.pK_MTID,
             label: data.type,
@@ -874,15 +879,15 @@ const MeetingDetails = ({
           setMeetingDetails({
             ...meetingDetails,
             MeetingType: {
-              PK_MTID: getALlMeetingTypes.meetingTypes[0].pK_MTID,
-              Type: getALlMeetingTypes.meetingTypes[0].type,
+              PK_MTID: getALlMeetingTypes?.meetingTypes[0].pK_MTID,
+              Type: getALlMeetingTypes?.meetingTypes[0].type,
             },
           });
         });
         setmeetingTypeDropdown(Newdata);
       }
     } catch (error) {}
-  }, [getALlMeetingTypes.meetingTypes]);
+  }, [getALlMeetingTypes?.meetingTypes]);
 
   //Reminder Frequency Drop Down Data
   useEffect(() => {
