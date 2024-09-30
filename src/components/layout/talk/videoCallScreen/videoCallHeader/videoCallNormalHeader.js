@@ -643,7 +643,7 @@ const VideoCallNormalHeader = ({
               <Tooltip placement="topRight" title={t("Participants")}>
                 <img src={AddParticipant} alt="Add Participants" />
               </Tooltip>
-              <div className="participants-list">
+              {/* <div className="participants-list">
                 {currentParticipants !== undefined &&
                 currentParticipants !== null &&
                 currentParticipants.length > 0
@@ -688,12 +688,6 @@ const VideoCallNormalHeader = ({
                                 </Dropdown.Item>
                               </Dropdown.Menu>
                             </Dropdown>
-
-                            {/* <p className="participant-state">
-                                    {matchingStatus
-                                      ? matchingStatus.CallStatus
-                                      : "Calling..."}
-                                  </p> */}
                           </Col>
                         </Row>
                       );
@@ -736,7 +730,7 @@ const VideoCallNormalHeader = ({
                     </Dropdown>
                   </Col>
                 </Row>
-              </div>
+              </div> */}
             </div>
 
             {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
