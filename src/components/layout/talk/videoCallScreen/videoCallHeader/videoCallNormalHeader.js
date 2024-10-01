@@ -3,7 +3,7 @@ import { Row, Col, Dropdown } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
-import { Button } from "./../../../../elements";
+import { Button, Checkbox } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { Tooltip } from "antd";
 import AddParticipant from "./../../talk-Video/video-images/Add Participant Purple.svg";
@@ -104,6 +104,10 @@ const VideoCallNormalHeader = ({
 
   const [handStatus, setHandStatus] = useState(false);
 
+  const [addParticipantPopup, setAddParticipantPopup] = useState(false);
+
+  const [selectedParticipants, setSelectedParticipants] = useState([]);
+
   const leaveModalPopupRef = useRef(null);
 
   useEffect(() => {
@@ -121,6 +125,15 @@ const VideoCallNormalHeader = ({
       dispatch(normalizeVideoPanelFlag(false));
     }
     setShowNotification(true);
+  };
+
+  const handleCheckboxChange = (userID) => (e) => {
+    const { checked } = e.target;
+    if (checked) {
+      setSelectedParticipants((prev) => [...prev, userID]);
+    } else {
+      setSelectedParticipants((prev) => prev.filter((id) => id !== userID));
+    }
   };
 
   const minimizeVideoPanel = () => {
@@ -248,8 +261,10 @@ const VideoCallNormalHeader = ({
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       if (videoFeatureReducer.ParticipantPopupFlag === false) {
         dispatch(participantPopup(true));
+        setAddParticipantPopup(false);
       } else {
         dispatch(participantPopup(false));
+        setAddParticipantPopup(false);
       }
     }
   };
@@ -297,11 +312,13 @@ const VideoCallNormalHeader = ({
   };
 
   const raiseHandFunction = () => {
-    if (handStatus) {
-      setHandStatus(false);
-    } else {
-      setHandStatus(true);
-    }
+    setHandStatus(!handStatus);
+    dispatch(participantPopup(false));
+  };
+
+  const addMoreParticipants = () => {
+    setAddParticipantPopup(!addParticipantPopup);
+    dispatch(participantPopup(false));
   };
 
   useEffect(() => {}, [
@@ -641,96 +658,62 @@ const VideoCallNormalHeader = ({
               }
             >
               <Tooltip placement="topRight" title={t("Participants")}>
-                <img src={AddParticipant} alt="Add Participants" />
+                <img
+                  onClick={addMoreParticipants}
+                  src={AddParticipant}
+                  alt="Add Participants"
+                />
               </Tooltip>
-              {/* <div className="participants-list">
-                {currentParticipants !== undefined &&
-                currentParticipants !== null &&
-                currentParticipants.length > 0
-                  ? currentParticipants.map((participantData, index) => {
-                      console.log("participantStatus", participantStatus[0]);
-                      const matchingStatus = participantStatus[0].find(
-                        (status) =>
-                          status.RecipientID === participantData.userID &&
-                          status.RoomID === initiateRoomID
-                      );
-                      return (
-                        <Row className="m-0" key={index}>
-                          <Col className="p-0" lg={7} md={7} sm={12}>
-                            <p className="participant-name">
-                              {participantData.userName}
-                            </p>
-                          </Col>
-                          <Col
-                            className="d-flex justify-content-end align-items-baseline gap-3 p-0"
-                            lg={5}
-                            md={5}
-                            sm={12}
-                          >
-                            <img src={MenuRaiseHand} alt="" />
-
-                            <Dropdown>
-                              <Dropdown.Toggle className="participant-toggle">
-                                <img src={Menu} alt="" />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                <Dropdown.Item className="participant-dropdown-item">
-                                  {t("Make-host")}
-                                </Dropdown.Item>
-                                <Dropdown.Item className="participant-dropdown-item">
-                                  {t("Remove")}
-                                </Dropdown.Item>
-                                <Dropdown.Item className="participant-dropdown-item">
-                                  {t("Mute")}
-                                </Dropdown.Item>
-                                <Dropdown.Item className="participant-dropdown-item">
-                                  {t("Hide-video")}
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </Col>
-                        </Row>
-                      );
-                    })
-                  : null}
-                <Row className="hostBorder m-0">
-                  <Col className="p-0" lg={7} md={7} sm={12}>
-                    <p className="participant-name">{currentUserName}</p>
-                  </Col>
-                  <Col
-                    className="
-                        d-flex
-                        justify-content-end
-                        align-items-baseline
-                        gap-3
-                        p-0"
-                    lg={5}
-                    md={5}
-                    sm={12}
-                  >
-                    <img src={MenuRaiseHand} alt="" />
-                    <Dropdown>
-                      <Dropdown.Toggle className="participant-toggle">
-                        <img src={Menu} alt="" />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item className="participant-dropdown-item">
-                          {t("Make-host")}
-                        </Dropdown.Item>
-                        <Dropdown.Item className="participant-dropdown-item">
-                          {t("Remove")}
-                        </Dropdown.Item>
-                        <Dropdown.Item className="participant-dropdown-item">
-                          {t("Mute")}
-                        </Dropdown.Item>
-                        <Dropdown.Item className="participant-dropdown-item">
-                          {t("Hide-video")}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </Col>
-                </Row>
-              </div> */}
+              {addParticipantPopup ? (
+                <div className="add-participants-list">
+                  {currentParticipants !== undefined &&
+                  currentParticipants !== null &&
+                  currentParticipants.length > 0
+                    ? currentParticipants.map((participantData, index) => {
+                        console.log("participantStatus", participantStatus[0]);
+                        const matchingStatus = participantStatus[0]?.find(
+                          (status) =>
+                            status.RecipientID === participantData.userID &&
+                            status.RoomID === initiateRoomID
+                        );
+                        return (
+                          <>
+                            <Row className="text-start" key={index}>
+                              <Col lg={12} md={12} sm={12}>
+                                <Checkbox
+                                  onChange={handleCheckboxChange(
+                                    participantData.userID
+                                  )}
+                                  checked={selectedParticipants.includes(
+                                    participantData.userID
+                                  )}
+                                  label2Class={"SelectAll"}
+                                  label2={
+                                    <>
+                                      <div className={"image-profile-wrapper"}>
+                                        <img
+                                          height={32}
+                                          width={32}
+                                          className={"image-style"}
+                                          src={`data:image/jpeg;base64,${participantData.profilePicture.displayProfilePictureName}`}
+                                          alt=""
+                                        />
+                                        <span>{participantData.userName}</span>
+                                      </div>
+                                    </>
+                                  }
+                                  className="SearchCheckbox "
+                                  name="IsChat"
+                                  classNameDiv={"addParticipantCheckbox"}
+                                />
+                              </Col>
+                            </Row>
+                          </>
+                        );
+                      })
+                    : null}
+                </div>
+              ) : null}
             </div>
 
             {currentCallType === 1 && checkFeatureIDAvailability(3) ? (

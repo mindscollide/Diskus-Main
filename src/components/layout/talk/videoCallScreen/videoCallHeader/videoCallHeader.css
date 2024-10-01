@@ -287,6 +287,19 @@ p.Notification-text {
   overflow: hidden auto;
 }
 
+.add-participants-list {
+  background: #fff;
+  border-radius: 4px;
+  padding: 10px 10px;
+  position: absolute;
+  width: 245px;
+  top: 50px;
+  height: 170px;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  left: -105px;
+  overflow: hidden auto;
+}
+
 .hostBorder.m-0.row {
   border-bottom: none !important;
   margin-bottom: 0 !important;
@@ -466,4 +479,29 @@ span.participants-counter {
 button.participant-toggle,
 button.participant-toggle:hover {
   border: none !important;
+}
+
+.addParticipantCheckbox {
+  display: flex;
+  align-items: center;
+}
+
+img.image-style {
+  border-radius: 100%;
+}
+
+.image-profile-wrapper {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 10px;
+}
+
+p.SelectAll {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  color: #5a5a5a;
+  margin-left: 10px !important;
 }
