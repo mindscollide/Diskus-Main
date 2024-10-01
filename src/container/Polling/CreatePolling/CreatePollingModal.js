@@ -1027,7 +1027,7 @@ const CreatePolling = () => {
                             onClick={() => SavePollsButtonFunc(1)}
                           />
                           <Button
-                            text={t("Save-and-publish")}
+                            text={t("Publish")}
                             className={styles["Save_Publish_btn_class"]}
                             onClick={() => SavePollsButtonFunc(2)}
                           />
