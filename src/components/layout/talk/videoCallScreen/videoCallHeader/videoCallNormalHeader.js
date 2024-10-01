@@ -7,6 +7,8 @@ import { Button, Checkbox } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { Tooltip } from "antd";
 import AddParticipant from "./../../talk-Video/video-images/Add Participant Purple.svg";
+import Shade from "./../../talk-Video/video-images/Shade.png";
+import AddParticipantWhite from "./../../talk-Video/video-images/Add Participant White.svg";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
 import NonActiveScreenShare from "./../../talk-Video/video-images/Screen Share Purple.svg";
@@ -422,7 +424,7 @@ const VideoCallNormalHeader = ({
                 videoFeatureReducer.LeaveCallModalFlag === true
                   ? "grayScaleImage"
                   : !isMicActive
-                  ? "active-state"
+                  ? "cursor-pointer active-state"
                   : "inactive-state"
               }
             >
@@ -439,7 +441,7 @@ const VideoCallNormalHeader = ({
                 videoFeatureReducer.LeaveCallModalFlag === true
                   ? "grayScaleImage"
                   : !isVideoActive
-                  ? "active-state"
+                  ? "cursor-pointer active-state"
                   : "inactive-state"
               }
             >
@@ -475,7 +477,7 @@ const VideoCallNormalHeader = ({
                   ? "grayScaleImage"
                   : !handStatus
                   ? "inactive-state"
-                  : "active-state"
+                  : "cursor-pointer active-state"
               }
             >
               <Tooltip
@@ -524,7 +526,7 @@ const VideoCallNormalHeader = ({
               <div className={"position-relative"}>
                 {videoFeatureReducer.ParticipantPopupFlag === true ? (
                   <>
-                    <div className="active-state">
+                    <div className="cursor-pointer active-state">
                       <img
                         src={ActiveParticipantIcon}
                         onClick={closeParticipantHandler}
@@ -654,64 +656,79 @@ const VideoCallNormalHeader = ({
               className={
                 videoFeatureReducer.LeaveCallModalFlag === true
                   ? "grayScaleImage position-relative"
-                  : "screenShare-Toggle inactive-state position-relative"
+                  : videoFeatureReducer.LeaveCallModalFlag === false &&
+                    addParticipantPopup === true
+                  ? "active-state position-relative"
+                  : "inactive-state position-relative"
               }
             >
               <Tooltip placement="topRight" title={t("Participants")}>
                 <img
                   onClick={addMoreParticipants}
-                  src={AddParticipant}
+                  className="cursor-pointer"
+                  src={
+                    addParticipantPopup ? AddParticipantWhite : AddParticipant
+                  }
                   alt="Add Participants"
                 />
               </Tooltip>
               {addParticipantPopup ? (
                 <div className="add-participants-list">
-                  {currentParticipants !== undefined &&
-                  currentParticipants !== null &&
-                  currentParticipants.length > 0
-                    ? currentParticipants.map((participantData, index) => {
-                        console.log("participantStatus", participantStatus[0]);
-                        const matchingStatus = participantStatus[0]?.find(
-                          (status) =>
-                            status.RecipientID === participantData.userID &&
-                            status.RoomID === initiateRoomID
-                        );
-                        return (
-                          <>
-                            <Row className="text-start" key={index}>
-                              <Col lg={12} md={12} sm={12}>
-                                <Checkbox
-                                  onChange={handleCheckboxChange(
-                                    participantData.userID
-                                  )}
-                                  checked={selectedParticipants.includes(
-                                    participantData.userID
-                                  )}
-                                  label2Class={"SelectAll"}
-                                  label2={
-                                    <>
-                                      <div className={"image-profile-wrapper"}>
-                                        <img
-                                          height={32}
-                                          width={32}
-                                          className={"image-style"}
-                                          src={`data:image/jpeg;base64,${participantData.profilePicture.displayProfilePictureName}`}
-                                          alt=""
-                                        />
-                                        <span>{participantData.userName}</span>
-                                      </div>
-                                    </>
-                                  }
-                                  className="SearchCheckbox "
-                                  name="IsChat"
-                                  classNameDiv={"addParticipantCheckbox"}
-                                />
-                              </Col>
-                            </Row>
-                          </>
-                        );
-                      })
-                    : null}
+                  <div className="participants-section">
+                    {currentParticipants !== undefined &&
+                    currentParticipants !== null &&
+                    currentParticipants.length > 0
+                      ? currentParticipants.map((participantData, index) => {
+                          console.log(
+                            "participantStatus",
+                            participantStatus[0]
+                          );
+                          const matchingStatus = participantStatus[0]?.find(
+                            (status) =>
+                              status.RecipientID === participantData.userID &&
+                              status.RoomID === initiateRoomID
+                          );
+                          return (
+                            <>
+                              <Row className="text-start" key={index}>
+                                <Col lg={12} md={12} sm={12}>
+                                  <Checkbox
+                                    onChange={handleCheckboxChange(
+                                      participantData.userID
+                                    )}
+                                    checked={selectedParticipants.includes(
+                                      participantData.userID
+                                    )}
+                                    label2Class={"SelectAll"}
+                                    label2={
+                                      <>
+                                        <div
+                                          className={"image-profile-wrapper"}
+                                        >
+                                          <img
+                                            height={40}
+                                            width={40}
+                                            className={"image-style"}
+                                            src={`data:image/jpeg;base64,${participantData.profilePicture.displayProfilePictureName}`}
+                                            alt=""
+                                          />
+                                          <span>
+                                            {participantData.userName}
+                                          </span>
+                                        </div>
+                                      </>
+                                    }
+                                    className="SearchCheckbox "
+                                    name="IsChat"
+                                    classNameDiv={"addParticipantCheckbox"}
+                                  />
+                                </Col>
+                              </Row>
+                            </>
+                          );
+                        })
+                      : null}
+                  </div>
                 </div>
               ) : null}
             </div>
