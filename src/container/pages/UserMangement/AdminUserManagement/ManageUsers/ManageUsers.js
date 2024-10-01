@@ -493,6 +493,7 @@ const ManageUsers = () => {
 
   // handle Edit User Modal
   const handleClickEditIcon = (record) => {
+    console.log(record, "recordrecord");
     setEditModalData(record);
     dispatch(showEditUserModal(true));
   };
