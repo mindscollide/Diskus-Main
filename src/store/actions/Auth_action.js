@@ -49,10 +49,12 @@ const RefreshToken = (navigate, t) => {
             );
             let message2 = t("Your-session-has-expired-please-login-again");
             // await dispatch(signOut(navigate, message2, dispatch));
-            signOut(navigate, "", dispatch);
+
             // dispatch(userLogOutApiFunc(navigate, t));
             await dispatch(refreshtokenFail(message2));
-
+            setTimeout(() => {
+              signOut(navigate, "", dispatch);
+            }, 4000);
             // navigate("/");
           } else if (
             response.data.responseResult.responseMessage

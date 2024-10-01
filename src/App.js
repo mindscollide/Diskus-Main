@@ -22,7 +22,7 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
-import { Loader } from "./components/elements";
+import { Loader, Notification } from "./components/elements";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
 import axios from "axios";
@@ -34,6 +34,15 @@ import { useDispatch } from "react-redux";
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const dispatch = useDispatch();
+  const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
+  console.log(
+    SessionExpireResponseMessage,
+    "SessionExpireResponseMessageSessionExpireResponseMessage"
+  );
+  const [openNotifcationBar, setOpenNotificationBar] = useState({
+    isOpen: false,
+    message: "",
+  });
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
   const { paymentProcessModal } = useSelector(
@@ -97,7 +106,30 @@ const App = () => {
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, [currentVersion]);
-  
+
+  useEffect(() => {
+    if (
+      SessionExpireResponseMessage !== null &&
+      SessionExpireResponseMessage !== undefined &&
+      SessionExpireResponseMessage !== ""
+    ) {
+      try {
+        setOpenNotificationBar({
+          ...openNotifcationBar,
+          isOpen: true,
+          message: SessionExpireResponseMessage,
+        });
+        setTimeout(() => {
+          setOpenNotificationBar({
+            ...openNotifcationBar,
+            isOpen: false,
+            message: "",
+          });
+        }, 4000);
+      } catch (error) {}
+    }
+  }, [SessionExpireResponseMessage]);
+
   return (
     <>
       <Suspense fallback={<Loader />}>
@@ -111,6 +143,11 @@ const App = () => {
             updateVersion={updateVersion}
           />
         )}
+        <Notification
+          open={openNotifcationBar.isOpen}
+          setOpen={setOpenNotificationBar}
+          message={openNotifcationBar.message}
+        />
       </Suspense>
       {/* <Notification /> */}
     </>

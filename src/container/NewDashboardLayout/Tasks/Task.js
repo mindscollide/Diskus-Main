@@ -28,19 +28,13 @@ const Task = () => {
   const dispatch = useDispatch();
   let creatorID = Number(localStorage.getItem("userID"));
   const [rowsToDo, setRowToDo] = useState([]);
+  const [totalDataRecords, setTotalDataRecords] = useState(0);
+  console.log(totalDataRecords, "totalDataRecordstotalDataRecords");
   const [getTodoID, setTodoID] = useState(0);
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
   const [showTodo, setShowTodo] = useState(false);
-  const callApiTask = async () => {
-    if (checkFeatureIDAvailability(6)) {
-      await dispatch(getTodoListInit());
-
-    }
-  };
-  useEffect(() => {
-    callApiTask();
-  }, []);
+ 
 
   const columnsToDo = [
     {
@@ -128,8 +122,9 @@ const Task = () => {
         toDoListReducer.getDashboardTaskData,
         "getDashboardTaskDatagetDashboardTaskDatagetDashboardTaskData"
       );
-      const { toDoLists } = toDoListReducer.getDashboardTaskData;
+      const { toDoLists, totalRecords } = toDoListReducer.getDashboardTaskData;
       if (toDoLists?.length > 0) {
+        setTotalDataRecords(totalRecords);
         let dataToSort = [...toDoLists];
         const sortedTasks = dataToSort.sort((taskA, taskB) => {
           const deadlineA = taskA?.deadlineDateTime;
@@ -146,7 +141,6 @@ const Task = () => {
       setRowToDo([]);
     }
   }, [toDoListReducer.getDashboardTaskData]);
-
 
   // Add Tasks from MQTT
   useEffect(() => {
@@ -256,7 +250,7 @@ const Task = () => {
                   lg={12}
                   className='d-flex justify-content-between'>
                   <span className='task-title'>{t("Tasks")}</span>
-                  {rowsToDo.length === 15 && (
+                  {totalDataRecords >= 2 && (
                     <span
                       className='cursor-pointer'
                       onClick={() => navigate("/DisKus/todolist")}>
