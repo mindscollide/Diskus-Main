@@ -65,7 +65,7 @@ const Actions = ({
   } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageSize, setCurrentPageSize] = useState(50);
+  const [currentPageSize, setCurrentPageSize] = useState(10);
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
@@ -692,10 +692,10 @@ const Actions = ({
                                   showSizer={true}
                                   total={totalRecords}
                                   pageSizeOptionsValues={[
-                                    "30",
+                                    "10",
+                                    "25",
                                     "50",
                                     "100",
-                                    "200",
                                   ]}
                                   pageSize={currentPageSize}
                                 />

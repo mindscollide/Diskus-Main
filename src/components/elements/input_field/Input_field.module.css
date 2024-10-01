@@ -165,15 +165,17 @@ body[dir="rtl"] .updateNotes_titleInput {
 }
 
 .PollingSearchInput {
-  width: 502px;
+  width: 100% !important;
   position: relative !important;
   height: 39px !important;
+  padding-right: 50px;
 }
 
 .meetingSearch {
   width: 502px;
   position: relative !important;
   height: 39px !important;
+  padding-right: 50px !important;
 }
 
 .meetinInnerSearch {

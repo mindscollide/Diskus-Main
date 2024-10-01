@@ -730,7 +730,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
             onClick={() => handleUpdateClick(1)}
           />
           <Button
-            text={t("Update-and-published")}
+            text={t("Publish")}
             className={styles["Save_Button_Meeting_Creat_Polls"]}
             onClick={() => handleUpdateClick(2)}
           />
