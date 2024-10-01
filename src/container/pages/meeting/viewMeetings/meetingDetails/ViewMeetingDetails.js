@@ -532,7 +532,6 @@ const ViewMeetingDetails = ({
         )
       );
     }
-    // copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
     setOpen({
       ...open,
       flag: true,
@@ -545,7 +544,6 @@ const ViewMeetingDetails = ({
         message: "",
       });
     }, 3000);
-    // dispatch(CleareMessegeNewMeeting());
   };
 
   const groupChatInitiation = (data) => {

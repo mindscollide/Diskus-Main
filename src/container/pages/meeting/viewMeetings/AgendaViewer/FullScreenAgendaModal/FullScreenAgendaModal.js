@@ -46,6 +46,7 @@ import {
   printAgenda,
 } from "../../../../../../store/actions/MeetingAgenda_action";
 import {
+  GetAllUserChats,
   GetAllUsers,
   GetGroupMessages,
   activeChat,
@@ -289,6 +290,14 @@ const FullScreenAgendaModal = ({
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
+      dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserID),
+          parseInt(currentOrganization),
+          t
+        )
+      );
       dispatch(GetGroupMessages(navigate, chatGroupData, t));
       dispatch(
         GetAllUsers(navigate, parseInt(currentUserID), currentOrganization, t)
