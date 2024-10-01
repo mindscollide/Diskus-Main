@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./EditUserModal.module.css";
 import { useTranslation } from "react-i18next";
+import ReactFlagsSelect from "react-flags-select";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
 import { useSelector } from "react-redux";
@@ -10,17 +11,15 @@ import {
   Modal,
   TextField,
 } from "../../../../../components/elements";
-import { Col, Row } from "react-bootstrap";
-import {
-  showEditUserModal,
-  showSucessfullyUpdatedModal,
-} from "../../../../../store/actions/UserMangementModalActions";
+import { Col, Form, Row } from "react-bootstrap";
+import { showEditUserModal } from "../../../../../store/actions/UserMangementModalActions";
 import {
   EditOrganizationsUserApi,
   getOrganizationPackageUserStatsAPI,
 } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { regexOnlyCharacters } from "../../../../../commen/functions/regex";
+import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 const EditUserModal = ({ editModalData }) => {
   console.log(editModalData, "editModalDataeditModalData");
   const { t } = useTranslation();
@@ -41,6 +40,20 @@ const EditUserModal = ({ editModalData }) => {
 
   const [packageAssignedValue, setPackageAssignedValue] = useState([]);
   const [packageAssignedOption, setPackageAssignedOption] = useState([]);
+  const findCountryCodeByMobileCode = (mobileCode) => {
+    for (const countryCode in countryNameforPhoneNumber) {
+      if (countryNameforPhoneNumber[countryCode].secondary === mobileCode) {
+        return countryCode;
+      }
+    }
+    return "US";
+  };
+  // Initialize selected country using the find function
+  const initialCountryCode = findCountryCodeByMobileCode(
+    editModalData.mobileCode
+  );
+  const [selected, setSelected] = useState(initialCountryCode);
+  const [selectedCountry, setSelectedCountry] = useState({});
   const [editPakageID, setEditPakageID] = useState(0);
   console.log(editPakageID, "editPakageIDeditPakageIDeditPakageID");
   const [editUserModalValues, setEditUserModalValues] = useState({
@@ -52,6 +65,11 @@ const EditUserModal = ({ editModalData }) => {
 
     Desgiantion: {
       value: editModalData.designation,
+      errorMessage: "",
+      errorStatus: false,
+    },
+    MobileNumber: {
+      value: editModalData.mobileNumber,
       errorMessage: "",
       errorStatus: false,
     },
@@ -117,6 +135,14 @@ const EditUserModal = ({ editModalData }) => {
     setUserStatus(findOptionByValue(editModalData.userStatus));
   }, [editModalData.userStatus]);
 
+  // Update selected state when editModalData.mobileCode changes
+  useEffect(() => {
+    if (editModalData.mobileCode) {
+      const countryCode = findCountryCodeByMobileCode(editModalData.mobileCode);
+      setSelected(countryCode);
+    }
+  }, [editModalData.mobileCode]);
+
   // package assigned option dropdown useEffect it will disable option when packageAllotedUsers greater then headCount
   useEffect(() => {
     if (
@@ -145,6 +171,14 @@ const EditUserModal = ({ editModalData }) => {
     setUserStatusID(selectedOption.value);
   };
 
+  // Handle the country selection
+  const handleSelect = (country) => {
+    setSelected(country);
+    setSelectedCountry(country);
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+      return obj.primary == country;
+    });
+  };
   const handleUpdateModal = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -195,6 +229,29 @@ const EditUserModal = ({ editModalData }) => {
         },
       });
     }
+
+    if (name === "MobileNumber" && value !== "") {
+      if (/^\d+$/.test(value) || value === "") {
+        // Check if value contains only digits or is empty
+        setEditUserModalValues({
+          ...editUserModalValues,
+          MobileNumber: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else {
+        setEditUserModalValues({
+          ...editUserModalValues,
+          MobileNumber: {
+            value: editModalData.mobileNumber,
+            errorMessage: "",
+            errorStatus: true,
+          },
+        });
+      }
+    }
   };
 
   const handleUpdateButton = () => {
@@ -207,7 +264,7 @@ const EditUserModal = ({ editModalData }) => {
         StatusID: Number(userStatusID),
         UserName: editUserModalValues.Name.value,
         Designation: editUserModalValues.Desgiantion.value,
-        MobileNumber: "",
+        MobileNumber: editUserModalValues.MobileNumber.value,
         RoleID: editUserModalValues.isAdminUser,
         OrganizationID: Number(organizationID),
         PackageID: isTrialCheck ? 4 : Number(editPakageID),
@@ -245,6 +302,8 @@ const EditUserModal = ({ editModalData }) => {
     setPackageAssignedValue(selectedOption);
     setEditPakageID(selectedOption.value);
   };
+
+  console.log(selected, "selectedselected");
 
   return (
     <section>
@@ -336,6 +395,54 @@ const EditUserModal = ({ editModalData }) => {
                       >
                         {editUserModalValues.Desgiantion.errorMessage}
                       </p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <label className={styles["label-styling"]}>
+                      {t("Mobile-number")}{" "}
+                      <span className={styles["aesterick-color"]}> *</span>
+                    </label>
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={4}
+                      xs={12}
+                      className={styles["react-flag"]}
+                    >
+                      <ReactFlagsSelect
+                        name="reactFlag"
+                        fullWidth={false}
+                        selected={selected} // Set the selected value from state
+                        selectedSize={8}
+                        className="menu-flags"
+                        onSelect={handleSelect}
+                        searchable={true}
+                        placeholder={"Select Co...."}
+                        customLabels={countryNameforPhoneNumber}
+                      />
+                    </Col>
+                    <Col lg={8} md={8} sm={8} xs={12}>
+                      <Form.Control
+                        placeholder={t("Enter-phone-number")}
+                        className={styles["formcontrol-Phone-Input-Textfield"]}
+                        applyClass="form-control2"
+                        maxLength={15}
+                        minLength={4}
+                        onChange={handleUpdateModal}
+                        value={editUserModalValues.MobileNumber.value}
+                        name="MobileNumber"
+                      />
+                      <Col>
+                        <p
+                          className={
+                            editUserModalValues.MobileNumber.value === ""
+                              ? ` ${styles["errorMessage"]}`
+                              : `${styles["errorMessage_hidden"]}`
+                          }
+                        >
+                          {editUserModalValues.MobileNumber.errorMessage}
+                        </p>
+                      </Col>
                     </Col>
                   </Row>
                   <Row className="mt-3">

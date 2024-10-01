@@ -8234,3 +8234,7 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
 .MobilePopUpModal .modal-content {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
 }
+
+.menu-flags button#rfs-btn {
+  height: 38px !important;
+}
