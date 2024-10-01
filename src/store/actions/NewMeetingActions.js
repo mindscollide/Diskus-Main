@@ -2829,7 +2829,7 @@ const setProposedMeetingDateApiFunc = (
               dispatch(
                 showPrposedMeetingDateSuccess(
                   response.data.responseResult,
-                  t("Record-saved")
+                  t("Your-vote-is-submitted-successfully")
                 )
               );
               if (flag === true) {
@@ -2967,7 +2967,7 @@ const SetMeetingResponseApiFunc = (
               dispatch(
                 showPrposedMeetingReponsneSuccess(
                   response.data.responseResult,
-                  t("Record-saved")
+                  t("Your-vote-is-submitted-successfully")
                 )
               );
               let userID = localStorage.getItem("userID");

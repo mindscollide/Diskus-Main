@@ -1131,7 +1131,7 @@ const UpdatePolls = () => {
                                 onClick={() => handleUpdateClick(1)}
                               />
                               <Button
-                                text={t("Update-and-publish")}
+                                text={t("Publish")}
                                 className={styles["Update_Publish_btn_class"]}
                                 onClick={() => handleUpdateClick(2)}
                               />
