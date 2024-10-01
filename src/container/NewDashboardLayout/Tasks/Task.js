@@ -250,7 +250,7 @@ const Task = () => {
                   lg={12}
                   className='d-flex justify-content-between'>
                   <span className='task-title'>{t("Tasks")}</span>
-                  {totalDataRecords >= 2 && (
+                  {totalDataRecords >= 15 && (
                     <span
                       className='cursor-pointer'
                       onClick={() => navigate("/DisKus/todolist")}>
