@@ -62,6 +62,7 @@ import LeaveMeetingIcon from "./AV-Images/Leave-Meeting.svg";
 import TalkInactiveIcon from "./AV-Images/Talk Inactive.svg";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 import {
+  GetAllUserChats,
   GetAllUsers,
   GetGroupMessages,
   activeChat,
@@ -296,7 +297,15 @@ const AgendaViewer = ({
       VideoCallURL: currentMeetingVideoURL,
     };
     dispatch(
-      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization, 1, meetingTitle)
+      FetchMeetingURLApi(
+        Data2,
+        navigate,
+        t,
+        currentUserID,
+        currentOrganization,
+        1,
+        meetingTitle
+      )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
     const emptyArray = [];
@@ -328,7 +337,15 @@ const AgendaViewer = ({
       VideoCallURL: currentMeetingVideoURL,
     };
     dispatch(
-      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization, 1, meetingTitle)
+      FetchMeetingURLApi(
+        Data2,
+        navigate,
+        t,
+        currentUserID,
+        currentOrganization,
+        1,
+        meetingTitle
+      )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
     const emptyArray = [];
@@ -412,6 +429,14 @@ const AgendaViewer = ({
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
+      dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(userID),
+          parseInt(currentOrganization),
+          t
+        )
+      );
       dispatch(GetGroupMessages(navigate, chatGroupData, t));
       dispatch(GetAllUsers(navigate, parseInt(userID), currentOrganization, t));
 
