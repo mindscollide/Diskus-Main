@@ -16,7 +16,7 @@ import Participant from "../../../../../assets/images/Recent Activity Icons/Vide
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
 import "./GuestVideoHeader.css";
 
-const GuestVideoHeader = () => {
+const GuestVideoHeader = ({ extractMeetingTitle }) => {
   const [micOn, setMicOn] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [isScreenShare, setIsScreenShare] = useState(false);
@@ -50,134 +50,127 @@ const GuestVideoHeader = () => {
 
   return (
     <>
-      <Container>
-        <Row className="mt-4">
-          <Col lg={5} md={5} sm={12}>
-            <p className="title-header-name">IT Departmental Meeting</p>
-          </Col>
+      <Row className="mt-4">
+        <Col lg={5} md={5} sm={12}>
+          <p className="title-header-name">{extractMeetingTitle}</p>
+        </Col>
 
-          <Col
-            lg={7}
-            md={7}
-            sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
-            <div className="Guest-Icons-state">
-              {micOn ? (
-                <img
-                  src={MicOff}
-                  onClick={openMicStatus}
-                  className="cursor-pointer"
-                />
-              ) : (
-                <img
-                  src={MicOn2}
-                  onClick={openMicStatus}
-                  className="cursor-pointer"
-                />
-              )}
-            </div>
-            <div className="Guest-Icons-state">
-              {isVideoOn ? (
-                <img src={VideoOff} onClick={openVideoStatus} />
-              ) : (
-                <img src={VideoOn2} onClick={openVideoStatus} />
-              )}
-            </div>
-            <div className="Guest-Icons-state">
-              {isScreenShare ? (
-                <img src={ScreenShareEnabled} onClick={openScreenShare} />
-              ) : (
-                <img src={Screenshare} onClick={openScreenShare} />
-              )}
-            </div>
-            <div className="Guest-Icons-state">
-              {isRaiseHand ? (
-                <img src={Raisehandselected} onClick={openRaiseHand} />
-              ) : (
-                <img src={RaiseHand} onClick={openRaiseHand} />
-              )}
-            </div>
+        <Col lg={7} md={7} sm={12} className="d-flex justify-content-end gap-2">
+          <div className="Guest-Icons-state">
+            {micOn ? (
+              <img
+                src={MicOff}
+                onClick={openMicStatus}
+                className="cursor-pointer"
+              />
+            ) : (
+              <img
+                src={MicOn2}
+                onClick={openMicStatus}
+                className="cursor-pointer"
+              />
+            )}
+          </div>
+          <div className="Guest-Icons-state">
+            {isVideoOn ? (
+              <img src={VideoOff} onClick={openVideoStatus} />
+            ) : (
+              <img src={VideoOn2} onClick={openVideoStatus} />
+            )}
+          </div>
+          <div className="Guest-Icons-state">
+            {isScreenShare ? (
+              <img src={ScreenShareEnabled} onClick={openScreenShare} />
+            ) : (
+              <img src={Screenshare} onClick={openScreenShare} />
+            )}
+          </div>
+          <div className="Guest-Icons-state">
+            {isRaiseHand ? (
+              <img src={Raisehandselected} onClick={openRaiseHand} />
+            ) : (
+              <img src={RaiseHand} onClick={openRaiseHand} />
+            )}
+          </div>
 
-            <div className="Guest-Icons-state">
-              {isSpeakerView ? (
-                <img src={SpeakerView} onClick={openSpeaker} />
-              ) : (
-                <img src={TileView} onClick={openSpeaker} />
-              )}
-            </div>
-            <div className="Guest-Icons-state-Participant">
-              {isParticipant ? (
-                <>
-                  <img src={ParticipantSelected} onClick={openParticipant} />
-                  <div className="New-List-Participants">
-                    {/* Your additional div content here */}
-                    <Row>
-                      <Col
-                        lg={7}
-                        md={7}
-                        sm={12}
-                        className="d-flex justify-content-start"
-                      >
-                        <p>Sarah Thompson</p>
-                      </Col>
-                      <Col
-                        lg={5}
-                        md={5}
-                        sm={12}
-                        className="d-flex justify-content-end"
-                      >
-                        <img src={RaiseHand} width="13px" height="16px" />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={7}
-                        md={7}
-                        sm={12}
-                        className="d-flex justify-content-start"
-                      >
-                        <p>Michael Davis</p>
-                      </Col>
-                      <Col
-                        lg={5}
-                        md={5}
-                        sm={12}
-                        className="d-flex justify-content-end"
-                      >
-                        <img src={RaiseHand} width="13px" height="16px" />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={7}
-                        md={7}
-                        sm={12}
-                        className="d-flex justify-content-start"
-                      >
-                        <p>Emily Parkor</p>
-                      </Col>
-                      <Col
-                        lg={5}
-                        md={5}
-                        sm={12}
-                        className="d-flex justify-content-end"
-                      >
-                        <img src={RaiseHand} width="13px" height="16px" />
-                      </Col>
-                    </Row>
-                  </div>
-                </>
-              ) : (
-                <img src={Participant} onClick={openParticipant} />
-              )}
-            </div>
-            <div className="Guest-Icons-state">
-              <img src={EndCall} />
-            </div>
-          </Col>
-        </Row>
-      </Container>
+          <div className="Guest-Icons-state">
+            {isSpeakerView ? (
+              <img src={SpeakerView} onClick={openSpeaker} />
+            ) : (
+              <img src={TileView} onClick={openSpeaker} />
+            )}
+          </div>
+          <div className="Guest-Icons-state-Participant">
+            {isParticipant ? (
+              <>
+                <img src={ParticipantSelected} onClick={openParticipant} />
+                <div className="New-List-Participants">
+                  {/* Your additional div content here */}
+                  <Row>
+                    <Col
+                      lg={7}
+                      md={7}
+                      sm={12}
+                      className="d-flex justify-content-start"
+                    >
+                      <p>Sarah Thompson</p>
+                    </Col>
+                    <Col
+                      lg={5}
+                      md={5}
+                      sm={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <img src={RaiseHand} width="13px" height="16px" />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      lg={7}
+                      md={7}
+                      sm={12}
+                      className="d-flex justify-content-start"
+                    >
+                      <p>Michael Davis</p>
+                    </Col>
+                    <Col
+                      lg={5}
+                      md={5}
+                      sm={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <img src={RaiseHand} width="13px" height="16px" />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      lg={7}
+                      md={7}
+                      sm={12}
+                      className="d-flex justify-content-start"
+                    >
+                      <p>Emily Parkor</p>
+                    </Col>
+                    <Col
+                      lg={5}
+                      md={5}
+                      sm={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <img src={RaiseHand} width="13px" height="16px" />
+                    </Col>
+                  </Row>
+                </div>
+              </>
+            ) : (
+              <img src={Participant} onClick={openParticipant} />
+            )}
+          </div>
+          <div className="Guest-Icons-state">
+            <img src={EndCall} />
+          </div>
+        </Col>
+      </Row>
     </>
   );
 };

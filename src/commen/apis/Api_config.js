@@ -1792,6 +1792,10 @@ const joinGuestVideo = {
   RequestMethod: "ServiceManager.JoinGuestVideo",
 };
 
+const admitRejectAttendee = {
+  RequestMethod: "ServiceManager.AdmitRejectAttendee",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2266,4 +2270,5 @@ export {
   getMeetingGuestVideoURL,
   ValidateEncryptedStringGuestVideoLink,
   joinGuestVideo,
+  admitRejectAttendee,
 };

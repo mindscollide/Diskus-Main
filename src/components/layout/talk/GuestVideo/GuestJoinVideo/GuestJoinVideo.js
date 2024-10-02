@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { joinGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
+import GuestVideoHeader from "../GuestVideoHeader/GuestVideoHeader";
 
 const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
 
-  console.log(name, "namenamenamename");
+  console.log({ extractMeetingId, extractMeetingTitle }, "namenamenamename");
 
   // another red div
   const [isBigScreen, setIsBigScreen] = useState(false);
@@ -84,7 +85,7 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
       setErrorMessage(false);
       setGetReady(true);
 
-      let data = { MeetingId: Number(extractMeetingId), GuestName: name };
+      let data = { MeetingId: extractMeetingId, GuestName: name };
       dispatch(joinGuestVideoMainApi(navigate, t, data));
 
       setTimeout(() => {
@@ -168,8 +169,7 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
   return (
     <Container fluid>
       <Row>
-        <Col lg={1} md={1} sm={12} />
-        <Col lg={10} md={10} sm={12}>
+        <Col lg={12} md={12} sm={12}>
           {!isBigScreen ? (
             <>
               <div className="guest-join-video-main">
@@ -271,9 +271,7 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
             </>
           ) : (
             <>
-              {/* <GuestVideoHeader /> */}
-
-              <p>{extractMeetingTitle}</p>
+              <GuestVideoHeader extractMeetingTitle={extractMeetingTitle} />
               <div className="new-div">
                 <div
                   style={{
@@ -287,7 +285,6 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
             </>
           )}
         </Col>
-        <Col lg={1} md={1} sm={12} />
       </Row>
     </Container>
   );

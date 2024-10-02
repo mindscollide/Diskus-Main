@@ -71,7 +71,10 @@ import {
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
-import { getMeetingGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
+import {
+  ClearResponseMessageGuest,
+  getMeetingGuestVideoMainApi,
+} from "../../../../../store/actions/Guest_Video";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -101,7 +104,14 @@ const ViewMeetingDetails = ({
     (state) => state.GuestVideoReducer.guestVideoData
   );
 
-  console.log(guestVideoUrlData, "stringDatastringData");
+  const guestVideoUrlNotification = useSelector(
+    (state) => state.GuestVideoReducer.ResponseMessage
+  );
+
+  console.log(
+    guestVideoUrlNotification,
+    "guestVideoUrlNotificationguestVideoUrlNotification"
+  );
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -603,12 +613,14 @@ const ViewMeetingDetails = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== undefined
+      (NewMeetingreducer.ResponseMessage !== "" &&
+        NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+        NewMeetingreducer.ResponseMessage !== "" &&
+        NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+        NewMeetingreducer.ResponseMessage !== undefined) ||
+      guestVideoUrlNotification !== ""
     ) {
+      console.log("guestVideoUrlNotificationguestVideoUrlNotification");
       setOpen({
         ...open,
         flag: true,
@@ -621,11 +633,26 @@ const ViewMeetingDetails = ({
           message: "",
         });
       }, 3000);
+
+      setOpen({
+        ...open,
+        flag: true,
+        message: guestVideoUrlNotification,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
       dispatch(CleareMessegeNewMeeting());
+      dispatch(ClearResponseMessageGuest());
     } else {
       dispatch(CleareMessegeNewMeeting());
+      dispatch(ClearResponseMessageGuest());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [NewMeetingreducer.ResponseMessage, guestVideoUrlNotification]);
 
   console.log("talkStateDatatalkStateData", talkStateData);
 
