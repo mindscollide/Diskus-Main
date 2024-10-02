@@ -2531,8 +2531,9 @@ const Dashboard = () => {
             MinutesReducer.Loading ||
             DataRoomFileAndFoldersDetailsReducer.Loading ||
             SignatureWorkFlowReducer.Loading ||
-            UserMangementReducer.Loading ? null : // <Loader />
-          null}
+            UserMangementReducer.Loading ? (
+            <Loader /> // <Loader />
+          ) : null}
           {/* Disconnectivity Modal  */}
           {isInternetDisconnectModalVisible && <InternetConnectivityModal />}
           <Notification
