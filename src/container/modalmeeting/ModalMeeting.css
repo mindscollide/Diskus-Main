@@ -76,22 +76,15 @@ fieldset:disabled .btn {
 }
 
 .modalMeetingCreateBody {
-  padding: 30px 20px; 
-  height: 70vh !important;
-  max-height: 70vh !important;
+  padding: 20px 20px;
+  min-height: 500px;
 }
 .modalMeetingCreateBody_close_modal {
   height: auto;
 }
 .modalMeetingCreateFooter {
-  height: 10vh !important;
   display: inline-block;
 }
-/* .modalMeetingCreateFooter {
-
-  height: 80px;
-  padding: 0 35px !important;
-} */
 
 .modalMeetingCreateHeader {
   display: none;
@@ -755,4 +748,65 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
 } */
 .css-qbdosj-Input:after {
   display: none;
+}
+
+/* New Button Classes */
+.isDetail-Schedule-top-btn_active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  padding: 8px 30px !important;
+  color: #fff;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isDetail-Schedule-top-btn-NonActive {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 8px 30px !important;
+  color: #000 !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isAgenda-Schedule-top-btn_active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  padding: 8px 30px !important;
+  color: #fff;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isAgenda-Schedule-top-btn-NonActive {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 8px 30px !important;
+  color: #000 !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isAttendee-Schedule-top-btn_active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  padding: 8px 30px !important;
+  color: #fff;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.isAttendee-Schedule-top-btn-NonActive {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 8px 30px !important;
+  color: #000 !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
 }

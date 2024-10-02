@@ -701,7 +701,7 @@ const Createpolls = ({ setCreatepoll }) => {
                   // onClick={handleViewPollsUnPublished}
                 />
                 <Button
-                  text={t("Save-and-published")}
+                  text={t("Publish")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(2)}
 

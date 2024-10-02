@@ -42,6 +42,7 @@ import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRo
 import CollapseIcon from "./AV-Images/Collapse-Icon.png";
 import DownloadIcon from "./AV-Images/Download-Icon.png";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
+import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 
 const ParentAgenda = ({
   data,
@@ -248,11 +249,7 @@ const ParentAgenda = ({
     };
     let pdfDataJson = JSON.stringify(Data);
     if (
-      ext === "pdf" ||
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xlx" ||
-      ext === "xlsx"
+      fileFormatforSignatureFlow.includes(ext)
     ) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,

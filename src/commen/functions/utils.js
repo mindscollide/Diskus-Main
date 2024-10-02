@@ -426,3 +426,52 @@ export const getData = (key) => {
   const data = localStorage.getItem(key);
   return data ? decrypt(data, process.env.REACT_APP_SECERETKEY) : null;
 };
+
+export const fileFormatforSignatureFlow = [
+  // PDF Formats
+  "pdf",
+  "fdf",
+  "xfdf",
+
+  // Microsoft Office Formats
+  "doc",
+  "docx",
+  "xls",
+  "xlsx",
+  "ppt",
+  "pptx",
+  "pub",
+
+  // CAD Formats
+  "dwg",
+  "dxf",
+  "dgn",
+  "rvt",
+  "dwf",
+
+  // Document Formats
+  "rtf",
+  "odt",
+  "ods",
+  "odp",
+  "wpf",
+
+  // Image Formats
+  "bmp",
+  "wmf",
+  "emf",
+  "gif",
+  "hdp",
+  "jpg",
+  "jp2",
+  "jpc",
+  "png",
+  "tif",
+  "tiff",
+
+  // Web Formats
+  "html",
+  "htm",
+  "mht",
+  "svg",
+];

@@ -473,7 +473,7 @@ const MeetingViewModalCalendar = ({
   useEffect(() => {
     try {
       if (viewFlag) {
-        dispatch(allAssignessList(navigate, t));
+        dispatch(allAssignessList(navigate, t, false));
       } else {
         setViewFlag(false);
         dispatch(cleareAssigneesState());
@@ -578,7 +578,10 @@ const MeetingViewModalCalendar = ({
       UserID: parseInt(createrID),
     };
     await dispatch(StartMeeting(navigate, Data, t));
-    localStorage.setItem("meetingTitle", assignees.ViewMeetingDetails.meetingDetails.title);
+    localStorage.setItem(
+      "meetingTitle",
+      assignees.ViewMeetingDetails.meetingDetails.title
+    );
   };
 
   const endMeeting = async () => {
@@ -607,19 +610,19 @@ const MeetingViewModalCalendar = ({
             setViewFlag(false);
           }}
           show={viewFlag}
-          size="lg"
+          size='lg'
           setShow={setViewFlag}
-          modalParentClass="modaldialog MeetingView"
-          className="MeetingView"
+          modalParentClass='modaldialog MeetingView'
+          className='MeetingView'
           ButtonTitle={ModalTitle}
-          modalBodyClassName="modalMeetingViewBody"
-          modalFooterClassName="modalMeetingViewFooter"
-          modalHeaderClassName="modalMeetingViewHeader"
+          modalBodyClassName='modalMeetingViewBody'
+          modalFooterClassName='modalMeetingViewFooter'
+          modalHeaderClassName='modalMeetingViewHeader'
           // ModalTitle={"Modal Header"}
           ModalBody={
             <>
               <Row>
-                <Col lg={3} md={3} sm={2} xs={12} className="isDetailBtn">
+                <Col lg={3} md={3} sm={2} xs={12} className='isDetailBtn'>
                   <Button
                     className={
                       isDetails
@@ -648,7 +651,7 @@ const MeetingViewModalCalendar = ({
                     variant={"Primary"}
                     text={t("Agendas")}
                     onClick={changeSelectAgenda}
-                    datatut="show-agenda"
+                    datatut='show-agenda'
                   />
                 </Col>
                 <Col
@@ -656,11 +659,7 @@ const MeetingViewModalCalendar = ({
                   md={3}
                   sm={2}
                   xs={12}
-                  className={
-                    " AttendeeShowBtn" +
-                    " " +
-                    currentLanguage
-                  }
+                  className={" AttendeeShowBtn" + " " + currentLanguage}
                   // className={"attendees-upper-btn" + " " + currentLanguage}
                 >
                   <Button
@@ -671,9 +670,8 @@ const MeetingViewModalCalendar = ({
                     }
                     variant={"Primary"}
                     text={t("Attendees")}
-                    datatut="show-meeting-attendees"
-                    onClick={changeSelectAttendees}
-                  ></Button>
+                    datatut='show-meeting-attendees'
+                    onClick={changeSelectAttendees}></Button>
                 </Col>
                 {minutesOftheMeatingStatus ? (
                   <Col
@@ -681,12 +679,7 @@ const MeetingViewModalCalendar = ({
                     md={2}
                     sm={2}
                     xs={12}
-                    className={
-                      " minutes-upper-btn" +
-                      " " +
-                      currentLanguage
-                    }
-                  >
+                    className={" minutes-upper-btn" + " " + currentLanguage}>
                     <Button
                       className={
                         isMinutes
@@ -695,9 +688,8 @@ const MeetingViewModalCalendar = ({
                       }
                       variant={"Primary"}
                       text={t("Minutes")}
-                      datatut="show-minutes"
-                      onClick={navigateToMinutes}
-                    ></Button>
+                      datatut='show-minutes'
+                      onClick={navigateToMinutes}></Button>
                   </Col>
                 ) : null}
 
@@ -706,11 +698,7 @@ const MeetingViewModalCalendar = ({
                   md={2}
                   sm={2}
                   xs={12}
-                  className={
-                    " DataRoomShowBtn" +
-                    " " +
-                    currentLanguage
-                  }
+                  className={" DataRoomShowBtn" + " " + currentLanguage}
                   // className={
                   //   "attachment-upper-btn view" + " " + currentLanguage
                   // }
@@ -734,17 +722,16 @@ const MeetingViewModalCalendar = ({
               </Row>
               {isDetails ? (
                 <>
-                  <Row className="my-4">
+                  <Row className='my-4'>
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratRegular d-flex flex-column lh-sm my-3"
-                    >
-                      <span className="MeetingViewDateTimeTextField">
+                      className='MontserratRegular d-flex flex-column lh-sm my-3'>
+                      <span className='MeetingViewDateTimeTextField'>
                         {createMeeting.MeetingDate}
                       </span>
-                      <span className="MeetingViewLocationText_Field">
+                      <span className='MeetingViewLocationText_Field'>
                         {createMeeting.MeetingLocation}
                       </span>
                     </Col>
@@ -754,9 +741,8 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" MeetingViewTitleTextField p-0"
-                    >
-                      <p className="viewModalTitle">
+                      className=' MeetingViewTitleTextField p-0'>
+                      <p className='viewModalTitle'>
                         {createMeeting.MeetingTitle.length < 100
                           ? `${createMeeting.MeetingTitle}`
                           : `${createMeeting.MeetingTitle.substring(
@@ -772,16 +758,15 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratRegular textAreaDivView p-0"
-                    >
+                      className='MontserratRegular textAreaDivView p-0'>
                       <TextField
                         change={detailsHandler}
-                        name="MeetingDescription"
-                        applyClass="form-control2 textbox-height-details-view"
-                        type="text"
+                        name='MeetingDescription'
+                        applyClass='form-control2 textbox-height-details-view'
+                        type='text'
                         disable={true}
                         as={"textarea"}
-                        rows="7"
+                        rows='7'
                         // label={}
                         // placeholder={t("Description") + "*"}
                         value={createMeeting.MeetingDescription}
@@ -792,15 +777,15 @@ const MeetingViewModalCalendar = ({
                 </>
               ) : isAgenda ? (
                 <>
-                  <div className="agendaList">
+                  <div className='agendaList'>
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
                           return (
-                            <div className="margin-top-20">
+                            <div className='margin-top-20'>
                               <>
-                                <Row className="mt-4">
+                                <Row className='mt-4'>
                                   <Col lg={1} md={1} xs={12}>
-                                    <span className=" agendaIndex">
+                                    <span className=' agendaIndex'>
                                       {index + 1}
                                     </span>
                                   </Col>
@@ -808,9 +793,8 @@ const MeetingViewModalCalendar = ({
                                     lg={7}
                                     md={7}
                                     xs={12}
-                                    className="MeetingAgendaView p-0"
-                                  >
-                                    <p className=" agendaTitle">
+                                    className='MeetingAgendaView p-0'>
+                                    <p className=' agendaTitle'>
                                       {data.ObjMeetingAgenda.Title}
                                     </p>
                                     {/* <TextField
@@ -840,14 +824,13 @@ const MeetingViewModalCalendar = ({
                                                 sm={12}
                                                 lg={3}
                                                 md={3}
-                                                className="meeting-view-file-icon"
+                                                className='meeting-view-file-icon'
                                                 onClick={(e) =>
                                                   downloadClick(
                                                     e,
                                                     MeetingAgendaAttachmentsData
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 {ext === "doc" ? (
                                                   <FileIcon
                                                     extension={"docx"}
@@ -939,7 +922,7 @@ const MeetingViewModalCalendar = ({
                                                     {...defaultStyles.ext}
                                                   />
                                                 )}
-                                                <p className="fileUploadLabel">
+                                                <p className='fileUploadLabel'>
                                                   {first}
                                                 </p>
                                               </Col>
@@ -952,19 +935,18 @@ const MeetingViewModalCalendar = ({
                                     lg={4}
                                     md={4}
                                     xs={12}
-                                    className="MeetingAgendaPresented MeetingAgendaURL"
-                                  >
+                                    className='MeetingAgendaPresented MeetingAgendaURL'>
                                     <TextField
                                       disable={true}
                                       name={"PresenterName"}
                                       value={
                                         data.ObjMeetingAgenda.PresenterName
                                       }
-                                      applyClass="form-control2"
-                                      type="text"
+                                      applyClass='form-control2'
+                                      type='text'
                                       label={t("Presented-by")}
                                     />
-                                    <p className="url">
+                                    <p className='url'>
                                       {data.ObjMeetingAgenda.URLs}
                                     </p>
                                   </Col>
@@ -983,8 +965,7 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" meeting-view-attendee-organizer-tab"
-                    >
+                      className=' meeting-view-attendee-organizer-tab'>
                       <label>{t("Organizer")}</label>
                     </Col>
                   </Row>
@@ -994,8 +975,7 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className="meeting-view-attendee-organizer-list"
-                    >
+                      className='meeting-view-attendee-organizer-list'>
                       {/* <EmployeeCard
                         employeeName="Saad Fudda"
                         employeeDesignation="Founder, Diara Studio"
@@ -1026,8 +1006,7 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" meeting-view-attendee-participant-tab"
-                    >
+                      className=' meeting-view-attendee-participant-tab'>
                       <label>{t("Participants")}</label>
                     </Col>
                   </Row>
@@ -1036,8 +1015,7 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className="meeting-view-attendee-participant-list"
-                    >
+                      className='meeting-view-attendee-participant-list'>
                       {addedParticipantNameList ? (
                         <>
                           <span>
@@ -1063,27 +1041,26 @@ const MeetingViewModalCalendar = ({
                 <>
                   <Row>
                     <Col sm={12}>
-                      <Row className="my-3 minutes-view px-3 d-flex flex-row ">
+                      <Row className='my-3 minutes-view px-3 d-flex flex-row '>
                         {createMeeting.MinutesOfMeeting.length > 0 ? (
                           createMeeting.MinutesOfMeeting.map(
                             (minutesOfMeetingLdata, index) => {
                               return (
                                 <Col
-                                  className="border p-2 minutes-box rounded my-2"
+                                  className='border p-2 minutes-box rounded my-2'
                                   sm={12}
                                   md={12}
-                                  lg={12}
-                                >
+                                  lg={12}>
                                   <Row>
                                     <Col sm={12}>
                                       <Row>
                                         <Col sm={1}>
-                                          <span className="agendaIndex">
+                                          <span className='agendaIndex'>
                                             {index + 1}
                                           </span>
                                         </Col>
-                                        <Col sm={11} className="fs-6">
-                                          <p className="agendaTitle meeting-view-minutes-title">
+                                        <Col sm={11} className='fs-6'>
+                                          <p className='agendaTitle meeting-view-minutes-title'>
                                             {minutesOfMeetingLdata.Description}
                                           </p>
                                         </Col>
@@ -1095,13 +1072,12 @@ const MeetingViewModalCalendar = ({
                             }
                           )
                         ) : (
-                          <Row className="meeting-view-minutes-tab">
+                          <Row className='meeting-view-minutes-tab'>
                             <Col
                               lg={12}
                               md={12}
                               xs={12}
-                              className="d-flex justify-content-center align-items-center"
-                            >
+                              className='d-flex justify-content-center align-items-center'>
                               <h3>{t("There-is-no-minutes-of-meeting")}</h3>
                             </Col>
                           </Row>
@@ -1112,7 +1088,7 @@ const MeetingViewModalCalendar = ({
                 </>
               ) : isAttachments ? (
                 <>
-                  <Row className="mt-4">
+                  <Row className='mt-4'>
                     {/* <Col lg={12} md={12} sm={12}> */}
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
@@ -1124,14 +1100,13 @@ const MeetingViewModalCalendar = ({
                               sm={6}
                               lg={3}
                               md={3}
-                              className="meeting-view-dataroom-attachment"
-                              onClick={(e) => downloadClick(e, data)}
-                            >
+                              className='meeting-view-dataroom-attachment'
+                              onClick={(e) => downloadClick(e, data)}>
                               <FileIcon
                                 extension={ext}
                                 {...defaultStyles.ext}
                               />
-                              <p className="fileUploadLabel">{first}</p>
+                              <p className='fileUploadLabel'>{first}</p>
                             </Col>
                           );
                         })
@@ -1151,8 +1126,7 @@ const MeetingViewModalCalendar = ({
                         lg={12}
                         md={12}
                         xs={12}
-                        className="d-flex justify-content-end"
-                      >
+                        className='d-flex justify-content-end'>
                         <Button
                           onClick={startMeeting}
                           className={

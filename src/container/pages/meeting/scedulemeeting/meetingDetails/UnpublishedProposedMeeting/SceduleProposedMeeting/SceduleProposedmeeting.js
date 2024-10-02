@@ -24,7 +24,11 @@ import {
   utcConvertintoGMT,
 } from "../../../../../../../commen/functions/date_formater";
 import { update } from "lodash";
-const SceduleProposedmeeting = ({}) => {
+const SceduleProposedmeeting = ({
+  setDataroomMapFolderId,
+  setCurrentMeetingID,
+  setSceduleMeeting,
+}) => {
   let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
@@ -181,7 +185,33 @@ const SceduleProposedmeeting = ({}) => {
         MeetingID: Number(viewProposeDatePollMeetingID),
         ProposedDateID: findIsSelected.proposedDateID,
       };
-      dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));
+      dispatch(
+        scheduleMeetingMainApi(
+          navigate,
+          t,
+          scheduleMeeting,
+          setDataroomMapFolderId,
+          setCurrentMeetingID,
+          setSceduleMeeting,
+          viewProposeDatePollMeetingID
+        )
+      );
+      // let Data = {
+      //         MeetingID: Number(id),
+      //       };
+      //       await dispatch(
+      //         GetAllMeetingDetailsApiFunc(
+      //           navigate,
+      //           t,
+      //           Data,
+      //           false,
+      //           setCurrentMeetingID,
+      //           setSceduleMeeting,
+      //           setDataroomMapFolderId,
+      //           0,
+      //           1
+      //         )
+      //       );
     }
   };
 
@@ -195,8 +225,7 @@ const SceduleProposedmeeting = ({}) => {
             {record.userName === "Total" ? (
               <span
                 className={styles["TotalCount_HEading"]}
-                title={record.userName}
-              >
+                title={record.userName}>
                 {record.userName}
               </span>
             ) : (
@@ -228,8 +257,7 @@ const SceduleProposedmeeting = ({}) => {
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail"]
             }
-            onClick={() => toggleActive(index, record, formattedDate)}
-          >
+            onClick={() => toggleActive(index, record, formattedDate)}>
             <span className={styles["date-time-column"]}>
               {newTimeFormaterViewPoll(formattedDate)}
             </span>
@@ -259,9 +287,9 @@ const SceduleProposedmeeting = ({}) => {
                 <img
                   src={BlueTick}
                   className={styles["TickIconClass"]}
-                  width="20.7px"
-                  height="14.21px"
-                  alt=""
+                  width='20.7px'
+                  height='14.21px'
+                  alt=''
                 />
               );
             }
@@ -306,7 +334,7 @@ const SceduleProposedmeeting = ({}) => {
                     column={scheduleColumn}
                     scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
-                    className="SceduleProposedMeeting"
+                    className='SceduleProposedMeeting'
                     rows={updateTableRows}
                   />
                   <span>
@@ -315,8 +343,7 @@ const SceduleProposedmeeting = ({}) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center mt-4"
-                      >
+                        className='d-flex justify-content-center mt-4'>
                         <Button
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}

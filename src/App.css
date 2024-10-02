@@ -6594,7 +6594,7 @@ textarea {
 }
 
 .ant-notification {
-  z-index: 99999999 !important;
+  z-index: 9999999999 !important;
 }
 
 .bottom-20 {
@@ -8212,4 +8212,33 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
 
 body.guest-video-call {
   background: #fff !important;
+}
+
+.MobilePopUpModal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(35%);
+  z-index: 1000;
+}
+
+@media screen and (max-width: 767px) {
+  .MobilePopUpModal {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .MobilePopUpModal {
+    width: 100%;
+  }
+}
+
+.MobilePopUpModal .modal-content {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.menu-flags button#rfs-btn {
+  height: 38px !important;
 }

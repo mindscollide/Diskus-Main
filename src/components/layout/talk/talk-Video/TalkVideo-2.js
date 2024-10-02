@@ -143,7 +143,7 @@ const TalkVideo = () => {
 
   //Calling API
   useEffect(() => {
-    dispatch(allAssignessList(navigate, t));
+    dispatch(allAssignessList(navigate, t,false));
   }, []);
 
   //Emoji on click function

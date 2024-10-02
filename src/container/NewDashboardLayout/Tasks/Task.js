@@ -20,6 +20,7 @@ import {
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { Table } from "antd";
+import { off } from "rsuite/esm/DOMHelper";
 const Task = () => {
   const { t } = useTranslation();
   const { toDoListReducer } = useSelector((state) => state);
@@ -27,25 +28,13 @@ const Task = () => {
   const dispatch = useDispatch();
   let creatorID = Number(localStorage.getItem("userID"));
   const [rowsToDo, setRowToDo] = useState([]);
+  const [totalDataRecords, setTotalDataRecords] = useState(0);
+  console.log(totalDataRecords, "totalDataRecordstotalDataRecords");
   const [getTodoID, setTodoID] = useState(0);
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
   const [showTodo, setShowTodo] = useState(false);
-  const callApiTask = async () => {
-    if (checkFeatureIDAvailability(6)) {
-      await dispatch(getTodoListInit());
-      let searchData = {
-        Date: "",
-        Title: "",
-        AssignedToName: "",
-        UserID: 0,
-      };
-      await dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
-    }
-  };
-  useEffect(() => {
-    callApiTask();
-  }, []);
+ 
 
   const columnsToDo = [
     {
@@ -128,12 +117,15 @@ const Task = () => {
   ];
 
   useEffect(() => {
-    if (
-      toDoListReducer.SearchTodolist !== null &&
-      toDoListReducer.SearchTodolist !== undefined
-    ) {
-      if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
-        let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
+    if (toDoListReducer.getDashboardTaskData) {
+      console.log(
+        toDoListReducer.getDashboardTaskData,
+        "getDashboardTaskDatagetDashboardTaskDatagetDashboardTaskData"
+      );
+      const { toDoLists, totalRecords } = toDoListReducer.getDashboardTaskData;
+      if (toDoLists?.length > 0) {
+        setTotalDataRecords(totalRecords);
+        let dataToSort = [...toDoLists];
         const sortedTasks = dataToSort.sort((taskA, taskB) => {
           const deadlineA = taskA?.deadlineDateTime;
           const deadlineB = taskB?.deadlineDateTime;
@@ -148,7 +140,7 @@ const Task = () => {
     } else {
       setRowToDo([]);
     }
-  }, [toDoListReducer.SearchTodolist]);
+  }, [toDoListReducer.getDashboardTaskData]);
 
   // Add Tasks from MQTT
   useEffect(() => {
@@ -258,7 +250,7 @@ const Task = () => {
                   lg={12}
                   className='d-flex justify-content-between'>
                   <span className='task-title'>{t("Tasks")}</span>
-                  {rowsToDo.length === 15 && (
+                  {totalDataRecords >= 15 && (
                     <span
                       className='cursor-pointer'
                       onClick={() => navigate("/DisKus/todolist")}>

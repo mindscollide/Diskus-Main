@@ -919,8 +919,12 @@ const saveAgendaContributorsRM = {
   RequestMethod: "ServiceManager.SaveAgendaContributors",
 };
 
+// const FetchVideoUrl = {
+//   RequestMethod: "ServiceManager.GetMeetingVideoURL",
+// };
+
 const FetchVideoUrl = {
-  RequestMethod: "ServiceManager.GetMeetingVideoURL",
+  RequestMethod: "ServiceManager.GetMeetingVideoURLNew",
 };
 
 const saveParticipantsMeeting = {
@@ -1764,6 +1768,18 @@ const getAllMeetingUsersRSVPDetailsRM = {
   RequestMethod: "ServiceManager.GetAllMeetingUserRSVPDetails",
 };
 
+const downloadCallRecording = {
+  RequestMethod: "ServiceManager.DownloadCallRecording",
+};
+
+const downloadMeetingRecording = {
+  RequestMethod: "ServiceManager.DownloadMeetingRecording",
+};
+
+const leaveMeetingVideo = {
+  RequestMethod: "ServiceManager.LeaveMeetingVideo",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2232,4 +2248,7 @@ export {
   getAdvanceMeetingAgendabyMeetingIDForView,
   getStatsForPublishingMinutesByWorkFlowId,
   getMinutesPublishedStatus,
+  downloadCallRecording,
+  downloadMeetingRecording,
+  leaveMeetingVideo,
 };
