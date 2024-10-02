@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Card, Container, Row, Col, Image } from "react-bootstrap";
-import { Button } from "../../elements/";
 import styles from "./GuestJoinRequest.module.css";
 import { useTranslation } from "react-i18next";
 import CrossIcon from "../../../assets/images/Cross_Icon.png";
@@ -17,12 +16,10 @@ const GuestJoinRequest = ({ mqttData }) => {
   };
 
   useEffect(() => {
-    // Create the audio element
     const audioElement = new Audio("/Admit-Request.wav");
 
     audioElement.loop = false;
 
-    // Play the audio when the component mounts
     audioElement.play();
 
     return () => {
@@ -43,7 +40,7 @@ const GuestJoinRequest = ({ mqttData }) => {
           />
           <Card.Body className="text-center">
             <p className={styles["title-alert"]}>
-              <strong>{guestName}</strong> wants to join this call
+              <strong>{guestName}</strong> {t("wants-to-join-this-call")}
             </p>
             <Row className="justify-content-center">
               <Col xs={5}>
