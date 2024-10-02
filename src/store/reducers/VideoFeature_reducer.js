@@ -31,7 +31,7 @@ const initialState = {
   ParticipantPopupFlag: false,
   MinimizeParticipantPopupFlag: false,
   VideoChatMessagesFlag: false,
-  ShowGuestPopup: false,
+  ShowGuestPopup: true,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {

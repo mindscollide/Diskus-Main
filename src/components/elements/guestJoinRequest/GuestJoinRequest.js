@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Card, Container, Row, Col, Image } from "react-bootstrap";
 import { Button } from "../../elements/";
 import styles from "./GuestJoinRequest.module.css";
 import { useTranslation } from "react-i18next";
 import CrossIcon from "../../../assets/images/Cross_Icon.png";
+import { guestJoinPopup } from "../../../store/actions/VideoFeature_actions";
 
 const GuestJoinRequest = ({ mqttData }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { guestName } = mqttData.payload;
 
   const handleAdmit = () => {
@@ -32,7 +35,12 @@ const GuestJoinRequest = ({ mqttData }) => {
     <div className={styles["box-positioning"]}>
       <Container className="d-flex justify-content-center align-items-center">
         <Card className={styles["card-ui"]}>
-          <img className={styles["handle-close"]} src={CrossIcon} alt="" />
+          <img
+            onClick={() => dispatch(guestJoinPopup(false))}
+            className={styles["handle-close"]}
+            src={CrossIcon}
+            alt=""
+          />
           <Card.Body className="text-center">
             <p className={styles["title-alert"]}>
               <strong>{guestName}</strong> wants to join this call
