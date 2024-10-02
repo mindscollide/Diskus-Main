@@ -27,6 +27,7 @@ import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   leaveCallModal,
+  guestJoinPopup,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -151,6 +152,7 @@ import {
   folderSharedMQTT,
 } from "../../store/actions/DataRoom_actions";
 import MobileAppPopUpModal from "../pages/UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
+import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -685,6 +687,24 @@ const Dashboard = () => {
                 setNotificationID(id);
               }
             }
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
+          ) {
+            dispatch(admitGuestUserRequest(data.payload));
+            dispatch(guestJoinPopup(true));
+            // if (data.viewable) {
+            //   setNotification({
+            //     ...notification,
+            //     notificationShow: true,
+            //     message: changeMQTTJSONOne(
+            //       t("MeetingReminderNotification"),
+            //       "[Meeting Title]",
+            //       data.payload.title.substring(0, 100)
+            //     ),
+            //   });
+            //   setNotificationID(id);
+            // }
           }
         }
       }
@@ -2447,21 +2467,6 @@ const Dashboard = () => {
     }
   }, []);
 
-  const mqttResponse = {
-    action: "Meeting",
-    senderID: 0,
-    receiverID: [1368],
-    dateTime: "20241001134658",
-    viewable: true,
-    payload: {
-      message: "MEETING_GUEST_JOIN_REQUEST",
-      guestName: "Guest Participant",
-      guestGUID: "a2507df99e484b2c9e216a8448b48df1",
-      meetingID: 3786,
-    },
-    message: null,
-  };
-
   return (
     <>
       <ConfigProvider
@@ -2498,7 +2503,7 @@ const Dashboard = () => {
           />
           {videoFeatureReducer.ShowGuestPopup ? (
             <div>
-              <GuestJoinRequest mqttData={mqttResponse} />
+              <GuestJoinRequest />
             </div>
           ) : null}
           {videoFeatureReducer.IncomingVideoCallFlag === true ? (

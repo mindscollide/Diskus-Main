@@ -10,6 +10,7 @@ import {
 } from "../../commen/apis/Api_config";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
+import { guestJoinPopup } from "./VideoFeature_actions";
 
 const getMeetingGuestVideoInit = () => {
   return {
@@ -322,22 +323,25 @@ const admitRejectFail = (message) => {
   };
 };
 
-const admitRejectAttendeeMainApi = (navigate, t) => {
+const admitRejectAttendeeMainApi = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(admitRejectInit());
     let form = new FormData();
     form.append("RequestMethod", admitRejectAttendee.RequestMethod);
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
       url: meetingApi,
       data: form,
-      headers: {},
+      headers: {
+        _token: token,
+      },
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           //   await dispatch(RefreshToken(navigate, t));
-          dispatch(admitRejectAttendeeMainApi(navigate, t));
+          dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -353,6 +357,7 @@ const admitRejectAttendeeMainApi = (navigate, t) => {
                   t("Successful")
                 )
               );
+              dispatch(guestJoinPopup(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -361,6 +366,7 @@ const admitRejectAttendeeMainApi = (navigate, t) => {
                 )
             ) {
               await dispatch(admitRejectFail(t("Video-call-not-found")));
+              dispatch(guestJoinPopup(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -368,6 +374,7 @@ const admitRejectAttendeeMainApi = (navigate, t) => {
                   "Meeting_MeetingServiceManager_AdmitRejectAttendee_03".toLowerCase()
                 )
             ) {
+              dispatch(guestJoinPopup(false));
               await dispatch(admitRejectFail(t("Something-went-wrong")));
             }
           } else {
@@ -389,10 +396,19 @@ const ClearResponseMessageGuest = () => {
   };
 };
 
+const admitGuestUserRequest = (response) => {
+  return {
+    type: actions.ADMIT_GUEST_USER_REQUEST,
+    response: response,
+  };
+};
+
 export {
   getMeetingGuestVideoMainApi,
   validateEncryptGuestVideoMainApi,
   joinGuestVideoMainApi,
   setClientGuest,
   ClearResponseMessageGuest,
+  admitGuestUserRequest,
+  admitRejectAttendeeMainApi,
 };

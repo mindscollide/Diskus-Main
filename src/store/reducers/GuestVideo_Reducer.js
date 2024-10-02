@@ -8,6 +8,7 @@ const initialState = {
   joinGuestData: null,
   guestClient: null,
   admitRejectData: null,
+  admitGuestUserRequestData: null
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -123,6 +124,13 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+      };
+    }
+
+    case actions.ADMIT_GUEST_USER_REQUEST: {
+      return {
+        ...state,
+        admitGuestUserRequestData: action.response,
       };
     }
 
