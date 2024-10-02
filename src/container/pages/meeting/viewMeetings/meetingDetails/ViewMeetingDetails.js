@@ -97,9 +97,11 @@ const ViewMeetingDetails = ({
     "advanceMeetingModalIDadvanceMeetingModalID"
   );
 
-  const stringData = useSelector((state) => state.GuestVideoReducer);
+  const guestVideoUrlData = useSelector(
+    (state) => state.GuestVideoReducer.guestVideoData
+  );
 
-  console.log(stringData, "stringDatastringData");
+  console.log(guestVideoUrlData, "stringDatastringData");
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
