@@ -95,6 +95,21 @@ const VideoChatReducer = (state = initialState, action) => {
         MeetingAgendaAttachmentMessage: action.message,
       };
     }
+
+    case actions.DOWNLOAD_CALL_RECORDING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DOWNLOAD_CALL_RECORDING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
     default:
       return { ...state };
   }

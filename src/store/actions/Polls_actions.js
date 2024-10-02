@@ -546,7 +546,7 @@ const castVoteApi = (
               .includes("Polls_PollsServiceManager_CastVote_01".toLowerCase())
           ) {
             await dispatch(
-              castVoteSuccess(response.data.responseResult, t("Vote-casted"))
+              castVoteSuccess(response.data.responseResult, t("Your-vote-is-submitted-successfully"))
             );
             if (check) {
               if (check === 1) {

@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { getDashbardTaskDataApi } from "../../../store/actions/ToDoList_action";
 import { getDashbardMeetingDataApi } from "../../../store/actions/NewMeetingActions";
 import { getDashbardPendingApprovalDataApi } from "../../../store/actions/workflow_actions";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 const Stats = () => {
   const { NewMeetingreducer, toDoListReducer, SignatureWorkFlowReducer } =
@@ -30,7 +31,9 @@ const Stats = () => {
 
   useEffect(() => {
     dispatch(getDashbardMeetingDataApi(navigate, t));
-    dispatch(getDashbardTaskDataApi(navigate, t));
+    if (checkFeatureIDAvailability(14)) {
+      dispatch(getDashbardTaskDataApi(navigate, t));
+    }
     dispatch(getDashbardPendingApprovalDataApi(navigate, t));
   }, [dispatch, navigate, t]);
 
@@ -137,13 +140,17 @@ const Stats = () => {
           let nowValue = Number(bar.max) - Number(bar.now);
           let calculateValue = nowValue === 0 ? bar.max : nowValue;
           let checkisbothValueisEqual = bar.max === bar.now;
-      
+
           return (
             <ProgressBar
               now={checkisbothValueisEqual ? 0 : calculateValue}
               max={bar.max}
               label={`${bar.now}/${bar.max}`}
-              className={ checkisbothValueisEqual ? styles["dashboard_progress_upcomingmeeting_R"] : bar.className}
+              className={
+                checkisbothValueisEqual
+                  ? styles["dashboard_progress_upcomingmeeting_R"]
+                  : bar.className
+              }
               // children={
               //   <>
               //     <span>{`${calculateValue}/${bar.max}`}</span>

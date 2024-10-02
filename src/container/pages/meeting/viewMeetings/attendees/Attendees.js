@@ -6,10 +6,23 @@ import { Button } from "../../../../../components/elements";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getAllMeetingUsersRSVPApi } from "../../../../../store/actions/NewMeetingActions";
+import {
+  LeaveCurrentMeeting,
+  getAllMeetingUsersRSVPApi,
+  searchNewUserMeeting,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+} from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
+import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 
-const Attendees = ({ MeetingID }) => {
+const Attendees = ({
+  MeetingID,
+  setEdiorRole,
+  setViewAdvanceMeetingModal,
+  editorRole,
+  setAttendees,
+}) => {
   const dispatch = useDispatch();
   const [organizersData, setOrganizersData] = useState([]);
   const [participantsData, setParticipantsData] = useState([]);
@@ -18,6 +31,11 @@ const Attendees = ({ MeetingID }) => {
   const [mayBe, setMayBe] = useState(0);
   const [notAttending, setNotAttending] = useState(0);
   const [notResponded, setNotResponded] = useState(0);
+  let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   const { getMeetingUsersRSVP } = useSelector(
     (state) => state.NewMeetingreducer
@@ -51,6 +69,48 @@ const Attendees = ({ MeetingID }) => {
       } catch (error) {}
     }
   }, [getMeetingUsersRSVP]);
+
+  const handleCancelAttendees = () => {
+    if (editorRole.status === 10 || editorRole.status === "10") {
+      let leaveMeetingData = {
+        FK_MDID: Number(MeetingID),
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      dispatch(
+        LeaveCurrentMeeting(
+          navigate,
+          t,
+          leaveMeetingData,
+          false,
+          false,
+          setEdiorRole,
+          MeetingID,
+          false
+        )
+      );
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    } else {
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber:
+          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
+      localStorage.removeItem("folderDataRoomMeeting");
+      setEdiorRole({ status: null, role: null });
+      setViewAdvanceMeetingModal(false);
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    }
+    setAttendees(false);
+  };
+
   return (
     <Row>
       <Col sm={12} md={12} lg={12} className={` ${"my-2"}`}>
@@ -100,7 +160,8 @@ const Attendees = ({ MeetingID }) => {
         sm={12}
         md={12}
         lg={12}
-        className={`${styles["Attendees_container"]}`}>
+        className={`${styles["Attendees_container"]}`}
+      >
         <section className={styles["Members_Area"]}>
           <p className={styles["AttendeesAreaHeading"]}>Organizers</p>
           {/* Organizers Data */}
@@ -134,8 +195,13 @@ const Attendees = ({ MeetingID }) => {
         sm={12}
         md={12}
         lg={12}
-        className={` ${"d-flex justify-content-end align-items-center mt-2"}`}>
-        <Button text={"Cancel"} className={styles["CancelAttendeesBtn"]} />
+        className={` ${"d-flex justify-content-end align-items-center mt-2"}`}
+      >
+        <Button
+          onClick={handleCancelAttendees}
+          text={"Cancel"}
+          className={styles["CancelAttendeesBtn"]}
+        />
       </Col>
     </Row>
   );

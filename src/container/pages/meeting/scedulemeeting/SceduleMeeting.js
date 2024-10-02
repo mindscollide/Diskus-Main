@@ -59,6 +59,11 @@ const SceduleMeeting = ({
 }) => {
   const { t } = useTranslation();
   const { NewMeetingreducer } = useSelector((state) => state);
+
+  const getALlMeetingTypes = useSelector(
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
+  );
+
   const [meetingDetails, setmeetingDetails] = useState(
     editorRole.role === "Agenda Contributor" ? false : true
   );
@@ -86,7 +91,12 @@ const SceduleMeeting = ({
   const apiCallsForComponentMound = async () => {
     try {
       // // Meeting Type Drop Down API
-      // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+      if (
+        getALlMeetingTypes.length === 0 &&
+        Object.keys(getALlMeetingTypes).length === 0
+      ) {
+        await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+      }
       // Reminder Frequency Drop Down API
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       // Recurring Drop Down API

@@ -402,8 +402,8 @@ const ViewMeetingModal = ({
   console.log(editorRole.role, "editorRoleeditorRole");
   return (
     <>
-      <section className='position-relative'>
-        <Row className='mt-2'>
+      <section className="position-relative">
+        <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
@@ -411,10 +411,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
+          <Col lg={12} md={12} sm={12} className="mb-4">
             <Paper className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -540,7 +540,8 @@ const ViewMeetingModal = ({
                     ) : null}
                     {Number(editorRole.status) === 10 ||
                     (Number(editorRole.status) === 9 &&
-                      editorRole.role === "Agenda Contributor") ? null : (
+                      editorRole.role === "Agenda Contributor") ||
+                    editorRole.role === "Participant" ? null : (
                       <Button
                         text={t("Attendence")}
                         className={
@@ -588,7 +589,15 @@ const ViewMeetingModal = ({
                   setDataroomMapFolderId={setDataroomMapFolderId}
                 />
               )}
-              {attendees && <Attendees MeetingID={advanceMeetingModalID} />}
+              {attendees && (
+                <Attendees
+                  MeetingID={advanceMeetingModalID}
+                  setEdiorRole={setEdiorRole}
+                  setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                  editorRole={editorRole}
+                  setAttendees={setAttendees}
+                />
+              )}
               {organizers && (
                 <Organizers
                   setmeetingDetails={setmeetingDetails}

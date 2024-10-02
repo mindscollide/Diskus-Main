@@ -144,8 +144,8 @@ const SignatureViewer = () => {
 
   // === Api calling === //
   async function apiCall(Data) {
-    await dispatch(allAssignessList(navigate, t));
     await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
+    await dispatch(allAssignessList(navigate, t, false));
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -1118,7 +1118,10 @@ const SignatureViewer = () => {
 
   //   return modifiedXFDFString;
   const handleOpenModal = () => {
-    console.log(copySignersData, "copySignersDatacopySignersDatacopySignersData")
+    console.log(
+      copySignersData,
+      "copySignersDatacopySignersDatacopySignersData"
+    );
     console.log(copyOfSigners, "copyOfSignerscopyOfSigners");
     if (copySignersData.current.length > 0) {
       setSignerData(copySignersData.current);

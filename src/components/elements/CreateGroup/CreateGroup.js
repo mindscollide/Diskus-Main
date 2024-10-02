@@ -105,7 +105,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-    dispatch(allAssignessList(navigate, t));
+    dispatch(allAssignessList(navigate, t, false));
     dispatch(getGroupMembersRoles(navigate, Data, t));
     dispatch(getOrganizationGroupTypes(navigate, Data, t));
   }, []);

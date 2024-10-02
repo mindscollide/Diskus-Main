@@ -27,12 +27,12 @@ const CustomPagination = ({
     if (type === "page") {
       if (currentLanguage === "ar") {
         return (
-          <span className="todolist-pagination-current">
+          <span className='todolist-pagination-current'>
             {convertNumberToLetter(current)}
           </span>
         );
       } else {
-        return <span className="todolist-pagination-current">{current}</span>;
+        return <span className='todolist-pagination-current'>{current}</span>;
       }
     }
     return originalElement;
@@ -58,7 +58,10 @@ const CustomPagination = ({
         itemRender={itemRender}
         showSizeChanger={showSizer}
         // showSizeChanger={false} // Show the page size dropdown
-        locale={{ items_per_page: t("items_per_page"), page: t("page") }}
+        locale={{
+          // items_per_page: t("items_per_page"),
+          page: ` ${"/"}${t("page")}`,
+        }}
       />
     </>
   );

@@ -126,7 +126,10 @@ import {
   getAllSignaturesDocumentsforCreatorApi,
 } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
-import { checkFeatureIDAvailability } from "../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  fileFormatforSignatureFlow,
+} from "../../commen/functions/utils";
 import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
 import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
 import {
@@ -369,7 +372,7 @@ const DataRoom = () => {
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {
-        // dispatch(allAssignessList(navigate, t));
+        //     dispatch(allAssignessList(navigate, t,false));
       }
       window.addEventListener("click", async function (e) {
         let clsname = e.target.className;
@@ -907,7 +910,7 @@ const DataRoom = () => {
     if (data.value === 1) {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
-        let ext = record.name.split(".").pop();
+        let ext = record?.name?.split(".").pop();
         if (validationExtension(ext)) {
           window.open(
             `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
@@ -1743,7 +1746,7 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {fileExtension === "pdf"
+                            {fileFormatforSignatureFlow.includes(fileExtension)
                               ? optionsforPDFandSignatureFlow(t).map(
                                   (data, index) => {
                                     return (
@@ -2382,9 +2385,7 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {fileExtension === "pdf" ||
-                            fileExtension === "docx" ||
-                            fileExtension === "doc"
+                            {fileFormatforSignatureFlow.includes(fileExtension)
                               ? optionsforPDFandSignatureFlow(t).map(
                                   (data, index) => {
                                     return (
@@ -2628,7 +2629,6 @@ const DataRoom = () => {
                   <span className={styles["threeDot__Icon"]}>
                     {record.isFolder ? (
                       <Dropdown
-
                         className={`${
                           styles["options_dropdown"]
                         } ${"dataroom_options"}`}>

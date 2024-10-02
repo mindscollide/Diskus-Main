@@ -34,14 +34,15 @@
 }
 
 .SearhBar_Polls {
-  width: 502px !important;
-  height: 183px !important;
+  width: 100% !important;
+  height: auto !important;
   background: #ffffff !important;
   position: absolute;
   right: 0;
   z-index: 1 !important;
   top: 39px !important;
   border: 1px solid #e1e1e1 !important;
+  padding: 20px 10px;
 }
 
 .Cross_Icon_Styling {

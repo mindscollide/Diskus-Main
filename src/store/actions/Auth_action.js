@@ -49,11 +49,20 @@ const RefreshToken = (navigate, t) => {
             );
             let message2 = t("Your-session-has-expired-please-login-again");
             // await dispatch(signOut(navigate, message2, dispatch));
-            await dispatch(refreshtokenFail(message2));
-            dispatch(userLogOutApiFunc(navigate, t));
 
+            // dispatch(userLogOutApiFunc(navigate, t));
+            await dispatch(refreshtokenFail(message2));
+            setTimeout(() => {
+              signOut(navigate, "", dispatch);
+            }, 4000);
             // navigate("/");
-          } else {
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_AuthManager_RefreshToken_01".toLowerCase()
+              )
+          ) {
             await dispatch(
               refreshtokenSuccess(
                 response.data.responseResult,
@@ -62,11 +71,11 @@ const RefreshToken = (navigate, t) => {
             );
             localStorage.setItem(
               "token",
-              JSON.stringify(response.data.responseResult.token)
+              JSON.stringify(response.data?.responseResult?.token)
             );
             localStorage.setItem(
               "refreshToken",
-              JSON.stringify(response.data.responseResult.refreshToken)
+              JSON.stringify(response.data?.responseResult?.refreshToken)
             );
           }
         } else {

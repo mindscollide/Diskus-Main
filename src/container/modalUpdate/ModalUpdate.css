@@ -321,9 +321,7 @@ body[dir="rtl"] .modal-update-addagenda {
   height: 45px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-weight: 400 !important;
-  margin-right: 9px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 
 .publish-meeting-btn {
@@ -334,12 +332,7 @@ body[dir="rtl"] .modal-update-addagenda {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 400 !important;
-  /* margin-right: 8px; */
   font-weight: 600 !important;
-}
-
-body[dir="rtl"] .publish-meeting-btn {
-  margin-right: 8px !important;
 }
 
 .isminutes-discard-btn {
@@ -349,8 +342,7 @@ body[dir="rtl"] .publish-meeting-btn {
   height: 45px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-weight: 400 !important;
-  margin-right: 10px;
+  font-weight: 600 !important;
 }
 
 .isminutes-cancel-btn {
@@ -361,8 +353,7 @@ body[dir="rtl"] .publish-meeting-btn {
   height: 45px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-weight: 400 !important;
-  margin-right: 10px;
+  font-weight: 600 !important;
 }
 
 .ismeeting-finish-btn {
@@ -373,7 +364,6 @@ body[dir="rtl"] .publish-meeting-btn {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 400 !important;
-  margin-right: 10px;
 }
 
 .update-isminutes-addbtn {
@@ -383,9 +373,7 @@ body[dir="rtl"] .publish-meeting-btn {
   height: 32px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  margin-top: 15px !important;
-  margin-left: -15px;
-  font-weight: 400 !important;
+  font-weight: 600 !important;
 }
 
 .update-isminutes-addbtn:disabled {
@@ -725,4 +713,38 @@ body[dir="rtl"] .isMinutes-Update-btn {
   color: #fff !important;
   font-size: 14px !important;
   font-weight: 600 !important;
+}
+
+.UpdateMeeting_discardChangesBtn {
+  background-color: #f16b6b !important;
+  padding: 12px 15px;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.UpdateMeeting_cancelMeetingBtn {
+  background-color: #6172d6 !important;
+  padding: 12px 15px;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+.UpdateMeeting_publishMeetingBtn {
+  background-color: #6172d6 !important;
+  padding: 12px 30px;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
 }

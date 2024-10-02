@@ -143,7 +143,7 @@ const Sidebar = () => {
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(allAssignessList(navigate, t));
+          // dispatch(allAssignessList(navigate, t));
         } else {
           let searchData = {
             Date: "",
@@ -157,7 +157,7 @@ const Sidebar = () => {
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(allAssignessList(navigate, t));
+          // dispatch(allAssignessList(navigate, t));
           // localStorage.setItem("MeetingCurrentView", 1);
         }
         dispatch(viewMeetingFlag(false));
@@ -208,7 +208,7 @@ const Sidebar = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
         dispatch(currentMeetingStatus(0));
       }
     }
@@ -245,7 +245,7 @@ const Sidebar = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
         dispatch(currentMeetingStatus(0));
       }
     }
@@ -282,7 +282,7 @@ const Sidebar = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
         dispatch(currentMeetingStatus(0));
       }
     }
@@ -1057,8 +1057,7 @@ const Sidebar = () => {
                 ) : null}
 
                 {/* Add more btn */}
-                {
-                checkFeatureIDAvailability(13) ||
+                {checkFeatureIDAvailability(13) ||
                 checkFeatureIDAvailability(17) ||
                 checkFeatureIDAvailability(18) ||
                 checkFeatureIDAvailability(15) ||
