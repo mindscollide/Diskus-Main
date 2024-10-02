@@ -74,7 +74,7 @@ const GuestVideoCall = () => {
       setExtractMeetingId(0);
       setExtractMeetingTitle("");
     }
-  }, []);
+  }, [validateData]);
 
   useEffect(() => {
     if (location.pathname.includes("GuestVideoCall")) {
@@ -93,13 +93,13 @@ const GuestVideoCall = () => {
 
       {validateData === null ? (
         <>
-          <div className="Main-Guest-Video flex-column">
+          <div className="Main-Guest-Video">
             <GuestVideoEnded />
           </div>
         </>
       ) : (
         <>
-          <div className="Main-Guest-Video flex-column">
+          <div className="Main-Guest-Video">
             <GuestJoinVideo
               extractMeetingId={extractMeetingId}
               extractMeetingTitle={extractMeetingTitle}

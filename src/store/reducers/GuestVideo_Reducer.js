@@ -6,6 +6,7 @@ const initialState = {
   guestVideoData: null,
   validateData: null,
   joinGuestData: null,
+  admitRejectData: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -82,6 +83,38 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         joinGuestData: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.ADMIT_REJECT_ATTENDEE_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.ADMIT_REJECT_ATTENDEE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        admitRejectData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.ADMIT_REJECT_ATTENDEE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        admitRejectData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CLEAR_GUEST_MEETING_MESSAGES: {
+      return {
+        ...state,
+        ResponseMessage: "",
       };
     }
 
