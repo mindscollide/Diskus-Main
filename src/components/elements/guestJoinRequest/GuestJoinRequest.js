@@ -15,37 +15,21 @@ const GuestJoinRequest = ({ mqttData }) => {
   return (
     <div className={styles["box-positioning"]}>
       <Container className="d-flex justify-content-center align-items-center">
-        <Card
-          style={{
-            width: "18rem",
-            backgroundColor: "#333",
-            color: "white",
-            padding: "15px",
-            borderRadius: "10px",
-          }}
-        >
+        <Card className={styles["card-ui"]}>
           <Card.Body className="text-center">
-            <Card.Title>Someone wants to join this call</Card.Title>
-            <Image
-              src="https://via.placeholder.com/40"
-              roundedCircle
-              className="my-3"
-            />
-            <Card.Text>{guestName}</Card.Text>
+            <Card.Title className={styles["title-alert"]}>
+              <strong>{guestName}</strong> wants to join this call
+            </Card.Title>
             <Row className="justify-content-center">
               <Col xs={5}>
-                <Button
-                  className="w-100"
-                  onClick={handleAdmit}
-                  text={t("Admit")}
-                />
+                <p className={styles["title-admit"]}>
+                  {t("Admit")}
+                </p>
               </Col>
               <Col xs={5}>
-                <Button
-                  className="w-100"
-                  onClick={handleAdmit}
-                  text={t("Reject")}
-                />
+                <p className={styles["title-reject"]}>
+                  {t("Reject")}
+                </p>
               </Col>
             </Row>
           </Card.Body>
