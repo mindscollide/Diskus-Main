@@ -94,8 +94,8 @@ const TodoList = () => {
       );
     } else {
       localStorage.setItem("todoListPage", 1);
-      localStorage.setItem("todoListRow", 50);
-      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+      localStorage.setItem("todoListRow", 15);
+      dispatch(SearchTodoListApi(navigate, searchData, 1, 15, t));
     }
     return () => {
       localStorage.removeItem("todoListPage");
@@ -558,7 +558,7 @@ const TodoList = () => {
         AssignedToName: "",
         UserID: parseInt(createrID),
       };
-      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+      dispatch(SearchTodoListApi(navigate, newData, 1, 15, t));
     } else {
       // make notification for if input fields is empty here
       let newData = {
@@ -567,7 +567,7 @@ const TodoList = () => {
         AssignedToName: searchData.AssignedToName,
         UserID: parseInt(createrID),
       };
-      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+      dispatch(SearchTodoListApi(navigate, newData, 1, 15, t));
     }
   };
 
@@ -580,7 +580,9 @@ const TodoList = () => {
       UserID: parseInt(createrID),
     };
     localStorage.setItem("todoListPage", 1);
-    dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+    localStorage.setItem("todoListRow", 15);
+
+    dispatch(SearchTodoListApi(navigate, newData, 1, 15, t));
     setSearchData({
       Date: "",
       Title: "",
@@ -923,12 +925,12 @@ const TodoList = () => {
                             }
                             showSizer={true}
                             total={totalRecords}
-                            pageSizeOptionsValues={["30", "50", "100", "200"]}
+                            pageSizeOptionsValues={["15", "30", "50", "100"]}
                             pageSize={
                               todoListPageSize !== null &&
                               todoListPageSize !== undefined
                                 ? todoListPageSize
-                                : 50
+                                : 15
                             }
                           />
                         </span>

@@ -72,13 +72,12 @@ const Actions = ({
     todoStatus,
   } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
+
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const [viewTaskModal, setViewTaskModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageSize, setCurrentPageSize] = useState(50);
+  const [currentPageSize, setCurrentPageSize] = useState(10);
   const [createaTask, setCreateaTask] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [removeTodo, setRemoveTodo] = useState(0);
@@ -691,9 +690,9 @@ const Actions = ({
                                     showSizer={true}
                                     total={totalRecords}
                                     pageSizeOptionsValues={[
-                                      "30",
+                                      "10",
+                                      "25",
                                       "50",
-                                      "100",
                                       "200",
                                     ]}
                                     pageSize={currentPageSize}
