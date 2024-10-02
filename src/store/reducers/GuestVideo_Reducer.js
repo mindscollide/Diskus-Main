@@ -4,6 +4,7 @@ const initialState = {
   Loading: false,
   ResponseMessage: "",
   guestVideoData: null,
+  validateData: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -11,7 +12,7 @@ const GuestVideoReducer = (state = initialState, action) => {
     case actions.GET_MEETING_GUEST_URL_INIT: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
       };
     }
 
@@ -29,6 +30,31 @@ const GuestVideoReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         guestVideoData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.VALIDATE_ENCRYPT_STRING_GUEST_VIDEO_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.VALIDATE_ENCRYPT_STRING_GUEST_VIDEO_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        validateData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.VALIDATE_ENCRYPT_STRING_GUEST_VIDEO_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        validateData: null,
         ResponseMessage: action.message,
       };
     }

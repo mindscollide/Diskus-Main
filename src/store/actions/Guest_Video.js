@@ -1,8 +1,12 @@
 import * as actions from "../action_types";
 import axios from "axios";
-import { videoApi } from "../../commen/apis/Api_ends_points";
+import { meetingApi } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
-import { getMeetingGuestVideoURL } from "../../commen/apis/Api_config";
+import {
+  getMeetingGuestVideoURL,
+  ValidateEncryptedStringGuestVideoLink,
+} from "../../commen/apis/Api_config";
+import copyToClipboard from "../../hooks/useClipBoard";
 
 const getMeetingGuestVideoInit = () => {
   return {
@@ -25,17 +29,17 @@ const getMeetingGuestVideoFail = (message) => {
   };
 };
 
-const getMeetingGuestVideoMainApi = () => {
+const getMeetingGuestVideoMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingGuestVideoInit());
     let form = new FormData();
     form.append("RequestMethod", getMeetingGuestVideoURL.RequestMethod);
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
 
     axios({
       method: "post",
-      url: videoApi,
+      url: meetingApi,
       data: form,
       headers: {
         _token: token,
@@ -44,7 +48,7 @@ const getMeetingGuestVideoMainApi = () => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getMeetingGuestVideoMainApi(navigate, t));
+          dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -55,8 +59,12 @@ const getMeetingGuestVideoMainApi = () => {
                 )
             ) {
               await dispatch(
-                getMeetingGuestVideoSuccess(response.data.responseResult, "")
+                getMeetingGuestVideoSuccess(
+                  response.data.responseResult,
+                  t("Meeting-link-copied")
+                )
               );
+              copyToClipboard(response.data.responseResult.guestVideoURL);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -89,4 +97,110 @@ const getMeetingGuestVideoMainApi = () => {
   };
 };
 
-export { getMeetingGuestVideoMainApi };
+const validateEncryptGuestVideoInit = () => {
+  return {
+    type: actions.VALIDATE_ENCRYPT_STRING_GUEST_VIDEO_INIT,
+  };
+};
+
+const validateEncryptGuestVideoSuccess = (response, message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPT_STRING_GUEST_VIDEO_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateEncryptGuestVideoFail = (message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPT_STRING_GUEST_VIDEO_FAIL,
+    message: message,
+  };
+};
+
+const validateEncryptGuestVideoMainApi = (navigate) => {
+  return (dispatch) => {
+    dispatch(validateEncryptGuestVideoInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      ValidateEncryptedStringGuestVideoLink.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify());
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          //   await dispatch(RefreshToken(navigate, t));
+          dispatch(validateEncryptGuestVideoMainApi(navigate));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                validateEncryptGuestVideoSuccess(
+                  response.data.responseResult,
+                  t("Active Meeting")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                validateEncryptGuestVideoFail(t("Meeting Not Active"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                validateEncryptGuestVideoFail(t("Invalid Meeting"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                validateEncryptGuestVideoFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              validateEncryptGuestVideoFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            validateEncryptGuestVideoFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(validateEncryptGuestVideoFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+export { getMeetingGuestVideoMainApi, validateEncryptGuestVideoMainApi };
