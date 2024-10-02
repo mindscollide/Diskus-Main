@@ -9,6 +9,7 @@ import {
   admitRejectAttendee,
 } from "../../commen/apis/Api_config";
 import copyToClipboard from "../../hooks/useClipBoard";
+import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 
 const getMeetingGuestVideoInit = () => {
   return {
@@ -250,6 +251,11 @@ const joinGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinGuestVideo_01".toLowerCase()
                 )
             ) {
+              mqttConnectionGuestUser(response.data.responseResult.guestGuid);
+              sessionStorage.setItem(
+                "GuestUserID",
+                response.data.responseResult.guestGuid
+              );
               await dispatch(
                 joinGuestVideoSuccess(
                   response.data.responseResult,
@@ -292,8 +298,8 @@ const setClientGuest = (response) => {
   return {
     type: actions.SET_MQTT_GUEST,
     response: response,
-  }
-}
+  };
+};
 
 const admitRejectInit = () => {
   return {
@@ -331,7 +337,7 @@ const admitRejectAttendeeMainApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           //   await dispatch(RefreshToken(navigate, t));
-          dispatch(admitRejectAttendeeMainApi(navigate, t, data));
+          dispatch(admitRejectAttendeeMainApi(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

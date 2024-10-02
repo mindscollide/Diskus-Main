@@ -10,15 +10,37 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { validateEncryptGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
+import Helper from "../../../../../commen/functions/history_logout";
+import { mqttConnectionGuestUser } from "../../../../../commen/functions/mqttconnection_guest";
 
 const GuestVideoCall = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let guestUserId = sessionStorage.getItem("GuestUserID");
 
   const validateData = useSelector(
     (state) => state.GuestVideoReducer.validateData
   );
+
+  let guestVideoClient = Helper.guestSocket;
+  const onConnectionLost = () => {
+    setTimeout(mqttConnectionGuestUser(guestUserId), 3000);
+  };
+  const onMessageArrived = (msg) => {
+    let data = JSON.parse(msg.payloadString);
+    console.log(data, "datadatadata");
+  };
+
+  useEffect(() => {
+    if (guestVideoClient !== null) {
+      guestVideoClient.onConnectionLost = onConnectionLost;
+      guestVideoClient.onMessageArrived = onMessageArrived;
+    } else {
+      console.log(guestUserId, "guestUserIdguestUserId");
+    }
+  }, [guestVideoClient, guestUserId]);
+
   console.log(validateData, "GuestVideoReducerGuestVideoReducer");
 
   // extract meeting ID state
