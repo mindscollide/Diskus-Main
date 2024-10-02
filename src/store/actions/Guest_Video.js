@@ -5,6 +5,7 @@ import { RefreshToken } from "./Auth_action";
 import {
   getMeetingGuestVideoURL,
   ValidateEncryptedStringGuestVideoLink,
+  joinGuestVideo,
 } from "../../commen/apis/Api_config";
 import copyToClipboard from "../../hooks/useClipBoard";
 
@@ -201,4 +202,93 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
   };
 };
 
-export { getMeetingGuestVideoMainApi, validateEncryptGuestVideoMainApi };
+const joinGuestVideoInit = () => {
+  return {
+    type: actions.JOIN_GUEST_VIDEO_INIT,
+  };
+};
+
+const joinGuestVideoSuccess = (response, message) => {
+  return {
+    type: actions.JOIN_GUEST_VIDEO_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const joinGuestVideoFail = (message) => {
+  return {
+    type: actions.JOIN_GUEST_VIDEO_FAIL,
+    message: message,
+  };
+};
+
+const joinGuestVideoMainApi = (navigate, t, data) => {
+  return (dispatch) => {
+    dispatch(joinGuestVideoInit());
+    let form = new FormData();
+    form.append("RequestMethod", joinGuestVideo.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {},
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          //   await dispatch(RefreshToken(navigate, t));
+          dispatch(joinGuestVideoMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinGuestVideo_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                joinGuestVideoSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinGuestVideo_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                joinGuestVideoFail(t("meeting organizers not found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinGuestVideo_03".toLowerCase()
+                )
+            ) {
+              await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(joinGuestVideoFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+export {
+  getMeetingGuestVideoMainApi,
+  validateEncryptGuestVideoMainApi,
+  joinGuestVideoMainApi,
+};

@@ -1788,6 +1788,10 @@ const ValidateEncryptedStringGuestVideoLink = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringGuestVideoLink",
 };
 
+const joinGuestVideo = {
+  RequestMethod: "ServiceManager.JoinGuestVideo",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2261,4 +2265,5 @@ export {
   leaveMeetingVideo,
   getMeetingGuestVideoURL,
   ValidateEncryptedStringGuestVideoLink,
+  joinGuestVideo,
 };

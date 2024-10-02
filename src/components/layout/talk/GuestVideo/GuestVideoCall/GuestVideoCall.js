@@ -9,36 +9,34 @@ import { extractActionFromUrl } from "../../../../../commen/functions/utils";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { validateEncryptGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
+import { useSelector } from "react-redux";
 
 const GuestVideoCall = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const validateData = useSelector(
+    (state) => state.GuestVideoReducer.validateData
+  );
+  console.log(validateData, "GuestVideoReducerGuestVideoReducer");
+
+  // extract meeting ID state
+  const [extractMeetingId, setExtractMeetingId] = useState(0);
+
+  // extract Meeting Title
+  const [extractMeetingTitle, setExtractMeetingTitle] = useState("");
+
+  console.log(
+    { extractMeetingId, extractMeetingTitle },
+    "extractMeetingTitleextractMeetingTitle"
+  );
+
   const [actionValue, setActionValue] = useState("");
   const location = useLocation();
   console.log(actionValue, "actionValueactionValueactionValue");
 
-  useEffect(() => {
-    const data = {
-      EncryptedString: actionValue,
-    };
-
-    dispatch(validateEncryptGuestVideoMainApi(navigate, t, data));
-    // Check if the current route contains 'GuestVideoCall'
-    if (location.pathname.includes("GuestVideoCall")) {
-      // Add the class to the body
-      document.body.classList.add("guest-video-call");
-    } else {
-      // Remove the class if the route doesn't contain 'GuestVideoCall'
-      document.body.classList.remove("guest-video-call");
-    }
-    // Cleanup on component unmount or route change
-    return () => {
-      document.body.classList.remove("guest-video-call");
-    };
-  }, [location]);
-
+  // get the String from API
   useEffect(() => {
     const extractActionFromCurrentUrl = () => {
       const url = window.location.href; // Get the current full URL
@@ -58,16 +56,58 @@ const GuestVideoCall = () => {
     };
   }, []);
 
+  // Api Hit Validate Encrypted Guest Video
+  useEffect(() => {
+    if (actionValue) {
+      let data = {
+        EncryptedString: actionValue,
+      };
+      dispatch(validateEncryptGuestVideoMainApi(navigate, t, data));
+    }
+  }, [actionValue]);
+
+  useEffect(() => {
+    if (validateData !== null && validateData !== undefined) {
+      setExtractMeetingId(validateData.meetingId);
+      setExtractMeetingTitle(validateData.meetingTitle);
+    } else {
+      setExtractMeetingId(0);
+      setExtractMeetingTitle("");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname.includes("GuestVideoCall")) {
+      document.body.classList.add("guest-video-call");
+    } else {
+      document.body.classList.remove("guest-video-call");
+    }
+    return () => {
+      document.body.classList.remove("guest-video-call");
+    };
+  }, [location]);
+
   return (
     <>
       {/* <GuestVideoHeader /> */}
 
-      <div className="Main-Guest-Video flex-column">
-        <GuestJoinVideo />
-        <p>{actionValue}</p>
-
-        {/* <GuestVideoEnded /> */}
-      </div>
+      {validateData === null ? (
+        <>
+          <div className="Main-Guest-Video flex-column">
+            <GuestVideoEnded />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="Main-Guest-Video flex-column">
+            <GuestJoinVideo
+              extractMeetingId={extractMeetingId}
+              extractMeetingTitle={extractMeetingTitle}
+            />
+          </div>
+          {/* <GuestVideoEnded /> */}
+        </>
+      )}
     </>
   );
 };

@@ -10,8 +10,16 @@ import MicOn from "../../../../../assets/images/Recent Activity Icons/Video/MicO
 import { LoadingOutlined } from "@ant-design/icons";
 
 import { Spin } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { joinGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
 
-const GuestJoinVideo = () => {
+const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
@@ -21,6 +29,8 @@ const GuestJoinVideo = () => {
 
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
+
+  console.log(name, "namenamenamename");
 
   // another red div
   const [isBigScreen, setIsBigScreen] = useState(false);
@@ -73,6 +83,9 @@ const GuestJoinVideo = () => {
     } else {
       setErrorMessage(false);
       setGetReady(true);
+
+      let data = { MeetingId: Number(extractMeetingId), GuestName: name };
+      dispatch(joinGuestVideoMainApi(navigate, t, data));
 
       setTimeout(() => {
         setIsBigScreen(true);
@@ -258,6 +271,9 @@ const GuestJoinVideo = () => {
             </>
           ) : (
             <>
+              {/* <GuestVideoHeader /> */}
+
+              <p>{extractMeetingTitle}</p>
               <div className="new-div">
                 <div
                   style={{

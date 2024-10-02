@@ -5,6 +5,7 @@ const initialState = {
   ResponseMessage: "",
   guestVideoData: null,
   validateData: null,
+  joinGuestData: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -55,6 +56,31 @@ const GuestVideoReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         validateData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.JOIN_GUEST_VIDEO_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.JOIN_GUEST_VIDEO_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        joinGuestData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.JOIN_GUEST_VIDEO_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        joinGuestData: null,
         ResponseMessage: action.message,
       };
     }
