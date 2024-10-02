@@ -1,8 +1,20 @@
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 .box-positioning {
   position: fixed;
   bottom: 20px;
   right: 0px;
   z-index: 9999999999 !important;
+  animation: slideInRight 0.5s ease-out;
 }
 
 .card-ui {
@@ -39,4 +51,12 @@
   font-size: 15px !important;
   cursor: pointer;
   text-decoration: underline;
+}
+
+img.handle-close {
+  width: 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
 }

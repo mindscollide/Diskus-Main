@@ -2496,9 +2496,11 @@ const Dashboard = () => {
             handleClose={closeNotification}
             id={notificationID}
           />
-          <div>
-            <GuestJoinRequest mqttData={mqttResponse} />
-          </div>
+          {videoFeatureReducer.ShowGuestPopup ? (
+            <div>
+              <GuestJoinRequest mqttData={mqttResponse} />
+            </div>
+          ) : null}
           {videoFeatureReducer.IncomingVideoCallFlag === true ? (
             <VideoMaxIncoming />
           ) : null}

@@ -212,12 +212,12 @@ const videoChatMessagesFlag = (response) => {
 
 //Aun Work
 
-// const videoMaximizePanel = (response) => {
-//   return {
-//     type: actions.MAXIMIZE_VIDEO_PANEL,
-//     response: response,
-//   };
-// };
+const guestJoinPopup = (response) => {
+  return {
+    type: actions.GUEST_JOIN_POPUP,
+    response: response,
+  };
+};
 
 // const videoMinimizePanel = (response) => {
 //   return {
@@ -257,4 +257,5 @@ export {
   participantPopup,
   minimizeParticipantPopup,
   videoChatMessagesFlag,
+  guestJoinPopup,
 };
