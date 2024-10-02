@@ -71,6 +71,7 @@ import {
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
+import { getMeetingGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -91,6 +92,10 @@ const ViewMeetingDetails = ({
   const { NewMeetingreducer, talkStateData } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
+  console.log(
+    advanceMeetingModalID,
+    "advanceMeetingModalIDadvanceMeetingModalID"
+  );
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -522,15 +527,19 @@ const ViewMeetingDetails = ({
         VideoCallURL: currentMeetingVideoURL,
       };
 
-      dispatch(
-        FetchMeetingURLClipboard(
-          Data2,
-          navigate,
-          t,
-          currentUserID,
-          currentOrganization
-        )
-      );
+      // dispatch(
+      //   FetchMeetingURLClipboard(
+      //     Data2,
+      //     navigate,
+      //     t,
+      //     currentUserID,
+      //     currentOrganization
+      //   )
+      // );
+      let data = {
+        MeetingId: Number(advanceMeetingModalID),
+      };
+      dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
     setOpen({
       ...open,

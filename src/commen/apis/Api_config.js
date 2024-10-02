@@ -1768,10 +1768,6 @@ const getAllMeetingUsersRSVPDetailsRM = {
   RequestMethod: "ServiceManager.GetAllMeetingUserRSVPDetails",
 };
 
-const getMeetingGuestVideoURL = {
-  RequestMethod: "ServiceManager.GetMeetingGuestVideoURL",
-};
-
 const downloadCallRecording = {
   RequestMethod: "ServiceManager.DownloadCallRecording",
 };
@@ -1782,6 +1778,14 @@ const downloadMeetingRecording = {
 
 const leaveMeetingVideo = {
   RequestMethod: "ServiceManager.LeaveMeetingVideo",
+};
+
+const getMeetingGuestVideoURL = {
+  RequestMethod: "ServiceManager.GetMeetingGuestVideoURL",
+};
+
+const ValidateEncryptedStringGuestVideoLink = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringGuestVideoLink",
 };
 
 export {
@@ -2252,8 +2256,9 @@ export {
   getAdvanceMeetingAgendabyMeetingIDForView,
   getStatsForPublishingMinutesByWorkFlowId,
   getMinutesPublishedStatus,
-  getMeetingGuestVideoURL,
   downloadCallRecording,
   downloadMeetingRecording,
   leaveMeetingVideo,
+  getMeetingGuestVideoURL,
+  ValidateEncryptedStringGuestVideoLink,
 };

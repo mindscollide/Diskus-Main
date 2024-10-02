@@ -91,7 +91,7 @@ export const router = createHashRouter(
       </Route>
 
       <Route>
-        <Route path="/GuestVideoCall" element={<GuestVideoCall />} />
+        <Route path="/Diskus/GuestVideoCall" element={<GuestVideoCall />} />
       </Route>
       {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
