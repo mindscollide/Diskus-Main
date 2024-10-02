@@ -15,6 +15,7 @@
 }
 
 .title-alert {
+  margin: 0 !important;
   text-align: center;
   color: #232323;
   font-size: 13px !important;
