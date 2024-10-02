@@ -118,7 +118,7 @@ const validateEncryptGuestVideoFail = (message) => {
   };
 };
 
-const validateEncryptGuestVideoMainApi = (navigate, t) => {
+const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
   return (dispatch) => {
     dispatch(validateEncryptGuestVideoInit());
     let form = new FormData();
@@ -126,7 +126,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t) => {
       "RequestMethod",
       ValidateEncryptedStringGuestVideoLink.RequestMethod
     );
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
 
     axios({
       method: "post",
@@ -137,7 +137,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           //   await dispatch(RefreshToken(navigate, t));
-          dispatch(validateEncryptGuestVideoMainApi(navigate));
+          dispatch(validateEncryptGuestVideoMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

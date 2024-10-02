@@ -475,3 +475,16 @@ export const fileFormatforSignatureFlow = [
   "mht",
   "svg",
 ];
+
+export const extractActionFromUrl = (url) => {
+  const params = new URLSearchParams(url.split("?")[1]); // Extract query params
+  let actionString = params.get("validateguest_action"); // Get 'validateguest_action' param
+
+  if (actionString) {
+    // Replace spaces with '+' to restore the original value
+    actionString = actionString.replace(/ /g, "+");
+    return decodeURIComponent(actionString.replace(/$/, "")); // Decode the value and remove trailing '='
+  }
+
+  return ""; // Return empty if no valid 'validateguest_action' is found
+};
