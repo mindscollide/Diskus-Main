@@ -31,6 +31,7 @@ const initialState = {
   ParticipantPopupFlag: false,
   MinimizeParticipantPopupFlag: false,
   VideoChatMessagesFlag: false,
+  ShowGuestPopup: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -242,6 +243,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         VideoChatMessagesFlag: action.response,
+      };
+    }
+
+    case actions.GUEST_JOIN_POPUP: {
+      return {
+        ...state,
+        ShowGuestPopup: action.response,
       };
     }
 
