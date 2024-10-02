@@ -16,7 +16,7 @@ const getMeetingGuestVideoInit = () => {
 
 const getMeetingGuestVideoSuccess = (response, message) => {
   return {
-    type: actions.GET_MEETING_GUEST_URL_INIT,
+    type: actions.GET_MEETING_GUEST_URL_SUCCESS,
     response: response,
     message: message,
   };
@@ -24,7 +24,7 @@ const getMeetingGuestVideoSuccess = (response, message) => {
 
 const getMeetingGuestVideoFail = (message) => {
   return {
-    type: actions.GET_MEETING_GUEST_URL_INIT,
+    type: actions.GET_MEETING_GUEST_URL_FAIL,
     message: message,
   };
 };
@@ -60,7 +60,7 @@ const getMeetingGuestVideoMainApi = (navigate, t, data) => {
             ) {
               await dispatch(
                 getMeetingGuestVideoSuccess(
-                  response.data.responseResult,
+                  response.data.responseResult.guestVideoURL,
                   t("Meeting-link-copied")
                 )
               );
@@ -118,7 +118,7 @@ const validateEncryptGuestVideoFail = (message) => {
   };
 };
 
-const validateEncryptGuestVideoMainApi = (navigate) => {
+const validateEncryptGuestVideoMainApi = (navigate, t) => {
   return (dispatch) => {
     dispatch(validateEncryptGuestVideoInit());
     let form = new FormData();
@@ -132,9 +132,7 @@ const validateEncryptGuestVideoMainApi = (navigate) => {
       method: "post",
       url: meetingApi,
       data: form,
-      headers: {
-        _token: token,
-      },
+      headers: {},
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
