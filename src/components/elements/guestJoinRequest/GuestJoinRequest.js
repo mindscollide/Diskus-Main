@@ -17,9 +17,9 @@ const GuestJoinRequest = ({ mqttData }) => {
       <Container className="d-flex justify-content-center align-items-center">
         <Card className={styles["card-ui"]}>
           <Card.Body className="text-center">
-            <Card.Title className={styles["title-alert"]}>
+            <p className={styles["title-alert"]}>
               <strong>{guestName}</strong> wants to join this call
-            </Card.Title>
+            </p>
             <Row className="justify-content-center">
               <Col xs={5}>
                 <p className={styles["title-admit"]}>
