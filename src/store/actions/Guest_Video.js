@@ -287,8 +287,16 @@ const joinGuestVideoMainApi = (navigate, t, data) => {
   };
 };
 
+const setClientGuest = (response) => {
+  return {
+    type: actions.SET_MQTT_GUEST,
+    response: response,
+  };
+};
+
 export {
   getMeetingGuestVideoMainApi,
   validateEncryptGuestVideoMainApi,
   joinGuestVideoMainApi,
+  setClientGuest,
 };

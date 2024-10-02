@@ -6,6 +6,7 @@ const initialState = {
   guestVideoData: null,
   validateData: null,
   joinGuestData: null,
+  guestClient: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -82,6 +83,13 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         joinGuestData: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SET_MQTT_GUEST: {
+      return {
+        ...state,
+        guestClient: action.response,
       };
     }
 
