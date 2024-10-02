@@ -26,7 +26,7 @@ const GuestVideoCall = () => {
 
   return (
     <>
-      <GuestVideoHeader />
+      {/* <GuestVideoHeader /> */}
 
       <div className="Main-Guest-Video">
         <GuestJoinVideo />

@@ -1764,6 +1764,10 @@ const getAllMeetingUsersRSVPDetailsRM = {
   RequestMethod: "ServiceManager.GetAllMeetingUserRSVPDetails",
 };
 
+const getMeetingGuestVideoURL = {
+  RequestMethod: "ServiceManager.GetMeetingGuestVideoURL",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2232,4 +2236,5 @@ export {
   getAdvanceMeetingAgendabyMeetingIDForView,
   getStatsForPublishingMinutesByWorkFlowId,
   getMinutesPublishedStatus,
+  getMeetingGuestVideoURL,
 };

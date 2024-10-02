@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers  } from "redux";
+import { applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
@@ -37,6 +37,7 @@ import {
   DataRoomFileAndFoldersDetailsReducer,
   UserReportReducer,
   SignatureWorkFlowReducer,
+  GuestVideoReducer,
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -105,6 +106,7 @@ const AppReducer = combineReducers({
   MinutesReducer: MinutesReducer,
   UserManagementModals: UserManagementModals,
   UserMangementReducer: UserMangementReducer,
+  GuestVideoReducer: GuestVideoReducer,
 });
 
 const rootReducer = (state, action) => {
