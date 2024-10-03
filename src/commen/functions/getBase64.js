@@ -42,7 +42,7 @@ const displayBlobAsHtml = (blob) => {
     // Get the HTML content from the Blob
     const htmlContent = event.target.result;
 
-    return htmlContent
+    return htmlContent;
   };
 
   reader.readAsText(blob);
@@ -54,7 +54,12 @@ const openHtmlInNewPage = (htmlContent) => {
   // Write HTML content into the new window
   newWindow.document.open();
   newWindow.document.write(htmlContent);
-  // newWindow.document.close();
 };
 
-export { getBase64, base64UrlToFile, base64ToBlob, displayBlobAsHtml,openHtmlInNewPage };
+export {
+  getBase64,
+  base64UrlToFile,
+  base64ToBlob,
+  displayBlobAsHtml,
+  openHtmlInNewPage,
+};
