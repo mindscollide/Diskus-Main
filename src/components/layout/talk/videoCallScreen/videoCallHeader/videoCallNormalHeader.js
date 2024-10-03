@@ -44,6 +44,7 @@ import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 import { useTranslation } from "react-i18next";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
+import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -418,6 +419,7 @@ const VideoCallNormalHeader = ({
         </Col>
         <>
           <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
+            <span onClick={() => participantWaitingListBox(true)}>List</span>
             <div
               onClick={disableMic}
               className={

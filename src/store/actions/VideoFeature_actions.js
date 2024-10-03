@@ -219,14 +219,17 @@ const guestJoinPopup = (response) => {
   };
 };
 
-// const videoMinimizePanel = (response) => {
-//   return {
-//     type: actions.MINIMIZE_VIDEO_PANEL,
-//     response: response,
-//   };
-// };
+const participantWaitingListBox = (response) => {
+  console.log(response, "responseresponseresponse");
+  return {
+    type: actions.PARTICIPANT_LIST_USERS,
+    payload: response,
+  };
+};
+
 
 export {
+  participantWaitingListBox,
   videoChatPanel,
   contactVideoFlag,
   recentVideoFlag,

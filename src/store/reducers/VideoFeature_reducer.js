@@ -32,6 +32,7 @@ const initialState = {
   MinimizeParticipantPopupFlag: false,
   VideoChatMessagesFlag: false,
   ShowGuestPopup: false,
+  participantWaitinglistBox: true
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -251,6 +252,13 @@ const videoFeatureReducer = (state = initialState, action) => {
         ...state,
         ShowGuestPopup: action.response,
       };
+    }
+    
+    case actions.PARTICIPANT_LIST_USERS: {
+      return {
+        ...state,
+        participantWaitinglistBox: action.payload
+      }
     }
 
     default:

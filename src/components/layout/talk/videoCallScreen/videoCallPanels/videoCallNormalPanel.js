@@ -22,14 +22,14 @@ import LayoutIconSelected from "../../../../../assets/images/Layout-Icon-Selecte
 import LayoutIconWhite from "../../../../../assets/images/Layout-Icon-White.svg";
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
 import { generateRandomGuest } from "../../../../../commen/functions/urlVideoCalls";
+import VideoCallParticipants from "../videocallParticipants/VideoCallParticipants";
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch();
 
-  const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state
-  );
-
+  const { videoFeatureReducer, VideoMainReducer, GuestVideoReducer } =
+    useSelector((state) => state);
+  console.log(videoFeatureReducer, "GuestVideoReducerGuestVideoReducer")
   let currentUserID = Number(localStorage.getItem("userID"));
   // let currentUserName = localStorage.getItem('name')
 
@@ -265,8 +265,7 @@ const VideoPanelNormal = () => {
                   videoFeatureReducer.VideoChatPanel === false
                 ? "max-video-panel more-zindex"
                 : ""
-            }
-          >
+            }>
             {VideoMainReducer.FullLoader === true ? (
               <>
                 <LoaderPanelVideoScreen
@@ -292,7 +291,10 @@ const VideoPanelNormal = () => {
                 ) : null}
                 <Row>
                   <>
-                    <Col lg={12} md={12} sm={12}>
+                    <Col
+                      lg={videoFeatureReducer.participantWaitinglistBox ? 9 : 12}
+                      md={videoFeatureReducer.participantWaitinglistBox ? 9 : 12}
+                      sm={videoFeatureReducer.participantWaitinglistBox ? 9 : 12}>
                       <div
                         className={
                           videoFeatureReducer.NormalizeVideoFlag === true &&
@@ -305,8 +307,7 @@ const VideoPanelNormal = () => {
                               videoFeatureReducer.MaximizeVideoFlag === true
                             ? "normal-avatar-large"
                             : ""
-                        }
-                      >
+                        }>
                         {initiateCallRoomID !== null ||
                         callAcceptedRoomID !== null ? (
                           <iframe
@@ -316,15 +317,20 @@ const VideoPanelNormal = () => {
                                 : callerURL
                             }
                             ref={iframeRef}
-                            title="Live Video"
-                            width="100%"
-                            height="100%"
-                            frameBorder="0"
-                            allow="camera;microphone;display-capture"
+                            title='Live Video'
+                            width='100%'
+                            height='100%'
+                            frameBorder='0'
+                            allow='camera;microphone;display-capture'
                           />
                         ) : null}
                       </div>
                     </Col>
+                    {videoFeatureReducer.participantWaitinglistBox ? (
+                      <Col lg={3} md={3} sm={3} className='ps-0'>
+                        <VideoCallParticipants />
+                      </Col>
+                    ) : null}
                   </>
                 </Row>
                 <Row>

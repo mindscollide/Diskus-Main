@@ -1,0 +1,79 @@
+.WaitingParticipantBox {
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  height: 100%;
+}
+.waiting_participants_box_title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6127d6;
+  line-height: 14.63px;
+}
+.AcceptAndDeniedBtns {
+  background-color: rgba(246, 249, 252, 1);
+  /* width: 100%; */
+  margin: 15px 0 10px 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: 10px 15px;
+}
+.AcceptAndDeniedManual {
+  background-color: rgba(246, 249, 252, 1);
+  margin: 0 0 10px 0;
+  padding: 10px 15px;
+  max-height: 49vh;
+  overflow-y: auto;
+}
+.denyAllBtn {
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  white-space: nowrap !important;
+}
+.AcceptAllBtn {
+  background: #55ce5c !important;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 600 !;
+  border: none !important;
+  width: 100% !important;
+  white-space: nowrap !important;
+}
+.denyAllBtn-small {
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  white-space: nowrap !important;
+}
+.AcceptAllBtn-small {
+  background: #55ce5c !important;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 600 !;
+  border: none !important;
+  width: 100% !important;
+  white-space: nowrap !important;
+}
+.participantImage {
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.participant_name {
+  font-size: 12px;
+  color: #5a5a5a;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

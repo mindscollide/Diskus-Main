@@ -142,6 +142,7 @@ const GuestVideoReducer = (state = initialState, action) => {
       };
     }
 
+
     default:
       return { ...state };
   }
