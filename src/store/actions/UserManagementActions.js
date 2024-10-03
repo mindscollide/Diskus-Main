@@ -2047,7 +2047,8 @@ const paymentStatusApi = (navigate, t, data) => {
                 )
             ) {
               await handleLoginResponse(
-                response.data.responseResult.userAuthData, dispatch
+                response.data.responseResult.userAuthData,
+                dispatch
               );
               await dispatch(
                 paymentStatusSuccess(
@@ -2715,10 +2716,7 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
 
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute(
-            "download",
-            "BoardDeckFile - " + meetingName + ".pdf"
-          );
+          link.setAttribute("download", "BoardDeck - " + meetingName + ".pdf");
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
