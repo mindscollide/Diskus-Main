@@ -1,8 +1,5 @@
 import { getPackageExpiryDetail } from "../../store/actions/GetPackageExpirtyDetails";
-import {
-  LoginFlowRoutes,
-  signUpFlowRoutes,
-} from "../../store/actions/UserManagementActions";
+import { LoginFlowRoutes } from "../../store/actions/UserManagementActions";
 
 // this is function save avalable feature for current user implementation its save all data in local storage
 export function savePackageFeatureIDs(userFeatures) {
@@ -102,14 +99,6 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     { id: 45, name: "subscriptionDetailsUserManagement" },
     { id: 45, name: "downgradeSubscription" },
     { id: 46, name: "updatedCancelSubscription" },
-
-    // not in use
-    // { id: 19, name: "Invoice" },
-    // { id: 19, name: "PaymentHistoryusermanagement" },
-    // { id: 19, name: "UpgradePackage" },
-    // { id: 19, name: "paymentForm" },
-    // { id: 19, name: "UpgradePackageDetail" },
-    // { id: 19, name: "UpgradePackageSelect" },
   ];
   try {
     // Iterate through each feature from the API response
