@@ -21,14 +21,6 @@
   border: #ccc 1px solid !important;
 }
 
-/* .btnCreate {
-  width: 130px !important;
-  height: 33px !important;
-  border: none;
-  border-radius: 0px;
-  background-color: rgb(117, 117, 117);
-} */
-
 .Add-User-btnReset {
   padding: 4px 40px;
   border: none;
@@ -199,42 +191,15 @@ body[dir="rtl"] .Addchart {
   font-weight: 600 !important;
 }
 
-/* select by default class */
-
 .selectbox-height-organization {
   width: 100% !important;
   margin-top: 12px;
   padding-top: 0% !important;
   padding-bottom: 0px !important;
-  /* border: 1px solid #e1e1e1 !important ;   */
 }
 body[dir="rtl"] .selectbox-height-organization {
   font-weight: 400 !important;
 }
-/* .css-1s2u09g-control {
-  border-color: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-} */
-
-/* .css-1s2u09g-control:hover {
-  border-color: none !important;
-  box-shadow: none !important;
-} */
-
-/* .css-6j8wv5-Input {
-  border-color: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-} */
-
-/* .css-6j8wv5-Input::selection, 
-.css-6j8wv5-Input:hover,
-.css-6j8wv5-Input:focus
-{
-  border-color: none !important;
-  box-shadow: none !important;
-} */
 
 .verification-email-modal-title {
   font-size: calc(35px - 20%) !important;
@@ -358,7 +323,6 @@ div#react-select-2-placeholder {
 
 .formcontrol-Phone-field {
   margin-top: 20px;
-  /* margin-left: 20px !important; */
 }
 
 .AddProgressBar {
@@ -496,7 +460,6 @@ body[dir="rtl"] .addUser-Heading {
   color: #f16b6b;
   visibility: visible !important;
   font-weight: 600 !important;
-
 }
 
 body[dir="rtl"] .errorMessage {
@@ -628,8 +591,6 @@ body[dir="rtl"] .checkEmailSpinner {
   color: #939393 !important;
   position: relative !important;
   cursor: pointer;
-  /* right    : 40px !important;
-  top         : 18px !important; */
 }
 
 .react-flag {
@@ -649,7 +610,6 @@ body[dir="rtl"] .checkEmailSpinner {
   color: #4d4d4d !important;
   font-size: 9px !important;
   font-weight: 600;
-  /* border: thin solid rgba(77, 77, 77, 0.3); */
   border-radius: 4px !important;
   background: white !important;
 }
@@ -658,8 +618,6 @@ body[dir="rtl"] .checkEmailSpinner {
   cursor: pointer !important;
   padding: 5px 8px !important;
   margin: 4px 5px !important;
-  /* font-size  : 13px !important; */
-  /* font-weight: 600; */
   white-space: nowrap !important;
 }
 
@@ -726,7 +684,6 @@ button#rfs-btn {
   margin: 2px !important;
   padding-left: 12px !important;
   padding-bottom: 2px !important;
-  /* padding-top: 2px; */
   color: hsl(0, 0%, 20%);
   box-sizing: border-box;
 }

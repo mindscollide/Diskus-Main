@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./AddUser.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { FormControl, FormGroup } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 import {
   Container,
   Row,
   Col,
   Form,
-  Card,
-  ListGroup,
   ProgressBar,
   Spinner,
 } from "react-bootstrap";
@@ -17,32 +15,20 @@ import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import { countryName, countryNameforPhoneNumber } from "./CountryJson";
-import {
-  validateEmail,
-  validateEmailEnglishAndArabicFormat,
-  validationEmail,
-} from "../../../../commen/functions/validations";
-import ReactFlagsSelect, { Ro } from "react-flags-select";
-import PhoneInput from "react-phone-input-2";
+import { countryNameforPhoneNumber } from "./CountryJson";
+import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
+import ReactFlagsSelect from "react-flags-select";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
-import { Check2, ExclamationTriangleFill } from "react-bootstrap-icons";
-import VerticalBarGraph from "@chartiful/react-vertical-bar-graph";
-// import { Bar } from "react-chartjs-2";
 import "react-phone-input-2/lib/style.css";
 import {
   Button,
-  TextField,
   Notification,
-  Paper,
   Modal,
   Loader,
-  Subscriptionwarningline,
   Subscriptionwarninglimit,
 } from "../../../../components/elements";
-import { borderRadius } from "@mui/system";
 import {
   addUserAction,
   OrganizationUserListStatisticsAction,
@@ -56,7 +42,6 @@ import { checkEmailExsist } from "../../../../store/actions/Admin_Organization";
 const AddUser = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
-  const [errorBar, setErrorBar] = useState(false);
   const [allowLimitModal, setAllowedLimitModal] = useState(false);
   const [emailVerifyModal, setEmailVerifyModal] = useState(false);
   const dispatch = useDispatch();
@@ -81,7 +66,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const Name = useRef(null);
   const Organization = useRef(null);
   const Designation = useRef(null);
-  const countryCodeRef = useRef(null);
   const MobileNumber = useRef(null);
   const OrganizationRole = useRef(null);
   const UserRole = useRef(null);
@@ -101,15 +85,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   const [editOrganization, setEditOrganization] = useState([]);
   const [editUserRole, setEditUserRole] = useState([]);
-
-  // states for Adduser card
-  const [addUserCardSection, setAddUserCardSection] = useState({
-    TotalAllowedUser: "",
-    EnableUser: "",
-    DisableUser: "",
-    LockedUser: "",
-    DormantUser: "",
-  });
 
   // states for Adduser Fields Section
   const [addUserSection, setAddUserSection] = useState({
@@ -190,8 +165,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       let newValue = valueCheck.trimStart();
       if (newValue !== "") {
-        // if (newValue.legend <= 100) {
-
         setAddUserSection({
           ...addUserSection,
           Name: {
@@ -200,18 +173,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             errorStatus: false,
           },
         });
-        // } else {
-        //
-
-        //   setAddUserSection({
-        //     ...addUserSection,
-        //     Name: {
-        //       value: addUserSection.Name.value,
-        //       errorMessage: "",
-        //       errorStatus: false,
-        //     },
-        //   });
-        // }
       } else {
         setAddUserSection({
           ...addUserSection,
@@ -229,7 +190,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
     if (name === "Designation" && value !== "") {
-      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (value !== "") {
         setAddUserSection({
           ...addUserSection,
@@ -586,15 +546,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
-  console.log(
-    "addUserSection.OrganizationRole.value",
-    addUserSection.UserRole.value
-  );
+
   useEffect(() => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
-      adminReducer.UpdateOrganizationMessageResponseMessage !==
-        "" &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -652,8 +608,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !== null &&
-      adminReducer.DeleteOrganizationMessageResponseMessage !==
-        "" &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -979,30 +934,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         let packageActiveOtherUsers = parseInt(
           adminReducer.TotalUserListsData.otherUsers
         );
-        console.log(
-          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
-          packageActiveBoardMemberUsers
-        );
-        console.log(
-          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
-          packageActiveAdminUsers
-        );
-        console.log(
-          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
-          packageActiveOtherUsers
-        );
-        console.log(
-          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
-          packageAllowedBoardMemberUsers
-        );
-        console.log(
-          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
-          packageAllowedAdminUsers
-        );
-        console.log(
-          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
-          packageAllowedOtherUsers
-        );
+
         setTotalActiveBarCount(
           parseInt(
             packageActiveBoardMemberUsers +
@@ -1192,7 +1124,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         }
       } else {
       }
-      // UserRole;
     } else {
       setEditOrganization(selectedOptions);
       if (Object.keys(selectedOptions).length > 0) {
@@ -1360,7 +1291,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           />
         ) : null}
 
-        {/* <Paper className={styles["papercolor-adduser"]}> */}
         <Row className="Add-User-Limit">
           <Col lg={6} md={6} sm={12} xs={12} className="mt-2">
             <Container>
@@ -1391,7 +1321,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         </div>
                       ) : (
                         <Chart
-                          // controls={false}
                           chartType="ColumnChart"
                           width="100%"
                           height="250px"
@@ -1475,16 +1404,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       {loading ? null : (
                         <Row>
                           <Col lg={8} md={8} sm={8} xs={12} className="">
-                            <label
-                              className={styles["Admin-labelChart-Title"]}
-                              // className={styles["labelChart-Remain-Title"]}
-                            >
+                            <label className={styles["Admin-labelChart-Title"]}>
                               {t("Client-member")}
                             </label>
                           </Col>
                           <Col lg={4} md={4} sm={4} xs={12}>
                             <label
-                              // className={styles["labelChart-RemainNum"]}
                               className={styles["Admin-labelChart-Number"]}
                             >
                               {adminReducer.TotalUserListsData
@@ -1662,17 +1587,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           ref={reactFlag}
                           fullWidth={false}
                           onOpen={handleDropdownOpen}
-                          // onClick={onClickHandler}
                           selected={selected}
                           selectedCountry={selectedCountry}
-                          // autoFocus={true}
-                          // defaultCountry={showCountry}
                           selectedSize={8}
                           onSelect={handleSelect}
                           searchable={true}
                           placeholder={"Select Co...."}
                           customLabels={countryNameforPhoneNumber}
-                          // className={styles["react-flag"]}
                         />
                       </Col>
                       <Col lg={8} md={8} sm={8} xs={12}>
@@ -1704,22 +1625,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         >
                           {addUserSection.MobileNumber.errorMessage}
                         </p>
-                        {/* {addUserSection.MobileNumber.value != "" && (
-                          <p
-                            className={
-                              (addUserSection.MobileNumber.errorStatus &&
-                                addUserSection.MobileNumber.value === "") ||
-                              (addUserSection.MobileNumber.errorMessage !==
-                                "" &&
-                                addUserSection.MobileNumber.errorMessage !==
-                                  t("User-mobile-doesnt-exists"))
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {addUserSection.MobileNumber.errorMessage}
-                          </p>
-                        )} */}
                       </Col>
                     </Row>
                   </Col>
@@ -1758,7 +1663,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           value={editOrganization}
                           placeholder={t("Please-select-one-option")}
                           className={styles["selectbox-height-organization"]}
-                          // applyClass="form-control2"
                           styles={borderChanges}
                         />
                       </Col>
@@ -1867,7 +1771,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           placeholder={t("Email")}
                           onChange={AddUserHandler}
                           value={addUserSection.Email.value}
-                          // onKeyDown={(event) => enterKeyHandler(event, Email)}
                           maxLength={160}
                           applyClass="form-control2"
                         />
@@ -1875,6 +1778,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           {isEmailUnique && addUserSection.Email.value != "" ? (
                             <img
                               draggable="false"
+                              alt=""
                               src={EmailVeriFyIcon}
                               className={styles["isEmailUnique"]}
                             />
@@ -2017,6 +1921,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             >
                               <img
                                 draggable="false"
+                                alt=""
                                 src={VerificationFailedIcon}
                                 width={60}
                                 className={styles["allowModalIcon"]}

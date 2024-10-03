@@ -1,12 +1,10 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./AllUserPage.module.css";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
-import countryList from "react-select-country-list";
 import { useNavigate } from "react-router-dom";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
-import { dataSet } from "./../EditUser/EditData";
 import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
 import {
@@ -27,21 +25,17 @@ import {
 } from "../../../../store/actions/RolesList";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
-  const [filterBarModal, setFilterBarModal] = useState(false);
-  const [editModal, setEditModal] = useState(false);
-
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [filterBarModal, setFilterBarModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+
   const state = useSelector((state) => state);
   const { adminReducer, roleListReducer, LanguageReducer } = state;
   const [rows, setRows] = useState([]);
 
   const [allUserData, setAllUserData] = useState([]);
-
-  const [rowSize, setRowSize] = useState(50);
-
-  const options = useMemo(() => countryList().getData(), []);
 
   //for enter key
   const UserStatus = useRef(null);
@@ -209,8 +203,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setForSearchOrganization([]);
     setForSearchUserStatus([]);
     setForSearchUserRole([]);
-
-    // setFilterFieldSection("");
   };
 
   // onclick AddUser User should be navigate to AddUser
@@ -261,7 +253,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Emails",
       align: "left",
       ellipsis: true,
-      
+
       render: (text, record) => {
         if (record.UserStatus === "Closed") {
           return <p className="Disabled-Close">{text}</p>;
@@ -390,14 +382,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   }, []);
 
   useEffect(() => {
-    console.log("setAllUserData", adminReducer.AllOrganizationUserList);
     if (
       Object.keys(adminReducer.AllOrganizationUserList).length > 0 &&
       adminReducer.AllOrganizationUserList != undefined &&
       adminReducer.AllOrganizationUserList != null
     ) {
-      console.log("setAllUserData", adminReducer.AllOrganizationUserList);
-
       let tem = [];
       adminReducer.AllOrganizationUserList.map((data, index) => {
         let convertValue = {
@@ -415,7 +404,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         };
         tem.push(convertValue);
       });
-      console.log("setAllUserData", tem);
       setAllUserData(tem);
     }
   }, [adminReducer.AllOrganizationUserList]);
@@ -472,8 +460,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       );
     });
 
-    console.log("filter", x);
-
     setRows([...x]);
     setFilterBarModal(false);
     setFilterFieldSection({
@@ -492,70 +478,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setForSearchUserRole([]);
     setFilterBarModal(false);
   };
-  // const searchFunc = () => {
-  //   console.log("check");
-
-  //   if (validationEmail(filterFieldSection.Emails.value)) {
-  //     console.log("check");
-
-  //     var y = [...allUserData];
-  //     console.log("filter", filterFieldSection);
-  //     let x = y.filter((a) => {
-  //       console.log("filter", a);
-  //       return (
-  //         (filterFieldSection.Names != ""
-  //           ? a.Names.toLowerCase().includes(
-  //               filterFieldSection.Names.toLowerCase()
-  //             )
-  //           : a.Names) &&
-  //         (filterFieldSection.Emails.value != ""
-  //           ? a.Emails.toLowerCase().includes(
-  //               filterFieldSection.Emails.value.toLowerCase()
-  //             )
-  //           : a.Emails) &&
-  //         (filterFieldSection.OrganizationRoles != ""
-  //           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
-  //           : a.OrganizationRole) &&
-  //         (filterFieldSection.UserRoles != ""
-  //           ? a.UserRole === filterFieldSection.UserRoles
-  //           : a.UserRole) &&
-  //         (filterFieldSection.UserStatus != ""
-  //           ? a.UserStatus === filterFieldSection.UserStatus
-  //           : a.UserStatus)
-  //       );
-  //     });
-
-  //     console.log("filter", x);
-
-  //     setRows([...x]);
-  //     setFilterBarModal(false);
-  //     setFilterFieldSection({
-  //       Names: "",
-  //       OrganizationRoles: "",
-  //       UserStatus: "",
-  //       UserRoles: "",
-  //       Emails: {
-  //         value: "",
-  //         errorMessage: "",
-  //         errorStatus: false,
-  //       },
-  //     });
-  //     setForSearchOrganization([]);
-  //     setForSearchUserStatus([]);
-  //     setForSearchUserRole([]);
-  //     setFilterBarModal(false);
-  //   } else {
-  //     setFilterFieldSection({
-  //       ...filterFieldSection,
-  //       Emails: {
-  //         value: filterFieldSection.Emails.value,
-  //         errorMessage: "Email Should be in Email Format",
-  //         errorStatus: true,
-  //       },
-  //     });
-  //   }
-  // };
-  console.log("filter", filterFieldSection);
 
   // to change select border color functionality
 
@@ -585,8 +507,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           : a.UserStatus)
       );
     });
-
-    console.log("filteredData", x);
 
     setRows([...x]);
   };
@@ -622,9 +542,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   useEffect(() => {
     let tem = [];
-    console.log("abcd", roleListReducer.UserStatusList);
     if (Object.keys(roleListReducer.UserStatusList).length > 0) {
-      roleListReducer.UserStatusList.map((data, index) => {
+      roleListReducer.UserStatusList.map((data) => {
         let op = { value: data.pK_UserStatusID, label: data.statusName };
         tem.push(op);
       });
@@ -636,7 +555,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     let tem = [];
     if (Object.keys(roleListReducer.UserRolesList).length > 0) {
-      roleListReducer.UserRolesList.map((data, index) => {
+      roleListReducer.UserRolesList.map((data) => {
         let op = { value: data.pK_URID, label: data.roleName };
         tem.push(op);
       });
@@ -668,14 +587,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const StatusHandler = (selectedOptions) => {
     setForSearchUserStatus(selectedOptions);
     if (Object.keys(selectedOptions).length > 0) {
-      console.log("StatusHandler", selectedOptions.label);
       setFilterFieldSection({
         ...filterFieldSection,
         UserStatus: selectedOptions.label,
       });
     }
   };
-  console.log("StatusHandler", forSearchUserStatus);
 
   const handleClose = () => {
     setFilterBarModal(false);
@@ -721,6 +638,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               src={Paymenthistoryhamberge}
               width={18}
               height={18}
+              alt=""
               onClick={openFilterModal}
             />
           </div>
@@ -790,7 +708,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           enterKeyHandler(event, OrganizationRoles)
                         }
                         name="Emails"
-                        // type="email"
                         placeholder={t("Email")}
                         applyClass="form-control2"
                         onChange={EditUserHandler}
@@ -915,16 +832,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       onClick={searchFunc}
                     />
                   </Col>
-
-                  {/* <Col
-                    lg={3}
-                    md={3}
-                    sm={12}
-                    xs={12}
-                    
-                  >
-                    
-                  </Col> */}
                 </Row>
               </Col>
             ) : null}
