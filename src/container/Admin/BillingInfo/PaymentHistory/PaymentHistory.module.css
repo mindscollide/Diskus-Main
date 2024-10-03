@@ -1,6 +1,4 @@
 .filterdrow {
-  /* margin-top: 50px !important;
-  margin-left: 90px !important; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +20,6 @@
 }
 
 .Edit-label-heading {
-  /* margin-top: -15px; */
   font-weight: 600 !important;
   font-size: 35px !important;
 }
@@ -152,7 +149,6 @@ body[dir="rtl"] .Edit-Main-Heading {
 
 .formcontrol-Phone-field {
   margin-top: 20px;
-  /* margin-left: 20px !important; */
 }
 
 .filterModal {
@@ -187,13 +183,6 @@ body[dir="rtl"] .filterModal {
   height: 7px;
   color: #f16b6b !important;
 }
-
-/* .filter-icon-EditUser {
-  position: "absolute" !important;
-  top: "18px" !important;
-  right: "30px" !important;
-  font-size: "21px" !important;
-} */
 
 .form-control-textfields {
   margin-top: 20px;
@@ -360,10 +349,7 @@ body[dir="rtl"] .surcharge {
   height: 35px !important;
   border-radius: 4px !important;
 }
-/* .tableColLabel {
-  color: #6172D6 !important;
-  font-size: 2rem !important;
-} */
+
 .paymentHistoryTable table {
   padding: 20px;
 }
