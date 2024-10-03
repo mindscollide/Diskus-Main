@@ -68,6 +68,7 @@ import { truncateString } from "../../../../../../commen/functions/regex";
 import { Tooltip } from "antd";
 import { mqttMeetingData } from "../../../../../../hooks/meetingResponse/response";
 import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
+import { updateCurrentEditorRole } from "../../../../../../store/actions/MeetingGlobalStates_actions";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -233,6 +234,16 @@ const UnpublishedProposedMeeting = ({
           <span
             className={styles["meetingTitle_view"]}
             onClick={() => {
+              let Data = {
+                status: record.status,
+                role: record.isParticipant
+                  ? "Participant"
+                  : record.isAgendaContributor
+                  ? "Agenda Contributor"
+                  : "Organizer",
+                isPrimaryOrganizer: false,
+              };
+              dispatch(updateCurrentEditorRole(Data));
               setEdiorRole({
                 status: record.status,
                 role: record.isParticipant
@@ -246,8 +257,8 @@ const UnpublishedProposedMeeting = ({
                 isVideoCall: record.isVideoCall,
                 talkGroupID: record.talkGroupID,
               });
-          localStorage.setItem("videoCallURL", record.videoCallURL)
-          handleOpenViewModal(record);
+              localStorage.setItem("videoCallURL", record.videoCallURL);
+              handleOpenViewModal(record);
               dispatch(viewMeetingFlag(true));
               dispatch(
                 GetAllUserChats(
@@ -481,8 +492,17 @@ const UnpublishedProposedMeeting = ({
                           isVideoCall: record.isVideoCall,
                           talkGroupID: record.talkGroupID,
                         });
-          localStorage.setItem("videoCallURL", record.videoCallURL)
-          setEdiorRole({
+                        localStorage.setItem(
+                          "videoCallURL",
+                          record.videoCallURL
+                        );
+                        let Data = {
+                          status: record.status,
+                          role:"Agenda Contributor",
+                          isPrimaryOrganizer: false,
+                        };
+                        dispatch(updateCurrentEditorRole(Data));
+                        setEdiorRole({
                           status: record.status,
                           role: "Agenda Contributor",
                         });
@@ -524,8 +544,18 @@ const UnpublishedProposedMeeting = ({
                             isVideoCall: record.isVideoCall,
                             talkGroupID: record.talkGroupID,
                           });
-          localStorage.setItem("videoCallURL", record.videoCallURL)
-          setEdiorRole({
+                          localStorage.setItem(
+                            "videoCallURL",
+                            record.videoCallURL
+                          );
+                          let Data = {
+                            status: record.status,
+                            role: "Organizer",
+                            isPrimaryOrganizer: false,
+                          };
+                          dispatch(updateCurrentEditorRole(Data));
+
+                          setEdiorRole({
                             status: record.status,
                             role: "Organizer",
                           });

@@ -53,6 +53,8 @@ import attendanceMeetingReducer from "./reducers/Attendance_Reducer";
 import actionMeetingReducer from "./reducers/ActionMeeting_Reducer";
 import UserManagementModals from "./reducers/UserManagementModals";
 import UserMangementReducer from "./reducers/UserManagementReducer";
+import MeetingGlobalStateReducer from "./reducers/MeetingGlobalState_Reducer";
+
 
 const AppReducer = combineReducers({
   auth: authReducer,
@@ -105,6 +107,7 @@ const AppReducer = combineReducers({
   MinutesReducer: MinutesReducer,
   UserManagementModals: UserManagementModals,
   UserMangementReducer: UserMangementReducer,
+  MeetingGlobalStateReducer: MeetingGlobalStateReducer
 });
 
 const rootReducer = (state, action) => {

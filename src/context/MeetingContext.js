@@ -10,8 +10,15 @@ export const MeetingProvider = ({ children }) => {
     role: null,
     isPrimaryOrganizer: false,
   });
+  const [currentMeetingID, setCurrentMeetingId] = useState(0);
   return (
-    <MeetingContext.Provider value={{ editorRole, setEdiorRole }}>
+    <MeetingContext.Provider
+      value={{
+        editorRole,
+        setEdiorRole,
+        currentMeetingID,
+        setCurrentMeetingId,
+      }}>
       {children}
     </MeetingContext.Provider>
   );

@@ -23,6 +23,7 @@ import {
 } from "./NewMeetingActions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import { updateCurrentEditorRole } from "./MeetingGlobalStates_actions";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
@@ -366,6 +367,12 @@ const UpdateOrganizersMeeting = (
                     )
                   );
                   // setSceduleMeeting(false);
+                  let Data = {
+                    status: "10",
+                    role:"Organizer",
+                    isPrimaryOrganizer: false,
+                  };
+                  dispatch(updateCurrentEditorRole(Data));
                   setEdiorRole({
                     status: "10",
                     role: "Organizer",
@@ -401,6 +408,12 @@ const UpdateOrganizersMeeting = (
                     );
                     localStorage.removeItem("folderDataRoomMeeting");
                     setEdiorRole({ status: null, role: null });
+                    let Data = {
+                      status: null,
+                      role: null,
+                      isPrimaryOrganizer: false,
+                    };
+                    dispatch(updateCurrentEditorRole(Data));
                     setAdvanceMeetingModalID(null);
                     setViewAdvanceMeetingModal(false);
                     dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -448,6 +461,12 @@ const UpdateOrganizersMeeting = (
                       // );
                     } else {
                       setAdvanceMeetingModalID(Data.MeetingID);
+                      let Data = {
+                        status: "10",
+                        role:"Organizer",
+                        isPrimaryOrganizer: false,
+                      };
+                      dispatch(updateCurrentEditorRole(Data));
                       setEdiorRole({
                         status: "10",
                         role: "Organizer",

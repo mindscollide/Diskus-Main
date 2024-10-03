@@ -123,6 +123,7 @@ import BoardDeckSendEmail from "../../BoardDeck/BoardDeckSendEmail/BoardDeckSend
 import { MeetingContext } from "../../../context/MeetingContext";
 import moment from "moment";
 import { DownloadMeetingRecording } from "../../../store/actions/VideoChat_actions";
+import { updateCurrentEditorRole } from "../../../store/actions/MeetingGlobalStates_actions";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -130,11 +131,16 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { editorRole, setEdiorRole } = useContext(MeetingContext);
-  const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
-    (state) => state
+  const {
+    talkStateData,
+    NewMeetingreducer,
+    meetingIdReducer,
+    MeetingGlobalStateReducer,
+  } = useSelector((state) => state);
+  console.log(
+    MeetingGlobalStateReducer,
+    "MeetingGlobalStateReducerMeetingGlobalStateReducer"
   );
-
   const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
     (state) => state.NewMeetingreducer
   );
@@ -260,11 +266,11 @@ const NewMeeting = () => {
   const [responseByDate, setResponseByDate] = useState("");
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [radioValue, setRadioValue] = useState(1);
-  // const [editorRole, setEdiorRole] = useState({
-  //   status: null,
-  //   role: null,
-  //   isPrimaryOrganizer: false,
-  // });
+  const [editorRole, setEdiorRole] = useState({
+    status: null,
+    role: null,
+    isPrimaryOrganizer: false,
+  });
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -368,6 +374,17 @@ const NewMeeting = () => {
         } = location.state?.advancemeetingData;
 
         const fetchData = async () => {
+          let Data = {
+            status: statusID,
+            role:
+              attendeeRoleID === 2
+                ? "Participant"
+                : attendeeRoleID === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            isPrimaryOrganizer: isPrimaryOrganizer,
+          };
+          dispatch(updateCurrentEditorRole(Data));
           setEdiorRole({
             status: statusID,
             role:
@@ -454,6 +471,17 @@ const NewMeeting = () => {
               await setAdvanceMeetingModalID(Number(result.meetingID));
               await setViewAdvanceMeetingModalUnpublish(true);
               await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+              let Data = {
+                status: result.meetingStatusId,
+                role:
+                  Number(result.attendeeId) === 2
+                    ? "Participant"
+                    : Number(result.attendeeId) === 4
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                isPrimaryOrganizer: false,
+              };
+              dispatch(updateCurrentEditorRole(Data));
               setEdiorRole({
                 ...editorRole,
                 isPrimaryOrganizer: false,
@@ -489,6 +517,17 @@ const NewMeeting = () => {
           await setAdvanceMeetingModalID(Number(result.meetingID));
           await setViewAdvanceMeetingModalUnpublish(true);
           await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          let Data = {
+            status: result.meetingStatusId,
+            role:
+              Number(result.attendeeId) === 2
+                ? "Participant"
+                : Number(result.attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            isPrimaryOrganizer: false,
+          };
+          dispatch(updateCurrentEditorRole(Data));
           setEdiorRole({
             ...editorRole,
             isPrimaryOrganizer: false,
@@ -518,6 +557,17 @@ const NewMeeting = () => {
           await setAdvanceMeetingModalID(Number(result.meetingID));
           await setViewAdvanceMeetingModalUnpublish(true);
           await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          let Data = {
+            status: result.meetingStatusId,
+            role:
+              Number(result.attendeeId) === 2
+                ? "Participant"
+                : Number(result.attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            isPrimaryOrganizer: false,
+          };
+          dispatch(updateCurrentEditorRole(Data));
           setEdiorRole({
             ...editorRole,
             isPrimaryOrganizer: false,
@@ -567,6 +617,17 @@ const NewMeeting = () => {
             await setAdvanceMeetingModalID(Number(result.meetingID));
             await setViewAdvanceMeetingModalUnpublish(true);
             await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            let Data = {
+              status: result.meetingStatusId,
+              role:
+                Number(result.attendeeId) === 2
+                  ? "Participant"
+                  : Number(result.attendeeId) === 4
+                  ? "Agenda Contributor"
+                  : "Organizer",
+              isPrimaryOrganizer: false,
+            };
+            dispatch(updateCurrentEditorRole(Data));
             setEdiorRole({
               ...editorRole,
               isPrimaryOrganizer: false,
@@ -613,6 +674,17 @@ const NewMeeting = () => {
             await setAdvanceMeetingModalID(Number(result.meetingID));
             await setViewAdvanceMeetingModalUnpublish(true);
             await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            let Data = {
+              status: result.meetingStatusId,
+              role:
+                Number(result.attendeeId) === 2
+                  ? "Participant"
+                  : Number(result.attendeeId) === 4
+                  ? "Agenda Contributor"
+                  : "Organizer",
+              isPrimaryOrganizer: false,
+            };
+            dispatch(updateCurrentEditorRole(Data));
             setEdiorRole({
               ...editorRole,
               isPrimaryOrganizer: false,
@@ -656,6 +728,17 @@ const NewMeeting = () => {
           await setAdvanceMeetingModalID(Number(result.meetingID));
           await setViewAdvanceMeetingModalUnpublish(true);
           await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          let Data = {
+            status: result.meetingStatusId,
+            role:
+              Number(result.attendeeId) === 2
+                ? "Participant"
+                : Number(result.attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            isPrimaryOrganizer: false,
+          };
+          dispatch(updateCurrentEditorRole(Data));
           setEdiorRole({
             ...editorRole,
             isPrimaryOrganizer: false,
@@ -1173,6 +1256,16 @@ const NewMeeting = () => {
                 isVideoCall: record.isVideoCall,
                 talkGroupID: record.talkGroupID,
               });
+              let Data = {
+                status: record.status,
+                role: record.isParticipant
+                  ? "Participant"
+                  : record.isAgendaContributor
+                  ? "Agenda Contributor"
+                  : "Organizer",
+                isPrimaryOrganizer: record.isPrimaryOrganizer,
+              };
+              dispatch(updateCurrentEditorRole(Data));
               setEdiorRole({
                 status: record.status,
                 role: record.isParticipant
@@ -1577,6 +1670,12 @@ const NewMeeting = () => {
                     setViewAdvanceMeetingModal(true);
                     dispatch(viewAdvanceMeetingPublishPageFlag(true));
                     dispatch(scheduleMeetingPageFlag(false));
+                    let Data = {
+                      status: 10,
+                      role: "Organizer",
+                      isPrimaryOrganizer: record.isPrimaryOrganizer,
+                    };
+                    dispatch(updateCurrentEditorRole(Data));
                     setEdiorRole({
                       status: 10,
                       role: "Organizer",
@@ -1599,6 +1698,12 @@ const NewMeeting = () => {
                     record.isQuickMeeting,
                     record.status
                   );
+                  let Data = {
+                    status: record.status,
+                    role: "Participant",
+                    isPrimaryOrganizer: false,
+                  };
+                  dispatch(updateCurrentEditorRole(Data));
                   setEdiorRole({
                     status: record.status,
                     role: "Participant",
@@ -1632,6 +1737,12 @@ const NewMeeting = () => {
                     record.status
                   );
                   // setIsOrganisers(isOrganiser);
+                  let Data = {
+                    status: record.status,
+                    role: "Agenda Contributor",
+                    isPrimaryOrganizer: false,
+                  };
+                  dispatch(updateCurrentEditorRole(Data));
                   setEdiorRole({
                     status: record.status,
                     role: "Agenda Contributor",
@@ -1665,6 +1776,12 @@ const NewMeeting = () => {
                     record.status
                   );
                   // setIsOrganisers(isOrganiser);
+                  let Data = {
+                    status: record.status,
+                    role: "Organizer",
+                    isPrimaryOrganizer: record.isPrimaryOrganizer,
+                  };
+                  dispatch(updateCurrentEditorRole(Data));
                   setEdiorRole({
                     status: record.status,
                     role: "Organizer",
@@ -1699,6 +1816,16 @@ const NewMeeting = () => {
                 className={styles["Board-Deck"]}
                 onClick={() => {
                   boardDeckOnClick(record);
+                  let Data = {
+                    status: record.status,
+                    role: record.isParticipant
+                      ? "Participant"
+                      : record.isAgendaContributor
+                      ? "Agenda Contributor"
+                      : "Organizer",
+                    isPrimaryOrganizer: record.isPrimaryOrganizer,
+                  };
+                  dispatch(updateCurrentEditorRole(Data));
                   setEdiorRole({
                     status: record.status,
                     role: record.isParticipant
@@ -1814,7 +1941,13 @@ const NewMeeting = () => {
                             localStorage.setItem(
                               "videoCallURL",
                               record.videoCallURL
-                            );
+                            );    
+                              let Data = {
+                              status: record.status,
+                              role:"Organizer",
+                              isPrimaryOrganizer: record.isPrimaryOrganizer,
+                            };
+                            dispatch(updateCurrentEditorRole(Data));
                             setEdiorRole({
                               status: record.status,
                               role: "Organizer",
@@ -1863,6 +1996,12 @@ const NewMeeting = () => {
                               "videoCallURL",
                               record.videoCallURL
                             );
+                            let Data = {
+                              status: record.status,
+                              role:"Agenda Contributor",
+                              isPrimaryOrganizer: record.isPrimaryOrganizer,
+                            };
+                            dispatch(updateCurrentEditorRole(Data));
                             setEdiorRole({
                               status: record.status,
                               role: "Agenda Contributor",
@@ -1953,7 +2092,12 @@ const NewMeeting = () => {
             dashboardEventData.isQuickMeeting,
             dashboardEventData.statusID
           );
-
+          let Data = {
+            status: dashboardEventData.statusID,
+            role:"Participant",
+            isPrimaryOrganizer: false,
+          };
+          dispatch(updateCurrentEditorRole(Data));
           setEdiorRole({
             status: dashboardEventData.statusID,
             role: "Participant",
@@ -1982,6 +2126,12 @@ const NewMeeting = () => {
             talkGroupID: dashboardEventData.talkGroupID,
           });
           localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL);
+          let Data = {
+            status: dashboardEventData.statusID,
+            role:"Agenda Contributor",
+            isPrimaryOrganizer: false,
+          };
+          dispatch(updateCurrentEditorRole(Data));
           setEdiorRole({
             status: dashboardEventData.statusID,
             role: "Agenda Contributor",
@@ -1993,6 +2143,12 @@ const NewMeeting = () => {
             dashboardEventData.statusID === 10) &&
           dashboardEventData.participantRoleID === 1
         ) {
+          let Data = {
+            status:  dashboardEventData.statusID,
+            role:"Organizer",
+            isPrimaryOrganizer: false,
+          };
+          dispatch(updateCurrentEditorRole(Data));
           setEdiorRole({
             status: dashboardEventData.statusID,
             role: "Organizer",
@@ -2053,6 +2209,12 @@ const NewMeeting = () => {
             setViewAdvanceMeetingModal(true);
             dispatch(viewAdvanceMeetingPublishPageFlag(true));
             dispatch(scheduleMeetingPageFlag(false));
+            let Data = {
+              status: 10,
+              role:"Organizer",
+              isPrimaryOrganizer: false,
+            };
+            dispatch(updateCurrentEditorRole(Data));
             setEdiorRole({
               status: 10,
               role: "Organizer",
@@ -2347,6 +2509,7 @@ const NewMeeting = () => {
             advanceMeetingModalID === endMeetingData.pK_MDID &&
             endMeetingData.status === "9"
           ) {
+            
             setEdiorRole({
               status: null,
               role: null,
@@ -2527,7 +2690,12 @@ const NewMeeting = () => {
                 meeting.isQuickMeeting,
                 meeting.status
               );
-
+              let Data = {
+                status: meeting.status,
+                role:"Participant",
+                isPrimaryOrganizer: false,
+              };
+              dispatch(updateCurrentEditorRole(Data));
               setEdiorRole({
                 status: meeting.status,
                 role: "Participant",
@@ -2555,6 +2723,12 @@ const NewMeeting = () => {
                 talkGroupID: meeting.talkGroupID,
               });
               localStorage.setItem("videoCallURL", meeting.videoCallURL);
+              let Data = {
+                status: meeting.status,
+                role:"Agenda Contributor",
+                isPrimaryOrganizer: false,
+              };
+              dispatch(updateCurrentEditorRole(Data));
               setEdiorRole({
                 status: meeting.status,
                 role: "Agenda Contributor",
@@ -2564,7 +2738,12 @@ const NewMeeting = () => {
             } else if (
               (meeting.status === "10" || meeting.status === 10) &&
               dashboardEventData.participantRoleID === 1
-            ) {
+            ) {      let Data = {
+              status: meeting.status,
+              role:"Organizer",
+              isPrimaryOrganizer: false,
+            };
+            dispatch(updateCurrentEditorRole(Data));
               setEdiorRole({
                 status: meeting.status,
                 role: "Organizer",
@@ -2624,6 +2803,12 @@ const NewMeeting = () => {
                 setViewAdvanceMeetingModal(true);
                 dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 dispatch(scheduleMeetingPageFlag(false));
+                let Data = {
+                  status: 10,
+                  role:"Organizer",
+                  isPrimaryOrganizer: false,
+                };
+                dispatch(updateCurrentEditorRole(Data));
                 setEdiorRole({
                   status: 10,
                   role: "Organizer",
