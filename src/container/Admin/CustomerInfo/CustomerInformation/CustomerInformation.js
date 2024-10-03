@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./CustomerInformation.module.css";
 import "./../../../../i18n";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useTranslation } from "react-i18next";
 import ReactFlagsSelect from "react-flags-select";
@@ -12,17 +11,12 @@ import {
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
-  TextField,
-  Paper,
   Modal,
   Loader,
   Notification,
 } from "../../../../components/elements";
 
 import styles from "./CustomerInformation.module.css";
-import { Scrollbars } from "react-custom-scrollbars";
-import ErrorBar from "../../../authentication/sign_up/errorbar/ErrorBar";
-import Title from "antd/lib/skeleton/Title";
 
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useDispatch, useSelector } from "react-redux";
