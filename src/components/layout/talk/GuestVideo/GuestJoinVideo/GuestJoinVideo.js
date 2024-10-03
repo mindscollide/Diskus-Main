@@ -21,7 +21,11 @@ import GuestVideoHeader from "../GuestVideoHeader/GuestVideoHeader";
 import { useSelector } from "react-redux";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 
-const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
+const GuestJoinVideo = ({
+  extractMeetingId,
+  extractMeetingTitle,
+  onJoinNameChange,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,7 +41,7 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [getReady, setGetReady] = useState(false);
 
-  const [name, setName] = useState("");
+  const [joinName, setJoinName] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
 
   console.log({ extractMeetingId, extractMeetingTitle }, "namenamenamename");
@@ -80,57 +84,19 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
   };
 
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    setJoinName(e.target.value);
     setErrorMessage(false);
   };
 
   const onJoinNowButton = () => {
-    if (name === "") {
+    if (joinName === "") {
       setErrorMessage(true);
     } else {
       setErrorMessage(false);
       setGetReady(true);
-
-      let data = { MeetingId: extractMeetingId, GuestName: name };
+      onJoinNameChange(joinName);
+      let data = { MeetingId: extractMeetingId, GuestName: joinName };
       dispatch(joinGuestVideoMainApi(navigate, t, data));
-
-      // setTimeout(() => {
-      //
-      //   if (!isWebCamEnabled) {
-      //     // Enable webcam
-      //     const mediaDevices = navigator.mediaDevices;
-
-      //     mediaDevices
-      //       .getUserMedia({
-      //         video: true,
-      //         audio: true,
-      //       })
-      //       .then((stream) => {
-      //         const video = videoRef.current;
-      //         if (video) {
-      //           video.srcObject = stream;
-      //           video.muted = true;
-      //           video.play();
-      //         }
-      //         setStream(stream); // Store the stream to disable later
-      //         setIsWebCamEnabled(true); // Webcam is now enabled
-      //       })
-      //       .catch((error) => {
-      //         alert(error.message);
-      //       });
-      //   } else {
-      //     // Disable webcam
-      //     if (stream) {
-      //       stream.getTracks().forEach((track) => track.stop());
-      //       setStream(null); // Clear the stream from state
-      //       const video = videoRef.current;
-      //       if (video) {
-      //         video.srcObject = null; // Clear the video source
-      //       }
-      //       setIsWebCamEnabled(false); // Webcam is now disabled
-      //     }
-      //   }
-      // }, 3000);
     }
   };
 
@@ -166,13 +132,6 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
     };
   }, []);
 
-  const onClickOpenANotherDiv = () => {
-    dispatch(guestVideoNavigationScreen(false));
-    // setIsBigScreen(false);
-    setGetReady(false);
-    setIsWebCamEnabled(false);
-  };
-
   return (
     <Container fluid>
       <Row>
@@ -187,7 +146,7 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
                     </label>
                     <Col lg={5} md={5} sm={12}>
                       <TextField
-                        name={"name"}
+                        name={"joinName"}
                         change={handleNameChange}
                         labelclass="d-none"
                         placeholder={"Enter your name"}

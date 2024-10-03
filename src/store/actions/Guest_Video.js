@@ -174,6 +174,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
               await dispatch(
                 validateEncryptGuestVideoFail(t("Meeting-not-active"))
               );
+              dispatch(guestVideoNavigationScreen(4));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

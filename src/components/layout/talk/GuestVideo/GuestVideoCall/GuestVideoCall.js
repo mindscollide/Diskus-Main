@@ -35,17 +35,35 @@ const GuestVideoCall = () => {
   );
 
   const [actionValue, setActionValue] = useState("");
-
+  //video Url state
+  const [videoUrl, setVideoUrl] = useState("");
+  console.log(videoUrl, "videoUrlvideoUrl");
   // extract meeting ID state
   const [extractMeetingId, setExtractMeetingId] = useState(0);
-
   // extract Meeting Title
   const [extractMeetingTitle, setExtractMeetingTitle] = useState("");
+  const [guestName, setGuestName] = useState("");
+  console.log(guestName, "guestName");
 
   let guestVideoClient = Helper.guestSocket;
+
+  useEffect(() => {
+    if (videoUrl && guestName) {
+      // Replace $ParticipantFullName with the actual guest name
+      const updatedUrl = videoUrl.replace("$ParticipantFullName$", guestName);
+      console.log(updatedUrl, "updatedUrlupdatedUrlupdatedUrl");
+      setVideoUrl(updatedUrl); // Update the video URL with the actual name
+    }
+  }, [videoUrl, guestName]);
+
+  const onJoinNameChange = (name) => {
+    setGuestName(name);
+  };
+
   const onConnectionLost = () => {
     setTimeout(mqttConnectionGuestUser(guestUserId), 3000);
   };
+
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
     console.log(data, "datadatadata");
@@ -55,6 +73,7 @@ const GuestVideoCall = () => {
         "MEETING_GUEST_JOIN_RESPONSE".toLowerCase()
       ) {
         if (data.payload.isAccepted === true) {
+          setVideoUrl(data.payload.videoUrl);
           dispatch(guestVideoNavigationScreen(2));
         } else {
           dispatch(guestVideoNavigationScreen(3));
@@ -146,12 +165,13 @@ const GuestVideoCall = () => {
             <GuestJoinVideo
               extractMeetingId={extractMeetingId}
               extractMeetingTitle={extractMeetingTitle}
+              onJoinNameChange={onJoinNameChange}
             />
           </div>
         </>
       ) : guestVideoNavigationData === 2 ? (
         <>
-          <GuestVideoScreen />
+          <GuestVideoScreen videoUrlName={videoUrl} />
         </>
       ) : guestVideoNavigationData === 3 ? (
         <>
