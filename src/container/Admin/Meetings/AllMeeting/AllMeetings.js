@@ -3,8 +3,6 @@ import styles from "./AllMeeting.module.css";
 import {
   Button,
   TextField,
-  FilterBar,
-  SearchInput,
   Notification,
   ResultMessage,
   Table,
@@ -13,17 +11,15 @@ import {
 } from "../../../../components/elements";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
-import { Container, Row, Col, Form, Search } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import NoMeetingsIcon from "../../../../assets/images/No-Meetings.png";
-import { Sliders2, Trash } from "react-bootstrap-icons";
-// import { Select } from "antd";
+import { Trash } from "react-bootstrap-icons";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
 import { useNavigate } from "react-router-dom";
 import EditIcon2 from "../../../../assets/images/Edit-Icon-blck.png";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import {
   OrganizationMeetings,
@@ -36,7 +32,6 @@ import {
   editResolutionDate,
   newTimeFormaterAsPerUTCFullDate,
   removeDashesFromDate,
-  TimeDisplayFormat,
 } from "../../../../commen/functions/date_formater";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
 import { Pagination } from "antd";
@@ -59,8 +54,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     flag: false,
     message: "",
   });
-  //default value for table should be 50
-  const [rowSize, setRowSize] = useState(50);
+
   const [meetingStatusOption, setMeetingStatusOption] = useState([]);
   const [meetingSelectedStatusOption, setMeetingSelectedStatusOption] =
     useState([]);
@@ -69,9 +63,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const Title = useRef(null);
   const Agenda = useRef(null);
   const Organizers = useRef(null);
-  const Date = useRef(null);
   const Status = useRef(null);
-  const Name = useRef(null);
   const Host = useRef(null);
   const Attendee = useRef(null);
   const From = useRef(null);
@@ -291,7 +283,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       title: t("Title"),
       dataIndex: "title",
       key: "title",
-      // width: "50px",
       align: "left",
       sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
       render: (text, record) => {
@@ -303,36 +294,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "agenda",
       key: "agenda",
       align: "left",
-      // render: (text, record) => {
-      //   return (
-      //     <p className={styles["agenda-title"]}>
-      //       {record.meetingAgenda[0].objMeetingAgenda.title}
-      //     </p>
-      //   );
-      // },
     },
     {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
       align: "left",
-      // render: (text, record) => {
-      //   if (record.status === "1") {
-      //     return <p className="m-0 FontArabicRegular">UpComing</p>;
-      //   } else if (record.status === "2") {
-      //     return <p className="m-0 FontArabicRegular">Start</p>;
-      //   } else if (record.status === "3") {
-      //     return <p className="m-0 FontArabicRegular">End</p>;
-      //   } else if (record.status === "4") {
-      //     return <p className="m-0 FontArabicRegular">Cancel</p>;
-      //   } else if (record.status === "5") {
-      //     return <p className="m-0 FontArabicRegular">Reschudule</p>;
-      //   } else if (record.status === "6") {
-      //     return <p className="m-0 FontArabicRegular">Close</p>;
-      //   } else if (record.status === "7") {
-      //     return <p className="m-0 FontArabicRegular">Delete</p>;
-      //   }
-      // },
     },
     {
       title: t("Organizer"),
@@ -340,7 +307,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "host",
       align: "left",
       className: "FontArabicRegular",
-      // sorter: (a, b) => a.host.localeCompare(b.host.toLowerCase),
     },
     {
       title: t("Date-or-time"),
@@ -370,9 +336,10 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               onClick={() => {
                 handleEditOrganizatioMeeting(record);
               }}
-              className='edit-icon-edituser icon-edit-list icon-size-one beachGreen '>
+              className="edit-icon-edituser icon-edit-list icon-size-one beachGreen "
+            >
               <i>
-                <img draggable='false' src={EditIcon2} />
+                <img draggable="false" alt="" src={EditIcon2} />
               </i>
             </div>
             <i style={{ cursor: "pointer", color: "#000" }}>
@@ -435,12 +402,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingModal(false);
     setFilterBarMeetingModal(false);
     setMeetingId(meetingID);
-    // setMeetingStatusId(StatusID);
   };
 
   const handleMeetingAtendees = (a, modalMeetingStates) => {
     let newVAl = false;
-    let arr = a.meetingAttendees.map((aA) => {
+    a.meetingAttendees.map((aA) => {
       if (
         aA.user.name
           .toLowerCase()
@@ -468,7 +434,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   const handleAllMeetingAtendees = (a, value) => {
     let newVAl = false;
-    let arr = a.meetingAttendees.map((aA) => {
+    a.meetingAttendees.map((aA) => {
       if (aA.user.name.toLowerCase().includes(value.toLowerCase())) {
         newVAl = true;
       }
@@ -478,7 +444,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   const handleAllMeetingAgenda = (a, value) => {
     let newVAl = false;
-    let arr = a.meetingAgenda.map((aA) => {
+    a.meetingAgenda.map((aA) => {
       if (
         aA.objMeetingAgenda.title.toLowerCase().includes(value.toLowerCase())
       ) {
@@ -743,8 +709,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   return (
     <>
       <Container>
-        <Row className='mt-3 row'>
-          <Col lg={3} md={3} sm={6} xs={12} className='p-0'>
+        <Row className="mt-3 row">
+          <Col lg={3} md={3} sm={6} xs={12} className="p-0">
             <label className={styles["Meeting-Main-Heading"]}>
               {t("All-meetings")}
             </label>
@@ -754,20 +720,22 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
             md={6}
             sm={6}
             xs={12}
-            className={styles["searchbar-Meeting-textfield"]}>
+            className={styles["searchbar-Meeting-textfield"]}
+          >
             <TextField
-              applyClass='form-control2'
-              className='mx-1'
+              applyClass="form-control2"
+              className="mx-1"
               placeholder={t("Title")}
-              labelclass='filter'
+              labelclass="filter"
               change={onAllSearch}
             />
             <div className={styles["MeetingfilterModal"]}>
               <img
-                draggable='false'
+                draggable="false"
                 src={Paymenthistoryhamberge}
                 width={18}
                 height={18}
+                alt=""
                 onClick={openFilterModal}
               />
             </div>
@@ -781,9 +749,10 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 <ResultMessage
                   icon={
                     <img
-                      draggable='false'
+                      draggable="false"
                       src={NoMeetingsIcon}
-                      className='nodata-table-icon'
+                      alt=""
+                      className="nodata-table-icon"
                     />
                   }
                   title={
@@ -799,7 +768,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 <Table
                   rows={rows}
                   column={AllMeetingColumn}
-                  className='AllUserTable'
+                  className="AllUserTable"
                   scroll={{ y: 320 }}
                   pagination={false}
                 />
@@ -813,7 +782,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               sm={12}
               md={12}
               lg={12}
-              className='d-flex justify-content-center my-2 pagination-groups-table'>
+              className="d-flex justify-content-center my-2 pagination-groups-table"
+            >
               <Pagination
                 total={totalRecords}
                 locale={{
@@ -841,7 +811,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           onHide={handleClose}
           ButtonTitle={ModalTitle}
           centered
-          modalHeaderClassName='Edit-Meetings-Modal'
+          modalHeaderClassName="Edit-Meetings-Modal"
           size={
             meetingModal && meetingDeleteModal === "sm"
               ? meetingModal && meetingDeleteModal === "sm"
@@ -858,15 +828,16 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         md={12}
                         sm={12}
                         xs={12}
-                        className='d-flex justify-content-start'>
+                        className="d-flex justify-content-start"
+                      >
                         <label className={styles["Meeting-label-heading"]}>
                           {t("Edit")}
                         </label>
                       </Col>
                     </Row>
 
-                    <Row className='border-bottom margin-left-20 margin-right-20'>
-                      <Col lg={6} md={6} sm={6} xs={12} className='p-0'>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={6} xs={12} className="p-0">
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Title")}
                         </p>
@@ -879,16 +850,16 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           className={styles["formcontrol-names-fields-Meeting"]}
                           maxLength={200}
                           disabled={true}
-                          applyClass='form-control2'
-                          name='Titles'
+                          applyClass="form-control2"
+                          name="Titles"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Titles}
                         />
                       </Col>
                     </Row>
 
-                    <Row className='border-bottom margin-left-20 margin-right-20'>
-                      <Col lg={6} md={6} sm={12} xs={12} className='p-0'>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={12} xs={12} className="p-0">
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Agenda")}
                         </p>
@@ -902,8 +873,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                             enterKeyHandler(event, Organizers)
                           }
                           maxLength={200}
-                          applyClass='form-control2'
-                          name='Agendas'
+                          applyClass="form-control2"
+                          name="Agendas"
                           disabled={true}
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Agendas}
@@ -911,8 +882,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row className='border-bottom margin-left-20 margin-right-20'>
-                      <Col lg={6} md={6} sm={12} xs={12} className='p-0'>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={12} xs={12} className="p-0">
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Organizer")}
                         </p>
@@ -927,16 +898,16 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           }
                           maxLength={200}
                           disabled={true}
-                          applyClass='form-control2'
-                          name='Organizers'
+                          applyClass="form-control2"
+                          name="Organizers"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Organizers}
                         />
                       </Col>
                     </Row>
 
-                    <Row className='border-bottom margin-left-20 margin-right-20'>
-                      <Col lg={6} md={6} sm={12} xs={12} className='p-0'>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={12} xs={12} className="p-0">
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Date-or-time")}
                         </p>
@@ -944,15 +915,15 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <Form.Control
                           disabled
-                          applyClass='form-control2'
+                          applyClass="form-control2"
                           className={styles["formcontrol-names-fields-Meeting"]}
                           value={modalEditMeetingStates.DateTime}
                         />
                       </Col>
                     </Row>
 
-                    <Row className='border-bottom margin-left-20 margin-right-20'>
-                      <Col lg={6} md={6} sm={12} xs={12} className='p-0'>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={12} xs={12} className="p-0">
                         <p className={styles["Status-Name-label"]}>
                           {t("Status")}
                         </p>
@@ -962,17 +933,18 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         md={6}
                         sm={12}
                         xs={12}
-                        className='All-meeting-col'>
+                        className="All-meeting-col"
+                      >
                         <Select
                           ref={Statuses}
                           options={meetingStatusOption}
                           onKeyDown={(event) => enterKeyHandler(event, Titles)}
-                          name='Statuses'
+                          name="Statuses"
                           className={
                             styles["selectbox-Meeting-organizationrole"]
                           }
                           placeholder={t("Please-select")}
-                          applyClass='form-control2'
+                          applyClass="form-control2"
                           onChange={changeStatusEditModal}
                           styles={borderChanges}
                           value={{
@@ -1010,9 +982,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           }
                           ref={Title}
                           onKeyDown={(event) => enterKeyHandler(event, Agenda)}
-                          name='Title'
+                          name="Title"
                           placeholder={t("Title")}
-                          applyClass='form-control2'
+                          applyClass="form-control2"
                           onChange={fieldValidate}
                           value={modalMeetingStates.Title}
                         />
@@ -1027,9 +999,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           }
                           ref={Agenda}
                           onKeyDown={(event) => enterKeyHandler(event, Status)}
-                          name='Agenda'
+                          name="Agenda"
                           placeholder={t("Agenda")}
-                          applyClass='form-control2'
+                          applyClass="form-control2"
                           onChange={fieldValidate}
                           value={modalMeetingStates.Agenda}
                         />
@@ -1042,7 +1014,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         md={3}
                         sm={12}
                         xs={12}
-                        className='All-meeting-col'>
+                        className="All-meeting-col"
+                      >
                         <Select
                           ref={Status}
                           onKeyDown={(event) => enterKeyHandler(event, Host)}
@@ -1052,9 +1025,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                             ]
                           }
                           options={meetingStatusOption}
-                          name='Status'
+                          name="Status"
                           placeholder={t("Select")}
-                          applyClass='form-control2'
+                          applyClass="form-control2"
                           onChange={handleMeetingStatus}
                           value={meetingSelectedStatusOption}
                           styles={borderChanges}
@@ -1069,9 +1042,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) =>
                             enterKeyHandler(event, Attendee)
                           }
-                          name='Host'
+                          name="Host"
                           placeholder={t("Organizer")}
-                          applyClass='form-control2'
+                          applyClass="form-control2"
                           onChange={fieldValidate}
                           value={modalMeetingStates.Host}
                         />
@@ -1086,23 +1059,24 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           }
                           ref={Attendee}
                           onKeyDown={(event) => enterKeyHandler(event, From)}
-                          name='Attendee'
+                          name="Attendee"
                           placeholder={t("Attendee")}
-                          applyClass='form-control2'
+                          applyClass="form-control2"
                           onChange={fieldValidate}
                           value={modalMeetingStates.Attendee}
                         />
                       </Col>
                     </Row>
 
-                    <Row className='mt-2'>
+                    <Row className="mt-2">
                       <Col
                         lg={6}
                         md={6}
                         sm={12}
                         xs={12}
-                        className='PaymentHistory-Datpickers'>
-                        <span className='mt-3 FontArabicRegular'>
+                        className="PaymentHistory-Datpickers"
+                      >
+                        <span className="mt-3 FontArabicRegular">
                           {t("From")}
                         </span>
                         <DatePicker
@@ -1110,8 +1084,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, To)}
                           selected={fromDate}
                           onChange={(date) => setFromDate(date)}
-                          className='form-control '
-                          name='From'
+                          className="form-control "
+                          name="From"
                           placeholder={t("From")}
                         />
                       </Col>
@@ -1120,18 +1094,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         md={6}
                         sm={12}
                         xs={12}
-                        className='PaymentHistory-Datpickers'>
-                        <span className='mt-3 FontArabicRegular'>
+                        className="PaymentHistory-Datpickers"
+                      >
+                        <span className="mt-3 FontArabicRegular">
                           {t("To")}
                         </span>
-                        <Form.Label className='d-none'></Form.Label>
+                        <Form.Label className="d-none"></Form.Label>
                         <DatePicker
                           ref={To}
                           onKeyDown={(event) => enterKeyHandler(event, To)}
                           selected={toDate}
                           onChange={(date) => setToDate(date)}
-                          className='form-control FontArabicRegular'
-                          name='To'
+                          className="form-control FontArabicRegular"
+                          name="To"
                           placeholder={t("To")}
                         />
                       </Col>
@@ -1147,7 +1122,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-center'>
+                          className="d-flex justify-content-center"
+                        >
                           <p className={styles["delete-modal-title"]}>
                             {t("Are-you-sure-you-want-to-delete-this-meeting")}
                           </p>
@@ -1168,7 +1144,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     md={12}
                     sm={12}
                     xs={12}
-                    className='d-flex justify-content-end'>
+                    className="d-flex justify-content-end"
+                  >
                     <Button
                       text={t("Update")}
                       onClick={() =>
@@ -1182,13 +1159,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   </Col>
                 </Row>
               ) : filterBarMeetingModal ? (
-                <Row className='mt-3 mb-4 me-3'>
+                <Row className="mt-3 mb-4 me-3">
                   <Col
                     lg={6}
                     md={6}
                     sm={6}
                     xs={12}
-                    className='d-flex justify-content-end'>
+                    className="d-flex justify-content-end"
+                  >
                     <Button
                       text={t("Reset")}
                       className={styles["icon-modalmeeting-ResetBtn"]}
@@ -1201,7 +1179,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     md={6}
                     sm={6}
                     xs={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <Button
                       className={styles["icon-modalmeeting-SearchBtn"]}
                       text={t("Search")}
@@ -1211,18 +1190,18 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 </Row>
               ) : meetingDeleteModal ? (
                 <Col sm={12} md={12} lg={12}>
-                  <Row className='mb-4'>
+                  <Row className="mb-4">
                     <Col
                       lg={6}
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-end'>
+                      className="d-flex justify-content-end"
+                    >
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
                         onClick={() => setMeetingDeleteModal(false)}
-                        // onClick={closeOnUpdateBtn}
                       />
                     </Col>
 
@@ -1231,7 +1210,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-start'>
+                      className="d-flex justify-content-start"
+                    >
                       <Button
                         text={t("Confirm")}
                         className={styles["icon-modalmeeting-confirm"]}
