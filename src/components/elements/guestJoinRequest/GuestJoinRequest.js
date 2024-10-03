@@ -7,7 +7,10 @@ import styles from "./GuestJoinRequest.module.css";
 import { useTranslation } from "react-i18next";
 import CrossIcon from "./../../layout/talk/talk-Video/video-images/CloseIcon.png";
 import ProfileIcon from "./../../layout/talk/talk-Video/video-images/Profile_Icon.png";
-import { guestJoinPopup } from "../../../store/actions/VideoFeature_actions";
+import {
+  guestJoinPopup,
+  participantWaitingListBox,
+} from "../../../store/actions/VideoFeature_actions";
 import { admitRejectAttendeeMainApi } from "../../../store/actions/Guest_Video";
 
 const GuestJoinRequest = () => {
@@ -58,9 +61,14 @@ const GuestJoinRequest = () => {
     };
   }, []);
 
+  const handleCLickView = () => {
+    dispatch(participantWaitingListBox(true));
+    dispatch(guestJoinPopup(false));
+  };
+
   return (
     <div className={styles["box-positioning"]}>
-      <Container className="d-flex justify-content-center align-items-center">
+      <Container className='d-flex justify-content-center align-items-center'>
         {/* <Card className={styles["card-ui"]}> */}
         {/* <img
             onClick={() => dispatch(guestJoinPopup(false))}
@@ -107,24 +115,28 @@ const GuestJoinRequest = () => {
             <div className={styles["avatars"]}>
               <img
                 src={ProfileIcon}
-                alt="Avatar 1"
+                alt='Avatar 1'
                 className={styles["avatar"]}
               />
               <img
                 src={ProfileIcon}
-                alt="Avatar 2"
+                alt='Avatar 2'
                 className={styles["avatar"]}
               />
               <img
                 src={ProfileIcon}
-                alt="Avatar 3"
+                alt='Avatar 3'
                 className={styles["avatar"]}
               />
             </div>
             <p className={styles["text"]}>
               Multiple people want to join the meeting.
             </p>
-            <Button className={styles["title-deny"]} text={t("View")} />
+            <Button
+              className={styles["title-deny"]}
+              text={t("View")}
+              onClick={handleCLickView}
+            />
           </div>
         </Card>
       </Container>

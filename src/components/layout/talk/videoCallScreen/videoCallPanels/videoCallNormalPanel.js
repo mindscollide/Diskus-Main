@@ -29,7 +29,7 @@ const VideoPanelNormal = () => {
 
   const { videoFeatureReducer, VideoMainReducer, GuestVideoReducer } =
     useSelector((state) => state);
-  console.log(videoFeatureReducer, "GuestVideoReducerGuestVideoReducer")
+  console.log(videoFeatureReducer, "GuestVideoReducerGuestVideoReducer");
   let currentUserID = Number(localStorage.getItem("userID"));
   // let currentUserName = localStorage.getItem('name')
 
@@ -292,9 +292,15 @@ const VideoPanelNormal = () => {
                 <Row>
                   <>
                     <Col
-                      lg={videoFeatureReducer.participantWaitinglistBox ? 9 : 12}
-                      md={videoFeatureReducer.participantWaitinglistBox ? 9 : 12}
-                      sm={videoFeatureReducer.participantWaitinglistBox ? 9 : 12}>
+                      lg={
+                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                      }
+                      md={
+                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                      }
+                      sm={
+                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                      }>
                       <div
                         className={
                           videoFeatureReducer.NormalizeVideoFlag === true &&
@@ -327,7 +333,15 @@ const VideoPanelNormal = () => {
                       </div>
                     </Col>
                     {videoFeatureReducer.participantWaitinglistBox ? (
-                      <Col lg={3} md={3} sm={3} className='ps-0'>
+                      <Col
+                        lg={3}
+                        md={3}
+                        sm={3}
+                        className={`${
+                          videoFeatureReducer.participantWaitinglistBox
+                            ? "ParticipantsWaiting_In"
+                            : "ParticipantsWaiting_Out"
+                        } ps-0`}>
                         <VideoCallParticipants />
                       </Col>
                     ) : null}

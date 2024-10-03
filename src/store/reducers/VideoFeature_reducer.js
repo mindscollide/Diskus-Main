@@ -31,8 +31,8 @@ const initialState = {
   ParticipantPopupFlag: false,
   MinimizeParticipantPopupFlag: false,
   VideoChatMessagesFlag: false,
-  ShowGuestPopup: false,
-  participantWaitinglistBox: true
+  ShowGuestPopup: true,
+  participantWaitinglistBox: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -253,12 +253,16 @@ const videoFeatureReducer = (state = initialState, action) => {
         ShowGuestPopup: action.response,
       };
     }
-    
+
     case actions.PARTICIPANT_LIST_USERS: {
+      console.log(
+        action,
+        "PARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERS"
+      );
       return {
         ...state,
-        participantWaitinglistBox: action.payload
-      }
+        participantWaitinglistBox: action.response,
+      };
     }
 
     default:

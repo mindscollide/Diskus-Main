@@ -5,6 +5,8 @@ import CrossIcon from "../../../../../assets/images/VideoCall/Cross_icon_videoCa
 import { Button, TextField } from "../../../../elements";
 import UserImage from "../../../../../assets/images/user.png";
 import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const names = [
   "John",
@@ -70,6 +72,8 @@ const names = [
 
 const VideoCallParticipants = () => {
   const [participantsList, setPartcipantList] = useState(names);
+  const {videoFeatureReducer} =useSelector(state => state) 
+  const dispatch = useDispatch()
   const [searchValue, setSearchValue] = useState("");
   const handleChangeSearchParticipant = (e) => {
     const { value } = e.target;
@@ -80,7 +84,7 @@ const VideoCallParticipants = () => {
       setPartcipantList(findisExist);
   };
   return (
-    <section className={styles["WaitingParticipantBox"]}>
+    <section className={videoFeatureReducer.NormalizeVideoFlag ?  styles["WaitingParticipantBoxNorm"] : styles["WaitingParticipantBox"]}>
       <Row>
         <Col
           sm={12}
@@ -92,7 +96,7 @@ const VideoCallParticipants = () => {
           </span>
           <img
             src={CrossIcon}
-            onClick={() => participantWaitingListBox(false)}
+            onClick={() => dispatch(participantWaitingListBox(false))}
             style={{ display: "block", objectFit: "cover" }}
           />
         </Col>
@@ -120,7 +124,7 @@ const VideoCallParticipants = () => {
           </div>
         </Col>
         <Col sm={12} md={12} lg={12}>
-          <div className={styles["AcceptAndDeniedManual"]}>
+          <div className={videoFeatureReducer.NormalizeVideoFlag  ? styles["AcceptAndDeniedManual_Nor"] : styles["AcceptAndDeniedManual"]}>
             {participantsList?.length > 0 &&
               participantsList.map((data, index) => {
                 return (

@@ -6,6 +6,7 @@
   padding: 20px;
   height: 100%;
 }
+
 .waiting_participants_box_title {
   font-size: 12px;
   font-weight: 600;
@@ -25,6 +26,13 @@
   margin: 0 0 10px 0;
   padding: 10px 15px;
   max-height: 49vh;
+  overflow-y: auto;
+}
+.AcceptAndDeniedManual_Nor {
+  background-color: rgba(246, 249, 252, 1);
+  margin: 0 0 10px 0;
+  padding: 10px 15px;
+  max-height: 23vh;
   overflow-y: auto;
 }
 .denyAllBtn {

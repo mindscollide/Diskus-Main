@@ -223,10 +223,9 @@ const participantWaitingListBox = (response) => {
   console.log(response, "responseresponseresponse");
   return {
     type: actions.PARTICIPANT_LIST_USERS,
-    payload: response,
+    response: response,
   };
 };
-
 
 export {
   participantWaitingListBox,
