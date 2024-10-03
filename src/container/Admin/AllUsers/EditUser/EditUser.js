@@ -5,10 +5,7 @@ import "./../../../../i18n";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
 import { useTranslation } from "react-i18next";
 import EditIcon2 from "../../../../assets/images/Edit-Icon-blck.png";
-import {
-  validateEmailEnglishAndArabicFormat,
-  validationEmail,
-} from "../../../../commen/functions/validations";
+import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 import {
   countryName,
   countryNameforPhoneNumber,
@@ -16,7 +13,6 @@ import {
 import ReactFlagsSelect from "react-flags-select";
 
 import Select from "react-select";
-// import { Select } from "antd";
 import {
   Button,
   TextField,
@@ -40,7 +36,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const EditUser = ({ show, setShow, ModalTitle }) => {
+const EditUser = ({ ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
@@ -65,7 +61,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const [rows, setRows] = useState([]);
 
-  const [rowSize, setRowSize] = useState(50);
   const [allUserData, setAllUserData] = useState([]);
 
   //for enter key
@@ -124,26 +119,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
-    console.log("Country", countryName);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
     setEditUserSection({ ...editUserSection, FK_CCID: a.id });
     console.log("Selected-Values", a);
-  };
-
-  const PhoneHandler = async (selectedOptions) => {
-    if (selectedOptions.phone != "") {
-      setEditUserSection({
-        ...editUserSection,
-        ["MobileNumber"]: selectedOptions.phone,
-      });
-    } else {
-      setEditUserSection({
-        ...editUserSection,
-        ["MobileNumber"]: "",
-      });
-    }
   };
 
   //for reset handler
@@ -177,7 +157,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     let value = e.target.value.trimStart();
 
     if (name === "Name" && value !== "") {
-      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (value !== "") {
         if (value.length <= 100) {
           setEditUserSection({
@@ -198,7 +177,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       });
     }
     if (name === "Designation" && value !== "") {
-      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (value !== "") {
         if (value.length <= 100) {
           setEditUserSection({
@@ -236,7 +214,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     //for Filter section
     if (name === "Names" && value !== "") {
       setErrorBar(false);
-      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (value !== "") {
         if (value.length <= 100) {
           setFilterFieldSection({
@@ -338,7 +315,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     await dispatch(
       deleteUserAction(navigate, dataForDelete, setDeleteEditModal, newData, t)
     );
-    // await dispatch(AllUserAction(newData, t));
   };
 
   //close modal on update button it's created temperary to check modal
@@ -370,7 +346,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       RequestingUserID: parseInt(RequestingUserID),
     };
     await dispatch(AllUserAction(navigate, newData, t));
-    // setFilterBarModal(false);
   };
 
   //Open modal on reset button it's created temperary to check modal
@@ -399,15 +374,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         return countryFullData;
       }
     );
-    console.log(countryNameData, "countryNameDatacountryNameData");
     let selectedCountryFromObject = Object.values(countryNameData).find(
       (SlectedDataOfCountry, index) => {
-        console.log(SlectedDataOfCountry, data, "data");
         return SlectedDataOfCountry.id === data.CountryCode;
       }
     );
     setSelected(selectedCountryFromObject.primary);
-    // setSelected(selectedCountryFromObject.primary);
 
     await setEditOrganization(editorganization);
     var edituserrole = {
@@ -426,20 +398,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setEditModal(true);
   };
 
-  // Open Success modal after update the success
-  const updateSuccessFull = async () => {
-    setIsUpdateSuccessfully(true);
-  };
-
   // Close Success modal
   const closeUpdateSuccessFull = () => {
-    // let OrganizationID = localStorage.getItem("organizationID");
-    // let RequestingUserID = localStorage.getItem("userID");
-    // let newData = {
-    //   OrganizationID: parseInt(OrganizationID),
-    //   RequestingUserID: parseInt(RequestingUserID),
-    // };
-    // dispatch(AllUserAction(newData, t, setIsUpdateSuccessfully));
     setIsUpdateSuccessfully(false);
   };
 
@@ -478,10 +438,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       UserID: data.UserID,
       UserRoleID: data.UserRoleID,
     };
-    console.log("openDeleteModal", editData);
 
     await setEditUserSection(editData);
-    console.log("openOnResetBtn", editData);
     setDeleteEditModal(true);
     setFilterBarModal(false);
   };
@@ -542,7 +500,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             </a>
           );
         }
-        // return <p className={styles["userEmail"]}>{text}</p>;
       },
     },
     {
@@ -652,7 +609,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Delete",
       align: "center",
       render: (text, record) => {
-        console.log("DeleteDeleteDeleteDeleteDelete", text, record.UserRoleID);
         if (record.UserStatus === "Closed") {
           return <></>;
         } else {
@@ -668,7 +624,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   className="edit-icon-edituser icon-edit-list icon-size-one beachGreen"
                 >
                   <i>
-                    <img draggable="false" src={EditIcon2} />
+                    <img draggable="false" src={EditIcon2} alt="" />
                   </i>
                 </div>
                 <i style={{ cursor: "pointer", color: "#000" }}>
@@ -735,55 +691,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setForSearchUserRole([]);
     setFilterBarModal(false);
   };
-  console.log("filter", filterFieldSection);
-
-  // const searchFunc = () => {
-  //   var y = [...allUserData];
-  //   let x = y.filter((a) => {
-  //     console.log("filter", a);
-  //     return (
-  //       (filterFieldSection.Names != ""
-  //         ? a.Names.toLowerCase().includes(
-  //           filterFieldSection.Names.toLowerCase()
-  //         )
-  //         : a.Names) &&
-  //       (filterFieldSection.Emails.value !== ""
-  //         ? a.Emails.toLowerCase().includes(
-  //           filterFieldSection.Emails.value.toLowerCase()
-  //         )
-  //         : a.Emails) &&
-  //       (filterFieldSection.OrganizationRoles != ""
-  //         ? a.OrganizationRole === filterFieldSection.OrganizationRoles
-  //         : a.OrganizationRole) &&
-  //       (filterFieldSection.UserRoles != ""
-  //         ? a.UserRole === filterFieldSection.UserRoles
-  //         : a.UserRole) &&
-  //       (filterFieldSection.UserStatus != ""
-  //         ? a.UserStatus === filterFieldSection.UserStatus
-  //         : a.UserStatus)
-  //     );
-  //   });
-
-  //   console.log("filteredData", x);
-
-  //   setRows([...x]);
-  //   setFilterBarModal(false);
-  //   setFilterFieldSection({
-  //     Names: "",
-  //     OrganizationRoles: "",
-  //     UserStatus: "",
-  //     UserRoles: "",
-  //     Emails: {
-  //       value: "",
-  //       errorMessage: "",
-  //       errorStatus: false,
-  //     },
-  //   });
-  //   setForSearchOrganization([]);
-  //   setForSearchUserStatus([]);
-  //   setForSearchUserRole([]);
-  //   setFilterBarModal(false);
-  // };
 
   const onAllSearch = (e) => {
     let value = e.target.value;
@@ -811,8 +718,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           : a.UserStatus)
       );
     });
-
-    console.log("filteredData", x);
 
     setRows([...x]);
   };
@@ -862,7 +767,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         };
         tem.push(convertValue);
       });
-      console.log("setAllUserData", tem);
       setAllUserData(tem);
     }
   }, [adminReducer.AllOrganizationUserList]);
@@ -870,11 +774,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
-   
       adminReducer.UpdateOrganizationMessageResponseMessage !==
         t("The-user-has-been-edited-successfully")
     ) {
-      console.log("checkreponce");
       setOpen({
         ...open,
         open: true,
@@ -895,8 +797,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.AllOrganizationResponseMessage !==
         t("The-user-has-been-edited-successfully")
     ) {
-      console.log("checkreponce");
-
       setOpen({
         ...open,
         open: true,
@@ -913,11 +813,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
-      adminReducer.DeleteOrganizationMessageResponseMessage !==
-        "" 
+      adminReducer.DeleteOrganizationMessageResponseMessage !== ""
     ) {
-      console.log("checkreponce");
-
       setOpen({
         ...open,
         open: true,
@@ -1055,7 +952,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
-  console.log("StatusHandler", forSearchUserStatus);
 
   const OrganaizationRoleHandler = async (selectedOptions) => {
     setForSearchOrganization(selectedOptions);
@@ -1238,9 +1134,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const handleClose = () => {
     setFilterBarModal(false);
     setEditModal(false);
-    // setIsUpdateSuccessfully(false);
     setDeleteEditModal(false);
-    // setIsUserNotUpdate(false)
   };
 
   return (
@@ -1269,6 +1163,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <img
               draggable="false"
               src={Paymenthistoryhamberge}
+              alt=""
               width={18}
               height={18}
               onClick={openFilterModal}
@@ -1391,32 +1286,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
 
-                  {/* <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>{t("Mobile")}</p>
-                    </Col>
-
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={12}
-                      xs={12}
-                      className="d-flex justify-content-center align-items-center "
-                    >
-                      <PhoneInput
-                        ref={MobileNumber}
-                        value={editUserSection.MobileNumber}
-                        onChange={(phone) => PhoneHandler({ phone })}
-                        className={styles["formcontrol-phone-fields"]}
-                        name="Mobile"
-                        defaultCountry="PK"
-                        maxLength={50}
-                        placeholder={t("Enter-phone-number")}
-                        countryCodeEditable={false}
-                      />
-                    </Col>
-                  </Row> */}
-
                   <Row className={styles["lineOnBottom"]}>
                     <Col
                       lg={5}
@@ -1440,13 +1309,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           <ReactFlagsSelect
                             fullWidth={false}
                             selected={selected}
-                            // onSelect={(code) => setSelected(code)}
                             onSelect={handleSelect}
                             placeholder={"Select Co...."}
                             customLabels={countryName}
                             searchable={true}
-                            // onChange={(phone) => PhoneHandler({ phone })}
-                            // className={styles["react-flag"]}
                           />
                         </Col>
                         <Col sm={12} md={9} lg={9}>
@@ -1461,7 +1327,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                             applyClass="form-control2"
                             maxLength={15}
                             minLength={4}
-                            // onChange={PhoneHandler}
                             onChange={EditUserHandler}
                             value={editUserSection.MobileNumber || ""}
                           />
@@ -1799,13 +1664,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Reset")}
                       className={styles["icon-modal-ResetBtn"]}
                       onClick={editResetHandler}
-                      // onClick={closeOnUpdateBtn}
                     />
                     <Button
                       className={styles["icon-modal-SearchBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
-                      // onClick={openDeleteModal}
                     />
                   </Col>
                 </Row>

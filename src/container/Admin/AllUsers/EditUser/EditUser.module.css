@@ -1,7 +1,6 @@
 .tablecolumnrow {
   margin-top: 15px !important;
   position: relative !important;
-  /* transition: opacity 0.3s; */
   overflow: auto !important;
   padding: 20px !important;
   background: #fff !important;
@@ -30,7 +29,6 @@
 }
 
 .Edit-label-heading {
-  /* margin-top: -15px; */
   font-weight: 600 !important;
   font-size: 35px !important;
   color: #6172d6 !important;
@@ -315,7 +313,6 @@ body[dir="rtl"] .formcontrol-fieldselectfor-filtermodal {
 
 .formcontrol-Phone-field {
   margin-top: 20px;
-  /* margin-left: 20px !important; */
 }
 
 .filterModal {
@@ -361,12 +358,6 @@ body[dir="rtl"] .deleteModal-message {
   color: blue !important;
 }
 
-/* .filter-icon-EditUser {
-  position: "absolute" !important;
-  top: "18px" !important;
-  right: "30px" !important;
-  font-size: "21px" !important;
-} */
 .userName {
   width: 120px !important;
   text-overflow: ellipsis !important;
@@ -422,7 +413,6 @@ body[dir="rtl"] .userDesgination {
   color: #f16b6b;
   visibility: visible;
   font-weight: 600 !important;
-
 }
 
 body[dir="rtl"] .errorMessage-Edit {
@@ -519,7 +509,6 @@ body[dir="rtl"] .react-flag-Edit button[aria-expanded="true"]:after {
   white-space: nowrap;
   overflow: hidden;
   font-weight: 600 !important;
-  /* font-weight: 600; */
 }
 
 body[dir="rtl"] .Edit-title-col-Name-Bold {
