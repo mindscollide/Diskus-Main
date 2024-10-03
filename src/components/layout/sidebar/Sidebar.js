@@ -27,10 +27,8 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
   LeaveCurrentMeetingOtherMenus,
-  LeaveCurrentMeeting,
   currentMeetingStatus,
 } from "../../../store/actions/NewMeetingActions";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { showCancelModalmeetingDeitals } from "../../../store/actions/NewMeetingActions";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
@@ -54,7 +52,6 @@ const Sidebar = () => {
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-
   const [meetingNavigation, setMeetingNavigation] = useState("Meeting");
   const [todoListNavigation, setTodoListNavigation] = useState("todolist");
   const [calendarNavigation, setCalendarNavigation] = useState("calendar");
@@ -143,7 +140,6 @@ const Sidebar = () => {
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t));
         } else {
           let searchData = {
             Date: "",
@@ -157,8 +153,6 @@ const Sidebar = () => {
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t));
-          // localStorage.setItem("MeetingCurrentView", 1);
         }
         dispatch(viewMeetingFlag(false));
         dispatch(meetingDetailsGlobalFlag(false));
@@ -175,7 +169,6 @@ const Sidebar = () => {
         dispatch(uploadGlobalFlag(false));
       }
     }
-    // navigate(`/${meetingNavigation}`);
   };
 
   // Todo Sidebar Click
@@ -212,7 +205,6 @@ const Sidebar = () => {
         dispatch(currentMeetingStatus(0));
       }
     }
-    // navigate(`/${todoListNavigation}`);
   };
 
   //Calendar Sidebar Click
@@ -249,10 +241,8 @@ const Sidebar = () => {
         dispatch(currentMeetingStatus(0));
       }
     }
-    // navigate(`/${calendarNavigation}`);
   };
 
-  //Notes Sidebar Click
   const handleMeetingSidebarNotes = () => {
     if (
       (NewMeetingreducer.scheduleMeetingPageFlag === true ||
@@ -286,7 +276,6 @@ const Sidebar = () => {
         dispatch(currentMeetingStatus(0));
       }
     }
-    // navigate(`/${notesNavigation}`);
   };
 
   return (
@@ -308,10 +297,6 @@ const Sidebar = () => {
               disabled={true}
               className="new_sidebar p-0 d-flex justify-content-center gap-5 align-items-center flex-column"
             >
-              {/* <Nav.Link as={Link} to="home" eventKey="link-1">
-          <img src={Logo} className="mb-5" />
-        </Nav.Link> */}
-
               <>
                 {/* Meeting Menu */}
                 <Nav.Link
@@ -320,7 +305,6 @@ const Sidebar = () => {
                   to="Meeting"
                   eventKey="link-2"
                   data-tut="meeting-iconSidebar"
-                  // className="m-0 p-0 iconSidebar"
                   className={
                     location.pathname === "/DisKus/Meeting" ||
                     location.pathname === "/Diskus/Meeting"
@@ -363,7 +347,6 @@ const Sidebar = () => {
                 </Nav.Link>
                 {/* Todo Menu */}
                 <Nav.Link
-                  // as={Link}
                   disabled={true}
                   to="todolist"
                   eventKey="link-3"
@@ -406,12 +389,9 @@ const Sidebar = () => {
                       />
                     </g>
                   </svg>
-
-                  {/* <i className="iconSidebar-note2" /> */}
                 </Nav.Link>
                 {/* Calendar Menu */}
                 <Nav.Link
-                  // as={Link}
                   disabled={true}
                   to="calendar"
                   eventKey="link-4"
@@ -495,12 +475,10 @@ const Sidebar = () => {
                       />
                     </g>
                   </svg>
-                  {/* <i className="iconSidebar-calendar" /> */}
                 </Nav.Link>
 
                 {/* FAQ Menu */}
                 <Nav.Link
-                  // as={Link}
                   disabled={true}
                   to="faq's"
                   eventKey="link-5"
@@ -703,8 +681,6 @@ const Sidebar = () => {
                       </g>
                     </g>
                   </svg>
-
-                  {/* <i className="iconSidebar-help" /> */}
                 </Nav.Link>
               </>
             </Nav>
@@ -977,7 +953,6 @@ const Sidebar = () => {
                         height="39.841"
                         viewBox="0 0 35.237 39.841"
                       >
-                        {/* <title className="tooltip">Notes </title> */}
                         <defs>
                           <linearGradient
                             id="linear-gradient"

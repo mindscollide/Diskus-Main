@@ -7,8 +7,6 @@ import TimeAgo from "timeago-react";
 import Cookies from "js-cookie";
 import MeetingChangesSvg from "../../../assets/images/meeting_changes-icon.svg";
 import "../header2/Header.css";
-import { useTour } from "@reactour/tour";
-import TextField from "../../elements/input_field/Input_field";
 import "../../../i18n.js";
 import { useTranslation } from "react-i18next";
 import {
@@ -19,12 +17,9 @@ import {
   ChatSquareText,
   X,
 } from "react-bootstrap-icons";
-import { CustomDatePicker, ResultMessage } from "../../elements";
+import { ResultMessage } from "../../elements";
 import CancelMeetingSvg from "../../../assets/images/cancel_meeting_icon.svg";
-import {
-  signOut,
-  userLogOutApiFunc,
-} from "../../../store/actions/Auth_Sign_Out";
+import { userLogOutApiFunc } from "../../../store/actions/Auth_Sign_Out";
 import { dateTime } from "../../../commen/functions/date_formater";
 import { getNotifications } from "../../../store/actions/GetUserNotification";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
@@ -62,14 +57,11 @@ const Header = ({ currentUserImage }) => {
     localStorage.setItem("globalPassowrdChecker", true);
   };
 
-  console.log("NotificationData", settingReducer);
-
   const { t, i18n } = useTranslation();
 
   // Languages
   const languages = [
     { name: "English", code: "en" },
-    // { name: "日本語", code: "ja" },
     { name: "Français", code: "fr" },
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
@@ -89,12 +81,9 @@ const Header = ({ currentUserImage }) => {
 
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
-    // document.title = t("app_title");
   }, [currentLangObj, t]);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-
-  console.log("LanguageReducer", LanguageReducer);
 
   return (
     <>
@@ -132,6 +121,7 @@ const Header = ({ currentUserImage }) => {
                                 <div className="desc-notification-user ">
                                   <img
                                     src={MeetingChangesSvg}
+                                    alt=""
                                     className="icon-class"
                                     draggable="false"
                                   />
@@ -141,6 +131,7 @@ const Header = ({ currentUserImage }) => {
                                 <div className="desc-notification-user ">
                                   <img
                                     src={MeetingChangesSvg}
+                                    alt=""
                                     className="icon-class"
                                     draggable="false"
                                   />
@@ -155,6 +146,7 @@ const Header = ({ currentUserImage }) => {
                                 <div className="desc-notification-user">
                                   <img
                                     src={CancelMeetingSvg}
+                                    alt=""
                                     className="icon-class"
                                     draggable="false"
                                   />
@@ -228,7 +220,6 @@ const Header = ({ currentUserImage }) => {
               </Dropdown.Menu>
             </Dropdown>
 
-            {/* <span>{t("languages")}</span>{" "} */}
             <select
               className={"language-dropdown" + " " + currentLanguage}
               onChange={handleChangeLocale}
@@ -249,6 +240,7 @@ const Header = ({ currentUserImage }) => {
               <Dropdown.Toggle className="dropdown-toggle">
                 <img
                   src={currentUserImage}
+                  alt=""
                   className="user-img "
                   draggable="false"
                 />
@@ -265,7 +257,6 @@ const Header = ({ currentUserImage }) => {
                   onClick={() => forgotPasswordCheck()}
                 >
                   <Nav.Link as={Link} to="forgotpassword">
-                    {/* Change Password */}
                     {t("Change-password")}
                   </Nav.Link>
                 </Dropdown.Item>
@@ -273,7 +264,6 @@ const Header = ({ currentUserImage }) => {
                   className={currentLanguage}
                   onClick={() => dispatch(userLogOutApiFunc(navigate, t))}
                 >
-                  {/* Sign Out */}
                   {t("Sign-out")}
                 </Dropdown.Item>
               </Dropdown.Menu>

@@ -38,9 +38,7 @@ import RequestExtensionModal from "../../../container/pages/UserMangement/Modals
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
 import {
   checkFeatureIDAvailability,
-  getData,
   getLocalStorageItemNonActiveCheck,
-  setData,
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 
@@ -71,7 +69,6 @@ const Header2 = ({ isVideo }) => {
   );
   const hasAdminRights = JSON.parse(localStorage.getItem("hasAdminRights"));
   const cancelSub = getLocalStorageItemNonActiveCheck("cancelSub");
-  const isTrail = localStorage.getItem("isTrial");
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
@@ -86,12 +83,8 @@ const Header2 = ({ isVideo }) => {
   const { t } = useTranslation();
   useEffect(() => {
     if (Blur !== null) {
-      console.log("Blur", Blur);
-
       setActivateBlur(true);
     } else {
-      console.log("Blur", Blur);
-
       setActivateBlur(false);
     }
   }, [Blur]);
@@ -139,10 +132,7 @@ const Header2 = ({ isVideo }) => {
   const handleModalCustomerInformation = () => {
     let userID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
-    dispatch(
-      getUserDetails(navigate, userID, t, OrganizationID)
-      // getUserDetails(navigate, userID, t, OrganizationID)
-    );
+    dispatch(getUserDetails(navigate, userID, t, OrganizationID));
   };
 
   // for modal create  handler
@@ -339,7 +329,6 @@ const Header2 = ({ isVideo }) => {
   // as huzeifa bhai said when we click on upgrade button then it'll navigate to the billing calculator page
   const handleShowUpgradedNowModal = () => {
     console.log("Clicked");
-    // dispatch(showUpgradeNowModal(true));
     navigate("/Admin/PakageDetailsUserManagement");
   };
 
@@ -364,9 +353,8 @@ const Header2 = ({ isVideo }) => {
   return (
     <>
       {activateBlur ? (
-        <Navbar className='header2-container ' sticky='top'>
-          {/* <Container> */}
-          <section className='d-flex justify-content-between w-100  align-items-center px-5'>
+        <Navbar className="header2-container " sticky="top">
+          <section className="d-flex justify-content-between w-100  align-items-center px-5">
             <Navbar.Brand
               as={Link}
               to={
@@ -380,53 +368,51 @@ const Header2 = ({ isVideo }) => {
                     : "/Admin/ManageUsers"
                   : "/DisKus"
               }
-              // onClick={homePageDashboardClick}
             >
               <img
                 src={DiskusLogoHeader}
-                alt=''
+                alt=""
                 width={120}
-                draggable='false'
+                draggable="false"
               />
             </Navbar.Brand>
-            <Nav className='ml-auto align-items-center'>
+            <Nav className="ml-auto align-items-center">
               <LanguageSelector />
-              <Nav.Link className='me-2'>
-                <Tooltip placement='topRight' title={t("Shortcuts")}>
-                  <div className='dropdown-btn_dotted'>
+              <Nav.Link className="me-2">
+                <Tooltip placement="topRight" title={t("Shortcuts")}>
+                  <div className="dropdown-btn_dotted">
                     <DropdownButton
-                      id='dropdown-btn_dotted'
-                      className='dropdown-btn_dotted'
+                      id="dropdown-btn_dotted"
+                      className="dropdown-btn_dotted"
                       disabled={true}
                       title={
                         <img
                           src={DiskusNotificationIcon}
-                          alt=''
+                          alt=""
                           width={28}
-                          draggable='false'
+                          draggable="false"
                         />
                       }
-                      onClick={dropDownMenuFunction}>
+                      onClick={dropDownMenuFunction}
+                    >
                       {checkFeatureIDAvailability(1) ? (
                         <>
                           <Dropdown.Item
-                            className='d-flex title-className'
-                            onClick={openMeetingModal}>
+                            className="d-flex title-className"
+                            onClick={openMeetingModal}
+                          >
                             <span>{t("Quick-meeting")}</span>
                           </Dropdown.Item>
                         </>
                       ) : null}
 
-                      <Dropdown.Item className='d-flex title-className'>
+                      <Dropdown.Item className="d-flex title-className">
                         {t("Upload-document")}
                       </Dropdown.Item>
-                      <Dropdown.Item className='d-flex title-className'>
+                      <Dropdown.Item className="d-flex title-className">
                         {t("Recently-added-files")}
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className='d-flex title-className'
-                        // onClick={RecentFilesTab}
-                      >
+                      <Dropdown.Item className="d-flex title-className">
                         <Nav.Link
                           as={Link}
                           to={
@@ -447,7 +433,8 @@ const Header2 = ({ isVideo }) => {
                               : "/DisKus/Minutes"
                           }
                           onClick={handleMeetingPendingApprovals}
-                          className='pendingApprovalsNav'>
+                          className="pendingApprovalsNav"
+                        >
                           {t("Pending-approvals")}
                         </Nav.Link>
                       </Dropdown.Item>
@@ -455,14 +442,14 @@ const Header2 = ({ isVideo }) => {
                   </div>
                 </Tooltip>
               </Nav.Link>
-              <Dropdown className='profilebtn-dropdown'>
-                <Dropdown.Toggle className='dropdown-toggle'>
+              <Dropdown className="profilebtn-dropdown">
+                <Dropdown.Toggle className="dropdown-toggle">
                   <img
                     src={`data:image/jpeg;base64,${currentUserProfilePic}`}
-                    className='user-img me-3 '
+                    className="user-img me-3 "
                     width={30}
-                    alt=''
-                    draggable='false'
+                    alt=""
+                    draggable="false"
                   />
 
                   <p className={`${"user-name me-2"} ${currentLanguage}`}>
@@ -470,58 +457,60 @@ const Header2 = ({ isVideo }) => {
                   </p>
                 </Dropdown.Toggle>
                 {location.pathname.includes("/Admin") ? (
-                  <Dropdown.Menu className='dropdown_menu_admin'>
+                  <Dropdown.Menu className="dropdown_menu_admin">
                     <Dropdown.Item
                       className={`${" text-black"} ${currentLanguage}`}
-                      onClick={() => forgotPasswordCheck()}>
+                      onClick={() => forgotPasswordCheck()}
+                    >
                       <Nav.Link
                         as={Link}
-                        to='CustomerInformation'
+                        to="CustomerInformation"
                         disabled={true}
-                        className='text-black'>
+                        className="text-black"
+                      >
                         {t("Customer-information")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
-                      onClick={() => forgotPasswordCheck()}>
+                      onClick={() => forgotPasswordCheck()}
+                    >
                       <Nav.Link
                         as={Link}
-                        to='changePassword'
+                        to="changePassword"
                         disabled={true}
-                        className='SignOutOptionMenu text-black'>
-                        {/* Change Password */}
+                        className="SignOutOptionMenu text-black"
+                      >
                         {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      // className={currentLanguage}
-                      onClick={modalLogoutHandler}>
-                      {/* Sign Out */}
-                      <Nav.Link className='SignOutOptionMenu text-black border-none'>
+                    <Dropdown.Item onClick={modalLogoutHandler}>
+                      <Nav.Link className="SignOutOptionMenu text-black border-none">
                         {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 ) : (
-                  <Dropdown.Menu className='Profile_dropdown_menu'>
+                  <Dropdown.Menu className="Profile_dropdown_menu">
                     {hasAdminRights && (
                       <Dropdown.Item className={currentLanguage}>
-                        <Nav.Link className='d-flex text-black FontClass'>
+                        <Nav.Link className="d-flex text-black FontClass">
                           {t("Organization-admin")}
                         </Nav.Link>
                       </Dropdown.Item>
                     )}
                     <Dropdown.Item
                       className={currentLanguage}
-                      onClick={modalUserProfileHandler}>
-                      <Nav.Link className='d-flex text-black FontClass'>
+                      onClick={modalUserProfileHandler}
+                    >
+                      <Nav.Link className="d-flex text-black FontClass">
                         {t("My-profile")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
-                      onClick={() => forgotPasswordCheck()}>
+                      onClick={() => forgotPasswordCheck()}
+                    >
                       <Nav.Link
                         as={Link}
                         to={
@@ -540,15 +529,16 @@ const Header2 = ({ isVideo }) => {
                             ? "/DisKus/Meeting"
                             : "/DisKus/setting"
                         }
-                        className='d-flex text-black FontClass'
-                        onClick={handleMeetingSidebarSettings}>
-                        {/* Change Password */}
+                        className="d-flex text-black FontClass"
+                        onClick={handleMeetingSidebarSettings}
+                      >
                         {t("Settings")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
-                      onClick={() => forgotPasswordCheck()}>
+                      onClick={() => forgotPasswordCheck()}
+                    >
                       <Nav.Link
                         as={Link}
                         to={
@@ -568,28 +558,28 @@ const Header2 = ({ isVideo }) => {
                             : "/DisKus/faq's"
                         }
                         onClick={handleMeetingSidebarFAQ}
-                        className='d-flex text-black FontClass'>
-                        {/* Change Password */}
+                        className="d-flex text-black FontClass"
+                      >
                         {t("Help")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
                       onClick={handleModalCustomerInformation}
-                      // onClick={() => forgotPasswordCheck()}
                     >
                       <Nav.Link
                         as={Link}
-                        to='changePassword'
-                        className='SignOutOptionMenu d-flex text-black  FontClass'>
+                        to="changePassword"
+                        className="SignOutOptionMenu d-flex text-black  FontClass"
+                      >
                         {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={currentLanguage}
-                      onClick={modalLogoutHandler}>
-                      {/* Sign Out */}
-                      <Nav.Link className='SignOutOptionMenu d-flex text-black border-none FontClass'>
+                      onClick={modalLogoutHandler}
+                    >
+                      <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
                         {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -617,27 +607,21 @@ const Header2 = ({ isVideo }) => {
                     : "/DisKus/faq's"
                 }
                 onClick={handleMeetingSidebarFAQ}
-                className='mx-3'>
+                className="mx-3"
+              >
                 <img
                   src={DiskusHeaderInfo}
-                  alt=''
+                  alt=""
                   width={28}
-                  draggable='false'
+                  draggable="false"
                 />
               </Nav.Link>
-              {/* {roleID != 2 && roleID != 1 ? (
-                <Nav.Link className="me-2" as={Link} to="setting">
-                  <img src={DiskusHeaderSetting} width={28} />
-                </Nav.Link>
-              ) : null} */}
             </Nav>
           </section>
-          {/* </Container> */}
         </Navbar>
       ) : (
-        <Navbar className='header2-container ' sticky='top'>
-          {/* <Container> */}
-          <section className='d-flex justify-content-between w-100  align-items-center px-5'>
+        <Navbar className="header2-container " sticky="top">
+          <section className="d-flex justify-content-between w-100  align-items-center px-5">
             <Navbar.Brand
               as={Link}
               to={
@@ -653,12 +637,13 @@ const Header2 = ({ isVideo }) => {
                     : "/Admin/ManageUsers"
                   : "/Diskus"
               }
-              onClick={homePageDashboardClick}>
+              onClick={homePageDashboardClick}
+            >
               <img
                 src={DiskusLogoHeader}
-                alt=''
+                alt=""
                 width={120}
-                draggable='false'
+                draggable="false"
               />
             </Navbar.Brand>
             {!isVideo && (
@@ -669,7 +654,8 @@ const Header2 = ({ isVideo }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='UpgradeButtonsClass'>
+                      className="UpgradeButtonsClass"
+                    >
                       {JSON.parse(localStorage.getItem("isTrial")) && (
                         <>
                           {JSON.parse(localStorage.getItem("remainingDays")) >
@@ -677,7 +663,7 @@ const Header2 = ({ isVideo }) => {
                             <>
                               {" "}
                               <span className={"trialExpireButton"}>
-                                <span className='InnerText'>
+                                <span className="InnerText">
                                   {t(
                                     "Your-trial-will-expire-in-{{remainingDays}}-days",
                                     {
@@ -689,7 +675,7 @@ const Header2 = ({ isVideo }) => {
                               </span>
                               <Button
                                 text={t("Upgrade-now")}
-                                className='UpgradeNowbutton'
+                                className="UpgradeNowbutton"
                                 onClick={handleShowUpgradedNowModal}
                               />
                             </>
@@ -704,7 +690,7 @@ const Header2 = ({ isVideo }) => {
                               {" "}
                               <Button
                                 text={t("Upgrade-now")}
-                                className='UpgradeNowbutton'
+                                className="UpgradeNowbutton"
                                 onClick={handleShowUpgradedNowModal}
                               />
                               {JSON.parse(
@@ -712,7 +698,7 @@ const Header2 = ({ isVideo }) => {
                               ) && (
                                 <Button
                                   text={t("Request-an-extention")}
-                                  className='UpgradeNowbutton'
+                                  className="UpgradeNowbutton"
                                   onClick={handleRequestExtentionModal}
                                 />
                               )}
@@ -723,37 +709,39 @@ const Header2 = ({ isVideo }) => {
                     </Col>
                   ) : null}
                 </Row>
-                <Nav className='ml-auto align-items-center'>
+                <Nav className="ml-auto align-items-center">
                   <LanguageSelector />
 
-                  <Nav.Link className='me-2'>
+                  <Nav.Link className="me-2">
                     {checkFeatureIDAvailability(1) ||
                     checkFeatureIDAvailability(13) ? (
-                      <Tooltip placement='topRight' title={t("Shortcuts")}>
-                        <div className='dropdown-btn_dotted'>
+                      <Tooltip placement="topRight" title={t("Shortcuts")}>
+                        <div className="dropdown-btn_dotted">
                           {location.pathname.includes("/Admin") ||
                           location.pathname.includes(
                             "/Admin"
                           ) ? null : roleRoute ||
                             TrialExpireSelectPac ? null : (
                             <DropdownButton
-                              id='dropdown-btn_dotted'
-                              className='dropdown-btn_dotted'
+                              id="dropdown-btn_dotted"
+                              className="dropdown-btn_dotted"
                               title={
                                 <img
                                   src={DiskusNotificationIcon}
-                                  alt=''
+                                  alt=""
                                   width={28}
-                                  draggable='false'
+                                  draggable="false"
                                 />
                               }
-                              onClick={dropDownMenuFunction}>
+                              onClick={dropDownMenuFunction}
+                            >
                               {checkFeatureIDAvailability(1) ? (
                                 <>
                                   <Dropdown.Item
-                                    className='d-flex title-className'
-                                    onClick={openMeetingModal}>
-                                    <span className='New_folder_shortcutkeys'>
+                                    className="d-flex title-className"
+                                    onClick={openMeetingModal}
+                                  >
+                                    <span className="New_folder_shortcutkeys">
                                       {t("Quick-meeting")}
                                     </span>
                                   </Dropdown.Item>
@@ -762,8 +750,7 @@ const Header2 = ({ isVideo }) => {
 
                               {checkFeatureIDAvailability(13) ? (
                                 <>
-                                  <Dropdown.Item className='d-flex title-className'>
-                                    {/* {t("Upload-document")} */}
+                                  <Dropdown.Item className="d-flex title-className">
                                     {(NewMeetingreducer.scheduleMeetingPageFlag ===
                                       true ||
                                       NewMeetingreducer.viewProposeDateMeetingPageFlag ===
@@ -779,13 +766,14 @@ const Header2 = ({ isVideo }) => {
                                     NewMeetingreducer.viewMeetingFlag ===
                                       false ? (
                                       <div
-                                        className='New_folder_shortcutkeys'
+                                        className="New_folder_shortcutkeys"
                                         onClick={() => {
                                           dispatch(
                                             showCancelModalmeetingDeitals(true)
                                           );
                                           dispatch(uploadGlobalFlag(true));
-                                        }}>
+                                        }}
+                                      >
                                         {t("Upload-document")}
                                       </div>
                                     ) : (
@@ -794,11 +782,8 @@ const Header2 = ({ isVideo }) => {
                                         handleFileUploadRequest={
                                           handleUploadFile
                                         }
-                                        // setProgress={setProgress}
                                       />
                                     )}
-
-                                    {/* <input type="file" /> */}
                                   </Dropdown.Item>
                                 </>
                               ) : null}
@@ -806,15 +791,16 @@ const Header2 = ({ isVideo }) => {
                               {checkFeatureIDAvailability(13) ? (
                                 <>
                                   <Dropdown.Item
-                                    className='d-flex title-className'
-                                    onClick={RecentFilesTab}>
-                                    <span className='New_folder_shortcutkeys'>
+                                    className="d-flex title-className"
+                                    onClick={RecentFilesTab}
+                                  >
+                                    <span className="New_folder_shortcutkeys">
                                       {t("Recently-added-files")}
                                     </span>
                                   </Dropdown.Item>
                                 </>
                               ) : null}
-                              <Dropdown.Item className='d-flex title-className'>
+                              <Dropdown.Item className="d-flex title-className">
                                 <Nav.Link
                                   as={Link}
                                   to={
@@ -835,8 +821,9 @@ const Header2 = ({ isVideo }) => {
                                       : "/DisKus/Minutes"
                                   }
                                   onClick={handleMeetingPendingApprovals}
-                                  className='pendingApprovalsNav'>
-                                  <span className='New_folder_shortcutkeys'>
+                                  className="pendingApprovalsNav"
+                                >
+                                  <span className="New_folder_shortcutkeys">
                                     {t("Pending-approvals")}
                                   </span>
                                 </Nav.Link>
@@ -848,34 +835,32 @@ const Header2 = ({ isVideo }) => {
                     ) : null}
                   </Nav.Link>
 
-                  <Dropdown className='profilebtn-dropdown'>
-                    <Dropdown.Toggle className='dropdown-toggle'>
+                  <Dropdown className="profilebtn-dropdown">
+                    <Dropdown.Toggle className="dropdown-toggle">
                       <img
                         src={`data:image/jpeg;base64,${currentUserProfilePic}`}
-                        className='user-img me-3 '
+                        className="user-img me-3 "
                         width={30}
-                        alt=''
-                        draggable='false'
+                        alt=""
+                        draggable="false"
                       />
                       <div>
                         <p className={`${"user-name me-2"} ${currentLanguage}`}>
                           {currentUserName}
                         </p>
                         <p
-                          className={`${"user-name orgStyle me-2"} ${currentLanguage}`}>
+                          className={`${"user-name orgStyle me-2"} ${currentLanguage}`}
+                        >
                           {" "}
                           {currentOrganizationName}
                         </p>
                       </div>
                     </Dropdown.Toggle>
                     {location.pathname.includes("/Admin") ? (
-                      <Dropdown.Menu className='dropdown_menu_admin'>
+                      <Dropdown.Menu className="dropdown_menu_admin">
                         {roleRoute || TrialExpireSelectPac || cancelSub ? (
-                          <Dropdown.Item
-                            // className={currentLanguage}
-                            onClick={modalLogoutHandler}>
-                            {/* Sign Out */}
-                            <Nav.Link className='SignOutOptionMenu text-black border-none'>
+                          <Dropdown.Item onClick={modalLogoutHandler}>
+                            <Nav.Link className="SignOutOptionMenu text-black border-none">
                               {t("Sign-out")}
                             </Nav.Link>
                           </Dropdown.Item>
@@ -883,15 +868,14 @@ const Header2 = ({ isVideo }) => {
                           <>
                             {" "}
                             <Dropdown.Item
-                              // className={`${" text-black"} ${currentLanguage}`}
-                              // onClick={() => forgotPasswordCheck()}
                               className={currentLanguage}
-                              onClick={openUserTab}>
+                              onClick={openUserTab}
+                            >
                               <Nav.Link
                                 as={Link}
-                                // to="CustomerInformation"
                                 disabled={true}
-                                className='text-black FontClass'>
+                                className="text-black FontClass"
+                              >
                                 {t("User-dashboard")}
                               </Nav.Link>
                             </Dropdown.Item>
@@ -900,13 +884,12 @@ const Header2 = ({ isVideo }) => {
                                 <Dropdown.Item
                                   className={`${" text-black"} ${currentLanguage}`}
                                   onClick={handleModalCustomerInformation}
-                                  // onClick={() => forgotPasswordCheck()}
                                 >
                                   <Nav.Link
                                     as={Link}
-                                    to='CustomerInformation'
-                                    className='text-black FontClass'>
-                                    {/* Change Password */}
+                                    to="CustomerInformation"
+                                    className="text-black FontClass"
+                                  >
                                     {t("Customer-information")}
                                   </Nav.Link>
                                 </Dropdown.Item>
@@ -914,36 +897,37 @@ const Header2 = ({ isVideo }) => {
                             ) : null}
                             <Dropdown.Item
                               className={currentLanguage}
-                              onClick={modalUserProfileHandler}>
-                              <Nav.Link className='d-flex text-black FontClass'>
+                              onClick={modalUserProfileHandler}
+                            >
+                              <Nav.Link className="d-flex text-black FontClass">
                                 {t("My-profile")}
                               </Nav.Link>
                             </Dropdown.Item>
                             <Dropdown.Item
-                              className={" text-black" + " " + currentLanguage}>
+                              className={" text-black" + " " + currentLanguage}
+                            >
                               <Nav.Link
                                 as={Link}
                                 to={"faq's"}
-                                className='d-flex text-black FontClass'>
+                                className="d-flex text-black FontClass"
+                              >
                                 {t("Help")}
                               </Nav.Link>
                             </Dropdown.Item>
                             <Dropdown.Item
                               className={" text-black" + " " + currentLanguage}
-                              onClick={() => forgotPasswordCheck()}>
+                              onClick={() => forgotPasswordCheck()}
+                            >
                               <Nav.Link
                                 as={Link}
-                                to='changePassword'
-                                className='SignOutOptionMenu text-black FontClass'>
-                                {/* Change Password */}
+                                to="changePassword"
+                                className="SignOutOptionMenu text-black FontClass"
+                              >
                                 {t("Change-password")}
                               </Nav.Link>
                             </Dropdown.Item>
-                            <Dropdown.Item
-                              // className={currentLanguage}
-                              onClick={modalLogoutHandler}>
-                              {/* Sign Out */}
-                              <Nav.Link className='SignOutOptionMenu text-black border-none FontClass'>
+                            <Dropdown.Item onClick={modalLogoutHandler}>
+                              <Nav.Link className="SignOutOptionMenu text-black border-none FontClass">
                                 {t("Sign-out")}
                               </Nav.Link>
                             </Dropdown.Item>
@@ -951,13 +935,13 @@ const Header2 = ({ isVideo }) => {
                         )}
                       </Dropdown.Menu>
                     ) : (
-                      <Dropdown.Menu className='Profile_dropdown_menu'>
+                      <Dropdown.Menu className="Profile_dropdown_menu">
                         {roleRoute || TrialExpireSelectPac || cancelSub ? (
                           <Dropdown.Item
                             className={currentLanguage}
-                            onClick={modalLogoutHandler}>
-                            {/* Sign Out */}
-                            <Nav.Link className='SignOutOptionMenu d-flex text-black border-none FontClass'>
+                            onClick={modalLogoutHandler}
+                          >
+                            <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
                               {t("Sign-out")}
                             </Nav.Link>
                           </Dropdown.Item>
@@ -966,22 +950,25 @@ const Header2 = ({ isVideo }) => {
                             {hasAdminRights && (
                               <Dropdown.Item
                                 className={currentLanguage}
-                                onClick={openAdminTab}>
-                                <Nav.Link className='d-flex text-black FontClass'>
+                                onClick={openAdminTab}
+                              >
+                                <Nav.Link className="d-flex text-black FontClass">
                                   {t("Organization-admin")}
                                 </Nav.Link>
                               </Dropdown.Item>
                             )}
                             <Dropdown.Item
                               className={currentLanguage}
-                              onClick={modalUserProfileHandler}>
-                              <Nav.Link className='d-flex text-black FontClass'>
+                              onClick={modalUserProfileHandler}
+                            >
+                              <Nav.Link className="d-flex text-black FontClass">
                                 {t("My-profile")}
                               </Nav.Link>
                             </Dropdown.Item>
                             <Dropdown.Item
                               className={" text-black" + " " + currentLanguage}
-                              onClick={() => forgotPasswordCheck()}>
+                              onClick={() => forgotPasswordCheck()}
+                            >
                               <Nav.Link
                                 as={Link}
                                 to={
@@ -1001,15 +988,16 @@ const Header2 = ({ isVideo }) => {
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/setting"
                                 }
-                                className='d-flex text-black FontClass'
-                                onClick={handleMeetingSidebarSettings}>
-                                {/* Change Password */}
+                                className="d-flex text-black FontClass"
+                                onClick={handleMeetingSidebarSettings}
+                              >
                                 {t("Settings")}
                               </Nav.Link>
                             </Dropdown.Item>
                             <Dropdown.Item
                               className={" text-black" + " " + currentLanguage}
-                              onClick={() => forgotPasswordCheck()}>
+                              onClick={() => forgotPasswordCheck()}
+                            >
                               <Nav.Link
                                 as={Link}
                                 to={
@@ -1030,26 +1018,28 @@ const Header2 = ({ isVideo }) => {
                                     : "/DisKus/faq's"
                                 }
                                 onClick={handleMeetingSidebarFAQ}
-                                className='d-flex text-black FontClass'>
-                                {/* Change Password */}
+                                className="d-flex text-black FontClass"
+                              >
                                 {t("Help")}
                               </Nav.Link>
                             </Dropdown.Item>
                             <Dropdown.Item
                               className={" text-black" + " " + currentLanguage}
-                              onClick={() => forgotPasswordCheck()}>
+                              onClick={() => forgotPasswordCheck()}
+                            >
                               <Nav.Link
                                 as={Link}
-                                to='changePassword'
-                                className='SignOutOptionMenu d-flex text-black FontClass'>
+                                to="changePassword"
+                                className="SignOutOptionMenu d-flex text-black FontClass"
+                              >
                                 {t("Change-password")}
                               </Nav.Link>
                             </Dropdown.Item>
                             <Dropdown.Item
                               className={currentLanguage}
-                              onClick={modalLogoutHandler}>
-                              {/* Sign Out */}
-                              <Nav.Link className='SignOutOptionMenu d-flex text-black border-none FontClass'>
+                              onClick={modalLogoutHandler}
+                            >
+                              <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
                                 {t("Sign-out")}
                               </Nav.Link>
                             </Dropdown.Item>
@@ -1080,14 +1070,15 @@ const Header2 = ({ isVideo }) => {
                           ? "/DisKus/Meeting"
                           : "/DisKus/faq's"
                       }
-                      className='mx-3'
-                      onClick={handleMeetingSidebarFAQ}>
-                      <Tooltip placement='topRight' title={t("FAQs")}>
+                      className="mx-3"
+                      onClick={handleMeetingSidebarFAQ}
+                    >
+                      <Tooltip placement="topRight" title={t("FAQs")}>
                         <img
                           src={DiskusHeaderInfo}
-                          alt=''
+                          alt=""
                           width={28}
-                          draggable='false'
+                          draggable="false"
                         />
                       </Tooltip>
                     </Nav.Link>
@@ -1096,25 +1087,25 @@ const Header2 = ({ isVideo }) => {
               </>
             )}
           </section>
-          {/* </Container> */}
         </Navbar>
       )}
       {show ? (
         <Modal
           show={show}
-          modalHeaderClassName='modal-header-logout'
+          modalHeaderClassName="modal-header-logout"
           setShow={setShow}
           centered
           size={"md"}
           ModalBody={
-            <Row className='mb-3 mt-5'>
+            <Row className="mb-3 mt-5">
               <Col lg={2} md={2} sm={12} />
               <Col
                 lg={8}
                 md={8}
                 sm={12}
-                className='d-flex justify-content-center'>
-                <label className=' logout-confirmation-label'>
+                className="d-flex justify-content-center"
+              >
+                <label className=" logout-confirmation-label">
                   {t("Are-you-sure-you-want-to-logout")}
                 </label>
               </Col>
@@ -1124,14 +1115,16 @@ const Header2 = ({ isVideo }) => {
           ModalFooter={
             <Col sm={12} md={12} lg={12}>
               <Row
-                className={"mb-3 mt-2 LogoutButtons" + " " + currentLanguage}>
+                className={"mb-3 mt-2 LogoutButtons" + " " + currentLanguage}
+              >
                 <Col
                   lg={6}
                   md={6}
                   sm={12}
-                  className={"text-center" + " " + currentLanguage}>
+                  className={"text-center" + " " + currentLanguage}
+                >
                   <Button
-                    className=' Cancel-btn'
+                    className=" Cancel-btn"
                     text={t("Cancel")}
                     onClick={handleCancel}
                   />
@@ -1140,9 +1133,10 @@ const Header2 = ({ isVideo }) => {
                   lg={6}
                   md={6}
                   sm={12}
-                  className={"text-center" + " " + currentLanguage}>
+                  className={"text-center" + " " + currentLanguage}
+                >
                   <Button
-                    className=' Ok-Successfull-btn'
+                    className=" Ok-Successfull-btn"
                     text={t("Logout")}
                     onClick={logoutFunction}
                   />
