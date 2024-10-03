@@ -251,6 +251,7 @@ const NewMeeting = () => {
     meetingID: null,
     showButton: false,
   });
+  const [startMeetingButton, setStartMeetingButton] = useState([]);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
@@ -1483,7 +1484,7 @@ const NewMeeting = () => {
 
         // Convert milliseconds to minutes
         const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-
+        const isButtonShown = startMeetingButton.find((btnData, index) => Number(btnData.meetingID) === Number(record.pK_MDID))
         if (Number(record.status) === 1) {
           if (record.isParticipant) {
           } else if (record.isAgendaContributor) {
@@ -1493,8 +1494,8 @@ const NewMeeting = () => {
               (record.isQuickMeeting === true &&
                 minutesDifference < minutesAgo) ||
               (record.isQuickMeeting === true &&
-                record.pK_MDID === startMeetingData.meetingID &&
-                startMeetingData.showButton)
+                record.pK_MDID === isButtonShown?.meetingID &&
+                isButtonShown?.showButton)
               // &&
               // minutesDifference > 0
             ) {
@@ -1536,8 +1537,8 @@ const NewMeeting = () => {
               (record.isQuickMeeting === false &&
                 minutesDifference < minutesAgo) ||
               (record.isQuickMeeting === false &&
-                record.pK_MDID === startMeetingData.meetingID &&
-                startMeetingData.showButton)
+                record.pK_MDID === isButtonShown?.meetingID &&
+                isButtonShown?.showButton)
             ) {
               return (
                 <Button
@@ -2281,6 +2282,11 @@ const NewMeeting = () => {
               }
             });
           });
+          setStartMeetingButton((prevStateStartBtn) => {
+            return prevStateStartBtn.filter(
+              (newBtn, index) => Number(newBtn.meetingID) !== Number(meetingID)
+            );
+          });
         } catch (error) {
           console.log(
             error,
@@ -2307,6 +2313,11 @@ const NewMeeting = () => {
                 return item; // Return the original item if the condition is not met
               }
             });
+          });
+          setStartMeetingButton((prevStateStartBtn) => {
+            return prevStateStartBtn.filter(
+              (newBtn, index) => Number(newBtn.meetingID) !== Number(meetingID)
+            );
           });
         } catch {}
       }
@@ -2351,6 +2362,12 @@ const NewMeeting = () => {
               status: null,
               role: null,
               isPrimaryOrganizer: false,
+            });
+            setStartMeetingButton((prevStateStartBtn) => {
+              return prevStateStartBtn.filter(
+                (newBtn, index) =>
+                  Number(newBtn.meetingID) !== Number(endMeetingData.pK_MDID)
+              );
             });
             setViewAdvanceMeetingModal(false);
             dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -2668,24 +2685,15 @@ const NewMeeting = () => {
             };
             return updatedRowsData;
           }
-
+          setStartMeetingButton((prevStateStartBtn) => {
+            return prevStateStartBtn.filter(
+              (newBtn, index) =>
+                Number(newBtn.meetingID) !== Number(meetingDetailsMqtt.pK_MDID)
+            );
+          });
           // Return the original rowsData if no matching row is found
           return rowsData;
         });
-
-        if (meetingDetailsMqtt.statusID === 1) {
-          setStartMeetingData({
-            ...startMeetingData,
-            meetingID: meetingDetailsMqtt.pK_MDID,
-            status: true,
-          });
-        } else {
-          setStartMeetingData({
-            ...startMeetingData,
-            meetingID: null,
-            status: false,
-          });
-        }
       }
     } catch (error) {
       console.log(error);
@@ -2693,8 +2701,58 @@ const NewMeeting = () => {
 
     dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData]);
+  useEffect(() => {
+    if (NewMeetingreducer.meetingReminderNotification !== null) {
+      try {
+        const meetingData =
+          NewMeetingreducer.meetingReminderNotification.meetingDetails;
+        console.log(meetingData, "meetingDetailsmeetingDetails");
+        setRow((rowsData) => {
+          // Find the index of the row that matches the condition
+          const rowIndex = rowsData.findIndex(
+            (rowData) => rowData.pK_MDID === meetingData.pK_MDID
+          );
+          console.log(rowIndex, "rowIndexrowIndex");
+          // If a matching row is found, create a new array with the updated row
+          if (rowIndex !== -1) {
+            const updatedRowsData = [...rowsData];
 
+            updatedRowsData[rowIndex] = {
+              ...updatedRowsData[rowIndex],
+              status: String(meetingData.statusID),
+            };
+            if (meetingData.statusID === 1) {
+              setStartMeetingButton([
+                ...startMeetingButton,
+                { meetingID: Number(meetingData.pK_MDID), showButton: true },
+              ]);
+              setStartMeetingData({
+                ...startMeetingData,
+                meetingID: Number(meetingData.pK_MDID),
+                showButton: true,
+              });
+            } else {
+              setStartMeetingData({
+                ...startMeetingData,
+                meetingID: null,
+                showButton: false,
+              });
+            }
+
+            return updatedRowsData;
+          }
+
+          // Return the original rowsData if no matching row is found
+          return rowsData;
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [NewMeetingreducer.meetingReminderNotification]);
+  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
   console.log(rows, "meetingDetailsMqttmeetingDetailsMqttmeetingDetailsMqtt");
+  console.log(startMeetingData, "updatedRowsDataupdatedRowsData");
 
   return (
     <>

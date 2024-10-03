@@ -93,7 +93,12 @@ import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 import { GetAllUserChats } from "./Talk_action";
-import { endIndexUrl, extractedUrl, generateRandomGuest, generateURLParticipant } from "../../commen/functions/urlVideoCalls";
+import {
+  endIndexUrl,
+  extractedUrl,
+  generateRandomGuest,
+  generateURLParticipant,
+} from "../../commen/functions/urlVideoCalls";
 import copyToClipboard from "../../hooks/useClipBoard";
 
 const boardDeckModal = (response) => {
@@ -1565,7 +1570,6 @@ const FetchMeetingURLClipboard = (
                   "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_01".toLowerCase()
                 )
             ) {
-
               let currentVideoURL = response.data.responseResult.videoURL;
 
               let match = currentVideoURL.match(/RoomID=([^&]*)/);
@@ -1588,7 +1592,10 @@ const FetchMeetingURLClipboard = (
               copyToClipboard(resultedVideoURL);
 
               dispatch(
-                clipboardURLMeetingData(response.data.responseResult.videoURL, t("Meeting-link-copied"))
+                clipboardURLMeetingData(
+                  response.data.responseResult.videoURL,
+                  t("Meeting-link-copied")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1597,7 +1604,12 @@ const FetchMeetingURLClipboard = (
                   "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_02".toLowerCase()
                 )
             ) {
-              dispatch(clipboardURLMeetingData("", t("Unable-to-generate-meeting-link")));
+              dispatch(
+                clipboardURLMeetingData(
+                  "",
+                  t("Unable-to-generate-meeting-link")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -8943,7 +8955,14 @@ const LeaveMeetingVideo = (Data, navigate, t) => {
   };
 };
 
+const meetingReminderNotifcation = (response) => {
+  return {
+    type: actions.MEETING_REMINDER_NOTIFICATION,
+    response: response,
+  };
+};
 export {
+  meetingReminderNotifcation,
   getAllMeetingUsersRSVPApi,
   getDashbardMeetingDataApi,
   emailRouteID,
