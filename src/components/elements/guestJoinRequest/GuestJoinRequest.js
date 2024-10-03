@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Card, Container, Row, Col, Image } from "react-bootstrap";
+import { Card, Container, Row, Col } from "react-bootstrap";
+import { Button } from "./../../elements";
 import styles from "./GuestJoinRequest.module.css";
 import { useTranslation } from "react-i18next";
 import CrossIcon from "./../../layout/talk/talk-Video/video-images/CloseIcon.png";
-import ProfileIcon from "./../../layout/talk/talk-Video/video-images/Avatar2.png";
+import ProfileIcon from "./../../layout/talk/talk-Video/video-images/Profile_Icon.png";
 import { guestJoinPopup } from "../../../store/actions/VideoFeature_actions";
 import { admitRejectAttendeeMainApi } from "../../../store/actions/Guest_Video";
 
@@ -60,8 +61,8 @@ const GuestJoinRequest = () => {
   return (
     <div className={styles["box-positioning"]}>
       <Container className="d-flex justify-content-center align-items-center">
-        <Card className={styles["card-ui"]}>
-          <img
+        {/* <Card className={styles["card-ui"]}> */}
+        {/* <img
             onClick={() => dispatch(guestJoinPopup(false))}
             className={styles["handle-close"]}
             src={CrossIcon}
@@ -81,28 +82,50 @@ const GuestJoinRequest = () => {
               />
             </div>
             <p className={styles["title-alert"]}>
-              {name + " "}
+              <strong>{name + " "}</strong>
               {t("has-requested-to-join-this-video-call")}
             </p>
             <Row className="justify-content-center">
               <Col xs={5}>
-                <p
-                  onClick={() => handleAdmit(1)}
-                  className={styles["title-admit"]}
-                >
-                  {t("Admit")}
-                </p>
+                <Button
+                  className={styles["title-deny"]}
+                  onClick={() => handleAdmit(2)}
+                  text={t("Deny")}
+                />
               </Col>
               <Col xs={5}>
-                <p
-                  onClick={() => handleAdmit(2)}
-                  className={styles["title-reject"]}
-                >
-                  {t("Reject")}
-                </p>
+                <Button
+                  className={styles["title-admit"]}
+                  onClick={() => handleAdmit(1)}
+                  text={t("Admit")}
+                />
               </Col>
             </Row>
-          </Card.Body>
+          </Card.Body> */}
+        <Card className={styles["card-ui-400"]}>
+          <div className={styles["content-section"]}>
+            <div className={styles["avatars"]}>
+              <img
+                src={ProfileIcon}
+                alt="Avatar 1"
+                className={styles["avatar"]}
+              />
+              <img
+                src={ProfileIcon}
+                alt="Avatar 2"
+                className={styles["avatar"]}
+              />
+              <img
+                src={ProfileIcon}
+                alt="Avatar 3"
+                className={styles["avatar"]}
+              />
+            </div>
+            <p className={styles["text"]}>
+              Multiple people want to join the meeting.
+            </p>
+            <Button className={styles["title-deny"]} text={t("View")} />
+          </div>
         </Card>
       </Container>
     </div>

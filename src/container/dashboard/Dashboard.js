@@ -2501,11 +2501,11 @@ const Dashboard = () => {
             handleClose={closeNotification}
             id={notificationID}
           />
-          {videoFeatureReducer.ShowGuestPopup ? (
+          {/* {videoFeatureReducer.ShowGuestPopup ? ( */}
             <div>
               <GuestJoinRequest />
             </div>
-          ) : null}
+          {/* // ) : null} */}
           {videoFeatureReducer.IncomingVideoCallFlag === true ? (
             <VideoMaxIncoming />
           ) : null}
