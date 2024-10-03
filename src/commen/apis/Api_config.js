@@ -1780,6 +1780,22 @@ const leaveMeetingVideo = {
   RequestMethod: "ServiceManager.LeaveMeetingVideo",
 };
 
+const getMeetingGuestVideoURL = {
+  RequestMethod: "ServiceManager.GetMeetingGuestVideoURL",
+};
+
+const ValidateEncryptedStringGuestVideoLink = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringGuestVideoLink",
+};
+
+const joinGuestVideo = {
+  RequestMethod: "ServiceManager.JoinGuestVideo",
+};
+
+const admitRejectAttendee = {
+  RequestMethod: "ServiceManager.AdmitRejectAttendee",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2251,4 +2267,8 @@ export {
   downloadCallRecording,
   downloadMeetingRecording,
   leaveMeetingVideo,
+  getMeetingGuestVideoURL,
+  ValidateEncryptedStringGuestVideoLink,
+  joinGuestVideo,
+  admitRejectAttendee,
 };

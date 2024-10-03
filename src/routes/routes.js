@@ -78,6 +78,7 @@ import UpdatedCancelSubscription from "../container/pages/UserMangement/AdminUse
 import PrivateVideoMeeting from "./PrivateVideoMeetingRoute";
 import VideoMeetingBoardDeck from "../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck";
 import { DocumentViewer } from "../components/elements";
+import GuestVideoCall from "../components/layout/talk/GuestVideo/GuestVideoCall/GuestVideoCall";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -86,57 +87,58 @@ export const router = createHashRouter(
     <>
       {/* Video Meeting Route */}
       <Route element={<PrivateVideoMeeting />}>
-        <Route path='/Diskus/video' element={<VideoMeetingBoardDeck />} />
+        <Route path="/Diskus/video" element={<VideoMeetingBoardDeck />} />
       </Route>
 
       <Route>
-        <Route path='/GuestVideoCall' element={<VideoMeetingBoardDeck />} />
+        <Route path="/Diskus/GuestVideoCall" element={<GuestVideoCall />} />
       </Route>
       {/* for all login Routes  */}
-      <Route path='/' element={<UserManagementProcess />} />
+      <Route path="/" element={<UserManagementProcess />} />
 
       {/* For All Signup Route */}
-      <Route path='/Signup' element={<SignupProcessUserManagement />} />
+      <Route path="/Signup" element={<SignupProcessUserManagement />} />
 
       {/* ============================================================ */}
       <Route
-        path='/PakageDetailsUserManagement'
+        path="/PakageDetailsUserManagement"
         element={<PakageDetailsUserManagement />}
       />
       {/* <Route path="/signuporganization" element={<Signup />} /> */}
 
       <Route
-        path='/forgotpasswordVerification'
+        path="/forgotpasswordVerification"
         element={<ForgotPasswordVerification />}
       />
-      <Route path='/updatepassword' element={<UpdatePasswordSuccessfully />} />
+      <Route path="/updatepassword" element={<UpdatePasswordSuccessfully />} />
 
       <Route
-        path='/PaymentFormUserManagement'
+        path="/PaymentFormUserManagement"
         element={<BillingMethodUsermanagement />}
       />
       <Route
-        path='/updatePasswordSuccess'
+        path="/updatePasswordSuccess"
         element={<PasswordUpdateMessage />}
       />
 
-      <Route path='/404' element={<NotFound />} />
-      <Route path='*' element={<NotFound />} />
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
       {/* ============================================================ */}
 
       <Route element={<PrivateRoutes />}>
         <Route
           exact
-          path='/Diskus/'
+          path="/Diskus/"
           element={
-            <RouteWrapperUser name='Diskus'>
+            <RouteWrapperUser name="Diskus">
               <Dashboard />
             </RouteWrapperUser>
-          }>
+          }
+        >
           <Route
-            path=''
+            path=""
             element={
-              <RouteWrapperUser name=''>
+              <RouteWrapperUser name="">
                 {/* <Home /> */}
 
                 <NewDashobard />
@@ -144,109 +146,109 @@ export const router = createHashRouter(
             }
           />
           <Route
-            path='Minutes'
+            path="Minutes"
             element={
-              <RouteWrapperUser name='Minutes'>
+              <RouteWrapperUser name="Minutes">
                 <MinutesFlow />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='home'
+            path="home"
             element={
-              <RouteWrapperUser name='home'>
+              <RouteWrapperUser name="home">
                 {/* <Home /> */}
                 <NewDashobard />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='Minutes'
+            path="Minutes"
             element={
-              <RouteWrapperUser name='Minutes'>
+              <RouteWrapperUser name="Minutes">
                 <MinutesFlow />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='todolist'
+            path="todolist"
             element={
-              <RouteWrapperUser name='todolist'>
+              <RouteWrapperUser name="todolist">
                 <TodoList />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='documentViewer'
+            path="documentViewer"
             element={
-              <RouteWrapperUser name='documentViewer'>
+              <RouteWrapperUser name="documentViewer">
                 <DocumentViewer />
               </RouteWrapperUser>
             }
           />
 
           <Route
-            path='signatureviewer'
+            path="signatureviewer"
             element={
-              <RouteWrapperUser name='signatureviewer'>
+              <RouteWrapperUser name="signatureviewer">
                 <SignatureViewer />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='signeddocument'
+            path="signeddocument"
             element={
-              <RouteWrapperUser name='signatureviewer'>
+              <RouteWrapperUser name="signatureviewer">
                 <PendingSignature />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='viewSignDocument'
+            path="viewSignDocument"
             element={
-              <RouteWrapperUser name='signatureviewer'>
+              <RouteWrapperUser name="signatureviewer">
                 <ViewSignatureDocument />
               </RouteWrapperUser>
             }
           />
           {/* <Route path="forgotpassword" element={<ForgotPassword />} /> */}
           <Route
-            path='calendar'
+            path="calendar"
             element={
-              <RouteWrapperUser name='calendar'>
+              <RouteWrapperUser name="calendar">
                 <CalendarPage />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='Meeting'
+            path="Meeting"
             element={
-              <RouteWrapperUser name='Meeting'>
+              <RouteWrapperUser name="Meeting">
                 <NewMeeting />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='Meeting/Useravailabilityformeeting'
+            path="Meeting/Useravailabilityformeeting"
             element={
-              <RouteWrapperUser name='Meeting'>
+              <RouteWrapperUser name="Meeting">
                 <RSVP />
               </RouteWrapperUser>
             }
           />
 
           <Route
-            path='Payment'
+            path="Payment"
             element={
-              <RouteWrapperUser name='Payment'>
+              <RouteWrapperUser name="Payment">
                 <PaymentTest />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='setting'
+            path="setting"
             element={
-              <RouteWrapperUser name='setting'>
+              <RouteWrapperUser name="setting">
                 <UserSettings />
               </RouteWrapperUser>
             }
@@ -260,57 +262,57 @@ export const router = createHashRouter(
             }
           />
           <Route
-            path='groups'
+            path="groups"
             element={
-              <RouteWrapperUser name='groups'>
+              <RouteWrapperUser name="groups">
                 <Groups />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='changePassword'
+            path="changePassword"
             element={
-              <RouteWrapperUser name='changePassword'>
+              <RouteWrapperUser name="changePassword">
                 <ChangePassword />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='notes'
+            path="notes"
             element={
-              <RouteWrapperUser name='notes'>
+              <RouteWrapperUser name="notes">
                 <Notes />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='committee'
+            path="committee"
             element={
-              <RouteWrapperUser name='committee'>
+              <RouteWrapperUser name="committee">
                 <Committee />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='resolution'
+            path="resolution"
             element={
-              <RouteWrapperUser name='resolution'>
+              <RouteWrapperUser name="resolution">
                 <Resolution />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='dataroom'
+            path="dataroom"
             element={
-              <RouteWrapperUser name='dataroom'>
+              <RouteWrapperUser name="dataroom">
                 <DataRoom />
               </RouteWrapperUser>
             }
           />
           <Route
-            path='polling'
+            path="polling"
             element={
-              <RouteWrapperUser name='polling'>
+              <RouteWrapperUser name="polling">
                 <Polling />
               </RouteWrapperUser>
             }
@@ -321,16 +323,17 @@ export const router = createHashRouter(
       <Route element={<PrivateAdminRoute />}>
         <Route
           exact
-          path='/Admin/'
+          path="/Admin/"
           element={
-            <RouteWrapperAdmin name='Admin'>
+            <RouteWrapperAdmin name="Admin">
               <AdminHome />
             </RouteWrapperAdmin>
-          }>
+          }
+        >
           <Route
-            path=''
+            path=""
             element={
-              <RouteWrapperAdmin name='Admin'>
+              <RouteWrapperAdmin name="Admin">
                 {roleRoute ? <PayOutstanding /> : <ManageUsers />}
               </RouteWrapperAdmin>
             }
@@ -338,18 +341,18 @@ export const router = createHashRouter(
 
           {/* Route For Payment Processs start */}
           <Route
-            path='PaymentProcess'
+            path="PaymentProcess"
             element={
-              <RouteWrapperAdmin name='PaymentProcess'>
+              <RouteWrapperAdmin name="PaymentProcess">
                 <PaymentProcess />
               </RouteWrapperAdmin>
             }
           />
 
           <Route
-            path='PaymentFormUserManagement'
+            path="PaymentFormUserManagement"
             element={
-              <RouteWrapperAdmin name='PaymentFormUserManagement'>
+              <RouteWrapperAdmin name="PaymentFormUserManagement">
                 <BillingMethodUsermanagement />
               </RouteWrapperAdmin>
             }
@@ -357,202 +360,202 @@ export const router = createHashRouter(
           {/* Route For Payment Processs end */}
 
           <Route
-            path='PakageDetailsUserManagement'
+            path="PakageDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name='PakageDetailsUserManagement'>
+              <RouteWrapperAdmin name="PakageDetailsUserManagement">
                 <PakageDetailsUserManagement />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='loginreport'
+            path="loginreport"
             element={
-              <RouteWrapperAdmin name='loginreport'>
+              <RouteWrapperAdmin name="loginreport">
                 <Reports />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PackageDetailUMupgrade'
+            path="PackageDetailUMupgrade"
             element={
-              <RouteWrapperAdmin name='PackageDetailUMupgrade'>
+              <RouteWrapperAdmin name="PackageDetailUMupgrade">
                 <PakageDetailsUMUpgrade />
               </RouteWrapperAdmin>
             }
           />
 
           <Route
-            path='AddUsers'
+            path="AddUsers"
             element={
-              <RouteWrapperAdmin name='AddUsers'>
+              <RouteWrapperAdmin name="AddUsers">
                 <AddUsers />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='ManageUsers'
+            path="ManageUsers"
             element={
-              <RouteWrapperAdmin name='ManageUsers'>
+              <RouteWrapperAdmin name="ManageUsers">
                 <ManageUsers />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='UserLevelConfigUM'
+            path="UserLevelConfigUM"
             element={
-              <RouteWrapperAdmin name='UserLevelConfigUM'>
+              <RouteWrapperAdmin name="UserLevelConfigUM">
                 <UserLevelConfigUM />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='AddUsersUsermanagement'
+            path="AddUsersUsermanagement"
             element={
-              <RouteWrapperAdmin name='AddUsersUsermanagement'>
+              <RouteWrapperAdmin name="AddUsersUsermanagement">
                 <AddUserMain />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='Invoice'
+            path="Invoice"
             element={
-              <RouteWrapperAdmin name='Invoice'>
+              <RouteWrapperAdmin name="Invoice">
                 <Invoice />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PayOutstanding'
+            path="PayOutstanding"
             element={
-              <RouteWrapperAdmin name='PayOutstanding'>
+              <RouteWrapperAdmin name="PayOutstanding">
                 <PayOutstanding />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PaymentHistory'
+            path="PaymentHistory"
             element={
-              <RouteWrapperAdmin name='PaymentHistory'>
+              <RouteWrapperAdmin name="PaymentHistory">
                 <PaymentHistory />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PaymentHistoryusermanagement'
+            path="PaymentHistoryusermanagement"
             element={
-              <RouteWrapperAdmin name='PaymentHistoryusermanagement'>
+              <RouteWrapperAdmin name="PaymentHistoryusermanagement">
                 <PaymentMethodBillInfo />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='Summary'
+            path="Summary"
             element={
-              <RouteWrapperAdmin name='Summary'>
+              <RouteWrapperAdmin name="Summary">
                 <Summary />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='Organization'
+            path="Organization"
             element={
-              <RouteWrapperAdmin name='Organization'>
+              <RouteWrapperAdmin name="Organization">
                 <OrganizationLevelSetting />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='OrganizationlevelConfigUM'
+            path="OrganizationlevelConfigUM"
             element={
-              <RouteWrapperAdmin name='OrganizationlevelConfigUM'>
+              <RouteWrapperAdmin name="OrganizationlevelConfigUM">
                 <OrganizationLevelConfigUM />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='AllMeeting'
+            path="AllMeeting"
             element={
-              <RouteWrapperAdmin name='AllMeeting'>
+              <RouteWrapperAdmin name="AllMeeting">
                 <AllMeetings />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='CancelSub'
+            path="CancelSub"
             element={
-              <RouteWrapperAdmin name='CancelSub'>
+              <RouteWrapperAdmin name="CancelSub">
                 <CancelSubs />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='CancelSubscriptionUserManagement'
+            path="CancelSubscriptionUserManagement"
             element={
-              <RouteWrapperAdmin name='CancelSubscriptionUserManagement'>
+              <RouteWrapperAdmin name="CancelSubscriptionUserManagement">
                 <CancelSubscriptionAdmin />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PackageDetail'
+            path="PackageDetail"
             element={
-              <RouteWrapperAdmin name='PackageDetail'>
+              <RouteWrapperAdmin name="PackageDetail">
                 <PackageDetails />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PackageDetailsUserManagement'
+            path="PackageDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name='PackageDetailsUserManagement'>
+              <RouteWrapperAdmin name="PackageDetailsUserManagement">
                 <PakageDetailsAdmin />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='subscriptionDetailsUserManagement'
+            path="subscriptionDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name='subscriptionDetailsUserManagement'>
+              <RouteWrapperAdmin name="subscriptionDetailsUserManagement">
                 <SubscriptionDetailsUserManagement />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='downgradeSubscription'
+            path="downgradeSubscription"
             element={
-              <RouteWrapperAdmin name='downgradeSubscription'>
+              <RouteWrapperAdmin name="downgradeSubscription">
                 <DowngradeSubscription />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='updatedCancelSubscription'
+            path="updatedCancelSubscription"
             element={
-              <RouteWrapperAdmin name='updatedCancelSubscription'>
+              <RouteWrapperAdmin name="updatedCancelSubscription">
                 <UpdatedCancelSubscription />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='EmptyState'
+            path="EmptyState"
             element={
-              <RouteWrapperAdmin name='EmptyState'>
+              <RouteWrapperAdmin name="EmptyState">
                 <EmptyState />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='UpgradePackage'
+            path="UpgradePackage"
             element={
-              <RouteWrapperAdmin name='UpgradePackage'>
+              <RouteWrapperAdmin name="UpgradePackage">
                 <PackageUpgrade />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='changePassword'
+            path="changePassword"
             element={
-              <RouteWrapperAdmin name='changePassword'>
+              <RouteWrapperAdmin name="changePassword">
                 <ChangePassword />
               </RouteWrapperAdmin>
             }
@@ -566,49 +569,49 @@ export const router = createHashRouter(
             }
           />
           <Route
-            path='deleteorganization'
+            path="deleteorganization"
             element={
-              <RouteWrapperAdmin name='deleteorganization'>
+              <RouteWrapperAdmin name="deleteorganization">
                 <DeleteOrganization />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='deleteorganizationUserMangement'
+            path="deleteorganizationUserMangement"
             element={
-              <RouteWrapperAdmin name='deleteorganizationUserMangement'>
+              <RouteWrapperAdmin name="deleteorganizationUserMangement">
                 <DeleteOrganizationAdmin />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='paymentForm'
+            path="paymentForm"
             element={
-              <RouteWrapperAdmin name='paymentForm'>
+              <RouteWrapperAdmin name="paymentForm">
                 <PaymentForm2 />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='UpgradePackageDetail'
+            path="UpgradePackageDetail"
             element={
-              <RouteWrapperAdmin name='UpgradePackageDetail'>
+              <RouteWrapperAdmin name="UpgradePackageDetail">
                 <PackageUpgradeDetail />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='UpgradePackageSelect'
+            path="UpgradePackageSelect"
             element={
-              <RouteWrapperAdmin name='UpgradePackageSelect'>
+              <RouteWrapperAdmin name="UpgradePackageSelect">
                 <PackageUpgradeSelect />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='CustomerInformation'
+            path="CustomerInformation"
             element={
-              <RouteWrapperAdmin name='CustomerInformation'>
+              <RouteWrapperAdmin name="CustomerInformation">
                 <CustomerInformation />
               </RouteWrapperAdmin>
             }
@@ -616,7 +619,7 @@ export const router = createHashRouter(
         </Route>
       </Route>
       <Route Route element={<PrivateRoutes />}>
-        <Route path='/onboard' element={<OnBoard />} />
+        <Route path="/onboard" element={<OnBoard />} />
       </Route>
     </>
   )

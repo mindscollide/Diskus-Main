@@ -71,6 +71,10 @@ import {
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
+import {
+  ClearResponseMessageGuest,
+  getMeetingGuestVideoMainApi,
+} from "../../../../../store/actions/Guest_Video";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -91,6 +95,23 @@ const ViewMeetingDetails = ({
   const { NewMeetingreducer, talkStateData } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
+  console.log(
+    advanceMeetingModalID,
+    "advanceMeetingModalIDadvanceMeetingModalID"
+  );
+
+  const guestVideoUrlData = useSelector(
+    (state) => state.GuestVideoReducer.guestVideoData
+  );
+
+  const guestVideoUrlNotification = useSelector(
+    (state) => state.GuestVideoReducer.ResponseMessage
+  );
+
+  console.log(
+    guestVideoUrlNotification,
+    "guestVideoUrlNotificationguestVideoUrlNotification"
+  );
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -522,15 +543,19 @@ const ViewMeetingDetails = ({
         VideoCallURL: currentMeetingVideoURL,
       };
 
-      dispatch(
-        FetchMeetingURLClipboard(
-          Data2,
-          navigate,
-          t,
-          currentUserID,
-          currentOrganization
-        )
-      );
+      // dispatch(
+      //   FetchMeetingURLClipboard(
+      //     Data2,
+      //     navigate,
+      //     t,
+      //     currentUserID,
+      //     currentOrganization
+      //   )
+      // );
+      let data = {
+        MeetingId: Number(advanceMeetingModalID),
+      };
+      dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
     setOpen({
       ...open,
@@ -588,12 +613,14 @@ const ViewMeetingDetails = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== undefined
+      (NewMeetingreducer.ResponseMessage !== "" &&
+        NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+        NewMeetingreducer.ResponseMessage !== "" &&
+        NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+        NewMeetingreducer.ResponseMessage !== undefined) ||
+      guestVideoUrlNotification !== ""
     ) {
+      console.log("guestVideoUrlNotificationguestVideoUrlNotification");
       setOpen({
         ...open,
         flag: true,
@@ -606,11 +633,26 @@ const ViewMeetingDetails = ({
           message: "",
         });
       }, 3000);
+
+      setOpen({
+        ...open,
+        flag: true,
+        message: guestVideoUrlNotification,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
       dispatch(CleareMessegeNewMeeting());
+      dispatch(ClearResponseMessageGuest());
     } else {
       dispatch(CleareMessegeNewMeeting());
+      dispatch(ClearResponseMessageGuest());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [NewMeetingreducer.ResponseMessage, guestVideoUrlNotification]);
 
   console.log("talkStateDatatalkStateData", talkStateData);
 
