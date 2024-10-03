@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Button } from "../../../../elements";
 import GuestVideoHeader from "../GuestVideoHeader/GuestVideoHeader";
 import "./GuestVideoScreen.css";
 
-const GuestVideoScreen = () => {
+const GuestVideoScreen = ({ videoUrlName }) => {
+  const frameRef = useRef(null);
+
   const validateData = useSelector(
     (state) => state.GuestVideoReducer.validateData
   );
@@ -25,13 +27,14 @@ const GuestVideoScreen = () => {
       <Container fluid>
         <GuestVideoHeader extractMeetingTitle={meetingTitle} />
         <div className="new-div">
-          <div
-            style={{
-              position: "relative",
-            }}
-          >
-            {/* <video ref={videoRef} className="video-size" /> */}
-          </div>
+          <iframe
+            src={videoUrlName}
+            ref={frameRef}
+            title="Live Video"
+            width="100%"
+            height="100%"
+            allow="camera;microphone;display-capture"
+          />
         </div>
       </Container>
     </>
