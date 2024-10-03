@@ -179,6 +179,8 @@ const VideoPanelNormal = () => {
     }
   };
 
+  const [showTile, setShowTile] = useState(false);
+
   const layoutCurrentChange = () => {
     let videoView = localStorage.getItem("VideoView");
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -187,9 +189,11 @@ const VideoPanelNormal = () => {
       if (iframe && videoView === "Sidebar") {
         iframe.contentWindow.postMessage("TileView", "*");
         localStorage.setItem("VideoView", "TileView");
+        setShowTile(true);
       } else if (iframe && videoView === "TileView") {
         iframe.contentWindow.postMessage("SidebarView", "*");
         localStorage.setItem("VideoView", "Sidebar");
+        setShowTile(false);
       }
     }
   };
@@ -207,24 +211,6 @@ const VideoPanelNormal = () => {
     setIsVideoActive(!isVideoActive);
     localStorage.setItem("VidOff", !isVideoActive);
   };
-
-  // useEffect(() => {
-  //   console.log("UseEffect", isMicActive, micStatus);
-  //   const iframe = iframeRef.current;
-  //   if (iframe && iframe.contentWindow !== null) {
-  //     iframe.contentWindow.postMessage("MicOff", "*");
-  //   }
-  // }, [isMicActive]);
-
-  // useEffect(() => {
-  //   console.log("UseEffect", isVideoActive, vidStatus);
-
-  //   const iframe = iframeRef.current;
-  //   if (iframe && iframe.contentWindow !== null) {
-  //     iframe.contentWindow.postMessage("VidOff", "*");
-  //     console.log("Check Check");
-  //   }
-  // }, [isVideoActive]);
 
   useEffect(() => {
     console.log("Normalize UseEffect Check", micStatus, isMicActive);
@@ -299,6 +285,7 @@ const VideoPanelNormal = () => {
                   disableVideo={disableVideoFunction}
                   isVideoActive={isVideoActive}
                   isMicActive={isMicActive}
+                  showTile={showTile}
                 />
                 {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
                   <VideoOutgoing />

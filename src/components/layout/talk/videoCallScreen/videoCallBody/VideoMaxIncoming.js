@@ -262,7 +262,7 @@ const VideoMaxIncoming = () => {
                           }
                           icon={<img src={BusyIcon} width={50} />}
                           onClick={busyCall}
-                          style={{ marginTop: "10px" }}
+                          style={{ paddingBottom: "0" }}
                         />
                         <span
                           className={
@@ -304,7 +304,7 @@ const VideoMaxIncoming = () => {
                         <Button
                           style={
                             activeCallState === true
-                              ? { marginTop: "10px" }
+                              ? { paddingBottom: "0" }
                               : null
                           }
                           className={
