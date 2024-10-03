@@ -46,7 +46,6 @@
 }
 
 .HR-line-Committee-group {
-  /* background: #5a5a5a !important; */
   background-color: #5a5a5a !important;
   margin: 1px !important;
   border: 1px solid #5a5a5a;
@@ -119,7 +118,6 @@ body[dir="rtl"] .Archived-Status-Committee-Group {
 }
 
 .Status-Committee-Group {
-  /* padding-top: 10px !important; */
   font-weight: 600;
 }
 
@@ -237,7 +235,6 @@ body[dir="rtl"] .namesCards-Committee-Group {
   position: absolute;
   top: 35px;
   right: 0;
-  /* pointer-events: none; */
 }
 
 body[dir="rtl"] .Two-Icons-style-Committee-Group {
@@ -249,7 +246,6 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 .update-Committee-btn {
   height: 39px;
   width: 247px;
-  /* padding: 12px 80px !important; */
   font-weight: 600;
   font-size: 12px !important;
   background: #6172d6;
@@ -296,9 +292,6 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
 }
 
 .profile_cards {
-  /* display: flex;
-  justify-content: center;
-  margin: 15px auto; */
   margin: 0 auto;
   width: 260px;
   display: inline-block;
@@ -319,10 +312,6 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   margin: 10px 0 !important;
   opacity: 50%;
 }
-
-/* .card_profile_box_Archived { */
-/* border: 1px solid #6172d6 !important; */
-/* } */
 
 .namecards_morethan-3 {
   display: block;

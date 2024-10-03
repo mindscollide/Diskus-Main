@@ -1,7 +1,7 @@
 // CalendarFooter.js
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Calendar.module.css";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
 const CalendarFooter = () => {

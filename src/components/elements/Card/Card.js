@@ -1,20 +1,14 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Card.module.css";
-import React, { useEffect, useRef, useState } from "react";
-import picprofile from "../../../assets/images/picprofile.png";
+import React, { useEffect, useState } from "react";
 import img1 from "../../../assets/images/DropdownONE.svg";
 import { useTranslation } from "react-i18next";
-import img2 from "../../../assets/images/DropDownTWO.svg";
 import { Button } from "../../../components/elements";
-import img3 from "../../../assets/images/DropdownTHREE.svg";
 import img4 from "../../../assets/images/DropdownFOUR.svg";
 import img5 from "../../../assets/images/DropdownFIVE.svg";
 import editicon from "../../../assets/images/Esvg.svg";
 import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
-import img7 from "../../../assets/images/DropdownSEVEN.svg";
-import Group_Icon from "../../../assets/images/group_Icons.svg";
-import { useMemo } from "react";
 import { Tooltip } from "antd";
 const Card = ({
   CardHeading,
@@ -45,12 +39,10 @@ const Card = ({
     { key: t("Archive"), value: 2 },
     { key: t("Active"), value: 3 },
   ]);
-  const cardRef = useRef();
 
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [editdropdown, setEditdropdown] = useState(false);
   const creatorID = localStorage.getItem("userID");
-  const findLengthofGroups = associatedTags && associatedTags.length;
 
   useEffect(() => {
     try {
@@ -102,12 +94,7 @@ const Card = ({
     });
 
   useEffect(() => {}, [editdropdown, dropdownthreedots]);
-  console.log(
-    creatorID,
-    creatorId,
-    Number(creatorId) === Number(creatorID),
-    "uniqCardIDuniqCardIDuniqCardID"
-  );
+
   return (
     <Row
       className={
@@ -191,7 +178,6 @@ const Card = ({
                     width="21px"
                     height="21px"
                     alt=""
-                    // className={StatusID === 1 ? "cursor-pointer" : ""}
                     className={
                       Number(creatorId) === Number(creatorID)
                         ? styles["Edit_icon_styles"]
@@ -207,7 +193,6 @@ const Card = ({
                   src={doticon}
                   width="21px"
                   height="21px"
-                  // className={StatusID === 1 ? "cursor-pointer" : ""}
                   className={
                     StatusID === 3 || StatusID === 1
                       ? styles["dot_icon_styles"]
@@ -321,9 +306,6 @@ const Card = ({
                           className="d-flex justify-content-start gap-2  ms-1 "
                         >
                           <div className={discussionMenuClass}>
-                            <span>
-                              <img src={img3} width={15} draggable="false" />
-                            </span>
                             <span className={styles["dropdown-text"]}>
                               {t("Discussions")}
                             </span>
@@ -407,33 +389,6 @@ const Card = ({
                         </div>
                       </Col>
                     </Row>
-                    {/* {flag && creatorId === Number(creatorID) ? (
-                      <>
-                        {" "}
-                        <hr className={styles["HR-line-Committee-group"]} />
-                        <Row className="mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-start gap-2  ms-1 "
-                            onClick={assignGroupBtn}
-                          >
-                            <span>
-                              <img src={img7} width={17} draggable="false" />
-                            </span>
-                            <span
-                              className={styles["dropdown-text"]}
-                              // onClick={() =>
-                              //   setdropdownthreedots(!dropdownthreedots)
-                              // }
-                            >
-                              {t("Assign-remove-group")}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    ) : null} */}
                   </Container>
                 </>
               ) : null}
@@ -511,7 +466,6 @@ const Card = ({
                 <span className={styles["associated_tagLine"]}>
                   {t("Associated-with")}{" "}
                   <span className={styles["associated_tagLine_groupTitle"]}>
-                    {/* {associatedTags[0].groupTitle} */}
                     {`${associatedTags.length} ${t("Groups")}`}
                   </span>
                 </span>
@@ -563,7 +517,6 @@ const Card = ({
               : null}
             {profile && profile.length - 4 > 0 ? (
               <Col sm={2} md={2} lg={2} className={styles["card_profile_box"]}>
-                {/* <img src={picprofile} width={35} /> */}
                 <span
                   className={
                     StatusID === 1 || StatusID === 2
