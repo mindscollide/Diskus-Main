@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Card, Container, Row, Col, Image } from "react-bootstrap";
 import styles from "./GuestJoinRequest.module.css";
 import { useTranslation } from "react-i18next";
-import CrossIcon from "../../../assets/images/Cross_Icon.png";
+import CrossIcon from "./../../layout/talk/talk-Video/video-images/CloseIcon.png";
+import ProfileIcon from "./../../layout/talk/talk-Video/video-images/Avatar2.png";
 import { guestJoinPopup } from "../../../store/actions/VideoFeature_actions";
 import { admitRejectAttendeeMainApi } from "../../../store/actions/Guest_Video";
 
@@ -15,17 +16,30 @@ const GuestJoinRequest = () => {
   const { GuestVideoReducer } = useSelector((state) => state);
 
   const {
-    guestName = "",
+    name = "",
     meetingID = "",
-    guestGUID = "",
+    uid = "",
+    isGuest = true,
   } = GuestVideoReducer?.admitGuestUserRequestData || {};
 
   const handleAdmit = (flag) => {
+    // let Data = {
+    //   MeetingId: meetingID,
+    //   GuestName: name,
+    //   GuestGuid: [uid],
+    //   IsGuest: isGuest,
+    //   IsRequestAccepted: flag === 1 ? true : false,
+    // };
     let Data = {
       MeetingId: meetingID,
-      GuestName: guestName,
-      GuestGuid: guestGUID,
-      IsRequestAccepted: flag === 1 ? true : false,
+      AttendeeResponseList: [
+        {
+          Name: name,
+          UID: uid,
+          IsRequestAccepted: flag === 1 ? true : false,
+          IsGuest: isGuest,
+        },
+      ],
     };
     dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
   };
@@ -54,8 +68,21 @@ const GuestJoinRequest = () => {
             alt=""
           />
           <Card.Body className="text-center">
+            <div>
+              <img
+                src={ProfileIcon}
+                alt=""
+                style={{
+                  borderRadius: "50%",
+                  width: "75px",
+                  height: "75px",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
             <p className={styles["title-alert"]}>
-              <strong>{guestName}</strong> {t("wants-to-join-this-call")}
+              {name + " "}
+              {t("has-requested-to-join-this-video-call")}
             </p>
             <Row className="justify-content-center">
               <Col xs={5}>
