@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import featherupload from "../../../assets/images/featherupload.svg";
-import Leftploygon from "../../../assets/images/Polygon 3.svg";
-import file_image from "../../../assets/images/file_image.svg";
-import pdfIcon from "../../../assets/images/pdf_icon.svg";
-import Rightploygon from "../../../assets/images/Polygon right.svg";
 import { Paper } from "@material-ui/core";
 import {
   TextField,
   Button,
   Checkbox,
   SelectBox,
-  InputSearchFilter,
   Notification,
   AttachmentViewer,
 } from "./../../../components/elements";
-import userImage from "../../../assets/images/user.png";
 import styles from "./UpadateGroup.module.css";
 import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
-import Groups from "../../../container/Groups/Groups";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -41,16 +34,13 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const [fileAttachments, setFileAttachments] = useState([]);
   const [fileForSend, setFileForSend] = useState([]);
   const navigate = useNavigate();
-  const [viewUpdateGroup, setViewUpdateGroup] = useState(true);
   const { t } = useTranslation();
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
   const [erorbar, setErrorBar] = useState(false);
-  const { assignees, GroupsReducer, DataRoomReducer } = useSelector(
-    (state) => state
-  );
+  const { assignees, GroupsReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
@@ -100,17 +90,10 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-        dispatch(allAssignessList(navigate, t,false));
+    dispatch(allAssignessList(navigate, t, false));
     dispatch(getGroupMembersRoles(navigate, Data, t));
     dispatch(getOrganizationGroupTypes(navigate, Data, t));
   }, []);
-
-  const onSearch = (name, id) => {
-    setOnclickFlag(true);
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
-  };
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
@@ -195,8 +178,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         participantOptionsWithIDs.find(
           (data, index) => data.label === participantRoleName
         );
-      attendees.map((data, index) => {
-        membersData.map((data2, index) => {
+      attendees.map((data) => {
+        membersData.map((data2) => {
           if (data === data2.FK_UID) {
             check = true;
           }
@@ -392,21 +375,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     setMembersData([...membersData]);
   };
 
-  const checkGroupMembers = (GroupMembers) => {
-    if (Object.keys(GroupMembers).length > 0) {
-      let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
-      let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
-
-      if (flag1 != undefined && flag2 != undefined) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  };
-
   const checkGroupHead = (groupMembers) => {
     let flag1 = groupMembers.findIndex((data, index) => data.FK_GRMRID === 2);
     if (flag1 !== -1) {
@@ -529,7 +497,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -594,17 +561,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-  //Sliders For Attachments
-
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   const handleRemoveFile = (index) => {
     const updatedFies = [...fileAttachments];
@@ -767,7 +723,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             placeholder={t("Description")}
                             required={true}
                             value={GroupDetails.Description}
-                            // className={styles["Height-of-textarea"]
                           />
                         </Col>
                       </Row>
@@ -810,7 +765,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 }
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 label2={t("Create-talk-group")}
-                                // checked={createMeeting.IsChat}
                                 onChange={CheckBoxHandler}
                                 checked={GroupDetails.isGroupChat}
                                 classNameDiv="checkboxParentClass"
@@ -944,7 +898,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                               </Col>
                                             </Row>
                                           </Col>
-                                          {/* {data.data.pK_UID !== GroupDetails.CreatorID && ( */}
                                           <>
                                             <Col
                                               lg={2}
@@ -955,6 +908,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                               <img
                                                 src={CrossIcon}
                                                 className="cursor-pointer"
+                                                alt=""
                                                 width={18}
                                                 onClick={() =>
                                                   removeMemberHandler(
@@ -965,7 +919,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                               />
                                             </Col>
                                           </>
-                                          {/* )} */}
                                         </Row>
                                       </section>
                                     </Col>
@@ -995,7 +948,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           </Row>
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
-                              groupMembers.map((data, index) => {
+                              groupMembers.map((data) => {
                                 if (data.role === 1) {
                                   return (
                                     <Col lg={6} md={6} sm={6}>
@@ -1080,6 +1033,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             <img
                                               src={CrossIcon}
                                               width={18}
+                                              alt=""
                                               className="cursor-pointer"
                                               onClick={() =>
                                                 removeMemberHandler(
@@ -1127,15 +1081,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               sm={12}
                               className="group-fields"
                             >
-                              {/* <InputSearchFilter
-                                placeholder="Search member here"
-                                value={taskAssignedToInput}
-                                filteredDataHandler={searchFilterHandler(
-                                  taskAssignedToInput
-                                )}
-                                change={onChangeSearch}
-                                onclickFlag={onclickFlag}
-                              /> */}
                               <Select
                                 options={allPresenters}
                                 maxMenuHeight={140}
@@ -1202,7 +1147,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             <Row className="d-flex gap-2 ">
                                               <Col lg={2} md={2} sm={12}>
                                                 <img
-                                                  // src={Newprofile}
                                                   alt=""
                                                   src={`data:image/jpeg;base64,${attendeelist.displayProfilePictureName}`}
                                                   width={50}
@@ -1313,27 +1257,27 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                         </Col>
                       </Row>
                       <section className={styles["UpdateGroupAttachments"]}>
-                      <Row className="mt-1">
-                        {fileAttachments.length > 0
-                          ? fileAttachments.map((data, index) => {
-                              return (
-                                <>
-                                  <Col lg={4} md={4} sm={4}>
-                                    <AttachmentViewer
-                                      data={data}
-                                      id={0}
-                                      handleClickRemove={() =>
-                                        handleRemoveFile(data)
-                                      }
-                                      name={data.DisplayAttachmentName}
-                                      fk_UID={userID}
-                                    />
-                                  </Col>
-                                </>
-                              );
-                            })
-                          : null}
-                      </Row>
+                        <Row className="mt-1">
+                          {fileAttachments.length > 0
+                            ? fileAttachments.map((data, index) => {
+                                return (
+                                  <>
+                                    <Col lg={4} md={4} sm={4}>
+                                      <AttachmentViewer
+                                        data={data}
+                                        id={0}
+                                        handleClickRemove={() =>
+                                          handleRemoveFile(data)
+                                        }
+                                        name={data.DisplayAttachmentName}
+                                        fk_UID={userID}
+                                      />
+                                    </Col>
+                                  </>
+                                );
+                              })
+                            : null}
+                        </Row>
                       </section>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>

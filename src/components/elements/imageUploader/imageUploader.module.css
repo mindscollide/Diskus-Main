@@ -1,10 +1,7 @@
-
 .CustomModalProfile {
-    z-index: 999999999999999999999999;
+  z-index: 999999999999999999999999;
 }
 
 .image_uploader_box {
-    border-radius: 50%;
+  border-radius: 50%;
 }
-
-.image_uploader_box {}

@@ -68,7 +68,6 @@ body[dir="rtl"] .ant-switch-checked .ant-switch-handle {
   filter: grayscale(0.5) !important;
 }
 .ant-switch-checked {
-  /* background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important; */
   filter: grayscale(0) !important;
 }
 
