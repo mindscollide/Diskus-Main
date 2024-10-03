@@ -57,7 +57,6 @@ export {
   SelectComment,
   AttachmentViewer,
   CustomOnboardModal,
-  // UploadButton,
   Welcome,
   Button,
   Calendar,

@@ -1,50 +1,3 @@
-// import React, { useEffect, useState } from 'react'
-// import TextField from "@material-ui/core/TextField";
-// import MenuItem from "@material-ui/core/MenuItem";
-// import './SelectDropdownforObject.css'
-
-// const SelectDropdownforObject = ({ options, change, value, key, defaultValue, label, setTimeZoneValue }) => {
-
-//     return (
-//         <div>
-//             <TextField
-//                 // id="outlined-select"
-//                 select
-//                 required
-//                 label={label}
-//                 variant="outlined"
-//                 onChange={change}
-//                 InputLabelProps={{
-//                     shrink: true
-//                 }}
-//                 // helperText={helperText}
-
-//                 key={key}
-//                 value={value || ""}
-//                 defaultValue={defaultValue}
-//             >
-//                 {/* {options} */}
-//                 {options?.map((d, index) => {
-//                     return <MenuItem
-//                         key={d.id}
-//                         value={JSON.stringify({
-//                             id: d.id,
-//                             percentage: d.percentage,
-//                             name: d.name
-//                         })}
-//                     >
-//                         {d.name}
-//                     </MenuItem>
-//                 }
-
-//                 )}
-
-//             </TextField>
-//         </div>
-//     )
-// }
-// export default SelectDropdownforObject
-
 import React, { useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -75,14 +28,12 @@ export default function SelectDropdownforObject({
         select
         required
         className="dropdpown_field_input"
-        // label="Select"
         variant="outlined"
         onChange={handleChange}
         InputLabelProps={{
           shrink: true,
         }}
         value={selectState || ""}
-        // defaultValue={""}
       >
         {options?.map((d, index) => (
           <MenuItem
@@ -90,7 +41,6 @@ export default function SelectDropdownforObject({
             key={d.id}
             value={JSON.stringify({
               id: d.pK_TZID,
-              // percentage: d.percentage,
               name: d.gmtOffset,
             })}
           >

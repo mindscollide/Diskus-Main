@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
 import { Paper } from "@material-ui/core";
-import { AttachmentViewer, Button } from "./../../../components/elements";
+import { Button } from "./../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -49,10 +49,6 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
           CommitteeReducer.getCommitteeByCommitteeID.committeeStatus
             .committeeStatusID;
         setCommitteeStatus(committeeStatusID);
-        console.log(
-          committeeStatusID,
-          "committeeStatusIDcommitteeStatusIDcommitteeStatusID"
-        );
       } else {
         setCommitteeStatus(null);
       }
@@ -128,63 +124,18 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
           ) : currentView === 2 ? (
             <>
               <CommitteeTodo committeeStatus={committeeStatus} />
-              {/* <Row className="my-3">
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    text={t("Close")}
-                    className={styles["closeBtn-view-committee"]}
-                    onClick={() => setViewGroupPage(false)}
-                  />
-                </Col>
-              </Row> */}
             </>
-          ) : // <TableToDo />
-          currentView === 3 ? (
+          ) : currentView === 3 ? (
             <>
               <Polls committeeStatus={committeeStatus} />
-              {/* <Row>
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    text={t("Close")}
-                    className={styles["closeBtn-view-committee"]}
-                    onClick={() => setViewGroupPage(false)}
-                  />
-                </Col>
-              </Row> */}
             </>
           ) : currentView === 4 ? (
             <>
               <CommitteeMeetingTab committeeStatus={committeeStatus} />
-              {/* <Meeting /> */}
-              {/* <Row>
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    text={t("Close")}
-                    className={styles["closeBtn-view-committee"]}
-                    onClick={() => setViewGroupPage(false)}
-                  />
-                </Col>
-              </Row> */}
             </>
           ) : null}
         </Paper>
       </section>
-      {/* <Notification open={open.flag} message={open.message} setOpen={setOpen} /> */}
     </>
   );
 };

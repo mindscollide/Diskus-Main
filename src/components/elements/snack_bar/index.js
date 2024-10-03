@@ -30,7 +30,7 @@ const Notification = ({ setOpen, open, message }) => {
     if (reason === "clickaway") {
       return;
     }
-    // setOpen(!open);
+
     setOpen({
       flag: true,
       message: "",

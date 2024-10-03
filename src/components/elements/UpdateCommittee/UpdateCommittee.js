@@ -794,7 +794,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           className="committee-update-type-select-fields CreateMeetingReminder ml-0 "
                         >
                           <SelectBox
-                            // name="Participant"
                             placeholder={t("Committee-type")}
                             value={committeeData.committeeTypeValue || ""}
                             option={committeeTypesValues}
@@ -1058,6 +1057,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             <img
                                               src={CrossIcon}
                                               width={18}
+                                              alt=""
                                               className="cursor-pointer"
                                               onClick={() =>
                                                 removeMemberHandler(
@@ -1192,6 +1192,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                               src={CrossIcon}
                                               className="cursor-pointer"
                                               width={18}
+                                              alt=""
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
@@ -1325,6 +1326,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                               src={CrossIcon}
                                               className="cursor-pointer"
                                               width={18}
+                                              alt=""
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
@@ -1729,6 +1731,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                   src={featherupload}
                                   width="18.87px"
                                   height="18.87px"
+                                  alt=""
                                   draggable="false"
                                 />
                               </span>

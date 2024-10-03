@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ClearMessageAnnotations,
-  GetAnnotationsOfToDoAttachementMessageCleare,
   addAnnotationsOnDataroomAttachement,
   addAnnotationsOnNotesAttachement,
   addAnnotationsOnResolutionAttachement,
@@ -16,7 +15,7 @@ import {
   getAnnotationsOfToDoAttachement,
 } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
-import { Notification, Loader } from "../index";
+import { Notification } from "../index";
 const DocumentViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -99,7 +98,6 @@ const DocumentViewer = () => {
         if (Number(attachmentID) === fileID) {
           window.close();
         }
-  
       } catch (error) {
         console.log(error, "datadatadata");
       }
@@ -275,8 +273,8 @@ const DocumentViewer = () => {
   }, [webViewer.ResponseMessage]);
   return (
     <>
-      <div className='documnetviewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div className="documnetviewer">
+        <div className="webviewer" ref={viewer}></div>
       </div>
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </>

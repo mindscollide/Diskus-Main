@@ -1296,6 +1296,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                   src={featherupload}
                                   width="18.87px"
                                   height="18.87px"
+                                  alt=""
                                   draggable="false"
                                 />
                               </span>

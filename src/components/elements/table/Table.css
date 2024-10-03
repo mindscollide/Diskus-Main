@@ -33,14 +33,6 @@
   height: 0px !important;
 }
 
-/* .ant-table-wrapper.hello ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
-  display: none !important;
-} */
-
-/* .ant-table table {
-  margin-bottom: 50px;
-} */
-
 .nodata-table-icon {
   font-size: 5rem;
   color: #2097d6;
@@ -51,7 +43,6 @@
   justify-content: center;
   justify-items: center;
 }
-/* change color blue to this */
 .title {
   color: #2097d6;
 }
