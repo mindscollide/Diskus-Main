@@ -39,6 +39,7 @@
   position: absolute;
   width: 230px;
   top: 50px;
+  right: 0;
   height: 170px;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   overflow: hidden auto;

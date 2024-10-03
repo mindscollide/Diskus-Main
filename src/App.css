@@ -8211,6 +8211,7 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
 }
 
 body.guest-video-call {
+  overflow: hidden;
   background: #fff !important;
 }
 

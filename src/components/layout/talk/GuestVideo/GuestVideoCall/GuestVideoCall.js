@@ -16,11 +16,14 @@ import { useSelector } from "react-redux";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnectionGuestUser } from "../../../../../commen/functions/mqttconnection_guest";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
+import GuestVideoReject from "../GuestVideoReject/GuestVideoReject";
 
 const GuestVideoCall = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
   let guestUserId = sessionStorage.getItem("GuestUserID");
 
   const validateData = useSelector(
@@ -30,6 +33,14 @@ const GuestVideoCall = () => {
   const guestVideoNavigationData = useSelector(
     (state) => state.GuestVideoReducer.guestVideoNavigationData
   );
+
+  const [actionValue, setActionValue] = useState("");
+
+  // extract meeting ID state
+  const [extractMeetingId, setExtractMeetingId] = useState(0);
+
+  // extract Meeting Title
+  const [extractMeetingTitle, setExtractMeetingTitle] = useState("");
 
   let guestVideoClient = Helper.guestSocket;
   const onConnectionLost = () => {
@@ -46,7 +57,7 @@ const GuestVideoCall = () => {
         if (data.payload.isAccepted === true) {
           dispatch(guestVideoNavigationScreen(2));
         } else {
-          dispatch(guestVideoNavigationScreen(4));
+          dispatch(guestVideoNavigationScreen(3));
         }
       }
     }
@@ -60,23 +71,6 @@ const GuestVideoCall = () => {
       console.log(guestUserId, "guestUserIdguestUserId");
     }
   }, [guestVideoClient, guestUserId]);
-
-  console.log(validateData, "GuestVideoReducerGuestVideoReducer");
-
-  // extract meeting ID state
-  const [extractMeetingId, setExtractMeetingId] = useState(0);
-
-  // extract Meeting Title
-  const [extractMeetingTitle, setExtractMeetingTitle] = useState("");
-
-  console.log(
-    { extractMeetingId, extractMeetingTitle },
-    "extractMeetingTitleextractMeetingTitle"
-  );
-
-  const [actionValue, setActionValue] = useState("");
-  const location = useLocation();
-  console.log(actionValue, "actionValueactionValueactionValue");
 
   // get the String from API
   useEffect(() => {
@@ -105,6 +99,13 @@ const GuestVideoCall = () => {
         EncryptedString: actionValue,
       };
       dispatch(validateEncryptGuestVideoMainApi(navigate, t, data));
+    }
+    if (validateData !== null && validateData !== undefined) {
+      setExtractMeetingId(validateData.meetingId);
+      setExtractMeetingTitle(validateData.meetingTitle);
+    } else {
+      setExtractMeetingId(0);
+      setExtractMeetingTitle("");
     }
   }, [actionValue]);
 
@@ -147,11 +148,16 @@ const GuestVideoCall = () => {
               extractMeetingTitle={extractMeetingTitle}
             />
           </div>
-          {/* <GuestVideoEnded /> */}
         </>
       ) : guestVideoNavigationData === 2 ? (
         <>
           <GuestVideoScreen />
+        </>
+      ) : guestVideoNavigationData === 3 ? (
+        <>
+          <div className="Main-Guest-Video">
+            <GuestVideoReject />
+          </div>
         </>
       ) : null}
     </>
