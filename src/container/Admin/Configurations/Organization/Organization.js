@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Switch,
-  Paper,
-  Accordian,
-  Loader,
-  TextField,
-} from "../../../../components/elements";
+import { Button, Switch, TextField } from "../../../../components/elements";
 import { Row, Col, Container } from "react-bootstrap";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
@@ -14,8 +7,6 @@ import styles from "./Organzation.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import getTimeZone from "../../../../store/actions/GetTimeZone";
-import getCountryCodeFunc from "../../../../store/actions/GetCountryCode";
-
 import {
   getOrganizationLevelSetting,
   updateOrganizationLevelSetting,
@@ -25,73 +16,10 @@ import { useNavigate } from "react-router-dom";
 
 const Organization = () => {
   //for translation
-  const { settingReducer, LanguageReducer } = useSelector((state) => state);
-  console.log("settingReducersettingReducersettingReducer", settingReducer);
+  const { settingReducer } = useSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [timedurationValues, setTimeDurationValues] = useState([
-    {
-      label: "1 Hours",
-      value: 1,
-    },
-    {
-      label: "2 Hours",
-      value: 2,
-    },
-    {
-      label: "3 Hours",
-      value: 3,
-    },
-    {
-      label: "4 Hours",
-      value: 4,
-    },
-    {
-      label: "5 Hours",
-      value: 5,
-    },
-    {
-      label: "6 Hours",
-      value: 6,
-    },
-    {
-      label: "7 Hours",
-      value: 7,
-    },
-    {
-      label: "8 Hours",
-      value: 8,
-    },
-    {
-      label: "9 Hours",
-      value: 9,
-    },
-    {
-      label: "10 Hours",
-      value: 10,
-    },
-    {
-      label: "11 Hours",
-      value: 11,
-    },
-    {
-      label: "12 Hours",
-      value: 12,
-    },
-    {
-      label: "13 Hours",
-      value: 13,
-    },
-    {
-      label: "14 Hours",
-      value: 14,
-    },
-    {
-      label: "15 Hours",
-      value: 15,
-    },
-  ]);
 
   const [organizationStates, setOrganizationStates] = useState({
     EmailOnNewMeeting: false,
@@ -105,7 +33,6 @@ const Organization = () => {
     MaximumMeetingDuration: 0,
     Is2FAEnabled: false,
     EmailonCancelledorDeleteMeeting: false,
-
     PushNotificationWhenResolutionIsClosed: false,
     PushNotificationwhenResolutionisCancelledafterCirculation: false,
     PushNotificationwhenRemovedfromGroup: false,
@@ -132,7 +59,6 @@ const Organization = () => {
     UserAllowMicrosoftCalendarSynch: false,
     CalenderMonthsSpan: 0,
   });
-  console.log(organizationStates, "organizationStates");
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
     value: "",
@@ -140,10 +66,6 @@ const Organization = () => {
   const [worldCountryID, setWorldCountryID] = useState(0);
   const [timezone, setTimeZone] = useState([]);
   const [countrycode, setCountryCode] = useState([]);
-  const [countryCodeValue, setCountryCodeValue] = useState({
-    label: "",
-    value: "",
-  });
 
   useEffect(() => {
     dispatch(getTimeZone(navigate, t));
@@ -231,11 +153,6 @@ const Organization = () => {
           userProfileData.userAllowMicrosoftCalendarSynch,
       };
       setOrganizationStates(settingData);
-      // let countryCode = {
-      //   label: userProfileData.countryCode.code,
-      //   value: userProfileData.countryCode.pK_CCID,
-      // };
-      // setCountryCodeValue(countryCode);
       setWorldCountryID(userProfileData.worldCountry.fK_WorldCountryID);
       let timeZoneCode = {
         label: userProfileData.timeZones
@@ -567,12 +484,6 @@ const Organization = () => {
     });
   };
 
-  // const hoursHandler = (event) => {
-  //   setOrganizationStates({
-  //     ...organizationStates,
-  //     MaximumMeetingDuration: event.value,
-  //   });
-  // };
   const handleChangeMaximumMeeting = (e) => {
     const value = e.target.value;
     if (value < 5 || value > 900) {
@@ -584,8 +495,6 @@ const Organization = () => {
       });
     }
   };
-
-  console.log("changeFlage", organizationStates);
 
   // Time Zones set in values
   useEffect(() => {
@@ -613,10 +522,6 @@ const Organization = () => {
 
   useEffect(() => {
     let userProfileData = settingReducer.GetOrganizationLevelSettingResponse;
-    console.log(
-      userProfileData,
-      "userProfileDatauserProfileDatauserProfileData"
-    );
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
         CalenderMonthsSpan: userProfileData.calenderMonthsSpan,
@@ -687,11 +592,6 @@ const Organization = () => {
           userProfileData.userAllowMicrosoftCalendarSynch,
       };
       setOrganizationStates(settingData);
-      // let countryCode = {
-      //   label: userProfileData.worldCountry?.code,
-      //   value: userProfileData.worldCountry?.fK_WorldCountryID,
-      // };
-      // setCountryCodeValue(countryCode);
       setWorldCountryID(userProfileData.worldCountry?.fK_WorldCountryID);
       let timeZoneCode = {
         label: userProfileData.timeZones
@@ -849,28 +749,6 @@ const Organization = () => {
                       labelclass={"d-none"}
                       width="80px"
                     />
-                    {/* <Select
-                      options={timedurationValues}
-                      placeholder={t("Select")}
-                      className={styles["select-timeDuration"]}
-                      value={{
-                        label:
-                          organizationStates.MaximumMeetingDuration +
-                          " " +
-                          "Hours",
-                        value: organizationStates.MaximumMeetingDuration,
-                      }}
-                      defaultValue={{
-                        label:
-                          organizationStates.MaximumMeetingDuration +
-                          " " +
-                          "Hours",
-                        value: organizationStates.MaximumMeetingDuration,
-                      }}
-                      menuShouldScrollIntoView={false}
-                      onChange={hoursHandler}
-                      styles={borderChanges}
-                    /> */}
                   </Col>
                 </Row>
 
@@ -1908,7 +1786,6 @@ const Organization = () => {
           </Row>
         </Col>
       </Container>
-      {/* {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };
