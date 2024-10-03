@@ -12,6 +12,13 @@ import copyToClipboard from "../../hooks/useClipBoard";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import { guestJoinPopup } from "./VideoFeature_actions";
 
+const guestVideoNavigationScreen = (response) => {
+  return {
+    type: actions.GUEST_VIDEO_SCREEN_NAVIGATION,
+    response: response,
+  };
+};
+
 const getMeetingGuestVideoInit = () => {
   return {
     type: actions.GET_MEETING_GUEST_URL_INIT,
@@ -252,6 +259,7 @@ const joinGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinGuestVideo_01".toLowerCase()
                 )
             ) {
+              // dispatch(guestVideoNavigationScreen(true));
               mqttConnectionGuestUser(response.data.responseResult.guestGuid);
               sessionStorage.setItem(
                 "GuestUserID",
@@ -411,4 +419,5 @@ export {
   ClearResponseMessageGuest,
   admitGuestUserRequest,
   admitRejectAttendeeMainApi,
+  guestVideoNavigationScreen,
 };

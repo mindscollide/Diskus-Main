@@ -2212,5 +2212,9 @@
   "Active-meeting": "Active Meeting",
   "meeting-organizers-not-found": "meeting organizers not found",
   "Meeting-not-found": "Meeting not found",
-  "Video-call-not-found": "Video call not found"
+  "Video-call-not-found": "Video call not found",
+  "Entry-denied": "Entry Denied",
+  "The-meeting-organizer-has-not-granted-you-permission-to-join-this-meeting-at-this-time": "The meeting organizer has not granted you permission to join this meeting at this time.",
+  "We-re-Sorry": "We're Sorry!",
+  "The-meeting-has-ended-and-this-link-is-no-longer-active": " The meeting has ended, and this link is no longer active."
 }

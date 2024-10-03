@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import imageChair from "../../../../../assets/images/Recent Activity Icons/Video/ChairImage.png";
-import "./GuestVideoEnded.css";
+import RejectImage from "../../../../../assets/images/Recent Activity Icons/Video/RejectImage.png";
+import "./GuestVideoReject.css";
 
-const GuestVideoEnded = () => {
+const GuestVideoReject = () => {
   const { t } = useTranslation();
 
   return (
@@ -14,7 +14,7 @@ const GuestVideoEnded = () => {
           <Col lg={1} md={1} sm={12} />
           <Col lg={10} md={10} sm={12}>
             <>
-              <div className="guest-video-ended">
+              <div className="Guest-Reject-Video">
                 <Container>
                   <Row>
                     <Col
@@ -23,7 +23,7 @@ const GuestVideoEnded = () => {
                       sm={12}
                       className="d-flex justify-content-center"
                     >
-                      <img src={imageChair} />
+                      <img src={RejectImage} />
                     </Col>
                   </Row>
 
@@ -34,23 +34,25 @@ const GuestVideoEnded = () => {
                       sm={12}
                       className="d-flex justify-content-center"
                     >
-                      <p className="main-heading">{t("We-re-Sorry")}</p>
+                      <p className="Denied-Main-Heading">{t("Entry-denied")}</p>
                     </Col>
                   </Row>
 
                   <Row>
+                    <Col lg={1} md={1} sm={12} />
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={9}
+                      md={9}
                       sm={12}
                       className="d-flex justify-content-center"
                     >
-                      <p className="sub-Heading-main">
+                      <p className="Sub-Denied-Main-Heading">
                         {t(
-                          "The-meeting-has-ended-and-this-link-is-no-longer-active"
+                          "The-meeting-organizer-has-not-granted-you-permission-to-join-this-meeting-at-this-time"
                         )}
                       </p>
                     </Col>
+                    <Col lg={1} md={1} sm={12} />
                   </Row>
                 </Container>
               </div>
@@ -63,4 +65,4 @@ const GuestVideoEnded = () => {
   );
 };
 
-export default GuestVideoEnded;
+export default GuestVideoReject;

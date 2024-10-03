@@ -1,0 +1,20 @@
+.Guest-Reject-Video {
+  padding: 60px 90px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+}
+
+.Denied-Main-Heading {
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 10px;
+  color: #6172d6 !important;
+}
+
+.Sub-Denied-Main-Heading {
+  font-size: 26px;
+  font-weight: 600;
+  text-align: center;
+  color: #5a5a5a !important;
+}
