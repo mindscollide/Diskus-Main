@@ -8,10 +8,14 @@ import GuestVideoEnded from "../GuestVideoEnded/GuestVideoEnded";
 import { extractActionFromUrl } from "../../../../../commen/functions/utils";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { validateEncryptGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
+import {
+  guestVideoNavigationScreen,
+  validateEncryptGuestVideoMainApi,
+} from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnectionGuestUser } from "../../../../../commen/functions/mqttconnection_guest";
+import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 
 const GuestVideoCall = () => {
   const { t } = useTranslation();
@@ -23,6 +27,10 @@ const GuestVideoCall = () => {
     (state) => state.GuestVideoReducer.validateData
   );
 
+  const guestVideoNavigationData = useSelector(
+    (state) => state.GuestVideoReducer.guestVideoNavigationData
+  );
+
   let guestVideoClient = Helper.guestSocket;
   const onConnectionLost = () => {
     setTimeout(mqttConnectionGuestUser(guestUserId), 3000);
@@ -30,6 +38,18 @@ const GuestVideoCall = () => {
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
     console.log(data, "datadatadata");
+    if (data.action === "Meeting") {
+      if (
+        data.payload.message.toLowerCase() ===
+        "MEETING_GUEST_JOIN_RESPONSE".toLowerCase()
+      ) {
+        if (data.payload.isAccepted === true) {
+          dispatch(guestVideoNavigationScreen(2));
+        } else {
+          dispatch(guestVideoNavigationScreen(4));
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -113,13 +133,13 @@ const GuestVideoCall = () => {
     <>
       {/* <GuestVideoHeader /> */}
 
-      {validateData === null ? (
+      {guestVideoNavigationData === 4 ? (
         <>
           <div className="Main-Guest-Video">
             <GuestVideoEnded />
           </div>
         </>
-      ) : (
+      ) : guestVideoNavigationData === 1 ? (
         <>
           <div className="Main-Guest-Video">
             <GuestJoinVideo
@@ -129,7 +149,11 @@ const GuestVideoCall = () => {
           </div>
           {/* <GuestVideoEnded /> */}
         </>
-      )}
+      ) : guestVideoNavigationData === 2 ? (
+        <>
+          <GuestVideoScreen />
+        </>
+      ) : null}
     </>
   );
 };

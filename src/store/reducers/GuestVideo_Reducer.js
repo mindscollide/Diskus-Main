@@ -8,7 +8,8 @@ const initialState = {
   joinGuestData: null,
   guestClient: null,
   admitRejectData: null,
-  admitGuestUserRequestData: null
+  admitGuestUserRequestData: null,
+  guestVideoNavigationData: 1,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -92,9 +93,9 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         guestClient: action.response,
-      }
+      };
     }
-    
+
     case actions.ADMIT_REJECT_ATTENDEE_INIT: {
       return {
         ...state,
@@ -131,6 +132,13 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         admitGuestUserRequestData: action.response,
+      };
+    }
+
+    case actions.GUEST_VIDEO_SCREEN_NAVIGATION: {
+      return {
+        ...state,
+        guestVideoNavigationData: action.response,
       };
     }
 

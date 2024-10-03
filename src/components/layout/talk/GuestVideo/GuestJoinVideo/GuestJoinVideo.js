@@ -13,13 +13,22 @@ import { Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { joinGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
+import {
+  guestVideoNavigationScreen,
+  joinGuestVideoMainApi,
+} from "../../../../../store/actions/Guest_Video";
 import GuestVideoHeader from "../GuestVideoHeader/GuestVideoHeader";
+import { useSelector } from "react-redux";
+import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 
 const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const guestNavigateData = useSelector(
+    (state) => state.GuestVideoReducer.guestVideoNavigationData
+  );
 
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
@@ -32,9 +41,6 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
   const [errorMessage, setErrorMessage] = useState(false);
 
   console.log({ extractMeetingId, extractMeetingTitle }, "namenamenamename");
-
-  // another red div
-  const [isBigScreen, setIsBigScreen] = useState(false);
 
   const handleToggleWebCam = () => {
     if (!isWebCamEnabled) {
@@ -88,43 +94,43 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
       let data = { MeetingId: extractMeetingId, GuestName: name };
       dispatch(joinGuestVideoMainApi(navigate, t, data));
 
-      setTimeout(() => {
-        setIsBigScreen(true);
-        if (!isWebCamEnabled) {
-          // Enable webcam
-          const mediaDevices = navigator.mediaDevices;
+      // setTimeout(() => {
+      //
+      //   if (!isWebCamEnabled) {
+      //     // Enable webcam
+      //     const mediaDevices = navigator.mediaDevices;
 
-          mediaDevices
-            .getUserMedia({
-              video: true,
-              audio: true,
-            })
-            .then((stream) => {
-              const video = videoRef.current;
-              if (video) {
-                video.srcObject = stream;
-                video.muted = true;
-                video.play();
-              }
-              setStream(stream); // Store the stream to disable later
-              setIsWebCamEnabled(true); // Webcam is now enabled
-            })
-            .catch((error) => {
-              alert(error.message);
-            });
-        } else {
-          // Disable webcam
-          if (stream) {
-            stream.getTracks().forEach((track) => track.stop());
-            setStream(null); // Clear the stream from state
-            const video = videoRef.current;
-            if (video) {
-              video.srcObject = null; // Clear the video source
-            }
-            setIsWebCamEnabled(false); // Webcam is now disabled
-          }
-        }
-      }, 3000);
+      //     mediaDevices
+      //       .getUserMedia({
+      //         video: true,
+      //         audio: true,
+      //       })
+      //       .then((stream) => {
+      //         const video = videoRef.current;
+      //         if (video) {
+      //           video.srcObject = stream;
+      //           video.muted = true;
+      //           video.play();
+      //         }
+      //         setStream(stream); // Store the stream to disable later
+      //         setIsWebCamEnabled(true); // Webcam is now enabled
+      //       })
+      //       .catch((error) => {
+      //         alert(error.message);
+      //       });
+      //   } else {
+      //     // Disable webcam
+      //     if (stream) {
+      //       stream.getTracks().forEach((track) => track.stop());
+      //       setStream(null); // Clear the stream from state
+      //       const video = videoRef.current;
+      //       if (video) {
+      //         video.srcObject = null; // Clear the video source
+      //       }
+      //       setIsWebCamEnabled(false); // Webcam is now disabled
+      //     }
+      //   }
+      // }, 3000);
     }
   };
 
@@ -161,7 +167,8 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
   }, []);
 
   const onClickOpenANotherDiv = () => {
-    setIsBigScreen(false);
+    dispatch(guestVideoNavigationScreen(false));
+    // setIsBigScreen(false);
     setGetReady(false);
     setIsWebCamEnabled(false);
   };
@@ -170,7 +177,7 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
     <Container fluid>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          {!isBigScreen ? (
+          {
             <>
               <div className="guest-join-video-main">
                 <Container>
@@ -269,21 +276,7 @@ const GuestJoinVideo = ({ extractMeetingId, extractMeetingTitle }) => {
                 </Container>
               </div>
             </>
-          ) : (
-            <>
-              <GuestVideoHeader extractMeetingTitle={extractMeetingTitle} />
-              <div className="new-div">
-                <div
-                  style={{
-                    position: "relative",
-                  }}
-                >
-                  <video ref={videoRef} className="video-size" />
-                </div>
-              </div>
-              <Button text={"Close Div"} onClick={onClickOpenANotherDiv} />
-            </>
-          )}
+          }
         </Col>
       </Row>
     </Container>
