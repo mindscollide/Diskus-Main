@@ -4,8 +4,6 @@ import {
   Button,
   Notification,
 } from "../../../components/elements";
-import { Paper } from "@material-ui/core";
-
 import styles from "./ViewCommittee.module.css";
 import { Upload } from "antd";
 import { useDispatch } from "react-redux";
@@ -18,14 +16,7 @@ import {
   uploadDocumentsCommitteesApi,
 } from "../../../store/actions/Committee_actions";
 import { Col, Row } from "react-bootstrap";
-import pdfIcon from "../../../assets/images/pdf_icon.svg";
-import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import file_image from "../../../assets/images/file_image.svg";
 import featherupload from "../../../assets/images/featherupload.svg";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
@@ -34,7 +25,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [fileAttachments, setFileAttachments] = useState([]);
-  const [viewCommitteeClose, setViewCommitteeClose] = useState(true);
   const { CommitteeReducer } = useSelector((state) => state);
   const [folderID, setFolderId] = useState(0);
   const [filesSending, setFilesSending] = useState([]);
@@ -55,10 +45,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
     committeeMembers: [],
   });
 
-  console.log(
-    { fileAttachments, filesSending, fileForSend },
-    "fileAttachmentsfileAttachments"
-  );
   const closebtn = async () => {
     setViewGroupPage(false);
     localStorage.removeItem("ViewCommitteeID");
@@ -144,35 +130,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
       );
     }
   };
-  const handleDoubleCLickFile = (data) => {
-    let ext = data.DisplayAttachmentName.split(".")[1];
-    let pdfData = {
-      taskId: data.pK_FileID,
-      commingFrom: 4,
-      fileName: data.DisplayAttachmentName,
-      attachmentID: data.pK_FileID,
-    };
-    const pdfDataJson = JSON.stringify(pdfData);
-    if (ext === "pdf") {
-      window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
-    } else {
-      let data2 = {
-        FileID: Number(data.pK_FileID),
-      };
-      dispatch(
-        DataRoomDownloadFileApiFunc(
-          navigate,
-          data2,
-          t,
-          data.DisplayAttachmentName
-        )
-      );
-    }
-  };
+
   useEffect(() => {
     if (
       CommitteeReducer.getCommitteeByCommitteeID !== null &&
@@ -208,7 +166,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -319,7 +276,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   return (
     <>
       <section className=" color-5a5a5a">
-        {/* <Paper className={styles["View-Committee-paper"]}> */}
         <Row>
           <Col lg={6} md={6} sm={6}>
             <Row>
@@ -524,11 +480,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                       (filterData, index) =>
                         filterData.committeeRole.committeeRoleID === 3
                     )
-                    .map((data, index) => {
-                      console.log(
-                        data,
-                        "ChairPersonChairPersonChairPersonChairPerson"
-                      );
+                    .map((data) => {
                       return (
                         <Col lg={6} md={6} sm={12} className="mt-2">
                           <Row>
@@ -609,10 +561,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                         filterData.committeeRole.committeeRoleID === 4
                     )
                     .map((data, index) => {
-                      console.log(
-                        data,
-                        "ChairPersonChairPersonChairPersonChairPerson"
-                      );
                       return (
                         <Col lg={6} md={6} sm={12} className="mt-2">
                           <Row>
@@ -692,7 +640,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                       (filterData, index) =>
                         filterData.committeeRole.committeeRoleID === 5
                     )
-                    .map((data, index) => {
+                    .map((data) => {
                       return (
                         <Col
                           lg={6}
@@ -777,6 +725,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                     <span className={styles["create_resolution_dragger"]}>
                       <img
                         src={featherupload}
+                        alt=""
                         width="18.87px"
                         height="18.87px"
                         draggable="false"
@@ -812,67 +761,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                               data={data}
                             />
                           </Col>
-                          {/* <Col lg={4} md={4} sm={4}>
-                            <section
-                              className={styles["Outer_Box"]}
-                              onClick={() => handleDoubleCLickFile(data)}
-                            >
-                              {Number(data.fk_UserID) ===
-                                Number(currentUserID) && (
-                                <span className={styles["Crossicon_Class"]}>
-                                  <img
-                                    src={CrossIcon}
-                                    height="12.68px"
-                                    alt=""
-                                    width="12.68px"
-                                    onClick={() => handleRemoveFile(data)}
-                                  />
-                                </span>
-                              )}
-
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <img
-                                    src={file_image}
-                                    width={"100%"}
-                                    alt=""
-                                    draggable="false"
-                                  />
-                                </Col>
-                              </Row>
-
-                              <section
-                                className={styles["backGround_name_Icon"]}
-                              >
-                                <Row className="mb-2">
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className={styles["IconTextClass"]}
-                                  >
-                                    <img
-                                      src={getIconSource(
-                                        getFileExtension(
-                                          data.DisplayAttachmentName
-                                        )
-                                      )}
-                                      alt=""
-                                      height="10px"
-                                      width="10px"
-                                      className={styles["IconPDF"]}
-                                    />
-                                    <span
-                                      className={styles["FileName"]}
-                                      title={data.DisplayAttachmentName}
-                                    >
-                                      {data.DisplayAttachmentName}
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </section>
-                            </section>
-                          </Col> */}
                         </>
                       );
                     })
@@ -900,7 +788,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
             />
           </Col>
         </Row>
-        {/* </Paper> */}
       </section>
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>

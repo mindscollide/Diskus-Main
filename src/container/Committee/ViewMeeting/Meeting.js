@@ -24,14 +24,10 @@ import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import {
   getMeetingByCommitteeIDApi,
   meetingNotConductedMQTT,
-  searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  ViewMeeting,
-  allAssignessList,
-} from "../../../store/actions/Get_List_Of_Assignees";
+import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
@@ -55,7 +51,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     allMeetingsSocketData,
     MeetingStatusEnded,
   } = useSelector((state) => state.meetingIdReducer);
-  const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   let userID = localStorage.getItem("userID");
@@ -235,10 +230,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           text: t("Active"),
           value: "10",
         },
-        // {
-        //   text: t("Start"),
-        //   value: "2",
-        // },
+
         {
           text: t("Upcoming"),
           value: "1",
@@ -284,7 +276,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "115px",
-      render: (text, record) => {
+      render: (record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
             <span className={styles["meeting-start"]}>
@@ -352,14 +344,11 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                         ? "margin-left-10"
                         : "margin-right-10"
                     }
-                    // onClick={(e) => groupChatInitiation(record)}
                   >
                     <Tooltip placement="topLeft" title={t("Chat")}>
                       <img
                         src={CommentIcon}
                         className="cursor-pointer"
-                        // width="20.06px"
-                        // height="15.95px"
                         alt=""
                         draggable="false"
                       />
@@ -471,8 +460,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
               (record.isQuickMeeting === true &&
                 record.pK_MDID === startMeetingData.meetingID &&
                 startMeetingData.showButton)
-              // &&
-              // minutesDifference > 0
             ) {
               return (
                 <Row>
@@ -488,12 +475,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                             t,
                             7,
                             startMeetingRequest
-                            // setEdiorRole,
-                            // setAdvanceMeetingModalID,
-                            // setDataroomMapFolderId,
-                            // setSceduleMeeting,
-                            // setViewFlag,
-                            // setEditFlag
                           )
                         );
                         localStorage.setItem("meetingTitle", record.title);
@@ -575,7 +556,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                   <>
                     <Row>
                       <Col sm={12} md={12} lg={12}>
-                        {/* <Tooltip placement="topRight" title={t("Edit")}> */}
                         {committeeStatus === 3 && (
                           <img
                             src={EditIcon}
@@ -594,8 +574,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                             }
                           />
                         )}
-
-                        {/* </Tooltip> */}
                       </Col>
                     </Row>
                   </>
@@ -611,19 +589,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   useEffect(() => {
     try {
       if (CommitteeMeetingMQTT !== null) {
-        console.log(
-          CommitteeMeetingMQTT,
-          ViewCommitteeID,
-          "CommitteeMeetingMQTTCommitteeMeetingMQTT"
-        );
-
         if (
           Number(ViewCommitteeID) === Number(CommitteeMeetingMQTT.committeeID)
         ) {
-          console.log(
-            CommitteeMeetingMQTT,
-            "CommitteeMeetingMQTTCommitteeMeetingMQTT"
-          );
           let meetingData = CommitteeMeetingMQTT.meeting;
           let findIsExist = rows.findIndex(
             (data, index) => data.pK_MDID === meetingData.pK_MDID
@@ -651,7 +619,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
 
   useEffect(() => {
     if (MeetingStatusEnded !== null) {
-      console.log(MeetingStatusEnded, "MeetingStatusEndedMeetingStatusEnded");
       try {
         if (
           MeetingStatusEnded.message.toLowerCase() ===
@@ -759,11 +726,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   //  Update Meeting Status Cancelled and Start Meeting
   useEffect(() => {
     if (MeetingStatusSocket !== null) {
-      console.log(
-        MeetingStatusSocket,
-        "MeetingStatusSocketMeetingStatusSocket"
-      );
-      let meetingStatusID = MeetingStatusSocket.meetingStatusID;
       if (
         MeetingStatusSocket.message
           .toLowerCase()
@@ -788,13 +750,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
       ) {
-        let meetingID = MeetingStatusSocket.meeting.pK_MDID;
       }
 
       dispatch(getMeetingStatusfromSocket(null));
-      // if (meetingStatusID === 4) {
-      //   updateCalendarData(true, meetingID);
-      // }
     }
   }, [MeetingStatusSocket]);
   return (
