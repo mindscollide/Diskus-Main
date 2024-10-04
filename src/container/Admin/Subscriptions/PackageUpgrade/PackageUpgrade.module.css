@@ -126,7 +126,6 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
 .span-foranually:hover {
   color: #5a5a5a;
   transition: 0.3s ease-in-out;
-  /* background-color: #6172D6; */
 }
 
 .packagecard_one {
@@ -223,7 +222,6 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   background-color: none;
   text-align: center;
   cursor: pointer;
-  /* opacity: 0.7; */
   border-right: 1px solid #e1e1e1;
   border-top: 1px solid #e1e1e1;
   border-bottom: 1px solid #e1e1e1;
@@ -298,13 +296,9 @@ body[dir="rtl"] .span-formontly {
 }
 
 .packagecard_two {
-  /* box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46); */
   border: 1px solid #707070;
   visibility: visible;
-  /* margin    : 10px 0 30px 0; */
   border-radius: 4px;
-  /* width     : 155px; */
-  /* margin    : 20px auto 10px auto; */
   max-height: 200px;
   padding: 5px 0;
 }
@@ -316,13 +310,8 @@ body[dir="rtl"] .span-formontly {
 
 .packagecard_two_visible {
   border: 1px solid #707070;
-  /* box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46); */
   visibility: hidden;
-  /* margin    : 10px 0 30px 0; */
-  /* padding   : 5px 5px !important; */
   border-radius: 4px;
-  /* width     : 155px; */
-  /* margin    : 20px auto 10px auto; */
   max-height: 200px;
   padding: 5px 0;
 }

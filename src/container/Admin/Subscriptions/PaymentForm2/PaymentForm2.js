@@ -1,49 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PaymentForm2.module.css";
 import { Container, Row, Col } from "react-bootstrap";
-import {
-  ChevronCompactLeft,
-  ChevronLeft,
-  ChevronRight,
-  X,
-} from "react-bootstrap-icons";
+import { ChevronLeft, ChevronRight, X } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Accordian,
-  Button,
-  Loader,
-  TextField,
-} from "../../../../components/elements";
+import { Button, Loader } from "../../../../components/elements";
 import PayonnerLogo from "../../../../assets/images/payoneer-logo.svg";
 import { Link, useNavigate } from "react-router-dom";
-import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Diskus_newRoundIcon_SignUp.svg";
-import PaypalPaymentLogo from "../../../../assets/images/newElements/Paypal.svg";
-import BinancePaymentCardLogo from "../../../../assets/images/newElements/BinancePaymentCardLogo.svg";
-import BitcoinPaymentCardLogo from "../../../../assets/images/newElements/BitcoinPaymentCardLogo.svg";
-import EtherumPaymentCardLogo from "../../../../assets/images/newElements/EtherumPaymentCardLogo.svg";
-import MasterCard from "../../../../assets/images/newElements/Master_card.svg";
-import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import { useTranslation } from "react-i18next";
-import { getSelectedPacakgeDetail } from "../../../../store/actions/Auth2_actions";
 import Cookies from "js-cookie";
-import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import {
-  getSubscriptionPaymentDetail,
-  getSubscriptionUpgradePaymentCompleteApi,
-} from "../../../../store/actions/Admin_PackageDetail";
+import { getSubscriptionUpgradePaymentCompleteApi } from "../../../../store/actions/Admin_PackageDetail";
 const PaymentForm2 = () => {
   const { t, i18n } = useTranslation();
-  const [annualPackageShow, setAnnualPackageShow] = useState(false);
-  const [monthlyPackageShow, setMonthlyPackageShow] = useState(false);
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
-  console.log("AuthreducerAuthreducer", Authreducer);
-  const [isSelectedPacakage, setSelectedPackage] = useState({
-    PackageCategory: "",
-    MonthlyAmount: "",
-    AnnuallyAmount: "",
-    DisountPer: "",
-    OrderAmount: "",
-  });
   const [totalAmount, setTotalAmount] = useState(0);
   let PaymentAmount = JSON.parse(localStorage.getItem("PaymentAmount"));
   useEffect(() => {
@@ -54,9 +22,6 @@ const PaymentForm2 = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const goBack = () => {
-    navigate("/selectedpackage");
-  };
 
   const languages = [
     { name: "English", code: "en" },
@@ -68,21 +33,11 @@ const PaymentForm2 = () => {
 
   const [language, setLanguage] = useState(currentLocale);
 
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
-  };
-
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  /// calcuate Anually price
 
   const handleSubmitforPayment = () => {
     dispatch(getSubscriptionUpgradePaymentCompleteApi(navigate, t));
@@ -97,9 +52,6 @@ const PaymentForm2 = () => {
     <>
       <Container className={styles["paymentformBackground"]}>
         <Row className="position-relative">
-          {/* <Col sm={12} md={12} lg={12} className={styles["bg_roundimage"]}>
-            <img draggable="false" src={DiskusnewRoundIconSignUp} alt="" />
-          </Col> */}
           <Col
             sm={12}
             lg={12}
@@ -114,9 +66,6 @@ const PaymentForm2 = () => {
               {t("Choose-payment-method")}
             </h3>
           </Col>
-          {/* <Col className={styles["languageSelector"]} >
-            <LanguageSelector />
-          </Col> */}
           <Col
             sm={12}
             md={12}
@@ -229,84 +178,6 @@ const PaymentForm2 = () => {
                     className={styles["PaymentFormSubmitPayment"]}
                   />
                 </Col>
-                {/* <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className="MontserratMedium-500 text-center small Arabicstyles_Subtotal_Not_include_taxes"
-                >
-                  {t("Subtotal-does-not-include-applicable-taxes")}
-                </Col> */}
-                {/* <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className={` ${"MontserratMedium-500 mt-2"} ${styles["link_text"]
-                    }`}
-                >
-                  <Link to="">{t("Have-a-promo-code")}</Link>
-                </Col> */}
-                {/* <Col
-                  className={` ${"MontserratMedium-500 mt-2"} ${styles["link_text"]
-                    }`}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                >
-                  <Link to="">{t("View-all-promo-codes")}</Link>
-                </Col> */}
-                {/* <Col sm={12} md={12} lg={12} className="mt-4 d-flex justify-content-center">
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className={styles["paymentoptions"]}
-                    >
-                      <div>
-                        <figure>
-                          <img draggable="false" src={BitcoinPaymentCardLogo} />
-                          <figcaption className="MontserratMedium-500 font-sizepaymentmethodcaption">
-                            {t("Bitcoin")}
-                          </figcaption>
-                        </figure>
-                        <figure>
-                          <img draggable="false" src={EtherumPaymentCardLogo} />
-                          <figcaption className="MontserratMedium-500 font-sizepaymentmethodcaption">
-                            {t("Ethereum")}
-                          </figcaption>
-                        </figure>
-                        <figure>
-                          <img draggable="false" src={BinancePaymentCardLogo} />
-                          <figcaption className="MontserratMedium-500 font-sizepaymentmethodcaption">
-                            {t("Binance")}
-                          </figcaption>
-                        </figure>
-                      </div>
-                      <div>
-                        <figure>
-                          <img draggable="false" src={PaypalPaymentLogo} />
-                          <figcaption></figcaption>
-                        </figure>
-                      </div>
-                      <div>
-                        <figure>
-                          <img draggable="false" src={MasterCard} />
-                          <figcaption></figcaption>
-                        </figure>
-                      </div>
-                    </Col>
-                  </Row>
-                </Col> */}
-                {/* <Col
-                  className=" text-center mt-2 Saved_money_Tagline"
-                  style={{ color: "5a5a5a" }}
-                  md={12}
-                  sm={12}
-                  lg={12}
-                >
-                  {t("Nice-you-saved-$5/-month-on-you-subscription")}
-                </Col> */}
               </Row>
             </Col>
           </Col>
