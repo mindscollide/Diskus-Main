@@ -10,7 +10,11 @@ import {
 } from "../../commen/apis/Api_config";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
-import { guestJoinPopup, participantAcceptandReject } from "./VideoFeature_actions";
+import {
+  guestJoinPopup,
+  participantAcceptandReject,
+  participantWaitingListBox,
+} from "./VideoFeature_actions";
 
 const guestVideoNavigationScreen = (response) => {
   return {
@@ -185,6 +189,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
               await dispatch(
                 validateEncryptGuestVideoFail(t("Invalid-meeting"))
               );
+              dispatch(guestVideoNavigationScreen(4));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -195,20 +200,24 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
               await dispatch(
                 validateEncryptGuestVideoFail(t("Something-went-wrong"))
               );
+              dispatch(guestVideoNavigationScreen(4));
             }
           } else {
             await dispatch(
               validateEncryptGuestVideoFail(t("Something-went-wrong"))
             );
+            dispatch(guestVideoNavigationScreen(4));
           }
         } else {
           await dispatch(
             validateEncryptGuestVideoFail(t("Something-went-wrong"))
           );
+          dispatch(guestVideoNavigationScreen(4));
         }
       })
       .catch((response) => {
         dispatch(validateEncryptGuestVideoFail(t("Something-went-wrong")));
+        dispatch(guestVideoNavigationScreen(4));
       });
   };
 };
@@ -369,7 +378,10 @@ const admitRejectAttendeeMainApi = (Data, navigate, t) => {
                   t("Successful")
                 )
               );
-              dispatch(participantAcceptandReject(filterGuids))
+              if (filterGuids.length > 1) {
+                dispatch(participantWaitingListBox(false));
+              }
+              dispatch(participantAcceptandReject(filterGuids));
               dispatch(guestJoinPopup(false));
             } else if (
               response.data.responseResult.responseMessage

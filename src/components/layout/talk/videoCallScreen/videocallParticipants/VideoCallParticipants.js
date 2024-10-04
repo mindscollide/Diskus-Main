@@ -8,114 +8,69 @@ import { participantWaitingListBox } from "../../../../../store/actions/VideoFea
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { admitRejectAttendeeMainApi } from "../../../../../store/actions/Guest_Video";
-
-const names = [
-  "John",
-  "Ali",
-  "Emily",
-  "Sara",
-  "Michael",
-  "Sophia",
-  "Daniel",
-  "Liam",
-  "Olivia",
-  "James",
-  "Ava",
-  "William",
-  "Isabella",
-  "Benjamin",
-  "Mia",
-  "Lucas",
-  "Charlotte",
-  "Henry",
-  "Amelia",
-  "Alexander",
-  "Evelyn",
-  "Jacob",
-  "Harper",
-  "Mason",
-  "Ella",
-  "Logan",
-  "Scarlett",
-  "Ethan",
-  "Grace",
-  "Noah",
-  "Lily",
-  "Aiden",
-  "Zoe",
-  "Jackson",
-  "Chloe",
-  "Elijah",
-  "Victoria",
-  "Sebastian",
-  "Hannah",
-  "David",
-  "Aurora",
-  "Samuel",
-  "Aria",
-  "Levi",
-  "Penelope",
-  "Gabriel",
-  "Layla",
-  "Isaac",
-  "Nora",
-  "Matthew",
-  "Ellie",
-  "Julian",
-  "Hazel",
-  "Anthony",
-  "Luna",
-  "Joshua",
-  "Violet",
-  "Andrew",
-  "Sofia",
-];
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const VideoCallParticipants = () => {
   const { videoFeatureReducer } = useSelector((state) => state);
-  const [meettingID, setMeetingID] = useState(0)
+  const [meettingID, setMeetingID] = useState(0);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const [participantsList, setPartcipantList] = useState([]);
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const handleChangeSearchParticipant = (e) => {
     const { value } = e.target;
     setSearchValue(value);
-    let findisExist = names.filter((namesData, index) =>
-      namesData.includes(value)
-    );
-    setPartcipantList(findisExist);
+    // let findisExist = names.filter((namesData, index) =>
+    //   namesData.includes(value)
+    // );
+    // setPartcipantList(findisExist);
   };
   useEffect(() => {
     if (videoFeatureReducer.participantWaitingList.length > 0) {
       try {
-        videoFeatureReducer.participantWaitingList.forEach(
-          (participantData, index) => {
-            setPartcipantList([...participantsList, participantData]);
-          }
-        );
+        setPartcipantList(videoFeatureReducer.participantWaitingList);
       } catch (error) {
-        console.log(error, "errorerror")
+        console.log(error, "errorerror");
       }
     } else {
-      setPartcipantList([])
+      setPartcipantList([]);
     }
   }, [videoFeatureReducer.participantWaitingList]);
 
-  // const handleClickAcceptAndReject = () => {
-  //   let Data = {
-  //     MeetingId: meettingID,
-  //     AttendeeResponseList: [
-  //       {
-  //         Name: name,
-  //         UID: uid,
-  //         IsRequestAccepted: flag === 1 ? true : false,
-  //         IsGuest: isGuest,
-  //       },
-  //     ],
-  //   };
-  //   dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
-  // }
-  console.log(videoFeatureReducer, "videoFeatureReducer.participantWaitingListvideoFeatureReducer.participantWaitingList")
+  const handleClickAllAcceptAndReject = (flag) => {
+    let Data = {
+      MeetingId: participantsList[0].meetingID,
+      AttendeeResponseList: participantsList.map((participantData, index) => {
+        return {
+          Name: participantData.name,
+          UID: participantData.uid,
+          IsRequestAccepted: flag === 1 ? true : false,
+          IsGuest: participantData.IsGuest,
+        };
+      }),
+    };
+    dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
+  };
+  const handleClickAcceptAndReject = (participantInfo, flag) => {
+    let Data = {
+      MeetingId: participantInfo.meetingID,
+      AttendeeResponseList: [
+        {
+          Name: participantInfo.name,
+          UID: participantInfo.uid,
+          IsRequestAccepted: flag === 1 ? true : false,
+          IsGuest: participantInfo.IsGuest,
+        },
+      ],
+    };
+    dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
+  };
+  console.log(
+    videoFeatureReducer,
+    "videoFeatureReducer.participantWaitingListvideoFeatureReducer.participantWaitingList"
+  );
   return (
     <section
       className={
@@ -150,12 +105,17 @@ const VideoCallParticipants = () => {
           <div className={styles["AcceptAndDeniedBtns"]}>
             <Row>
               <Col sm={6} md={6} lg={6}>
-                <Button className={styles["denyAllBtn"]} text={"Deny All"} />
+                <Button
+                  className={styles["denyAllBtn"]}
+                  text={"Deny All"}
+                  onClick={() => handleClickAllAcceptAndReject(2)}
+                />
               </Col>
               <Col sm={6} md={6} lg={6}>
                 <Button
                   className={styles["AcceptAllBtn"]}
                   text={"Accept All "}
+                  onClick={() => handleClickAllAcceptAndReject(1)}
                 />
               </Col>
             </Row>
@@ -170,7 +130,10 @@ const VideoCallParticipants = () => {
             }>
             {participantsList?.length > 0 &&
               participantsList.map((data, index) => {
-                console.log(data, "participantsListparticipantsListparticipantsList")
+                console.log(
+                  data,
+                  "participantsListparticipantsListparticipantsList"
+                );
                 return (
                   <Row className='mb-2' key={data.uid}>
                     <Col
@@ -182,7 +145,9 @@ const VideoCallParticipants = () => {
                         src={UserImage}
                         className={styles["participantImage"]}
                       />
-                      <span className={styles["participant_name"]}>{data.name}</span>
+                      <span className={styles["participant_name"]}>
+                        {data.name}
+                      </span>
                     </Col>
                     <Col
                       sm={6}
@@ -191,11 +156,13 @@ const VideoCallParticipants = () => {
                       className='d-flex align-items-center gap-2'>
                       <Button
                         className={styles["denyAllBtn-small"]}
-                        text={"Deny "}
+                        text='Deny'
+                        onClick={() => handleClickAcceptAndReject(data, 2)}
                       />
                       <Button
                         className={styles["AcceptAllBtn-small"]}
-                        text={"Accept "}
+                        text={"Accept"}
+                        onClick={() => handleClickAcceptAndReject(data, 1)}
                       />
                     </Col>
                   </Row>
