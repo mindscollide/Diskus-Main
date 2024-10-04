@@ -234,7 +234,15 @@ const participantWaitingList = (response) => {
   };
 };
 
+const participantAcceptandReject = (response) => {
+  return {
+    type: actions.ACCEPT_AND_REMOVE_PARTICIPANTS,
+    payload: response,
+  };
+};
+
 export {
+  participantAcceptandReject,
   participantWaitingList,
   participantWaitingListBox,
   videoChatPanel,

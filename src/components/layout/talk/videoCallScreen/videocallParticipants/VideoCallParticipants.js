@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./VideoCallParticipants.module.css";
 import { Col, Row } from "react-bootstrap";
 import CrossIcon from "../../../../../assets/images/VideoCall/Cross_icon_videoCallParticipantWaiting.png";
@@ -7,6 +7,7 @@ import UserImage from "../../../../../assets/images/user.png";
 import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { admitRejectAttendeeMainApi } from "../../../../../store/actions/Guest_Video";
 
 const names = [
   "John",
@@ -71,20 +72,57 @@ const names = [
 ];
 
 const VideoCallParticipants = () => {
-  const [participantsList, setPartcipantList] = useState(names);
-  const {videoFeatureReducer} =useSelector(state => state) 
-  const dispatch = useDispatch()
+  const { videoFeatureReducer } = useSelector((state) => state);
+  const [meettingID, setMeetingID] = useState(0)
+  const [participantsList, setPartcipantList] = useState([]);
+  const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const handleChangeSearchParticipant = (e) => {
     const { value } = e.target;
-    setSearchValue(value)
-      let findisExist = names.filter((namesData, index) =>
-        namesData.includes(value)
-      );
-      setPartcipantList(findisExist);
+    setSearchValue(value);
+    let findisExist = names.filter((namesData, index) =>
+      namesData.includes(value)
+    );
+    setPartcipantList(findisExist);
   };
+  useEffect(() => {
+    if (videoFeatureReducer.participantWaitingList.length > 0) {
+      try {
+        videoFeatureReducer.participantWaitingList.forEach(
+          (participantData, index) => {
+            setPartcipantList([...participantsList, participantData]);
+          }
+        );
+      } catch (error) {
+        console.log(error, "errorerror")
+      }
+    } else {
+      setPartcipantList([])
+    }
+  }, [videoFeatureReducer.participantWaitingList]);
+
+  // const handleClickAcceptAndReject = () => {
+  //   let Data = {
+  //     MeetingId: meettingID,
+  //     AttendeeResponseList: [
+  //       {
+  //         Name: name,
+  //         UID: uid,
+  //         IsRequestAccepted: flag === 1 ? true : false,
+  //         IsGuest: isGuest,
+  //       },
+  //     ],
+  //   };
+  //   dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
+  // }
+  console.log(videoFeatureReducer, "videoFeatureReducer.participantWaitingListvideoFeatureReducer.participantWaitingList")
   return (
-    <section className={videoFeatureReducer.NormalizeVideoFlag ?  styles["WaitingParticipantBoxNorm"] : styles["WaitingParticipantBox"]}>
+    <section
+      className={
+        videoFeatureReducer.NormalizeVideoFlag
+          ? styles["WaitingParticipantBoxNorm"]
+          : styles["WaitingParticipantBox"]
+      }>
       <Row>
         <Col
           sm={12}
@@ -124,11 +162,17 @@ const VideoCallParticipants = () => {
           </div>
         </Col>
         <Col sm={12} md={12} lg={12}>
-          <div className={videoFeatureReducer.NormalizeVideoFlag  ? styles["AcceptAndDeniedManual_Nor"] : styles["AcceptAndDeniedManual"]}>
+          <div
+            className={
+              videoFeatureReducer.NormalizeVideoFlag
+                ? styles["AcceptAndDeniedManual_Nor"]
+                : styles["AcceptAndDeniedManual"]
+            }>
             {participantsList?.length > 0 &&
               participantsList.map((data, index) => {
+                console.log(data, "participantsListparticipantsListparticipantsList")
                 return (
-                  <Row className='mb-2'>
+                  <Row className='mb-2' key={data.uid}>
                     <Col
                       sm={6}
                       md={6}
@@ -138,7 +182,7 @@ const VideoCallParticipants = () => {
                         src={UserImage}
                         className={styles["participantImage"]}
                       />
-                      <span className={styles["participant_name"]}>{data}</span>
+                      <span className={styles["participant_name"]}>{data.name}</span>
                     </Col>
                     <Col
                       sm={6}

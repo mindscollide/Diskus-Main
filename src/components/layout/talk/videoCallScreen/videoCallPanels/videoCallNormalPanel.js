@@ -345,6 +345,8 @@ const VideoPanelNormal = () => {
                         <VideoCallParticipants />
                       </Col>
                     ) : null}
+                        {/* <VideoCallParticipants /> */}
+
                   </>
                 </Row>
                 <Row>
