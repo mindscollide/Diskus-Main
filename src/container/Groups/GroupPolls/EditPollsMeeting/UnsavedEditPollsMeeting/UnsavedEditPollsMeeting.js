@@ -3,7 +3,6 @@ import styles from "./UnsavedEditPollsMeeting.module.css";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { Modal, Button } from "../../../../../components/elements";
 import { showunsavedEditPollsMeetings } from "../../../../../store/actions/NewMeetingActions";

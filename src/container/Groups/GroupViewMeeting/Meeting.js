@@ -5,7 +5,6 @@ import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
-import { truncateString } from "../../../commen/functions/regex";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import ClipIcon from "../../../assets/images/ClipIcon.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
@@ -23,17 +22,12 @@ import { useSelector } from "react-redux";
 import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 
 import {
-  getMeetingByCommitteeIDApi,
   getMeetingbyGroupApi,
   meetingNotConductedMQTT,
-  searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  ViewMeeting,
-  allAssignessList,
-} from "../../../store/actions/Get_List_Of_Assignees";
+import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
@@ -41,7 +35,6 @@ import {
   createGroupMeeting,
   getMeetingStatusfromSocket,
 } from "../../../store/actions/GetMeetingUserId";
-import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 const CommitteeMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
@@ -57,18 +50,13 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     allMeetingsSocketData,
     MeetingStatusEnded,
   } = useSelector((state) => state.meetingIdReducer);
-  console.log(
-    allMeetingsSocketData,
-    "allMeetingsSocketDataallMeetingsSocketData"
-  );
-  const [isOrganisers, setIsOrganisers] = useState(false);
+
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   let userID = localStorage.getItem("userID");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let currentUserId = localStorage.getItem("userID");
-  let currentLanguage = localStorage.getItem("i18nextLng");
   const [pageSize, setPageSize] = useState(50);
   const [currentPage, setCurrentPage] = useState(1);
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
@@ -235,10 +223,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           text: t("Active"),
           value: "10",
         },
-        // {
-        //   text: t("Start"),
-        //   value: "2",
-        // },
+
         {
           text: t("Upcoming"),
           value: "1",
@@ -344,8 +329,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                     <img
                       src={CommentIcon}
                       className="cursor-pointer"
-                      // width="20.06px"
-                      // height="15.95px"
                       alt=""
                       draggable="false"
                     />
@@ -434,13 +417,10 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           } else if (isAgendaContributor) {
           } else {
             if (
-              // startMeetingButton === true
               (record.isQuickMeeting === true && minutesDifference < 4) ||
               (record.isQuickMeeting === true &&
                 record.pK_MDID === startMeetingData.meetingID &&
                 startMeetingData.showButton)
-              // &&
-              // minutesDifference > 0
             ) {
               return (
                 <Row>
@@ -456,12 +436,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                             t,
                             7,
                             startMeetingRequest
-                            // setEdiorRole,
-                            // setAdvanceMeetingModalID,
-                            // setDataroomMapFolderId,
-                            // setSceduleMeeting,
-                            // setViewFlag,
-                            // setEditFlag
                           )
                         );
                         localStorage.setItem("meetingTitle", record.title);
@@ -552,7 +526,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   <>
                     <Row>
                       <Col sm={12} md={12} lg={12}>
-                        {/* <Tooltip placement="topRight" title={t("Edit")}> */}
                         {groupStatus === 3 && (
                           <img
                             src={EditIcon}
@@ -571,8 +544,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                             }
                           />
                         )}
-
-                        {/* </Tooltip> */}
                       </Col>
                     </Row>
                   </>
@@ -650,10 +621,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           let findIsExist = rows.findIndex(
             (data, index) => data.pK_MDID === meetingData.pK_MDID
           );
-          console.log(
-            GroupMeetingMQTT,
-            "GroupMeetingMQTTGroupMeetingMQTTGroupMeetingMQTT"
-          );
+
           if (findIsExist !== -1) {
             setRow((rowsData) => {
               return rowsData.map((newData, index) => {
@@ -744,9 +712,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       }
 
       dispatch(getMeetingStatusfromSocket(null));
-      // if (meetingStatusID === 4) {
-      //   updateCalendarData(true, meetingID);
-      // }
     }
   }, [MeetingStatusSocket]);
 

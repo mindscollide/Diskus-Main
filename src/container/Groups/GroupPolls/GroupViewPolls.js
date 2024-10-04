@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../assets/images/bin.svg";
 import { truncateString } from "../../../commen/functions/regex";
-import { Pagination, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -13,14 +13,9 @@ import { Button, Table } from "../../../components/elements";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../assets/images/EmptyStatesMeetingPolls.svg";
-// import Createpolls from "./CreatePolls/Createpolls";
 import Createpolls from "../GroupPolls/CreatePolls/CreateGrouppolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
-import {
-  GetAllPollsByMeetingIdApiFunc,
-  showCancelPolls,
-  showUnsavedPollsMeeting,
-} from "../../../store/actions/NewMeetingActions";
+import { showUnsavedPollsMeeting } from "../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
@@ -33,19 +28,15 @@ import {
   deletePollsMQTT,
   getPollByPollIdforGroups,
   getPollsByGroupMainApi,
-  getPollsByPollIdApi,
 } from "../../../store/actions/Polls_actions";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
-import { truncate } from "lodash";
 const GroupViewPolls = ({ groupStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   console.log(groupStatus, "groupStatusgroupStatusgroupStatus");
 
-  const { NewMeetingreducer, GroupsReducer, PollsReducer } = useSelector(
-    (state) => state
-  );
+  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -56,7 +47,6 @@ const GroupViewPolls = ({ groupStatus }) => {
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [afterViewPolls, setafterViewPolls] = useState(false);
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -175,7 +165,6 @@ const GroupViewPolls = ({ groupStatus }) => {
         setViewPublishedPoll
       )
     );
-    // dispatch(showunsavedEditPollsMeetings(false));
   };
 
   const handleDeletePoll = (record) => {
@@ -282,13 +271,9 @@ const GroupViewPolls = ({ groupStatus }) => {
         return (
           <span
             className={styles["DateClass"]}
-            onClick={
-              () => handleClickonTitle(record)
-              // navigate("/DisKus/polling", { state: { record, isVote: false } })
-            }
+            onClick={() => handleClickonTitle(record)}
           >
             {truncateString(text, 50)}
-            {/* {text} */}
           </span>
         );
       },
@@ -360,12 +345,6 @@ const GroupViewPolls = ({ groupStatus }) => {
       },
     },
 
-    // {
-    //   title: t("Poll-type"),
-    //   dataIndex: "PollType",
-    //   key: "PollType",
-    //   width: "90px",
-    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
@@ -388,12 +367,7 @@ const GroupViewPolls = ({ groupStatus }) => {
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   buttonValue={t("Vote")}
-                  onClick={
-                    () => handleClickVoteCast(record)
-                    // navigate("/DisKus/polling", {
-                    // state: { record, isVote: true },
-                    // })
-                  }
+                  onClick={() => handleClickVoteCast(record)}
                 />
               );
             } else if (record.voteStatus === "Voted") {
@@ -585,42 +559,6 @@ const GroupViewPolls = ({ groupStatus }) => {
                             </Col>
                           </Row>
                         </section>
-                        {/* <Row className="mt-5">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end gap-2"
-                          >
-                            <Button
-                              text={t("Clone-meeting")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={enableAfterSavedViewPolls}
-                            />
-
-                            <Button
-                              text={t("Cancel")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={handleCacnelbutton}
-                            />
-
-                            <Button
-                              text={t("Save")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-publish")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-next")}
-                              className={styles["Save_Button_Polls_meeting"]}
-                              onClick={handleSaveAndnext}
-                            />
-                          </Col>
-                        </Row> */}
                       </>
                     ) : (
                       <>

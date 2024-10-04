@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import {
-  ArrowCounterclockwise,
-  ChevronDown,
-  Plus,
-} from "react-bootstrap-icons";
-import { Input, Pagination, Select } from "antd";
+import { Row, Col } from "react-bootstrap";
+import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { Select } from "antd";
 import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
@@ -21,7 +17,6 @@ import "antd/dist/antd.css";
 
 import ModalToDoList from "./CreateTodo/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
-import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
 import {
   cleareMessage,
   getTodoStatus,
@@ -47,22 +42,15 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     todoStatus,
     assignees,
     getTodosStatus,
-    socketTodoStatusData,
     PollsReducer,
-    LanguageReducer,
-    uploadReducer,
   } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isExpand, setExpand] = useState(false);
-  const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
-  const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
   const [statusValues, setStatusValues] = useState([]);
-
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
@@ -72,8 +60,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     AssignedToName: "",
     UserID: 0,
   });
-  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
-  let todoListPageSize = localStorage.getItem("todoListRow");
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -86,7 +73,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
   // GET TODOS STATUS
   useEffect(() => {
-    if(!todoStatus.Response?.length > 0){
+    if (!todoStatus.Response?.length > 0) {
       dispatch(getTodoStatus(navigate, t));
     }
     if (ViewGroupID !== null) {
@@ -134,7 +121,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       PollsReducer.todoGetGroupTask !== null &&
       PollsReducer.todoGetGroupTask !== undefined
     ) {
-      // setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
       if (PollsReducer.todoGetGroupTask.toDoLists.length > 0) {
         let dataToSort = [...PollsReducer.todoGetGroupTask.toDoLists];
         const sortedTasks = dataToSort.sort((taskA, taskB) => {
@@ -174,7 +160,11 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     let newOptionsFilter = [];
     let newArrStatus = [""];
 
-    if (todoStatus.Response !== null && todoStatus.Response !== "" && todoStatus.Response.length > 0) {
+    if (
+      todoStatus.Response !== null &&
+      todoStatus.Response !== "" &&
+      todoStatus.Response.length > 0
+    ) {
       todoStatus.Response.map((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
@@ -213,11 +203,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       UpdateFileList: [],
     };
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 4, setShow));
-    // let Data = {
-    //   FK_TID: record.pK_TID,
-    //   GroupID: Number(ViewGroupID),
-    // };
-    // dispatch(deleteGroupTaskApi(navigate, t, Data));
   };
 
   const columnsToDo = [
@@ -244,7 +229,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
-      // align: "left",
       render: (record, index) => {
         return (
           <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
@@ -320,7 +304,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),
-      // width: "220px",
       render: (text, record) => {
         return (
           <span className="MontserratRegular">
@@ -339,7 +322,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         {
           text: t("In-progress"),
           value: "In Progress",
-          // className: currentLanguage,
         },
         {
           text: t("Pending"),
@@ -461,19 +443,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         setUpdateFlagToDo(true);
         setModalsflag(false);
       } else {
-        // setViewFlagToDo(true);
       }
     }
   }, [toDoListReducer.ToDoDetails]);
-
-  // for search Date handler
-  const searchHandlerDate = (e) => {
-    setSearchData({
-      ...searchData,
-      Date: e.target.value,
-      UserID: parseInt(createrID),
-    });
-  };
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -665,7 +637,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                   className={"ToDo"}
                   rows={rowsToDo}
                   scroll={scroll}
-                  // onChange={tableTodoChange}
                   pagination={false}
                   locale={{
                     emptyText: emptyText(), // Set your custom empty text here
@@ -690,7 +661,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setViewFlagToDo={setViewFlagToDo}
         />
       ) : null}
-      {/* <Notification setOpen={setOpen} open={open.open} message={open.message} /> */}
     </>
   );
 };
