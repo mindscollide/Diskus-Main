@@ -1,16 +1,10 @@
-import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  TextArea,
-  SelectComment,
-} from "../../../../components/elements"; // Importing necessary components
+import React from "react";
+import { Modal, Button } from "../../../../components/elements"; // Importing necessary components
 import styles from "./AcceptCommentModal.module.css"; // Importing CSS styles
 import { acceptCommentModal } from "../../../../store/actions/Minutes_action"; // Importing action creator
 import { useTranslation } from "react-i18next"; // Importing translation hook
-import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
+import { useDispatch } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
-import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing image
 
 // Functional component for deleting a comment
 const AcceptCommentModal = ({
@@ -19,7 +13,6 @@ const AcceptCommentModal = ({
   minutesGeneral,
   setMinutesGeneral,
   setMinutesToReview,
-  minutesToReview,
   currentUserID,
 }) => {
   const { t } = useTranslation(); // Translation hook
@@ -78,8 +71,6 @@ const AcceptCommentModal = ({
       console.log("Error", error);
     }
   };
-
-  console.log("MinutesReducerMinutesReducer", minutesAgenda, minutesGeneral);
 
   return (
     <section>

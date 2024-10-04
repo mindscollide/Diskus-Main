@@ -619,7 +619,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         if (Number(ViewGroupID) === Number(GroupMeetingMQTT.groupID)) {
           let meetingData = GroupMeetingMQTT.meeting;
           let findIsExist = rows.findIndex(
-            (data, index) => data.pK_MDID === meetingData.pK_MDID
+            (data) => data.pK_MDID === meetingData.pK_MDID
           );
 
           if (findIsExist !== -1) {
