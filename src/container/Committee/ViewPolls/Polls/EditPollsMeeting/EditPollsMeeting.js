@@ -24,17 +24,11 @@ import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import Profile from "../../../../../assets/images/newprofile.png";
 import RedCross from "../../../../../assets/images/CrossIcon.svg";
 import UnsavedEditPollsMeeting from "./UnsavedEditPollsMeeting/UnsavedEditPollsMeeting";
 import { showunsavedEditPollsMeetings } from "../../../../../store/actions/NewMeetingActions";
 import {
-  convertGMTDateintoUTC,
-  convertintoGMTCalender,
-  formatDateToMMDDYY,
-  formatDateToUTC,
   multiDatePickerDateChangIntoUTC,
-  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../../store/actions/Polls_actions";
@@ -42,7 +36,6 @@ import { updatePollsApi } from "../../../../../store/actions/Polls_actions";
 const EditPollsMeeting = ({ setEditPolls }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
   const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
@@ -63,24 +56,9 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const calendRef = useRef();
   const [memberSelect, setmemberSelect] = useState([]);
   const [checkForPollStatus, setCheckForPollStatus] = useState(false);
-
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [members, setMembers] = useState([]);
-
-  const [options, setOptions] = useState([
-    // {
-    //   name: 1,
-    //   value: "",
-    // },
-    // {
-    //   name: 2,
-    //   value: "",
-    // },
-    // {
-    //   name: 3,
-    //   value: "",
-    // },
-  ]);
+  const [options, setOptions] = useState([]);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -227,16 +205,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       }
     } catch {}
   };
-  console.log(
-    {
-      updatePolls,
-      members,
-      options,
-      checkForPollStatus,
-      allValuesNotEmpty,
-    },
-    "handleUpdateClickhandleUpdateClickhandleUpdateClick"
-  );
+
   const handleUpdateClick = (pollStatusValue) => {
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
@@ -396,25 +365,16 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         setMembers(pollMembers);
       }
       try {
-        // if (Object.keys(pollsDetailsData.pollOptions).length > 2) {
         let Option = [];
         pollsDetailsData.pollOptions.map((data, index) => {
           let dataAdd = { name: index + 1, value: data.answer };
           Option.push(dataAdd);
         });
         setOptions(Option);
-        // } else if (Object.keys(pollsDetailsData.pollOptions).length <= 2) {
-        //   const updatedOptions = options.map((option) => {
-        //     const apiData = pollsDetailsData.pollOptions.find(
-        //       (apiOption, index) => index + 1 === option.name
-        //     );
-        //     return apiData ? { ...option, value: apiData.answer } : option;
-        //   });
-        //   setOptions(updatedOptions);
-        // }
       } catch {}
     }
   }, [PollsReducer.Allpolls]);
+
   const customFilter = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
@@ -539,6 +499,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                         <img
                           draggable={false}
                           src={plusFaddes}
+                          alt=""
                           width="15.87px"
                           height="15.87px"
                         />

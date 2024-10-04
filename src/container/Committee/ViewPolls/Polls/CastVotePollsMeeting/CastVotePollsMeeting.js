@@ -8,14 +8,10 @@ import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Checkbox,
-  CustomRadio2,
   Notification,
 } from "../../../../../components/elements";
 import { Progress, Radio } from "antd";
-import {
-  EditmeetingDateFormat,
-  utcConvertintoGMT,
-} from "../../../../../commen/functions/date_formater";
+import { EditmeetingDateFormat } from "../../../../../commen/functions/date_formater";
 import moment from "moment";
 import { castVoteApi } from "../../../../../store/actions/Polls_actions";
 
@@ -69,14 +65,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       return false;
     }
   };
-  const handleCheckBoxForOneOnly = (e) => {
-    let value = e.target.value;
 
-    setViewProgressPollsDetails({
-      ...viewProgressPollsDetails,
-      answer: [value],
-    });
-  };
   const handleCheckBoxYes = (e) => {
     let checked = e.target.checked;
     let name = e.target.name;
@@ -132,8 +121,6 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
     setvotePolls(false);
   };
 
-  console.log(viewProgressPollsDetails.answer, "viewProgressPollsDetails");
-
   return (
     <>
       <section>
@@ -176,11 +163,6 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                       <span>({data.totalVotes})</span>
                                     </span>
                                   </Col>
-                                  {/* <Col lg={2} md={2} sm={2}>
-                                  <span className={styles["Percentage_Class"]}>
-                                    59%
-                                  </span>
-                                </Col> */}
                                 </Row>
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
@@ -202,17 +184,6 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                             classNameCheckBoxP="d-none"
                                           />
                                         ) : (
-                                          // <CustomRadio2
-                                          //   value={
-                                          //     viewProgressPollsDetails.answer
-                                          //   }
-                                          //   Optios={data.pollAnswerID}
-                                          //   onChange={handleCheckBoxForOneOnly}
-                                          //   className={
-                                          //     styles["Custom_radio_button"]
-                                          //   }
-                                          // />
-
                                           <Radio.Group
                                             onChange={(e) =>
                                               setViewProgressPollsDetails({

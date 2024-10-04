@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../../assets/images/bin.svg";
-import { Pagination, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -15,8 +15,6 @@ import emtystate from "../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import {
-  GetAllPollsByMeetingIdApiFunc,
-  showCancelPolls,
   showUnsavedPollsMeeting,
   showunsavedEditPollsMeetings,
 } from "../../../../store/actions/NewMeetingActions";
@@ -29,7 +27,6 @@ import {
   createPollCommitteesMQTT,
   deleteCommitteePollApi,
   deletePollsMQTT,
-  getPollsByPollIdApi,
   getPollsByPollIdforCommitteeApi,
 } from "../../../../store/actions/Polls_actions";
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
@@ -41,12 +38,9 @@ const Polls = ({ committeeStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
-    (state) => state
-  );
+  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
   // Vote Cast Polls
   const [votePolls, setvotePolls] = useState(false);
-  // console.log(first)
   // Create Poll
   const [createpoll, setCreatepoll] = useState(false);
   // Edit Polls
@@ -60,13 +54,8 @@ const Polls = ({ committeeStatus }) => {
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
-
-  const enableAfterSavedViewPolls = () => {
-    setafterViewPolls(true);
-  };
 
   const handleCastVotePollMeeting = (record) => {
     let data = {
@@ -85,7 +74,6 @@ const Polls = ({ committeeStatus }) => {
         setViewPublishedPoll
       )
     );
-    // setvotePolls(true);
   };
 
   const handleEditPollsMeeting = (record) => {
@@ -105,10 +93,7 @@ const Polls = ({ committeeStatus }) => {
       )
     );
     dispatch(showunsavedEditPollsMeetings(false));
-
-    // dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(false);
-    // setEditPolls(true);
   };
 
   const handleDeletePoll = (record) => {
@@ -119,22 +104,7 @@ const Polls = ({ committeeStatus }) => {
     dispatch(deleteCommitteePollApi(navigate, t, data));
   };
 
-  // const handleCacnelbutton = () => {
-  //   dispatch(showCancelPolls(true));
-  // };
-
-  // const handleSaveAndnext = () => {
-  //   setPolls(false);
-  //   setAttendance(true);
-  // };
-
-  // const onClickVoteBtn = (record) => {
-  //   navigate("/DisKus/polling", { state: { record, isVote: false } });
-  // };
-
   const handleClickonTitle = (record) => {
-    // navigate("/DisKus/polling", { state: { record, isVote: false } });
-    // if (Object.keys(record).length > 0) {
     let data = {
       PollID: record.pollID,
       UserID: parseInt(userID),
@@ -199,25 +169,8 @@ const Polls = ({ committeeStatus }) => {
         );
       }
     }
-
-    // }
-    // if (Object.keys(record).length > 0) {
-    //   let data = {
-    //     PollID: record.pollID,
-    //     UserID: parseInt(userID),
-    //   };
-    //   dispatch(
-    //     getPollsByPollIdforCommitteeApi(
-    //       navigate,
-    //       data,
-    //       2,
-    //       t,
-    //       setEditPolls,
-    //       setvotePolls
-    //     )
-    //   );
-    // }
   };
+
   useEffect(() => {
     let Data = {
       CommitteeID: Number(ViewCommitteeID),
@@ -406,15 +359,6 @@ const Polls = ({ committeeStatus }) => {
       },
     },
 
-    // {
-    //   title: t("Poll-type"),
-    //   dataIndex: "PollType",
-    //   key: "PollType",
-    //   width: "90px",
-    //   render: () => {
-    //     return <span className={styles["text-success"]}>{t("Meetings")}</span>;
-    //   },
-    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
@@ -438,14 +382,7 @@ const Polls = ({ committeeStatus }) => {
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={
-                    () => handleCastVotePollMeeting(record)
-                    // navigate("/DisKus/polling", {
-                    //   state: { record, isVote: true },
-                    // })
-                  }
-
-                  // onClick={onClickVoteBtn () => navigate("/DisKus/polling")}
+                  onClick={() => handleCastVotePollMeeting(record)}
                 />
               );
             } else if (record.voteStatus === "Voted") {
@@ -599,7 +536,6 @@ const Polls = ({ committeeStatus }) => {
               <ViewPollsUnPublished setUnPublished={setUnPublished} />
             ) : viewPublishedPoll ? (
               <ViewPollsPublishedScreen
-                // setViewPublishedPoll={setViewPublishedPoll}
                 setSavePollsPublished={setViewPublishedPoll}
               />
             ) : (

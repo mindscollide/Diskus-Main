@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import {
   Button,
   TextField,
   Checkbox,
   Notification,
-  Loader,
 } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -28,14 +25,9 @@ import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import Profile from "../../../../../assets/images/newprofile.png";
-import GroupIcon from "../../../../../assets/images/groupdropdown.svg";
 import RedCross from "../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
-import {
-  GetAllMeetingUserApiFunc,
-  showUnsavedPollsMeeting,
-} from "../../../../../store/actions/NewMeetingActions";
+import { showUnsavedPollsMeeting } from "../../../../../store/actions/NewMeetingActions";
 import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../commen/functions/date_formater";
@@ -46,15 +38,12 @@ const Createpolls = ({ setCreatepoll }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
-    (state) => state
-  );
+  const { NewMeetingreducer, CommitteeReducer } = useSelector((state) => state);
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [memberSelect, setmemberSelect] = useState([]);
-
   const [pollsData, setPollsData] = useState({
     Title: "",
     AllowMultipleAnswer: false,
@@ -64,7 +53,6 @@ const Createpolls = ({ setCreatepoll }) => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
-
   const [options, setOptions] = useState([
     {
       name: 1,
@@ -139,14 +127,6 @@ const Createpolls = ({ setCreatepoll }) => {
     dispatch(showUnsavedPollsMeeting(true));
   };
 
-  const handleViewPollsUnPublished = () => {
-    setSavedPolls(true);
-  };
-
-  const handleViewPollsPublished = () => {
-    setSavePollsPublished(true);
-  };
-
   const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -174,8 +154,6 @@ const Createpolls = ({ setCreatepoll }) => {
   };
 
   const changeDateStartHandler = (date) => {
-    let newDate = new Date(date);
-    console.log(newDate, "newDatenewDatenewDatenewDatenewDate");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     DateDate.setHours(23, 59, 0, 0);
@@ -254,7 +232,7 @@ const Createpolls = ({ setCreatepoll }) => {
               if (newarr.length > 0) {
                 newarr.forEach((morganizer, index) => {
                   let check2 = newarr.find(
-                    (data, index) => data.UserID === morganizer.pK_UID
+                    (data) => data.UserID === morganizer.pK_UID
                   );
                   if (check2 !== undefined) {
                   } else {
@@ -321,8 +299,6 @@ const Createpolls = ({ setCreatepoll }) => {
       await dispatch(SavePollsApi(navigate, data, t, 3));
       setCreatepoll(false);
     } else {
-      // setError(true);
-
       if (pollsData.Title === "") {
         setOpen({
           ...open,
@@ -462,6 +438,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                           <img
                                             draggable={false}
                                             src={WhiteCrossIcon}
+                                            alt=""
                                             width="31.76px"
                                             height="31.76px"
                                             onClick={() =>
@@ -501,6 +478,7 @@ const Createpolls = ({ setCreatepoll }) => {
                               <img
                                 draggable={false}
                                 src={plusFaddes}
+                                alt=""
                                 width="15.87px"
                                 height="15.87px"
                               />
@@ -639,6 +617,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                             <img
                                               src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                               draggable={false}
+                                              alt=""
                                               height="33px"
                                               width="33px"
                                               className={
@@ -660,6 +639,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                             <img
                                               draggable={false}
                                               src={RedCross}
+                                              alt=""
                                               height="14px"
                                               width="14px"
                                               className="cursor-pointer"
@@ -698,14 +678,11 @@ const Createpolls = ({ setCreatepoll }) => {
                   text={t("Save")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(1)}
-                  // onClick={handleViewPollsUnPublished}
                 />
                 <Button
                   text={t("Publish")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(2)}
-
-                  // onClick={handleViewPollsPublished}
                 />
               </Col>
             </Row>
