@@ -1,10 +1,7 @@
 .DataRoom_container {
   max-width: 98%;
-  /* width: 90%; */
   margin: 0 auto;
-  /* max-height: calc(100vh - 60px) !important; */
   max-height: calc(100vh - 60px) !important;
-  /* height: 91vh; */
 }
 
 .Data_room_heading {
@@ -244,7 +241,6 @@
 
 .paper_Icon {
   position: absolute !important;
-  /* z-index: 1; */
   top: 150px !important;
   right: 640px;
 }
@@ -285,10 +281,6 @@
   margin-left: -15px;
 }
 
-/* body[dir="rtl"] .Drop_Down_searchBar {
-  right: 49.2% !important;
-} */
-
 .DropDown_name {
   font-size: 12px !important;
   font-weight: 600;
@@ -299,7 +291,6 @@
   font-size: 12px !important;
   font-weight: 600;
   color: #5a5a5a;
-  /* border-top: 1px solid #e1e1e1; */
 }
 
 .Search_option_text_span {
@@ -408,8 +399,6 @@ body[dir="rtl"] .Search_Icon {
   right: 1370px !important;
 }
 
-/* body[dir="rtl"] .Drop_Down_searchBar {} */
-
 .grid_view_btn {
   height: 100% !important;
   width: 39px !important;
@@ -420,21 +409,15 @@ body[dir="rtl"] .Search_Icon {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* z-index: 2; */
 }
 
 .grid_view_btn:is(:hover, :visited, :active, :focus, :focus-visible, :active) {
   height: 100% !important;
   width: 39px !important;
-  /* background: #fff !important; */
-  /* border: 1px solid #e1e1e1; */
   border: none !important;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border-top-right-radius: 0px !important; */
-  /* border-bottom-right-radius: 0px !important; */
-  /* outline: none !important; */
 }
 
 .grid_view_btn_active {
@@ -620,11 +603,9 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   color: #fff !important;
 }
 .progress_bar {
-  /* width: 80px; */
   font-size: 0px !important;
   display: flex;
   justify-content: flex-end;
-  /* color: #fff !important; */
 }
 .Scroller_bar_of_BarUploder_folder {
   max-height: 16.8vh !important;
@@ -639,10 +620,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   overflow-y: auto;
   display: block;
 }
-/* .Scroller_bar_of_BarUploder_folder:hover {
-  background-color: #e1e1e1 !important;
-  filter: opacity(0.2);
-} */
+
 .Scroller_bar_of_BarUploder {
   height: 13vh !important;
   overflow-x: hidden !important;
@@ -964,19 +942,13 @@ body[dir="rtl"] .dataroom_searchinput2 {
   user-select: none !important;
   cursor: pointer !important;
   display: initial !important;
-
-  /* display: flex; */
-  /* gap: 5px; */
 }
 .fileRow {
-  /* gap: 5px; */
   display: flex;
   align-items: center;
-  /* overflow: hidden !important; */
   width: 100% !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  /* display: inline-flex; */
   max-width: 300px !important;
 }
 
@@ -1122,21 +1094,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
 .showUploadBar:hover .folderProgress {
   display: none !important;
 }
-/* .crossIcon {
-  display: none !important;
-}
-.Scroller_bar_of_BarUploder_folder:hover .crossIcon {
-  display: block !important;
-}
-.Scroller_bar_of_BarUploder_folder:hover .folderProgress {
-  display: none !important;
-}
-.Scroller_bar_of_BarUploder_folder:hover .folderProgress .ant-progress-inner {
-  width: 25px !important;
-  height: 25px !important;
-  font-size: 0px !important;
-  display: none !important;
-} */
+
 .folderProgress .ant-progress-inner {
   font-size: 0px !important;
 }
@@ -1227,9 +1185,6 @@ body[dir="rtl"] .dataroom_searchinput2 {
   border: none !important;
 }
 
-/* .DataRoom_DropDown .dropdown-toggle.btn.btn-primary {
-  border: none !important;
-} */
 .dropdown_menu_dataroom {
   min-width: auto;
 }
@@ -1287,14 +1242,6 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 .DataRoom_DropDown .dropdown-menu.show .dropdown-item:hover {
   background: none !important;
 }
-
-/* .DataRoom_DropDown button::before {
-  position: absolute;
-  font-size: 22px;
-  top: 7px;
-  left: 20px;
-  color: #fff;
-} */
 
 .DataRoom_DropDown .dropdown-toggle::after {
   display: inline-block;

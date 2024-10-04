@@ -66,10 +66,7 @@ const ViewDetailsModal = ({
     name: "",
   });
   const [documentActivityDetails, setDocumentActivityDetails] = useState(null);
-  console.log(
-    documentDetails,
-    "documentActivityDetailsdocumentActivityDetailsdocumentActivityDetails"
-  );
+
   const handleDetialsButton = () => {
     setDetailsState(true);
     setActivityState(false);
@@ -93,10 +90,6 @@ const ViewDetailsModal = ({
       ...documentDetails,
       description: e.target.value,
     });
-    console.log(
-      e.target.value,
-      "handleChandeDescriptionhandleChandeDescription"
-    );
   };
 
   const handleBluronDescription = (event) => {
@@ -202,12 +195,7 @@ const ViewDetailsModal = ({
                     width="28px"
                   />
                 )}
-                {/* <img
-                  src={getIconSource(getFileExtension(documentDetails?.name))}
-                  alt=""
-                  height="28px"
-                  width="28px"
-                /> */}
+
                 <span className={styles["Title-file"]}>
                   {documentDetails?.name}
                 </span>
@@ -339,24 +327,6 @@ const ViewDetailsModal = ({
                                 </span>
                               </>
                             ) : null}
-
-                            {/* Globe Icon */}
-                            {/* <img
-                              src={GlobeIcon}
-                              alt=""
-                              height="30px"
-                              width="30px"
-                              className={styles["profileClass"]}
-                            /> */}
-                            {/* <span>
-                              <img
-                                src={Organization}
-                                alt=""
-                                height="30px"
-                                width="30px"
-                                className={styles["organization_cion"]}
-                              />
-                            </span> */}
                           </Col>
                         </Row>
                         <Row className="mt-2">
@@ -672,7 +642,6 @@ const ViewDetailsModal = ({
                                 todayData,
                                 "todayDatatodayDatatodayData"
                               );
-                              // src={`data:image/jpeg;base64,${todayData.base64ImgOwner}`}
                               return (
                                 <>
                                   <Row className="mt-2">
@@ -915,43 +884,6 @@ const ViewDetailsModal = ({
                                           </Row>
                                         </>
                                       )}
-                                      {/* <span
-                                        className={styles["activity_heading"]}
-                                      >
-                                        {todayData?.description}
-                                      </span>
-                                      <span className={styles["date_heading"]}>
-                                        {todayData.createdDateTime !== "" &&
-                                          newTimeFormaterAsPerUTCTalkDate(
-                                            todayData.createdDateTime
-                                          )}
-                                      </span>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className="d-flex gap-2 align-items-center"
-                                        >
-                                          <img
-                                            src={getIconSource(
-                                              getFileExtension(
-                                                todayData?.displayFileName
-                                              )
-                                            )}
-                                            alt=""
-                                            height="17px"
-                                            width="17px"
-                                          />
-                                          <span
-                                            className={
-                                              styles["Filename_heading"]
-                                            }
-                                          >
-                                            {todayData?.displayFileName}
-                                          </span>
-                                        </Col>
-                                      </Row> */}
                                     </Col>
                                   </Row>
                                 </>
