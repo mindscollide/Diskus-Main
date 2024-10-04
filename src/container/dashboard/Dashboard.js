@@ -269,8 +269,6 @@ const Dashboard = () => {
     console.log(data, " MQTT onMessageArrived");
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
-        // if (data.action && data.payload ) {
-
         if (data.action && data.payload) {
           if (
             data?.payload?.message.toLowerCase() ===
@@ -360,10 +358,7 @@ const Dashboard = () => {
                 dispatch(LeaveMeetingVideo(Data, navigate, t));
               }
             }
-            // let Data2 = {
-            //   UserID: Number(createrID),
-            // };
-            // dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
+
             dispatch(mqttCurrentMeetingEnded(data.payload));
           } else if (
             data.payload.message.toLowerCase() ===
@@ -531,20 +526,6 @@ const Dashboard = () => {
             data.payload.message?.toLowerCase() ===
             "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
           ) {
-            // if (data.viewable) {
-            //   setNotification({
-            //     ...notification,
-            //     notificationShow: true,
-            //     message: changeMQTTJSONOne(
-            //       t("NEW_MEETING_CREATION"),
-            //       "[Place holder]",
-            //       data.payload.meetingTitle.substring(0, 100)
-            //     ),
-            //   });
-            // setNotificationID(id);
-
-            // }
-
             dispatch(meetingAgendaContributorAdded(data.payload));
           } else if (
             data.payload.message
@@ -645,15 +626,6 @@ const Dashboard = () => {
             dispatch(meetingParticipantRemoved(data.payload));
 
             if (data.viewable) {
-              // setNotification({
-              //   ...notification,
-              //   notificationShow: true,
-              //   message: changeMQTTJSONOne(
-              //     t("MeetingReminderNotification"),
-              //     "[Meeting Title]",
-              //     data.payload.meetingTitle.substring(0, 100)
-              //   ),
-              // });
               setNotificationID(id);
             }
           } else if (
@@ -1119,7 +1091,6 @@ const Dashboard = () => {
                 "[Committe Title]",
                 data.payload.committees.committeesTitle.substring(0, 100)
               ),
-              // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
             });
           }
           dispatch(realtimeCommitteeResponse(data.payload.committees));
@@ -1136,7 +1107,6 @@ const Dashboard = () => {
                 "[Committee Title]",
                 data.payload.committees.committeesTitle.substring(0, 100)
               ),
-              // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
             });
           }
           dispatch(realtimeCommitteeResponse(data.payload.committees));
@@ -1153,7 +1123,6 @@ const Dashboard = () => {
                 "[Committee Title]",
                 data.payload.committeeTitle.substring(0, 100)
               ),
-              // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
           }
           dispatch(realtimeCommitteeStatusResponse(data.payload));
@@ -1186,7 +1155,6 @@ const Dashboard = () => {
                 "[Committee Title]",
                 data.payload.committeeTitle.substring(0, 100)
               ),
-              // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
           }
           dispatch(realtimeCommitteeStatusResponse(data.payload));
@@ -1205,7 +1173,6 @@ const Dashboard = () => {
                 "[Committee Title]",
                 data.payload.committees.committeesTitle.substring(0, 100)
               ),
-              // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
           }
         }
@@ -1223,7 +1190,6 @@ const Dashboard = () => {
                 "[Group Title]",
                 data.payload.groups.groupTitle.substring(0, 100)
               ),
-              // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
             });
           }
           dispatch(realtimeGroupResponse(data.payload.groups));
@@ -1240,7 +1206,6 @@ const Dashboard = () => {
                 "[Group Title]",
                 data.payload.groups.groupTitle.substring(0, 100)
               ),
-              // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
             });
           }
           dispatch(realtimeGroupResponse(data.payload.groups));
@@ -1257,7 +1222,6 @@ const Dashboard = () => {
                 "[Group Title]",
                 data.payload.groupTitle.substring(0, 100)
               ),
-              // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
           }
           dispatch(realtimeGroupStatusResponse(data.payload));
@@ -1290,7 +1254,6 @@ const Dashboard = () => {
                 "[Group Title]",
                 data.payload.groups.groupTitle.substring(0, 100)
               ),
-              // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
             });
           }
           dispatch(removeGroupMemberMQTT(data.payload));
@@ -1307,7 +1270,6 @@ const Dashboard = () => {
                 "[Group Title]",
                 data.payload.groupTitle.substring(0, 100)
               ),
-              // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
           }
           dispatch(realtimeGroupStatusResponse(data.payload));
@@ -1460,7 +1422,6 @@ const Dashboard = () => {
           "UNREAD_MESSAGES_COUNT".toLowerCase()
         ) {
           dispatch(mqttUnreadMessageCount(data.payload));
-          // setNotificationID(id)
         } else if (
           data.payload.message.toLowerCase() ===
           "NEW_BROADCAST_MESSAGE".toLowerCase()
@@ -1648,25 +1609,6 @@ const Dashboard = () => {
             });
           }
         }
-        // else if (
-        //   data.payload.message.toLowerCase() ===
-        //   "PUBLISHED_POLL_DELETED".toLowerCase()
-        // ) {
-        //   dispatch(deletePollsMQTT(data.payload));
-        //   setNotificationID(id);
-
-        //   if (data.viewable) {
-        //     setNotification({
-        //       ...notification,
-        //       notificationShow: true,
-        //       message: changeMQTTJSONOne(
-        //         t("PUBLISHED_POLL_DELETED"),
-        //         "[Poll Title]",
-        //         data.payload.pollTitle
-        //       ),
-        //     });
-        //   }
-        // }
       }
       if (data.action.toLowerCase() === "Resolution".toLowerCase()) {
         if (
@@ -1876,8 +1818,6 @@ const Dashboard = () => {
           let callTypeID = Number(localStorage.getItem("callTypeID"));
           if (Number(data.senderID) !== Number(createrID)) {
             if (callTypeID === 1) {
-              // dispatch(videoOutgoingCallFlag(false))
-              // dispatch(normalizeVideoPanelFlag(false))
             }
             if (Number(createrID) !== data.payload.recepientID) {
               localStorage.setItem("unansweredFlag", true);
@@ -2064,14 +2004,6 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
               localStorage.setItem("activeCall", false);
             }
-            // localStorage.setItem('newCallerID', callerID)
-            // localStorage.setItem('initiateVideoCall', false)
-            // setNotification({
-            //   ...notification,
-            //   notificationShow: true,
-            //   message: `Call has been disconnected by ${data.payload.callerName}`,
-            // })
-            // setNotificationID(id)
           }
           dispatch(leaveCallModal(false));
         } else if (
@@ -2079,9 +2011,7 @@ const Dashboard = () => {
           "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()
         ) {
           let callerID = Number(localStorage.getItem("callerID"));
-          // if (callerID === newCallerID) {
-          //   localStorage.setItem('activeCall', false)
-          // }
+
           localStorage.setItem("newCallerID", callerID);
           localStorage.setItem("initiateVideoCall", false);
 
@@ -2204,7 +2134,6 @@ const Dashboard = () => {
             .toLowerCase()
             .includes("EVENT_DELETED_FROM_GOOGLE_CALENDAR".toLowerCase())
         ) {
-          // deleteGoogleEventMQTT;
           dispatch(deleteGoogleEventMQTT(data.payload));
         } else if (
           data.payload.message
@@ -2218,15 +2147,12 @@ const Dashboard = () => {
             .includes("NEW_MICROSOFT_EVENT_UPDATED".toLowerCase())
         ) {
           dispatch(updateMicrosftEventMQTT(data.payload));
-          // updateMicrosftEventMQTT,
-          //
         } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_MICROSOFT_EVENT_DELETED".toLowerCase())
         ) {
           dispatch(deleteMicrosftEventMQTT(data.payload));
-          // deleteMicrosftEventMQTT;
         }
       }
       if (data.action.toLowerCase() === "LogOut".toLowerCase()) {
@@ -2445,28 +2371,29 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {videoFeatureReducer.IncomingVideoCallFlag === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -2479,11 +2406,10 @@ const Dashboard = () => {
           ) : null}
           {videoFeatureReducer.VideoChatMessagesFlag === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
-          {/* <Modal show={true} size="md" setShow={true} /> */}
           {videoFeatureReducer.NormalizeVideoFlag === true ||
           videoFeatureReducer.MinimizeVideoFlag === true ||
           videoFeatureReducer.MaximizeVideoFlag === true ? (
@@ -2551,25 +2477,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -2585,12 +2511,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}
