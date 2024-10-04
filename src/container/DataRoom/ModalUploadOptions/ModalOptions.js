@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 const ModalOptions = ({
   setTasksAttachments,
   tasksAttachments,
-  setTasksAttachmentsID,
   tasksAttachmentsID,
   uploadOptionsmodal,
   setUploadOptions,

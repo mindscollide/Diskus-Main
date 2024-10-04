@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { Col, Container, Form, Row } from "react-bootstrap";
+import React from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalCancelUpload.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../components/elements";
 
-const ModalCancelUpload = ({canselingDetaUplodingForFOlder, setCanselingDetaUplodingForFOlder ,CanceUploadinFromModalTrue}) => {
+const ModalCancelUpload = ({
+  canselingDetaUplodingForFOlder,
+  setCanselingDetaUplodingForFOlder,
+  CanceUploadinFromModalTrue,
+}) => {
   const { t } = useTranslation();
   const closebtn = async () => {
     setCanselingDetaUplodingForFOlder(false);

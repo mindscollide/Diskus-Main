@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ModalDeleteFolder.module.css";
 import { Modal, Button } from "../../../components/elements";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
 const ModalDeleteFolder = ({
@@ -19,27 +19,22 @@ const ModalDeleteFolder = ({
           setIsDeleteFolder(false);
         }}
         setShow={setIsDeleteFolder}
-        // ButtonTitle={ModalTitle}
         modalFooterClassName="d-block"
         centered
-        // size={setRenamefolder === true ? "md" : "md"}
         ModalBody={
           <>
             <Row>
-              {/* <Col lg={2} md={2} sm={2}></Col> */}
               <Col lg={12} md={12} sm={12} className="text-center">
                 <span className={styles["information_text"]}>
                   {t("Are-you-sure-you-want-to-delete-the-folder")}
                 </span>
               </Col>
-              {/* <Col lg={2} md={2} sm={2}></Col> */}
             </Row>
           </>
         }
         ModalFooter={
           <>
             <Row className="my-3 ">
-              {/* <Col lg={2} md={2} sm={2}></Col> */}
               <Col
                 lg={12}
                 sm={12}
@@ -58,7 +53,6 @@ const ModalDeleteFolder = ({
                   onClick={handleClickDeleteFolderFunc}
                 />
               </Col>
-              {/* <Col lg={2} md={2} sm={2}></Col> */}
             </Row>
           </>
         }
