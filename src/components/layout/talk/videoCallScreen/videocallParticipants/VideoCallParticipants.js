@@ -47,7 +47,7 @@ const VideoCallParticipants = () => {
           Name: participantData.name,
           UID: participantData.uid,
           IsRequestAccepted: flag === 1 ? true : false,
-          IsGuest: participantData.IsGuest,
+          IsGuest: true,
         };
       }),
     };
@@ -61,7 +61,7 @@ const VideoCallParticipants = () => {
           Name: participantInfo.name,
           UID: participantInfo.uid,
           IsRequestAccepted: flag === 1 ? true : false,
-          IsGuest: participantInfo.IsGuest,
+          IsGuest: true,
         },
       ],
     };
