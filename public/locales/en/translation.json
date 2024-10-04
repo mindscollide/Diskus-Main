@@ -2216,5 +2216,8 @@
   "Entry-denied": "Entry Denied",
   "The-meeting-organizer-has-not-granted-you-permission-to-join-this-meeting-at-this-time": "The meeting organizer has not granted you permission to join this meeting at this time.",
   "We-re-Sorry": "We're Sorry!",
-  "The-meeting-has-ended-and-this-link-is-no-longer-active": " The meeting has ended, and this link is no longer active."
+  "The-meeting-has-ended-and-this-link-is-no-longer-active": " The meeting has ended, and this link is no longer active.",
+  "Ready-to-join": "Ready To Join?",
+  "You-are-in-the-waiting-room": "You are in the waiting room",
+  "The-organizer-will-allow-you-to-join-shortly": "The organizer will allow you to join shortly."
 }

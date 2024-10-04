@@ -15,12 +15,26 @@
   justify-content: center;
   align-items: center;
 }
+
 .ready-to-join {
   font-size: 30px;
   font-weight: 600;
   color: #5a5a5a;
 }
 
+.waiting-room-class {
+  font-weight: 600;
+  font-size: 30px;
+  color: #6172d6;
+  margin-bottom: 1px; /* Adjust the bottom margin to reduce spacing */
+}
+
+.organizer-allow-class {
+  font-weight: 600;
+  font-size: 20px;
+  color: #5a5a5a;
+  margin-top: 0; /* Remove any top margin */
+}
 .Join-Now-Btn {
   width: 118px;
   height: 39px;
@@ -83,4 +97,19 @@
 video.video-size {
   width: 100%;
   object-fit: cover;
+}
+
+@keyframes ZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9); /* Start slightly smaller */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1); /* End at normal size */
+  }
+}
+
+.waiting-text-animation {
+  animation: ZoomIn 1s ease-in-out;
 }
