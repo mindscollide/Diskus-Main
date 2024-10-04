@@ -207,7 +207,9 @@ const GuestJoinVideo = ({
                       <div className="guest-video-inside-component">
                         {!getReady ? (
                           <>
-                            <p className="ready-to-join">Ready To Join?</p>
+                            <p className="ready-to-join">
+                              {t("Ready-to-join")}
+                            </p>
                             <Button
                               text="Join Now"
                               className="Join-Now-Btn"
@@ -216,8 +218,17 @@ const GuestJoinVideo = ({
                           </>
                         ) : (
                           <>
-                            <p className="ready-to-join">Getting Ready!</p>
-                            <Spin
+                            <div className="waiting-text-animation"> 
+                              <p className="waiting-room-class">
+                                {t("You-are-in-the-waiting-room")}
+                              </p>
+                              <p className="organizer-allow-class">
+                                {t(
+                                  "The-organizer-will-allow-you-to-join-shortly"
+                                )}
+                              </p>
+                            </div>
+                            {/* <Spin
                               indicator={
                                 <LoadingOutlined
                                   style={{
@@ -226,7 +237,7 @@ const GuestJoinVideo = ({
                                 />
                               }
                               size="large"
-                            />
+                            /> */}
                           </>
                         )}
                       </div>
