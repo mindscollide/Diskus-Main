@@ -3,8 +3,6 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
   Paper,
-  TextField,
-  Checkbox,
   Notification,
   Loader,
 } from "./../../../components/elements";
@@ -14,7 +12,6 @@ import styles from "./ForgotPassword.module.css";
 import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
-import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
 import { validateEmail } from "../../../commen/functions/validations";
 import {
   changePasswordRequest,
@@ -25,18 +22,10 @@ import LanguageSelector from "../../../components/elements/languageSelector/Lang
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [messege, setMessege] = useState("");
   const dispatch = useDispatch();
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
-  const currentLocale = Cookies.get("i18next") || "en";
-  // const [language, setLanguage] = useState(currentLocale);
-  // const currentLangObj = languages.find((lang) => lang.code === currentLocale);
   const state = useSelector((state) => state);
   const { auth, LanguageReducer } = state;
   const [open, setOpen] = useState({
@@ -79,17 +68,6 @@ const ForgotPassword = () => {
       setEmail("");
     }
   };
-
-  // const handleChangeLocale = (e) => {
-  //   const lang = e.target.value;
-  //   setLanguage(lang);
-  //   localStorage.setItem("i18nextLng", lang);
-  //   i18n.changeLanguage(lang);
-  // };
-
-  // useEffect(() => {
-  //   document.body.dir = currentLangObj.dir || "ltr";
-  // }, [currentLangObj, t]);
 
   useEffect(() => {
     if (auth.ResponseMessage !== "") {
@@ -140,7 +118,12 @@ const ForgotPassword = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img draggable="false" src={DiskusLogo} width={220} alt="diskus_logo" />
+                    <img
+                      draggable="false"
+                      src={DiskusLogo}
+                      width={220}
+                      alt="diskus_logo"
+                    />
                   </Col>
                 </Row>
                 <Row className="text-center mt-5">
@@ -184,24 +167,8 @@ const ForgotPassword = () => {
                         width="100%"
                         placeholder={t("Email")}
                         maxLength={160}
-                        // autoComplete={"off"}
-                        // autoComplete="on"
                       />
                       <p className={styles["ErrorMessege"]}>{messege}</p>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col>
-                      <p
-                      // className={
-                      //   errorBar
-                      //     ? ` ${styles["errorMessage-inLogin"]} `
-                      //     : `${styles["errorMessage-inLogin_hidden"]}`
-                      // }
-                      >
-                        {/* {errorMessage} */}
-                      </p>
                     </Col>
                   </Row>
 
@@ -249,7 +216,8 @@ const ForgotPassword = () => {
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
-              <img draggable="false"
+              <img
+                draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"

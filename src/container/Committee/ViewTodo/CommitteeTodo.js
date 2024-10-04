@@ -1,76 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import {
-  ArrowCounterclockwise,
-  ChevronDown,
-  Plus,
-} from "react-bootstrap-icons";
-import { Input, Pagination, Select } from "antd";
-import {
-  Button,
-  TableToDo,
-  ResultMessage,
-  Paper,
-  Loader,
-  CustomDatePicker,
-  TextField,
-  Notification,
-} from "../../../components/elements";
+import { Row, Col } from "react-bootstrap";
+import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { Select } from "antd";
+import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
-import UserImage from "../../../assets/images/user.png";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import del from "../../../assets/images/del.png";
-import { Dropdown, Space, Typography } from "antd";
-import {
-  Paragraph,
-  Search,
-  ArrowRight,
-  ArrowLeft,
-} from "react-bootstrap-icons";
 import {
   ViewToDoList,
-  GetTodoListByUser,
-  searchTodoListByUser,
   clearResponce,
-  SearchTodoListApi,
-  deleteCommitteeTaskApi,
   saveTaskDocumentsApi,
   createTaskCommitteeMQTT,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
-
 import ModalToDoList from "./CreateTodo/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
-import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
 import {
   cleareMessage,
   getTodoStatus,
   updateTodoStatusFunc,
 } from "../../../store/actions/GetTodos";
-import Form from "react-bootstrap/Form";
-import moment from "moment";
 import "../../pages/todolist/Todolist.css";
 import { useTranslation } from "react-i18next";
-import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
-import { enGB, ar } from "date-fns/locale";
-import { registerLocale } from "react-datepicker";
 import {
-  _justShowDateformat,
-  newDateFormaterAsPerUTC,
-  newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
-import CustomPagination from "../../../commen/functions/customPagination/Paginations";
-import {
-  getTaskCommitteeIDApi,
-  setTasksByCommitteeApi,
-} from "../../../store/actions/Polls_actions";
-import { deleteCommitteeTaskRM } from "../../../commen/apis/Api_config";
+import { getTaskCommitteeIDApi } from "../../../store/actions/Polls_actions";
 
 const CreateTodoCommittee = ({ committeeStatus }) => {
-  //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const state = useSelector((state) => state);
@@ -79,23 +38,15 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     todoStatus,
     assignees,
     getTodosStatus,
-    socketTodoStatusData,
     PollsReducer,
-    LanguageReducer,
-    uploadReducer,
   } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isExpand, setExpand] = useState(false);
-  const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
-  const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
-
   const [todoViewModal, setTodoViewModal] = useState(false);
-  const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
   const [statusValues, setStatusValues] = useState([]);
 
@@ -105,8 +56,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     AssignedToName: "",
     UserID: 0,
   });
-  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
-  let todoListPageSize = localStorage.getItem("todoListRow");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -116,11 +65,10 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-  console.log("socketTodoStatusData", PollsReducer);
 
   // GET TODOS STATUS
   useEffect(() => {
-    if(!todoStatus.Response?.length > 0){
+    if (!todoStatus.Response?.length > 0) {
       dispatch(getTodoStatus(navigate, t));
     }
 
@@ -170,14 +118,12 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       PollsReducer.getTodoCommitteeTask !== null &&
       PollsReducer.getTodoCommitteeTask !== undefined
     ) {
-      // setTotalRecords(PollsReducer.SearchTodolist.totalRecords);
       if (PollsReducer.getTodoCommitteeTask.toDoLists.length > 0) {
         let dataToSort = [...PollsReducer.getTodoCommitteeTask.toDoLists];
         const sortedTasks = dataToSort.sort((taskA, taskB) => {
           const deadlineA = taskA?.deadlineDateTime;
           const deadlineB = taskB?.deadlineDateTime;
 
-          // Compare the deadlineDateTime values as numbers for sorting
           return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
         });
 
@@ -227,7 +173,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           label: data.status,
         });
       });
-    } 
+    }
     setStatusValues(newArrStatus);
 
     setStatusOptions(optionsArr);
@@ -266,8 +212,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       render: (text, record) => (
         <p
-          className='todolist-title-col'
-          onClick={(e) => viewModalHandler(record.pK_TID)}>
+          className="todolist-title-col"
+          onClick={(e) => viewModalHandler(record.pK_TID)}
+        >
           {text}
         </p>
       ),
@@ -278,16 +225,15 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
-      // align: "left",
       render: (record, index) => {
         return (
-          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular'>
+          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
             {" "}
             <img
-              draggable='false'
-              className='data-img'
+              draggable="false"
+              className="data-img"
               src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
-              alt='userimage'
+              alt="userimage"
             />
             {record?.name}
           </p>
@@ -313,15 +259,15 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular color-505050 FontArabicRegular'>
+              <p className="m-0 MontserratRegular color-505050 FontArabicRegular">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-                      alt='userimage'
+                      alt="userimage"
                     />
 
                     {text[0].name}
@@ -329,10 +275,10 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                 ) : (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-                      alt='userimage'
+                      alt="userimage"
                     />
                     {text[0].name}
                   </>
@@ -353,7 +299,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),
-      // width: "220px",
       render: (text, record) => {
         return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
       },
@@ -368,7 +313,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         {
           text: t("In-progress"),
           value: "In Progress",
-          // className: currentLanguage,
         },
         {
           text: t("Pending"),
@@ -396,7 +340,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       ],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
         return record.status.status.toLowerCase().includes(value.toLowerCase());
@@ -408,7 +352,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
               <Select
                 defaultValue={text.status}
                 bordered={false}
-                dropdownClassName='Status-Todo'
+                dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -422,7 +366,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+              >
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -448,7 +393,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                   : text.pK_TSID === 5
                   ? "Completed custom-class  color-5a5a5a  text-center my-1"
                   : null
-              }>
+              }
+            >
               {text.status}
             </p>
           );
@@ -468,9 +414,10 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         ) {
           return (
             <i
-              className='meeting-editbutton cursor-pointer'
-              onClick={(e) => deleteTodolist(index)}>
-              <img draggable='false' src={del} alt='' />
+              className="meeting-editbutton cursor-pointer"
+              onClick={(e) => deleteTodolist(index)}
+            >
+              <img draggable="false" src={del} alt="" />
             </i>
           );
         } else {
@@ -480,15 +427,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     },
   ];
 
-  // for search Date handler
-  const searchHandlerDate = (e) => {
-    setSearchData({
-      ...searchData,
-      Date: e.target.value,
-      UserID: parseInt(createrID),
-    });
-  };
-
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
     if (e === 6) {
@@ -496,63 +434,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     }
     dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false, 1));
   };
-
-  // const paginationChangeHandlerTodo = async (current, pageSize) => {
-  //   localStorage.setItem("todoListPage", current);
-  //   localStorage.setItem("todoListRow", pageSize);
-  //   dispatch(SearchTodoListApi(navigate, searchData, current, pageSize, t));
-  // };
-
-  // // for search
-  // const search = (e) => {
-  //   e.preventDefault();
-  //   if (
-  //     searchData.Date === "" &&
-  //     searchData.Title === "" &&
-  //     searchData.AssignedToName === ""
-  //   ) {
-  //     let newData = {
-  //       Date: "",
-  //       Title: "",
-  //       AssignedToName: "",
-  //       UserID: parseInt(createrID),
-  //     };
-  //     dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-  //   } else {
-  //     // make notification for if input fields is empty here
-  //     let newData = {
-  //       Date: searchData.Date,
-  //       Title: searchData.Title,
-  //       AssignedToName: searchData.AssignedToName,
-  //       UserID: parseInt(createrID),
-  //     };
-  //     dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-  //     setSearchData({
-  //       Date: "",
-  //       Title: "",
-  //       AssignedToName: "",
-  //       UserID: parseInt(createrID),
-  //     });
-  //   }
-  // };
-
-  // const resetSearchBar = (e) => {
-  //   e.preventDefault();
-  //   let newData = {
-  //     Date: "",
-  //     Title: "",
-  //     AssignedToName: "",
-  //     UserID: parseInt(createrID),
-  //   };
-  //   localStorage.setItem("todoListPage", 1);
-  //   dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-  //   setSearchData({
-  //     Date: "",
-  //     Title: "",
-  //     AssignedToName: "",
-  //     UserID: parseInt(0),
-  //   });
-  // };
 
   useEffect(() => {
     if (
@@ -680,9 +561,10 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           sm={12}
           md={12}
           lg={12}
-          className='d-flex flex-column align-items-center'>
-          <img src={TodoMessageIcon1} alt='' />
-          <span className='mt-4'> {t("No-Task")}</span>
+          className="d-flex flex-column align-items-center"
+        >
+          <img src={TodoMessageIcon1} alt="" />
+          <span className="mt-4"> {t("No-Task")}</span>
         </Col>
       </Row>
     );
@@ -690,9 +572,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
   return (
     <>
-      <div className='todolistContainer_Committee'>
-        <Row className='my-3'>
-          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end '>
+      <div className="todolistContainer_Committee">
+        <Row className="my-3">
+          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
             {committeeStatus === 3 && (
               <Button
                 text={t("Create-a-Task")}
@@ -705,63 +587,19 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         </Row>
         <Row>
           <Col>
-            <Row className='row-scroll-todolist'>
-              <Col className=''>
+            <Row className="row-scroll-todolist">
+              <Col className="">
                 <TableToDo
                   sortDirections={["descend", "ascend"]}
                   column={columnsToDo}
                   className={"ToDo"}
                   rows={rowsToDo}
                   scroll={scroll}
-                  // onChange={tableTodoChange}
                   pagination={false}
                   locale={{
                     emptyText: emptyText(), // Set your custom empty text here
                   }}
                 />
-
-                {/* {rowsToDo.length > 0 && (
-                  <Row className="">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={
-                            "  d-flex justify-content-center"
-                          }
-                        >
-                          <span className="PaginationStyle-TodoList">
-                            <CustomPagination
-                              onChange={paginationChangeHandlerTodo}
-                              current={
-                                todoListCurrentPage !== null &&
-                                todoListCurrentPage !== undefined
-                                  ? todoListCurrentPage
-                                  : 1
-                              }
-                              showSizer={true}
-                              total={totalRecords}
-                              pageSizeOptionsValues={["30", "50", "100", "200"]}
-                              pageSize={
-                                todoListPageSize !== null &&
-                                todoListPageSize !== undefined
-                                  ? todoListPageSize
-                                  : 50
-                              }
-                            />
-                          </span>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                )} */}
               </Col>
             </Row>
           </Col>
@@ -773,7 +611,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
-          className='toDoViewModal'
+          className="toDoViewModal"
         />
       ) : viewFlagToDo ? (
         <ModalViewToDo
@@ -781,7 +619,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           setViewFlagToDo={setViewFlagToDo}
         />
       ) : null}
-      {/* <Notification setOpen={setOpen} open={open.open} message={open.message} /> */}
     </>
   );
 };

@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Container, Dropdown, DropdownButton } from "react-bootstrap";
-import {
-  Calendar,
-  Button,
-  DropdownforSelect,
-  Loader,
-  Notification,
-} from "./../../components/elements";
+import { Col, Row, Dropdown } from "react-bootstrap";
+import { Calendar, Notification } from "./../../components/elements";
 import "./CalendarPage.css";
 import { Plus } from "react-bootstrap-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,23 +12,16 @@ import {
   getEventsTypes,
 } from "../../store/actions/GetDataForCalendar";
 import {
-  covertDateForCalenderIntoUTC,
-  dateTime,
   forMainCalendar,
   newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
-  _justShowDateformat,
   newTimeFormaterAsPerUTCTalkTime,
   formattedString,
   utcConvertintoGMT,
 } from "../../commen/functions/date_formater";
 import ModalMeeting from "../modalmeeting/ModalMeeting";
 import TodoListModal from "../todolistModal/ModalToDoList";
-import ModalView from "../modalView/ModalView";
-import {
-  clearResponseMessage,
-  ViewMeeting,
-} from "../../store/actions/Get_List_Of_Assignees";
+import { clearResponseMessage } from "../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
 import { cleareMessage } from "../../store/actions/Admin_AddUser";
 import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos";
@@ -45,7 +32,6 @@ import MeetingViewModalCalendar from "../modalView/ModalView";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 
 const CalendarPage = () => {
-  //For Localization
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,17 +48,13 @@ const CalendarPage = () => {
     adminReducer,
     meetingIdReducer,
     getTodosStatus,
-    LanguageReducer,
   } = state;
   const [calenderData, setCalenderDatae] = useState([]);
-
   const [calendarView, setCalendarView] = useState(false);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [defaultValue, setDefaultValue] = useState("");
-  const [editFlag, setEditFlag] = useState(false);
   const [defaultState, setDefaultState] = useState(false);
-
   const [openNotification, setOpenNotification] = useState({
     flag: false,
     message: "",
@@ -85,7 +67,7 @@ const CalendarPage = () => {
       : 1;
   let OrganizationID = localStorage.getItem("organizationID");
   const userID = localStorage.getItem("userID");
-  var currentDate = new Date(); // Get the current date
+  var currentDate = new Date();
 
   // Calculate the start date
   let startDate = new Date(
@@ -184,16 +166,11 @@ const CalendarPage = () => {
         superprev2 === clsname ||
         body === clsname
       ) {
-        // setCalendarView(true);
-        //
       } else {
-        //
-
         if (open) {
         } else {
           if (clsname === "") {
           } else {
-            // setCalendarView(false);
           }
         }
       }
@@ -204,10 +181,7 @@ const CalendarPage = () => {
   }, []);
 
   function onChange(value) {
-    console.log(value, "valuevaluevalueonChange");
     let newDAte = moment(value._d).format("YYYY-MM-DD");
-    console.log(newDAte, "valuevaluevalueonChange");
-
     setCalendarView(false);
     if (startDataUpdate > value._d) {
       const date = new Date(value._d);
@@ -272,7 +246,7 @@ const CalendarPage = () => {
       newList = [];
     }
     if (Object.keys(Data).length > 0) {
-      Data.map((cData, index) => {
+      Data.map((cData) => {
         let StartingTime = forMainCalendar(cData.eventDate + cData.startTime);
         let EndingTime = forMainCalendar(cData.eventDate + cData.endTime);
         let meetingStartTime = newTimeFormaterAsPerUTC(
@@ -287,7 +261,6 @@ const CalendarPage = () => {
             start: new Date(StartingTime),
             end: new Date(EndingTime),
             border: `2px solid ${googleEventColor}`,
-            // color: "#ffff",
             backgroundColor: googleEventColor,
             calendarTypeId: Number(cData.fK_CETID),
             isQuickMeeting: cData.isQuickMeeting,
@@ -306,7 +279,6 @@ const CalendarPage = () => {
             start: new Date(StartingTime),
             end: new Date(EndingTime),
             border: `2px solid ${officeEventColor}`,
-            // color: "#ffff",
             backgroundColor: officeEventColor,
             calendarTypeId: Number(cData.fK_CETID),
             isQuickMeeting: cData.isQuickMeeting,
@@ -325,7 +297,6 @@ const CalendarPage = () => {
             start: new Date(StartingTime),
             end: new Date(EndingTime),
             border: `2px solid ${diskusEventColor}`,
-            // color: "#ffff",
             backgroundColor: diskusEventColor,
             calendarTypeId: Number(cData.fK_CETID),
             isQuickMeeting: cData.isQuickMeeting,
@@ -366,7 +337,6 @@ const CalendarPage = () => {
             formattedString(calendarData.model?.end?.dateTime)
           ),
           border: `2px solid ${googleEventColor}`,
-          // color: "#ffff",
           backgroundColor: googleEventColor,
           calendarTypeId: Number(calendarData.calendarEventTypeID),
           isQuickMeeting: true,
@@ -408,7 +378,6 @@ const CalendarPage = () => {
             formattedString(calendarData.model?.end?.dateTime)
           ),
           border: `2px solid ${googleEventColor}`,
-          // color: "#ffff",
           backgroundColor: googleEventColor,
           calendarTypeId: Number(calendarData.calendarEventTypeID),
           isQuickMeeting: true,
@@ -475,7 +444,6 @@ const CalendarPage = () => {
             formattedString(calendarData.model?.end?.dateTime)
           ),
           border: `2px solid ${officeEventColor}`,
-          // color: "#ffff",
           backgroundColor: officeEventColor,
           calendarTypeId: Number(calendarData.calendarEventTypeID),
           isQuickMeeting: true,
@@ -516,7 +484,6 @@ const CalendarPage = () => {
             formattedString(calendarData.model?.end?.dateTime)
           ),
           border: `2px solid ${officeEventColor}`,
-          // color: "#ffff",
           backgroundColor: officeEventColor,
           calendarTypeId: Number(calendarData.calendarEventTypeID),
           isQuickMeeting: true,
@@ -569,7 +536,6 @@ const CalendarPage = () => {
       );
       setViewFlag(true);
     } else {
-      // setViewFlag(false);
     }
   }, [assignees.ViewMeetingDetails]);
 
@@ -862,26 +828,22 @@ const CalendarPage = () => {
   );
   return (
     <>
-      <div className='calendar_container'>
-        <Row className='d-flex justify-content-start align-items-center margin-bottom-15 mt-2'>
+      <div className="calendar_container">
+        <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
           <Col lg={2} md={2} sm={2} xs={12}>
-            <span className='Calender-heading'>{t("Calendar")}</span>
+            <span className="Calender-heading">{t("Calendar")}</span>
           </Col>
-          <Col
-            lg={2}
-            md={2}
-            sm={2}
-            // className=" mt-2 d-flex justify-content-center"
-          >
+          <Col lg={2} md={2} sm={2}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Dropdown
-                  className='Calendar_CreateBtn'
+                  className="Calendar_CreateBtn"
                   onClick={eventClickHandler}
-                  align={"start"}>
+                  align={"start"}
+                >
                   <Dropdown.Toggle title={t("Create")}>
                     <Row>
-                      <Col lg={12} md={12} sm={12} className='heading_button'>
+                      <Col lg={12} md={12} sm={12} className="heading_button">
                         <Plus width={20} height={20} fontWeight={800} />
                         <span>{t("Create")}</span>
                       </Col>
@@ -892,8 +854,9 @@ const CalendarPage = () => {
                     {checkFeatureIDAvailability(1) ? (
                       <>
                         <Dropdown.Item
-                          className='dropdown-item'
-                          onClick={handleCreateMeeting}>
+                          className="dropdown-item"
+                          onClick={handleCreateMeeting}
+                        >
                           {t("Schedule-a-meeting")}
                         </Dropdown.Item>
                       </>
@@ -901,8 +864,9 @@ const CalendarPage = () => {
                     {checkFeatureIDAvailability(14) ? (
                       <>
                         <Dropdown.Item
-                          className='dropdown-item'
-                          onClick={handleCreateTodo}>
+                          className="dropdown-item"
+                          onClick={handleCreateTodo}
+                        >
                           {t("Create-a-to-do-list")}
                         </Dropdown.Item>
                       </>
@@ -913,7 +877,7 @@ const CalendarPage = () => {
             </Row>
           </Col>
         </Row>
-        <Row className='align-items-center'>
+        <Row className="align-items-center">
           <Calendar
             events={calenderData}
             startDataUpdate={startDataUpdate}
@@ -921,7 +885,7 @@ const CalendarPage = () => {
             endDataUpdate={endDataUpdate}
             setEndDataUpdate={setEndDataUpdate}
             handleEventSelect={viewModalHandler}
-            className='calendar'
+            className="calendar"
             onChange={onChange}
             handleAddEvent={handleAddEvent}
             setCalendarView={setCalendarView}
