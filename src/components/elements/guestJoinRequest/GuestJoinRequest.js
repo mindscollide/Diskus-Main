@@ -17,10 +17,11 @@ const GuestJoinRequest = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [waitingOnParticipant, setWaitingOnParticipant] = useState([]);
   const { GuestVideoReducer, videoFeatureReducer } = useSelector(
     (state) => state
   );
-
+  console.log(waitingOnParticipant, "waitingOnParticipantwaitingOnParticipant")
   const {
     name = "",
     meetingID = "",
@@ -68,10 +69,27 @@ const GuestJoinRequest = () => {
     dispatch(guestJoinPopup(false));
   };
 
+  useEffect(() => {
+    if (
+      videoFeatureReducer.participantWaitingList !== undefined &&
+      videoFeatureReducer.participantWaitingList !== null &&
+      videoFeatureReducer.participantWaitingList.length > 0
+    ) {
+      try {
+        setWaitingOnParticipant(videoFeatureReducer.participantWaitingList);
+      } catch (error) {
+        setWaitingOnParticipant([]);
+      }
+    } else {
+      setWaitingOnParticipant([]);
+
+    }
+  }, [videoFeatureReducer.participantWaitingList]);
+
   return (
     <div className={styles["box-positioning"]}>
       <Container className='d-flex justify-content-center align-items-center'>
-        {videoFeatureReducer.participantWaitingList?.length === 1 ? (
+        {waitingOnParticipant?.length === 1 ? (
           <>
             <Card className={styles["card-ui"]}>
               <img
@@ -116,11 +134,11 @@ const GuestJoinRequest = () => {
               </Card.Body>
             </Card>
           </>
-        ) : videoFeatureReducer.participantWaitingList?.length > 0 ? (
+        ) : waitingOnParticipant?.length > 0 ? (
           <Card className={styles["card-ui-400"]}>
             <div className={styles["content-section"]}>
               <div className={styles["avatars"]}>
-                {videoFeatureReducer.participantWaitingList.map(
+                {waitingOnParticipant.map(
                   (participantData, index) => {
                     return (
                       <img

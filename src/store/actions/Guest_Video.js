@@ -10,7 +10,7 @@ import {
 } from "../../commen/apis/Api_config";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
-import { guestJoinPopup } from "./VideoFeature_actions";
+import { guestJoinPopup, participantAcceptandReject } from "./VideoFeature_actions";
 
 const guestVideoNavigationScreen = (response) => {
   return {
@@ -147,7 +147,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          //   await dispatch(RefreshToken(navigate, t));
+          // await dispatch(RefreshToken(navigate, t));
           dispatch(validateEncryptGuestVideoMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -333,6 +333,9 @@ const admitRejectFail = (message) => {
 };
 
 const admitRejectAttendeeMainApi = (Data, navigate, t) => {
+  let filterGuids = Data.AttendeeResponseList.map(
+    (guidMap, index) => guidMap.UID
+  );
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(admitRejectInit());
@@ -349,7 +352,7 @@ const admitRejectAttendeeMainApi = (Data, navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          //   await dispatch(RefreshToken(navigate, t));
+          await dispatch(RefreshToken(navigate, t));
           dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -366,6 +369,7 @@ const admitRejectAttendeeMainApi = (Data, navigate, t) => {
                   t("Successful")
                 )
               );
+              dispatch(participantAcceptandReject(filterGuids))
               dispatch(guestJoinPopup(false));
             } else if (
               response.data.responseResult.responseMessage
@@ -411,7 +415,6 @@ const admitGuestUserRequest = (response) => {
     response: response,
   };
 };
-
 
 export {
   getMeetingGuestVideoMainApi,
