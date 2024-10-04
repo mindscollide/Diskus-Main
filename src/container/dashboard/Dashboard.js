@@ -2500,6 +2500,7 @@ const Dashboard = () => {
             handleClose={closeNotification}
             id={notificationID}
           />
+
           {videoFeatureReducer.ShowGuestPopup && (
             <div>
               <GuestJoinRequest />

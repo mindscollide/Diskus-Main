@@ -33,10 +33,20 @@ const initialState = {
   VideoChatMessagesFlag: false,
   ShowGuestPopup: true,
   participantWaitinglistBox: false,
+  participantWaitingList: [],
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.PARTICIPANT_JOINT_REQUESTS: {
+      return {
+        ...state,
+        participantWaitingList: [
+          ...state.participantWaitingList,
+          action.response,
+        ],
+      };
+    }
     case actions.VIDEO_CHAT_FLAG: {
       return {
         ...state,

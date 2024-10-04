@@ -17,6 +17,7 @@ import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnectionGuestUser } from "../../../../../commen/functions/mqttconnection_guest";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 import GuestVideoReject from "../GuestVideoReject/GuestVideoReject";
+import { participantWaitingList } from "../../../../../store/actions/VideoFeature_actions";
 
 const GuestVideoCall = () => {
   const { t } = useTranslation();
@@ -74,6 +75,7 @@ const GuestVideoCall = () => {
       ) {
         if (data.payload.isAccepted === true) {
           setVideoUrl(data.payload.videoUrl);
+          dispatch(participantWaitingList(data.payload))
           dispatch(guestVideoNavigationScreen(2));
         } else {
           dispatch(guestVideoNavigationScreen(3));

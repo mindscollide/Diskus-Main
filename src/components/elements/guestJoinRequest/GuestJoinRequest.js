@@ -17,7 +17,9 @@ const GuestJoinRequest = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { GuestVideoReducer } = useSelector((state) => state);
+  const { GuestVideoReducer, videoFeatureReducer } = useSelector(
+    (state) => state
+  );
 
   const {
     name = "",
@@ -69,76 +71,84 @@ const GuestJoinRequest = () => {
   return (
     <div className={styles["box-positioning"]}>
       <Container className='d-flex justify-content-center align-items-center'>
-        {/* <Card className={styles["card-ui"]}> */}
-        {/* <img
-            onClick={() => dispatch(guestJoinPopup(false))}
-            className={styles["handle-close"]}
-            src={CrossIcon}
-            alt=""
-          />
-          <Card.Body className="text-center">
-            <div>
+        {videoFeatureReducer.participantWaitingList?.length === 1 &&
+        videoFeatureReducer.ShowGuestPopup ? (
+          <>
+            <Card className={styles["card-ui"]}>
               <img
-                src={ProfileIcon}
-                alt=""
-                style={{
-                  borderRadius: "50%",
-                  width: "75px",
-                  height: "75px",
-                  objectFit: "cover",
-                }}
+                onClick={() => dispatch(guestJoinPopup(false))}
+                className={styles["handle-close"]}
+                src={CrossIcon}
+                alt=''
+              />
+              <Card.Body className='text-center'>
+                <div>
+                  <img
+                    src={ProfileIcon}
+                    alt=''
+                    style={{
+                      borderRadius: "50%",
+                      width: "75px",
+                      height: "75px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <p className={styles["title-alert"]}>
+                  <strong>{name + " "}</strong>
+                  {t("has-requested-to-join-this-video-call")}
+                </p>
+                <Row className='justify-content-center'>
+                  <Col xs={5}>
+                    <Button
+                      className={styles["title-deny"]}
+                      onClick={() => handleAdmit(2)}
+                      text={t("Deny")}
+                    />
+                  </Col>
+                  <Col xs={5}>
+                    <Button
+                      className={styles["title-admit"]}
+                      onClick={() => handleAdmit(1)}
+                      text={t("Admit")}
+                    />
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </>
+        ) : videoFeatureReducer.participantWaitingList?.length > 0 &&
+          videoFeatureReducer.ShowGuestPopup ? (
+          <Card className={styles["card-ui-400"]}>
+            <div className={styles["content-section"]}>
+              <div className={styles["avatars"]}>
+                <img
+                  src={ProfileIcon}
+                  alt='Avatar 1'
+                  className={styles["avatar"]}
+                />
+                <img
+                  src={ProfileIcon}
+                  alt='Avatar 2'
+                  className={styles["avatar"]}
+                />
+                <img
+                  src={ProfileIcon}
+                  alt='Avatar 3'
+                  className={styles["avatar"]}
+                />
+              </div>
+              <p className={styles["text"]}>
+                Multiple people want to join the meeting.
+              </p>
+              <Button
+                className={styles["title-deny"]}
+                text={t("View")}
+                onClick={handleCLickView}
               />
             </div>
-            <p className={styles["title-alert"]}>
-              <strong>{name + " "}</strong>
-              {t("has-requested-to-join-this-video-call")}
-            </p>
-            <Row className="justify-content-center">
-              <Col xs={5}>
-                <Button
-                  className={styles["title-deny"]}
-                  onClick={() => handleAdmit(2)}
-                  text={t("Deny")}
-                />
-              </Col>
-              <Col xs={5}>
-                <Button
-                  className={styles["title-admit"]}
-                  onClick={() => handleAdmit(1)}
-                  text={t("Admit")}
-                />
-              </Col>
-            </Row>
-          </Card.Body> */}
-        <Card className={styles["card-ui-400"]}>
-          <div className={styles["content-section"]}>
-            <div className={styles["avatars"]}>
-              <img
-                src={ProfileIcon}
-                alt='Avatar 1'
-                className={styles["avatar"]}
-              />
-              <img
-                src={ProfileIcon}
-                alt='Avatar 2'
-                className={styles["avatar"]}
-              />
-              <img
-                src={ProfileIcon}
-                alt='Avatar 3'
-                className={styles["avatar"]}
-              />
-            </div>
-            <p className={styles["text"]}>
-              Multiple people want to join the meeting.
-            </p>
-            <Button
-              className={styles["title-deny"]}
-              text={t("View")}
-              onClick={handleCLickView}
-            />
-          </div>
-        </Card>
+          </Card>
+        ) : null}
       </Container>
     </div>
   );

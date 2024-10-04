@@ -227,7 +227,15 @@ const participantWaitingListBox = (response) => {
   };
 };
 
+const participantWaitingList = (response) => {
+  return {
+    type: actions.PARTICIPANT_JOINT_REQUESTS,
+    response: response,
+  };
+};
+
 export {
+  participantWaitingList,
   participantWaitingListBox,
   videoChatPanel,
   contactVideoFlag,
