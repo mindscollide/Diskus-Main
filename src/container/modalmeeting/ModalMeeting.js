@@ -44,7 +44,6 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
   getCurrentDate,
   getCurrentDateTime,
-  getCurrentTimmeGMTHHMMss,
   getHoursMinutesSec,
   getStartTimeWithCeilFunction,
 } from "../../commen/functions/time_formatter";
@@ -127,7 +126,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [defaultPresenter, setDefaultPresenter] = useState(null);
 
   const [attendeesParticipant, setAttendeesParticipant] = useState([]);
-  console.log(attendeesParticipant, "attendeesParticipantattendeesParticipant");
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("Participant");
   const [participantRoleID, setParticipantRoleID] = useState(2);
@@ -145,19 +143,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [attachments, setAttachments] = useState([]);
   const [forUpdateAttachments, setForUpdateAttachent] = useState([]);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [taskAssignedName, setTaskAssignedName] = useState("");
   const [createMeetingTime, setCreateMeetingTime] = useState(
     getStartTime.newFormatTime
   );
   const getCurrentDateforMeeting = getCurrentDate();
-  const [onclickFlag, setOnclickFlag] = useState(false);
-
   // for Participant options
   const participantOptions = [t("Organizer"), t("Participant")];
-  const currentDate = new Date();
-  const currentHours = currentDate.getHours().toString().padStart(2, "0");
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
-  const getcurrentTime = `${currentHours}:${currentMinutes}`;
   const [meetingDate, setMeetingDate] = useState(
     getCurrentDateforMeeting.DateGMT
   );
@@ -229,11 +220,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
-      // createMeeting.MeetingReminderID.length != 0 &&
-      // createMeeting.MeetingDescription !== "" &&
-      // createMeeting.MeetingLocation !== ""
-      //  &&
-      // createMeeting.MeetingTitle !== ""
     ) {
       setModalField(false);
       setIsDetails(false);
@@ -256,9 +242,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
-      // createMeeting.MeetingReminderID.length > 0 &&
-      // createMeeting.MeetingLocation !== "" &&
-      // createMeeting.MeetingTitle !== "" &&
       createMeeting.MeetingAgendas.length > 0
     ) {
       setModalField(false);
@@ -272,9 +255,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       createMeeting.MeetingStartTime === "" ||
       createMeeting.MeetingEndTime === "" ||
       createMeeting.MeetingDate === ""
-      // createMeeting.MeetingReminderID.length === 0 ||
-      // createMeeting.MeetingLocation === ""
-      // createMeeting.MeetingTitle === ""
     ) {
       setModalField(true);
       setIsDetails(true);
@@ -315,11 +295,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setIsAttendees(true);
       setIsDetails(false);
       setIsPublishMeeting(false);
-      // setOpen({
-      //   ...open,
-      //   flag: true,
-      //   message: t("Please-atleast-add-one-agenda"),
-      // });
     } else {
     }
   };
@@ -330,11 +305,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
-      // createMeeting.MeetingReminderID.length != 0 &&
-      // createMeeting.MeetingDescription !== "" &&
-      // createMeeting.MeetingLocation !== ""
-      // &&
-      // createMeeting.MeetingTitle !== ""
     ) {
       setModalField(false);
       setIsDetails(false);
@@ -358,7 +328,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const ReminderNameHandler = (e, value) => {
     setReminderValue(value);
     let valueOfReminder = assignees.RemindersData;
-    valueOfReminder.map((data, index) => {
+    valueOfReminder.map((data) => {
       if (value === data.description) {
         let id = data.pK_MRID;
         setCreateMeeting({
@@ -397,20 +367,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setCurrentStep(3);
       setIsAttendees(true);
       setIsPublishMeeting(false);
-      // setOpen({
-      //   ...open,
-      //   flag: true,
-      //   message: t("Please-atleast-add-one-agenda"),
-      // });
     }
-  };
-
-  const navigateToPublish = async () => {
-    setModalField(false);
-    setIsDetails(false);
-    setIsAgenda(false);
-    setIsAttendees(false);
-    setIsPublishMeeting(true);
   };
 
   // for Participant id's
@@ -459,7 +416,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           });
           setCreateMeetingTime(newTime);
         }
-        // if (getCurrentTimmeGMTHHMMss())
       }
     } else {
       let newDate = new Date(newTime);
@@ -685,8 +641,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   };
 
   const editGrid = (datarecord, dataindex) => {
-    console.log(datarecord, "datarecorddatarecord");
-    console.log(dataindex, "datarecorddatarecord");
     let Data;
     meetingAttendeesList.forEach((user, index) => {
       const { PresenterName } = datarecord.ObjMeetingAgenda;
@@ -726,7 +680,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     setObjMeetingAgenda(datarecord.ObjMeetingAgenda);
     let filesData = [];
     if (datarecord.MeetingAgendaAttachments.length > 0) {
-      datarecord.MeetingAgendaAttachments.map((uploadedFile, index) => {
+      datarecord.MeetingAgendaAttachments.map((uploadedFile) => {
         filesData.push({
           PK_MAAID: 0,
           DisplayAttachmentName: uploadedFile.DisplayAttachmentName,
@@ -739,8 +693,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     setAttachments(filesData);
     setForUpdateAttachent(filesData);
   };
-  console.log(attachments, "datarecorddatarecord");
-  console.log(forUpdateAttachments, "datarecorddatarecord");
+
   const deleteGrid = (datarecord, dataindex) => {
     let splicedArray = createMeeting.MeetingAgendas.indexOf(datarecord);
     createMeeting.MeetingAgendas.splice(splicedArray, 1);
@@ -893,87 +846,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
       } else {
         setModalField(true);
-        // setOpen({
-        //   ...open,
-        //   flag: true,
-        //   message: t("Enter-Title-Information"),
-        // });
       }
       setModalField(false);
     } else {
       if (objMeetingAgenda.Title) {
-        // if (objMeetingAgenda.URLs !== "") {
-        //   if (urlPatternValidation(objMeetingAgenda.URLs)) {
-        //     if (fileForSend.length > 0) {
-        //       setModalField(false);
-        //       let fileforSend = [];
-        //       let newfile = [];
-        //       const uploadPromises = fileForSend.map((newData) => {
-        //         // Return the promise from FileUploadToDo
-        //         return dispatch(FileUploadToDo(navigate, newData, t, newfile));
-        //       });
-        //       // Wait for all uploadPromises to resolve
-        //       await Promise.all(uploadPromises);
-        //       newfile.forEach((fileData, index) => {
-        //         fileforSend.push({
-        //           PK_MAAID: 0,
-        //           DisplayAttachmentName: fileData.DisplayAttachmentName,
-        //           OriginalAttachmentName: fileData.OriginalAttachmentName,
-        //           CreationDateTime: "111111",
-        //           FK_MAID: 0,
-        //         });
-        //       });
-        //       let previousAdendas = [...createMeeting.MeetingAgendas];
-
-        //       let newData = {
-        //         ObjMeetingAgenda: objMeetingAgenda,
-        //         MeetingAgendaAttachments: fileforSend,
-        //       };
-        //       previousAdendas.push(newData);
-        //       setCreateMeeting({
-        //         ...createMeeting,
-        //         MeetingAgendas: previousAdendas,
-        //       });
-        //       setObjMeetingAgenda({
-        //         Title: "",
-        //         PresenterName: "",
-        //         URLs: "",
-        //         FK_MDID: 0,
-        //       });
-        //       setFileForSend([]);
-        //       setMeetingAgendaAttachments({
-        //         ...meetingAgendaAttachments,
-        //         MeetingAgendaAttachments: [],
-        //       });
-        //       setAttachments([]);
-        //     } else {
-        //       setModalField(false);
-        //       let previousAdendas = [...createMeeting.MeetingAgendas];
-        //       let newData = {
-        //         ObjMeetingAgenda: objMeetingAgenda,
-        //         MeetingAgendaAttachments: [],
-        //       };
-        //       previousAdendas.push(newData);
-        //       setCreateMeeting({
-        //         ...createMeeting,
-        //         MeetingAgendas: previousAdendas,
-        //       });
-        //       setObjMeetingAgenda({
-        //         Title: "",
-        //         PresenterName: "",
-        //         URLs: "",
-        //         FK_MDID: 0,
-        //       });
-        //     }
-        //   } else {
-        //     setModalField(false);
-        //     setOpen({
-        //       ...open,
-        //       flag: true,
-        //       message: t("Enter-valid-url"),
-        //     });
-        //   }
-        // } else {
         if (fileForSend.length > 0) {
           setModalField(false);
           setObjMeetingAgenda(defaultMeetingAgenda);
@@ -1419,7 +1295,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
         // Group MembersData
       }
-      // setAttendeesParticipant(membersData);
     } catch {}
   }, [checkFlag]);
 
@@ -1499,21 +1374,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         setMeetingAttendees(newData);
         setTaskAssignedTo(0);
         setParticipantRoleName("Participant");
-        // setParticipantRoleID(2);
-        // if (meetingAttendeesList.length > 0) {
-        //   meetingAttendeesList.forEach((data, index) => {
-        //     if (data.pK_UID === taskAssignedTo) {
-        //                   membersData.push({
-
-        //                   });
-        //       setTaskAssignedToInput({
-        //         name: "",
-        //         value: 0,
-        //         lable: "",
-        //       });
-        //     }
-        //   });
-        // }
         setTaskAssignedToInput({
           name: "",
           value: 0,
@@ -1547,7 +1407,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           },
         };
         setMeetingAttendees(newData);
-        // setParticipantRoleID(2);
         setTaskAssignedToInput({
           name: "",
           value: 0,
@@ -1680,13 +1539,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   const onHideHandleModal = () => {
     setCloseConfirmationModal(true);
-    // setModalField(false);
     setIsDetails(false);
     setIsAgenda(false);
     setIsAttendees(false);
-    // setIsMinutes(false);
     setIsPublishMeeting(false);
-    // setCancelMeetingModal(false);
   };
   const onHideCancelButton = () => {
     if (currentStep === 1) {
@@ -1695,15 +1551,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setIsAgenda(false);
       setIsAttendees(false);
       setCloseConfirmationModal(false);
-
-      // setIsMinutes(false);
     } else if (currentStep === 2) {
       setIsDetails(false);
       setIsAgenda(true);
       setCloseConfirmationModal(false);
 
       setIsAttendees(false);
-      // setIsMinutes(false);
     } else if (currentStep === 3) {
       setIsDetails(false);
       setCloseConfirmationModal(false);
@@ -1711,8 +1564,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setIsAgenda(false);
       setIsAttendees(true);
       setCurrentStep(3);
-
-      // setIsMinutes(false);
     }
   };
 
@@ -1859,14 +1710,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           locale={localValue}
                           onFocusedDateChange={meetingDateHandler}
                         />
-                        {/* <MultiDatePicker
-                          onChange={meetingDateHandler}
-                          name="MeetingDate"
-                          value={meetingDate}
-                          calendar={calendarValue}
-                          locale={localValue}
-                          // newValue={createMeeting.MeetingDate}
-                        /> */}
                       </div>
                       <div className="height-10">
                         {modalField === true &&
@@ -1892,13 +1735,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         className="MeetingReminder"
                         required
                       />
-                      <div className="height-10">
-                        {/* {modalField === true && reminderValue === "" ? (
-                          <ErrorBar errorText={"Select Reminder"} />
-                        ) : null} */}
-                      </div>
+                      <div className="height-10"></div>
                     </Col>
-                    {/* <Col lg={3} md={3} xs={12}></Col> */}
                   </Row>
 
                   <Row className="createmeetingInput-row mt-1">
@@ -1953,10 +1791,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {/* {modalField === true &&
-                      createMeeting.MeetingLocation === "" ? (
-                        <ErrorBar errorText={t("This-field-is-empty")} />
-                      ) : null} */}
                     </Col>
                     <Col
                       lg={4}
@@ -1994,10 +1828,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {/* {modalField === true &&
-                      createMeeting.MeetingTitle === "" ? (
-                        <ErrorBar errorText={t("This-field-is-empty")} />
-                      ) : null} */}
                     </Col>
                   </Row>
 
@@ -2018,15 +1848,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
-                        // maxLength={500}
                       />
                     </Col>
                   </Row>
                 </>
               ) : isAgenda ? (
                 <>
-                  {/* <Form.Group></Form.Group> */}
-
                   <div className="agenda_container">
                     <Form onSubmit={addAnOtherAgenda}>
                       <Row>
@@ -2045,10 +1872,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                             maxLength={300}
                             placeholder={t("Agenda-title") + "*"}
                           />
-                          {/* {modalField === true &&
-                          objMeetingAgenda.Title === "" ? (
-                            <ErrorBar errorText={t("This-field-is-empty")} />
-                          ) : null} */}
                         </Col>
                         <Col
                           lg={5}
@@ -2069,15 +1892,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                             placeholder="Select Presenter"
                             filterOption={filterFunc}
                           />
-                          {/* <TextField
-                            change={agendaHandler}
-                            name={"PresenterName"}
-                            value={objMeetingAgenda.PresenterName}
-                            applyClass="form-control2"
-                            type="text"
-                            maxLength={200}
-                            placeholder={t("Presenter")}
-                          /> */}
                         </Col>
                       </Row>
 
@@ -2137,12 +1951,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                     <Row>
                       {attachments.length > 0
                         ? attachments.map((data, index) => {
-                            let ext =
-                              data.DisplayAttachmentName !== undefined &&
-                              data.DisplayAttachmentName.split(".").pop();
-                            const first =
-                              data.DisplayAttachmentName !== undefined &&
-                              data.DisplayAttachmentName.split(" ")[0];
                             return (
                               <Col sm={4} md={4} lg={4}>
                                 <AttachmentViewer
@@ -2238,14 +2046,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                               MeetingAgendaAttachmentsData,
                                               index
                                             ) => {
-                                              var ext =
-                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                  "."
-                                                ).pop();
-                                              const first =
-                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                  " "
-                                                )[0];
                                               return (
                                                 <Col sm={4} lg={4} md={4}>
                                                   <AttachmentViewer
@@ -2285,7 +2085,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         "attendee-title-field    addattendee-textfield-width"
                       }
                     >
-                      {/* {taskAssignedToInput.value !== 0 ?  "" : ""} */}
                       <Select
                         options={attendeesParticipant}
                         classNamePrefix={"ModalOrganizerSelect"}
@@ -2309,7 +2108,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                     >
                       <SelectBox
                         name="Participant"
-                        // width="100%"
                         placeholder={t("Participant") + "*"}
                         option={participantOptions}
                         value={participantRoleName}

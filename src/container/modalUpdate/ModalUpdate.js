@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./ModalUpdate.css";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import Select from "react-select";
 import {
   convertDateTimeObject,
@@ -10,37 +9,25 @@ import {
   RemoveTimeDashes,
 } from "../../commen/functions/date_formater";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
 import {
   TextField,
   Button,
   Modal,
-  TimePickers,
-  CustomDatePicker,
   SelectBox,
   Accordian,
   EmployeeCard,
-  InputSearchFilter,
   Notification,
   Checkbox,
-  Loader,
-  MultiDatePicker,
   AttachmentViewer,
 } from "./../../components/elements";
 import {
   FileUploadToDo,
   ResetAllFilesUpload,
 } from "../../store/actions/Upload_action";
-import {
-  addMinutesofMeetings,
-  HideMinuteMeetingMessage,
-} from "../../store/actions/AddMinutesofMeeting_action";
 import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar";
-import userImage from "../../assets/images/user.png";
 import { Row, Col, Container } from "react-bootstrap";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import CustomUpload from "../../components/elements/upload/Upload";
@@ -48,18 +35,15 @@ import { CameraVideo } from "react-bootstrap-icons";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  allAssignessList,
   UpdateMeeting,
   cleareAssigneesState,
   CancelMeeting,
-  GetAllReminders,
 } from "../../store/actions/Get_List_Of_Assignees";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-import TextFieldTime from "../../components/elements/input_field_time/Input_field";
 import {
   getCurrentDate,
   getCurrentDateTime,
@@ -124,10 +108,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
     MeetingAgendaAttachments: [],
   });
-  console.log(
-    meetingAgendaAttachments,
-    "meetingAgendaAttachmentsmeetingAgendaAttachments"
-  );
+
   // for meatings  Attendees
   const [meetingAttendees, setMeetingAttendees] = useState({
     User: {
@@ -200,7 +181,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     MeetingAgendas: [],
     MeetingAttendees: [],
     ExternalMeetingAttendees: [],
-    // MinutesOfMeeting: [],
   });
   console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting");
   const [minutesOfMeeting, setMinutesOfMeeting] = useState([]);
@@ -246,11 +226,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
-      // createMeeting.MeetingReminderID.length != 0 &&
-      // createMeeting.MeetingDescription != "" &&
-      // createMeeting.MeetingLocation != ""
-      //  &&
-      // createMeeting.MeetingTitle != ""
     ) {
       setCurrentStep(2);
       setModalField(false);
@@ -277,11 +252,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
-      // createMeeting.MeetingReminderID.length != 0 &&
-      // createMeeting.MeetingDescription != "" &&
-      // createMeeting.MeetingLocation !== ""
-      // &&
-      // createMeeting.MeetingTitle !== ""
     ) {
       setCurrentStep(3);
 
@@ -310,10 +280,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
-      // createMeeting.MeetingDescription != "" &&
-      // createMeeting.MeetingLocation !== ""
-      // &&
-      // createMeeting.MeetingTitle != ""
     ) {
       setModalField(false);
       setIsDetails(false);
@@ -341,9 +307,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
-      // createMeeting.MeetingDescription !== "" &&
-      // createMeeting.MeetingLocation !== "" &&
-      // createMeeting.MeetingTitle !== "" &&
       createMeetingTime !== "" &&
       meetingDate !== ""
     ) {
@@ -402,9 +365,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     await setIsMinutes(false);
     await setIsAgenda(false);
     await setIsAttendees(false);
-    let finalDateTime = createConvert(
-      createMeeting.MeetingDate + createMeeting.MeetingStartTime
-    );
+
     let finalDateTimeWithoutUTC =
       createMeeting.MeetingDate + createMeeting.MeetingStartTime;
     let newDate = finalDateTimeWithoutUTC.slice(0, 8);
@@ -478,8 +439,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       CreationTime: "",
       FK_MDID: 0,
     });
-    // await setMeetingReminderValue("");
-    // await setMeetingReminderID([]);
+
     setReminder("");
     setReminderValue("");
     setTaskAssignedToInput("");
@@ -516,7 +476,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let name = e.target.name;
     let value = e.target.value;
     let valueCheck = value.replace(/^\s/g, "");
-    // setModalField(true);
     if (name === "MeetingStartTime") {
       setCreateMeeting({
         ...createMeeting,
@@ -524,15 +483,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         ["MeetingEndTime"]: RemoveTimeDashes(value),
       });
       setCreateMeetingTime(value);
-    }
-    // else if (name === "MeetingDate") {
-    //
-    //   setCreateMeeting({
-    //     ...createMeeting,
-    //     [name]: value,
-    //   });
-    // }
-    else if (name === "MeetingLocation") {
+    } else if (name === "MeetingLocation") {
       setCreateMeeting({
         ...createMeeting,
         [name]: valueCheck.trimStart(),
@@ -589,7 +540,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   //for onchange events  of the meeting
   const onChangeAddMinutes = (e) => {
-    let name = e.target.name;
     let value = e.target.value;
     var valueCheck = value.replace(/^\s/g, "");
     setRecordMinutesOfTheMeeting({
@@ -721,14 +671,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     });
   };
 
-  const downloadClick = (e, record) => {
-    let data = {
-      OriginalFileName: record.OriginalAttachmentName,
-      DisplayFileName: record.DisplayAttachmentName,
-    };
-    dispatch(DownloadFile(navigate, data));
-  };
-
   useEffect(() => {
     let newData = uploadReducer.uploadDocumentsList;
 
@@ -813,11 +755,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         }
       } else {
         setModalField(true);
-        // setOpen({
-        //   ...open,
-        //   flag: true,
-        //   message: t("Enter-Title-Information"),
-        // });
       }
     } else {
       if (objMeetingAgenda.Title !== "") {
@@ -871,8 +808,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         }
       } else {
         if (previousAdendas) {
-          console.log(createMeeting.MeetingAgendas, "agendaCountagendaCount");
-
           // Get the current count of agendas (starting from 1)
           const agendaCount = createMeeting.MeetingAgendas.length + 1;
 
@@ -943,12 +878,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
-    // let value = e.target.value;
     setParticipantRoleName(value);
     let user = participantOptionsWithIDs;
     if (user !== undefined) {
       if (participantOptionsWithIDs.length > 0) {
-        participantOptionsWithIDs.map((data, index) => {
+        participantOptionsWithIDs.map((data) => {
           if (data.label === value) {
             let newData = {
               User: {
@@ -980,7 +914,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   useEffect(() => {
     let valueOfReminder = assignees.RemindersData;
-    valueOfReminder.map((data, index) => {
+    valueOfReminder.map((data) => {
       if (createMeeting.MeetingReminderID === data.pK_MRID) {
         setReminderValue(data.description);
         setCreateMeeting({
@@ -996,8 +930,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (editFlag) {
       let user1 = createMeeting.MeetingAttendees;
       let List = addedParticipantNameList;
-      //     dispatch(allAssignessList(navigate, t,false));
-      // dispatch(GetAllReminders(navigate, t));
+
       setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
       setAddedParticipantNameList(List);
     } else {
@@ -1067,8 +1000,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   useEffect(() => {
     if (Object.keys(assignees.user).length > 0) {
       setMeetingAttendeesList(assignees.user);
-      let PresenterData = [];
-      assignees.user.forEach((user, index) => {
+      assignees.user.forEach((user) => {
         if (Number(user.pK_UID) === Number(createrID)) {
           setDefaultPresenter({
             label: (
@@ -1139,7 +1071,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (user !== undefined) {
       if (meetingAttendeesList.length > 0) {
         setOptiosnMeetingAttendeesList(
-          meetingAttendeesList.map((data, index) => {
+          meetingAttendeesList.map((data) => {
             return data.name;
           })
         );
@@ -1229,12 +1161,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setMinutesOftheMeatingStatus(false);
           setEndMeetingStatus(false);
         }
-        viewData.meetingReminders.map((rdata, index) => {
+        viewData.meetingReminders.map((rdata) => {
           let pkid = rdata.pK_MRID;
           reminder.push(pkid);
         });
         let valueOfReminder = assignees.RemindersData;
-        valueOfReminder.map((data, index) => {
+        valueOfReminder.map((data) => {
           if (data.pK_MRID === reminder[0]) {
             setReminderValue(data.description);
           }
@@ -1274,7 +1206,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           if (viewData.externalMeetingAttendees !== undefined) {
             if (viewData.externalMeetingAttendees.length > 0) {
               viewData.externalMeetingAttendees.map(
-                (externalMeetingAttendeesMeetingdata, index) => {
+                (externalMeetingAttendeesMeetingdata) => {
                   List.push({
                     name: externalMeetingAttendeesMeetingdata.emailAddress,
                     designation: "Default",
@@ -1319,7 +1251,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
         } catch (error) {}
         try {
-          viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
+          viewData.minutesOfMeeting.map((minutesOfMeetingData) => {
             minutesOfMeetings.push({
               PK_MOMID: minutesOfMeetingData.pK_MOMID,
               Description: minutesOfMeetingData.description,
@@ -1333,7 +1265,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         }
         try {
           viewData.externalMeetingAttendees.map(
-            (externalMeetingAttendeesData, index) => {
+            (externalMeetingAttendeesData) => {
               externalMeetingAttendiesList.push({
                 PK_EMAID: externalMeetingAttendeesData.pK_EMAID,
                 EmailAddress: externalMeetingAttendeesData.emailAddress,
@@ -1344,9 +1276,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         } catch (error) {
           //  Block of code to handle errors
         }
-        // setMeetingDate(
-        //   moment(viewData.meetingEvent.meetingDate, "YYYYMMDD").format("DD/MM/YYYY").toString()
-        // );
+
         setMeetingDate(
           moment(
             EditmeetingDateFormat(
@@ -1389,7 +1319,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   const editGrid = (datarecord, dataindex) => {
     let Data;
-    assignees.user.forEach((user, index) => {
+    assignees.user.forEach((user) => {
       if (user.name === datarecord.ObjMeetingAgenda.PresenterName) {
         Data = {
           label: (
@@ -1442,101 +1372,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setTaskAssignedName(name);
   };
 
-  //Input Field Assignee Change
-  const onChangeSearch = (e) => {
-    setTaskAssignedToInput(e.target.value);
-  };
-
-  //Drop Down Values
-  const searchFilterHandler = (value) => {
-    if (Number(checkFlag) === 6) {
-      let CommitteeMembers =
-        CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
-      if (
-        CommitteeMembers !== undefined &&
-        CommitteeMembers !== null &&
-        CommitteeMembers.length !== 0
-      ) {
-        return CommitteeMembers.filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.userName.toLowerCase();
-          return searchTerm && assigneesName.startsWith(searchTerm);
-        })
-          .slice(0, 10)
-          .map((item) => (
-            <div
-              onClick={() => onSearch(item.userName, item.pK_UID)}
-              className="dropdown-row-assignee d-flex align-items-center flex-row"
-              key={item.pK_UID}
-            >
-              <img
-                src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
-                alt=""
-                className="user-img"
-              />
-              <p className="p-0 m-0">{item.userName}</p>
-            </div>
-          ));
-      }
-    } else if (Number(checkFlag) === 7) {
-      let GroupMembers = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
-      if (
-        GroupMembers !== undefined &&
-        GroupMembers !== null &&
-        GroupMembers.length !== 0
-      ) {
-        return GroupMembers.filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.userName.toLowerCase();
-          return searchTerm && assigneesName.startsWith(searchTerm);
-        })
-          .slice(0, 10)
-          .map((item) => (
-            <div
-              onClick={() => onSearch(item.userName, item.pK_UID)}
-              className="dropdown-row-assignee d-flex align-items-center flex-row"
-              key={item.pK_UID}
-            >
-              <img
-                src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
-                alt=""
-                className="user-img"
-              />
-              <p className="p-0 m-0">{item.userName}</p>
-            </div>
-          ));
-      }
-    } else {
-      let allAssignees = assignees.user;
-      if (
-        allAssignees !== undefined &&
-        allAssignees !== null &&
-        allAssignees.length !== 0
-      ) {
-        return allAssignees
-          .filter((item) => {
-            const searchTerm = value.toLowerCase();
-            const assigneesName = item.name.toLowerCase();
-            return searchTerm && assigneesName.startsWith(searchTerm);
-          })
-          .slice(0, 10)
-          .map((item) => (
-            <div
-              onClick={() => onSearch(item.name, item.pK_UID)}
-              className="dropdown-row-assignee d-flex align-items-center flex-row"
-              key={item.pK_UID}
-            >
-              <img
-                src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-                alt=""
-                className="user-img"
-              />
-              <p className="p-0 m-0">{item.name}</p>
-            </div>
-          ));
-      }
-    }
-  };
   useEffect(() => {
     try {
       let membersData = [];
@@ -1585,7 +1420,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           GroupMembers !== undefined &&
           GroupMembers.length > 0
         ) {
-          GroupMembers.forEach((groupMemberData, index) => {
+          GroupMembers.forEach((groupMemberData) => {
             membersData.push({
               label: (
                 <>
@@ -1698,7 +1533,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           },
         });
         if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.map((data, index) => {
+          meetingAttendeesList.map((data) => {
             if (data.pK_UID === taskAssignedTo) {
               List.push({
                 name: data.name,
@@ -1787,9 +1622,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       let newTime = finalDateTimeWithoutUTC.slice(8, 14);
       let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
       let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
-      // let newDate = finalDateTime.slice(0, 8);
-      // let newTime = finalDateTime.slice(8, 14);
-      // let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
       let newData = {
         MeetingID: createMeeting.MeetingID,
         MeetingTitle:
@@ -1811,7 +1643,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
       console.log(newData, "newDatanewDatanewData");
-      // if (hasOrganizer) {
       await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
       await setObjMeetingAgenda({
         PK_MAID: 0,
@@ -1858,8 +1689,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         CreationTime: "",
         FK_MDID: 0,
       });
-      // await setMeetingReminderValue("");
-      // await setMeetingReminderID([]);
+
       setReminder("");
       setReminderValue("");
       setTaskAssignedToInput("");
@@ -2011,7 +1841,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const cancelMeetingConfirmation = async () => {
     if (minutesOftheMeatingStatus) {
       if (endMeetingStatus2) {
-        // let Data = { MinutesOfMeeting: minutesOfMeeting };
         await setModalField(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
@@ -2067,12 +1896,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           CreationTime: "",
           FK_MDID: 0,
         });
-        // await setMeetingReminderValue("");
-        // await setMeetingReminderID([]);
+
         setReminder("");
         setReminderValue("");
       } else {
-        // let Data = { MinutesOfMeeting: minutesOfMeeting };
         await setModalField(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
@@ -2128,8 +1955,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           CreationTime: "",
           FK_MDID: 0,
         });
-        // await setMeetingReminderValue("");
-        // await setMeetingReminderID([]);
+
         setReminder("");
         setReminderValue("");
         setTaskAssignedToInput("");
@@ -2171,7 +1997,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   const handleDeleteAttendee = (data, index) => {
     let user1 = createMeeting.MeetingAttendees;
-    let List = addedParticipantNameList;
     user1.splice(index, 1);
     addedParticipantNameList.splice(index, 1);
     setAddedParticipantNameList(addedParticipantNameList);
@@ -2233,7 +2058,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   }
   const onHideHandleModal = () => {
     setCloseConfirmationModal(true);
-    // setModalField(false);
     setIsDetails(false);
     setIsAgenda(false);
     setIsAttendees(false);
@@ -2289,13 +2113,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       MeetingAgendas: copyMeetingAgenda,
     });
   };
-  console.log(createMeeting, "handleDeleteAgendahandleDeleteAgenda");
 
   const handleChangePresenter = (value) => {
-    console.log(
-      value,
-      "handleChangePresenterhandleChangePresenterhandleChangePresenter"
-    );
     setPresenterValue(value);
     setObjMeetingAgenda({
       ...objMeetingAgenda,
@@ -2328,7 +2147,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setShow={setEditFlag}
           className={closeConfirmationModal ? null : "meeting_update"}
           ButtonTitle={ModalTitle}
-          // modalBodyClassName="modalMeetingUpdateBody"
           modalFooterClassName={"d-block"}
           modalHeaderClassName={"d-none"}
           size={
@@ -2417,24 +2235,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
                       />
-                      {/* <TextFieldTime
-                        type="time"
-                        labelclass="d-none"
-                        value={createMeetingTime}
-                        name="MeetingStartTime"
-                        onKeyDown={(e) => e.preventDefault()}
-                        applyClass={"quick_meeting_time"}
-                        change={detailsHandler}
-                        placeholder={"00:00"}
-                      /> */}
-                      {/* <TimePickers
-                        disable={endMeetingStatus}
-                        change={detailsHandler}
-                        placeholder={"00:00"}
-                        name="MeetingStartTime"
-                        value={createMeeting.MeetingStartTime}
-                        required
-                      /> */}
+
                       {modalField === true &&
                       createMeeting.MeetingStartTime === "" ? (
                         <ErrorBar errorText={t("Select-time")} />
@@ -2465,17 +2266,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         calendar={calendarValue}
                         locale={localValue}
                         onFocusedDateChange={meetingDateHandler}
-
-                        // ref={calendRef}
                       />
-                      {/* <MultiDatePicker
-                        onChange={meetingDateHandler}
-                        name="MeetingDate"
-                        value={meetingDate}
-                        calendar={calendarValue}
-                        locale={localValue}
-                        disabled={endMeetingStatus}
-                      /> */}
+
                       {modalField === true &&
                       createMeeting.MeetingDate === "" ? (
                         <ErrorBar errorText={t("Select-date")} />
@@ -2499,11 +2291,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         className="MeetingReminder"
                         required
                       />
-                      {/* {  reminderValue === "" ? (
-                        <ErrorBar errorText={"Select Reminder"} />
-                      ) : null} */}
                     </Col>
-                    {/* <Col lg={3} md={3} xs={12}></Col> */}
                   </Row>
 
                   <Row className="updatemeetingvideoiconbtrrow">
@@ -2544,10 +2332,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {/* {modalField === true &&
-                      createMeeting.MeetingLocation === "" ? (
-                        <ErrorBar errorText={t("This-field-is-empty")} />
-                      ) : null} */}
                     </Col>
                     <Col
                       lg={4}
@@ -2588,10 +2372,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {/* {modalField === true &&
-                      createMeeting.MeetingTitle === "" ? (
-                        <ErrorBar errorText={t("This-field-is-empty")} />
-                      ) : null} */}
                     </Col>
                   </Row>
 
@@ -2614,30 +2394,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
-                        // maxLength={500}
                       />
-                      {/* { 
-                      createMeeting.MeetingDescription === "" ? (
-                        <ErrorBar errorText={t("This-field-is-empty")} />
-                      ) : null} */}
                     </Col>
                   </Row>
-
-                  {/* <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className="d-flex justify-content-end"
-                    >
-                      <Button
-                        onClick={navigateToAgenda}
-                        className={"btn btn-primary meeting next"}
-                        variant={"Primary"}
-                        text="Next"
-                      />
-                    </Col>
-                  </Row> */}
                 </>
               ) : isAgenda ? (
                 <>
@@ -2662,10 +2421,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               type="text"
                               placeholder={t("Agenda-title") + "*"}
                             />
-                            {/* {modalField === true &&
-                            objMeetingAgenda.Title === "" ? (
-                              <ErrorBar errorText={t("This-field-is-empty")} />
-                            ) : null} */}
                           </Col>
                           <Col
                             lg={5}
@@ -2688,16 +2443,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               placeholder="Select Presenter"
                               filterOption={filterFunc}
                             />
-                            {/* <TextField
-                              disable={endMeetingStatus}
-                              change={agendaHandler}
-                              name={"PresenterName"}
-                              value={objMeetingAgenda.PresenterName}
-                              applyClass="form-control2"
-                              type="text"
-                              maxLength={200}
-                              placeholder={t("Presenter")}
-                            /> */}
                           </Col>
                         </Row>
 
@@ -2743,14 +2488,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                   .MeetingAgendaAttachments.length > 0
                                   ? meetingAgendaAttachments.MeetingAgendaAttachments.map(
                                       (data, index) => {
-                                        var ext =
-                                          data.DisplayAttachmentName.split(
-                                            "."
-                                          ).pop();
-                                        const first =
-                                          data.DisplayAttachmentName.split(
-                                            " "
-                                          )[0];
                                         return (
                                           <Col sm={4} md={4} lg={4}>
                                             <AttachmentViewer
@@ -2927,15 +2664,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               : taskAssignedToInput
                           }
                         />
-                        {/* <InputSearchFilter
-                          placeholder={t("Add-attendees")}
-                          value={taskAssignedToInput}
-                          filteredDataHandler={searchFilterHandler(
-                            taskAssignedToInput
-                          )}
-                          change={onChangeSearch}
-                          applyClass={"input_searchAttendees_createMeeting"}
-                        /> */}
                       </Col>
                       <Col
                         lg={5}
@@ -3127,7 +2855,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               xs={12}
                               className="d-flex justify-content-center align-items-center"
                             >
-                              {/* <h3>There is no Minutes of the meeting</h3> */}
                               <h3>{t("There-is-no-minutes-of-meeting")}</h3>
                             </Col>
                           </Row>

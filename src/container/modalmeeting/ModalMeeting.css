@@ -1,42 +1,7 @@
-/* @media screen and (max-width: 576px) {
-  .modal-dialog {
-    max-width: 800px !important;
-    min-height: auto !important;
-  }
-} */
-
 .createModalMeeting .modal-content {
-  /* height: 600px !important; */
-  /* width: 700px !important; */
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  /* padding: 20px 0; */
 }
-
-/* .modal-content:has(.modal-body .row.confirmationDialogue) {
-  height: auto !important;
-  width: 100% !important;
-} */
-
-/* .confirmationDialogue-2 {
-  align-items: center !important;
-  width: 450px !important;
-  margin: 20px 0 !important;
-} */
-
-/* .modal-header {
-  position: absolute;
-  right   : 0;
-  z-index : 1;
-} */
-
-/* .modal-footer {
-  border-top: none;
-
-  height: 20%;
-  max-height: 20%;
-  min-height: 20%;
-} */
 
 .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] {
   padding: 2px;
@@ -53,14 +18,8 @@ fieldset:disabled .btn {
   opacity: var(--bs-btn-disabled-opacity);
 }
 
-/* .inputfield[type=text]::placeholder:after {
-  content: '*';
-  color: red; vertical-align: top; font-size: 18px;
-} */
 .file-icon {
   position: relative;
-  /* display: flex;
-  flex-wrap : wrap; */
 }
 
 .deleteBtn {
@@ -89,15 +48,6 @@ fieldset:disabled .btn {
 .modalMeetingCreateHeader {
   display: none;
 }
-/* .modalMeetingCreateHeader {
-  border-bottom: none;
-  border-top: none;
-  padding: 10px 20px;
-  height: 5%;
-  max-height: 5%;
-  min-height: 5%;
-  margin-top: 15px !important;
-} */
 
 .attendeeParticipant {
   border: 1px solid #e0e0e0;
@@ -106,9 +56,6 @@ fieldset:disabled .btn {
   border-radius: 4px;
 }
 
-/* .CreateMeetingReminder {
-  margin-top: 10px;
-} */
 .participant-scroll-creatingmeeting {
   min-height: 45vh !important;
   overflow-y: auto !important;
@@ -169,7 +116,6 @@ fieldset:disabled .btn {
   border: 1px solid #e1e1e1 !important;
   font-weight: 600 !important;
   font-size: 12px !important;
-  /* border: 1px solid #666666 !important; */
 }
 
 .textAreaDiv textarea::placeholder {
@@ -211,7 +157,6 @@ input#MeetingReminderID::placeholder {
 
 .participant-heading-creatingmeeting {
   color: #6172d6;
-  /* margin-top: 25px; */
   font-size: 20px;
   margin-bottom: 10px;
   font-weight: 600;
@@ -231,37 +176,15 @@ input#MeetingReminderID::placeholder {
   cursor: pointer;
 }
 
-/* .file-icon-modalmeeting-p {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.file-icon-modalmeeting-p:hover {
-  text-overflow: none;
-  white-space: normal;
-} */
-
-/* .modalmeeting-participant-scroll {
-  height: 161px;
-  overflow-y: auto;
-  overflow-x: hidden;
-} */
-
 .modalmeeting-attendees-row {
   border: 1px solid #e1e1e1;
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 4px !important;
-  /* margin-left  : -4px !important; */
-  /* margin-right : 15px; */
 }
 
 .modalmeeting-add {
   margin-top: 10px !important;
-  /* margin-bottom: 10px !important; */
-  /* margin-left  : -15px !important; */
 }
 
 .add-button {
@@ -465,8 +388,6 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 
 .select-participant-box {
   margin-top: 6px !important;
-  /* margin-left: -18px !important; */
-  /* width: 36% !important; */
 }
 
 .agenda-upper-button {
@@ -481,7 +402,6 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 
 .meeting {
   height: 33px !important;
-  /* width: 100px !important; */
 }
 
 .modalmeeting-attendees-row
@@ -511,11 +431,6 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 }
 
 @media screen and (max-width: 1000px) {
-  /* .meeting {
-    height: 30px !important;
-    width: 100px !important;
-  } */
-
   .isDetail-Schedule-top-btn {
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     border: none !important;
@@ -707,7 +622,6 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
 .ant-btn-primary[disabled]:focus,
 .ant-btn-primary[disabled]:active {
   color: rgb(255, 255, 255);
-  /* border-color: #d9d9d9; */
   background: #6172d6;
   filter: grayscale(0.5) !important;
   text-shadow: none;
@@ -730,11 +644,6 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   color: #6172d6 !important;
 }
 
-/* .MuiAutocomplete-popper {
-  width: 194px !important;
-  right: 30px !important;
-} */
-
 .MuiAutocomplete-listbox {
   margin: 0 !important;
   padding: 8px px 0 !important;
@@ -743,9 +652,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   max-height: 40vh !important;
   width: 100% !important;
 }
-/* .presenter_dropdown__input {
-  display: none !important;
-} */
+
 .css-qbdosj-Input:after {
   display: none;
 }

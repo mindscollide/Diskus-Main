@@ -1,4 +1,3 @@
-/* change background color blue to this */
 .badge-icon {
   background-color: #6172d6 !important;
 
@@ -12,19 +11,16 @@
 
 .minutes-view {
   overflow-y: auto;
-  /* max-height: 475px; */
   max-height: 355px;
 }
 
 .minutes-view-2 {
   overflow-y: auto;
   max-height: 346px;
-  /* max-height: 355px; */
 }
 
 .minutes-box {
   max-height: 220px;
-  /* / overflow-y: auto; / */
 }
 
 .btn.disabled,
@@ -38,7 +34,6 @@ fieldset:disabled .btn {
   height: 20% !important;
   max-height: 20% !important;
   min-height: 20% !important;
-  /* display: block !important; */
 }
 
 .modalMeetingUpdateBody {
@@ -95,12 +90,9 @@ fieldset:disabled .btn {
 }
 
 .updatemeeting-attendees-row {
-  /* border: 1px solid #e0e0e0;
-  margin: 20px 0px !important; */
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 4px !important;
-  /* margin-left: -1px !important; */
 }
 
 .updatemeeting-participant-scroll {
@@ -154,17 +146,6 @@ fieldset:disabled .btn {
   width: 450px !important;
   margin-top: 20px !important;
 }
-
-/* 
-.updatemeeting-publishMeeting-btn {
-  width: 450px !important;
-  margin-top: 30px !important;
-}
-
-.updatemeeting-publishMeeting-btn {
-  width: 450px !important;
-  margin: 10px 0 !important;
-} */
 
 .updatemeeting-cancel-btn {
   width: 450px !important;
@@ -223,8 +204,6 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 4px !important;
   font-size: 15px !important;
   font-weight: 500 !important;
-  /* margin-right: 4px !important; */
-  /* margin-top   : 6px !important; */
   font-weight: 600 !important;
 }
 
@@ -236,8 +215,7 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 4px !important;
   font-size: 15px !important;
   font-weight: 500 !important;
-  /* margin-right: 4px !important; */
-  /* margin-top   : 6px !important; */
+
   font-weight: 600 !important;
 }
 
@@ -385,7 +363,6 @@ body[dir="rtl"] .modal-update-addagenda {
 .modalupdatemeeting-add {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
-  /* margin-left: -15px !important; */
 }
 
 .agenda-upper-button {
@@ -668,8 +645,6 @@ body[dir="rtl"] .isMinutes-Update-btn {
 
 .select-participant-update-box {
   margin-top: -1px !important;
-  /* margin-left: -18px !important; */
-  /* width: 36% !important; */
 }
 .meeting_update .modal-content {
   height: 580px !important;
