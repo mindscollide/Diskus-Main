@@ -75,7 +75,6 @@ const GuestVideoCall = () => {
       ) {
         if (data.payload.isAccepted === true) {
           setVideoUrl(data.payload.videoUrl);
-          dispatch(participantWaitingList(data.payload))
           dispatch(guestVideoNavigationScreen(2));
         } else {
           dispatch(guestVideoNavigationScreen(3));

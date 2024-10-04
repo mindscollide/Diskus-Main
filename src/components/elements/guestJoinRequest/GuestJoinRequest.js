@@ -71,8 +71,7 @@ const GuestJoinRequest = () => {
   return (
     <div className={styles["box-positioning"]}>
       <Container className='d-flex justify-content-center align-items-center'>
-        {videoFeatureReducer.participantWaitingList?.length === 1 &&
-        videoFeatureReducer.ShowGuestPopup ? (
+        {videoFeatureReducer.participantWaitingList?.length === 1 ? (
           <>
             <Card className={styles["card-ui"]}>
               <img
@@ -117,26 +116,21 @@ const GuestJoinRequest = () => {
               </Card.Body>
             </Card>
           </>
-        ) : videoFeatureReducer.participantWaitingList?.length > 0 &&
-          videoFeatureReducer.ShowGuestPopup ? (
+        ) : videoFeatureReducer.participantWaitingList?.length > 0 ? (
           <Card className={styles["card-ui-400"]}>
             <div className={styles["content-section"]}>
               <div className={styles["avatars"]}>
-                <img
-                  src={ProfileIcon}
-                  alt='Avatar 1'
-                  className={styles["avatar"]}
-                />
-                <img
-                  src={ProfileIcon}
-                  alt='Avatar 2'
-                  className={styles["avatar"]}
-                />
-                <img
-                  src={ProfileIcon}
-                  alt='Avatar 3'
-                  className={styles["avatar"]}
-                />
+                {videoFeatureReducer.participantWaitingList.map(
+                  (participantData, index) => {
+                    return (
+                      <img
+                        src={ProfileIcon}
+                        alt='Avatar 1'
+                        className={styles["avatar"]}
+                      />
+                    );
+                  }
+                )}
               </div>
               <p className={styles["text"]}>
                 Multiple people want to join the meeting.

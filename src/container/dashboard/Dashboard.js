@@ -28,6 +28,7 @@ import {
   minimizeVideoPanelFlag,
   leaveCallModal,
   guestJoinPopup,
+  participantWaitingList,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -691,6 +692,7 @@ const Dashboard = () => {
             data.payload.message.toLowerCase() ===
             "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
           ) {
+            dispatch(participantWaitingList(data.payload))
             dispatch(admitGuestUserRequest(data.payload));
             dispatch(guestJoinPopup(true));
             // if (data.viewable) {
