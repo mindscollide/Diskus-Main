@@ -5,18 +5,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Profile from "../../../../../../assets/images/newprofile.png";
-import { style } from "@mui/system";
 import { Button } from "../../../../../../components/elements";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 const ViewPollsUnPublished = ({ setUnPublished }) => {
   const { t } = useTranslation();
   const { PollsReducer } = useSelector((state) => state);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
 
   const [pollParticipants, setPollParticipants] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
@@ -81,7 +75,7 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
             >
               <Row>
                 {pollsOption.length > 0
-                  ? pollsOption.map((data, index) => {
+                  ? pollsOption.map((data) => {
                       return (
                         <>
                           <Col lg={12} md={12} sm={12} className="mt-2">

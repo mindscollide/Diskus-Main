@@ -14,13 +14,11 @@ import {
 import Select from "react-select";
 import { Upload } from "antd";
 import DrapDropIcon from "../../../../../../assets/images/DrapDropIcon.svg";
-import RedCrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import UnsavedActions from "../UnsavedActionModal/UnsavedActions";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-
 import {
   showUnsavedActionsModal,
   GetAllMeetingUserApiFunc,
@@ -31,26 +29,18 @@ import {
 } from "../../../../../../store/actions/Action_Meeting";
 
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
-import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import ViewActions from "../ViewActions/ViewActions";
 import { convertGMTDateintoUTC } from "../../../../../../commen/functions/date_formater";
 import {
   CreateToDoList,
   saveFilesTaskApi,
 } from "../../../../../../store/actions/ToDoList_action";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../../DataRoom/SearchFunctionality/option";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 const CreateTask = ({
   setCreateaTask,
   currentMeeting,
-  setActionState,
-  actionState,
   dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
@@ -122,9 +112,45 @@ const CreateTask = ({
       let newmembersArray = [];
       if (Object.keys(createMeetingTaskData).length > 0) {
         if (createMeetingTaskData.meetingOrganizers.length > 0) {
-          createMeetingTaskData.meetingOrganizers.map(
-            (MorganizerData, MorganizerIndex) => {
-              let MeetingOrganizerData = {
+          createMeetingTaskData.meetingOrganizers.map((MorganizerData) => {
+            let MeetingOrganizerData = {
+              value: MorganizerData.userID,
+              label: (
+                <>
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
+                          height="16.45px"
+                          width="18.32px"
+                          alt=""
+                          draggable="false"
+                          className={styles["Image_class_Agenda"]}
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {MorganizerData.userName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                </>
+              ),
+              name: MorganizerData.userName,
+              type: 1,
+            };
+            if (Number(MorganizerData.userID) === Number(creatorID)) {
+              setcreateTaskDetails({
+                ...createTaskDetails,
+                AssignedTo: [MorganizerData.userID],
+              });
+              setSelectedTask({
+                ...selectedTask,
                 value: MorganizerData.userID,
                 label: (
                   <>
@@ -153,52 +179,14 @@ const CreateTask = ({
                   </>
                 ),
                 name: MorganizerData.userName,
-                type: 1,
-              };
-              if (Number(MorganizerData.userID) === Number(creatorID)) {
-                setcreateTaskDetails({
-                  ...createTaskDetails,
-                  AssignedTo: [MorganizerData.userID],
-                });
-                setSelectedTask({
-                  ...selectedTask,
-                  value: MorganizerData.userID,
-                  label: (
-                    <>
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex gap-2 align-items-center"
-                          >
-                            <img
-                              src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
-                              height="16.45px"
-                              width="18.32px"
-                              alt=""
-                              draggable="false"
-                              className={styles["Image_class_Agenda"]}
-                            />
-                            <span className={styles["NameDropDown"]}>
-                              {MorganizerData.userName}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    </>
-                  ),
-                  name: MorganizerData.userName,
-                });
-              }
-              newmembersArray.push(MeetingOrganizerData);
+              });
             }
-          );
+            newmembersArray.push(MeetingOrganizerData);
+          });
         }
         if (createMeetingTaskData.meetingAgendaContributors.length > 0) {
           createMeetingTaskData.meetingAgendaContributors.map(
-            (meetAgendaContributor, meetAgendaContributorIndex) => {
+            (meetAgendaContributor) => {
               let MeetingAgendaContributorData = {
                 value: meetAgendaContributor.userID,
                 label: (
@@ -272,9 +260,44 @@ const CreateTask = ({
           );
         }
         if (createMeetingTaskData.meetingParticipants.length > 0) {
-          createMeetingTaskData.meetingParticipants.map(
-            (meetParticipants, meetParticipantsIndex) => {
-              let MeetingParticipantsData = {
+          createMeetingTaskData.meetingParticipants.map((meetParticipants) => {
+            let MeetingParticipantsData = {
+              value: meetParticipants.userID,
+              label: (
+                <>
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
+                          height="16.45px"
+                          width="18.32px"
+                          alt=""
+                          draggable="false"
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {meetParticipants.userName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                </>
+              ),
+              type: 3,
+              name: meetParticipants.userName,
+            };
+            if (Number(meetParticipants.userID) === Number(creatorID)) {
+              setcreateTaskDetails({
+                ...createTaskDetails,
+                AssignedTo: [meetParticipants.userID],
+              });
+              setSelectedTask({
+                ...selectedTask,
                 value: meetParticipants.userID,
                 label: (
                   <>
@@ -292,6 +315,7 @@ const CreateTask = ({
                             width="18.32px"
                             alt=""
                             draggable="false"
+                            className={styles["Image_class_Agenda"]}
                           />
                           <span className={styles["NameDropDown"]}>
                             {meetParticipants.userName}
@@ -301,52 +325,13 @@ const CreateTask = ({
                     </>
                   </>
                 ),
-                type: 3,
                 name: meetParticipants.userName,
-              };
-              if (Number(meetParticipants.userID) === Number(creatorID)) {
-                setcreateTaskDetails({
-                  ...createTaskDetails,
-                  AssignedTo: [meetParticipants.userID],
-                });
-                setSelectedTask({
-                  ...selectedTask,
-                  value: meetParticipants.userID,
-                  label: (
-                    <>
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex gap-2 align-items-center"
-                          >
-                            <img
-                              src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
-                              height="16.45px"
-                              width="18.32px"
-                              alt=""
-                              draggable="false"
-                              className={styles["Image_class_Agenda"]}
-                            />
-                            <span className={styles["NameDropDown"]}>
-                              {meetParticipants.userName}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    </>
-                  ),
-                  name: meetParticipants.userName,
-                });
-              }
-              newmembersArray.push(MeetingParticipantsData);
+              });
             }
-          );
+            newmembersArray.push(MeetingParticipantsData);
+          });
         }
       }
-      console.log(newmembersArray, "pollMeetingDatapollMeetingData");
 
       setTaskMemberSelect(newmembersArray);
     } else {
@@ -380,7 +365,6 @@ const CreateTask = ({
   const actionSaveHandler = () => {
     if (
       createTaskDetails.ActionsToTake !== "" &&
-      // createTaskDetails.Description !== "" &&
       createTaskDetails.AssignedTo > 0 &&
       createTaskDetails.date !== ""
     ) {
@@ -400,7 +384,6 @@ const CreateTask = ({
       seterror(true);
     }
   };
-  console.log(createTaskDetails.date, "creatercreatercreater");
 
   const props = {
     name: "file",
@@ -415,7 +398,6 @@ const CreateTask = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -533,7 +515,6 @@ const CreateTask = ({
   const documentsUploadCall = async (dataroomMapFolderId) => {
     let newFolder = [];
     let newSaveFiles = [];
-    // if(fileForSend)
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
         uploadActionMeetingApi(
@@ -556,10 +537,7 @@ const CreateTask = ({
         newSaveFiles
       )
     );
-    console.log(
-      { uploadPromises, newFolder, newSaveFiles },
-      "uploadPromisesuploadPromisesuploadPromises"
-    );
+
     let newAttachmentData = newSaveFiles.map((data, index) => {
       return {
         DisplayAttachmentName: data.DisplayAttachmentName,
@@ -567,10 +545,6 @@ const CreateTask = ({
         FK_TID: Number(createTaskID),
       };
     });
-    console.log(
-      { newAttachmentData },
-      "uploadPromisesuploadPromisesuploadPromises"
-    );
 
     let Data = {
       TaskCreatorID: Number(creatorID),
@@ -578,7 +552,6 @@ const CreateTask = ({
       TaskID: Number(createTaskID),
       TasksAttachments: newAttachmentData,
     };
-    console.log({ Data }, "uploadPromisesuploadPromisesuploadPromises");
 
     let newData = {
       TaskID: Number(createTaskID),
@@ -588,7 +561,6 @@ const CreateTask = ({
           ? createTaskDetails.AgendaID.toString()
           : "-1",
     };
-    console.log({ newData }, "uploadPromisesuploadPromisesuploadPromises");
 
     await dispatch(
       saveTaskDocumentsAndAssigneesApi(
@@ -647,14 +619,8 @@ const CreateTask = ({
     setSelectAgenda(e);
   };
 
-  const saveButtonFunc = () => {
-    seterror(true);
-    setonSaveView(true);
-  };
-
   // for selecting Data
   const handleSelectMemberValue = (e) => {
-    console.log(e, "valuevaluevaluevaluevalue");
     setcreateTaskDetails({
       ...createTaskDetails,
       AssignedTo: [e.value],
@@ -680,21 +646,6 @@ const CreateTask = ({
                 sm={12}
                 className={styles["Create_Task_main_Scroller"]}
               >
-                {/* <Row className="mt-4">
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["MainHeading_Create_Action"]}>
-                      ext ever since the 1500s, when an unknown printer took a
-                      galley of type and scrambled it to make a type specimen
-                      book. It has survived not only five centuries, but also
-                      the leap into electronic typesetting, remaining
-                      essentially unchanged. It was popularised in the 1960s
-                      with the release of Letraset sheets containing Lorem Ipsum
-                      passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
-                    </span>
-                  </Col>
-                </Row> */}
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
@@ -744,9 +695,6 @@ const CreateTask = ({
                           classNamePrefix={"Polls_Meeting"}
                           value={selectedTask.value === 0 ? null : selectedTask}
                           options={taskMemberSelect}
-                          // closeMenuOnSelect={false}
-                          // components={animatedComponents}
-                          // isMulti
                           onChange={handleSelectMemberValue}
                           isSearchable={false}
                         />
@@ -845,7 +793,6 @@ const CreateTask = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
                       {t("Description")}{" "}
-                      {/* <span className={styles["Steric"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
@@ -861,21 +808,7 @@ const CreateTask = ({
                       maxLength={2000}
                       rows="4"
                       placeholder={t("Description")}
-                      // required={true}
                     />
-                    {/* <Row>
-                      <Col>
-                        <p
-                          className={
-                            error && createTaskDetails.Description === ""
-                              ? ` ${styles["errorMessage-inLogin"]} `
-                              : `${styles["errorMessage-inLogin_hidden"]}`
-                          }
-                        >
-                          {t("Description-is-required-action")}
-                        </p>
-                      </Col>
-                    </Row> */}
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -892,8 +825,7 @@ const CreateTask = ({
                           <Row>
                             <Col className={styles["Scroller_Actions_Page"]}>
                               <Row className="ps-3">
-                                {taskAttachments.map((data, index) => {
-                                  console.log(data, "datadatadata");
+                                {taskAttachments.map((data) => {
                                   return (
                                     <>
                                       <Col lg={2} md={2} sm={2}>
@@ -906,61 +838,6 @@ const CreateTask = ({
                                             removeFileFunction(data)
                                           }
                                         />
-                                        {/* <Row>
-                                            <Col lg={10} md={10} sm={10}>
-                                              <Row className="mt-2">
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className="d-flex gap-2 align-items-center"
-                                                >
-                                                  <img
-                                                    alt="File Format"
-                                                    draggable={false}
-                                                    src={getIconSource(
-                                                      getFileExtension(
-                                                        data.DisplayAttachmentName
-                                                      )
-                                                    )}
-                                                    height="31.57px"
-                                                    width="31.57px"
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["FileName"]
-                                                    }
-                                                    title={
-                                                      data.DisplayAttachmentName
-                                                    }
-                                                  >
-                                                    {data.DisplayAttachmentName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                            <Col
-                                              lg={2}
-                                              md={2}
-                                              sm={2}
-                                              className="d-flex align-items-center justify-content-start mt-1"
-                                            >
-                                              <img
-                                                alt="dragger"
-                                                draggable={false}
-                                                src={RedCrossIcon}
-                                                height="20.76px"
-                                                width="20.76px"
-                                                className={
-                                                  styles["CrossIconClass"]
-                                                }
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  removeFileFunction(index);
-                                                }}
-                                              />
-                                            </Col>
-                                          </Row> */}
                                       </Col>
                                     </>
                                   );
@@ -1054,21 +931,6 @@ const CreateTask = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {/* <Button
-                  text={t("Clone-meeting")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                />
-
-                <Button
-                  text={t("Delete-meeting")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                />
-
-                <Button
-                  text={t("Publish-the-meeting")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                /> */}
-
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Button_Polls_meeting"]}
@@ -1078,7 +940,6 @@ const CreateTask = ({
                 <Button
                   text={t("Save")}
                   className={styles["Save_Button_Polls_meeting"]}
-                  // onClick={saveButtonFunc}
                   onClick={actionSaveHandler}
                 />
               </Col>

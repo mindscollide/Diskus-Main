@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import {
   Button,
@@ -41,7 +39,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -89,7 +87,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-    // let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
         return item.name === name ? { ...item, value: newValue } : item;
@@ -132,15 +129,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     dispatch(showUnsavedPollsMeeting(true));
   };
 
-  const handleViewPollsUnPublished = () => {
-    setSavedPolls(true);
-  };
-
-  const handleViewPollsPublished = () => {
-    setSavePollsPublished(true);
-  };
-
-  const HandleChange = (e, index) => {
+  const HandleChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "TitlePolls") {
@@ -190,45 +179,43 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
       let newmembersArray = [];
       if (Object.keys(pollMeetingData).length > 0) {
         if (pollMeetingData.meetingOrganizers.length > 0) {
-          pollMeetingData.meetingOrganizers.map(
-            (MorganizerData, MorganizerIndex) => {
-              let MeetingOrganizerData = {
-                value: MorganizerData.userID,
-                name: MorganizerData.userName,
-                label: (
+          pollMeetingData.meetingOrganizers.map((MorganizerData) => {
+            let MeetingOrganizerData = {
+              value: MorganizerData.userID,
+              name: MorganizerData.userName,
+              label: (
+                <>
                   <>
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
-                          <img
-                            src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
-                            height="16.45px"
-                            width="18.32px"
-                            draggable="false"
-                            alt=""
-                          />
-                          <span className={styles["NameDropDown"]}>
-                            {MorganizerData.userName}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {MorganizerData.userName}
+                        </span>
+                      </Col>
+                    </Row>
                   </>
-                ),
-                type: 1,
-              };
-              newmembersArray.push(MeetingOrganizerData);
-            }
-          );
+                </>
+              ),
+              type: 1,
+            };
+            newmembersArray.push(MeetingOrganizerData);
+          });
         }
         if (pollMeetingData.meetingAgendaContributors.length > 0) {
           pollMeetingData.meetingAgendaContributors.map(
-            (meetAgendaContributor, meetAgendaContributorIndex) => {
+            (meetAgendaContributor) => {
               let MeetingAgendaContributorData = {
                 value: meetAgendaContributor.userID,
                 name: meetAgendaContributor.userName,
@@ -264,42 +251,39 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           );
         }
         if (pollMeetingData.meetingParticipants.length > 0) {
-          pollMeetingData.meetingParticipants.map(
-            (meetParticipants, meetParticipantsIndex) => {
-              let MeetingParticipantsData = {
-                value: meetParticipants.userID,
-                name: meetParticipants.userName,
-                label: (
+          pollMeetingData.meetingParticipants.map((meetParticipants) => {
+            let MeetingParticipantsData = {
+              value: meetParticipants.userID,
+              name: meetParticipants.userName,
+              label: (
+                <>
                   <>
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
-                          <img
-                            // src={GroupIcon}
-                            src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
-                            height="16.45px"
-                            width="18.32px"
-                            alt=""
-                            draggable="false"
-                          />
-                          <span className={styles["NameDropDown"]}>
-                            {meetParticipants.userName}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
+                          height="16.45px"
+                          width="18.32px"
+                          alt=""
+                          draggable="false"
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {meetParticipants.userName}
+                        </span>
+                      </Col>
+                    </Row>
                   </>
-                ),
-                type: 3,
-              };
-              newmembersArray.push(MeetingParticipantsData);
-            }
-          );
+                </>
+              ),
+              type: 3,
+            };
+            newmembersArray.push(MeetingParticipantsData);
+          });
         }
       }
       console.log(newmembersArray, "pollMeetingDatapollMeetingData");
@@ -323,25 +307,19 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     try {
       if (Object.keys(selectedsearch).length > 0) {
         try {
-          selectedsearch.map((seledtedData, index) => {
-            console.log(
-              seledtedData,
-              "seledtedDataseledtedDataseledtedDataseledtedData"
-            );
+          selectedsearch.map((seledtedData) => {
             if (seledtedData.type === 1) {
               let check1 = pollsData.meetingOrganizers.find(
-                (data, index) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value
               );
 
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-                let meetingOrganizers = check1;
-
                 if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
+                  newarr.map((morganizer) => {
                     let check2 = newarr.find(
-                      (data, index) => data.UserID === morganizer.userID
+                      (data) => data.UserID === morganizer.userID
                     );
                     if (check2 !== undefined) {
                     } else {
@@ -359,18 +337,16 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               }
             } else if (seledtedData.type === 2) {
               let check1 = pollsData.meetingAgendaContributors.find(
-                (data, index) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value
               );
 
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-                let meetingOrganizers = check1;
-
                 if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
+                  newarr.map((morganizer) => {
                     let check2 = newarr.find(
-                      (data, index) => data.UserID === morganizer.userID
+                      (data) => data.UserID === morganizer.userID
                     );
                     if (check2 !== undefined) {
                     } else {
@@ -393,12 +369,10 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-                let meetingOrganizers = check1;
-
                 if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
+                  newarr.map((morganizer) => {
                     let check2 = newarr.find(
-                      (data, index) => data.UserID === morganizer.userID
+                      (data) => data.UserID === morganizer.userID
                     );
                     if (check2 !== undefined) {
                     } else {
@@ -805,6 +779,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                             <img
                                               src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                               draggable={false}
+                                              alt=""
                                               height="33px"
                                               width="33px"
                                               className={
@@ -826,6 +801,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                             <img
                                               draggable={false}
                                               src={RedCross}
+                                              alt=""
                                               height="14px"
                                               width="14px"
                                               className="cursor-pointer"
@@ -864,14 +840,11 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                   text={t("Save")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(1)}
-                  // onClick={handleViewPollsUnPublished}
                 />
                 <Button
                   text={t("Publish")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(2)}
-
-                  // onClick={handleViewPollsPublished}
                 />
               </Col>
             </Row>

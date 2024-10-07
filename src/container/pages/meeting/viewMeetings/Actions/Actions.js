@@ -6,16 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Table } from "../../../../../components/elements";
 import { ChevronDown } from "react-bootstrap-icons";
-
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
-import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
 import { useState, useEffect } from "react";
 import EmptyStates from "../../../../../assets/images/EmptystateAction.svg";
 import CreateTask from "./CreateTask/CreateTask";
 import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import del from "../../../../../assets/images/del.png";
-
 import {
   searchNewUserMeeting,
   showUnsavedActionsModal,
@@ -47,11 +44,7 @@ const Actions = ({
   setPolls,
   currentMeeting,
   editorRole,
-  setMinutes,
-  setEditMeeting,
-  isEditMeeting,
   dataroomMapFolderId,
-  setMeetingMaterial,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -120,7 +113,7 @@ const Actions = ({
       todoStatus.Response !== "" &&
       todoStatus.Response?.length > 0
     ) {
-      todoStatus.Response.map((data, index) => {
+      todoStatus.Response.map((data) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
@@ -151,7 +144,7 @@ const Actions = ({
           });
         } else {
           setActionsRows((rowsData) => {
-            return rowsData.map((newData, index) => {
+            return rowsData.map((newData) => {
               if (newData.pK_TID === payloadData.todoid) {
                 const newObj = {
                   ...newData,
@@ -208,7 +201,8 @@ const Actions = ({
         return (
           <span
             onClick={() => viewActionModal(record)}
-            className={styles["Action_title"]}>
+            className={styles["Action_title"]}
+          >
             {text}
           </span>
         );
@@ -220,16 +214,15 @@ const Actions = ({
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
-      // align: "left",
-      render: (record, index) => {
+      render: (record) => {
         return (
-          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
+          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
             {" "}
             <img
-              draggable='false'
-              className='data-img'
+              draggable="false"
+              className="data-img"
               src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-              alt=''
+              alt=""
             />
             {record?.name}
           </p>
@@ -255,15 +248,15 @@ const Actions = ({
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
+              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
 
                     {text[0].name}
@@ -271,10 +264,10 @@ const Actions = ({
                 ) : (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
                     {text[0].name}
                   </>
@@ -290,7 +283,7 @@ const Actions = ({
       dataIndex: "deadlineDate",
       key: "deadlineDate",
       width: "200px",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <span className={styles["Action-Date-title"]}>
             {_justShowDateformatBilling(record.deadlineDateTime)}
@@ -298,21 +291,7 @@ const Actions = ({
         );
       },
     },
-    // {
-    //   title: t("Assigned-to"),
-    //   dataIndex: "taskAssignedTo",
-    //   key: "taskAssignedTo",
-    //   width: "200px",
-    //   render: (text, record) => {
-    //     return (
-    //       <>
-    //         <span className={styles["Action-Date-title"]}>
-    //           {record.taskAssignedTo[0].name}
-    //         </span>
-    //       </>
-    //     );
-    //   },
-    // },
+
     {
       title: t("Status"),
       dataIndex: "status",
@@ -323,7 +302,6 @@ const Actions = ({
         {
           text: t("In-progress"),
           value: 1,
-          // className: currentLanguage,
         },
         {
           text: t("Pending"),
@@ -344,7 +322,7 @@ const Actions = ({
       ],
       defaultFilteredValue: [1, 2, 3, 4, 5],
       filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
         return Number(record?.status?.pK_TSID) === Number(value);
@@ -356,7 +334,7 @@ const Actions = ({
               <Select
                 defaultValue={text.status}
                 bordered={false}
-                dropdownClassName='Status-Todo'
+                dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -370,8 +348,9 @@ const Actions = ({
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
-                {statusOptions.map((optValue, index) => {
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+              >
+                {statusOptions.map((optValue) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
                       {optValue.status}
@@ -396,7 +375,8 @@ const Actions = ({
                   : text.pK_TSID === 5
                   ? "Completed  custom-class  color-5a5a5a  text-center my-1"
                   : null
-              }>
+              }
+            >
               {text.status}
             </p>
           );
@@ -405,19 +385,7 @@ const Actions = ({
 
       filterMultiple: true,
     },
-    // {
-    //   title: t("Status"),
-    //   dataIndex: "status",
-    //   key: "status",
-    //   width: "150px",
-    //   render: (text, record) => (
-    //     <>
-    //       <span className={styles["Action-Date-title"]}>
-    //         {record.status.status}
-    //       </span>
-    //     </>
-    //   ),
-    // },
+
     {
       dataIndex: "RedCrossIcon",
       key: "RedCrossIcon",
@@ -485,15 +453,6 @@ const Actions = ({
             (data, index) => data.pK_TID === taskData.todoList.pK_TID
           );
           if (findisAlreadExist !== -1) {
-            // setActionsRows((actionRows) => {
-            //   actionRows.map((newData, index) => {
-            //     if (newData.pK_TID === taskData.todoList.pK_TID) {
-            //       return taskInfo;
-            //     } else {
-            //       return newData;
-            //     }
-            //   });
-            // });
           } else {
             setActionsRows([...actionsRows, taskInfo]);
           }
@@ -518,8 +477,6 @@ const Actions = ({
     };
     setCurrentPage(current);
     setCurrentPageSize(pageSize);
-    // localStorage.setItem("MeetingPageRows", pageSize);
-    // localStorage.setItem("MeetingPageCurrent", current);
     dispatch(getMeetingTaskMainApi(navigate, t, data));
   };
 
@@ -558,38 +515,6 @@ const Actions = ({
     dispatch(ViewToDoList(navigate, Data, t, setViewTaskModal, null));
   };
 
-  // To go on Previous tab
-  const prevTabToMinutes = () => {
-    console.log(
-      { editorRole },
-      "handleClickSavehandleClickSavehandleClickSave"
-    );
-    if (
-      (editorRole.role === "Agenda Contributor" ||
-        editorRole.role === "Participant") &&
-      Number(editorRole.status) === 9
-    ) {
-      setactionsPage(false);
-      setMeetingMaterial(true);
-    } else if (
-      (editorRole.role === "Participant" ||
-        editorRole.role === "Agenda Contributor") &&
-      Number(editorRole.status) === 10
-    ) {
-      setactionsPage(false);
-      setMeetingMaterial(true);
-    } else {
-      setactionsPage(false);
-      setMinutes(true);
-    }
-    // if (editorRole.role === "Participant" && Number(editorRole.status) === 10) {
-    //   setactionsPage(false);
-    //   setMeetingMaterial(true);
-    // }
-    // setactionsPage(false);
-    // setMinutes(true);
-  };
-
   return (
     <section>
       {createaTask ? (
@@ -602,12 +527,12 @@ const Actions = ({
         />
       ) : (
         <>
-          <Row className='mt-3'>
-            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+          <Row className="mt-3">
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <Button
                 text={t("Create-task")}
                 className={styles["Create_Task_Button"]}
-                icon={<img draggable={false} src={addmore} alt='' />}
+                icon={<img draggable={false} src={addmore} alt="" />}
                 onClick={handleCreateTaskButton}
               />
             </Col>
@@ -617,27 +542,29 @@ const Actions = ({
             <Col lg={12} md={12} sm={12}>
               {Object.keys(actionsRows)?.length === 0 ? (
                 <>
-                  <Row className='mt-0'>
+                  <Row className="mt-0">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-center'>
+                      className="d-flex justify-content-center"
+                    >
                       <img
-                        alt=''
+                        alt=""
                         draggable={false}
                         src={EmptyStates}
-                        width='306.27px'
-                        height='230px'
+                        width="306.27px"
+                        height="230px"
                       />
                     </Col>
                   </Row>
-                  <Row className='mt-2'>
+                  <Row className="mt-2">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-center'>
+                      className="d-flex justify-content-center"
+                    >
                       <span className={styles["Empty-State_Heading"]}>
                         {t("Create-tasks-instantly")}
                       </span>
@@ -648,7 +575,8 @@ const Actions = ({
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-center'>
+                      className="d-flex justify-content-center"
+                    >
                       <span className={styles["EmptyState_SubHeading"]}>
                         {t("The-meeting-wrapped-up-lets-dive-into-some-task")}
                       </span>
@@ -671,12 +599,13 @@ const Actions = ({
                     </Row>
 
                     {Object.keys(actionsRows).length > 0 && (
-                      <Row className=''>
+                      <Row className="">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-center'>
+                          className="d-flex justify-content-center"
+                        >
                           <Row>
                             <Col
                               lg={12}
@@ -684,8 +613,9 @@ const Actions = ({
                               sm={12}
                               className={
                                 "pagination-groups-table d-flex justify-content-center"
-                              }>
-                              <span className='PaginationStyle-TodoList'>
+                              }
+                            >
+                              <span className="PaginationStyle-TodoList">
                                 <CustomPagination
                                   onChange={handleForPagination}
                                   current={currentPage}
@@ -708,22 +638,19 @@ const Actions = ({
                   </section>
                 </>
               )}
-              <Row className='mt-3'>
+              <Row className="mt-3">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-end gap-2'>
+                  className="d-flex justify-content-end gap-2"
+                >
                   <Button
                     text={t("Cancel")}
                     className={styles["CloneMeetingButton"]}
                     onClick={handleCancelActionNoPopup}
                   />
-                  {/* <Button
-                    text={t("Previous")}
-                    className={styles["SaveButtonActions"]}
-                    onClick={prevTabToMinutes}
-                  /> */}
+
                   {Number(editorRole.status) === 9 &&
                   (editorRole.role === "Participant" ||
                     editorRole.role === "Agenda Contributor") ? null : (
