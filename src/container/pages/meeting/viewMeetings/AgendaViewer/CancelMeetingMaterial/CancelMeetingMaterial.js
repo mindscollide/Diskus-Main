@@ -6,7 +6,6 @@ import {
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -20,7 +19,6 @@ const CancelMeetingMaterial = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleNOFunctionality = () => {

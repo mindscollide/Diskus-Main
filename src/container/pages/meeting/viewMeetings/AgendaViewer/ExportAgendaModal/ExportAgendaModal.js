@@ -1,36 +1,13 @@
-import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  Switch,
-  TextField,
-  Table,
-} from "../../../../../../components/elements";
-import { Checkbox } from "antd";
+import React from "react";
+import { Modal, Button } from "../../../../../../components/elements";
 import styles from "./ExportAgendaModal.module.css";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
-import { useNavigate } from "react-router-dom";
-import Cast from "../../../../../../assets/images/CAST.svg";
-import {
-  showVoteAgendaModal,
-  showVoteConfirmationModal,
-} from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
-import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
-import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
-import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
-import Plus from "../../../../../../assets/images/Meeting plus.png";
-import profile from "../../../../../../assets/images/newprofile.png";
-import { validateInput } from "../../../../../../commen/functions/regex";
 
 const ExportAgendaModal = ({ setExportAgendaView }) => {
   return (
     <section>
       <Modal
         show={true}
-        // setShow={dispatch(showVoteAgendaModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => setExportAgendaView(false)}

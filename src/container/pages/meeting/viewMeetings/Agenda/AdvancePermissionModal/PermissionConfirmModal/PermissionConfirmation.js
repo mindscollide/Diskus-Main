@@ -3,7 +3,6 @@ import styles from "./PermissionConfirmation.module.css";
 import { Modal, Button } from "../../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   showAdvancePermissionConfirmation,
   showAdvancePermissionModal,
@@ -12,7 +11,6 @@ import { Col, Row } from "react-bootstrap";
 const PermissionConfirmation = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const noBtnFunctionality = () => {
     dispatch(showAdvancePermissionModal(true));

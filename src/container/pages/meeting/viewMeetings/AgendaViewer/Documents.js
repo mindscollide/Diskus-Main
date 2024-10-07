@@ -1,23 +1,16 @@
-import { useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import styles from "./Agenda.module.css";
-import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const Documents = ({ data, index, setRows, rows, parentId }) => {
-  const [files, setfiles] = useState([]);
-
   const CrossDocument = (fileIndex) => {
     let optionscross = [...rows];
     optionscross[index].files.splice(fileIndex, 1);
-    console.log("optionscrossoptionscross", optionscross);
-    // setfiles(optionscross);
     setRows(optionscross);
   };
 
@@ -28,7 +21,6 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
           <div className="d-flex gap-2 flex-wrap  mt-2">
             {data?.files?.length > 0
               ? data?.files?.map((filesData, Fileindex) => {
-                  console.log("filesDatafilesData", filesData);
                   return (
                     <Draggable
                       key={filesData.FileID}
@@ -53,6 +45,7 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
                                   >
                                     <img
                                       draggable={false}
+                                      alt=""
                                       src={getIconSource(
                                         getFileExtension(filesData.name)
                                       )}
@@ -69,6 +62,7 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
                                   >
                                     <img
                                       draggable={false}
+                                      alt=""
                                       src={redcrossIcon}
                                       width="15px"
                                       height="15px"

@@ -5,15 +5,9 @@ import { Col, Row } from "react-bootstrap";
 import { Button, Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Upload } from "antd";
-import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
-import line from "../../../../../assets/images/LineAgenda.svg";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
 import {
-  showCancelModalAgenda,
-  showImportPreviousAgendaModal,
   searchNewUserMeeting,
-  cleareAllState,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -21,10 +15,8 @@ import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearAgendaReducerState,
   clearResponseMessage,
-  getAdvanceMeetingAgendabyMeetingID_fail,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
-
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
@@ -35,7 +27,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
 import AgendaView from "./AgendaView/AgendaView";
 import ParentAgenda from "./ParentAgenda";
-import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
+import { onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
@@ -90,7 +82,6 @@ const Agenda = ({
     (state) => state
   );
 
-  const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
   const [cancelModalView, setCancelModalView] = useState(false);
@@ -124,10 +115,6 @@ const Agenda = ({
       setRows([]);
     };
   }, []);
-  //   updatedRows.push(newMainAgenda);
-  //   setRows(updatedRows);
-  //   console.log(updatedRows, "updatedRowsupdatedRows");
-  // };
 
   const handleCancelMeetingNoPopup = () => {
     let searchData = {
@@ -151,11 +138,6 @@ const Agenda = ({
     setAdvanceMeetingModalID(null);
   };
 
-  const handlePreviousBtn = () => {
-    setAgenda(false);
-    setParticipants(true);
-  };
-
   const handleNextBtn = () => {
     setAgenda(false);
     setMeetingMaterial(true);
@@ -170,10 +152,6 @@ const Agenda = ({
       setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
     }
   }, [GetAdvanceMeetingAgendabyMeetingIDData]);
-  console.log(
-    "GetAdvanceMeetingAgendabyMeetingIDData",
-    GetAdvanceMeetingAgendabyMeetingIDData
-  );
 
   useEffect(() => {
     console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
@@ -199,58 +177,6 @@ const Agenda = ({
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
 
-  // useEffect(() => {
-  //   if (
-  //     MeetingAgendaReducer.MeetingAgendaStartedData !== undefined &&
-  //     MeetingAgendaReducer.MeetingAgendaStartedData !== null
-  //   ) {
-  //     setRows((prevState) => {
-  //       const updatedState = prevState.map((item) => {
-  //         if (
-  //           item.id ===
-  //             MeetingAgendaReducer.MeetingAgendaStartedData.agendaID ||
-  //           item.subAgenda.some(
-  //             (subItem) =>
-  //               subItem.subAgendaID ===
-  //               MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
-  //           )
-  //         ) {
-  //           console.log("Updating item:", item);
-  //           const updatedItem = {
-  //             ...item,
-  //             voteOwner: {
-  //               ...item.voteOwner,
-  //               currentVotingClosed: true,
-  //             },
-  //             subAgenda: item.subAgenda.map((subItem) => {
-  //               if (
-  //                 subItem.subAgendaID ===
-  //                 MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
-  //               ) {
-  //                 console.log("Updating subItem:", subItem);
-  //                 return {
-  //                   ...subItem,
-  //                   voteOwner: {
-  //                     ...subItem.voteOwner,
-  //                     currentVotingClosed: true,
-  //                   },
-  //                 };
-  //               }
-  //               return subItem;
-  //             }),
-  //           };
-  //           console.log("Updated item:", updatedItem);
-  //           return updatedItem;
-  //         }
-  //         return item;
-  //       });
-
-  //       console.log("Updated state:", updatedState);
-  //       return updatedState;
-  //     });
-  //   }
-  // }, [MeetingAgendaReducer.MeetingAgendaStartedData]);
-
   useEffect(() => {
     if (
       MeetingAgendaReducer.MeetingAgendaStartedData !== undefined &&
@@ -261,7 +187,6 @@ const Agenda = ({
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
           ) {
-            console.log("Updating main item:", item);
             return {
               ...item,
               voteOwner: {
@@ -276,7 +201,6 @@ const Agenda = ({
                 MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
             )
           ) {
-            console.log("Updating subItem:", item);
             return {
               ...item,
               subAgenda: item.subAgenda.map((subItem) => {
@@ -284,7 +208,6 @@ const Agenda = ({
                   subItem.subAgendaID ===
                   MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
                 ) {
-                  console.log("Updating subItem:", subItem);
                   return {
                     ...subItem,
                     voteOwner: {
@@ -300,7 +223,6 @@ const Agenda = ({
           return item;
         });
 
-        console.log("Updated state:", updatedState);
         return updatedState;
       });
     }
@@ -316,7 +238,6 @@ const Agenda = ({
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
           ) {
-            console.log("Updating main item:", item);
             return {
               ...item,
               voteOwner: {
@@ -331,7 +252,6 @@ const Agenda = ({
                 MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
             )
           ) {
-            console.log("Updating subItem:", item);
             return {
               ...item,
               subAgenda: item.subAgenda.map((subItem) => {
@@ -339,7 +259,6 @@ const Agenda = ({
                   subItem.subAgendaID ===
                   MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
                 ) {
-                  console.log("Updating subItem:", subItem);
                   return {
                     ...subItem,
                     voteOwner: {
@@ -355,7 +274,6 @@ const Agenda = ({
           return item;
         });
 
-        console.log("Updated state:", updatedState);
         return updatedState;
       });
     }
@@ -389,12 +307,6 @@ const Agenda = ({
       setEmptyStateRows(false);
     }
   }, [rows]);
-
-  console.log(
-    "MeetingAgendaReducerMeetingAgendaReducer",
-    MeetingAgendaReducer
-    // data
-  );
 
   return (
     <>
@@ -559,11 +471,7 @@ const Agenda = ({
                   className={styles["Cancel_Meeting_Details"]}
                   onClick={handleCancelMeetingNoPopup}
                 />
-                {/* <Button
-                  text={t("Previous")}
-                  className={styles["Next_Button_Organizers_view"]}
-                  onClick={handlePreviousBtn}
-                /> */}
+
                 <Button
                   text={t("Next")}
                   className={styles["Next_Button_Organizers_view"]}

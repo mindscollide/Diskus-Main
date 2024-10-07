@@ -5,7 +5,6 @@ import {
   Button,
   Table,
   Notification,
-  Loader,
 } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,20 +18,16 @@ import {
   CleareMessegeNewMeeting,
   cleareAllState,
   getAllAgendaContributorApi,
-  getAllAgendaContributor_fail,
   searchNewUserMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
-import NORSVP from "../../../../../assets/images/No-RSVP.png";
-import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
-  setorganizers,
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
   setEdiorRole,
@@ -94,15 +89,8 @@ const AgendaContributers = ({
     }
   }, [NewMeetingreducer.getAllAgendaContributors]);
 
-  const handleCancelBtn = () => {
-    setCancelModalView(true);
-  };
   const handleNextBtn = () => {
     setParticipants(true);
-    setAgendaContributors(false);
-  };
-  const handlePreviousBtn = () => {
-    setorganizers(true);
     setAgendaContributors(false);
   };
 
@@ -126,7 +114,6 @@ const AgendaContributers = ({
     localStorage.removeItem("folderDataRoomMeeting");
     setEdiorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
-    // setMeetingDetails(false);
   };
 
   let allowRSVPValue = NewMeetingreducer?.getAllAgendaContributorsAllowRSVP;
@@ -139,7 +126,6 @@ const AgendaContributers = ({
         key: "userName",
         align: "left",
         ellipsis: true,
-        // width: "300px",
       },
 
       {
@@ -148,7 +134,6 @@ const AgendaContributers = ({
         key: "email",
         align: "left",
         ellipsis: true,
-        // width: "400px",
       },
       {
         title: t("Contributor-title"),
@@ -156,7 +141,6 @@ const AgendaContributers = ({
         key: "Title",
         align: "left",
         ellipsis: true,
-        // width: "300px",
       },
 
       {
@@ -165,8 +149,7 @@ const AgendaContributers = ({
         key: "attendeeAvailability",
         align: "left",
         ellipsis: true,
-        // width: "120px",
-        render: (text, record) => {
+        render: (record) => {
           if (record.attendeeAvailability === 1) {
             return (
               <img
@@ -209,38 +192,14 @@ const AgendaContributers = ({
             );
           }
         },
-        // render: (text, record) => {
-        //   if (record.isRSVP === true) {
-        //     return (
-        //       <img
-        //         draggable={false}
-        //         src={thumbsup}
-        //         height="30px"
-        //         width="30px"
-        //         alt=""
-        //       />
-        //     );
-        //   } else {
-        //     return (
-        //       <img
-        //         draggable={false}
-        //         src={thumbsdown}
-        //         height="30px"
-        //         width="30px"
-        //         alt=""
-        //       />
-        //     );
-        //   }
-        // },
       },
 
       {
         title: t("Notification"),
         dataIndex: "isContributedNotified",
         key: "isContributedNotified",
-        // width: "180px",
         ellipsis: true,
-        render: (text, record) => {
+        render: (record) => {
           if (record.isContributedNotified === true) {
             return (
               <Row>
@@ -291,8 +250,6 @@ const AgendaContributers = ({
         key: "userName",
         align: "left",
         ellipsis: true,
-        // width: "300px",
-        
       },
 
       {
@@ -301,7 +258,6 @@ const AgendaContributers = ({
         key: "email",
         align: "left",
         ellipsis: true,
-        // width: "400px",
       },
       {
         title: t("Contributor-title"),
@@ -309,15 +265,13 @@ const AgendaContributers = ({
         key: "Title",
         align: "left",
         ellipsis: true,
-        // width: "300px",
       },
       {
         title: t("Notification"),
         dataIndex: "isContributedNotified",
         key: "isContributedNotified",
         ellipsis: true,
-        // width: "180px",
-        render: (text, record) => {
+        render: (record) => {
           if (record.isContributedNotified === true) {
             return (
               <Row>
@@ -388,8 +342,6 @@ const AgendaContributers = ({
     }
   }, [NewMeetingreducer.ResponseMessage]);
 
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
-
   return (
     <>
       <section>
@@ -399,7 +351,7 @@ const AgendaContributers = ({
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={AgendaContributorViewColoumns}
-                  scroll={{ y: rowsData.length === 0? "52vh": "36vh" }}
+                  scroll={{ y: rowsData.length === 0 ? "52vh" : "36vh" }}
                   pagination={false}
                   locale={{
                     emptyText: (
@@ -461,21 +413,12 @@ const AgendaContributers = ({
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
-            {/* <Button
-              text={t("Cancel")}
-              className={styles["Cancel_Button_Organizers_view"]}
-              onClick={handleCancelBtn}
-            /> */}
             <Button
               text={t("Cancel")}
               className={styles["Cancel_Meeting_Details"]}
               onClick={handleCancelMeetingNoPopup}
             />
-            {/* <Button
-              text={t("Previous")}
-              className={styles["Next_Button_Organizers_view"]}
-              onClick={handlePreviousBtn}
-            /> */}
+
             <Button
               text={t("Next")}
               className={styles["Next_Button_Organizers_view"]}
@@ -494,7 +437,6 @@ const AgendaContributers = ({
       )}
 
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {/* {NewMeetingreducer.Loader2 && <Loader />} */}
     </>
   );
 };

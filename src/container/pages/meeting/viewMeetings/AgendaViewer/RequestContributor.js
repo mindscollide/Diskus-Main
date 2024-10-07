@@ -5,32 +5,6 @@ import styles from "./Agenda.module.css";
 import { TextField } from "../../../../../components/elements";
 
 const RequestContributor = ({ data, index, setRows, rows }) => {
-  const { t } = useTranslation();
-  // Function to handle changes in main agenda additional text field Main Request Contributor Note
-  const handleMainAgendaAdditionalMainReqNotes = (index, e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    const updatedRows = [...rows];
-    if (name === "MainNoteReqContributor") {
-      updatedRows[index].MainNote = value;
-    }
-    setRows(updatedRows);
-    console.log(updatedRows, "MainNoteReqContributor");
-  };
-  // Function to handle changes in main agenda Main Request Contributor Url text field
-  const handleMainAgendaAdditionalFieldChangeRequestContributorURL = (
-    index,
-    e
-  ) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    const updatedRows = [...rows];
-    if (name === "MainRequestContributorName") {
-      updatedRows[index].requestContributorURl = value;
-    }
-    setRows(updatedRows);
-    console.log(updatedRows, "MainRequestContributorName");
-  };
   return (
     <>
       <Row key={index + 5} className="mt-3">
@@ -46,9 +20,6 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
               <p className={styles["agendaCreater"]}>
                 {data?.contributor?.contributorName}
               </p>
-              {/* <span className={styles["agendaCreationTime"]}>
-                {data?.contributor?.contributorName}
-              </span> */}
             </div>
           </span>
         </Col>
