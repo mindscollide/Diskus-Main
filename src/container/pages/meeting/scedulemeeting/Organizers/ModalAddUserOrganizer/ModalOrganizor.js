@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ModalOrganizor.module.css";
-import {
-  Modal,
-  Table,
-  TextField,
-  Button,
-  Loader,
-  Notification,
-  InputSearchFilter,
-} from "../../../../../../components/elements";
+import { Modal, Button } from "../../../../../../components/elements";
 import {
   showAddUserModal,
   showNotifyOrganizors,
 } from "../../../../../../store/actions/NewMeetingActions";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
-import committeicon from "../../../../../../assets/images/Group 2584.png";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import {
   GetAllCommitteesUsersandGroups,
@@ -24,7 +15,6 @@ import {
 } from "../../../../../../store/actions/MeetingOrganizers_action";
 import { useDispatch, useSelector } from "react-redux";
 import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
-import profile from "../../../../../../assets/images/newprofile.png";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
@@ -43,7 +33,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
   const [membersOrganizers, setMembersOrganizers] = useState([]);
 
   const [organizersSave, setOrganizersSave] = useState([]);
-  const [inputSearchValue, setInputSearchValue] = useState("");
 
   const [selectedsearch, setSelectedsearch] = useState([]);
 
@@ -59,11 +48,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
     let tem2 = [...organizersSave];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData, index) => {
-          console.log(
-            seledtedData,
-            "seledtedDataseledtedDataseledtedDataseledtedData"
-          );
+        selectedsearch.map((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = newOrganizersData.groups.find(
               (data, index) => data.groupID === seledtedData.value
@@ -71,12 +56,12 @@ const ModalOrganizor = ({ currentMeeting }) => {
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser, index) => {
+                groupUsers.map((gUser) => {
                   let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === gUser.userID
+                    (data) => data.UserID === gUser.userID
                   );
                   let check2Save = organizersSave.find(
-                    (data, index) => data.UserID === gUser.userID
+                    (data) => data.UserID === gUser.userID
                   );
                   if (check2 !== undefined && check2Save !== undefined) {
                   } else {
@@ -113,17 +98,17 @@ const ModalOrganizor = ({ currentMeeting }) => {
             }
           } else if (seledtedData.type === 2) {
             let check1 = newOrganizersData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value
+              (data) => data.committeeID === seledtedData.value
             );
             if (check1 != undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser, index) => {
+                committeesUsers.map((cUser) => {
                   let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === cUser.userID
+                    (data) => data.UserID === cUser.userID
                   );
                   let check2Save = organizersSave.find(
-                    (data, index) => data.UserID === cUser.userID
+                    (data) => data.UserID === cUser.userID
                   );
                   if (check2 !== undefined && check2Save !== undefined) {
                   } else {
@@ -160,12 +145,12 @@ const ModalOrganizor = ({ currentMeeting }) => {
             }
           } else if (seledtedData.type === 3) {
             let check1 = membersOrganizers.find(
-              (data, index) => data.UserID === seledtedData.value
+              (data) => data.UserID === seledtedData.value
             );
             if (check1 != undefined) {
             } else {
               let check2 = newOrganizersData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value
               );
               if (check2 !== undefined) {
                 let newUser = {
@@ -249,7 +234,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.map((a, index) => {
+          newOrganizersData.groups.map((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -264,6 +249,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     >
                       <img
                         src={GroupIcon}
+                        alt=""
                         height="16.45px"
                         width="18.32px"
                         draggable="false"
@@ -281,7 +267,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
           });
         }
         if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.map((a, index) => {
+          newOrganizersData.committees.map((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -297,6 +283,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     >
                       <img
                         src={committeeicon}
+                        alt=""
                         width="21.71px"
                         height="18.61px"
                         draggable="false"
@@ -314,11 +301,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
           });
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          console.log(
-            newOrganizersData.organizationUsers,
-            "organizationUsersorganizationUsersorganizationUsers"
-          );
-          newOrganizersData.organizationUsers.map((a, index) => {
+          newOrganizersData.organizationUsers.map((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -333,7 +316,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        // src={}
                         alt=""
                         className={styles["UserProfilepic"]}
                         width="18px"
@@ -359,203 +341,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
     }
   }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
 
-  //Drop Down Values
-  const onChangeSearch = (e) => {
-    setInputSearchValue(e.target.value.trimStart());
-  };
-  const onSearch = (name, id, type, item) => {
-    let newOrganizersData =
-      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
-    let tem = [...membersOrganizers];
-    let tem2 = [...organizersSave];
-    try {
-      if (type === 1) {
-        let check1 = newOrganizersData.groups.find(
-          (data, index) => data.groupID === id
-        );
-        if (check1 !== undefined) {
-          let groupUsers = check1.groupUsers;
-          if (Object.keys(groupUsers).length > 0) {
-            groupUsers.forEach((gUser, index) => {
-              let check2 = membersOrganizers.find(
-                (data, index) => data.UserID === gUser.userID
-              );
-              let check2Save = organizersSave.find(
-                (data, index) => data.UserID === gUser.userID
-              );
-              if (check2 !== undefined && check2Save !== undefined) {
-              } else {
-                let newUser = {
-                  userName: gUser.userName,
-                  userID: gUser.userID,
-                  displayPicture:
-                    gUser.profilePicture.displayProfilePictureName,
-                  email: gUser.emailAddress,
-                  isPrimaryOrganizer: false,
-                  isOrganizerNotified: false,
-                  organizerTitle: "",
-                  rsvp: false,
-                  isDeletable: true,
-                  disabledTitle: false,
-                  disabledRSVP: true,
-                  disabledNotification: true,
-                  disabledSwitch: true,
-                  NotificationMessage: "",
-                  isEdit: false,
-                  attendeeAvailability: 1,
-                };
-                let newUserSave = {
-                  isPrimaryOrganizer: false,
-                  isOrganizerNotified: false,
-                  organizerTitle: "",
-                  UserID: gUser.userID,
-                };
-                tem.push(newUser);
-                tem2.push(newUserSave);
-              }
-            });
-          }
-        }
-      } else if (type === 2) {
-        let check1 = newOrganizersData.committees.find(
-          (data, index) => data.committeeID === id
-        );
-        if (check1 !== undefined) {
-          let committeesUsers = check1.committeeUsers;
-          if (Object.keys(committeesUsers).length > 0) {
-            committeesUsers.forEach((cUser, index) => {
-              let check2 = membersOrganizers.find(
-                (data, index) => data.UserID === cUser.userID
-              );
-              let check2Save = organizersSave.find(
-                (data, index) => data.UserID === cUser.userID
-              );
-              if (check2 !== undefined && check2Save !== undefined) {
-              } else {
-                let newUser = {
-                  userName: cUser.userName,
-                  userID: cUser.userID,
-                  displayPicture:
-                    cUser.profilePicture.displayProfilePictureName,
-                  email: cUser.emailAddress,
-                  isPrimaryOrganizer: false,
-                  isOrganizerNotified: false,
-                  organizerTitle: "",
-                  rsvp: false,
-                  isDeletable: true,
-                  disabledTitle: false,
-                  disabledRSVP: true,
-                  disabledNotification: true,
-                  disabledSwitch: true,
-                  NotificationMessage: "",
-                  isEdit: false,
-                  attendeeAvailability: 1,
-                };
-                let newUserSave = {
-                  isPrimaryOrganizer: false,
-                  isOrganizerNotified: false,
-                  organizerTitle: "",
-                  UserID: cUser.userID,
-                };
-                tem.push(newUser);
-                tem2.push(newUserSave);
-              }
-            });
-          }
-        }
-      } else if (type === 3) {
-        let check1 = membersOrganizers.find(
-          (data, index) => data.UserID === id
-        );
-        if (check1 !== undefined) {
-        } else {
-          let check2 = newOrganizersData.organizationUsers.find(
-            (data, index) => data.userID === id
-          );
-          if (check2 !== undefined) {
-            let newUser = {
-              userName: check2.userName,
-              userID: check2.userID,
-              displayPicture: check2.profilePicture.displayProfilePictureName,
-              email: check2.emailAddress,
-              isPrimaryOrganizer: false,
-              isOrganizerNotified: false,
-              organizerTitle: "",
-              rsvp: false,
-              isDeletable: true,
-              disabledTitle: false,
-              disabledRSVP: true,
-              disabledNotification: true,
-              disabledSwitch: true,
-              NotificationMessage: "",
-              isEdit: false,
-              attendeeAvailability: 1,
-            };
-            let newUserSave = {
-              isPrimaryOrganizer: false,
-              isOrganizerNotified: false,
-              organizerTitle: "",
-              UserID: check2.userID,
-            };
-            tem.push(newUser);
-            tem2.push(newUserSave);
-          }
-        }
-      } else {
-      }
-      const uniqueData = new Set(tem.map(JSON.stringify));
-
-      const uniqueDataSave = new Set(tem2.map(JSON.stringify));
-
-      // Convert the Set back to an array of objects
-      const result = Array.from(uniqueData).map(JSON.parse);
-      const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
-      setMembersOrganizers(result);
-      setOrganizersSave(resultSave);
-      setInputSearchValue("");
-    } catch {}
-  };
-
-  const searchFilterHandler = (value) => {
-    let allAssignees = dropdowndata;
-    try {
-      if (
-        allAssignees !== undefined &&
-        allAssignees !== null &&
-        allAssignees.length !== 0
-      ) {
-        return allAssignees
-          .filter((item) => {
-            const searchValue = value.toLowerCase();
-            const agendaContributorValue = item.label.toLowerCase();
-            return (
-              searchValue && agendaContributorValue.startsWith(searchValue)
-            );
-          })
-          .slice(0, 10)
-          .map((item) => (
-            <div
-              onClick={() => onSearch(item.label, item.value, item.type, item)}
-              className="dropdown-row-assignee d-flex align-items-center flex-row"
-              key={item.pK_UID}
-            >
-              <img
-                draggable="false"
-                src={
-                  item.type === 3
-                    ? `data:image/jpeg;base64,${item?.profilePic}`
-                    : item.profilePic
-                }
-                alt=""
-                className="user-img"
-              />
-              <p className="p-0 m-0">{item.label}</p>
-            </div>
-          ));
-      } else {
-      }
-    } catch (error) {}
-  };
   const saveOrganizers = () => {
     dispatch(showAddUserModal(false));
     dispatch(showNotifyOrganizors(true));
@@ -604,6 +389,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                   >
                     <img
                       draggable={false}
+                      alt=""
                       src={BlackCrossIcon}
                       className={"cursor-pointer"}
                       width="16px"
@@ -645,7 +431,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                 </Row>
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>
                   {membersOrganizers.length > 0
-                    ? membersOrganizers.map((data, index) => {
+                    ? membersOrganizers.map((data) => {
                         return (
                           <>
                             <Col lg={6} md={6} sm={12} className="mt-2">
@@ -701,7 +487,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
         }
         ModalFooter={
           <>
-            {/* {membersOrganizers} */}
             <Row>
               <Col
                 lg={12}
@@ -709,13 +494,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
                 sm={12}
                 className="d-flex justify-content-end"
               >
-                {/* <Row className="mt-2">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end"
-                  > */}
                 {membersOrganizers.length > 0 && (
                   <Button
                     text={t("Done")}
@@ -723,9 +501,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     onClick={saveOrganizers}
                   />
                 )}
-
-                {/* </Col> */}
-                {/* </Row> */}
               </Col>
             </Row>
           </>

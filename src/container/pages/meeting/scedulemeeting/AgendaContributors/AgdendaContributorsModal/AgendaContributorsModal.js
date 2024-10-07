@@ -4,7 +4,6 @@ import {
   Modal,
   Button,
   Notification,
-  InputSearchFilter,
 } from "../../../../../../components/elements";
 import {
   showAddAgendaContributor,
@@ -36,7 +35,6 @@ const AgendaContributorsModal = ({
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [membersOrganizers, setMembersOrganizers] = useState([]);
-  const [agendaContributorUsers, setAgendaContributorUsers] = useState("");
   const [open, setOpen] = useState({
     flag: false,
     message: "",

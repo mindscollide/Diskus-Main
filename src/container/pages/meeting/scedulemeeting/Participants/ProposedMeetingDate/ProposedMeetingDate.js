@@ -4,7 +4,6 @@ import { Button, Notification } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
 import DatePicker from "react-multi-date-picker";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { DateObject } from "react-multi-date-picker";
@@ -179,7 +178,6 @@ const ProposedMeetingDate = ({
           let meetingDateValueFormat = new DateObject(
             getAllProposedDates.deadLineDate
           ).format("DD/MM/YYYY");
-          let DateDate = convertToUTC(getAllProposedDates.deadLineDate);
           setSendResponseVal(meetingDateValueFormat);
           setSendResponseBy({
             ...sendResponseBy,
@@ -429,12 +427,10 @@ const ProposedMeetingDate = ({
   //Meeting Details
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
-    console.log(lastRow, "lastRowlastRowlastRow");
     if (isValidRow(lastRow)) {
       let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
         lastRow.selectedOptionView
       );
-      console.log(DateGMT, "DateGMTDateGMTDateGMTDateGMT");
       setRows([
         ...rows,
         {
@@ -506,15 +502,12 @@ const ProposedMeetingDate = ({
       }
     });
 
-    console.log(sortedDates, "newDatenewDatenewDatenewDate");
-
     if (sendResponseVal !== "") {
       let Data = {
         MeetingID: currentMeeting,
         SendResponsebyDate: sendResponseBy.date,
         ProposedDates: newArr,
       };
-      console.log(Data, "newDatenewDatenewDatenewDate");
 
       dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
     } else {
@@ -542,11 +535,6 @@ const ProposedMeetingDate = ({
 
   const CancelModal = () => {
     setProposedMeetingDates(false);
-
-    // setParticipants(true);
-    // setParticipants(true);
-
-    // dispatch(showPrposedMeetingUnsavedModal(true));
   };
 
   useEffect(() => {
@@ -786,12 +774,7 @@ const ProposedMeetingDate = ({
                                       alt=""
                                     />
                                   </Col>
-                                  <Col
-                                    lg={3}
-                                    md={3}
-                                    sm={12}
-                                    // className="d-flex justify-content-end"
-                                  >
+                                  <Col lg={3} md={3} sm={12}>
                                     <DatePicker
                                       value={data.endDateView}
                                       arrowClassName="arrowClass"
@@ -964,11 +947,7 @@ const ProposedMeetingDate = ({
                 className={styles["Cancel_Button_ProposedMeeting"]}
                 onClick={CancelModal}
               />
-              {/* <Button
-                text={t("View")}
-                className={styles["Save_Button_ProposedMeeting"]}
-                onClick={EnabletheViewProposedmeetingDates}
-              /> */}
+
               {!isEdit ? (
                 <>
                   <Button

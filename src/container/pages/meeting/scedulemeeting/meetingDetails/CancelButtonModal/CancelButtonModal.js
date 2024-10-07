@@ -58,7 +58,6 @@ const CancelButtonModal = ({
         value: 0,
         label: "",
       },
-      Location: "",
       IsVideoCall: false,
     });
     setRows([

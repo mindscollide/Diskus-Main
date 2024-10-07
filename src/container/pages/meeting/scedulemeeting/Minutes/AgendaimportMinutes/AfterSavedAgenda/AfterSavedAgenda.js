@@ -3,8 +3,6 @@ import styles from "./AfterSavedAgenda.module.css";
 import backDownArrow from "../../../../../../../assets/images/downDirect.png";
 import upArrow from "../../../../../../../assets/images/UpperArrow.svg";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { Button } from "../../../../../../../components/elements";
 import Editicon from "../../../../../../../assets/images/Edit-Icon.png";
@@ -13,8 +11,6 @@ import EditAgenda from "../EditAgenda/EditAgenda";
 
 const AfterSavedAgenda = ({ AgendaData }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [expandSubAgenda, setexpandSubAgenda] = useState(false);
   const [expandIndex, setexpandIndex] = useState(0);
   const [viewMinutesPage, setviewMinutesPage] = useState(false);
@@ -59,7 +55,9 @@ const AfterSavedAgenda = ({ AgendaData }) => {
               <Button
                 text={t("Edit")}
                 className={styles["ButtonsAftersavedEdit"]}
-                icon={<img src={Editicon} height="11.75px" width="11.75px" />}
+                icon={
+                  <img src={Editicon} height="11.75px" width="11.75px" alt="" />
+                }
                 onClick={handleEditAgendaPage}
               />
             </Col>
@@ -96,6 +94,7 @@ const AfterSavedAgenda = ({ AgendaData }) => {
                                   ? upArrow
                                   : backDownArrow
                               }
+                              alt=""
                               className="cursor-pointer"
                               onClick={() => {
                                 HandleExpandOptions(index);

@@ -13,12 +13,7 @@ import ReactQuill, { Quill } from "react-quill";
 import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../assets/images/featherupload.svg";
-import Leftploygon from "../../../../../assets/images/Polygon 3.svg";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
-import file_image from "../../../../../assets/images/file_image.svg";
-import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
-import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
-import Rightploygon from "../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
@@ -51,10 +46,6 @@ import {
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../DataRoom/SearchFunctionality/option";
 import { removeHTMLTagsAndTruncate } from "../../../../../commen/functions/utils";
 
 const Minutes = ({
@@ -63,15 +54,12 @@ const Minutes = ({
   setSceduleMeeting,
   setMeetingMaterial,
   setactionsPage,
-  setDataroomMapFolderId,
-  setEdiorRole,
   editorRole,
 }) => {
   // Newly Implemented
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const Delta = Quill.import("delta");
   let userID = localStorage.getItem("userID");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -271,7 +259,6 @@ const Minutes = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -283,7 +270,7 @@ const Minutes = ({
         return;
       }
 
-      fileList.forEach((fileData, index) => {
+      fileList.forEach((fileData) => {
         if (fileData.size > 10485760) {
           size = false;
         } else if (fileData.size === 0) {
@@ -336,17 +323,6 @@ const Minutes = ({
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-  //Sliders For Attachments
-  //Sliders For Attachments
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   //Edit Button Function
   const handleEditFunc = async (data) => {
@@ -383,7 +359,7 @@ const Minutes = ({
       ) {
         let files = [];
         let prevData = [];
-        generalMinutesDocument.data.map((data, index) => {
+        generalMinutesDocument.data.map((data) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
@@ -456,7 +432,6 @@ const Minutes = ({
             t,
             newData,
             folderID,
-            // newFolder,
             newfile
           )
         );
@@ -649,7 +624,6 @@ const Minutes = ({
 
   // Cancel Button
   const handleUNsaveChangesModal = () => {
-    // dispatch(showUnsaveMinutesFileUpload(true));
     let userID = localStorage.getItem("userID");
     let meetingpageRow = localStorage.getItem("MeetingPageRows");
     let meetingPageCurrent = parseInt(
@@ -710,37 +684,6 @@ const Minutes = ({
     }
   };
 
-  // Pervious Button
-  const handlePreviousButton = () => {
-    if (agenda) {
-      if (
-        addAgendaWiseFields.Description.value.trimStart() !== "" ||
-        addAgendaWiseFiles.length !== 0 ||
-        agendaOptionvalue.value !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(1);
-      } else {
-        setMinutes(false);
-        setMeetingMaterial(true);
-      }
-    } else if (general) {
-      if (
-        addNoteFields.Description.value.trimStart() !== "" ||
-        fileAttachments.length !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(1);
-      } else {
-        setMinutes(false);
-        setMeetingMaterial(true);
-      }
-    }
-    // setMinutes(false);
-    // setMeetingMaterial(true);
-    // dispatch(showPreviousConfirmationModal(true));
-  };
-
   const handleNextButton = () => {
     if (agenda) {
       if (
@@ -790,10 +733,7 @@ const Minutes = ({
         dispatch(uploadGlobalFlag(false));
       }
     }
-
-    // dispatch(showPreviousConfirmationModal(true));
   };
-  console.log(ResponseMessage, "ResponseMessageResponseMessage");
   useEffect(() => {
     if (
       ResponseMessage.trim() !== "" &&
@@ -804,20 +744,6 @@ const Minutes = ({
       ResponseMessage !== t("List-updated-successfully") &&
       ResponseMessage !== t("No-data-available")
     ) {
-      console.log(ResponseMessage, "ResponseMessageResponseMessage");
-      // setOpen({
-      //   ...open,
-      //   flag: true,
-      //   message: ResponseMessage,
-      // });
-      // setTimeout(() => {
-      //   setOpen({
-      //     ...open,
-      //     flag: false,
-      //     message: "",
-      //   });
-      //   dispatch(CleareMessegeNewMeeting());
-      // }, 3000);
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
@@ -1182,62 +1108,6 @@ const Minutes = ({
                                                 data={filesname}
                                                 id={0}
                                               />
-                                              {/* <section
-                                                className={styles["Outer_Box"]}
-                                              >
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <img
-                                                      src={file_image}
-                                                      width={"100%"}
-                                                      alt=""
-                                                      draggable="false"
-                                                    />
-                                                  </Col>
-                                                </Row>
-
-                                                <section
-                                                  className={
-                                                    styles[
-                                                      "backGround_name_Icon"
-                                                    ]
-                                                  }
-                                                >
-                                                  <Row className="mb-2">
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      className={
-                                                        styles["IconTextClass"]
-                                                      }
-                                                    >
-                                                      <img
-                                                        src={getIconSource(
-                                                          getFileExtension(
-                                                            filesname.displayFileName
-                                                          )
-                                                        )}
-                                                        height="10px"
-                                                        width="10px"
-                                                        className={
-                                                          styles["IconPDF"]
-                                                        }
-                                                        alt=""
-                                                      />
-                                                      <span
-                                                        className={
-                                                          styles["FileName"]
-                                                        }
-                                                      >
-                                                        {
-                                                          filesname.displayFileName
-                                                        }
-                                                      </span>
-                                                    </Col>
-                                                  </Row>
-                                                </section>
-                                              </section> */}
                                             </Col>
                                           </>
                                         );
@@ -1283,18 +1153,7 @@ const Minutes = ({
               md={12}
               sm={12}
               className="d-flex justify-content-end gap-2"
-            >
-              {/* <Button
-                text={t("Previous")}
-                className={styles["Previous_Button"]}
-                onClick={handlePreviousButton}
-              />
-              <Button
-                text={t("Next")}
-                onClick={handleNextButton}
-                className={styles["Button_General"]}
-              /> */}
-            </Col>
+            ></Col>
           </Row>
         </>
       ) : null}
@@ -1318,12 +1177,7 @@ const Minutes = ({
               onClick={handleInvitetoCollaborate}
             />
           ) : null}
-          {/* <Button
-            text={t("Previous")}
-            className={styles["Previous_button_Minutes"]}
-            onClick={handlePreviousButton}
-            // onClick={handleUNsaveChangesModal}
-          /> */}
+
           <Button
             text={t("Next")}
             className={styles["Next_button_Minutes"]}

@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
 import OrganizerViewModal from "../../../scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
-
 import { ChevronDown } from "react-bootstrap-icons";
 import {
   Button,
@@ -18,14 +17,11 @@ import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,
-  showDeleteMeetingModal,
   showSceduleProposedMeeting,
   scheduleMeetingPageFlag,
   viewProposeDateMeetingPageFlag,
-  viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
   viewMeetingFlag,
   meetingDetailsGlobalFlag,
   organizersGlobalFlag,
@@ -43,7 +39,6 @@ import {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
-  validateStringEmailApi,
   validateStringParticipantProposedApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
@@ -56,7 +51,6 @@ import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeet
 import { useEffect } from "react";
 import { StatusValue } from "../../../statusJson";
 import {
-  convertDateinGMT,
   forRecentActivity,
   getDifferentisDateisPassed,
   newTimeFormaterAsPerUTCFullDate,
@@ -72,19 +66,15 @@ import { checkFeatureIDAvailability } from "../../../../../../commen/functions/u
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
   setViewProposeOrganizerPoll,
-  viewProposeDatePoll,
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModalUnpublish,
   setSceduleMeeting,
   setEdiorRole,
   setEditMeeting,
   setCurrentMeetingID,
-  currentMeeting,
-  editorRole,
   setDataroomMapFolderId,
   setResponseByDate,
   setVideoTalk,
-  videoTalk,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -93,7 +83,6 @@ const UnpublishedProposedMeeting = ({
   let currentOrganizationId = localStorage.getItem("organizationID");
   let MeetingProp = localStorage.getItem("meetingprop");
 
-  let currentView = localStorage.getItem("MeetingCurrentView");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -116,15 +105,6 @@ const UnpublishedProposedMeeting = ({
   const [rows, setRow] = useState([]);
   const [publishState, setPublishState] = useState(null);
   const [organizerViewModal, setOrganizerViewModal] = useState(false);
-  let Meetingprop = localStorage.getItem("meetingprop");
-
-  const handleDeleteMeetingModal = () => {
-    dispatch(showDeleteMeetingModal(true));
-  };
-
-  const enableScedulePrposedMeetingModal = () => {
-    dispatch(showSceduleProposedMeeting(true));
-  };
 
   // Empty text data
   const emptyText = () => {
@@ -133,9 +113,9 @@ const UnpublishedProposedMeeting = ({
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
           />
         }
         title={t("No-new-meetings")}
@@ -246,8 +226,8 @@ const UnpublishedProposedMeeting = ({
                 isVideoCall: record.isVideoCall,
                 talkGroupID: record.talkGroupID,
               });
-          localStorage.setItem("videoCallURL", record.videoCallURL)
-          handleOpenViewModal(record);
+              localStorage.setItem("videoCallURL", record.videoCallURL);
+              handleOpenViewModal(record);
               dispatch(viewMeetingFlag(true));
               dispatch(
                 GetAllUserChats(
@@ -288,7 +268,8 @@ const UnpublishedProposedMeeting = ({
               dispatch(pollsGlobalFlag(false));
               dispatch(attendanceGlobalFlag(false));
               dispatch(uploadGlobalFlag(false));
-            }}>
+            }}
+          >
             {truncateString(text, 35)}
           </span>
         );
@@ -314,12 +295,12 @@ const UnpublishedProposedMeeting = ({
       ],
       filterResetToDefaultFilteredValue: true,
       defaultFilteredValue: ["11", "12"],
-      filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+      filterIcon: () => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) =>
         record.status.toLowerCase().includes(value.toLowerCase()),
-      render: (text, record) => {
+      render: (record) => {
         return StatusValue(t, record.status);
       },
     },
@@ -336,7 +317,7 @@ const UnpublishedProposedMeeting = ({
         const nameB = b.userDetails?.name || "";
         return nameA.localeCompare(nameB);
       },
-      render: (text, record) => {
+      render: (record) => {
         return <span className={styles["orgaizer_value"]}>{record.host}</span>;
       },
     },
@@ -347,10 +328,10 @@ const UnpublishedProposedMeeting = ({
       width: "155px",
       ellipsis: true,
 
-      render: (text, record) => {
+      render: (record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className='text-truncate d-block'>
+            <span className="text-truncate d-block">
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -373,14 +354,14 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
       width: "115px",
-      render: (text, record) => {
+      render: (record) => {
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
         let value = record.meetingPoll?.totalNoOfDirectorsVoted;
         if (record.meetingPoll) {
           return (
             <>
               <Row>
-                <Col lg={12} md={12} sm={12} className='text-center'>
+                <Col lg={12} md={12} sm={12} className="text-center">
                   {value === maxValue &&
                   value === 0 &&
                   maxValue === 0 ? null : record.meetingPoll
@@ -388,10 +369,10 @@ const UnpublishedProposedMeeting = ({
                     record.meetingPoll?.totalNoOfDirectorsVoted ? (
                     <img
                       src={rspvGreenIcon}
-                      height='17.06px'
-                      width='17.06px'
-                      alt=''
-                      draggable='false'
+                      height="17.06px"
+                      width="17.06px"
+                      alt=""
+                      draggable="false"
                     />
                   ) : (
                     <>
@@ -404,7 +385,8 @@ const UnpublishedProposedMeeting = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className={"newMeetingProgressbar"}>
+                          className={"newMeetingProgressbar"}
+                        >
                           <ProgressBar
                             now={value}
                             max={maxValue}
@@ -428,11 +410,11 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "responseDeadLine",
       key: "responseDeadLine",
       width: "115px",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <>
             {record.status === "12" ? (
-              <span className='d-flex justify-content-center'>
+              <span className="d-flex justify-content-center">
                 {changeDateStartHandler2(record.responseDeadLine)}
               </span>
             ) : (
@@ -447,11 +429,7 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "Edit",
       key: "Edit",
       width: "33px",
-      render: (text, record) => {
-        let apiData = {
-          MeetingID: Number(record.pK_MDID),
-          StatusID: 1,
-        };
+      render: (record) => {
         return (
           <>
             <Row>
@@ -459,21 +437,21 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex  align-items-center justify-content-center gap-4'>
+                className="d-flex  align-items-center justify-content-center gap-4"
+              >
                 {record.isAgendaContributor ? (
-                  <Tooltip placement='bottomLeft' title={t("Edit")}>
+                  <Tooltip placement="bottomLeft" title={t("Edit")}>
                     <img
                       src={EditIcon}
-                      className='cursor-pointer'
-                      width='17.03px'
-                      height='17.03px'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer"
+                      width="17.03px"
+                      height="17.03px"
+                      alt=""
+                      draggable="false"
                       onClick={() => {
                         handleEditMeeting(
                           record.pK_MDID,
                           record.isQuickMeeting,
-                          // record.isAgendaContributor,
                           record
                         );
                         setVideoTalk({
@@ -481,8 +459,11 @@ const UnpublishedProposedMeeting = ({
                           isVideoCall: record.isVideoCall,
                           talkGroupID: record.talkGroupID,
                         });
-          localStorage.setItem("videoCallURL", record.videoCallURL)
-          setEdiorRole({
+                        localStorage.setItem(
+                          "videoCallURL",
+                          record.videoCallURL
+                        );
+                        setEdiorRole({
                           status: record.status,
                           role: "Agenda Contributor",
                         });
@@ -504,19 +485,18 @@ const UnpublishedProposedMeeting = ({
                   </Tooltip>
                 ) : record.isOrganizer ? (
                   <>
-                    <Tooltip placement='bottomLeft' title={t("Edit")}>
+                    <Tooltip placement="bottomLeft" title={t("Edit")}>
                       <img
                         src={EditIcon}
-                        className='cursor-pointer'
-                        width='17.03px'
-                        height='17.03px'
-                        alt=''
-                        draggable='false'
+                        className="cursor-pointer"
+                        width="17.03px"
+                        height="17.03px"
+                        alt=""
+                        draggable="false"
                         onClick={() => {
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
-                            // record.isAgendaContributor,
                             record
                           );
                           setVideoTalk({
@@ -524,8 +504,11 @@ const UnpublishedProposedMeeting = ({
                             isVideoCall: record.isVideoCall,
                             talkGroupID: record.talkGroupID,
                           });
-          localStorage.setItem("videoCallURL", record.videoCallURL)
-          setEdiorRole({
+                          localStorage.setItem(
+                            "videoCallURL",
+                            record.videoCallURL
+                          );
+                          setEdiorRole({
                             status: record.status,
                             role: "Organizer",
                           });
@@ -580,7 +563,8 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex  align-items-center gap-4'>
+                className="d-flex  align-items-center gap-4"
+              >
                 {record.status === "11" ? (
                   record.isParticipant ? null : record.isAgendaContributor ? null : (
                     <Button
@@ -619,7 +603,6 @@ const UnpublishedProposedMeeting = ({
                     <Button
                       text={t("View-poll")}
                       className={styles["publish_meeting_btn_View_poll"]}
-                      // disableBtn={isViewPollShown ? true : false}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           false,
@@ -803,10 +786,7 @@ const UnpublishedProposedMeeting = ({
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setRow([getData, ...rows]);
-            console.log(getData, "getDatagetDatagetData");
-          } catch (error) {
-            console.log(error, "getDatagetDatagetData");
-          }
+          } catch (error) {}
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -878,19 +858,15 @@ const UnpublishedProposedMeeting = ({
     }
   }, [MeetingProp]); // Add `dispatch` to the dependency array
 
-  console.log("rowsrowsrows", rows);
-
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
-
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12} className='w-100'>
+        <Col lg={12} md={12} sm={12} className="w-100">
           <Table
             column={MeetingColoumns}
             scroll={{ y: "54vh", x: false }}
             pagination={false}
-            className='newMeetingTable'
+            className="newMeetingTable"
             rows={rows}
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
