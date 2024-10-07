@@ -1,6 +1,5 @@
 .NewMeeting_container {
   width: 98% !important;
-  /* height: 80vh !important; */
   margin: 0 auto !important;
 }
 
@@ -126,7 +125,6 @@ body[dir="rtl"] .polling_searchinput {
 }
 
 .joining-Meeting {
-  /* width: 118px; */
   height: 28px;
   font-size: 12px;
   color: #fff;
@@ -139,7 +137,6 @@ body[dir="rtl"] .polling_searchinput {
 .joining-Meeting:hover,
 .joining-Meeting:focus,
 .joining-Meeting:focus-visible {
-  /* width: 118px !important; */
   height: 28px !important;
   font-size: 12px !important;
   color: #fff !important;
@@ -149,7 +146,6 @@ body[dir="rtl"] .polling_searchinput {
 }
 
 .Start-Meeting {
-  /* width: 118px; */
   height: 28px;
   font-size: 12px;
   color: #fff;
@@ -161,7 +157,6 @@ body[dir="rtl"] .polling_searchinput {
 }
 
 .Start-Meeting:is(:hover, :focus, :focus-visible:active) {
-  /* width: 118px !important; */
   height: 28px !important;
   font-size: 12px !important;
   color: #fff !important;
@@ -212,19 +207,6 @@ body[dir="rtl"] .PaginationStyle-Committee {
   padding: 12px 10px !important;
 }
 
-/* .PaginationStyle-Committee {
-  margin-top: 5px !important;
-  background-color: #fff !important;
-  width: auto !important;
-  display: flex !important;
-  justify-content: center !important;
-  padding: 12px 40px !important;
-  height: 54px !important;
-  box-shadow: 0px 0px 5px #ccc !important;
-  border-radius: 4px !important;
-  position: absolute !important;
-} */
-
 body[dir="rtl"] .PaginationStyle-Committee {
   width: auto !important;
   padding: 8px 10px !important;
@@ -245,7 +227,6 @@ body[dir="rtl"] .PaginationStyle-Committee {
 
 .PaperStylesMeetingTwoPage {
   width: 100% !important;
-  /* min-height: 78vh !important;*/
   height: auto !important;
   position: relative;
   padding: 20px 20px !important;
@@ -270,7 +251,6 @@ body[dir="rtl"] .PaginationStyle-Committee {
 }
 
 .publishedMeetingButton-active {
-  /* border: 1px solid #e1e1e1 !important; */
   font-size: 12px !important;
   font-weight: 600 !important;
   border-radius: 4px !important;
@@ -302,11 +282,6 @@ body[dir="rtl"] .PaginationStyle-Committee {
   color: #6172d6;
   font-size: 14px !important;
   cursor: pointer;
-  /* overflow: hidden !important; */
-  /* width: 180px !important; */
-  /* white-space: nowrap !important; */
-  /* text-overflow: ellipsis !important; */
-  /* display: block !important; */
 }
 
 .width-10 {
@@ -402,7 +377,6 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
 }
 
 .meeting-expanded-row {
-  /* margin-left: 33px !important; */
   margin-left: 35px !important;
 }
 .orgaizer_value {

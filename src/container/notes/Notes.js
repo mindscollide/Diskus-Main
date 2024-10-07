@@ -11,18 +11,15 @@ import hollowstar from "../../assets/images/Hollowstar.svg";
 import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
 import MinusExpand from "../../assets/images/close-accordion.svg";
 import EditIconNote from "../../assets/images/EditIconNotes.svg";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Plus } from "react-bootstrap-icons";
 import {
   AttachmentViewer,
   Button,
-  Loader,
   Notification,
 } from "../../components/elements";
-import { Accordion, AccordionSummary, Tooltip } from "@material-ui/core";
-import { AccordionDetails } from "@mui/material";
+import { Tooltip } from "@material-ui/core";
 import {
   ClearNotesResponseMessage,
   GetNotes,
@@ -40,7 +37,7 @@ const Notes = () => {
   const [updateNotesModal, setUpdateNotesModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NotesReducer, LanguageReducer } = useSelector((state) => state);
+  const { NotesReducer } = useSelector((state) => state);
   //Get Current User ID
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
@@ -48,7 +45,6 @@ const Notes = () => {
   let notesPage = JSON.parse(localStorage.getItem("notesPage"));
   let notesPagesize = localStorage.getItem("notesPageSize");
   const [totalRecords, setTotalRecords] = useState(0);
-  const [isExtend, setIsExtend] = useState(false);
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false);
 
@@ -110,7 +106,7 @@ const Notes = () => {
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
             notes.push({
               date: data.date,
               description: data.description,
@@ -136,7 +132,7 @@ const Notes = () => {
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
             notes.push({
               date: data.date,
               description: data.description,
@@ -200,20 +196,6 @@ const Notes = () => {
     );
   };
 
-  const ColorStarIcon = (id, index) => {
-    setStarIcon(!showStarIcon);
-  };
-
-  const toggleAcordion = (notesID) => {
-    // setExpanded((prev) => (prev === notesID ? true : false));
-    if (isExpanded === notesID) {
-      setExpanded(false);
-    } else {
-      setExpanded(notesID);
-    }
-    // setExpand(!isExpand);
-  };
-
   const handelChangeNotesPagination = async (current, pageSize) => {
     localStorage.setItem("notesPage", current);
     localStorage.setItem("notesPageSize", pageSize);
@@ -255,14 +237,6 @@ const Notes = () => {
     }
   }, [NotesReducer.ResponseMessage]);
 
-  // Function to convert Arabic numerals to Arabic text
-  const convertToArabicText = (number) => {
-    const arabicNumbers = "٠١٢٣٤٥٦٧٨٩";
-    const arabicText = number
-      .toString()
-      .replace(/\d/g, (d) => arabicNumbers[d]);
-    return arabicText;
-  };
   return (
     <>
       <div className={styles["notescontainer"]}>
@@ -414,7 +388,7 @@ const Notes = () => {
                               className={styles["NotesAttachments"]}
                             >
                               {data?.notesAttachments.length > 0
-                                ? data?.notesAttachments.map((file, index) => {
+                                ? data?.notesAttachments.map((file) => {
                                     return (
                                       <AttachmentViewer
                                         data={file}

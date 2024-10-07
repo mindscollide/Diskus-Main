@@ -7,11 +7,10 @@ import RedChair from "../../../assets/images/RSVPRedChair.svg";
 import Clock from "../../../assets/images/RSVPClockIcon.svg";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TextField } from "../../../components/elements";
+import { TextField } from "../../../components/elements";
 import { useDispatch } from "react-redux";
 import { validateEncryptedStringUserAvailibilityForMeetingApi } from "../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
-import moment from "moment";
 import {
   convertDateTimeRangeToGMT,
   newTimeFormaterAsPerUTCTalkDateTime,
@@ -32,14 +31,10 @@ const RSVP = () => {
     userResponseStatus: 0,
     meetingLocation: "",
   });
-  const { NewMeetingreducer } = useSelector((state) => state);
 
   const UserAvalibilityState = useSelector(
     (state) => state.NewMeetingreducer.userAvailibilityData
   );
-  let RSVP = localStorage.getItem("RSVP");
-
-  console.log(UserAvalibilityState, "UserAvalibilityState");
 
   useEffect(() => {
     if (
@@ -106,12 +101,13 @@ const RSVP = () => {
         {rsvpData && (
           <>
             <Col lg={6} md={6} sm={6}>
-              <Row className='mt-5'>
+              <Row className="mt-5">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex flex-column flex-wrap align-items-center'>
+                  className="d-flex flex-column flex-wrap align-items-center"
+                >
                   {rsvpData && (
                     <>
                       {rsvpData.userResponseStatus === 2 ? (
@@ -119,9 +115,9 @@ const RSVP = () => {
                         <>
                           <img
                             src={ThumbsUp}
-                            height='130.64px'
-                            width='113.47px'
-                            alt=''
+                            height="130.64px"
+                            width="113.47px"
+                            alt=""
                           />
                           <span className={styles["ThankyouHeading"]}>
                             {t("Thank-you")}!
@@ -135,9 +131,9 @@ const RSVP = () => {
                         <>
                           <img
                             src={RedChair}
-                            height='130.64px'
-                            width='113.47px'
-                            alt=''
+                            height="130.64px"
+                            width="113.47px"
+                            alt=""
                           />
                           <span className={styles["RedThankyouHeading"]}>
                             {t("Thank-you")}!
@@ -154,9 +150,9 @@ const RSVP = () => {
                         <>
                           <img
                             src={Clock}
-                            height='130.64px'
-                            width='113.47px'
-                            alt=''
+                            height="130.64px"
+                            width="113.47px"
+                            alt=""
                           />
                           <span className={styles["OrangeThankyouHeading"]}>
                             {t("Thank-you")}!
@@ -192,9 +188,9 @@ const RSVP = () => {
                   />
                 </Col>
               </Row>
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col lg={6} md={6} sm={6}>
-                  <Row className='mt-2'>
+                  <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("Meeting-date-and-time")}
@@ -214,7 +210,7 @@ const RSVP = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className='mt-2'>
+                  <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("Date-of-submitting-response")}
@@ -235,7 +231,7 @@ const RSVP = () => {
                   </Row>
                 </Col>
                 <Col lg={6} md={6} sm={6}>
-                  <Row className='mt-2'>
+                  <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("Meeting-location")}
@@ -252,7 +248,7 @@ const RSVP = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className='mt-2'>
+                  <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("You-have-confirmed-your-attendance")}

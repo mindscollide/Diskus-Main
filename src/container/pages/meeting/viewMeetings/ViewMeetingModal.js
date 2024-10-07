@@ -3,7 +3,7 @@ import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
-import { Button, Loader } from "../../../../components/elements";
+import { Button } from "../../../../components/elements";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
 import {
@@ -15,17 +15,8 @@ import {
 } from "../../../../store/actions/VideoFeature_actions";
 import {
   searchNewUserMeeting,
-  scheduleMeetingPageFlag,
-  viewProposeDateMeetingPageFlag,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
-  meetingOrganizerRemoved,
-  meetingOrganizerAdded,
-  meetingAgendaContributorRemoved,
-  meetingAgendaContributorAdded,
-  viewMeetingFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
@@ -54,11 +45,6 @@ const ViewMeetingModal = ({
   videoTalk,
   setVideoTalk,
 }) => {
-  console.log(
-    Number(editorRole.status),
-    "editorRoleeditorRoleeditorRoleeditorRole"
-  );
-  console.log(videoTalk, "videoTalkvideoTalk");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
@@ -100,10 +86,6 @@ const ViewMeetingModal = ({
 
   const { meetingIdReducer, NewMeetingreducer } = useSelector((state) => state);
 
-  console.log(
-    meetingIdReducer.meetingDetails,
-    "meetingIdReducermeetingIdReducermeetingIdReducer"
-  );
   useEffect(() => {
     if (routeID !== null) {
       if (Number(routeID) === 1) {
@@ -294,7 +276,6 @@ const ViewMeetingModal = ({
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        // setCurrentMeetingID(0);
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
         let searchData = {
@@ -325,7 +306,6 @@ const ViewMeetingModal = ({
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        // setCurrentMeetingID(0);
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
         let searchData = {
@@ -399,7 +379,6 @@ const ViewMeetingModal = ({
       }
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
-  console.log(editorRole.role, "editorRoleeditorRole");
   return (
     <>
       <section className="position-relative">
@@ -502,7 +481,6 @@ const ViewMeetingModal = ({
                     )}
                     {checkFeatureIDAvailability(14) ? (
                       <>
-                        {/* {editorRole.role === "Participant" ? null : ( */}
                         <Button
                           text={t("Task")}
                           className={
@@ -518,7 +496,6 @@ const ViewMeetingModal = ({
                               : true
                           }
                         />
-                        {/* )} */}
                       </>
                     ) : null}
                     {checkFeatureIDAvailability(15) ? (
@@ -571,9 +548,7 @@ const ViewMeetingModal = ({
                         onClick={showAttendees}
                       />
                     )}
-                    {/* )} */}
                   </>
-                  {/* )} */}
                 </Col>
               </Row>
               {meetingDetails && (

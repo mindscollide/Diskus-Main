@@ -1,19 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Spin, Tooltip } from "antd";
+import { Spin } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
-import TodoMessageIcon1 from "../../../assets/images/DashboardNewTodo.svg";
 import noTask from "../../../assets/images/DashBoardTask.svg";
-import IconAttachment from "../../../assets/images/AttachmentNotes.svg";
-import PlusButton from "../../../assets/images/PlusButton.svg";
-import styles from "../../EventsModal/EventModal.module.css";
-import StarIcon from "../../../assets/images/Star.svg";
-import hollowstar from "../../../assets/images/Hollowstar.svg";
 import {
-  CustomTableToDoDashboard,
-  CustomTextProgressbar,
   ResultMessage,
-  Paper,
   Notification,
   Modal,
   Button,
@@ -31,17 +22,11 @@ import { useTranslation } from "react-i18next";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import ModalMeeting from "../../modalmeeting/ModalMeeting";
 import {
-  newTimeFormaterAsPerUTCFullDate,
-  _justShowDateformat,
-  _justShowDay,
-  forRecentActivity,
   startDateTimeMeetingCalendar,
   newDateFormaterAsPerUTC,
   forHomeCalendar,
 } from "../../../commen/functions/date_formater";
-import TimeAgo from "timeago-react";
 import {
-  GetTodoListByUser,
   getTodoListInit,
   GetWeeklyToDoCount,
   HideNotificationTodo,
@@ -68,29 +53,20 @@ import {
   cleareAssigneesState,
   HideNotification,
 } from "../../../store/actions/Get_List_Of_Assignees";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
 import VerificationFailedIcon from "./../../../assets/images/failed.png";
-import {
-  GetNotes,
-  GetNotesByIdAPI,
-  GetNotesById_Init,
-  getNotes_Init,
-} from "../../../store/actions/Notes_actions";
+import { GetNotes, getNotes_Init } from "../../../store/actions/Notes_actions";
 import ModalAddNote from "../../notes/modalAddNote/ModalAddNote";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import EventsModal from "../../EventsModal/EventsModal";
 import ModalViewNote from "../../notes/modalViewNote/ModalViewNote";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
-import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import Stats from "../../NewDashboardLayout/Stats/Stats";
 
 const Home = () => {
-  const dCheck = useLoaderData();
-  //
-  //For Localization
   const { t } = useTranslation();
   const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
     useState(false);
@@ -108,7 +84,6 @@ const Home = () => {
     auth,
     Authreducer,
     NotesReducer,
-    LanguageReducer,
     assignees,
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
@@ -122,28 +97,14 @@ const Home = () => {
     open: false,
     message: "",
   });
-  // for sub menus Icons
-  const [subIcons, setSubIcons] = useState(false);
+
   //For Calendar
   const dispatch = useDispatch();
   const [modalNote, setModalNote] = useState(false);
   const [updateShow, setUpdateShow] = useState(false);
-
   //for view modal notes
   const [viewModalShow, setViewModalShow] = useState(false);
-
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
-  const [minutesAgo, setMinutesAgo] = useState(null);
-
-  let now = new Date();
-  let year = now.getUTCFullYear();
-  let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
-  let day = now.getUTCDate().toString().padStart(2, "0");
-  let hours = now.getUTCHours().toString().padStart(2, "0");
-  let minutes = now.getUTCMinutes().toString().padStart(2, "0");
-  let seconds = now.getUTCSeconds().toString().padStart(2, "0");
-  let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-
   const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
@@ -152,28 +113,16 @@ const Home = () => {
   // get new date
   let date = new Date();
   let currentDateObject = new DateObject(date);
-  let getCurrentDate = moment(date).format("DD");
-
-  let format = "YYYYMMDD";
-
   const [dates, setDates] = useState([]);
-  console.log(
-    { calendarEvents, calenderData, dates },
-    "calendarEventscalendarEventscalendarEvents"
-  );
-
   const [activateBlur, setActivateBlur] = useState(false);
-
   let Blur = localStorage.getItem("blur");
   const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0);
   const [upcomingMeetingCountThisWeek, setUpcomingMeetingCountThisWeek] =
     useState(0);
-
   const [todoListThisWeek, setTodoListThisWeek] = useState(0);
   const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0);
   //ToDo Table Data
   const [rowsToDo, setRowToDo] = useState([]);
-  //
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   //For Custom language datepicker
@@ -185,9 +134,6 @@ const Home = () => {
   const [getNoteID, setGetNoteID] = useState(0);
   const [getTodoID, setTodoID] = useState(0);
   const [todolistLoader, setTodoListLoader] = useState(false);
-
-  let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek;
-  let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
   const [show, setShow] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const [startDataUpdate, setStartDataUpdate] = useState("");
@@ -273,8 +219,6 @@ const Home = () => {
       };
       await dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
       dispatch(GetWeeklyToDoCount(navigate, Data2, t));
-
-      // dispatch(GetTodoListByUser(navigate, Data2, t));
     }
     dispatch(GetWeeklyMeetingsCount(navigate, createrID, t));
     dispatch(GetUpcomingEvents(navigate, Data2, t));
@@ -333,7 +277,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (Blur != undefined) {
+    if (Blur !== undefined) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);
@@ -347,15 +291,11 @@ const Home = () => {
       setCalendarEvents(Data);
       if (Object.keys(calenderData).length > 0) {
         let newList = calenderData;
-        Data.map((cData, index) => {
+        Data.map((cData) => {
           if (flag) {
             if (cData.pK_MDID === meetingID) {
-              let date = startDateTimeMeetingCalendar(
-                cData.eventDate + cData.startTime
-              );
               // just remove the  data from list and add it to first position of
               // at there we needs to remove the date field.
-
               // Update Calendar Data
             } else {
               let date = startDateTimeMeetingCalendar(
@@ -379,11 +319,6 @@ const Home = () => {
         Data.map((cData, index) => {
           if (flag) {
             if (cData.pK_MDID === meetingID) {
-              console.log(
-                "Delete MeetingMeetingMeetingMeeting",
-                cData,
-                meetingID
-              );
               return;
             } else {
               let date = moment(
@@ -418,8 +353,6 @@ const Home = () => {
   //  Update Meeting Status Cancelled and Start Meeting
   useEffect(() => {
     if (meetingIdReducer.MeetingStatusSocket !== null) {
-      let meetingStatusID =
-        meetingIdReducer.MeetingStatusSocket.meetingStatusID;
       if (
         meetingIdReducer.MeetingStatusSocket.message
           .toLowerCase()
@@ -439,7 +372,6 @@ const Home = () => {
             return eventData.pK_MDID !== Number(meetingID);
           })
         );
-        console.log("upComingEvents");
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             return (
@@ -486,9 +418,6 @@ const Home = () => {
       }
 
       dispatch(getMeetingStatusfromSocket(null));
-      // if (meetingStatusID === 4) {
-      //   updateCalendarData(true, meetingID);
-      // }
     }
   }, [meetingIdReducer.MeetingStatusSocket]);
 
@@ -515,9 +444,6 @@ const Home = () => {
     }
   }, [SocketRecentActivityData]);
 
-  const handleClickNoteModal = () => {
-    setModalNote(true);
-  };
   // Set Meeting Data in Calendar and Events Modal
   useEffect(() => {
     try {
@@ -532,17 +458,13 @@ const Home = () => {
             )
           );
         let findPartcipantRoleID = meetingData.meetingAttendees.find(
-          (attendeeData, index) => {
+          (attendeeData) => {
             if (attendeeData.user.pK_UID === parseInt(userID)) {
               return attendeeData.meetingAttendeeRole.pK_MARID;
             }
           }
         )?.meetingAttendeeRole.pK_MARID;
 
-        console.log(
-          findPartcipantRoleID,
-          "findPartcipantRoleIDfindPartcipantRoleIDfindPartcipantRoleID"
-        );
         let dashboardData = {
           pK_MDID: meetingData.pK_MDID,
           pK_CEID: meetingData.pK_CEID,
@@ -588,7 +510,7 @@ const Home = () => {
         );
         // Its Check if the event calendar modal is open and also a for a  same date  modal
         if (eventModal) {
-          events.find((newData, index) => {
+          events.find((newData) => {
             if (newData.eventDate === dashboardData.eventDate) {
               setEvents([...events, dashboardData]);
             }
@@ -598,8 +520,6 @@ const Home = () => {
         if (isExistAlready === -1) {
           setCalendarEvents([...calendarEvents, dashboardData]);
           setDates((prev) => [...prev, formattedDate]);
-
-          // setUpComingEvents((prev) => [...prev, meetingData]);
         } else {
           setCalendarEvents((calendarEventData) => {
             return calendarEventData.map((data) => {
@@ -620,15 +540,8 @@ const Home = () => {
       if (meetingIdReducer.allMeetingsSocketData !== null) {
         let meetingData = meetingIdReducer.allMeetingsSocketData;
 
-        const formattedDate =
-          meetingData.dateOfMeeting &&
-          new DateObject(
-            forHomeCalendar(
-              meetingData.dateOfMeeting + meetingData.meetingStartTime
-            )
-          );
         let findPartcipantRoleID = meetingData.meetingAttendees.find(
-          (attendeeData, index) => {
+          (attendeeData) => {
             if (attendeeData.user.pK_UID === parseInt(userID)) {
               return attendeeData.meetingAttendeeRole.pK_MARID;
             }
@@ -713,23 +626,7 @@ const Home = () => {
                 : data;
             });
           });
-
-          // setCalendarEvents([...calendarEvents, dashboardData]);
-          // setDates((prev) => [...prev, formattedDate]);
-
-          // setUpComingEvents((prev) => [...prev, meetingData]);
         }
-        //  else {
-        //   setCalendarEvents((calendarEventData) => {
-        //     return calendarEventData.map((data) => {
-        //       if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
-        //         return dashboardData;
-        //       } else {
-        //         return data;
-        //       }
-        //     });
-        //   });
-        // }
       }
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
@@ -757,7 +654,6 @@ const Home = () => {
           }
         );
 
-        console.log("upComingEvents", updatedUpcomingEvents);
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
         console.log("upComingEvents", upComingEvents);
@@ -822,7 +718,7 @@ const Home = () => {
       ) {
         if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
             notes.push(data);
           });
           setNotes(notes);
@@ -865,7 +761,7 @@ const Home = () => {
       }
     } catch (error) {}
   }, [toDoListReducer.SocketTodoActivityData]);
-  console.log(toDoListReducer, "toDoListReducer");
+
   //get todolist reducer
   useEffect(() => {
     if (
@@ -898,84 +794,6 @@ const Home = () => {
       ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
     );
   };
-
-  const handleOpenTodoListModal = () => {
-    setShowTodo(true);
-  };
-  // for view modal  handler
-  const viewModalHandler = (id) => {};
-
-  const columnsToDo = [
-    {
-      title: t("Task"),
-      dataIndex: "title",
-      key: "title",
-      width: "35%",
-      className: "titleDashboard",
-      ellipsis: true,
-      render: (text, record) => (
-        <span className='w-100 cursor-pointer'>{text}</span>
-      ),
-      // render: (text) => <span className="fw-bold">{text}</span>,
-    },
-    {
-      title: t("Deadline"),
-      dataIndex: "deadlineDateTime",
-      key: "deadlineDateTime",
-      width: "40%",
-      className: "deadlineDashboard",
-
-      render: (text, record) => {
-        return (
-          <span className='cursor-pointer'>{_justShowDateformat(text)}</span>
-        );
-      },
-    },
-    {
-      title: t("Status"),
-      dataIndex: "status",
-      key: "status",
-      width: "25%",
-      className: "statusDashboard",
-      render: (text, record) => {
-        if (record.status.pK_TSID === 1) {
-          return (
-            <span className=' InProgress status_value cursor-pointer'>
-              {text.status}
-            </span>
-          );
-        } else if (record.status.pK_TSID === 2) {
-          return (
-            <span className=' Pending  status_value cursor-pointer'>
-              {text.status}
-            </span>
-          );
-        } else if (record.status.pK_TSID === 3) {
-          return (
-            <span className=' Upcoming cursor-pointer'>{text.status}</span>
-          );
-        } else if (record.status.pK_TSID === 4) {
-          return (
-            <span className=' Cancelled status_value cursor-pointer'>
-              {text.status}
-            </span>
-          );
-        } else if (record.status.pK_TSID === 5) {
-          return (
-            <span className=' Completed status_value cursor-pointer'>
-              {text.status}
-            </span>
-          );
-        } else if (record.status.pK_TSID === 6) {
-          return (
-            <span className=' color-F68732 status_value cursor-pointer'>
-              {text.status}
-            </span>
-          );
-        }
-      },
-    },
-  ];
 
   useEffect(() => {
     setMeetingCountThisWeek(meetingIdReducer.TotalMeetingCountThisWeek);
@@ -1158,45 +976,13 @@ const Home = () => {
     navigate("/");
   };
 
-  const meetingDashboardCalendarEvent = (data) => {
-    let dashboardData = {
-      pK_MDID: data.meetingDetails.pK_MDID,
-      pK_CEID: data.meetingEvent.pK_CEID,
-      fK_TZID: 0,
-      fK_CETID: 0,
-      fK_CESID: 0,
-      location: data.meetingEvent.location,
-      eventDate: data.meetingEvent.meetingDate,
-      startTime: data.meetingEvent.startTime,
-      endTime: data.meetingEvent.endTime,
-      title: data.meetingDetails.title,
-      description: data.meetingDetails.description,
-      calenderEventSource: "Diskus",
-      calenderEventType: "Meeting",
-      timeZone: "Asia/Karachi",
-      statusID: data.meetingDetails.statusID,
-      participantRoleID: data.participantRoleID,
-      isQuickMeeting: data.meetingDetails.isQuickMeeting,
-    };
-    dispatch(dashboardCalendarEvent(dashboardData));
-    navigate("/DisKus/Meeting");
-  };
-  console.log(
-    meetingIdReducer,
-    upComingEvents,
-    calendarEvents,
-    events,
-    "meetingIdReducermeetingIdReducermeetingIdReducer"
-  );
-  console.log("upComingEvents", upComingEvents);
   // Meeting Status End Updated
   useEffect(() => {
     try {
       if (meetingIdReducer.MeetingStatusEnded !== null) {
         try {
           let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
-          console.log(meetingID, "meetingIDmeetingIDmeetingID");
-          console.log("upComingEvents");
+
           setUpComingEvents((upcomingeventData) => {
             return upcomingeventData.filter((meetingData) => {
               return (
@@ -1231,372 +1017,6 @@ const Home = () => {
       console.log(error);
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
-
-  // const upcomingEventsHandler = (upComingEvents) => {
-  //   console.log("upComingEvents", upComingEvents);
-  //   let flag = false;
-  //   let indexforUndeline = null;
-  //   try {
-  //     upComingEvents.map((upcomingEventsData, index) => {
-  //       if (
-  //         upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-  //         getCurrentDate
-  //       ) {
-  //         if (indexforUndeline === null && flag === false) {
-  //           // if (index - 1 >= 0) {
-  //           flag = true;
-  //           indexforUndeline = index;
-  //           // }
-  //         }
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  //   return upComingEvents.map((upcomingEventsData, index) => {
-  //     let meetingDateTime =
-  //       upcomingEventsData.meetingEvent.meetingDate +
-  //       upcomingEventsData.meetingEvent.startTime;
-  //     const currentDateObj = new Date(
-  //       currentUTCDateTime.substring(0, 4), // Year
-  //       parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
-  //       currentUTCDateTime.substring(6, 8), // Day
-  //       currentUTCDateTime.substring(8, 10), // Hours
-  //       currentUTCDateTime.substring(10, 12), // Minutes
-  //       currentUTCDateTime.substring(12, 14) // Seconds
-  //     );
-
-  //     const meetingDateObj = new Date(
-  //       meetingDateTime.substring(0, 4), // Year
-  //       parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
-  //       meetingDateTime.substring(6, 8), // Day
-  //       meetingDateTime.substring(8, 10), // Hours
-  //       meetingDateTime.substring(10, 12), // Minutes
-  //       meetingDateTime.substring(12, 14) // Seconds
-  //     );
-
-  //     // Calculate the time difference in milliseconds
-  //     const timeDifference = meetingDateObj - currentDateObj;
-
-  //     // Convert milliseconds to minutes
-  //     const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-  //     return (
-  //       <>
-  //         {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-  //         getCurrentDate ? (
-  //           <Row>
-  //             <Col lg={12} md={12} sm={12}>
-  //               <div
-  //                 className={
-  //                   (upcomingEventsData.meetingDetails.statusID === 1 &&
-  //                     minutesDifference < 15) ||
-  //                   upcomingEventsData.meetingDetails.statusID === 10
-  //                     ? "event-details upcoming_events todayEvent border-0 d-flex justify-content-center align-items-center"
-  //                     : "event-details upcoming_events todayEvent border-0"
-  //                 }
-  //                 onClick={() =>
-  //                   viewModalHandler(upcomingEventsData.meetingDetails.pK_MDID)
-  //                 }
-  //               >
-  //                 <div
-  //                   className={
-  //                     (upcomingEventsData.meetingDetails.statusID === 1 &&
-  //                       minutesDifference < 15) ||
-  //                     upcomingEventsData.meetingDetails.statusID === 10
-  //                       ? "event-details-block"
-  //                       : ""
-  //                   }
-  //                 >
-  //                   <p className="events-description ">
-  //                     {upcomingEventsData.meetingDetails.title}
-  //                   </p>
-  //                   <p className="events-dateTime ">
-  //                     {newTimeFormaterAsPerUTCFullDate(
-  //                       upcomingEventsData.meetingEvent.meetingDate +
-  //                         upcomingEventsData.meetingEvent.startTime
-  //                     )}
-  //                   </p>
-  //                 </div>
-  //                 {upcomingEventsData.meetingDetails.statusID === 1 &&
-  //                 upcomingEventsData.participantRoleID === 1 ? (
-  //                   upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-  //                   minutesDifference < 15 ? (
-  //                     // &&
-  //                     // minutesDifference > 0
-  //                     //   &&
-  //                     //   minutesDifference <= 99999999 &&
-  //                     //   minutesDifference > 0
-  //                     <Button
-  //                       text={t("Start-meeting")}
-  //                       className="Start-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-  //                       false &&
-  //                     upcomingEventsData.participantRoleID === 1 &&
-  //                     minutesDifference < 15 ? (
-  //                     // &&
-  //                     // minutesDifference > 0
-  //                     //   &&
-  //                     //     minutesDifference <= 99999999 &&
-  //                     //     minutesDifference > 0
-  //                     <Button
-  //                       text={t("Start-meeting")}
-  //                       className="Start-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : null
-  //                 ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-  //                   upcomingEventsData.participantRoleID === 2 ? (
-  //                     <Button
-  //                       text={t("Join-meeting")}
-  //                       className="joining-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : upcomingEventsData.participantRoleID === 4 ? (
-  //                     <Button
-  //                       text={t("Join-meeting")}
-  //                       className="joining-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : upcomingEventsData.participantRoleID === 1 ? (
-  //                     <Button
-  //                       text={t("Join-meeting")}
-  //                       className="joining-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : null
-  //                 ) : null}
-  //               </div>
-  //             </Col>
-  //           </Row>
-  //         ) : indexforUndeline !== null && indexforUndeline === index ? (
-  //           <>
-  //             <span className="bordertop" />
-  //             <Row>
-  //               <Col lg={12} md={12} sm={12}>
-  //                 <div
-  //                   className={
-  //                     (upcomingEventsData.meetingDetails.statusID === 1 &&
-  //                       minutesDifference < 15) ||
-  //                     upcomingEventsData.meetingDetails.statusID === 10
-  //                       ? "event-details d-flex justify-content-center align-items-center"
-  //                       : "event-details"
-  //                   }
-  //                   onClick={() =>
-  //                     viewModalHandler(
-  //                       upcomingEventsData.meetingDetails.pK_MDID
-  //                     )
-  //                   }
-  //                 >
-  //                   <div
-  //                     className={
-  //                       (upcomingEventsData.meetingDetails.statusID === 1 &&
-  //                         minutesDifference < 15) ||
-  //                       upcomingEventsData.meetingDetails.statusID === 10
-  //                         ? "event-details-block"
-  //                         : ""
-  //                     }
-  //                   >
-  //                     <p className="events-description">
-  //                       {upcomingEventsData.meetingDetails.title}
-  //                     </p>
-  //                     <p className="events-dateTime">
-  //                       {newTimeFormaterAsPerUTCFullDate(
-  //                         upcomingEventsData.meetingEvent.meetingDate +
-  //                           upcomingEventsData.meetingEvent.startTime
-  //                       )}
-  //                     </p>
-  //                   </div>
-  //                   {upcomingEventsData.meetingDetails.statusID === 1 &&
-  //                   upcomingEventsData.participantRoleID === 1 ? (
-  //                     upcomingEventsData.meetingDetails.isQuickMeeting ===
-  //                       true && minutesDifference < 15 ? (
-  //                       // &&
-  //                       // minutesDifference > 0
-  //                       //   &&
-  //                       //   minutesDifference <= 99999999 &&
-  //                       //   minutesDifference > 0
-  //                       <Button
-  //                         text={t("Start-meeting")}
-  //                         className="Start-Meeting-Upcoming"
-  //                         onClick={() =>
-  //                           meetingDashboardCalendarEvent(upcomingEventsData)
-  //                         }
-  //                       />
-  //                     ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-  //                         false && minutesDifference < 15 ? (
-  //                       // &&
-  //                       // minutesDifference > 0
-  //                       //   &&
-  //                       //     minutesDifference <= 99999999 &&
-  //                       //     minutesDifference > 0
-  //                       <Button
-  //                         text={t("Start-meeting")}
-  //                         className="Start-Meeting-Upcoming"
-  //                         onClick={() =>
-  //                           meetingDashboardCalendarEvent(upcomingEventsData)
-  //                         }
-  //                       />
-  //                     ) : null
-  //                   ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-  //                     upcomingEventsData.participantRoleID === 2 ? (
-  //                       <Button
-  //                         text={t("Join-meeting")}
-  //                         className="joining-Meeting-Upcoming"
-  //                         onClick={() =>
-  //                           meetingDashboardCalendarEvent(upcomingEventsData)
-  //                         }
-  //                       />
-  //                     ) : upcomingEventsData.participantRoleID === 4 ? (
-  //                       <Button
-  //                         text={t("Join-meeting")}
-  //                         className="joining-Meeting-Upcoming"
-  //                         onClick={() =>
-  //                           meetingDashboardCalendarEvent(upcomingEventsData)
-  //                         }
-  //                       />
-  //                     ) : upcomingEventsData.participantRoleID === 1 ? (
-  //                       <Button
-  //                         text={t("Join-meeting")}
-  //                         className="joining-Meeting-Upcoming"
-  //                         onClick={() =>
-  //                           meetingDashboardCalendarEvent(upcomingEventsData)
-  //                         }
-  //                       />
-  //                     ) : null
-  //                   ) : null}
-  //                 </div>
-  //               </Col>
-  //             </Row>
-  //           </>
-  //         ) : (
-  //           <Row>
-  //             <Col lg={12} md={12} sm={12}>
-  //               <div
-  //                 className={
-  //                   (upcomingEventsData.meetingDetails.statusID === 1 &&
-  //                     minutesDifference < 15) ||
-  //                   upcomingEventsData.meetingDetails.statusID === 10
-  //                     ? "event-details d-flex justify-content-center align-items-center"
-  //                     : "event-details"
-  //                 }
-  //                 onClick={() =>
-  //                   viewModalHandler(upcomingEventsData.meetingDetails.pK_MDID)
-  //                 }
-  //               >
-  //                 <div
-  //                   className={
-  //                     (upcomingEventsData.meetingDetails.statusID === 1 &&
-  //                       minutesDifference < 15) ||
-  //                     upcomingEventsData.meetingDetails.statusID === 10
-  //                       ? "event-details-block"
-  //                       : ""
-  //                   }
-  //                 >
-  //                   <p className="events-description">
-  //                     {upcomingEventsData.meetingDetails.title}
-  //                   </p>
-  //                   <p className="events-dateTime">
-  //                     {newTimeFormaterAsPerUTCFullDate(
-  //                       upcomingEventsData.meetingEvent.meetingDate +
-  //                         upcomingEventsData.meetingEvent.startTime
-  //                     )}
-  //                   </p>
-  //                 </div>
-  //                 {upcomingEventsData.meetingDetails.statusID === 1 &&
-  //                 upcomingEventsData.participantRoleID === 1 ? (
-  //                   upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-  //                   minutesDifference < 15 ? (
-  //                     // &&
-  //                     // minutesDifference > 0
-  //                     //   &&
-  //                     //   minutesDifference <= 99999999 &&
-  //                     //   minutesDifference > 0
-  //                     <Button
-  //                       text={t("Start-meeting")}
-  //                       className="Start-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-  //                       false && minutesDifference < 15 ? (
-  //                     // &&
-  //                     // minutesDifference > 0
-  //                     //   &&
-  //                     //     minutesDifference <= 99999999 &&
-  //                     //     minutesDifference > 0
-  //                     <Button
-  //                       text={t("Start-meeting")}
-  //                       className="Start-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : null
-  //                 ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-  //                   upcomingEventsData.participantRoleID === 2 ? (
-  //                     <Button
-  //                       text={t("Join-meeting")}
-  //                       className="joining-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : upcomingEventsData.participantRoleID === 4 ? (
-  //                     <Button
-  //                       text={t("Join-meeting")}
-  //                       className="joining-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : upcomingEventsData.participantRoleID === 1 ? (
-  //                     <Button
-  //                       text={t("Join-meeting")}
-  //                       className="joining-Meeting-Upcoming"
-  //                       onClick={() =>
-  //                         meetingDashboardCalendarEvent(upcomingEventsData)
-  //                       }
-  //                     />
-  //                   ) : null
-  //                 ) : null}
-  //               </div>
-  //             </Col>
-  //           </Row>
-  //         )}
-  //       </>
-  //     );
-  //   });
-  // };
-
-  const OpenUpdateNotesModal = async (id) => {
-    setGetNoteID(id);
-    await dispatch(GetNotesById_Init());
-    dispatch(
-      GetNotesByIdAPI(
-        navigate,
-        id,
-        t,
-        setViewModalShow,
-        setUpdateShow,
-        setUpdateNotesModalHomePage,
-        3
-      )
-    );
-  };
 
   const handleMonthChange = (value) => {
     const formattedDate = value.format("YYYYMMDD");
@@ -1652,7 +1072,7 @@ const Home = () => {
     }
   };
 
-  const handleClickonDate = (dateObject, dateSelect) => {
+  const handleClickonDate = (dateSelect) => {
     let selectDate = dateSelect.toString().split("/").join("");
     if (calendarEvents.length > 0) {
       const findData = calendarEvents.filter(
@@ -1672,8 +1092,6 @@ const Home = () => {
           ) {
             // Update the statusID to 10
             event.statusID = 10;
-            // Dispatch an action to update the global state if needed
-            // dispatch(updateEventStatus(event)); // Assuming you have a proper action
           }
         });
       } else {
@@ -1688,20 +1106,20 @@ const Home = () => {
 
   return (
     <>
-      <Container fluid className='Dashboard-Main-Container'>
+      <Container fluid className="Dashboard-Main-Container">
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <section className='StatsBox'>
+            <section className="StatsBox">
               <Stats />
             </section>
           </Col>
         </Row>
         <Row>
-          <Col lg={4} md={4} sm={12} className='dashboard-container'>
-            <section className='dashboard-col-1'>
+          <Col lg={4} md={4} sm={12} className="dashboard-container">
+            <section className="dashboard-col-1">
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <div className='whiteBackground Spinner home-calendar-spinner calendar_home   '>
+                  <div className="whiteBackground Spinner home-calendar-spinner calendar_home   ">
                     {calendarReducer.Spinner === true ? (
                       <Spin />
                     ) : (
@@ -1724,10 +1142,9 @@ const Home = () => {
                               }}
                               multiple={false}
                               onChange={calendarClickFunction}
-                              className='custom-multi-date-picker'
+                              className="custom-multi-date-picker"
                               onMonthChange={handleMonthChange}
                               currentDate={currentDateObject}
-                              // format="YYYY-MM-DD"
                             />
                           </Col>
                         </Row>
@@ -1738,39 +1155,36 @@ const Home = () => {
               </Row>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <div className='whiteBackground Spinner home-meeting_event-spinner event_home '>
+                  <div className="whiteBackground Spinner home-meeting_event-spinner event_home ">
                     {meetingIdReducer.Spinner === true ? (
                       <Spin />
                     ) : (
                       <>
                         <Row>
                           <Col lg={12} md={12} sm={12}>
-                            <h1 className='upcoming-events'>
+                            <h1 className="upcoming-events">
                               {t("Up-coming-event")}
                             </h1>
 
-                            <div className='Upcoming-Events-Box'>
-                              {
-                                upComingEvents.length === 0 ? (
-                                  <ResultMessage
-                                    icon={
-                                      <img
-                                        src={noTask}
-                                        alt=''
-                                        width={"100%"}
-                                        draggable='false'
-                                      />
-                                    }
-                                    subTitle={
-                                      <span className='UpcomingEvent'>
-                                        {t("No-upcoming-events")}
-                                      </span>
-                                    }
-                                    className='notification-text'
-                                  />
-                                ) : null
-                                // upcomingEventsHandler(upComingEvents)
-                              }
+                            <div className="Upcoming-Events-Box">
+                              {upComingEvents.length === 0 ? (
+                                <ResultMessage
+                                  icon={
+                                    <img
+                                      src={noTask}
+                                      alt=""
+                                      width={"100%"}
+                                      draggable="false"
+                                    />
+                                  }
+                                  subTitle={
+                                    <span className="UpcomingEvent">
+                                      {t("No-upcoming-events")}
+                                    </span>
+                                  }
+                                  className="notification-text"
+                                />
+                              ) : null}
                             </div>
                           </Col>
                         </Row>
@@ -1781,7 +1195,7 @@ const Home = () => {
               </Row>
             </section>
           </Col>
-          <Col lg={4} md={4} sm={12} className='m-0 '></Col>
+          <Col lg={4} md={4} sm={12} className="m-0 "></Col>
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
@@ -1803,25 +1217,25 @@ const Home = () => {
           ButtonTitle={"Block"}
           centered
           size={"md"}
-          modalHeaderClassName='d-none'
+          modalHeaderClassName="d-none"
           ModalBody={
             <>
               <>
-                <Row className='mb-1'>
+                <Row className="mb-1">
                   <Col lg={12} md={12} xs={12} sm={12}>
                     <Row>
-                      <Col className='d-flex justify-content-center'>
+                      <Col className="d-flex justify-content-center">
                         <img
                           src={VerificationFailedIcon}
                           width={60}
                           className={"allowModalIcon"}
-                          alt=''
-                          draggable='false'
+                          alt=""
+                          draggable="false"
                         />
                       </Col>
                     </Row>
                     <Row>
-                      <Col className='text-center mt-4'>
+                      <Col className="text-center mt-4">
                         <label className={"allow-limit-modal-p"}>
                           {t(
                             "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -1837,12 +1251,13 @@ const Home = () => {
           ModalFooter={
             <>
               <Col sm={12} md={12} lg={12}>
-                <Row className='mb-3'>
+                <Row className="mb-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}
@@ -1877,11 +1292,6 @@ const Home = () => {
       ) : showTodo ? (
         <ModalToDoList show={showTodo} setShow={setShowTodo} />
       ) : null}
-
-      {/* {(NotesReducer.Loading && getNoteID !== 0) ||
-      (toDoListReducer.Loading && getTodoID !== 0) ? (  
-        <Loader />
-      ) : null} */}
     </>
   );
 };

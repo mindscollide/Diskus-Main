@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
-  TextField,
   Button,
   Modal,
   Notification,
   AttachmentViewer,
 } from "../../../components/elements";
-import { Row, Col, Container, Dropdown, Form } from "react-bootstrap";
+import { Row, Col, Container, Form } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.snow.css";
@@ -14,27 +13,21 @@ import styles from "./ModalAddNote.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   FileUploadToDo,
-  ResetAllFilesUpload,
   uploaddocumentloader,
 } from "../../../store/actions/Upload_action";
 import CustomUpload from "../../../components/elements/upload/Upload";
-import moment from "moment";
-import {
-  SaveNotesAPI,
-  openAddNotesModal,
-} from "../../../store/actions/Notes_actions";
+import { SaveNotesAPI } from "../../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
 import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "antd";
-import {
-  regexOnlyForNumberNCharacters,
-  validateInput,
-} from "../../../commen/functions/regex";
+import { validateInput } from "../../../commen/functions/regex";
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
-  //For Localization
-  const { uploadReducer } = useSelector((state) => state);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const NoteTitle = useRef(null);
+  const editorRef = useRef(null);
   let createrID = localStorage.getItem("userID");
   const maxCharacters = 2500;
   const navigate = useNavigate();
@@ -46,10 +39,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const [isCreateNote, setIsCreateNote] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const NoteTitle = useRef(null);
-  const editorRef = useRef(null);
 
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
@@ -60,7 +49,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     message: "",
   });
 
-  const date = new Date();
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
@@ -84,11 +72,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     },
     isStarrted: false,
   });
-
-  console.log(
-    addNoteFields.Description.value.length,
-    "valuevaluevaluevaluevaluevalue"
-  );
 
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = tasksAttachments.TasksAttachments;
@@ -198,7 +181,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     console.log(data, "uploadFilesToDouploadFilesToDo");
     let filesArray = Object.values(data.target.files);
     let fileSizeArr = fileSize;
-    let flag = false;
     let sizezero = true;
     let size = true;
 
@@ -219,8 +201,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       let fileExists = tasksAttachments.TasksAttachments.some(
         (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
       );
-
-      console.log(fileExists, "fileExistsfileExistsfileExists");
 
       if (!size) {
         setTimeout(() => {
@@ -573,19 +553,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
                                       (data, index) => {
-                                        var ext =
-                                          data.DisplayAttachmentName.split(
-                                            "."
-                                          ).pop();
-
-                                        const first =
-                                          data.DisplayAttachmentName.split(
-                                            " "
-                                          )[0];
-
-                                        // let newext = JSON.parse(ext)
-                                        //
-
                                         return (
                                           <AttachmentViewer
                                             handleClickRemove={() =>

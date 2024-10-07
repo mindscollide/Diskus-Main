@@ -17,7 +17,6 @@ import {
   deleteNotesApi,
   UpdateNotesAPI,
 } from "../../../store/actions/Notes_actions";
-// import { countryName } from "../../AllUsers/AddUser/CountryJson";
 import { useTranslation } from "react-i18next";
 import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
@@ -31,9 +30,8 @@ import { Tooltip } from "antd";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
-  const { NotesReducer, uploadReducer } = useSelector((state) => state);
+  const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
-  const Delta = Quill.import("delta");
   const editorRef = useRef(null);
   const maxCharacters = 2500;
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
@@ -237,10 +235,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         NotesReducer.GetNotesByNotesId !== null &&
         NotesReducer.GetNotesByNotesId !== undefined
       ) {
-        console.log(
-          NotesReducer.GetNotesByNotesId,
-          "NotesReducerNotesReducerNotesReducer"
-        );
         setAddNoteFields({
           ...addNoteFields,
           Title: {
@@ -308,9 +302,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //Upload File Handler
   const uploadFilesToDo = (data) => {
     let filesArray = Object.values(data.target.files);
-    console.log(filesArray, "uploadFilesToDouploadFilesToDo");
     let fileSizeArr = fileSize;
-    let flag = false;
     let sizezero = true;
     let size = true;
 
@@ -359,10 +351,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           OriginalAttachmentName: fileData.name,
           fileSize: fileData.size,
         };
-        // setTasksAttachments((prevAttachments) => ({
-        //   ...prevAttachments,
-        //   TasksAttachments: [...prevAttachments.TasksAttachments, file],
-        // }));
+
         console.log(file, "filefilefilefile");
         setAttachments((prevAttachments) => [...prevAttachments, file]);
         fileSizeArr += fileData.size;
@@ -374,9 +363,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     });
   };
   let previousFileList = [];
-  console.log(attachments, "newfilesnewfiles");
-  console.log(tasksAttachments.TasksAttachments, "newfilesnewfiles");
-  console.log(fileForSend, "newfilesnewfiles");
 
   const notesSaveHandler = async () => {
     try {
@@ -399,8 +385,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
-          newfiles.map((data, index) => {
-            console.log(data, "newfilesnewfiles");
+          newfiles.map((data) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
@@ -438,7 +423,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
           let copData = [...tasksAttachments.TasksAttachments];
-          copData.map((data, index) => {
+          copData.map((data) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
@@ -514,7 +499,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           modalFooterClassName={styles["modalUpdateNotes"]}
           ButtonTitle={ModalTitle}
           centered
-          //   modalFooterClassName={styles["modal-userprofile-footer"]}
           size={
             isUpdateNote === true
               ? "md"
@@ -534,28 +518,29 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className='d-flex align-items-center justify-content-start gap-3'>
+                      className="d-flex align-items-center justify-content-start gap-3"
+                    >
                       <p className={styles["UpdateNote-heading"]}>
                         {t("Update-note")}
                         {/* {t("Update-note")} */}
                       </p>
                       {isStarred ? (
-                        <Tooltip placement='topLeft' title={t("Starred")}>
+                        <Tooltip placement="topLeft" title={t("Starred")}>
                           <img
-                            draggable='false'
+                            draggable="false"
                             src={hollowstar}
                             className={styles["star-updatenote"]}
-                            alt=''
+                            alt=""
                             onClick={() => setIsStarrted(!isStarred)}
                           />
                         </Tooltip>
                       ) : (
-                        <Tooltip placement='topLeft' title={t("unstarred")}>
+                        <Tooltip placement="topLeft" title={t("unstarred")}>
                           <img
-                            draggable='false'
+                            draggable="false"
                             className={styles["star-updatenote"]}
                             src={StarIcon}
-                            alt=''
+                            alt=""
                             onClick={() => setIsStarrted(!isStarred)}
                           />
                         </Tooltip>
@@ -569,7 +554,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-start mb-0'>
+                      className="d-flex justify-content-start mb-0"
+                    >
                       <p className={styles["date-updatenote"]}>
                         {t("Created-On")} :{" "}
                         {_justShowDateformat(
@@ -589,7 +575,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-end'>
+                      className="d-flex justify-content-end"
+                    >
                       <p className={styles["date-updatenote2"]}>
                         {t("Last-modified-on")} :{" "}
                         {_justShowDateformat(
@@ -609,8 +596,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <Form.Control
                         placeholder={t("Meeting-with")}
-                        applyClass='updateNotes_titleInput'
-                        name='Title'
+                        applyClass="updateNotes_titleInput"
+                        name="Title"
                         maxLength={290}
                         value={addNoteFields.Title.value || ""}
                         onChange={addNotesFieldHandler}
@@ -623,7 +610,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                               erorbar && addNoteFields.Title.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
-                            }>
+                            }
+                          >
                             {t("Title-is-required")}
                           </p>
                         </Col>
@@ -632,12 +620,11 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                   </Row>
 
                   <Row className={styles["QuillRow"]}>
-                    <Col lg={12} md={12} sm={12} xs={12} className='mt-1'>
+                    <Col lg={12} md={12} sm={12} xs={12} className="mt-1">
                       <ReactQuill
                         ref={editorRef}
-                        theme='snow'
+                        theme="snow"
                         value={addNoteFields.Description.value || ""}
-                        // defaultValue={addNoteFields.Description.value}
                         onChange={onTextChange}
                         modules={modules}
                         className={styles["quill-update-height"]}
@@ -654,39 +641,36 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                           erorbar && addNoteFields.Description.value === ""
                             ? ` ${styles["errorUpdateMessage_hidden"]} `
                             : `${styles["errorUpdateMessage_hidden"]}`
-                        }>
+                        }
+                      >
                         {t("Description-is-required")}
                       </p>
                     </Col>
                   </Row>
 
-                  <Row className='mt-5'>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      // className="d-flex justify-content-start"
-                    >
-                      <Row className='mt-4'>
+                  <Row className="mt-5">
+                    <Col lg={12} md={12} sm={12} xs={12}>
+                      <Row className="mt-4">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           xs={12}
-                          className='d-flex justify-content-start'>
+                          className="d-flex justify-content-start"
+                        >
                           <label className={styles["attached-title"]}>
                             {t("Attachement")}
                           </label>
                         </Col>
                       </Row>
-                      <Row className='mt-2'>
+                      <Row className="mt-2">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           xs={12}
-                          className='d-flex justify-content-start'>
+                          className="d-flex justify-content-start"
+                        >
                           <span className={styles["Notes-upload-input"]}>
                             <CustomUpload
                               change={uploadFilesToDo}
@@ -694,7 +678,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                               onClick={(event) => {
                                 event.target.value = null;
                               }}
-                              className='UploadFileButton'
+                              className="UploadFileButton"
                             />
                           </span>
                         </Col>
@@ -704,14 +688,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                           sm={12}
                           lg={12}
                           md={12}
-                          className={styles["notes-updates-attachment"]}>
+                          className={styles["notes-updates-attachment"]}
+                        >
                           {attachments.length > 0
                             ? attachments.map((data, index) => {
-                                var ext =
-                                  data.DisplayAttachmentName.split(".").pop();
-
-                                const first =
-                                  data.DisplayAttachmentName.split(" ")[0];
                                 return (
                                   <AttachmentViewer
                                     handleClickRemove={() =>
@@ -724,112 +704,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                       localStorage.getItem("userID")
                                     )}
                                   />
-                                  // <Col
-                                  //   sm={12}
-                                  //   lg={2}
-                                  //   md={2}
-                                  //   className={
-                                  //     styles["modaltodolist-attachment-icon"]
-                                  //   }
-                                  // >
-                                  //   {ext === "doc" ? (
-                                  //     <FileIcon
-                                  //       extension={"docx"}
-                                  //       size={78}
-                                  //       type={"document"}
-                                  //       labelColor={"rgba(44, 88, 152)"}
-                                  //     />
-                                  //   ) : ext === "docx" ? (
-                                  //     <FileIcon
-                                  //       extension={"docx"}
-                                  //       size={78}
-                                  //       type={"font"}
-                                  //       labelColor={"rgba(44, 88, 152)"}
-                                  //     />
-                                  //   ) : ext === "xls" ? (
-                                  //     <FileIcon
-                                  //       extension={"xls"}
-                                  //       type={"spreadsheet"}
-                                  //       size={78}
-                                  //       labelColor={"rgba(16, 121, 63)"}
-                                  //     />
-                                  //   ) : ext === "xlsx" ? (
-                                  //     <FileIcon
-                                  //       extension={"xls"}
-                                  //       type={"spreadsheet"}
-                                  //       size={78}
-                                  //       labelColor={"rgba(16, 121, 63)"}
-                                  //     />
-                                  //   ) : ext === "pdf" ? (
-                                  //     <FileIcon
-                                  //       extension={"pdf"}
-                                  //       size={78}
-                                  //       {...defaultStyles.pdf}
-                                  //     />
-                                  //   ) : ext === "png" ? (
-                                  //     <FileIcon
-                                  //       extension={"png"}
-                                  //       size={78}
-                                  //       type={"image"}
-                                  //       labelColor={"rgba(102, 102, 224)"}
-                                  //     />
-                                  //   ) : ext === "txt" ? (
-                                  //     <FileIcon
-                                  //       extension={"txt"}
-                                  //       size={78}
-                                  //       type={"document"}
-                                  //       labelColor={"rgba(52, 120, 199)"}
-                                  //     />
-                                  //   ) : ext === "jpg" ? (
-                                  //     <FileIcon
-                                  //       extension={"jpg"}
-                                  //       size={78}
-                                  //       type={"image"}
-                                  //       labelColor={"rgba(102, 102, 224)"}
-                                  //     />
-                                  //   ) : ext === "jpeg" ? (
-                                  //     <FileIcon
-                                  //       extension={"jpeg"}
-                                  //       size={78}
-                                  //       type={"image"}
-                                  //       labelColor={"rgba(102, 102, 224)"}
-                                  //     />
-                                  //   ) : ext === "gif" ? (
-                                  //     <FileIcon
-                                  //       extension={"gif"}
-                                  //       size={78}
-                                  //       {...defaultStyles.gif}
-                                  //     />
-                                  //   ) : (
-                                  //     <FileIcon
-                                  //       extension={ext}
-                                  //       size={78}
-                                  //       {...defaultStyles.ext}
-                                  //     />
-                                  //   )}
-                                  //   <span
-                                  //     className={
-                                  //       styles["deleteUpdateNoteAttachment"]
-                                  //     }
-                                  //   >
-                                  //     <img
-                                  //       draggable="false"
-                                  //       src={deleteButtonCreateMeeting}
-                                  //       width={15}
-                                  //       height={15}
-                                  //       alt=""
-                                  //       onClick={() =>
-                                  //         deleteFilefromAttachments(data, index)
-                                  //       }
-                                  //     />
-                                  //   </span>
-                                  //   <p
-                                  //     className="modaltodolist-attachment-text"
-                                  //     title={data.displayAttachmentName}
-                                  //   >
-                                  //     {first}
-                                  //   </p>
-                                  // </Col>
                                 );
                               })
                             : null}
@@ -846,7 +720,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["delete-note-modal-text"]}>
+                        className={styles["delete-note-modal-text"]}
+                      >
                         <p>{t("Are-you-sure-you-want-to-delete-this-note")}?</p>
                       </Col>
                     </Row>
@@ -859,7 +734,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className={styles["Confirmationmodal_body_text"]}>
+                      className={styles["Confirmationmodal_body_text"]}
+                    >
                       {t("Are-you-sure-note-reset-closed")}
                     </Col>
                   </Row>
@@ -870,7 +746,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["delete-note-modal-text"]}>
+                    className={styles["delete-note-modal-text"]}
+                  >
                     <p>{t("Are-you-sure-you-want-to-update-this-note")}?</p>
                   </Col>
                 </Row>
@@ -880,12 +757,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           ModalFooter={
             <>
               {isUpdateNote ? (
-                <Row className=' '>
+                <Row className=" ">
                   <Col
                     lg={12}
                     md={12}
                     xs={12}
-                    className='d-flex gap-3 justify-content-end'>
+                    className="d-flex gap-3 justify-content-end"
+                  >
                     <Button
                       text={t("Delete")}
                       onClick={deleteNoteModalHandler}
@@ -904,14 +782,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
                     <Button
                       text={t("Update")}
-                      type='submit'
+                      type="submit"
                       onClick={() => {
                         setCloseConfirmationBox(false);
                         setIsDeleteNote(false);
                         setIsUpdateNote(false);
                         setUpdateConfirmation(true);
                       }}
-                      // onClick={notesSaveHandler}
                       className={styles["Update-notes-Button"]}
                     />
                   </Col>
@@ -924,7 +801,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-end '>
+                      className="d-flex justify-content-end "
+                    >
                       <Button
                         text={t("Cancel")}
                         className={styles["cancel-note-modal-btn"]}
@@ -936,7 +814,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-start '>
+                      className="d-flex justify-content-start "
+                    >
                       <Button
                         text={t("Delete")}
                         className={styles["delete-note-modal-btn"]}
@@ -954,7 +833,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='d-flex justify-content-center gap-3'>
+                      className="d-flex justify-content-center gap-3"
+                    >
                       <Button
                         onClick={() => setIsUpdateNote(true)}
                         className={styles["cancel-Update-notes"]}
@@ -975,7 +855,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     md={6}
                     sm={6}
                     xs={12}
-                    className='d-flex justify-content-end '>
+                    className="d-flex justify-content-end "
+                  >
                     <Button
                       text={t("Cancel")}
                       className={styles["cancel-note-modal-btn"]}
@@ -985,7 +866,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         setIsUpdateNote(true);
                         setUpdateConfirmation(false);
                       }}
-                      // onClick={handleClickCancelDeleteModal}
                     />
                   </Col>
                   <Col
@@ -993,7 +873,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     md={6}
                     sm={6}
                     xs={12}
-                    className='d-flex justify-content-start '>
+                    className="d-flex justify-content-start "
+                  >
                     <Button
                       text={t("Update")}
                       className={styles["delete-note-modal-btn"]}
