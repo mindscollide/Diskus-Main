@@ -5,26 +5,18 @@ import { Col, Row, Container } from "react-bootstrap";
 import {
   Button,
   Notification,
-  Loader,
-  TextField,
   Modal,
 } from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
-import BlueCamera from "../../../../../assets/images/blue Camera.svg";
-import ClipboardIcon from "../../../../../assets/images/clipboard-01.svg";
-import copyToClipboard from "../../../../../hooks/useClipBoard";
+
 import { useDispatch } from "react-redux";
 import {
   cleareAllState,
   CleareMessegeNewMeeting,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
-  scheduleMeetingPageFlag,
-  viewProposeDateMeetingPageFlag,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
   LeaveCurrentMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
@@ -37,7 +29,6 @@ import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrg
 import {
   GetAllUsers,
   GetAllUserChats,
-  GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   activeChat,
 } from "../../../../../store/actions/Talk_action";
@@ -78,9 +69,7 @@ const ViewMeetingDetails = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
-  setMeetingDetails,
   editorRole,
-  setAgenda,
   setEdiorRole,
   setDataroomMapFolderId,
   setMeetingMaterial,
@@ -125,8 +114,6 @@ const ViewMeetingDetails = ({
   ]);
 
   const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
-
-  const [initiateVideoModalGroup, setInitiateVideoModalGroup] = useState(false);
 
   const [viewFlag, setViewFlag] = useState(false);
 
@@ -229,7 +216,6 @@ const ViewMeetingDetails = ({
         IsVideoCall: false,
         TalkGroupID: 0,
       });
-      // dispatch(showGetAllMeetingDetialsFailed(""));
       dispatch(cleareAllState());
     };
   }, []);
@@ -241,27 +227,6 @@ const ViewMeetingDetails = ({
     } else {
       setmeetingDetails(false);
       setorganizers(true);
-    }
-  };
-
-  const handleEndDateChange = (index, date) => {
-    let newDate = new Date(date);
-    if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-
-      const updatedRows = [...rows];
-      updatedRows[index].endDate = formattedTime;
-      updatedRows[index].endTime = newDate;
-      setRows(updatedRows);
-    } else {
-      console.error("Invalid date and time object:", date);
     }
   };
 
@@ -314,7 +279,6 @@ const ViewMeetingDetails = ({
   //Fetching All Saved Data
   useEffect(() => {
     try {
-      console.log("meetingStatus", NewMeetingreducer);
       if (
         NewMeetingreducer.getAllMeetingDetails !== null &&
         NewMeetingreducer.getAllMeetingDetails !== undefined
@@ -334,7 +298,6 @@ const ViewMeetingDetails = ({
         console.log("meetingStatus", getmeetingStatus);
         setMeetingStatus(Number(getmeetingStatus));
         let getmeetingType = MeetingData.meetingType;
-        let wasPublishedFlag = MeetingData.wasMeetingPublished;
         setMeetingDetailsData({
           MeetingTitle: MeetingData.meetingTitle,
           MeetingType: {
@@ -512,8 +475,6 @@ const ViewMeetingDetails = ({
     }
   };
 
-  console.log("NewMeetingreducer.CurrentMeetingURL", NewMeetingreducer);
-
   const copyToClipboardd = () => {
     let MeetingData =
       NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
@@ -547,7 +508,6 @@ const ViewMeetingDetails = ({
   };
 
   const groupChatInitiation = (data) => {
-    console.log("groupChatInitiationgroupChatInitiation", data);
     if (
       data.TalkGroupID !== 0 &&
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
@@ -645,11 +605,6 @@ const ViewMeetingDetails = ({
                 </>
               ) : meetingDetails.IsVideoCall === true ? (
                 <>
-                  {/* <Button
-                  text={t("Join-Video-Call")}
-                  className={styles["JoinMeetingButton"]}
-                  onClick={joinMeetingCall}
-                /> */}
                   <Button
                     text={t("Leave-meeting")}
                     className={styles["LeaveMeetinButton"]}
@@ -691,24 +646,10 @@ const ViewMeetingDetails = ({
               </Col>
             </Row>
             <Row className="mt-2">
-              {/* <Col lg={12} md={12} sm={12} className="textAreaDivVieww vv"> */}
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["ParaGraph_SavedMeeting"]}>
                   {meetingDetails.Description}
                 </span>
-                {/* <TextField
-                  // change={detailsHandler}
-                  name="MeetingDescription"
-                  applyClass="form-control2 textbox-height-details-view"
-                  type="text"
-                  disable={true}
-                  // as={"textarea"}
-                  rows="7"
-                  // label={}
-                  // placeholder={t("Description") + "*"}
-                  value={meetingDetails.Description}
-                  required
-                /> */}
               </Col>
             </Row>
             <Row className="mt-3">
@@ -736,7 +677,6 @@ const ViewMeetingDetails = ({
                 </Row>
                 <Row>
                   {rows.map((data, index) => {
-                    console.log(data, "formattedStartDateformattedStartDate");
                     const formattedStartDate = convertToGMT(
                       data.meetingDate,
                       data.startTime
@@ -782,21 +722,6 @@ const ViewMeetingDetails = ({
                     )}
                     {meetingDetails.IsVideoCall && (
                       <>
-                        {/* <img
-                        src={BlueCamera}
-                        height="17.84px"
-                        width="27.19px"
-                        alt=""
-                        className={styles["blue-icon"]}
-                      /> */}
-                        {/* <img
-                          src={ClipboardIcon}
-                          height="40px"
-                          width="40px"
-                          alt=""
-                          onClick={() => copyToClipboardd()}
-                          className={styles["clipboard-icon"]}
-                        /> */}
                         {editorRole.status === "10" ||
                         editorRole.status === 10 ? (
                           <>
@@ -820,20 +745,15 @@ const ViewMeetingDetails = ({
                               className={`${
                                 styles["CopyLinkButton"]
                               } ${"grayScaled"}`}
-                              // onClick={() => copyToClipboardd()}
                             />
                             <Button
                               text={t("Join-Video-Call")}
                               className={`${
                                 styles["JoinMeetingButton"]
                               } ${"grayScaled"} `}
-                              // onClick={joinMeetingCall}
                             />
                           </>
                         )}
-                        {/* <span className={styles["LinkClass"]}>
-                        {meetingDetails.Link}
-                      </span> */}
                       </>
                     )}
                   </Col>
@@ -926,7 +846,6 @@ const ViewMeetingDetails = ({
             />
           </Col>
         </Row>
-        {/* {NewMeetingreducer.LoadingViewModal && <Loader />} */}
         {cancelModalView && (
           <CancelButtonModal
             setCancelModalView={setCancelModalView}

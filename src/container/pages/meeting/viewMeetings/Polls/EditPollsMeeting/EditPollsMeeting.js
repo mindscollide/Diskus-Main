@@ -13,10 +13,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import {
-  regexOnlyForNumberNCharacters,
-  validateInput,
-} from "../../../../../../commen/functions/regex";
+import { validateInput } from "../../../../../../commen/functions/regex";
 import WhiteCrossIcon from "../../../../../../assets/images/PollCrossIcon.svg";
 import plusFaddes from "../../../../../../assets/images/NewBluePLus.svg";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -25,18 +22,11 @@ import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import Profile from "../../../../../../assets/images/newprofile.png";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedEditPollsMeeting from "./UnsavedEditPollsMeeting/UnsavedEditPollsMeeting";
+import { showunsavedEditPollsMeetings } from "../../../../../../store/actions/NewMeetingActions";
 import {
-  CleareMessegeNewMeeting,
-  showunsavedEditPollsMeetings,
-} from "../../../../../../store/actions/NewMeetingActions";
-import {
-  convertGMTDateintoUTC,
-  convertintoGMTCalender,
   multiDatePickerDateChangIntoUTC,
-  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
 import {
@@ -72,20 +62,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [members, setMembers] = useState([]);
 
-  const [options, setOptions] = useState([
-    // {
-    //   name: 1,
-    //   value: "",
-    // },
-    // {
-    //   name: 2,
-    //   value: "",
-    // },
-    // {
-    //   name: 3,
-    //   value: "",
-    // },
-  ]);
+  const [options, setOptions] = useState([]);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -101,7 +78,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-    // let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
         return item.name === name ? { ...item, value: newValue } : item;
@@ -112,7 +88,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const addNewRow = () => {
-    console.log("iam clicked");
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
@@ -405,22 +380,12 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
           setMembers(pollMembers);
         }
         try {
-          // if (Object.keys(pollsDetailsData.pollOptions).length > 2) {
           let Option = [];
           pollsDetailsData.pollOptions.map((data, index) => {
             let dataAdd = { name: index + 1, value: data.answer };
             Option.push(dataAdd);
           });
           setOptions(Option);
-          // } else if (Object.keys(pollsDetailsData.pollOptions).length <= 2) {
-          //   const updatedOptions = options.map((option) => {
-          //     const apiData = pollsDetailsData.pollOptions.find(
-          //       (apiOption, index) => index + 1 === option.name
-          //     );
-          //     return apiData ? { ...option, value: apiData.answer } : option;
-          //   });
-          //   setOptions(updatedOptions);
-          // }
         } catch {}
       }
     } catch {}

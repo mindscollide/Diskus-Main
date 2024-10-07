@@ -15,16 +15,13 @@ import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../../assets/images/featherupload.svg";
 import ReactQuill, { Quill } from "react-quill";
-// import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
   CleareMessegeNewMeeting,
-  DeleteAgendaWiseMinutesDocumentsApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
-  cleareAllState,
   saveFilesMeetingagendaWiseMinutesApi,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -32,7 +29,6 @@ import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../..
 import AttachmentIcon from "./../Images/Attachment-Icon.png";
 import ArrowDown from "./../Images/Arrow-Down.png";
 import DropdownPurple from "./../Images/Dropdown-Purple.png";
-import DefaultAvatar from "./../Images/avatar.png";
 import EditIcon from "./../Images/Edit-Icon.png";
 import MenuIcon from "./../Images/MenuIcon.png";
 import DeleteIcon from "./../Images/DeleteIcon.png";
@@ -47,7 +43,6 @@ import {
   GetMinuteReviewStatsForOrganizerByMeetingId,
   DeleteMinuteReducer,
 } from "../../../../../../store/actions/Minutes_action";
-import { transform } from "lodash";
 import {
   convertToGMTMinuteTime,
   convertDateToGMTMinute,
@@ -65,8 +60,6 @@ const AgendaWise = ({
   setAddNoteFields,
   fileAttachments,
   setFileAttachments,
-  addReviewers,
-  setAddReviewers,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -74,8 +67,6 @@ const AgendaWise = ({
   let folderID = localStorage.getItem("folderDataRoomMeeting");
 
   let isAgenda = true;
-
-  const Delta = Quill.import("delta");
 
   const [open, setOpen] = useState({
     flag: false,
@@ -89,20 +80,10 @@ const AgendaWise = ({
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
-  const [accordianExpand, setAccordianExpand] = useState(false);
-  const [general, setGeneral] = useState(false);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [agenda, setAgenda] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [organizerID, setOrganizerID] = useState(0);
-  const [expandedFiles, setExpandedFiles] = useState([]);
-  const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
-
-  const [showMore, setShowMore] = useState(false);
-  const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
@@ -111,90 +92,37 @@ const AgendaWise = ({
     },
   });
 
-  console.log(
-    AgendaWiseAgendaListReducer.AllAgendas,
-    "AgendaWiseAgendaListReducer"
-  );
-
   useEffect(() => {
     try {
       if (
         AgendaWiseAgendaListReducer.AllAgendas !== null &&
         AgendaWiseAgendaListReducer.AllAgendas !== undefined
       ) {
-        console.log(AgendaWiseAgendaListReducer.AllAgendas, "AllAgendas");
         let NewData = [];
-        console.log(
-          AgendaWiseAgendaListReducer.AllAgendas,
-          "agendaListagendaList"
-        );
-        AgendaWiseAgendaListReducer.AllAgendas.agendaList.map(
-          (agenda, index) => {
-            console.log(agenda, "agendaListagendaList");
-            NewData.push({
-              value: agenda.id,
-              label: agenda.title,
-            });
 
-            agenda.subAgenda.map((subajendaData, index) => {
-              NewData.push({
-                value: subajendaData.subAgendaID,
-                label: subajendaData.subTitle,
-              });
+        AgendaWiseAgendaListReducer.AllAgendas.agendaList.map((agenda) => {
+          NewData.push({
+            value: agenda.id,
+            label: agenda.title,
+          });
+
+          agenda.subAgenda.map((subajendaData) => {
+            NewData.push({
+              value: subajendaData.subAgendaID,
+              label: subajendaData.subTitle,
             });
-          }
-        );
+          });
+        });
         setAgendaOptions(NewData);
         setAgendaID(NewData);
       }
     } catch {}
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
 
-  console.log(agendaOptions, "agendaOptionsagendaOptions");
-
-  // Grouping the messages by agendaID while maintaining the unique titles
-  const groupedMessages = messages.reduce((acc, curr) => {
-    if (!acc[curr.agendaID]) {
-      acc[curr.agendaID] = {
-        agendaID: curr.agendaID,
-        agendaTitle: curr.agendaTitle,
-        items: [
-          {
-            minuteID: curr.minuteID,
-            minutesDetails: curr.minutesDetails,
-            userID: curr.userID,
-            userName: curr.userName,
-            lastUpdatedDate: curr.lastUpdatedDate,
-            lastUpdatedTime: curr.lastUpdatedTime,
-            userProfilePicture: curr.userProfilePicture,
-            minutesAttachmets: curr.minutesAttachmets,
-            agendaTitle: curr.agendaTitle,
-          },
-        ],
-      };
-    } else {
-      acc[curr.agendaID].items.push({
-        minuteID: curr.minuteID,
-        minutesDetails: curr.minutesDetails,
-        userID: curr.userID,
-        userName: curr.userName,
-        lastUpdatedDate: curr.lastUpdatedDate,
-        lastUpdatedTime: curr.lastUpdatedTime,
-        userProfilePicture: curr.userProfilePicture,
-        minutesAttachmets: curr.minutesAttachmets,
-        agendaTitle: curr.agendaTitle,
-      });
-    }
-
-    console.log(acc, "returnreturnreturn");
-    return acc;
-  }, {});
-
   let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
-  console.log("fileSizefileSize", fileSize);
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -222,10 +150,6 @@ const AgendaWise = ({
     },
   };
 
-  const toggleExpansion = () => {
-    setExpanded(!expanded);
-  };
-
   const props = {
     name: "file",
     multiple: true,
@@ -239,7 +163,6 @@ const AgendaWise = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -320,18 +243,6 @@ const AgendaWise = ({
   // Initialize previousFileList to an empty array
   let previousFileList = [];
 
-  //Sliders For Attachments
-
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
-
   const onTextChange = (content, delta, source) => {
     if (source === "user") {
       const deltaOps = delta.ops || [];
@@ -368,20 +279,6 @@ const AgendaWise = ({
             },
           });
         }
-
-        console.log(String(content).length, content, "String Length ....");
-        // if (source === "user") {
-        //   // Update state only if no image is detected in the content
-        //   const isEmptyContent = content === "<p><br></p>";
-        //   setAddNoteFields({
-        //     ...addNoteFields,
-        //     Description: {
-        //       value: isEmptyContent ? "" : content,
-        //       errorMessage: "",
-        //       errorStatus: false,
-        //     },
-        //   });
-        // }
       }
     }
   };
@@ -414,10 +311,6 @@ const AgendaWise = ({
       dispatch(
         AddAgendaWiseMinutesApiFunc(navigate, Data, t, setAgendaOptionValue)
       );
-      // setAgendaOptionValue({
-      //   value: 0,
-      //   label: "",
-      // });
     } else {
       if (!isDescriptionNotEmpty) {
         setAddNoteFields((prevState) => ({
@@ -449,7 +342,6 @@ const AgendaWise = ({
           t,
           newData,
           folderID,
-          // newFolder,
           newfile
         )
       );
@@ -502,10 +394,6 @@ const AgendaWise = ({
   // For getting the MinuteID
   useEffect(() => {
     if (NewMeetingreducer.agendaWiseMinuteID !== 0) {
-      console.log(
-        NewMeetingreducer.agendaWiseMinuteID,
-        "agendaWiseMinuteIDagendaWiseMinuteID"
-      );
       documentUploadingFunc(NewMeetingreducer.agendaWiseMinuteID);
     }
   }, [NewMeetingreducer.agendaWiseMinuteID]);
@@ -584,19 +472,14 @@ const AgendaWise = ({
     setFileAttachments([]);
     setPreviousFileIDs([]);
   };
-  console.log(agendaOptions, "descriptiondescription");
 
   //handle Edit functionality
   const handleEditFunc = (data, title) => {
-    console.log(agendaOptions, "descriptiondescription");
-    console.log(data, title, "descriptiondescription");
     setupdateData(data);
     if (data.description !== "") {
-      console.log(data.description, "descriptiondescription");
       let findOptionValue = agendaOptions.filter(
         (agendaOption, index) => agendaOption.label === title
       );
-      console.log(findOptionValue, "descriptiondescription");
       setAddNoteFields({
         Description: {
           value: data.description,
@@ -620,24 +503,12 @@ const AgendaWise = ({
       console.log("data.minutesDetails is undefined or null");
     }
     setisEdit(true);
-    console.log(data, "handleEditFunchandleEditFunc");
     let Data = {
       FK_MeetingAgendaMinutesID: data.minuteID,
     };
     dispatch(
       AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
     );
-  };
-
-  const toggleAcordion = (agendaID) => {
-    console.log(agendaID, "notesIDnotesIDnotesID");
-    // setExpanded((prev) => (prev === notesID ? true : false));
-    if (accordianExpand === agendaID) {
-      setAccordianExpand(false);
-    } else {
-      setAccordianExpand(agendaID);
-    }
-    // setExpand(!isExpand);
   };
 
   useEffect(() => {
@@ -647,11 +518,6 @@ const AgendaWise = ({
         NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined &&
         NewMeetingreducer.RetriveAgendaWiseDocuments.data.length > 0
       ) {
-        console.log(
-          NewMeetingreducer.RetriveAgendaWiseDocuments,
-          "RetriveAgendaWiseDocuments"
-        );
-
         let files = [];
         let prevData = [];
         NewMeetingreducer.RetriveAgendaWiseDocuments.data.map((data, index) => {
@@ -700,8 +566,6 @@ const AgendaWise = ({
     let newfile = [...previousFileIDs];
     let fileObj = [];
     if (Object.keys(fileForSend).length > 0) {
-      console.log(updateData.minuteID, "updateDataupdateData");
-
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
           uploadDocumentsMeetingAgendaWiseMinutesApi(
@@ -741,8 +605,6 @@ const AgendaWise = ({
         )
       );
     } else if (newfile.length > 0) {
-      console.log(updateData, "updateDataupdateData");
-
       let docsData = {
         FK_MeetingAgendaMinutesID: Number(updateData.minuteID),
         FK_MDID: advanceMeetingModalID,
@@ -762,7 +624,6 @@ const AgendaWise = ({
     } else {
       // If newfile is empty, call the API with an empty docsData
 
-      console.log(updateData.minuteID, "updateDataupdateData");
       let docsData = {
         FK_MeetingAgendaMinutesID: Number(updateData.minuteID),
         FK_MDID: advanceMeetingModalID,
@@ -777,67 +638,6 @@ const AgendaWise = ({
           advanceMeetingModalID
         )
       );
-    }
-
-    // setAgendaOptionValue({
-    //   label: "",
-    //   value: 0,
-    // });
-    // setAddNoteFields({
-    //   ...addNoteFields,
-    //   Description: {
-    //     value: "",
-    //     errorMessage: "",
-    //     errorStatus: true,
-    //   },
-    // });
-
-    // setFileAttachments([]);
-    // setFileForSend([]);
-    // setisEdit(false);
-  };
-  const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
-    console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
-    let minuteID = 0;
-    AgendaWiseData.items.map((id, index) => {
-      minuteID = id.minuteID;
-    });
-    let Data = {
-      MDID: advanceMeetingModalID,
-      MeetingAgendaMinutesID: Number(minuteID),
-    };
-
-    dispatch(
-      DeleteAgendaWiseMinutesDocumentsApiFunc(
-        navigate,
-        Data,
-        t,
-        advanceMeetingModalID,
-        minuteID
-      )
-    );
-    setAddNoteFields({
-      ...addNoteFields,
-      Description: {
-        value: "",
-        errorMessage: "",
-        errorStatus: true,
-      },
-    });
-
-    setFileAttachments([]);
-    // setAgendaOptions([]);
-  };
-
-  const handleshowMore = (index) => {
-    if (showMoreIndex === index && showMore) {
-      // If the clicked index is the same as the expanded one, collapse it
-      setShowMoreIndex(null);
-      setShowMore(false);
-    } else {
-      // If a different index is clicked or it's not expanded, expand the clicked section
-      setShowMoreIndex(index);
-      setShowMore(true);
     }
   };
 
@@ -941,13 +741,12 @@ const AgendaWise = ({
     };
   }, [menuMinute]);
 
-  const accordianClick = (data, id, index) => {
+  const accordianClick = (index) => {
     setOpenIndices((prevIndices) =>
       prevIndices.includes(index)
         ? prevIndices.filter((i) => i !== index)
         : [...prevIndices, index]
     );
-    console.log("openIndices", openIndices);
   };
 
   const openMinuteDrawer = (minuteID) => {
@@ -963,22 +762,6 @@ const AgendaWise = ({
     } else {
       setIsOpenDrawerSubMinute(subMinuteID);
     }
-  };
-
-  const openCloseReviewerDetail = (index) => {
-    setOpenReviewerDetail((prevIndices) =>
-      prevIndices.includes(index)
-        ? prevIndices.filter((i) => i !== index)
-        : [...prevIndices, index]
-    );
-  };
-
-  const openCloseReviewerDetailSubminute = (index) => {
-    setOpenReviewerDetailSubminute((prevIndices) =>
-      prevIndices.includes(index)
-        ? prevIndices.filter((i) => i !== index)
-        : [...prevIndices, index]
-    );
   };
 
   function hasAttachments(data) {
@@ -1003,8 +786,6 @@ const AgendaWise = ({
 
     return false;
   }
-
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   useEffect(() => {
     try {
@@ -1078,11 +859,6 @@ const AgendaWise = ({
           }
         });
 
-        console.log(
-          "Transformed Data before attachment update:",
-          transformedData
-        );
-
         transformedData.forEach((agenda) => {
           agenda.minuteData.forEach((minute) => {
             let matchingData =
@@ -1106,11 +882,6 @@ const AgendaWise = ({
             });
           });
         });
-
-        console.log(
-          "Transformed Data after attachment update:",
-          transformedData
-        );
 
         if (
           MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData &&
@@ -1144,16 +915,11 @@ const AgendaWise = ({
 
             return agenda;
           });
-          console.log(
-            newTransformedData,
-            "newTransformedDatanewTransformedData"
-          );
+
           setMinutesData(newTransformedData);
         } else {
           setMinutesData(transformedData);
         }
-
-        console.log("Final transformedData:", transformedData);
       } else {
         setMinutesData([]);
       }
@@ -1215,8 +981,6 @@ const AgendaWise = ({
     );
   };
 
-  console.log("Minutes of Agenda", minutesData);
-
   return (
     <section className={styles["agenda-wise-minutes"]}>
       {Number(editorRole.status) === 1 ||
@@ -1227,7 +991,7 @@ const AgendaWise = ({
         (Number(editorRole.status) === 10 &&
           editorRole.role === "Organizer") ? (
         <>
-          <Row className='mt-4'>
+          <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
               <Row className={styles["Add-note-QuillRow"]}>
                 <Col
@@ -1235,7 +999,8 @@ const AgendaWise = ({
                   md={12}
                   sm={12}
                   xs={12}
-                  className={styles["Arabic_font_Applied"]}>
+                  className={styles["Arabic_font_Applied"]}
+                >
                   <Select
                     options={agendaOptions}
                     maxMenuHeight={140}
@@ -1249,7 +1014,7 @@ const AgendaWise = ({
                   />
                   <ReactQuill
                     ref={editorRef}
-                    theme='snow'
+                    theme="snow"
                     value={addNoteFields.Description.value || ""}
                     placeholder={t("Minutes-details")}
                     onChange={onTextChange}
@@ -1261,7 +1026,7 @@ const AgendaWise = ({
                   />
                 </Col>
               </Row>
-              <Row className='mt-5'>
+              <Row className="mt-5">
                 <Col>
                   <p
                     className={
@@ -1269,18 +1034,20 @@ const AgendaWise = ({
                       addNoteFields.Description.value === ""
                         ? ` ${styles["errorNotesMessage"]} `
                         : `${styles["errorNotesMessage_hidden"]}`
-                    }>
+                    }
+                  >
                     {addNoteFields.Description.errorMessage}
                   </p>
                 </Col>
               </Row>
               {/* Button For Saving the The Minutes  */}
-              <Row className='mt-0'>
+              <Row className="mt-0">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex gap-2 justify-content-end'>
+                  className="d-flex gap-2 justify-content-end"
+                >
                   <Button
                     text={t("Reset")}
                     className={styles["Previous_Button"]}
@@ -1310,7 +1077,7 @@ const AgendaWise = ({
               <section className={styles["viewAgendaWiseAttachments"]}>
                 {fileAttachments.length > 0 ? (
                   <>
-                    <Row className='mt-1'>
+                    <Row className="mt-1">
                       {fileAttachments.length > 0
                         ? fileAttachments.map((data, index) => {
                             return (
@@ -1334,20 +1101,21 @@ const AgendaWise = ({
                   </>
                 ) : null}
               </section>
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col lg={12} md={12} sm={12}>
                   <Dragger
                     fileList={[]}
                     {...props}
-                    className={styles["dragdrop_attachment_create_resolution"]}>
-                    <p className='ant-upload-drag-icon'>
+                    className={styles["dragdrop_attachment_create_resolution"]}
+                  >
+                    <p className="ant-upload-drag-icon">
                       <span className={styles["create_resolution_dragger"]}>
                         <img
                           src={featherupload}
-                          width='18.87px'
-                          height='18.87px'
-                          draggable='false'
-                          alt=''
+                          width="18.87px"
+                          height="18.87px"
+                          draggable="false"
+                          alt=""
                         />
                       </span>
                     </p>
@@ -1366,17 +1134,15 @@ const AgendaWise = ({
         </>
       ) : null}
       {minutesData.map((data, index) => {
-        console.log(data, "minutesDataminutesDataminutesData");
         const isOpen = openIndices.includes(index);
-        const isOpenReviewer = openReviewerDetail.includes(index);
         let attachmentResult = hasAttachments(data);
         return (
-          <Row className='mt-2'>
+          <Row className="mt-2">
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
               <>
                 <div>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className='mt-2'>
+                    <Col lg={12} md={12} sm={12} className="mt-2">
                       <div
                         onClick={() =>
                           accordianClick(data, data.minuteID, index)
@@ -1385,21 +1151,21 @@ const AgendaWise = ({
                           isOpen
                             ? styles["agenda-wrapper-closed"]
                             : styles["agenda-wrapper-open"]
-                        }>
+                        }
+                      >
                         <p className={styles["agenda-title"]}>
                           {index + 1 + "." + " " + data.agendaTitle}
                         </p>
-                        <span className='d-flex align-items-start justify-content-center'>
-                          {/* //data.minuteData.length > 0 && */}
+                        <span className="d-flex align-items-start justify-content-center">
                           {attachmentResult ? (
                             <img
                               className={styles["Attachment"]}
-                              alt=''
+                              alt=""
                               src={AttachmentIcon}
                             />
                           ) : null}
                           <img
-                            alt=''
+                            alt=""
                             src={ArrowDown}
                             className={
                               isOpen
@@ -1416,10 +1182,6 @@ const AgendaWise = ({
                       {data.isParentData ? (
                         <>
                           {data.minuteData.map((parentMinutedata, index) => {
-                            console.log(
-                              { parentMinutedata },
-                              "parentMinutedataparentMinutedata"
-                            );
                             return (
                               <>
                                 {minuteReviewData !== null &&
@@ -1429,14 +1191,16 @@ const AgendaWise = ({
                                       <div
                                         className={
                                           styles["reviewer-progress-wrapper"]
-                                        }>
+                                        }
+                                      >
                                         <Row>
                                           <Col lg={11} md={11} sm={12}>
                                             <div
                                               className={
                                                 styles["reviewer-progress-text"]
-                                              }>
-                                              <p className='m-0'>
+                                              }
+                                            >
+                                              <p className="m-0">
                                                 {t("Total")}{" "}
                                                 {
                                                   parentMinutedata?.MinuteStats
@@ -1445,7 +1209,7 @@ const AgendaWise = ({
                                               </p>
                                               <span>|</span>
 
-                                              <p className='m-0'>
+                                              <p className="m-0">
                                                 {t("Pending")}{" "}
                                                 {
                                                   parentMinutedata?.MinuteStats
@@ -1454,7 +1218,7 @@ const AgendaWise = ({
                                               </p>
                                               <span>|</span>
 
-                                              <p className='m-0'>
+                                              <p className="m-0">
                                                 {t("Accepted")}{" "}
                                                 {
                                                   parentMinutedata?.MinuteStats
@@ -1462,7 +1226,7 @@ const AgendaWise = ({
                                                 }
                                               </p>
                                               <span>|</span>
-                                              <p className='m-0'>
+                                              <p className="m-0">
                                                 {t("Rejected")}{" "}
                                                 {
                                                   parentMinutedata?.MinuteStats
@@ -1479,9 +1243,10 @@ const AgendaWise = ({
                                               currentLanguage === "ar"
                                                 ? "text-start"
                                                 : "text-end"
-                                            }>
+                                            }
+                                          >
                                             <img
-                                              alt=''
+                                              alt=""
                                               src={DropdownPurple}
                                               className={
                                                 isOpenDrawerMinute ===
@@ -1509,21 +1274,18 @@ const AgendaWise = ({
                                                 : styles[
                                                     "ParentMinuteNotExtend"
                                                   ]
-                                            }>
+                                            }
+                                          >
                                             <p
-                                              className={`${styles["text-wrapper-review"]}`}>
+                                              className={`${styles["text-wrapper-review"]}`}
+                                            >
                                               <span
                                                 className={
                                                   styles["Review-pending"]
-                                                }>
+                                                }
+                                              >
                                                 Review Pending:
                                               </span>{" "}
-                                              {/* {parentMinutedata?.MinuteStats
-                                                ?.pendingUsers?.length > 0 &&
-                                                parentMinutedata?.MinuteStats?.pendingUsers?.map(
-                                                  (pendingUserData, index) =>
-                                                    `${pendingUserData}, `
-                                                )} */}
                                               {parentMinutedata?.MinuteStats
                                                 ?.pendingUsers?.length > 0 &&
                                                 parentMinutedata?.MinuteStats?.pendingUsers.map(
@@ -1537,19 +1299,15 @@ const AgendaWise = ({
                                                 )}
                                             </p>
                                             <p
-                                              className={`${styles["text-wrapper-review"]}`}>
+                                              className={`${styles["text-wrapper-review"]}`}
+                                            >
                                               <span
                                                 className={
                                                   styles["Review-accepted"]
-                                                }>
+                                                }
+                                              >
                                                 Review Accepted:
                                               </span>{" "}
-                                              {/* {parentMinutedata?.MinuteStats
-                                                ?.acceptedByUsers?.length > 0 &&
-                                                parentMinutedata?.MinuteStats?.acceptedByUsers?.map(
-                                                  (acceptedUser, index) =>
-                                                    `${acceptedUser}, `
-                                                )} */}
                                               {parentMinutedata?.MinuteStats
                                                 ?.acceptedByUsers?.length > 0 &&
                                                 parentMinutedata?.MinuteStats?.acceptedByUsers.map(
@@ -1563,19 +1321,15 @@ const AgendaWise = ({
                                                 )}
                                             </p>
                                             <p
-                                              className={`${styles["text-wrapper-review"]}`}>
+                                              className={`${styles["text-wrapper-review"]}`}
+                                            >
                                               <span
                                                 className={
                                                   styles["Review-declined"]
-                                                }>
+                                                }
+                                              >
                                                 Review Rejected:
                                               </span>{" "}
-                                              {/* {parentMinutedata?.MinuteStats
-                                                ?.rejectedByUsers?.length > 0 &&
-                                                parentMinutedata?.MinuteStats?.rejectedByUsers?.map(
-                                                  (rejectedUser, index) =>
-                                                    `${rejectedUser}, `
-                                                )} */}
                                               {parentMinutedata?.MinuteStats
                                                 ?.rejectedByUsers?.length > 0 &&
                                                 parentMinutedata?.MinuteStats?.rejectedByUsers.map(
@@ -1599,7 +1353,8 @@ const AgendaWise = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className='position-relative'>
+                                    className="position-relative"
+                                  >
                                     <div className={styles["uploaded-details"]}>
                                       {(
                                         (parentMinutedata.isEditable === true &&
@@ -1623,7 +1378,7 @@ const AgendaWise = ({
                                         <img
                                           className={styles["delete-icon"]}
                                           src={DeleteIcon}
-                                          alt=''
+                                          alt=""
                                           onClick={() => {
                                             dispatch(
                                               deleteCommentModalAgenda(true)
@@ -1643,9 +1398,8 @@ const AgendaWise = ({
                                               __html:
                                                 parentMinutedata?.description,
                                             }}
-                                            className={
-                                              styles["minutes-text"]
-                                            }></p>
+                                            className={styles["minutes-text"]}
+                                          ></p>
                                           {parentMinutedata?.attachments
                                             ?.length > 0 ? (
                                             <Row>
@@ -1679,10 +1433,6 @@ const AgendaWise = ({
                                                           )
                                                         )
                                                       }
-                                                      // name={
-                                                      //   fileData?.displayFileName
-                                                      // }
-                                                      // id={fileData.pK_FileID}
                                                     />
                                                   </Col>
                                                 )
@@ -1694,34 +1444,37 @@ const AgendaWise = ({
                                           lg={3}
                                           md={3}
                                           sm={12}
-                                          className='position-relative'>
-                                          <Row className='m-0'>
+                                          className="position-relative"
+                                        >
+                                          <Row className="m-0">
                                             <Col
                                               lg={9}
                                               md={9}
                                               sm={12}
-                                              className='p-0'>
+                                              className="p-0"
+                                            >
                                               <span
-                                                className={
-                                                  styles["bar-line"]
-                                                }></span>
+                                                className={styles["bar-line"]}
+                                              ></span>
                                               <p
                                                 className={
                                                   styles["uploadedbyuser"]
-                                                }>
+                                                }
+                                              >
                                                 {t("Uploaded-by")}
                                               </p>
                                               <div className={styles["gap-ti"]}>
                                                 <img
                                                   src={`data:image/jpeg;base64,${parentMinutedata.uploader.displayProfilePictureName}`}
                                                   className={styles["Image"]}
-                                                  alt=''
+                                                  alt=""
                                                   draggable={false}
                                                 />
                                                 <p
                                                   className={
                                                     styles["agendaCreater"]
-                                                  }>
+                                                  }
+                                                >
                                                   {parentMinutedata.userName}
                                                 </p>
                                               </div>
@@ -1730,8 +1483,9 @@ const AgendaWise = ({
                                               lg={3}
                                               md={3}
                                               sm={12}
-                                              className='d-grid justify-content-end p-0'>
-                                              <div className='d-flex justify-content-center align-items-center'>
+                                              className="d-grid justify-content-end p-0"
+                                            >
+                                              <div className="d-flex justify-content-center align-items-center">
                                                 {(
                                                   (parentMinutedata.isEditable ===
                                                     true &&
@@ -1765,9 +1519,9 @@ const AgendaWise = ({
                                                           "Organizer")
                                                 ) ? (
                                                   <img
-                                                    className='cursor-pointer mx-2'
+                                                    className="cursor-pointer mx-2"
                                                     src={EditIcon}
-                                                    alt=''
+                                                    alt=""
                                                     onClick={() =>
                                                       handleEditFunc(
                                                         parentMinutedata,
@@ -1785,11 +1539,12 @@ const AgendaWise = ({
                                                   className={
                                                     styles["box-agendas"]
                                                   }
-                                                  ref={closeMenuMinute}>
+                                                  ref={closeMenuMinute}
+                                                >
                                                   <img
-                                                    className='cursor-pointer'
+                                                    className="cursor-pointer"
                                                     src={MenuIcon}
-                                                    alt=''
+                                                    alt=""
                                                   />
                                                   <div
                                                     className={
@@ -1805,28 +1560,27 @@ const AgendaWise = ({
                                                               "popup-agenda-menu"
                                                             ]
                                                           } ${"opacity-0 pe-none"}`
-                                                    }>
+                                                    }
+                                                  >
                                                     <span
-                                                      onClick={
-                                                        () =>
-                                                          handleClickShowRevision(
-                                                            data,
-                                                            parentMinutedata.minuteID
-                                                          )
-                                                        // setShowRevisionHistory(true)
-                                                      }>
+                                                      onClick={() =>
+                                                        handleClickShowRevision(
+                                                          data,
+                                                          parentMinutedata.minuteID
+                                                        )
+                                                      }
+                                                    >
                                                       {t("Revisions")}
                                                     </span>
                                                     <span
-                                                      onClick={
-                                                        () =>
-                                                          handleClickShowVersionHistory(
-                                                            data,
-                                                            parentMinutedata.minuteID
-                                                          )
-                                                        // setShowVersionHistory(true)
+                                                      onClick={() =>
+                                                        handleClickShowVersionHistory(
+                                                          data,
+                                                          parentMinutedata.minuteID
+                                                        )
                                                       }
-                                                      className='border-0'>
+                                                      className="border-0"
+                                                    >
                                                       {t("Version-history")}
                                                     </span>
                                                   </div>
@@ -1839,7 +1593,8 @@ const AgendaWise = ({
                                               <p
                                                 className={
                                                   styles["time-uploader"]
-                                                }>
+                                                }
+                                              >
                                                 {convertToGMTMinuteTime(
                                                   parentMinutedata.lastUpdatedDate +
                                                     parentMinutedata.lastUpdatedTime
@@ -1848,7 +1603,8 @@ const AgendaWise = ({
                                               <p
                                                 className={
                                                   styles["date-uploader"]
-                                                }>
+                                                }
+                                              >
                                                 {convertDateToGMTMinute(
                                                   parentMinutedata.lastUpdatedDate +
                                                     parentMinutedata.lastUpdatedTime
@@ -1867,16 +1623,10 @@ const AgendaWise = ({
                         </>
                       ) : null}
                       {data.subMinutes.map((subMinuteData, subMinuteIndex) => {
-                        console.log(
-                          { subMinuteData },
-                          "parentMinutedataparentMinutedata"
-                        );
-                        const isOpenReviewerSubminute =
-                          openReviewerDetailSubminute.includes(subMinuteIndex);
                         return (
                           <div>
                             {subMinuteData.minuteData.length === 0 ? null : (
-                              <Row className='mx-50'>
+                              <Row className="mx-50">
                                 <Col lg={12} md={12} sm={12}>
                                   <p className={styles["Parent-title-heading"]}>
                                     {index +
@@ -1890,8 +1640,7 @@ const AgendaWise = ({
                                 </Col>
                               </Row>
                             )}
-                            {/* {isOpenReviewerSubminute === false &&
-                            minuteReviewData !== null ? ( */}
+
                             <>
                               {subMinuteData.minuteData.map(
                                 (minuteDataSubminute) => (
@@ -1903,14 +1652,16 @@ const AgendaWise = ({
                                           currentLanguage === "ar"
                                             ? "mxr-50"
                                             : "mxl-50"
-                                        }>
+                                        }
+                                      >
                                         <Col lg={12} md={12} sm={12}>
                                           <div
                                             className={
                                               styles[
                                                 "reviewer-progress-wrapper"
                                               ]
-                                            }>
+                                            }
+                                          >
                                             <Row>
                                               <Col lg={11} md={11} sm={12}>
                                                 <div
@@ -1918,8 +1669,9 @@ const AgendaWise = ({
                                                     styles[
                                                       "reviewer-progress-text"
                                                     ]
-                                                  }>
-                                                  <p className='m-0'>
+                                                  }
+                                                >
+                                                  <p className="m-0">
                                                     {t("Total")}{" "}
                                                     {
                                                       minuteDataSubminute
@@ -1928,7 +1680,7 @@ const AgendaWise = ({
                                                     }
                                                   </p>
                                                   <span>|</span>
-                                                  <p className='m-0'>
+                                                  <p className="m-0">
                                                     {t("Pending")}{" "}
                                                     {
                                                       minuteDataSubminute
@@ -1936,7 +1688,7 @@ const AgendaWise = ({
                                                     }
                                                   </p>
                                                   <span>|</span>
-                                                  <p className='m-0'>
+                                                  <p className="m-0">
                                                     {t("Accepted")}{" "}
                                                     {
                                                       minuteDataSubminute
@@ -1944,7 +1696,7 @@ const AgendaWise = ({
                                                     }
                                                   </p>
                                                   <span>|</span>
-                                                  <p className='m-0'>
+                                                  <p className="m-0">
                                                     {t("Rejected")}{" "}
                                                     {
                                                       minuteDataSubminute
@@ -1961,9 +1713,10 @@ const AgendaWise = ({
                                                   currentLanguage === "ar"
                                                     ? "text-start"
                                                     : "text-end"
-                                                }>
+                                                }
+                                              >
                                                 <img
-                                                  alt=''
+                                                  alt=""
                                                   src={DropdownPurple}
                                                   className={
                                                     minuteDataSubminute.minuteID ===
@@ -1991,22 +1744,18 @@ const AgendaWise = ({
                                                     : styles[
                                                         "subMinuteNotExtend"
                                                       ]
-                                                }>
+                                                }
+                                              >
                                                 <p
-                                                  className={`${styles["text-wrapper-review"]}`}>
+                                                  className={`${styles["text-wrapper-review"]}`}
+                                                >
                                                   <span
                                                     className={
                                                       styles["Review-pending"]
-                                                    }>
+                                                    }
+                                                  >
                                                     Review Pending:
                                                   </span>{" "}
-                                                  {/* {minuteDataSubminute
-                                                    ?.MinuteStats?.pendingUsers
-                                                    ?.length > 0 &&
-                                                    minuteDataSubminute?.MinuteStats?.pendingUsers?.map(
-                                                      (pendingUserData) =>
-                                                        `${pendingUserData}, `
-                                                    )} */}
                                                   {minuteDataSubminute
                                                     ?.MinuteStats?.pendingUsers
                                                     ?.length > 0 &&
@@ -2025,21 +1774,15 @@ const AgendaWise = ({
                                                     )}
                                                 </p>
                                                 <p
-                                                  className={`${styles["text-wrapper-review"]}`}>
+                                                  className={`${styles["text-wrapper-review"]}`}
+                                                >
                                                   <span
                                                     className={
                                                       styles["Review-accepted"]
-                                                    }>
+                                                    }
+                                                  >
                                                     Review Accepted:
                                                   </span>{" "}
-                                                  {/* {minuteDataSubminute
-                                                    ?.MinuteStats
-                                                    ?.acceptedByUsers?.length >
-                                                    0 &&
-                                                    minuteDataSubminute?.MinuteStats?.acceptedByUsers?.map(
-                                                      (acceptedUserData) =>
-                                                        `${acceptedUserData}, `
-                                                    )} */}
                                                   {minuteDataSubminute
                                                     ?.MinuteStats
                                                     ?.acceptedByUsers?.length >
@@ -2060,21 +1803,15 @@ const AgendaWise = ({
                                                     )}
                                                 </p>
                                                 <p
-                                                  className={`${styles["text-wrapper-review"]}`}>
+                                                  className={`${styles["text-wrapper-review"]}`}
+                                                >
                                                   <span
                                                     className={
                                                       styles["Review-declined"]
-                                                    }>
+                                                    }
+                                                  >
                                                     Review Rejected:
                                                   </span>{" "}
-                                                  {/* {minuteDataSubminute
-                                                    ?.MinuteStats
-                                                    ?.rejectedByUsers?.length >
-                                                    0 &&
-                                                    minuteDataSubminute?.MinuteStats?.rejectedByUsers?.map(
-                                                      (rejectedUserData) =>
-                                                        `${rejectedUserData}, `
-                                                    )} */}
                                                   {minuteDataSubminute
                                                     ?.MinuteStats
                                                     ?.rejectedByUsers?.length >
@@ -2106,26 +1843,27 @@ const AgendaWise = ({
                                         currentLanguage === "ar"
                                           ? "mxr-50"
                                           : "mxl-50"
-                                      }>
+                                      }
+                                    >
                                       <Col
                                         lg={12}
                                         md={12}
                                         sm={12}
-                                        className='position-relative'>
+                                        className="position-relative"
+                                      >
                                         <div
                                           className={
                                             styles["version-control-wrapper"]
-                                          }>
+                                          }
+                                        >
                                           <span></span>
                                         </div>
                                         <div
-                                          className={
-                                            styles["uploaded-details"]
-                                          }>
+                                          className={styles["uploaded-details"]}
+                                        >
                                           <Row
-                                            className={
-                                              styles["inherit-height"]
-                                            }>
+                                            className={styles["inherit-height"]}
+                                          >
                                             <Col lg={9} md={9} sm={12}>
                                               <p
                                                 dangerouslySetInnerHTML={{
@@ -2134,19 +1872,18 @@ const AgendaWise = ({
                                                 }}
                                                 className={
                                                   styles["minutes-text"]
-                                                }></p>
+                                                }
+                                              ></p>
                                               {minuteDataSubminute.attachments
                                                 .length > 0 ? (
                                                 <Row>
                                                   {minuteDataSubminute.attachments.map(
-                                                    (
-                                                      subFileData,
-                                                      subFileIndex
-                                                    ) => (
+                                                    (subFileData) => (
                                                       <Col
                                                         lg={3}
                                                         md={3}
-                                                        sm={12}>
+                                                        sm={12}
+                                                      >
                                                         <AttachmentViewer
                                                           handleClickDownload={() =>
                                                             downloadDocument(
@@ -2176,12 +1913,6 @@ const AgendaWise = ({
                                                               )
                                                             )
                                                           }
-                                                          // name={
-                                                          //   subFileData.displayFileName
-                                                          // }
-                                                          // id={
-                                                          //   subFileData.pK_FileID
-                                                          // }
                                                         />
                                                       </Col>
                                                     )
@@ -2193,39 +1924,43 @@ const AgendaWise = ({
                                               lg={3}
                                               md={3}
                                               sm={12}
-                                              className='position-relative'>
-                                              <Row className='m-0'>
+                                              className="position-relative"
+                                            >
+                                              <Row className="m-0">
                                                 <Col
                                                   lg={9}
                                                   md={9}
                                                   sm={12}
-                                                  className='p-0'>
+                                                  className="p-0"
+                                                >
                                                   <span
                                                     className={
                                                       styles["bar-line"]
-                                                    }></span>
+                                                    }
+                                                  ></span>
                                                   <p
                                                     className={
                                                       styles["uploadedbyuser"]
-                                                    }>
+                                                    }
+                                                  >
                                                     {t("Uploaded-by")}
                                                   </p>
                                                   <div
-                                                    className={
-                                                      styles["gap-ti"]
-                                                    }>
+                                                    className={styles["gap-ti"]}
+                                                  >
                                                     <img
                                                       src={`data:image/jpeg;base64,${minuteDataSubminute.uploader.displayProfilePictureName}`}
                                                       className={
                                                         styles["Image"]
                                                       }
-                                                      alt=''
+                                                      alt=""
                                                       draggable={false}
                                                     />
                                                     <p
                                                       className={
                                                         styles["agendaCreater"]
-                                                      }>
+                                                      }
+                                                    >
                                                       {
                                                         minuteDataSubminute.userName
                                                       }
@@ -2236,8 +1971,9 @@ const AgendaWise = ({
                                                   lg={3}
                                                   md={3}
                                                   sm={12}
-                                                  className='d-grid justify-content-end p-0'>
-                                                  <div className='d-flex justify-content-center align-items-center'>
+                                                  className="d-grid justify-content-end p-0"
+                                                >
+                                                  <div className="d-flex justify-content-center align-items-center">
                                                     {(
                                                       (minuteDataSubminute.isEditable ===
                                                         true &&
@@ -2271,9 +2007,9 @@ const AgendaWise = ({
                                                               "Organizer")
                                                     ) ? (
                                                       <img
-                                                        className='cursor-pointer mx-2'
+                                                        className="cursor-pointer mx-2"
                                                         src={EditIcon}
-                                                        alt=''
+                                                        alt=""
                                                         onClick={() =>
                                                           handleEditFunc(
                                                             minuteDataSubminute,
@@ -2291,11 +2027,12 @@ const AgendaWise = ({
                                                       className={
                                                         styles["box-agendas"]
                                                       }
-                                                      ref={closeMenuMinute}>
+                                                      ref={closeMenuMinute}
+                                                    >
                                                       <img
-                                                        className='cursor-pointer'
+                                                        className="cursor-pointer"
                                                         src={MenuIcon}
-                                                        alt=''
+                                                        alt=""
                                                       />
                                                       <div
                                                         className={
@@ -2311,30 +2048,27 @@ const AgendaWise = ({
                                                                   "popup-agenda-menu"
                                                                 ]
                                                               } ${"opacity-0 pe-none"}`
-                                                        }>
+                                                        }
+                                                      >
                                                         <span
-                                                          onClick={
-                                                            () =>
-                                                              handleClickShowRevision(
-                                                                minuteDataSubminute,
-                                                                minuteDataSubminute.minuteID
-                                                              )
-                                                            // setShowRevisionHistory(true)
-                                                          }>
+                                                          onClick={() =>
+                                                            handleClickShowRevision(
+                                                              minuteDataSubminute,
+                                                              minuteDataSubminute.minuteID
+                                                            )
+                                                          }
+                                                        >
                                                           {t("Revisions")}
                                                         </span>
                                                         <span
-                                                          onClick={
-                                                            () =>
-                                                              handleClickShowVersionHistory(
-                                                                data,
-                                                                minuteDataSubminute.minuteID
-                                                              )
-                                                            // setShowVersionHistory(
-                                                            //   true
-                                                            // )
+                                                          onClick={() =>
+                                                            handleClickShowVersionHistory(
+                                                              data,
+                                                              minuteDataSubminute.minuteID
+                                                            )
                                                           }
-                                                          className='border-0'>
+                                                          className="border-0"
+                                                        >
                                                           {t("Version-history")}
                                                         </span>
                                                       </div>
@@ -2347,7 +2081,8 @@ const AgendaWise = ({
                                                   <p
                                                     className={
                                                       styles["time-uploader"]
-                                                    }>
+                                                    }
+                                                  >
                                                     {convertToGMTMinuteTime(
                                                       minuteDataSubminute.lastUpdatedDate +
                                                         minuteDataSubminute.lastUpdatedTime
@@ -2356,7 +2091,8 @@ const AgendaWise = ({
                                                   <p
                                                     className={
                                                       styles["date-uploader"]
-                                                    }>
+                                                    }
+                                                  >
                                                     {convertDateToGMTMinute(
                                                       minuteDataSubminute.lastUpdatedDate +
                                                         minuteDataSubminute.lastUpdatedTime
@@ -2380,7 +2116,7 @@ const AgendaWise = ({
                                           <img
                                             className={styles["delete-icon"]}
                                             src={DeleteIcon}
-                                            alt=''
+                                            alt=""
                                             onClick={() => {
                                               dispatch(
                                                 deleteCommentModalAgenda(true)
@@ -2399,7 +2135,6 @@ const AgendaWise = ({
                                 )
                               )}
                             </>
-                            {/* ) : null} */}
                           </div>
                         );
                       })}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Button } from "../../../../../../components/elements"; // Importing necessary components
 import styles from "./DeleteCommentModal.module.css"; // Importing CSS styles
 import {
@@ -54,10 +54,7 @@ const DeleteCommentAgenda = ({
     });
 
     setFileAttachments([]);
-    // setAgendaOptions([]);
   };
-
-  console.log("This is Delete Modal of Agenda")
 
   return (
     <section>

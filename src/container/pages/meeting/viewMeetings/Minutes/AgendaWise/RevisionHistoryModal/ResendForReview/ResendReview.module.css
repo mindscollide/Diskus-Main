@@ -50,7 +50,6 @@ img.image-style {
 .profile-wrapper {
   margin: 10px 0px;
   border: 1px solid #e1e1e1;
-  /* padding: 10px; */
   border-radius: 4px;
   margin-right: 10px;
   height: 44px;
@@ -67,7 +66,6 @@ label.label-style {
 }
 
 p.delete-comment-message {
-  /* margin: 0; */
   font-weight: 600;
   font-size: 16px;
   color: #5a5a5a;

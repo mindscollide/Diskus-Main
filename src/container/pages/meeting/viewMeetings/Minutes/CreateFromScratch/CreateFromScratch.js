@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import styles from "./CreateFromScratch.module.css";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import profile from "../../../../../../assets/images/newprofile.png";
 import { Col, Row } from "react-bootstrap";
@@ -15,13 +14,11 @@ import {
   showUnsavedCreateFromScratch,
   showUnsavedForButonCreateFromScratch,
 } from "../../../../../../store/actions/NewMeetingActions";
-import { isHTML } from "../../../../../../commen/functions/html_formater";
 import UnsavedCreateScratch from "./UnsavedCreateScratch/UnsavedCreateScratch";
 
 const CreateFromScratch = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [editable, setEditable] = useState(false);
   const [createFromSratch, setCreateFromSratch] = useState(false);
   const [editableIndex, setEditableIndex] = useState(0);
@@ -34,7 +31,6 @@ const CreateFromScratch = () => {
     },
   ]);
   const [quillText, setQuillText] = useState("");
-  console.log(quillText, "quillTextquillTextquillText");
   const handleRemoveFiles = (index) => {
     let optionscross = [...showScratchFiles];
     optionscross.splice(index, 1);
@@ -148,6 +144,7 @@ const CreateFromScratch = () => {
               />
               <img
                 draggable={false}
+                alt=""
                 src={RedCroseeIcon}
                 className={styles["RedCrossForEdit"]}
               />
@@ -166,7 +163,6 @@ const CreateFromScratch = () => {
             <Row className="mt-5">
               {showScratchFiles.length > 0
                 ? showScratchFiles.map((data, index) => {
-                    console.log(data, "datadatadatadatadata");
                     return (
                       <>
                         {editableIndex === index && editable ? (
@@ -189,6 +185,7 @@ const CreateFromScratch = () => {
                                 />
                                 <img
                                   draggable={false}
+                                  alt=""
                                   src={RedCroseeIcon}
                                   className={
                                     styles["RedCrossForEdit_AfterSave"]
@@ -255,24 +252,6 @@ const CreateFromScratch = () => {
                                                 : t("See-less")}
                                             </span>
                                           </span>
-                                          {/* <span className={styles["Title_File"]}>
-                                      {isHTML(data.name) && (
-                                        <span
-                                          dangerouslySetInnerHTML={{
-                                            __html: data.name,
-                                          }}
-                                        ></span>
-                                      )}
-
-                                      <span
-                                        className={styles["Show_more_Styles"]}
-                                        onClick={toggleExpansion}
-                                      >
-                                        {expanded
-                                          ? t("See-more")
-                                          : t("See-less")}
-                                      </span>
-                                    </span> */}
                                         </Col>
                                       </Row>
                                       <Row className="mt-1">
@@ -292,6 +271,7 @@ const CreateFromScratch = () => {
                                         <Col lg={2} md={2} sm={2}>
                                           <img
                                             draggable={false}
+                                            alt=""
                                             src={profile}
                                             height="39px"
                                             width="39px"
@@ -333,6 +313,7 @@ const CreateFromScratch = () => {
                                         >
                                           <img
                                             draggable={false}
+                                            alt=""
                                             src={EditIcon}
                                             height="21.55px"
                                             width="21.55px"
@@ -347,6 +328,7 @@ const CreateFromScratch = () => {
                                   </Row>
                                   <img
                                     draggable={false}
+                                    alt=""
                                     src={RedCroseeIcon}
                                     height="20.76px"
                                     width="20.76px"
@@ -375,16 +357,7 @@ const CreateFromScratch = () => {
           md={12}
           sm={12}
           className="d-flex justify-content-end gap-2"
-        >
-          {/* <Button
-            text={t("Cancel")}
-            className={styles["CancelButtonOnSaveAgendaImport"]}
-          />
-          <Button
-            text={t("Save")}
-            className={styles["SaveButtonOnSaveAgendaImport"]}
-          /> */}
-        </Col>
+        ></Col>
       </Row>
       {createFromSratch ? (
         <>

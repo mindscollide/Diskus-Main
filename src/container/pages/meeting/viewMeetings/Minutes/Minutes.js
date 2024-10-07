@@ -39,7 +39,6 @@ import AddReviewers from "./AddReviewersModal/AddReviewers";
 import AttachmentIcon from "./Images/Attachment-Icon.png";
 import ArrowDown from "./Images/Arrow-Down.png";
 import EditIcon from "./Images/Edit-Icon.png";
-import DefaultAvatar from "./Images/avatar.png";
 import {
   convertToGMTMinuteTime,
   convertDateToGMTMinute,
@@ -56,8 +55,6 @@ import {
   GetPublishedMeetingMinutesApi,
   GetAllOrganizationUsersForReview,
   GetMinuteReviewFlowByMeetingId,
-  GetDataForResendMinuteReview,
-  MeetingPublishedMinutesApi,
   GetStatsForPublishingMinutesByWorkFlowId,
 } from "../../../../../store/actions/Minutes_action";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
@@ -65,7 +62,6 @@ import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRo
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
 import {
   fileFormatforSignatureFlow,
-  removeHTMLTags,
   removeHTMLTagsAndTruncate,
 } from "../../../../../commen/functions/utils";
 import ApprovalIncompleteModal from "./approvalIncompleteModal/ApprovalIncompleteModal";
@@ -217,18 +213,6 @@ const Minutes = ({
         GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
       );
 
-      // dispatch(
-      //   GetAllAgendaWiseMinutesApiFunc(
-      //     navigate,
-      //     Data,
-      //     t,
-      //     Number(advanceMeetingModalID),
-      //     false,
-      //     false,
-      //     true
-      //   )
-      // );
-
       dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
     }
 
@@ -313,13 +297,9 @@ const Minutes = ({
             },
           });
         }
-
-        console.log(String(content).length, content, "String Length ....");
       }
     }
   };
-
-  console.log("addNoteFieldsaddNoteFields", addNoteFields);
 
   const props = {
     name: "file",
@@ -334,7 +314,6 @@ const Minutes = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
       console.log("testtesttest", fileAttachments, fileList);
@@ -445,7 +424,7 @@ const Minutes = ({
       ) {
         let files = [];
         let prevData = [];
-        generalMinutesDocument.data.map((data, index) => {
+        generalMinutesDocument.data.map((data) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
@@ -485,9 +464,6 @@ const Minutes = ({
     setGeneral(true);
   };
 
-  const toggleExpansion = () => {
-    setExpanded(!expanded);
-  };
   const handleAddClick = async () => {
     if (addNoteFields.Description.value !== "") {
       let Data = {
@@ -515,8 +491,6 @@ const Minutes = ({
     }
   };
 
-  console.log("addNoteFieldsaddNoteFields", addNoteFields);
-
   const documentUploadingFunc = async (minuteID) => {
     let newFolder = [];
     let newfile = [];
@@ -528,7 +502,6 @@ const Minutes = ({
             t,
             newData,
             folderID,
-            // newFolder,
             newfile
           )
         );
@@ -593,7 +566,6 @@ const Minutes = ({
   };
 
   const pdfData = (record, ext) => {
-    console.log("PDFDATAPDFDATA", record);
     let Data = {
       taskId: 1,
       commingFrom: 4,
@@ -719,18 +691,6 @@ const Minutes = ({
         errorStatus: true,
       },
     });
-  };
-
-  const handleshowMore = (index) => {
-    if (generalShowMore === index) {
-      // If the clicked index is the same as the expanded one, collapse it
-      setGeneralShowMore(null);
-      setShowMore(false);
-    } else {
-      // If a different index is clicked, expand the clicked section and collapse the previous one
-      setGeneralShowMore(index);
-      setShowMore(true);
-    }
   };
 
   //Invite To Collaborate
@@ -892,7 +852,7 @@ const Minutes = ({
     await setAddReviewers(true);
   };
 
-  const accordianClick = (data, id, index) => {
+  const accordianClick = (index) => {
     setOpenIndices((prevIndices) =>
       prevIndices.includes(index)
         ? prevIndices.filter((i) => i !== index)
@@ -900,7 +860,7 @@ const Minutes = ({
     );
   };
 
-  const accordianClickGeneral = (data, id, index) => {
+  const accordianClickGeneral = (index) => {
     setOpenIndicesGeneral((prevIndices) =>
       prevIndices.includes(index)
         ? prevIndices.filter((i) => i !== index)
@@ -1156,7 +1116,6 @@ const Minutes = ({
   };
 
   const publishMeetingMinutes = () => {
-    // let Data = { MeetingID: Number(advanceMeetingModalID) };
     let workFlowID =
       MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow.workFlow
         .pK_WorkFlow_ID;
@@ -1170,7 +1129,6 @@ const Minutes = ({
         setPublishAnywayModal
       )
     );
-    // dispatch(MeetingPublishedMinutesApi(Data, navigate, t));
   };
 
   useEffect(() => {
@@ -1201,18 +1159,6 @@ const Minutes = ({
     generalminutesDocumentForMeeting,
     NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes,
   ]);
-
-  console.log(
-    "publishMinutesDataAgendapublishMinutesDataAgenda",
-    publishMinutesDataAgenda
-  );
-
-  console.log(
-    "publishMinutesDataGeneralpublishMinutesDataGeneral",
-    publishMinutesDataGeneral
-  );
-
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   return JSON.parse(isMinutePublished) ? (
     <>
@@ -1268,166 +1214,156 @@ const Minutes = ({
                   </Row>
                   {isOpen ? (
                     <>
-                      {data.agendaMinutes.map(
-                        (parentMinuteData, subMinuteIndex) => {
-                          const maxVisibleImages = 4;
-                          const approvedByUsers =
-                            parentMinuteData.approvedByUsers;
-                          const visibleApprovedUsers = approvedByUsers.slice(
-                            0,
-                            maxVisibleImages
-                          );
-                          const remainingCount =
-                            approvedByUsers.length - maxVisibleImages;
-                          return (
-                            <div>
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="position-relative"
+                      {data.agendaMinutes.map((parentMinuteData) => {
+                        const maxVisibleImages = 4;
+                        const approvedByUsers =
+                          parentMinuteData.approvedByUsers;
+                        const visibleApprovedUsers = approvedByUsers.slice(
+                          0,
+                          maxVisibleImages
+                        );
+                        const remainingCount =
+                          approvedByUsers.length - maxVisibleImages;
+                        return (
+                          <div>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="position-relative"
+                              >
+                                <div
+                                  className={styles["version-control-wrapper"]}
                                 >
-                                  <div
-                                    className={
-                                      styles["version-control-wrapper"]
-                                    }
-                                  >
-                                    <span></span>
-                                  </div>
-                                  <div className={styles["uploaded-details"]}>
-                                    <Row className={styles["inherit-height"]}>
-                                      <Col lg={10} md={10} sm={12}>
-                                        <p
-                                          dangerouslySetInnerHTML={{
-                                            __html:
-                                              parentMinuteData.minutesDetails,
-                                          }}
-                                          className={styles["minutes-text"]}
-                                        ></p>
-                                        {parentMinuteData.minutesAttachmets
-                                          .length > 0 ? (
-                                          <Row>
-                                            {parentMinuteData.minutesAttachmets.map(
-                                              (subFileData, subFileIndex) => (
-                                                <Col lg={3} md={3} sm={12}>
-                                                  <AttachmentViewer
-                                                    handleClickDownload={() =>
-                                                      downloadDocument(
-                                                        subFileData
+                                  <span></span>
+                                </div>
+                                <div className={styles["uploaded-details"]}>
+                                  <Row className={styles["inherit-height"]}>
+                                    <Col lg={10} md={10} sm={12}>
+                                      <p
+                                        dangerouslySetInnerHTML={{
+                                          __html:
+                                            parentMinuteData.minutesDetails,
+                                        }}
+                                        className={styles["minutes-text"]}
+                                      ></p>
+                                      {parentMinuteData.minutesAttachmets
+                                        .length > 0 ? (
+                                        <Row>
+                                          {parentMinuteData.minutesAttachmets.map(
+                                            (subFileData) => (
+                                              <Col lg={3} md={3} sm={12}>
+                                                <AttachmentViewer
+                                                  handleClickDownload={() =>
+                                                    downloadDocument(
+                                                      subFileData
+                                                    )
+                                                  }
+                                                  fk_UID={0}
+                                                  handleClickRemove={() =>
+                                                    handleRemoveFile(
+                                                      subFileData
+                                                    )
+                                                  }
+                                                  data={
+                                                    parentMinuteData.minutesAttachmets
+                                                  }
+                                                  id={subFileData.pK_FileID}
+                                                  name={
+                                                    subFileData.displayFileName
+                                                  }
+                                                  handleEyeIcon={() =>
+                                                    pdfData(
+                                                      parentMinuteData.minutesAttachmets,
+                                                      getFileExtension(
+                                                        subFileData?.displayFileName
                                                       )
-                                                    }
-                                                    fk_UID={0}
-                                                    handleClickRemove={() =>
-                                                      handleRemoveFile(
-                                                        subFileData
-                                                      )
-                                                    }
-                                                    data={
-                                                      parentMinuteData.minutesAttachmets
-                                                    }
-                                                    id={subFileData.pK_FileID}
-                                                    name={
-                                                      subFileData.displayFileName
-                                                    }
-                                                    handleEyeIcon={() =>
-                                                      pdfData(
-                                                        parentMinuteData.minutesAttachmets,
-                                                        getFileExtension(
-                                                          subFileData?.displayFileName
-                                                        )
-                                                      )
-                                                    }
-                                                  />
-                                                  {/* <AttachmentViewer
-                                                    id={0}
-                                                    name={
-                                                      subFileData.displayFileName
-                                                    }
-                                                  /> */}
-                                                </Col>
+                                                    )
+                                                  }
+                                                />
+                                              </Col>
+                                            )
+                                          )}
+                                        </Row>
+                                      ) : null}
+                                    </Col>
+                                    <Col
+                                      lg={2}
+                                      md={2}
+                                      sm={12}
+                                      className="position-relative"
+                                    >
+                                      <Row className="m-0">
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="p-0"
+                                        >
+                                          <span
+                                            className={styles["bar-line"]}
+                                          ></span>
+                                          <p
+                                            className={`${styles["uploadedbyuser"]} m-0`}
+                                          >
+                                            {t("Uploaded-by")}
+                                          </p>
+                                          <div className={styles["gap-ti"]}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${parentMinuteData?.userProfilePicture?.displayProfilePictureName}`}
+                                              className={styles["Image"]}
+                                              alt=""
+                                              draggable={false}
+                                            />
+                                            <p
+                                              className={
+                                                styles["agendaCreater"]
+                                              }
+                                            >
+                                              {parentMinuteData.userName}
+                                            </p>
+                                          </div>
+                                          <p
+                                            className={`${styles["uploadedbyuser"]} mt-3`}
+                                          >
+                                            {t("Approved-by")}
+                                          </p>
+                                          <div className={styles["gap-ti"]}>
+                                            {visibleApprovedUsers.map(
+                                              (
+                                                approvedUserList,
+                                                subFileIndex
+                                              ) => (
+                                                <img
+                                                  key={subFileIndex}
+                                                  src={`data:image/jpeg;base64,${approvedUserList?.displayProfilePictureName}`}
+                                                  className={styles["Image"]}
+                                                  alt=""
+                                                  draggable={false}
+                                                />
                                               )
                                             )}
-                                          </Row>
-                                        ) : null}
-                                      </Col>
-                                      <Col
-                                        lg={2}
-                                        md={2}
-                                        sm={12}
-                                        className="position-relative"
-                                      >
-                                        <Row className="m-0">
-                                          <Col
-                                            lg={12}
-                                            md={12}
-                                            sm={12}
-                                            className="p-0"
-                                          >
-                                            <span
-                                              className={styles["bar-line"]}
-                                            ></span>
-                                            <p
-                                              className={`${styles["uploadedbyuser"]} m-0`}
-                                            >
-                                              {t("Uploaded-by")}
-                                            </p>
-                                            <div className={styles["gap-ti"]}>
-                                              <img
-                                                src={`data:image/jpeg;base64,${parentMinuteData?.userProfilePicture?.displayProfilePictureName}`}
-                                                className={styles["Image"]}
-                                                alt=""
-                                                draggable={false}
-                                              />
-                                              <p
+                                            {remainingCount > 0 && (
+                                              <span
                                                 className={
-                                                  styles["agendaCreater"]
+                                                  styles["reviewer-count"]
                                                 }
                                               >
-                                                {parentMinuteData.userName}
-                                              </p>
-                                            </div>
-                                            <p
-                                              className={`${styles["uploadedbyuser"]} mt-3`}
-                                            >
-                                              {t("Approved-by")}
-                                            </p>
-                                            <div className={styles["gap-ti"]}>
-                                              {visibleApprovedUsers.map(
-                                                (
-                                                  approvedUserList,
-                                                  subFileIndex
-                                                ) => (
-                                                  <img
-                                                    key={subFileIndex}
-                                                    src={`data:image/jpeg;base64,${approvedUserList?.displayProfilePictureName}`}
-                                                    className={styles["Image"]}
-                                                    alt=""
-                                                    draggable={false}
-                                                  />
-                                                )
-                                              )}
-                                              {remainingCount > 0 && (
-                                                <span
-                                                  className={
-                                                    styles["reviewer-count"]
-                                                  }
-                                                >
-                                                  +{remainingCount}
-                                                </span>
-                                              )}
-                                            </div>
-                                          </Col>
-                                        </Row>
-                                      </Col>
-                                    </Row>
-                                  </div>
-                                </Col>
-                              </Row>
-                            </div>
-                          );
-                        }
-                      )}
+                                                +{remainingCount}
+                                              </span>
+                                            )}
+                                          </div>
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </Col>
+                            </Row>
+                          </div>
+                        );
+                      })}
 
                       {data.childAgendas.map(
                         (childAgendaData, subMinuteIndex) => {
@@ -1447,7 +1383,7 @@ const Minutes = ({
                                 </Col>
                               </Row>
                               {childAgendaData.agendaMinutes.map(
-                                (childAgendaMinuteData, subMinuteIndex) => {
+                                (childAgendaMinuteData) => {
                                   const maxVisibleImages = 4;
                                   const approvedByUsers =
                                     childAgendaMinuteData.approvedByUsers;
@@ -1497,21 +1433,12 @@ const Minutes = ({
                                               0 ? (
                                                 <Row>
                                                   {childAgendaMinuteData.minutesAttachmets.map(
-                                                    (
-                                                      subFileData,
-                                                      subFileIndex
-                                                    ) => (
+                                                    (subFileData) => (
                                                       <Col
                                                         lg={3}
                                                         md={3}
                                                         sm={12}
                                                       >
-                                                        {/* <AttachmentViewer
-                                                          id={0}
-                                                          name={
-                                                            subFileData.displayFileName
-                                                          }
-                                                        /> */}
                                                         <AttachmentViewer
                                                           handleClickDownload={() =>
                                                             downloadDocument(
@@ -1575,7 +1502,6 @@ const Minutes = ({
                                                     className={styles["gap-ti"]}
                                                   >
                                                     <img
-                                                      // src={DefaultAvatar}
                                                       src={`data:image/jpeg;base64,${childAgendaMinuteData?.userProfilePicture?.displayProfilePictureName}`}
                                                       className={
                                                         styles["Image"]
@@ -1888,7 +1814,6 @@ const Minutes = ({
               <Button
                 text={t("Add-reviewers")}
                 className={styles["Add_Reviewers"]}
-                // disableBtn={minutesData.length > 0 ? true : false}
                 onClick={addReviewersModal}
               />
             </div>
@@ -1994,7 +1919,7 @@ const Minutes = ({
                         <>
                           <Row>
                             {fileAttachments.length > 0
-                              ? fileAttachments.map((data, index) => {
+                              ? fileAttachments.map((data) => {
                                   return (
                                     <>
                                       <Col lg={4} md={4} sm={4}>
@@ -2288,12 +2213,6 @@ const Minutes = ({
                                           >
                                             Review Rejected:
                                           </span>{" "}
-                                          {/* {data?.MinuteStats?.rejectedByUsers
-                                            ?.length > 0 &&
-                                            data?.MinuteStats?.rejectedByUsers?.map(
-                                              (minuteRejectedUser, index) =>
-                                                `${minuteRejectedUser}, `
-                                            )} */}
                                           {data?.MinuteStats?.rejectedByUsers
                                             ?.length > 0 &&
                                             data?.MinuteStats?.rejectedByUsers.map(
@@ -2360,34 +2279,30 @@ const Minutes = ({
                                       ></p>
                                       {data.attachments.length > 0 ? (
                                         <Row>
-                                          {data.attachments.map(
-                                            (fileData, index) => (
-                                              <Col lg={3} md={3} sm={12}>
-                                                <AttachmentViewer
-                                                  handleClickDownload={() =>
-                                                    downloadDocument(fileData)
-                                                  }
-                                                  fk_UID={0}
-                                                  handleClickRemove={() =>
-                                                    handleRemoveFile(fileData)
-                                                  }
-                                                  data={data.attachments}
-                                                  id={fileData.pK_FileID}
-                                                  name={
-                                                    fileData.displayFileName
-                                                  }
-                                                  handleEyeIcon={() =>
-                                                    pdfData(
-                                                      data.attachments,
-                                                      getFileExtension(
-                                                        fileData?.displayFileName
-                                                      )
+                                          {data.attachments.map((fileData) => (
+                                            <Col lg={3} md={3} sm={12}>
+                                              <AttachmentViewer
+                                                handleClickDownload={() =>
+                                                  downloadDocument(fileData)
+                                                }
+                                                fk_UID={0}
+                                                handleClickRemove={() =>
+                                                  handleRemoveFile(fileData)
+                                                }
+                                                data={data.attachments}
+                                                id={fileData.pK_FileID}
+                                                name={fileData.displayFileName}
+                                                handleEyeIcon={() =>
+                                                  pdfData(
+                                                    data.attachments,
+                                                    getFileExtension(
+                                                      fileData?.displayFileName
                                                     )
-                                                  }
-                                                />
-                                              </Col>
-                                            )
-                                          )}
+                                                  )
+                                                }
+                                              />
+                                            </Col>
+                                          ))}
                                         </Row>
                                       ) : null}
                                     </Col>
@@ -2497,9 +2412,6 @@ const Minutes = ({
                                               >
                                                 <span
                                                   onClick={() =>
-                                                    // setShowRevisionHistory(
-                                                    //   true
-                                                    // )
                                                     handleClickShowRevision(
                                                       data,
                                                       data.minuteID
@@ -2509,13 +2421,11 @@ const Minutes = ({
                                                   {t("Revisions")}
                                                 </span>
                                                 <span
-                                                  onClick={
-                                                    () =>
-                                                      handleClickShowVersionHistory(
-                                                        data,
-                                                        data.minuteID
-                                                      )
-                                                    // setShowVersionHistory(true)
+                                                  onClick={() =>
+                                                    handleClickShowVersionHistory(
+                                                      data,
+                                                      data.minuteID
+                                                    )
                                                   }
                                                   className="border-0"
                                                 >
@@ -2576,11 +2486,6 @@ const Minutes = ({
               />
             ) : null}
 
-            {/* <Button
-            text={t("Previous")}
-            className={styles["Previous_Button"]}
-            onClick={handlePreviousButton}
-          /> */}
             <Button
               text={t("Next")}
               onClick={handleNextButton}

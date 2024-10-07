@@ -320,7 +320,6 @@ body[dir="rtl"] .header-of-collapse-material {
 .MinusIcon {
   margin-right: 40px !important;
   color: #6172d6 !important;
-  /* margin-bottom: 16px !important; */
 }
 body[dir="rtl"] .MinusIcon {
   margin-right: 60px !important;
@@ -370,11 +369,6 @@ body[dir="rtl"] .MinusIcon {
   line-height: 37px;
   color: #6172d6;
 }
-
-/* .main-wrapper {
-  padding-right: 50px;
-  padding-left: 50px;
-} */
 
 .Accept-all {
   width: 123px;
@@ -615,7 +609,6 @@ body[dir="rtl"] .review-minutes-wrapper-scroll {
 .review-minutes-wrapper {
   height: 57vh;
   overflow: hidden auto;
-  /* padding-right: 15px; */
   margin-bottom: 15px;
 }
 
@@ -632,7 +625,6 @@ body[dir="rtl"] .review-minutes-wrapper-scroll {
 
 .viewAgendaWiseAttachments {
   max-height: 110px;
-  /* min-height: 110px; */
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 15px;
@@ -736,7 +728,6 @@ span.Review-pending {
   border-radius: 6px;
   width: 200px;
   height: 70px;
-  /* padding: 7px; */
 }
 
 body[dir="rtl"] .popup-agenda-menu {

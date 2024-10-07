@@ -151,8 +151,6 @@
 
 .Footer_button {
   position: relative;
-  /* bottom: 50px !important; */
-  /* right: 45px; */
   display: flex !important;
   gap: 10px !important;
   justify-content: flex-end;
