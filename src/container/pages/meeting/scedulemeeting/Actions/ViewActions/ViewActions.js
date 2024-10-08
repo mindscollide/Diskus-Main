@@ -1,18 +1,11 @@
 import React from "react";
 import styles from "./ViewActions.module.css";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import RedCrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import PDFIcon from "../../../../../../assets/images/pdf_icon.svg";
 
 const ViewActions = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
 
   return (
     <section>
@@ -121,6 +114,7 @@ const ViewActions = () => {
                   >
                     <img
                       draggable={false}
+                      alt=""
                       src={PDFIcon}
                       height="31.57px"
                       width="31.57px"
