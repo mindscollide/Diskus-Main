@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Paper } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import styles from "./EditResolution.module.css";
@@ -17,7 +17,6 @@ import {
   Button,
   Checkbox,
   Notification,
-  InputSearchFilter,
   AttachmentViewer,
 } from "./../../../components/elements";
 import { useState } from "react";
@@ -53,7 +52,6 @@ import {
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { validateInput } from "../../../commen/functions/regex";
@@ -65,9 +63,9 @@ const EditResolution = ({ setCancelresolution }) => {
   const navigate = useNavigate();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { ResolutionReducer, assignees } = useSelector((state) => state);
+  const { ResolutionReducer } = useSelector((state) => state);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
-  const [usersList, setUsersList] = useState([])
+  const [usersList, setUsersList] = useState([]);
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const currentDate = new Date();
@@ -99,12 +97,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const [nonVoter, setNonVoters] = useState([]);
   const [votersForView, setVotersForView] = useState([]);
   const [nonVoterForView, setNonVotersForView] = useState([]);
-  console.log(
-    nonVoterForView,
-    votersForView,
-    meetingAttendeesList,
-    "votersForViewvotersForViewvotersForView"
-  );
   const [error, setError] = useState(false);
   const [VoterName, setVoterName] = useState("");
   const [VoterID, setVoterID] = useState(0);
@@ -252,7 +244,6 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const removeUserForVoter = (id, name) => {
-    console.log(id, name, "removeUserForVoterremoveUserForVoter")
     setVoterModalRemove(true);
     setVoterID(id);
     setVoterName(name);
@@ -266,10 +257,10 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const RemoveVoterInfo = () => {
     setVotersForView((prevVoterState) =>
-      prevVoterState.filter((data, index) => data.userID !== VoterID)
+      prevVoterState.filter((data) => data.userID !== VoterID)
     );
     setVoters((prevVoter) =>
-      prevVoter.filter((data, index) => data.FK_UID !== VoterID)
+      prevVoter.filter((data) => data.FK_UID !== VoterID)
     );
     setVoterID(0);
     setVoterName("");
@@ -278,10 +269,10 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const removeNonVoterInfo = () => {
     setNonVotersForView((prevNonVoterState) =>
-      prevNonVoterState.filter((data, index) => data.userID !== VoterID)
+      prevNonVoterState.filter((data) => data.userID !== VoterID)
     );
     setNonVoters((prevNonVoter) =>
-      prevNonVoter.filter((data, index) => data.FK_UID !== VoterID)
+      prevNonVoter.filter((data) => data.FK_UID !== VoterID)
     );
     setNonVoterModalRemove(false);
     setVoterID(0);
@@ -299,7 +290,7 @@ const EditResolution = ({ setCancelresolution }) => {
     });
   };
 
-  const deleteFilefromAttachments = (data, index) => {
+  const deleteFilefromAttachments = (data) => {
     let fileSizefound = fileSize - data.fileSize;
 
     setAttachments((prevState) => {
@@ -320,13 +311,9 @@ const EditResolution = ({ setCancelresolution }) => {
 
     setFileSize(fileSizefound);
   };
-  console.log(
-    { voterInfo, nonVoterInfo, voters, nonVoter },
-    "nonVoterInfononVoterInfo"
-  );
+
   const addVoters = () => {
     let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
-
     let voters_Data = [...voters];
     let voters_DataView = [...votersForView];
     if (newOrganizersData !== null) {
@@ -351,11 +338,6 @@ const EditResolution = ({ setCancelresolution }) => {
               }
             );
 
-            console.log(
-              checkIfExistInNonVoters,
-              "checkIfExistInNonVoterscheckIfExistInNonVoters"
-            );
-
             if (checkIfExistInNonVoters.length > 0) {
               // Filter out voters who do not exist in the findGroupData.groupUsers
               let checkIfExistInVoters = checkIfExistInNonVoters.filter(
@@ -369,14 +351,8 @@ const EditResolution = ({ setCancelresolution }) => {
                 }
               );
 
-              console.log(
-                checkIfExistInVoters,
-                "checkIfExistInNonVoterscheckIfExistInNonVoters"
-              );
-
               if (checkIfExistInVoters.length > 0) {
-                checkIfExistInVoters.forEach((userData, index) => {
-                  console.log(userData, "userDatauserDatauserData");
+                checkIfExistInVoters.forEach((userData) => {
                   voters_Data.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -434,7 +410,7 @@ const EditResolution = ({ setCancelresolution }) => {
                 }
               );
               if (checkIfExistInVoters.length > 0) {
-                checkIfExistInVoters.forEach((userData, index) => {
+                checkIfExistInVoters.forEach((userData) => {
                   voters_Data.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -462,10 +438,10 @@ const EditResolution = ({ setCancelresolution }) => {
           let { organizationUsers } = newOrganizersData;
 
           let isAlreadyExistInNonVoters = nonVoter.findIndex(
-            (data, index) => data.FK_UID === voterInfo.value
+            (data) => data.FK_UID === voterInfo.value
           );
           let isAlreadyExistInVoters = voters.findIndex(
-            (data, index) => data.FK_UID === voterInfo.value
+            (data) => data.FK_UID === voterInfo.value
           );
 
           if (isAlreadyExistInNonVoters === -1) {
@@ -538,10 +514,7 @@ const EditResolution = ({ setCancelresolution }) => {
                 return !userExists;
               }
             );
-            console.log(
-              checkIfExistInVoters,
-              "checkIfExistInVoterscheckIfExistInVoters"
-            );
+
             if (checkIfExistInVoters.length > 0) {
               // Filter out voters who do not exist in the findGroupData.groupUsers
               let checkIfExistInNonVoters = checkIfExistInVoters.filter(
@@ -554,13 +527,9 @@ const EditResolution = ({ setCancelresolution }) => {
                   return !userExists;
                 }
               );
-              console.log(
-                checkIfExistInNonVoters,
-                "checkIfExistInVoterscheckIfExistInVoters"
-              );
+
               if (checkIfExistInNonVoters.length > 0) {
-                checkIfExistInNonVoters.forEach((userData, index) => {
-                  console.log(userData, "userDatauserDatauserData");
+                checkIfExistInNonVoters.forEach((userData) => {
                   nonVotersData.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -617,10 +586,8 @@ const EditResolution = ({ setCancelresolution }) => {
                   return !userExists;
                 }
               );
-              console.log(checkIfExistInVoters, "Users not in voters list");
               if (checkIfExistInNonVoters.length > 0) {
-                checkIfExistInNonVoters.forEach((userData, index) => {
-                  console.log(userData, "userDatauserDatauserData");
+                checkIfExistInNonVoters.forEach((userData) => {
                   nonVotersData.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -648,10 +615,10 @@ const EditResolution = ({ setCancelresolution }) => {
           let { organizationUsers } = newOrganizersData;
 
           let findVoter = nonVoter.findIndex(
-            (data, index) => data.FK_UID === nonVoterInfo.value
+            (data) => data.FK_UID === nonVoterInfo.value
           );
           let findisAlreadyExist = voters.findIndex(
-            (data, index) => data.FK_UID === nonVoterInfo.value
+            (data) => data.FK_UID === nonVoterInfo.value
           );
           if (findisAlreadyExist === -1) {
             if (findVoter === -1) {
@@ -694,17 +661,15 @@ const EditResolution = ({ setCancelresolution }) => {
       type: 0,
     });
     setEmailValue("");
-    console.log(nonVotersData, nonVotersDataView, "addNonVoteraddNonVoter");
   };
   const handleChangeVoter = (event) => {
-    console.log(event, "handleChangeVoterhandleChangeVoterhandleChangeVoter");
     let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
         if (organizationUsers?.length > 0) {
           let findUserData = organizationUsers.find(
-            (userData, index) => userData.userID === event.value
+            (userData) => userData.userID === event.value
           );
           setEmailValue(findUserData.emailAddress);
           setVoterInfo({
@@ -727,14 +692,13 @@ const EditResolution = ({ setCancelresolution }) => {
     }
   };
   const handleChangeNonVoter = (event) => {
-    console.log(event, "eventeventeventevent");
     let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
         if (organizationUsers?.length > 0) {
           let findUserData = organizationUsers.find(
-            (userData, index) => userData.userID === event.value
+            (userData) => userData.userID === event.value
           );
           setEmailValue(findUserData.emailAddress);
           setNonVoterInfo({
@@ -757,16 +721,10 @@ const EditResolution = ({ setCancelresolution }) => {
     }
   };
 
-  console.log(
-    { votersForView, nonVoterForView },
-    "nonVoterForViewnonVoterForView"
-  );
-
   let previousFileList = [];
 
   const props = {
     name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
@@ -778,7 +736,6 @@ const EditResolution = ({ setCancelresolution }) => {
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -976,7 +933,6 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const createResolutionHandleClick = async (id) => {
-    console.log(id, "ididididid");
     if (
       editResolutionData.Title !== "" &&
       circulationDateTime.date !== "" &&
@@ -988,8 +944,6 @@ const EditResolution = ({ setCancelresolution }) => {
       editResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       editResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
-      console.log(typeof id, "ididididid");
-
       if (id === 1) {
         setResolutionupdate(true);
         setResolutionCirculate(false);
@@ -1088,7 +1042,6 @@ const EditResolution = ({ setCancelresolution }) => {
       }
     }
     if (name === "ResolutionDescription") {
-      // let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*() ]/g, "");
       if (value !== "") {
         setEditResolutionData({
           ...editResolutionData,
@@ -1141,10 +1094,10 @@ const EditResolution = ({ setCancelresolution }) => {
     });
     reminderData
       .filter(
-        (data, index) =>
+        (data) =>
           data.value === resolutionData.fK_ResolutionReminderFrequency_ID
       )
-      .map((reminderData, index) => {
+      .map((reminderData) => {
         setReminderFrequencyValue({
           label: reminderData.label,
           value: reminderData.value,
@@ -1152,10 +1105,9 @@ const EditResolution = ({ setCancelresolution }) => {
       });
     votingMethods
       .filter(
-        (data, index) =>
-          data.value === resolutionData.fK_ResolutionVotingMethodID
+        (data) => data.value === resolutionData.fK_ResolutionVotingMethodID
       )
-      .map((methodData, index) => {
+      .map((methodData) => {
         setVotingMethodValue({
           label: methodData.label,
           value: methodData.value,
@@ -1185,7 +1137,7 @@ const EditResolution = ({ setCancelresolution }) => {
     if (attachmentsResolution.length > 0) {
       let atCH = [];
       let newData = [];
-      attachmentsResolution.map((data, index) => {
+      attachmentsResolution.map((data) => {
         atCH.push({
           DisplayAttachmentName: data.DisplayAttachmentName,
           OriginalAttachmentName: data.OriginalAttachmentName,
@@ -1204,12 +1156,10 @@ const EditResolution = ({ setCancelresolution }) => {
     if (votersResolutionMembers.length > 0) {
       let viewVoter = [];
       let sendVoter = [];
-      votersResolutionMembers.map((voterMember, index) => {
+      votersResolutionMembers.map((voterMember) => {
         meetingAttendeesList
-          .filter(
-            (assigneeData, index) => assigneeData.pK_UID === voterMember.fK_UID
-          )
-          .map((data, index) => {
+          .filter((assigneeData) => assigneeData.pK_UID === voterMember.fK_UID)
+          .map((data) => {
             sendVoter.push({
               FK_UID: data.pK_UID,
               FK_VotingStatus_ID: 3,
@@ -1225,12 +1175,10 @@ const EditResolution = ({ setCancelresolution }) => {
     if (nonVotersResolutionMembers.length > 0) {
       let viewVoter = [];
       let sendVoter = [];
-      nonVotersResolutionMembers.map((voterMember, index) => {
+      nonVotersResolutionMembers.map((voterMember) => {
         meetingAttendeesList
-          .filter(
-            (assigneeData, index) => assigneeData.pK_UID === voterMember.fK_UID
-          )
-          .map((data, index) => {
+          .filter((assigneeData) => assigneeData.pK_UID === voterMember.fK_UID)
+          .map((data) => {
             sendVoter.push({
               FK_UID: data.pK_UID,
               FK_VotingStatus_ID: 3,
@@ -1248,12 +1196,11 @@ const EditResolution = ({ setCancelresolution }) => {
   useEffect(() => {
     let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
     if (newOrganizersData !== null && newOrganizersData !== undefined) {
-      console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
       let temp = [];
-      let usersData = []
+      let usersData = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.map((a, index) => {
+          newOrganizersData.groups.map((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -1264,12 +1211,14 @@ const EditResolution = ({ setCancelresolution }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={GroupIcon}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
+                        alt=""
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.groupName}
@@ -1284,7 +1233,7 @@ const EditResolution = ({ setCancelresolution }) => {
           });
         }
         if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.map((a, index) => {
+          newOrganizersData.committees.map((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -1295,12 +1244,14 @@ const EditResolution = ({ setCancelresolution }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={committeeicon}
-                        width='21.71px'
-                        height='18.61px'
-                        draggable='false'
+                        alt=""
+                        width="21.71px"
+                        height="18.61px"
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.committeeName}
@@ -1315,7 +1266,7 @@ const EditResolution = ({ setCancelresolution }) => {
           });
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.map((a, index) => {
+          newOrganizersData.organizationUsers.map((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -1326,15 +1277,15 @@ const EditResolution = ({ setCancelresolution }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        // src={}
-                        alt=''
+                        alt=""
                         className={styles["UserProfilepic"]}
-                        width='18px'
-                        height='18px'
-                        draggable='false'
+                        width="18px"
+                        height="18px"
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.userName}
@@ -1345,16 +1296,15 @@ const EditResolution = ({ setCancelresolution }) => {
               ),
               type: 3,
             };
-            usersData.push(a)
+            usersData.push(a);
             temp.push(newData);
           });
         }
         setMeetingAttendeesList(temp);
-        setUsersList(usersData)
+        setUsersList(usersData);
       } else {
         setMeetingAttendeesList([]);
-        setUsersList([])
-
+        setUsersList([]);
       }
     }
   }, [ResolutionReducer.getAllCommitteesAndGroups]);
@@ -1362,7 +1312,7 @@ const EditResolution = ({ setCancelresolution }) => {
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
       let newArr = [];
-      ResolutionReducer.GetAllVotingMethods.map((data, index) => {
+      ResolutionReducer.GetAllVotingMethods.map((data) => {
         newArr.push({
           value: data.pK_ResolutionVotingMethodID,
           label: data.votingMethod,
@@ -1417,10 +1367,10 @@ const EditResolution = ({ setCancelresolution }) => {
         });
         reminderData
           .filter(
-            (data, index) =>
+            (data) =>
               data.value === resolutionData.fK_ResolutionReminderFrequency_ID
           )
-          .map((reminderData, index) => {
+          .map((reminderData) => {
             setReminderFrequencyValue({
               label: reminderData.label,
               value: reminderData.value,
@@ -1428,10 +1378,9 @@ const EditResolution = ({ setCancelresolution }) => {
           });
         votingMethods
           .filter(
-            (data, index) =>
-              data.value === resolutionData.fK_ResolutionVotingMethodID
+            (data) => data.value === resolutionData.fK_ResolutionVotingMethodID
           )
-          .map((methodData, index) => {
+          .map((methodData) => {
             setVotingMethodValue({
               label: methodData.label,
               value: methodData.value,
@@ -1471,7 +1420,7 @@ const EditResolution = ({ setCancelresolution }) => {
           let atCH = [];
 
           let newData = [];
-          attachmentsResolution.forEach((data, index) => {
+          attachmentsResolution.forEach((data) => {
             atCH.push({
               DisplayFileName: data.displayAttachmentName,
               DiskusFileName: data.originalAttachmentName,
@@ -1485,7 +1434,6 @@ const EditResolution = ({ setCancelresolution }) => {
           });
           setAttachments(newData);
           setTasksAttachments(atCH);
-          // }
         }
         if (
           votersResolutionMembers.length > 0 &&
@@ -1496,10 +1444,9 @@ const EditResolution = ({ setCancelresolution }) => {
           votersResolutionMembers.forEach((voterMember, index) => {
             usersList
               .filter(
-                (assigneeData, index) =>
-                  assigneeData.userID === voterMember.fK_UID
+                (assigneeData) => assigneeData.userID === voterMember.fK_UID
               )
-              .forEach((data, index) => {
+              .forEach((data) => {
                 vTrs.push({
                   FK_UID: data.userID,
                   FK_VotingStatus_ID: 3,
@@ -1517,7 +1464,6 @@ const EditResolution = ({ setCancelresolution }) => {
           let nVtr = [];
           let nVtrVie = [];
 
-          // if (nonVoterForView.length === 0 && nonVoter.length === 0) {
           nonVotersResolutionMembers.map((voterMember, index) => {
             usersList
               .filter(
@@ -1571,27 +1517,6 @@ const EditResolution = ({ setCancelresolution }) => {
       date: meetingDateSaveFormat,
       dateValue: meetingDateValueFormat,
     });
-  };
-
-  const handleChangeTimeSelection = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "circulation") {
-      setCirculationDateTime({
-        ...circulationDateTime,
-        time: value,
-      });
-    } else if (name === "voting") {
-      setVotingDateTime({
-        ...votingDateTime,
-        time: value,
-      });
-    } else if (name === "decision") {
-      setDecisionDateTime({
-        ...decisionDateTime,
-        time: value,
-      });
-    }
   };
 
   //Circulation Time
@@ -1656,7 +1581,7 @@ const EditResolution = ({ setCancelresolution }) => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className='input-with-icon'
+        className="input-with-icon"
       />
     );
   }
@@ -1666,7 +1591,7 @@ const EditResolution = ({ setCancelresolution }) => {
       <section>
         <Row>
           <Col lg={12} md={12} sm={12}>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Resolution_create_heading"]}>
                   {t("Edit-resolution")}
@@ -1686,7 +1611,8 @@ const EditResolution = ({ setCancelresolution }) => {
                         editResolutionData.ResolutionStatus === "Circulated"
                           ? styles["Circulated_box_Edit"]
                           : styles["Draft_box_Edit"]
-                      }>
+                      }
+                    >
                       <span className={styles["Edit_draft_Tag"]}>
                         {editResolutionData.ResolutionStatus}
                       </span>
@@ -1699,7 +1625,8 @@ const EditResolution = ({ setCancelresolution }) => {
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span
-                                className={styles["Details_New_resolution"]}>
+                                className={styles["Details_New_resolution"]}
+                              >
                                 {t("Details")}
                               </span>
                             </Col>
@@ -1709,15 +1636,16 @@ const EditResolution = ({ setCancelresolution }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className='CreateMeetingInput  resolution-search-input '>
+                              className="CreateMeetingInput  resolution-search-input "
+                            >
                               <TextField
-                                applyClass='form-control2'
-                                type='text'
+                                applyClass="form-control2"
+                                type="text"
                                 placeholder={t("Resolution-title")}
                                 required={true}
                                 value={editResolutionData.Title}
                                 maxLength={300}
-                                name='ResolutionTitle'
+                                name="ResolutionTitle"
                                 change={handleChange}
                               />
                             </Col>
@@ -1728,22 +1656,24 @@ const EditResolution = ({ setCancelresolution }) => {
                                     editResolutionData.Title === "" && error
                                       ? ` ${styles["errorMessage"]}`
                                       : `${styles["errorMessage_hidden"]}`
-                                  }>
+                                  }
+                                >
                                   {t("Resolution-Title-is-required")}
                                 </p>
                               </Col>
                             </Row>
                           </Row>
-                          <Row className='mt-3'>
+                          <Row className="mt-3">
                             <Col
                               lg={6}
                               md={6}
                               sm={6}
-                              className='select-dropdowns-height FontArabicRegular'>
+                              className="select-dropdowns-height FontArabicRegular"
+                            >
                               <Select
-                                name='Participant'
+                                name="Participant"
                                 placeholder={t("Voting-method")}
-                                className='select-voting-deadline'
+                                className="select-voting-deadline"
                                 value={{
                                   label: votingMethodValue.label,
                                   value: votingMethodValue.value,
@@ -1760,7 +1690,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                         0 && error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
-                                    }>
+                                    }
+                                  >
                                     {t("Voting-method-is-required")}
                                   </p>
                                 </Col>
@@ -1770,11 +1701,12 @@ const EditResolution = ({ setCancelresolution }) => {
                               lg={6}
                               md={6}
                               sm={6}
-                              className='select-dropdowns-height FontArabicRegular'>
+                              className="select-dropdowns-height FontArabicRegular"
+                            >
                               <Select
-                                name=''
+                                name=""
                                 placeholder={t("Decision")}
-                                className='select-voting-deadline'
+                                className="select-voting-deadline"
                                 defaultValue={{
                                   label: decision.label,
                                   value: decision.value,
@@ -1788,17 +1720,18 @@ const EditResolution = ({ setCancelresolution }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className='CreateMeetingInput FontArabicRegular '>
+                              className="CreateMeetingInput FontArabicRegular "
+                            >
                               <TextField
-                                applyClass='text-area-create-group'
-                                type='text'
+                                applyClass="text-area-create-group"
+                                type="text"
                                 as={"textarea"}
-                                rows='4'
+                                rows="4"
                                 placeholder={t("Notes-for-voters")}
                                 value={editResolutionData.NotesToVoter}
                                 required={true}
                                 maxLength={500}
-                                name='ResolutionDescription'
+                                name="ResolutionDescription"
                                 change={handleChange}
                               />
 
@@ -1810,14 +1743,15 @@ const EditResolution = ({ setCancelresolution }) => {
                                       error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
-                                    }>
+                                    }
+                                  >
                                     {t("Notes-to-voters-is-required")}
                                   </p>
                                 </Col>
                               </Row>
                             </Col>
                           </Row>
-                          <Row className='mt-2'>
+                          <Row className="mt-2">
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Circulation_heading"]}>
                                 {t("Circulation-date")}
@@ -1825,33 +1759,34 @@ const EditResolution = ({ setCancelresolution }) => {
                               <span style={{ color: "#F16B6B" }}>*</span>
                             </Col>
                           </Row>
-                          <Row className='mt-0'>
+                          <Row className="mt-0">
                             <Col
                               lg={6}
                               sm={6}
                               md={6}
-                              className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
-                              <div className='datepicker '>
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
+                            >
+                              <div className="datepicker ">
                                 <DatePicker
                                   format={"DD/MM/YYYY"}
                                   minDate={currentDate}
-                                  placeholder='YYYY-MM-DD'
+                                  placeholder="YYYY-MM-DD"
                                   render={
                                     <InputIcon
-                                      placeholder='DD/MM/YYYY'
+                                      placeholder="DD/MM/YYYY"
                                       className={
                                         styles["Resolution_datePicker"]
                                       }
                                     />
                                   }
                                   editable={false}
-                                  className='datePickerTodoCreate2'
+                                  className="datePickerTodoCreate2"
                                   onOpenPickNewDate={true}
                                   containerClassName={
                                     styles["datePicker_Container"]
                                   }
-                                  inputMode=''
-                                  name='circulation'
+                                  inputMode=""
+                                  name="circulation"
                                   value={circulationDateTime.dateValue}
                                   calendar={calendarValue}
                                   locale={localValue}
@@ -1867,7 +1802,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                       circulationDateTime.date === "" && error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
-                                    }>
+                                    }
+                                  >
                                     {t("Circulation-date-is-required")}
                                   </p>
                                 </Col>
@@ -1877,28 +1813,18 @@ const EditResolution = ({ setCancelresolution }) => {
                               lg={6}
                               sm={6}
                               md={6}
-                              className='CreateMeetingReminder resolution-search-input FontArabicRegular'>
-                              {/* <TextFieldTime
-                                type="time"
-                                name="circulation"
-                                labelclass="d-none"
-                                onKeyDown={(e) => e.preventDefault()}
-                                applyClass={"search_voterInput"}
-                                value={circulationDateTime.time}
-                                change={(e) => {
-                                  handleChangeTimeSelection(e);
-                                }}
-                              /> */}
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular"
+                            >
                               <DatePicker
-                                arrowClassName='arrowClass'
-                                containerClassName='containerClassTimePicker'
-                                className='timePicker'
+                                arrowClassName="arrowClass"
+                                containerClassName="containerClassTimePicker"
+                                className="timePicker"
                                 disableDayPicker
-                                inputClass='inputTImeMeeting'
+                                inputClass="inputTImeMeeting"
                                 calendar={calendarValue}
                                 locale={localValue}
                                 editable={false}
-                                format='hh:mm A'
+                                format="hh:mm A"
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
                                 selected={
@@ -1918,31 +1844,34 @@ const EditResolution = ({ setCancelresolution }) => {
                                       circulationDateTime.time === "" && error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
-                                    }>
+                                    }
+                                  >
                                     {t("Circulation-time-is-required")}
                                   </p>
                                 </Col>
                               </Row>
                             </Col>
                           </Row>
-                          <Row className='mt-2'>
+                          <Row className="mt-2">
                             <Col lg={12} md={12} sm={12}>
                               <span
                                 className={
                                   styles["Voting_deadline_Create_resolution"]
-                                }>
+                                }
+                              >
                                 {t("Voting-deadline")}
                               </span>
                               <span style={{ color: "#F16B6B" }}>*</span>
                             </Col>
                           </Row>
-                          <Row className='mt-0'>
+                          <Row className="mt-0">
                             <Col
                               lg={6}
                               sm={6}
                               md={6}
-                              className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
-                              <div className='datepicker'>
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
+                            >
+                              <div className="datepicker">
                                 <DatePicker
                                   format={"DD/MM/YYYY"}
                                   minDate={
@@ -1954,20 +1883,20 @@ const EditResolution = ({ setCancelresolution }) => {
                                   }
                                   render={
                                     <InputIcon
-                                      placeholder='DD/MM/YYYY'
+                                      placeholder="DD/MM/YYYY"
                                       className={
                                         styles["Resolution_datePicker"]
                                       }
                                     />
                                   }
                                   editable={false}
-                                  className='datePickerTodoCreate2'
+                                  className="datePickerTodoCreate2"
                                   onOpenPickNewDate={true}
                                   containerClassName={
                                     styles["datePicker_Container"]
                                   }
-                                  inputMode=''
-                                  name='voting'
+                                  inputMode=""
+                                  name="voting"
                                   value={votingDateTime.dateValue}
                                   calendar={calendarValue}
                                   locale={localValue}
@@ -1981,7 +1910,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                       votingDateTime.date === "" && error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
-                                    }>
+                                    }
+                                  >
                                     {t("Voting-deadline-date-is-required")}
                                   </p>
                                 </Col>
@@ -1991,27 +1921,17 @@ const EditResolution = ({ setCancelresolution }) => {
                               lg={6}
                               sm={6}
                               md={6}
-                              className='CreateMeetingReminder  resolution-search-input FontArabicRegular'>
-                              {/* <TextField
-                                type="time"
-                                labelclass="d-none"
-                                name="voting"
-                                onKeyDown={(e) => e.preventDefault()}
-                                applyClass={"search_voterInput"}
-                                value={votingDateTime.time}
-                                change={(e) => {
-                                  handleChangeTimeSelection(e);
-                                }}
-                              /> */}
+                              className="CreateMeetingReminder  resolution-search-input FontArabicRegular"
+                            >
                               <DatePicker
-                                arrowClassName='arrowClass'
-                                containerClassName='containerClassTimePicker'
-                                className='timePicker'
+                                arrowClassName="arrowClass"
+                                containerClassName="containerClassTimePicker"
+                                className="timePicker"
                                 disableDayPicker
-                                inputClass='inputTImeMeeting'
+                                inputClass="inputTImeMeeting"
                                 calendar={calendarValue}
                                 locale={localValue}
-                                format='hh:mm A'
+                                format="hh:mm A"
                                 editable={false}
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
@@ -2028,33 +1948,36 @@ const EditResolution = ({ setCancelresolution }) => {
                                       votingDateTime.time === "" && error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
-                                    }>
+                                    }
+                                  >
                                     {t("Voting-deadline-time-is-required")}
                                   </p>
                                 </Col>
                               </Row>
                             </Col>
                           </Row>
-                          <Row className='mt-2'>
+                          <Row className="mt-2">
                             <Col lg={12} md={12} sm={12}>
                               <span
                                 className={
                                   styles[
                                     "decision_annoucement_Createresoulution"
                                   ]
-                                }>
+                                }
+                              >
                                 {t("Decision-announcement")}
                               </span>
                               <span style={{ color: "#F16B6B" }}>*</span>
                             </Col>
                           </Row>
-                          <Row className='mt-0'>
+                          <Row className="mt-0">
                             <Col
                               lg={6}
                               sm={6}
                               md={6}
-                              className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
-                              <div className='datepicker'>
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
+                            >
+                              <div className="datepicker">
                                 <DatePicker
                                   format={"DD/MM/YYYY"}
                                   minDate={
@@ -2062,23 +1985,23 @@ const EditResolution = ({ setCancelresolution }) => {
                                       ? dateformatYYYYMMDD(votingDateTime.date)
                                       : currentDate
                                   }
-                                  placeholder='YYYY-MM-DD'
+                                  placeholder="YYYY-MM-DD"
                                   render={
                                     <InputIcon
-                                      placeholder='DD/MM/YYYY'
+                                      placeholder="DD/MM/YYYY"
                                       className={
                                         styles["Resolution_datePicker"]
                                       }
                                     />
                                   }
                                   editable={false}
-                                  className='datePickerTodoCreate2'
+                                  className="datePickerTodoCreate2"
                                   onOpenPickNewDate={false}
                                   containerClassName={
                                     styles["datePicker_Container"]
                                   }
-                                  inputMode=''
-                                  name='decision'
+                                  inputMode=""
+                                  name="decision"
                                   value={decisionDateTime.dateValue}
                                   calendar={calendarValue}
                                   locale={localValue}
@@ -2092,7 +2015,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                       decisionDateTime.date === "" && error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
-                                    }>
+                                    }
+                                  >
                                     {t(
                                       "Decision-announcement-date-is-required"
                                     )}
@@ -2104,27 +2028,17 @@ const EditResolution = ({ setCancelresolution }) => {
                               lg={6}
                               sm={6}
                               md={6}
-                              className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
-                              {/* <TextField
-                                type="time"
-                                labelclass="d-none"
-                                name="decision"
-                                onKeyDown={(e) => e.preventDefault()}
-                                applyClass={"search_voterInput"}
-                                value={decisionDateTime.time}
-                                change={(e) => {
-                                  handleChangeTimeSelection(e);
-                                }}
-                              /> */}
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
+                            >
                               <DatePicker
-                                arrowClassName='arrowClass'
-                                containerClassName='containerClassTimePicker'
-                                className='timePicker'
+                                arrowClassName="arrowClass"
+                                containerClassName="containerClassTimePicker"
+                                className="timePicker"
                                 disableDayPicker
-                                inputClass='inputTImeMeeting'
+                                inputClass="inputTImeMeeting"
                                 calendar={calendarValue}
                                 locale={localValue}
-                                format='hh:mm A'
+                                format="hh:mm A"
                                 editable={false}
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
@@ -2141,7 +2055,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                       decisionDateTime.time === "" && error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
-                                    }>
+                                    }
+                                  >
                                     {t(
                                       "Decision-announcement-time-is-required"
                                     )}
@@ -2150,7 +2065,7 @@ const EditResolution = ({ setCancelresolution }) => {
                               </Row>
                             </Col>
                           </Row>
-                          <Row className='mt-2'>
+                          <Row className="mt-2">
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Reminder"]}>
                                 {t("Reminder-frequency")}
@@ -2158,16 +2073,17 @@ const EditResolution = ({ setCancelresolution }) => {
                               <span style={{ color: "#F16B6B" }}>*</span>
                             </Col>
                           </Row>
-                          <Row className='mt-0'>
+                          <Row className="mt-0">
                             <Col
                               lg={6}
                               md={6}
                               sm={12}
-                              className='CreateMeetingReminder select-dropdowns-height FontArabicRegular '>
+                              className="CreateMeetingReminder select-dropdowns-height FontArabicRegular "
+                            >
                               <Select
-                                name='Participant'
+                                name="Participant"
                                 placeholder={t("Time")}
-                                className='select-voting-deadline'
+                                className="select-voting-deadline"
                                 options={reminderData}
                                 onChange={ReminderChangeHandler}
                                 value={{
@@ -2182,28 +2098,31 @@ const EditResolution = ({ setCancelresolution }) => {
                                       ReminderFrequncyValue.value === 0 && error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
-                                    }>
+                                    }
+                                  >
                                     {t("Reminder-frequency-is-required")}
                                   </p>
                                 </Col>
                               </Row>
                             </Col>
                           </Row>
-                          <Row className='mt-2'>
+                          <Row className="mt-2">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["CheckBoxalign"]}>
+                              className={styles["CheckBoxalign"]}
+                            >
                               <Row>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='UpdateCheckbox  d-flex justify-content-start FontArabicRegular'>
+                                  className="UpdateCheckbox  d-flex justify-content-start FontArabicRegular"
+                                >
                                   <Checkbox
-                                    className='SearchCheckbox '
-                                    name='IsChat'
+                                    className="SearchCheckbox "
+                                    name="IsChat"
                                     checked={
                                       editResolutionData.IsResolutionPublic
                                     }
@@ -2212,7 +2131,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                     }
                                     label2={t("Make-resolution-public")}
                                     onChange={handleChangeChecker}
-                                    classNameDiv='checkboxParentClass'></Checkbox>
+                                    classNameDiv="checkboxParentClass"
+                                  ></Checkbox>
                                 </Col>
                               </Row>
                             </Col>
@@ -2222,9 +2142,11 @@ const EditResolution = ({ setCancelresolution }) => {
                           lg={1}
                           md={1}
                           sm={false}
-                          className='d-flex justify-content-center'>
+                          className="d-flex justify-content-center"
+                        >
                           <span
-                            className={styles["line_Editresolution"]}></span>
+                            className={styles["line_Editresolution"]}
+                          ></span>
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                           <Row>
@@ -2232,7 +2154,8 @@ const EditResolution = ({ setCancelresolution }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-start gap-3'>
+                              className="d-flex justify-content-start gap-3"
+                            >
                               <Button
                                 text={t("Voters")}
                                 className={
@@ -2262,7 +2185,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                       <Col lg={5} md={5} sm={5}>
                                         <Select
                                           placeholder={`${t("Add-attendees")}*`}
-                                          className='mt-3'
+                                          className="mt-3"
                                           isSearchable={false}
                                           value={
                                             voterInfo.value === 0
@@ -2279,7 +2202,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                                 voters.length === 0 && error
                                                   ? ` ${styles["errorMessage"]}`
                                                   : `${styles["errorMessage_hidden"]}`
-                                              }>
+                                              }
+                                            >
                                               {t("At-least-add-one-voter")}
                                             </p>
                                           </Col>
@@ -2290,10 +2214,11 @@ const EditResolution = ({ setCancelresolution }) => {
                                         lg={5}
                                         md={5}
                                         sm={5}
-                                        className='CreateMeetingInput resolution-search-input'>
+                                        className="CreateMeetingInput resolution-search-input"
+                                      >
                                         <TextField
-                                          applyClass='text-area-create-group'
-                                          type='text'
+                                          applyClass="text-area-create-group"
+                                          type="text"
                                           placeholder={t("Email")}
                                           required={true}
                                           value={emailValue}
@@ -2316,14 +2241,15 @@ const EditResolution = ({ setCancelresolution }) => {
                                       </Col>
                                     </Row>
 
-                                    <Row className='mt-3'>
+                                    <Row className="mt-3">
                                       <Col
                                         lg={12}
                                         md={12}
                                         sm={12}
                                         className={
                                           styles["scroll-bar-Create-resolution"]
-                                        }>
+                                        }
+                                      >
                                         <Row>
                                           {votersForView.length > 0
                                             ? votersForView.map(
@@ -2334,12 +2260,14 @@ const EditResolution = ({ setCancelresolution }) => {
                                                         lg={6}
                                                         md={6}
                                                         sm={6}
-                                                        className='mt-2'>
+                                                        className="mt-2"
+                                                      >
                                                         <Row>
                                                           <Col
                                                             lg={12}
                                                             md={12}
-                                                            sm={12}>
+                                                            sm={12}
+                                                          >
                                                             <EmployeeinfoCard
                                                               Employeename={
                                                                 data?.name
@@ -2348,23 +2276,25 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                 data?.emailAddress
                                                               }
                                                               EmployeePic={
-                                                                data?.profilePicture?.displayProfilePictureName
+                                                                data
+                                                                  ?.profilePicture
+                                                                  ?.displayProfilePictureName
                                                               }
                                                               Icon={
                                                                 <img
                                                                   src={
                                                                     CrossIcon
                                                                   }
-                                                                  alt=''
-                                                                  width='18px'
-                                                                  height='18px'
+                                                                  alt=""
+                                                                  width="18px"
+                                                                  height="18px"
                                                                   onClick={() =>
                                                                     removeUserForVoter(
                                                                       data.userID,
                                                                       data.userName
                                                                     )
                                                                   }
-                                                                  draggable='false'
+                                                                  draggable="false"
                                                                 />
                                                               }
                                                             />
@@ -2386,7 +2316,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                       <Col lg={5} md={5} sm={5}>
                                         <Select
                                           placeholder={`${t("Add-attendees")}*`}
-                                          className='mt-3'
+                                          className="mt-3"
                                           isSearchable={false}
                                           value={
                                             nonVoterInfo.value === 0
@@ -2402,10 +2332,11 @@ const EditResolution = ({ setCancelresolution }) => {
                                         lg={5}
                                         md={5}
                                         sm={5}
-                                        className='CreateMeetingInput resolution-search-input '>
+                                        className="CreateMeetingInput resolution-search-input "
+                                      >
                                         <TextField
-                                          applyClass='text-area-create-group'
-                                          type='text'
+                                          applyClass="text-area-create-group"
+                                          type="text"
                                           placeholder={t("Email")}
                                           required={true}
                                           disable={true}
@@ -2429,14 +2360,15 @@ const EditResolution = ({ setCancelresolution }) => {
                                         />
                                       </Col>
                                     </Row>
-                                    <Row className='mt-3'>
+                                    <Row className="mt-3">
                                       <Col
                                         lg={12}
                                         md={12}
                                         sm={12}
                                         className={
                                           styles["scroll-bar-Create-resolution"]
-                                        }>
+                                        }
+                                      >
                                         <Row>
                                           {nonVoterForView.length > 0
                                             ? nonVoterForView.map(
@@ -2447,12 +2379,14 @@ const EditResolution = ({ setCancelresolution }) => {
                                                         lg={6}
                                                         md={6}
                                                         sm={6}
-                                                        className='mt-2'>
+                                                        className="mt-2"
+                                                      >
                                                         <Row>
                                                           <Col
                                                             lg={12}
                                                             md={12}
-                                                            sm={12}>
+                                                            sm={12}
+                                                          >
                                                             <EmployeeinfoCard
                                                               Employeename={
                                                                 data?.name
@@ -2461,23 +2395,25 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                 data?.emailAddress
                                                               }
                                                               EmployeePic={
-                                                                data?.profilePicture?.displayProfilePictureName
+                                                                data
+                                                                  ?.profilePicture
+                                                                  ?.displayProfilePictureName
                                                               }
                                                               Icon={
                                                                 <img
                                                                   src={
                                                                     CrossIcon
                                                                   }
-                                                                  alt=''
-                                                                  width='18px'
-                                                                  height='18px'
+                                                                  alt=""
+                                                                  width="18px"
+                                                                  height="18px"
                                                                   onClick={() =>
                                                                     removeUserForNonVoter(
                                                                       data.userID,
                                                                       data.userName
                                                                     )
                                                                   }
-                                                                  draggable='false'
+                                                                  draggable="false"
                                                                 />
                                                               }
                                                             />
@@ -2496,11 +2432,12 @@ const EditResolution = ({ setCancelresolution }) => {
                                 ) : null}
 
                                 <Row>
-                                  <Col lg={12} md={12} sm={12} className='mt-3'>
+                                  <Col lg={12} md={12} sm={12} className="mt-3">
                                     <span
                                       className={
                                         styles["Attachments_resolution"]
-                                      }>
+                                      }
+                                    >
                                       {t("Attachments")}
                                     </span>
                                   </Col>
@@ -2508,13 +2445,15 @@ const EditResolution = ({ setCancelresolution }) => {
                                 <Row
                                   className={
                                     styles["edit_resolution_attachments"]
-                                  }>
+                                  }
+                                >
                                   {attachments.length > 0 && (
                                     <Col
                                       className={styles["attachments_height"]}
                                       sm={12}
                                       md={12}
-                                      lg={12}>
+                                      lg={12}
+                                    >
                                       <Row>
                                         {attachments.length > 0
                                           ? attachments.map((data, index) => {
@@ -2544,129 +2483,6 @@ const EditResolution = ({ setCancelresolution }) => {
                                                     )}
                                                   />
                                                 </Col>
-
-                                                // <Col
-                                                //   sm={4}
-                                                //   lg={4}
-                                                //   md={4}
-                                                // >
-                                                //   {ext === "doc" ? (
-                                                //     <FileIcon
-                                                //       extension={"docx"}
-                                                //       size={78}
-                                                //       type={"document"}
-                                                //       labelColor={
-                                                //         "rgba(44, 88, 152)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "docx" ? (
-                                                //     <FileIcon
-                                                //       extension={"docx"}
-                                                //       size={78}
-                                                //       type={"font"}
-                                                //       labelColor={
-                                                //         "rgba(44, 88, 152)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "xls" ? (
-                                                //     <FileIcon
-                                                //       extension={"xls"}
-                                                //       type={"spreadsheet"}
-                                                //       size={78}
-                                                //       labelColor={
-                                                //         "rgba(16, 121, 63)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "xlsx" ? (
-                                                //     <FileIcon
-                                                //       extension={"xls"}
-                                                //       type={"spreadsheet"}
-                                                //       size={78}
-                                                //       labelColor={
-                                                //         "rgba(16, 121, 63)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "pdf" ? (
-                                                //     <FileIcon
-                                                //       extension={"pdf"}
-                                                //       size={78}
-                                                //       {...defaultStyles.pdf}
-                                                //     />
-                                                //   ) : ext === "png" ? (
-                                                //     <FileIcon
-                                                //       extension={"png"}
-                                                //       size={78}
-                                                //       type={"image"}
-                                                //       labelColor={
-                                                //         "rgba(102, 102, 224)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "txt" ? (
-                                                //     <FileIcon
-                                                //       extension={"txt"}
-                                                //       size={78}
-                                                //       type={"document"}
-                                                //       labelColor={
-                                                //         "rgba(52, 120, 199)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "jpg" ? (
-                                                //     <FileIcon
-                                                //       extension={"jpg"}
-                                                //       size={78}
-                                                //       type={"image"}
-                                                //       labelColor={
-                                                //         "rgba(102, 102, 224)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "jpeg" ? (
-                                                //     <FileIcon
-                                                //       extension={"jpeg"}
-                                                //       size={78}
-                                                //       type={"image"}
-                                                //       labelColor={
-                                                //         "rgba(102, 102, 224)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "gif" ? (
-                                                //     <FileIcon
-                                                //       extension={"gif"}
-                                                //       size={78}
-                                                //       {...defaultStyles.gif}
-                                                //     />
-                                                //   ) : (
-                                                //     <FileIcon
-                                                //       extension={ext}
-                                                //       size={78}
-                                                //       {...defaultStyles.ext}
-                                                //     />
-                                                //   )}
-                                                //   <span className="deleteBtn">
-                                                //     <img
-                                                //       src={
-                                                //         deleteButtonCreateMeeting
-                                                //       }
-                                                //       width={15}
-                                                //       alt=""
-                                                //       height={15}
-                                                //       onClick={() =>
-                                                //         deleteFilefromAttachments(
-                                                //           data,
-                                                //           index
-                                                //         )
-                                                //       }
-                                                //       draggable="false"
-                                                //     />
-                                                //   </span>
-                                                //   <p
-                                                //     className="modaltodolist-attachment-text  FontArabicRegular"
-                                                //     title={
-                                                //       data.displayAttachmentName
-                                                //     }
-                                                //   >
-                                                //     {first}
-                                                //   </p>
-                                                // </Col>
                                               );
                                             })
                                           : null}
@@ -2682,18 +2498,20 @@ const EditResolution = ({ setCancelresolution }) => {
                                         styles[
                                           "dragdrop_attachment_create_resolution"
                                         ]
-                                      }>
-                                      <p className='ant-upload-drag-icon'>
+                                      }
+                                    >
+                                      <p className="ant-upload-drag-icon">
                                         <span
                                           className={
                                             styles["create_resolution_dragger"]
-                                          }>
+                                          }
+                                        >
                                           <img
                                             src={featherupload}
-                                            width='18.87px'
-                                            height='18.87px'
-                                            alt=''
-                                            draggable='false'
+                                            width="18.87px"
+                                            height="18.87px"
+                                            alt=""
+                                            draggable="false"
                                           />
                                         </span>
                                       </p>
@@ -2702,7 +2520,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                         <span
                                           className={
                                             styles["Choose_file_style"]
-                                          }>
+                                          }
+                                        >
                                           {t("Choose-file")} {""}
                                         </span>
                                         <span className={styles["here_text"]}>
@@ -2712,23 +2531,20 @@ const EditResolution = ({ setCancelresolution }) => {
                                     </Dragger>
                                   </Col>
                                 </Row>
-                                {/* <Row className="mt-3">
-                               
-                              </Row> */}
-                                {/* {isVoter ?
-                          <> */}
-                                <Row className='mt-3'>
+
+                                <Row className="mt-3">
                                   <Col
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className='d-flex justify-content-end gap-3'>
+                                    className="d-flex justify-content-end gap-3"
+                                  >
                                     <Button
                                       text={
                                         currentLanguage === "ar" ? (
-                                          <ArrowRight size={30} color='#fff' />
+                                          <ArrowRight size={30} color="#fff" />
                                         ) : (
-                                          <ArrowLeft size={30} color='#fff' />
+                                          <ArrowLeft size={30} color="#fff" />
                                         )
                                       }
                                       onClick={() => {

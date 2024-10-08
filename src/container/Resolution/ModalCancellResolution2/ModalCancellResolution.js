@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalCancellResolution.module.css";
 import { useTranslation } from "react-i18next";
-import { Button, InputSearchFilter, Modal } from "../../../components/elements";
+import { Button, Modal } from "../../../components/elements";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { cancelResolutionApi } from "../../../store/actions/Resolution_actions";
@@ -10,17 +10,25 @@ const ModalCancellResolution2 = ({
   cancelresolution,
   setCancelresolution,
   Id,
-  // handleCancelResolution
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [resolutioncancel, setResolutioncancel] = useState(false);
+
   const closebtn = async () => {
     setCancelresolution(false);
   };
   const handleCancelResolution = () => {
-    dispatch(cancelResolutionApi(navigate, Id, t, setResolutioncancel, setCancelresolution));
+    dispatch(
+      cancelResolutionApi(
+        navigate,
+        Id,
+        t,
+        setResolutioncancel,
+        setCancelresolution
+      )
+    );
   };
   return (
     <>

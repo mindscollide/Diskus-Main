@@ -220,7 +220,6 @@ body[dir="rtl"] .Non_Voters_Btn_viewresolution_Active {
 .scroll-bar-view-resolution {
   height: 300px !important;
   overflow-x: hidden !important;
-  /* margin-bottom: 60px !important; */
 }
 
 .scroll-bar-view-resolution::-webkit-scrollbar {
