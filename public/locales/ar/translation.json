@@ -2138,6 +2138,7 @@
   "Generating-meeting-link": "Generating meeting link",
   "Meeting-link-copied": "Meeting link copied",
   "Unable-to-generate-meeting-link": "Unable to generate meeting link",
-  "Your-vote-is-submitted-successfully": "Your vote is submitted successfully"
-
+  "Your-vote-is-submitted-successfully": "Your vote is submitted successfully",
+  "Start-time": "Start time",
+  "End-time": "End time"
 }
