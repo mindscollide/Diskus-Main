@@ -18,40 +18,25 @@ import {
 import {
   cancelisTrailandSubscriptionApi,
   getAllUserTypePackagesApi,
-  LoginFlowRoutes,
 } from "../../../../../store/actions/UserManagementActions";
-import { openPaymentProcessModal } from "../../../../../store/actions/UserMangementModalActions";
 const PakageDetailsUMUpgrade = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-
   const { t } = useTranslation();
-
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
   );
-
   //States
   const [tableData, setTableData] = useState([]);
   const [packageTableData, setPackageTableData] = useState([]);
   let isTrial = localStorage.getItem("isTrial");
-
-  const [lisence, setlisence] = useState({
-    TotalLisence: "",
-  });
   const [packageDetail, setPackageDetail] = useState([]);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
-
   const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
-  console.log(
-    organizationPackagePrice,
-    packageDetail,
-    "organizationPackagePriceorganizationPackagePrice"
-  );
 
   //get All user pakages Api call
   useEffect(() => {
@@ -64,10 +49,6 @@ const PakageDetailsUMUpgrade = () => {
 
   useEffect(() => {
     if (location.state && location.state.organizationSelectedPackages) {
-      console.log(
-        location.state.organizationSelectedPackages,
-        "selectedPackagesselectedPackages"
-      );
       const selectedPackages = location.state.organizationSelectedPackages[0];
       if (selectedPackages) {
         console.log(selectedPackages, "selectedPackagesselectedPackages");
@@ -98,8 +79,6 @@ const PakageDetailsUMUpgrade = () => {
       setOrganizationPackagePrice([]);
     }
   }, [location.state]);
-
-  console.log(organizationPackagePrice, "organizationSelectedPackages");
 
   //Fetching the data for pakage selection
   useEffect(() => {
@@ -157,8 +136,6 @@ const PakageDetailsUMUpgrade = () => {
       dispatch(cancelisTrailandSubscriptionApi(navigate, t, data));
     } else {
     }
-
-    // navigate("/Admin/PaymentFormUserManagement");
   };
 
   const ColumnsPakageSelection = [
@@ -222,7 +199,6 @@ const PakageDetailsUMUpgrade = () => {
       key: "Numberoflicenses",
       align: "center",
       render: (text, row, index) => {
-        console.log({ row, text }, "pricepriceprice");
         if (row.shouldDisplayTextField) {
           return;
         } else {
@@ -241,7 +217,6 @@ const PakageDetailsUMUpgrade = () => {
                   }
                   return item;
                 });
-                console.log(newData, "newData");
                 setPackageTableData(newData);
               }
             };
@@ -252,7 +227,6 @@ const PakageDetailsUMUpgrade = () => {
             const priceValue = matchedPackage
               ? matchedPackage.licenseCount
               : "";
-            console.log(priceValue, "priceValuepriceValuepriceValue");
             return (
               <Row>
                 <Col className="d-flex justify-content-center">
@@ -393,7 +367,7 @@ const PakageDetailsUMUpgrade = () => {
       key: "YearlychargesTotal",
       align: "center",
       width: 100,
-      render: (text, row, index) => {
+      render: (text, row) => {
         let YearlyCharges = 0;
         if (row?.name) {
           const findName = organizationPackagePrice.find(
@@ -434,12 +408,6 @@ const PakageDetailsUMUpgrade = () => {
       },
     },
   ];
-
-  //Pay Now B Button On Click
-  const handlePayNowClick = () => {
-    localStorage.setItem("signupCurrentPage", 2);
-    navigate("/Signup");
-  };
 
   //For buttons default row flag
   const defaultRowWithButtons = {
@@ -562,23 +530,7 @@ const PakageDetailsUMUpgrade = () => {
                       <Row className="mt-3">
                         <Col sm={12}>
                           <>
-                            {/* <span className="icon-star package-icon-style">
-                              <span
-                                className="path1"
-                                // style={{ color: packageColorPath1 }}
-                              ></span>
-                              <span
-                                className="path2"
-                                // style={{ color: packageColorPath2 }}
-                              ></span>
-                              <span
-                                className="path3"
-                                // style={{ color: packageColorPath2 }}
-                              ></span>
-                            </span> */}
                             <span className={styles["package_title"]}>
-                              {/* {t("Gold")} */}
-                              {/* {data.PackageName} */}
                               {data.name}
                             </span>{" "}
                           </>

@@ -22,7 +22,6 @@ import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/funct
 import {
   getOrganizationPackageUserStatsAPI,
   AddOrganizationsUserApi,
-  GetOrganizationSelectedPackagesByOrganizationIDApi,
 } from "../../../../../store/actions/UserManagementActions";
 import { checkEmailExsist } from "../../../../../store/actions/Admin_Organization";
 import { Check2 } from "react-bootstrap-icons";
@@ -32,15 +31,10 @@ const AddUserMain = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { UserMangementReducer, adminReducer } = useSelector((state) => state);
-  console.log(
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
-    "organizationSelectedPakagesByOrganizationIDData"
-  );
 
   // organizationName from Local Storage
   const organizationName = localStorage.getItem("organizatioName");
   const organizationID = localStorage.getItem("organizationID");
-  const UserID = localStorage.getItem("userID");
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
@@ -87,11 +81,6 @@ const AddUserMain = () => {
   });
 
   const myStats = UserMangementReducer.getOrganizationUserStatsGraph?.userStats;
-  console.log(myStats, "datatatataF");
-
-  const userStats = useSelector(
-    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
-  );
 
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
   useEffect(() => {
@@ -192,42 +181,6 @@ const AddUserMain = () => {
         },
       });
     }
-
-    // if (name === "Email" && value !== "") {
-    //   if (value !== "") {
-    //     // Check if email is not empty
-    //     if (validateEmailEnglishAndArabicFormat(value)) {
-    //       // Check if email format is valid
-    //       setUserAddMain({
-    //         ...userAddMain,
-    //         Email: {
-    //           value: value.trimStart(),
-    //           errorMessage: "", // Clear error message when email is valid
-    //           errorStatus: false, // Set error status to false when email is valid
-    //         },
-    //       });
-    //     } else {
-    //       setUserAddMain({
-    //         ...userAddMain,
-    //         Email: {
-    //           value: value.trimStart(),
-    //           errorMessage: t("Enter-valid-email-address"), // Set error message when email is invalid
-    //           errorStatus: true, // Set error status to true when email is invalid
-    //         },
-    //       });
-    //     }
-    //   } else {
-    //     // Handle case when email is empty
-    //     setUserAddMain({
-    //       ...userAddMain,
-    //       Email: {
-    //         value: "",
-    //         errorMessage: "", // Clear error message when email is empty
-    //         errorStatus: false, // Set error status to false when email is empty
-    //       },
-    //     });
-    //   }
-    // }
   };
 
   //Validating the Email
@@ -388,7 +341,6 @@ const AddUserMain = () => {
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
-    // strokeWidth: "10px",
     hAxis: {
       viewWindow: {
         min: 0, // for space horizontally between bar
@@ -477,7 +429,6 @@ const AddUserMain = () => {
 
   // handle select for country Flag
   const handleSelect = (country) => {
-    console.log(country, "countrycountrycountry");
     setSelected(country);
     setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
@@ -498,8 +449,7 @@ const AddUserMain = () => {
     ) {
       let temp = [];
       UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.map(
-        (data, index) => {
-          console.log(data, "packageDatapackageData");
+        (data) => {
           temp.push({
             value: data.pK_PackageID,
             label: data.name,
@@ -546,12 +496,6 @@ const AddUserMain = () => {
     totalAllotedUsers += packages.packageAllotedUsers;
     totalHeadCount += packages.headCount;
   });
-
-  console.log(
-    totalAllotedUsers,
-    totalHeadCount,
-    "totalAllotedUserstotalAllotedUsers"
-  );
 
   return (
     <>
@@ -689,11 +633,6 @@ const AddUserMain = () => {
                               </Col>
                               <div className={styles["borderLine-title"]} />
                             </Row>
-                            {/* <Col lg={4} md={4} sm={4} xs={12}>
-                              <label className={styles["labelChart-Number"]}>
-                                {`${packages.allotedUsers} / ${packages.headCount}`}
-                              </label>
-                            </Col> */}
                           </Row>
 
                           {["Professional", "Premium"].map((packageName) => {
@@ -796,7 +735,6 @@ const AddUserMain = () => {
                       {t("Organization")}{" "}
                     </label>
                     <span className={styles["associates-text"]}>
-                      {/* {t("Waqas-associates")} */}
                       {organizationName}
                     </span>
                   </Col>
@@ -869,7 +807,6 @@ const AddUserMain = () => {
                         <ReactFlagsSelect
                           name="reactFlag"
                           fullWidth={false}
-                          //   onOpen={handleDropdownOpen}
                           selected={selected}
                           selectedCountry={selectedCountry}
                           selectedSize={8}

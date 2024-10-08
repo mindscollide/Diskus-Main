@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BillProcessStepThree.module.css";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Button, TableToDo, Loader } from "../../../../../components/elements";
 import ellipses from "../../../../../assets/images/ellipses.svg";
@@ -11,10 +11,7 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
-import {
-  calculateTotals,
-  calculateTotalsBillingStepper,
-} from "../../../../../commen/functions/TableDataCalculation";
+import { calculateTotalsBillingStepper } from "../../../../../commen/functions/TableDataCalculation";
 const BillProcessStepThree = () => {
   const { t } = useTranslation();
 
@@ -80,11 +77,6 @@ const BillProcessStepThree = () => {
           UserMangementReducer.getAllSelectedPakagesData
             .organizationSubscription.organizationSelectedPackages.length > 0
         ) {
-          console.log(
-            UserMangementReducer.getAllSelectedPakagesData
-              .organizationSubscription.fK_TenureOfSubscriptionID,
-            "setGetAllPakagesData"
-          );
           setTenureID(
             UserMangementReducer.getAllSelectedPakagesData
               .organizationSubscription.fK_TenureOfSubscriptionID
@@ -121,7 +113,7 @@ const BillProcessStepThree = () => {
       key: "name",
       ellipses: true,
       align: "center",
-      render: (text, record) => {
+      render: (record) => {
         const { name } = calculateTotalsBillingStepper(getAllPakagesData);
 
         if (record.isTotalRow) {
@@ -167,7 +159,7 @@ const BillProcessStepThree = () => {
       key: "headCount",
       ellipses: true,
       align: "center",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <>
             <span className={styles["ChargesPerLicesense"]}>
@@ -192,7 +184,7 @@ const BillProcessStepThree = () => {
       align: "center",
       ellipses: true,
       width: 100,
-      render: (text, record) => {
+      render: (record) => {
         const { Yearlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
         if (record.isTotalRow) {
@@ -225,7 +217,7 @@ const BillProcessStepThree = () => {
       align: "center",
       ellipses: true,
       width: 100,
-      render: (text, record) => {
+      render: (record) => {
         const { Monthlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
         if (record.isTotalRow) {
@@ -257,7 +249,7 @@ const BillProcessStepThree = () => {
       align: "center",
       ellipses: true,
       width: 100,
-      render: (text, record) => {
+      render: (record) => {
         const { Quaterlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
         if (record.isTotalRow) {

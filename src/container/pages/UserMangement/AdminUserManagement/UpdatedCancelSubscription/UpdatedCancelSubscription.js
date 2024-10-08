@@ -261,7 +261,7 @@ const UpdatedCancelSubscription = () => {
       ellipsis: true,
       align: "center",
       width: 100,
-      render: (text, record) => {
+      render: (record) => {
         if (record.IsDefaultRow) {
           return (
             <>
@@ -434,7 +434,7 @@ const UpdatedCancelSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-      render: (text, record) => {
+      render: (record) => {
         if (record.IsDefaultRow) {
           return <></>;
         } else {

@@ -99,10 +99,6 @@ const DowngradeSubscription = () => {
         UserMangementReducer.getOrganizationWallet !== null &&
         UserMangementReducer.getOrganizationWallet !== undefined
       ) {
-        console.log(
-          UserMangementReducer.getOrganizationWallet,
-          "getOrganizationWallet"
-        );
         setWalletData({
           walletamount:
             UserMangementReducer.getOrganizationWallet.organizationWallet
@@ -209,7 +205,7 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-      render: (text, record, index) => {
+      render: (record) => {
         if (record.IsDefaultRow) {
           // Get the total charges only once, assuming you have access to the original data
           const totalCharges = calculateTotalChargesDowngradeSubscription(
@@ -456,7 +452,6 @@ const DowngradeSubscription = () => {
       PackagesHeadCounts: packagesHeadCounts,
     };
 
-    console.log(data, "handelOnClickDownGradeButton");
     dispatch(downgradeOrganizationSubscriptionApi(navigate, t, data));
   };
 

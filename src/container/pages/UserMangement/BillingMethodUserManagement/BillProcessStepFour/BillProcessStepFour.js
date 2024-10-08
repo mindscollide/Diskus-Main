@@ -88,40 +88,6 @@ const BillProcessStepFour = ({ paymentMethods, setPaymentMethods }) => {
       });
     }
 
-    // if (name === "CreditCardNumber" && value !== "") {
-    //   const creditCardRegex = /^(?:\d[ -]*?){13,16}$/;
-    //   if (creditCardRegex.test(value)) {
-    //     // Input matches credit card pattern
-    //     setPaymentMethods({
-    //       ...paymentMethods,
-    //       CreditCardNumber: {
-    //         value: value.trim(),
-    //         errorMessage: "",
-    //         errorStatus: false,
-    //       },
-    //     });
-    //   } else {
-    //     // Input doesn't match credit card pattern
-    //     setPaymentMethods({
-    //       ...paymentMethods,
-    //       CreditCardNumber: {
-    //         value: value.replace(/[^0-9-]/g, ""), // Remove non-numeric characters
-    //         errorMessage: "",
-    //         errorStatus: true,
-    //       },
-    //     });
-    //   }
-    // } else if (name === "CreditCardNumber" && value === "") {
-    //   setPaymentMethods({
-    //     ...paymentMethods,
-    //     CreditCardNumber: {
-    //       value: "",
-    //       errorMessage: "",
-    //       errorStatus: false,
-    //     },
-    //   });
-    // }
-
     if (name === "CreditCardExpiration" && value !== "") {
       const expirationDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/; // MM/YY format
 

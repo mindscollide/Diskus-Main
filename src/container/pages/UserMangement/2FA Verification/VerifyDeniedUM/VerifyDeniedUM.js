@@ -8,7 +8,6 @@ import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_
 import logo from "../../../../../assets/images/signinlogo.svg";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { Button, Paper } from "../../../../../components/elements";
-import { useNavigate } from "react-router-dom";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 import { useDispatch } from "react-redux";
 const VerifyDeniedUM = () => {
@@ -129,7 +128,6 @@ const VerifyDeniedUM = () => {
                   draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
-                  // width="600px"
                   className={styles["denied_signIn_Auth_Icon"]}
                 />
               </Col>

@@ -122,7 +122,6 @@ div#react-select-2-placeholder {
 
 .formcontrol-Phone-field {
   margin-top: 20px;
-  /* margin-left: 20px !important; */
 }
 
 .AddProgressBar {
@@ -410,8 +409,6 @@ body[dir="rtl"] .checkEmailSpinner {
   color: #939393 !important;
   position: relative !important;
   cursor: pointer;
-  /* right    : 40px !important;
-    top         : 18px !important; */
 }
 
 .react-flag {
@@ -431,7 +428,6 @@ body[dir="rtl"] .checkEmailSpinner {
   color: #4d4d4d !important;
   font-size: 9px !important;
   font-weight: 600;
-  /* border: thin solid rgba(77, 77, 77, 0.3); */
   border-radius: 4px !important;
   background: white !important;
 }
@@ -440,8 +436,6 @@ body[dir="rtl"] .checkEmailSpinner {
   cursor: pointer !important;
   padding: 5px 8px !important;
   margin: 4px 5px !important;
-  /* font-size  : 13px !important; */
-  /* font-weight: 600; */
   white-space: nowrap !important;
 }
 
@@ -500,7 +494,6 @@ button#rfs-btn {
   margin: 2px !important;
   padding-left: 12px !important;
   padding-bottom: 2px !important;
-  /* padding-top: 2px; */
   color: hsl(0, 0%, 20%);
   box-sizing: border-box;
 }
@@ -535,23 +528,3 @@ button#rfs-btn {
 .container-main-class {
   padding: 0px 40px !important;
 }
-
-/* .isEmailUnique {
-  position: relative;
-  left: 315px;
-  top: -41px;
-  width: 30px;
-  height: 30px;
-  bottom: 20px;
-  color: green;
-} */
-
-/* .checkEmailSpinner {
-  position: relative;
-  left: 345px;
-  top: -41px;
-  width: 30px;
-  height: 30px;
-  bottom: 20px;
-  color: green;
-} */

@@ -43,8 +43,6 @@ const CreateAddtionalUsersModal = () => {
 
   let OrganizatioName = localStorage.getItem("organizatioName");
 
-  let pakageSelectedID = localStorage.getItem("PakageSelectedID");
-
   const { UserManagementModals, UserMangementReducer } = useSelector(
     (state) => state
   );
@@ -200,7 +198,6 @@ const CreateAddtionalUsersModal = () => {
       // e.g., set error messages in createAddionalUsers
     }
   };
-  console.log("members", members);
   //handle removing the addional Users
   const handleCrossIcon = (indexToRemove) => {
     setMembers((currentMembers) =>
@@ -210,9 +207,6 @@ const CreateAddtionalUsersModal = () => {
 
   //Handle Skip Button
   const handleSkipButton = async () => {
-    let data = {
-      OrganizationID: Number(organzataionID),
-    };
     await dispatch(showCreateAddtionalUsersModal(false));
 
     await dispatch(getPackageExpiryDetail(navigate, Number(organzataionID), t));

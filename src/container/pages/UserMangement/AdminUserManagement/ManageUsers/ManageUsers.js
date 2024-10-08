@@ -45,8 +45,6 @@ const ManageUsers = () => {
 
   let userID = localStorage.getItem("userID");
 
-  let FreeTrial = localStorage.getItem("isTrial");
-
   const { UserMangementReducer, UserManagementModals } = useSelector(
     (state) => state
   );
@@ -140,11 +138,8 @@ const ManageUsers = () => {
   //AllOrganizationsUsers Api Data
   useEffect(() => {
     try {
-      console.log("datadatadata");
       const Users = UserMangementReducer.allOrganizationUsersData;
-      console.log(Users, "UsersUsersUsersUsersUsers");
-      Users.selectedPackageDetails.map((data, index) => {
-        console.log(data, "datadatadata");
+      Users.selectedPackageDetails.map((data) => {
         setHeadCount(data.headCount);
       });
 
@@ -238,7 +233,6 @@ const ManageUsers = () => {
         }
       },
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
         return (
           <>
             {(() => {
@@ -258,7 +252,7 @@ const ManageUsers = () => {
       key: "userStatus",
       align: "left",
       ellipsis: true,
-      render: (text, record) => {
+      render: (record) => {
         return (
           <>
             {(() => {
@@ -311,7 +305,7 @@ const ManageUsers = () => {
       dataIndex: "Delete",
       key: "Delete",
       align: "center",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <>
             {checkFeatureIDAvailability(27) ? (

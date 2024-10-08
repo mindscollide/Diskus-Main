@@ -7,7 +7,7 @@ import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.
 import Cookies from "js-cookie";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import {
   Button,
@@ -27,14 +27,11 @@ import {
 import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 const VerificationEmailAndNumber = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
-  //
-  const storedValue = localStorage.getItem("value");
 
   const [value, setValue] = useState(null);
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
@@ -46,7 +43,6 @@ const VerificationEmailAndNumber = () => {
     open: false,
     message: "",
   });
-  let GobackSelection = localStorage.getItem("GobackSelection");
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
@@ -85,7 +81,6 @@ const VerificationEmailAndNumber = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let userID = localStorage.getItem("userID");
-    // let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
     let Data = {
       UserID: JSON.parse(userID),
       IsRequestFromDevice: false,
@@ -118,10 +113,6 @@ const VerificationEmailAndNumber = () => {
 
   useEffect(() => {
     if (Authreducer.AuthenticateAFAResponse !== null) {
-      console.log(
-        Authreducer.AuthenticateAFAResponse,
-        "Authreducer.AuthenticateAFAResponse"
-      );
       localStorage.setItem(
         "email",
         Authreducer.AuthenticateAFAResponse.emailAddress
@@ -228,9 +219,8 @@ const VerificationEmailAndNumber = () => {
     if (newClient != null && newClient != "" && newClient != undefined) {
     } else {
       let userID = localStorage.getItem("userID");
-      if(userID !== null) {
+      if (userID !== null) {
         mqttConnection(userID);
-
       }
     }
   }, [Helper.socket]);
@@ -359,19 +349,6 @@ const VerificationEmailAndNumber = () => {
                     lg={12}
                     className={styles["Go_back_link_VerifyCodeOne"]}
                   >
-                    {/* <Link
-                      to={
-                        parseInt(GobackSelection) === 1
-                          ? "/twofac"
-                          : parseInt(GobackSelection) === 2
-                          ? "/sendmailwithdevice"
-                          : parseInt(GobackSelection) === 3
-                          ? "/twofacmultidevice"
-                          : "/twofac"
-                      }
-                    >
-                      {t("Go-back")}
-                    </Link> */}
                     <span
                       className="d-flex justify-content-center cursor-pointer"
                       onClick={handleGoBackButton}
@@ -391,7 +368,6 @@ const VerificationEmailAndNumber = () => {
                   draggable="false"
                   src={img2}
                   alt="auth_icon"
-                  // width="380px"
                   className={styles["phone-image"]}
                 />
               </Col>
@@ -400,7 +376,6 @@ const VerificationEmailAndNumber = () => {
                   draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
-                  // width="600px"
                   className={styles["Auth_Icon"]}
                 />
               </Col>

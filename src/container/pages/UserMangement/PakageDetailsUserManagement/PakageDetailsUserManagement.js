@@ -15,14 +15,11 @@ import {
   Notification,
 } from "../../../../components/elements";
 import {
-  LoginFlowRoutes,
   cancelisTrailandSubscriptionApi,
   changeSelectPacakgeApi,
   getAllUserTypePackagesApi,
   signUpFlowRoutes,
-  signupFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
-import { Table } from "antd";
 import { calculateTotals } from "../../../../commen/functions/TableDataCalculation";
 
 const PakageDetailsUserManagement = () => {
@@ -34,7 +31,6 @@ const PakageDetailsUserManagement = () => {
 
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
   const trialPage = localStorage.getItem("isTrial");
-  console.log(trialPage, "trialPagetrialPagetrialPage");
   let changePacakgeFlag = localStorage.getItem("changePacakgeFlag");
 
   const { UserMangementReducer, LanguageReducer } = useSelector(
@@ -43,17 +39,11 @@ const PakageDetailsUserManagement = () => {
 
   //States
   const [tableData, setTableData] = useState([]);
-  console.log(tableData, "tableDatatableData");
-  const [lisence, setlisence] = useState({
-    TotalLisence: "",
-  });
   const [packageDetail, setPackageDetail] = useState([]);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
-
-  console.log(tableData, "tableDatatableDatatableData");
 
   //get All user pakages Api call
   useEffect(() => {
@@ -101,8 +91,6 @@ const PakageDetailsUserManagement = () => {
     }
   }, [UserMangementReducer.getAllUserTypePackagesData]);
 
-  console.log(tableData, "setTableDatasetTableDatasetTableData");
-
   //Fetching User headcounts data and set in the table
   useEffect(() => {
     if (UserMangementReducer.getAllSelectedPakagesData) {
@@ -129,11 +117,6 @@ const PakageDetailsUserManagement = () => {
           }
         );
       }
-
-      console.log(
-        UserMangementReducer.getAllSelectedPakagesData,
-        "UserMangementReducerUserMangementReducer"
-      );
     }
   }, [UserMangementReducer.getAllSelectedPakagesData]);
 
@@ -163,7 +146,7 @@ const PakageDetailsUserManagement = () => {
       dataIndex: "name",
       key: "name",
       align: "center",
-      render: (text, response) => {
+      render: (response) => {
         const { name } = calculateTotals(tableData);
 
         if (response.isTotalRow) {
@@ -216,7 +199,7 @@ const PakageDetailsUserManagement = () => {
       dataIndex: "Numberoflicenses",
       key: "Numberoflicenses",
       align: "center",
-      render: (text, row) => {
+      render: (row) => {
         const { Numberoflicenses } = calculateTotals(tableData);
 
         if (row.shouldDisplayTextField) {
@@ -272,12 +255,11 @@ const PakageDetailsUserManagement = () => {
       key: "MonthCharges",
       width: 100,
       align: "center",
-      render: (text, row) => {
+      render: (row) => {
         const { MonthCharges } = calculateTotals(tableData);
         console.log(MonthCharges, "pricepricepriceprice");
         const monthlyCharges =
           row.price && row.licenseCount ? row.price * row.licenseCount : 0;
-        console.log(monthlyCharges, "licenseCount");
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -331,7 +313,7 @@ const PakageDetailsUserManagement = () => {
       key: "Quarterlycharges",
       align: "center",
       width: 100,
-      render: (text, row) => {
+      render: (row) => {
         const { Quarterlycharges } = calculateTotals(tableData);
 
         const quarterlyCharges =
@@ -387,7 +369,7 @@ const PakageDetailsUserManagement = () => {
       key: "YearlychargesTotal",
       align: "center",
       width: 100,
-      render: (text, row) => {
+      render: (row) => {
         const { YearlychargesTotal } = calculateTotals(tableData);
 
         const YearlyCharges =
@@ -458,7 +440,6 @@ const PakageDetailsUserManagement = () => {
       dispatch(
         changeSelectPacakgeApi(navigate, t, requestData, changePacakgeFlag)
       );
-      // localStorage.removeItem("changePacakgeFlag")
     } else {
       if (SignupPage) {
         let requestData = {
@@ -498,14 +479,6 @@ const PakageDetailsUserManagement = () => {
     navigate("/Admin/subscriptionDetailsUserManagement");
   };
 
-  const { Numberoflicenses, price, Quarterlycharges, YearlychargesTotal } =
-    calculateTotals(tableData);
-
-  console.log(
-    { Numberoflicenses, price, Quarterlycharges, YearlychargesTotal },
-    "calculateTotalscalculateTotals"
-  );
-  // const isLastRow = {true}
   return (
     <Container>
       <Row>
@@ -542,23 +515,7 @@ const PakageDetailsUserManagement = () => {
                       <Row className="mt-3">
                         <Col sm={12}>
                           <>
-                            {/* <span className="icon-star package-icon-style">
-                              <span
-                                className="path1"
-                                // style={{ color: packageColorPath1 }}
-                              ></span>
-                              <span
-                                className="path2"
-                                // style={{ color: packageColorPath2 }}
-                              ></span>
-                              <span
-                                className="path3"
-                                // style={{ color: packageColorPath2 }}
-                              ></span>
-                            </span> */}
                             <span className={styles["package_title"]}>
-                              {/* {t("Gold")} */}
-                              {/* {data.PackageName} */}
                               <p title={data.name}>{data.name}</p>
                             </span>{" "}
                           </>

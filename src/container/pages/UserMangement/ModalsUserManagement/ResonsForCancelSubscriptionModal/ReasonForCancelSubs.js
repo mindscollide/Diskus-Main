@@ -21,12 +21,6 @@ const ReasonForCancelSubs = ({ completionContract, subscriptionID }) => {
 
   // state for cancel Subscription
   const [cancelSubs, setCancelSubs] = useState([]);
-  console.log(cancelSubs, "cancelSubscancelSubs");
-
-  //getting organizationSubscriptionID from localStorage
-  let OrganizationSubscriptionID = localStorage.getItem(
-    "organizationSubscriptionID"
-  );
 
   const [selectedReasonIds, setSelectedReasonIds] = useState([]);
 
@@ -96,17 +90,6 @@ const ReasonForCancelSubs = ({ completionContract, subscriptionID }) => {
   const handleNeverMindButton = () => {
     dispatch(showReasonForLeavingModal(false));
   };
-
-  //handle select for checkbox is Admin
-  // const handleCancelSubCheckbox = (isChecked) => {
-  //   setCheckboxCancel((prevState) => ({
-  //     ...prevState,
-  //     isCheckbox: {
-  //       ...prevState.isCheckbox,
-  //       value: isChecked,
-  //     },
-  //   }));
-  // };
 
   return (
     <section>
