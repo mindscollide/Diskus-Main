@@ -1059,14 +1059,14 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 totalRecords: response.data.responseResult.totalRecords,
               };
               dispatch(SearchMeeting_Success(newMeetingData, ""));
-              await dispatch(
-                GetAllUserChats(
-                  navigate,
-                  parseInt(currentUserId),
-                  parseInt(currentOrganizationId),
-                  t
-                )
-              );
+              // await dispatch(
+              //   GetAllUserChats(
+              //     navigate,
+              //     parseInt(currentUserId),
+              //     parseInt(currentOrganizationId),
+              //     t
+              //   )
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

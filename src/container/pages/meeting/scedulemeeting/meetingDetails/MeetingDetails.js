@@ -1344,9 +1344,21 @@ const MeetingDetails = ({
                 </Row>
               </Row>
               <Row className="mt-3">
-                <Col lg={12} md={12} sm={12}>
+                <Col lg={4} md={4} sm={12}>
                   <span className={styles["Scedule_heading"]}>
                     {t("Scheduled-on")}
+                    <span className={styles["steric"]}>*</span>
+                  </span>
+                </Col>
+                <Col lg={4} md={4} sm={12}>
+                  <span className={styles["Scedule_heading"]}>
+                    {t("Start-time")}
+                    <span className={styles["steric"]}>*</span>
+                  </span>
+                </Col>
+                <Col lg={4} md={4} sm={12}>
+                  <span className={styles["Scedule_heading"]}>
+                    {t("End-time")}
                     <span className={styles["steric"]}>*</span>
                   </span>
                 </Col>
