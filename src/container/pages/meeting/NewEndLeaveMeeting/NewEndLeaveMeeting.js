@@ -3,18 +3,13 @@ import styles from "./NewEndLeaveMeeting.module.css";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Button, Modal } from "../../../../components/elements";
-import {
-  showEndMeetingForAll,
-  showEndMeetingModal,
-} from "../../../../store/actions/NewMeetingActions";
+import { showEndMeetingForAll } from "../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 
 const NewEndLeaveMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   return (
     <section>

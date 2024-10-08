@@ -9,7 +9,6 @@ import { UploadTextField } from "../../../../components/elements";
 import {
   searchNewUserMeeting,
   showCancelModalmeetingDeitals,
-  showGetAllMeetingDetialsFailed,
   scheduleMeetingPageFlag,
   viewProposeDateMeetingPageFlag,
   viewAdvanceMeetingPublishPageFlag,
@@ -30,7 +29,6 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
 } from "../../../../store/actions/NewMeetingActions";
-import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { Col, Row } from "react-bootstrap";
 
 const CancelButtonModal = () => {
@@ -110,7 +108,6 @@ const CancelButtonModal = () => {
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t, false));
         } else {
           let searchData = {
             Date: "",
@@ -124,18 +121,12 @@ const CancelButtonModal = () => {
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t, false));
-          // localStorage.setItem("MeetingCurrentView", 1);
         }
       }
     }
   };
 
   const handleUploadFile = async ({ file }) => {
-    // console.log(event.target, "handleUploadFilehandleUploadFile");
-    // const file = event.target.files[0]; // Extract the file from the event
-    // console.log(file, "handleUploadFilehandleUploadFile");
-    // navigate("/Diskus/dataroom", { state: file });
     if (NewMeetingreducer.uploadGlobalFlag === true) {
       dispatch(showCancelModalmeetingDeitals(false));
       dispatch(scheduleMeetingPageFlag(false));
@@ -157,8 +148,6 @@ const CancelButtonModal = () => {
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
       dispatch(uploadGlobalFlag(false));
-      // navigate(`/DisKus/Meeting`);
-      console.log(file, "handleUploadFilehandleUploadFile");
       navigate("/Diskus/dataroom", { state: file });
     } else {
       dispatch(showCancelModalmeetingDeitals(false));
@@ -194,7 +183,6 @@ const CancelButtonModal = () => {
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t, false));
         } else {
           let searchData = {
             Date: "",
@@ -208,8 +196,6 @@ const CancelButtonModal = () => {
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
           dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t, false));
-          // localStorage.setItem("MeetingCurrentView", 1);
         }
       }
     }
@@ -219,16 +205,6 @@ const CancelButtonModal = () => {
     <section>
       {" "}
       <section>
-        {/* {
-          <div className="d-none">
-            {" "}
-            <UploadTextField
-              title={t("Upload-document")}
-              handleFileUploadRequest={handleUploadFile}
-              // setProgress={setProgress}
-            />
-          </div>
-        } */}
         <Modal
           show={NewMeetingreducer.cancelModalMeetingDetails}
           setShow={dispatch(showCancelModalmeetingDeitals)}
@@ -244,7 +220,8 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Any-unsaved-changes-will-be")}
                   </span>
@@ -255,7 +232,8 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Lost-continue")}
                   </span>
@@ -270,7 +248,8 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center gap-2'>
+                  className="d-flex justify-content-center gap-2"
+                >
                   <Button
                     text={t("No")}
                     className={styles["Yes_unsave_File_Upload"]}
@@ -281,7 +260,6 @@ const CancelButtonModal = () => {
                       title={t("Yes")}
                       handleFileUploadRequest={handleUploadFile}
                       className={styles["No_unsave_File_Upload"]}
-                      // setProgress={setProgress}
                     />
                   ) : (
                     <Button
