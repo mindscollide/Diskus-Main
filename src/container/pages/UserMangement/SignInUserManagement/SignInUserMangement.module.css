@@ -27,7 +27,6 @@ body[dir="rtl"] .signIn_heading {
 .RememberEmail {
   font-size: calc(16px - 20%) !important;
   border-radius: 4px;
-  /* margin-top: 5px; */
 }
 
 .Remember-Email-text {
@@ -92,7 +91,6 @@ body[dir="rtl"] .Next_button_EmailVerify {
   width: 100%;
   border-radius: 4px;
   padding: 10px 30px !important;
-  /* font-size: calc(18px - 20%) !important; */
   font-size: 12px !important;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -109,7 +107,6 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
   width: 100%;
   border-radius: 4px;
   padding: 10px 30px !important;
-  /* font-size: calc(18px - 20%) !important; */
   font-size: 12px !important;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -117,11 +114,6 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
   font-weight: 600 !important;
   text-transform: uppercase;
 }
-
-/* .subscribNow_button_EmailVerify {
-    width: 280px;
-    border-radius: 1px;
-  } */
 
 .Auth_Icon {
   position: fixed;
@@ -137,10 +129,6 @@ body[dir="rtl"] .Auth_Icon {
   left: -190px;
 }
 
-/* .signInError {
-      background-color: #fff !important;
-      color: #000 !important;
-  } */
 .Login_page_text {
   display: flex;
   margin-top: 10%;
@@ -201,7 +189,6 @@ body[dir="rtl"] .inputEmailField {
 body[dir="rtl"] .heading-1 {
   font-weight: 600 !important;
   font-size: 70px !important;
-  /* letter-spacing: 3xpx; */
 }
 
 body[dir="rtl"] .heading-2 {
@@ -494,7 +481,7 @@ body[dir="rtl"] .languageSelector {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    max-width:290px !important;
+    max-width: 290px !important;
     max-height: 450px;
     padding: 30px 41px !important;
     border: 1px solid #e1e1e1;
@@ -502,7 +489,6 @@ body[dir="rtl"] .languageSelector {
     margin: 0px !important;
     margin-left: 50px !important;
     margin-top: 50px !important;
-
   }
   .freetrail_banner {
     position: relative;

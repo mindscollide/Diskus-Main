@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./VerifyOTPUM.module.css";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
@@ -14,16 +14,10 @@ import {
   Loader,
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
-import {
-  cleareMessage,
-  verificationEmailOTP,
-} from "../../../../store/actions/Auth2_actions";
+import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
 import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import { useSelector } from "react-redux";
-import {
-  LoginFlowRoutes,
-  signUpFlowRoutes,
-} from "../../../../store/actions/UserManagementActions";
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
 
 const VerifyOTPUM = () => {
   const { t } = useTranslation();
@@ -44,10 +38,6 @@ const VerifyOTPUM = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
 
   const languages = [
     { name: "English", code: "en" },

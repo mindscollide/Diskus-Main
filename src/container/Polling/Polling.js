@@ -8,11 +8,11 @@ import {
   Notification,
   Paper,
 } from "../../components/elements";
-import { Pagination, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
-import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { ChevronDown } from "react-bootstrap-icons";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIcon from "../../assets/images/Edit-Icon.png";
 import BinIcon from "../../assets/images/bin.svg";
@@ -30,7 +30,6 @@ import { useDispatch, useSelector } from "react-redux";
 import PollsEmpty from "../../assets/images/Poll_emptyState.svg";
 import {
   LoaderState,
-  castVoteApi,
   deletePollsMQTT,
   getPollsByPollIdApi,
   globalFlag,
@@ -47,16 +46,10 @@ import {
 } from "../../store/actions/Polls_actions";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import {
-  _justShowDateformatBilling,
-  resolutionResultTable,
-} from "../../commen/functions/date_formater";
+import { _justShowDateformatBilling } from "../../commen/functions/date_formater";
 import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
-import {
-  regexOnlyCharacters,
-  regexOnlyForNumberNCharacters,
-} from "../../commen/functions/regex";
+import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const Polling = () => {
@@ -93,7 +86,6 @@ const Polling = () => {
 
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
   const currentPageSize = localStorage.getItem("pollingPageSize");
-  console.log(pollPub, "pollPubpollPubpollPub");
   useEffect(() => {
     if (currentPage !== null && currentPageSize !== null) {
       let data = {
@@ -242,7 +234,6 @@ const Polling = () => {
     }
   }, [PollsReducer.pollingSocket]);
 
-  console.log({ rows }, "rowsrowsrowsrowsrows");
   useEffect(() => {
     try {
       if (PollsReducer.newPollDelete !== null) {
@@ -250,8 +241,7 @@ const Polling = () => {
 
         setRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
-            (newData2, index) =>
-              Number(newData2.pollID) !== Number(polls?.pollID)
+            (newData2) => Number(newData2.pollID) !== Number(polls?.pollID)
           );
         });
         dispatch(deletePollsMQTT(null));
@@ -316,8 +306,6 @@ const Polling = () => {
   const deletePollingModal = (record) => {
     setIdForDelete(record.pollID);
     dispatch(setDeltePollModal(true));
-
-    // setIdForDelete
   };
 
   const handleSearchEvent = () => {
@@ -326,12 +314,7 @@ const Polling = () => {
       ...pollsState,
       searchValue: searchBoxState.searchByTitle,
     });
-    // setSearchpoll(false);
-    // setsearchBoxState({
-    //   ...searchBoxState,
-    //   searchByName: "",
-    //   searchByTitle: "",
-    // });
+
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -365,7 +348,8 @@ const Polling = () => {
             className={styles["Ellipses_Class"]}
             onClick={() => {
               handleViewModal(record);
-            }}>
+            }}
+          >
             {text}
           </span>
         );
@@ -392,19 +376,19 @@ const Polling = () => {
       ],
       defaultFilteredValue: ["Published", "UnPublished", "Expired"],
       filterResetToDefaultFilteredValue: true, // Use the actual status values here
-      filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+      filterIcon: () => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
 
       onFilter: (value, record) =>
         record.pollStatus.status.indexOf(value) === 0,
       render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
-          return <span className='text-success'>{t("Published")}</span>;
+          return <span className="text-success">{t("Published")}</span>;
         } else if (record.pollStatus?.pollStatusId === 1) {
-          return <span className='text-success'>{t("Unpublished")}</span>;
+          return <span className="text-success">{t("Unpublished")}</span>;
         } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className='text-success'>{t("Expired")}</span>;
+          return <span className="text-success">{t("Expired")}</span>;
         }
       },
     },
@@ -425,7 +409,7 @@ const Polling = () => {
           b.dueDate.slice(6, 8)
         ),
       sortDirections: ["ascend", "descend"],
-      render: (text, record) => {
+      render: (text) => {
         return _justShowDateformatBilling(text);
       },
     },
@@ -436,7 +420,7 @@ const Polling = () => {
       width: "97px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       render: (text, record) => {
-        return <span className='text-truncate d-block'>{text}</span>;
+        return <span className="text-truncate d-block">{text}</span>;
       },
     },
     {
@@ -453,7 +437,7 @@ const Polling = () => {
       key: "vote",
       width: "69px",
       align: "center",
-      render: (text, record) => {
+      render: (record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (record.voteStatus === "Not Voted") {
@@ -468,12 +452,7 @@ const Polling = () => {
               );
             } else if (record.voteStatus === "Voted") {
               return (
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  // className={styles["Background-nonvoted-Button"]}
-                >
+                <Col lg={12} md={12} sm={12}>
                   <span className={styles["votedBtn"]}>{t("Voted")}</span>
                 </Col>
               );
@@ -488,12 +467,7 @@ const Polling = () => {
             if (record.wasPollPublished) {
               if (record.voteStatus === "Not Voted") {
                 return (
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    // className={styles["Background-nonvoted-Button"]}
-                  >
+                  <Col lg={12} md={12} sm={12}>
                     <span className={styles["Not-voted"]}>
                       {t("Not-voted")}
                     </span>
@@ -501,12 +475,7 @@ const Polling = () => {
                 );
               } else {
                 return (
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    // className={styles["Background-nonvoted-Button"]}
-                  >
+                  <Col lg={12} md={12} sm={12}>
                     <span className={styles["votedBtn"]}>{t("Voted")}</span>
                   </Col>
                 );
@@ -526,7 +495,7 @@ const Polling = () => {
       dataIndex: "Edit",
       key: "Edit",
       width: "53px",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <>
             {Number(record.pollCreatorID) === Number(userID) ? (
@@ -537,17 +506,17 @@ const Polling = () => {
                       {!record.wasPollPublished ? (
                         <>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topRight' title={t("Edit")}>
+                            <Tooltip placement="topRight" title={t("Edit")}>
                               <img
                                 src={EditIcon}
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                alt=''
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
+                                alt=""
                                 onClick={() => {
                                   handleEditpollModal(record);
                                 }}
-                                draggable='false'
+                                draggable="false"
                               />
                             </Tooltip>
                           </Col>
@@ -557,17 +526,17 @@ const Polling = () => {
                         <>
                           <Col sm={12} md={5} lg={5}></Col>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topLeft' title={t("Delete")}>
+                            <Tooltip placement="topLeft" title={t("Delete")}>
                               <img
                                 src={BinIcon}
-                                alt=''
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
+                                alt=""
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
                                 onClick={() => {
                                   deletePollingModal(record);
                                 }}
-                                draggable='false'
+                                draggable="false"
                               />
                             </Tooltip>
                           </Col>
@@ -577,32 +546,32 @@ const Polling = () => {
                   ) : (
                     <>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topRight' title={t("Edit")}>
+                        <Tooltip placement="topRight" title={t("Edit")}>
                           <img
                             src={EditIcon}
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            alt=''
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            alt=""
                             onClick={() => {
                               handleEditpollModal(record);
                             }}
-                            draggable='false'
+                            draggable="false"
                           />
                         </Tooltip>
                       </Col>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topLeft' title={t("Delete")}>
+                        <Tooltip placement="topLeft" title={t("Delete")}>
                           <img
                             src={BinIcon}
-                            alt=''
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
+                            alt=""
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
                             onClick={() => {
                               deletePollingModal(record);
                             }}
-                            draggable='false'
+                            draggable="false"
                           />
                         </Tooltip>
                       </Col>
@@ -621,7 +590,6 @@ const Polling = () => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "SearchVal") {
-      // let UpdateValue = regexOnlyForNumberNCharacters(value);
       if (value !== "") {
         setPollsState({
           ...pollsState,
@@ -638,42 +606,12 @@ const Polling = () => {
 
   const handleKeyDownSearch = (e) => {
     if (e.key === "Enter") {
-      // setPollsState({
-      //   ...pollsState,
-      //   searchValue: "",
-      // });
       setEnterpressed(true);
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
         CreatorName: "",
         PollTitle: pollsState.searchValue,
-        PageNumber: 1,
-        Length: 50,
-      };
-      dispatch(searchPollsApi(navigate, t, data));
-    }
-  };
-
-  const handleKeyDownSearchModal = (e) => {
-    if (e.key === "Enter" && searchBoxState.searchByTitle !== "") {
-      setSearchpoll(true);
-      setPollsState({
-        ...pollsState,
-        searchValue: searchBoxState.searchByTitle,
-      });
-      setSearchpoll(false);
-      setsearchBoxState({
-        ...searchBoxState,
-        searchByName: "",
-        searchByTitle: "",
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        PollTitle: searchBoxState.searchByTitle,
-        CreatorName: searchBoxState.searchByName,
-        Title: searchBoxState.searchByTitle,
         PageNumber: 1,
         Length: 50,
       };
@@ -806,12 +744,6 @@ const Polling = () => {
       Length: 50,
     };
     dispatch(searchPollsApi(navigate, t, data));
-    // setSearchpoll(false);
-    // setsearchBoxState({
-    //   ...searchBoxState,
-    //   searchByName: "",
-    //   searchByTitle: "",
-    // });
   };
 
   const handleResettingPage = () => {
@@ -834,8 +766,13 @@ const Polling = () => {
   return (
     <>
       <section className={styles["Poll_Container"]}>
-        <Row className='my-3 d-flex align-items-center'>
-          <Col sm={12} md={7} lg={7} className="d-flex align-items-center gap-4">
+        <Row className="my-3 d-flex align-items-center">
+          <Col
+            sm={12}
+            md={7}
+            lg={7}
+            className="d-flex align-items-center gap-4"
+          >
             <span className={styles["Poll_Container__heading"]}>
               {t("Polls")}
             </span>
@@ -845,11 +782,11 @@ const Polling = () => {
               icon={
                 <img
                   src={plusbutton}
-                  height='7.6px'
-                  width='7.6px'
-                  alt=''
-                  className='align-items-center'
-                  draggable='false'
+                  height="7.6px"
+                  width="7.6px"
+                  alt=""
+                  className="align-items-center"
+                  draggable="false"
                 />
               }
               onClick={() =>
@@ -858,8 +795,8 @@ const Polling = () => {
             />
           </Col>
 
-          <Col sm={12} md={5} lg={5} >
-            <span className='position-relative w-100'>
+          <Col sm={12} md={5} lg={5}>
+            <span className="position-relative w-100">
               <TextField
                 width={"100%"}
                 placeholder={t("Search")}
@@ -868,7 +805,7 @@ const Polling = () => {
                 value={pollsState.searchValue}
                 change={HandleSearchPollsMain}
                 onKeyDown={handleKeyDownSearch}
-                labelclass='d-none'
+                labelclass="d-none"
                 clickIcon={HandleShowSearch}
                 inputicon={
                   <>
@@ -877,26 +814,28 @@ const Polling = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex gap-2 align-items-center'>
+                        className="d-flex gap-2 align-items-center"
+                      >
                         {pollsState.searchValue && enterpressed ? (
                           <>
                             <img
                               src={BlackCrossIcon}
-                              className='cursor-pointer'
-                              draggable='false'
-                              alt=''
+                              className="cursor-pointer"
+                              draggable="false"
+                              alt=""
                               onClick={handleResettingPage}
                             />
                           </>
                         ) : null}
                         <Tooltip
-                          placement='bottomLeft'
-                          title={t("Search-filters")}>
+                          placement="bottomLeft"
+                          title={t("Search-filters")}
+                        >
                           <img
                             src={searchicon}
-                            alt=''
+                            alt=""
                             className={styles["Search_Bar_icon_class"]}
-                            draggable='false'
+                            draggable="false"
                           />
                         </Tooltip>
                       </Col>
@@ -912,31 +851,32 @@ const Polling = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["SearhBar_Polls"]}>
-                      <Row className='mt-2'>
+                      className={styles["SearhBar_Polls"]}
+                    >
+                      <Row className="mt-2">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-end'>
+                          className="d-flex justify-content-end"
+                        >
                           <img
                             src={BlackCrossIcon}
                             className={styles["Cross_Icon_Styling"]}
-                            width='16px'
-                            height='16px'
-                            alt=''
+                            width="16px"
+                            height="16px"
+                            alt=""
                             onClick={HandleCloseSearchModal}
-                            draggable='false'
+                            draggable="false"
                           />
                         </Col>
                       </Row>
-                      <Row className='mt-3'>
+                      <Row className="mt-3">
                         <Col lg={6} md={6} sm={6}>
                           <TextField
                             placeholder={t("Search-by-title")}
                             applyClass={"Search_Modal_Fields"}
-                            labelclass='d-none'
-                            // onKeyDown={handleKeyDownSearchModal}
+                            labelclass="d-none"
                             name={"searchbytitle"}
                             value={searchBoxState.searchByTitle}
                             change={HandleSearchboxNameTitle}
@@ -946,20 +886,20 @@ const Polling = () => {
                           <TextField
                             placeholder={t("Search-by-name")}
                             applyClass={"Search_Modal_Fields"}
-                            labelclass='d-none'
-                            // onKeyDown={handleKeyDownSearchModal}
+                            labelclass="d-none"
                             name={"seachbyname"}
                             value={searchBoxState.searchByName}
                             change={HandleSearchboxNameTitle}
                           />
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-end gap-2'>
+                          className="d-flex justify-content-end gap-2"
+                        >
                           <Button
                             text={t("Reset")}
                             className={styles["Reset_Button_polls_SearchModal"]}
@@ -999,8 +939,9 @@ const Polling = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className='d-flex justify-content-center align-items-center flex-column gap-2'>
-                    <img src={PollsEmpty} alt='poll_icon' draggable='false' />
+                    className="d-flex justify-content-center align-items-center flex-column gap-2"
+                  >
+                    <img src={PollsEmpty} alt="poll_icon" draggable="false" />
                     <span className={styles["No_Poll_Heading"]}>
                       {t("No-polls")}
                     </span>
@@ -1015,11 +956,11 @@ const Polling = () => {
                       icon={
                         <img
                           src={plusbutton}
-                          height='7.6px'
-                          width='7.6px'
-                          alt=''
-                          className='align-items-center'
-                          draggable='false'
+                          height="7.6px"
+                          width="7.6px"
+                          alt=""
+                          className="align-items-center"
+                          draggable="false"
                         />
                       }
                       onClick={() =>
@@ -1035,19 +976,21 @@ const Polling = () => {
             )}
           </Col>
         </Row>
-        <Row className='mt-4'>
+        <Row className="mt-4">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className='d-flex justify-content-center'>
+            className="d-flex justify-content-center"
+          >
             {rows.length > 0 && (
               <Row className={styles["PaginationStyle-Committee"]}>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className={"pagination-groups-table"}>
+                  className={"pagination-groups-table"}
+                >
                   <CustomPagination
                     current={currentPage !== null ? currentPage : 1}
                     pageSize={currentPageSize !== null ? currentPageSize : 50}

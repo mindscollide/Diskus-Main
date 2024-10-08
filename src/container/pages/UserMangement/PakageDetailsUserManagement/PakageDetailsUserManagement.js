@@ -65,7 +65,6 @@ const PakageDetailsUserManagement = () => {
   useEffect(() => {
     try {
       const pakageDetails = UserMangementReducer.getAllUserTypePackagesData;
-      console.log(pakageDetails, "datadatadatadata");
 
       // Check if the package details object and its packages array exist and are not empty
       if (
@@ -257,7 +256,6 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       render: (row) => {
         const { MonthCharges } = calculateTotals(tableData);
-        console.log(MonthCharges, "pricepricepriceprice");
         const monthlyCharges =
           row.price && row.licenseCount ? row.price * row.licenseCount : 0;
         if (row.shouldDisplayTextField) {

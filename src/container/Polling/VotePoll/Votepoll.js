@@ -6,10 +6,9 @@ import {
   Checkbox,
   Notification,
   CustomRadio2,
-  TextField,
 } from "../../../components/elements";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
-import { useSSR, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Progress } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +17,6 @@ import {
   castVoteApi,
   setVotePollModal,
 } from "../../../store/actions/Polls_actions";
-import CustomRadio from "../../../components/elements/radio/Radio";
 const Votepoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -93,9 +91,7 @@ const Votepoll = () => {
   };
 
   const handleForCheck = (value) => {
-    let findID = viewProgressPollsDetails.answer.find(
-      (data, index) => data === value
-    );
+    let findID = viewProgressPollsDetails.answer.find((data) => data === value);
     if (findID != undefined) {
       return true;
     } else {
@@ -142,6 +138,7 @@ const Votepoll = () => {
                   <img
                     draggable="false"
                     src={BlackCrossIcon}
+                    alt=""
                     className={styles["Vote_Poll_cross_ICon"]}
                     height="16px"
                     width="16px"
@@ -236,10 +233,6 @@ const Votepoll = () => {
                                           }
                                           Optios={data.pollAnswerID}
                                           onChange={handleCheckBoxForOneOnly}
-
-                                          // className={
-                                          //   styles["Custom_radio_button"]
-                                          // }
                                         />
                                       )}
                                     </Col>
@@ -309,13 +302,6 @@ const Votepoll = () => {
                                           classNameCheckBoxP="d-none"
                                         />
                                       ) : (
-                                        // <CustomRadio
-                                        //   checked={data.voted}
-                                        //   change={handleCheckBoxForOneOnly}
-                                        //   className={
-                                        //     styles["Custom_radio_button"]
-                                        //   }
-                                        // />
                                         <CustomRadio2
                                           value={
                                             viewProgressPollsDetails.answer
@@ -323,9 +309,6 @@ const Votepoll = () => {
                                           Optios={data.pollAnswerID}
                                           className="custom-radio"
                                           onChange={handleCheckBoxForOneOnly}
-                                          // className={
-                                          //   styles["Custom_radio_button"]
-                                          // }
                                         />
                                       )}
                                     </Col>

@@ -287,7 +287,6 @@ body[dir="rtl"] .languageSelector {
   display: flex;
   justify-content: center;
   text-decoration: underline;
-  /* font-size: calc(12px - 20%) !important; */
   margin-top: 4px !important;
   color: #5a5a5a !important;
   font-weight: 400 !important;

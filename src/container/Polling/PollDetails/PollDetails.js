@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  Button,
-  Checkbox,
-  TextField,
-} from "../../../components/elements";
+import { Modal, Button } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./PollDetails.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { Col, Container, Row } from "react-bootstrap";
-import profile from "../../../assets/images/profile_polls.svg";
 import { Progress } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   getPollsByPollIdApi,
-  setviewpollProgressModal,
-  viewVotesApi,
   viewVotesDetailsModal,
 } from "../../../store/actions/Polls_actions";
 const PollDetails = () => {
@@ -31,7 +23,6 @@ const PollDetails = () => {
     []
   );
   const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
-  const [votepollParticipants, setVotePollParticipants] = useState([]);
 
   useEffect(() => {
     let vieVotePollDetails = PollsReducer.viewVotes;
@@ -68,7 +59,6 @@ const PollDetails = () => {
       UserID: parseInt(userID),
     };
     dispatch(getPollsByPollIdApi(navigate, data, 3, t));
-    // await dispatch(setviewpollProgressModal(true));
   };
 
   return (
@@ -91,6 +81,7 @@ const PollDetails = () => {
                 <img
                   draggable="false"
                   src={BlackCrossIcon}
+                  alt=""
                   className={styles["Cross_Icon_poll_Details"]}
                   width="16px"
                   height="16px"
@@ -122,7 +113,7 @@ const PollDetails = () => {
                     sm={12}
                     className={`${styles["BOx_for_yes"]} d-flex`}
                   >
-                    <Row >
+                    <Row>
                       <Col lg={12} md={12} sm={12}>
                         {pollTitle.length > 100 ? (
                           // Add d-flex class and justify-content-center to center the text
@@ -143,22 +134,7 @@ const PollDetails = () => {
                     </Row>
                   </Col>
                 </Row>
-                {/* <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Box_For_Title_toShow"]}
-                  >
-                    <Row>
-                      <Col lg={12} sm={12} md={12}>
-                        <span className={styles["ViewTitleTOShowOnProgress"]}>
-                          {pollTitle}
-                        </span>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row> */}
+
                 <Row className="mt-1">
                   <Col
                     lg={12}
@@ -214,10 +190,6 @@ const PollDetails = () => {
                     className={styles["Scroller_participants"]}
                   >
                     {pollAttendiesOpptionsVise.map((data, index) => {
-                      console.log(
-                        data,
-                        "pollAttendiesOpptionsVisepollAttendiesOpptionsVisepollAttendiesOpptionsVise"
-                      );
                       return (
                         <>
                           <Row className="mt-2" key={index}>
@@ -235,10 +207,6 @@ const PollDetails = () => {
                             {Object.keys(data.pollParticipants).length > 0
                               ? data.pollParticipants.map(
                                   (innerData, index) => {
-                                    console.log(
-                                      innerData,
-                                      "innerDatainnerDatainnerData"
-                                    );
                                     return (
                                       <>
                                         <Col
