@@ -8,7 +8,6 @@ import VerificationEmailAndNumber from "../UserMangement/2FA Verification/Verifi
 import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/VerifyDeniedUM";
 import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify";
 import SignUpOrganizationUM from "../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
-import SignupProcessUserManagement from "../SignUpProcessUserManagement/SignupProcessUserManagement";
 import ForgotPasswordUM from "../UserMangement/ForgotPassword/ForgotPasswordUM";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
 import ForgotPasswordVerificationUM from "../UserMangement/ForgotPasswordVerification/ForgotPasswordVerificationUM";
@@ -21,12 +20,11 @@ import {
 } from "../../../store/actions/Auth2_actions";
 import { Notification } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
-import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
 import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import Helper from "../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
 
 const UserManagementProcess = () => {
@@ -35,12 +33,8 @@ const UserManagementProcess = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const currentUrl = window.location.href.split("?verifyOTPaction=")[1];
-  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
   let userManagementRoute = Number(localStorage.getItem("LoginFlowPageRoute"));
-  console.log(
-    userManagementRoute,
-    "userManagementuserManagementuserManagement"
-  );
+
   const { UserMangementReducer, Authreducer } = useSelector((state) => state);
 
   //state to show snackbar
@@ -79,11 +73,6 @@ const UserManagementProcess = () => {
 
   useEffect(() => {
     if (UserMangementReducer.defaultRoutingValue) {
-      // Update local storage with the current step
-      // localStorage.setItem(
-      //   "LoginFlowPageRoute",
-      //   UserMangementReducer.defaultRoutingValue
-      // );
     }
   }, [UserMangementReducer.defaultRoutingValue]);
 
@@ -202,18 +191,12 @@ const UserManagementProcess = () => {
     }
   }, [Helper.socket]);
 
-  // console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
-  //USer Password Verification After forget password
+  //User Password Verification After forget password
   useEffect(() => {
     if (
       Authreducer?.VerifyOTPEmailResponseMessage !== "" &&
       Authreducer?.VerifyOTPEmailResponseMessage !== undefined
     ) {
-      console.log(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "AuthreducerAuthreducerAuthreducer"
-      );
-
       setOpen({
         ...open,
         open: true,
@@ -238,11 +221,6 @@ const UserManagementProcess = () => {
       Authreducer?.AuthenticateAFAResponseMessage != "" &&
       Authreducer?.AuthenticateAFAResponseMessage != undefined
     ) {
-      console.log(
-        Authreducer.AuthenticateAFAResponseMessage,
-        "AuthreducerAuthreducerAuthreducer"
-      );
-
       setOpen({
         ...open,
         open: true,
