@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Button,
@@ -10,13 +10,19 @@ import styles from "./NotifyOrganizors.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import {
+  selectedMeetingOrganizers,
+  meetingOrganizers,
+  notificationSendData,
   sendNotificationOrganizer,
   notificationUpdateData,
 } from "../../../../../../store/actions/MeetingOrganizers_action";
 import { useNavigate } from "react-router-dom";
+import profile from "../../../../../../assets/images/newprofile.png";
 import { sendRecentNotificationOrganizerModal } from "../../../../../../store/actions/NewMeetingActions";
+import UpperArrow from "../../../../../../assets/images/UpperArrow.svg";
 import { Col, Row } from "react-bootstrap";
 import { validateInput } from "../../../../../../commen/functions/regex";
+import downdirect from "../../../../../../assets/images/downDirect.png";
 
 const SendNotificationOrganizer = ({ currentMeeting }) => {
   const { t } = useTranslation();
@@ -31,6 +37,29 @@ const SendNotificationOrganizer = ({ currentMeeting }) => {
   });
 
   const [membersHide, setMembersHide] = useState(false);
+  // const [members, setMembers] = useState([
+  //   {
+  //     name: 'saif',
+  //   },
+  //   {
+  //     name: 'owais wAJID',
+  //   },
+  //   {
+  //     name: 'ALI RAZA',
+  //   },
+  //   {
+  //     name: 'huzeifa',
+  //   },
+  //   {
+  //     name: 'mamdani',
+  //   },
+  //   {
+  //     name: 'aun',
+  //   },
+  //   {
+  //     name: 'saroush',
+  //   },
+  // ])
 
   // Initialize membersOrganizers state with the modified 'isOrganizerNotified' property
   const initialMembersOrganizers =
@@ -48,11 +77,13 @@ const SendNotificationOrganizer = ({ currentMeeting }) => {
     Array(initialMembersOrganizers.length).fill(true)
   );
 
+  const [allOrganizersAccept, setAllOrganizersAccept] = useState(true);
+
   const handleCrossIcon = () => {
     dispatch(sendRecentNotificationOrganizerModal(false));
   };
 
-  const HandleChange = (e) => {
+  const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "Message") {
@@ -71,6 +102,22 @@ const SendNotificationOrganizer = ({ currentMeeting }) => {
     }
   };
 
+  const handleAllowOrganizerCheck = () => {
+    const newState = !allOrganizersAccept;
+    setAllOrganizersAccept(newState);
+    const updatedCheckboxes = membersOrganizers.map(() => newState);
+    const updatedMembers = membersOrganizers.map((member) => ({
+      ...member,
+      isOrganizerNotified: true,
+    }));
+    setMemberCheckboxes(updatedCheckboxes);
+    setMembersOrganizers(updatedMembers);
+  };
+
+  const handleHideItems = () => {
+    setMembersHide(!membersHide);
+  };
+
   const handleCheckboxChange = (index, isChecked, data) => {
     const updatedCheckboxes = [...memberCheckboxes];
     updatedCheckboxes[index] = isChecked;
@@ -82,7 +129,9 @@ const SendNotificationOrganizer = ({ currentMeeting }) => {
     setMembersOrganizers(updatedMembers);
   };
 
+  const [NotifyMessageError, setNotifyMessaegError] = useState(false);
   const sendNotification = () => {
+    // if (notifyOrganizerData.Messege !== "") {
     let Data = {
       UserID: MeetingOrganizersReducer.NotificationSendData[0].userID,
       Message: notifyOrganizerData.Messege,
@@ -92,11 +141,19 @@ const SendNotificationOrganizer = ({ currentMeeting }) => {
     dispatch(sendNotificationOrganizer(Data, navigate, t));
     dispatch(notificationUpdateData(membersOrganizers));
     dispatch(sendRecentNotificationOrganizerModal(false));
+    // } else {
+    //   setNotifyMessaegError(true);
+    // }
   };
 
   const handleCancelButton = () => {
     dispatch(sendRecentNotificationOrganizerModal(false));
+    // dispatch(meetingOrganizers([]))
   };
+
+  console.log("MeetingOrganizersReducer", MeetingOrganizersReducer);
+
+  console.log("Checkboxes state check", memberCheckboxes, membersOrganizers);
 
   return (
     <section>
@@ -141,9 +198,52 @@ const SendNotificationOrganizer = ({ currentMeeting }) => {
                   name="Message"
                   maxLength={500}
                 />
+                {/* {NotifyMessageError && notifyOrganizerData.Messege === "" ? (
+                  <span
+                    className={
+                      NotifyMessageError && notifyOrganizerData.Messege === ""
+                        ? `${styles["errorMessage-inLogin"]}`
+                        : `${styles["errorMessage-inLogin_hidden"]}`
+                    }
+                  >
+                    {t("Please-enter-message")}
+                  </span>
+                ) : null} */}
               </Col>
             </Row>
-
+            {/* <Row className="mt-2">
+              <Col
+                lg={6}
+                md={6}
+                sm={12}
+                className="d-flex align-items-center gap-2"
+              >
+                <Checkbox
+                  checked={allOrganizersAccept}
+                  onChange={handleAllowOrganizerCheck}
+                  disabled={true}
+                  className="sendNotificationOrganizer"
+                />
+                <p className={styles["Check_box_title"]}>
+                  {t("All-organizers")}
+                </p>
+              </Col>
+              <Col
+                lg={6}
+                md={6}
+                sm={12}
+                className="d-flex justify-content-end align-items-center cursor-pointer"
+              >
+                <img
+                  draggable={false}
+                  src={membersHide ? downdirect : UpperArrow}
+                  width="18.4px"
+                  height="9.2px"
+                  className={styles["UparrowClasss"]}
+                  onClick={handleHideItems}
+                />
+              </Col>
+            </Row> */}
             {membersHide ? null : (
               <>
                 <Row>
@@ -172,7 +272,6 @@ const SendNotificationOrganizer = ({ currentMeeting }) => {
                                 >
                                   <img
                                     draggable={false}
-                                    alt=""
                                     src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                     width="33px"
                                     height="33px"

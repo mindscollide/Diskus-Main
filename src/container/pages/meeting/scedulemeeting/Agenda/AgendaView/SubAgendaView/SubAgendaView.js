@@ -5,11 +5,14 @@ import dropmdownblack from "../../../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../../../assets/images/whiteupper.png";
 import profile from "../../../../../../../assets/images/newprofile.png";
 import PDFIcon from "../../../../../../../assets/images/pdf_icon.svg";
-import { useTranslation } from "react-i18next";
 
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const SubAgendaView = ({ MainAgendaData, MainAgendaIndex }) => {
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [expandSubAgenda, setExpandSubAgenda] = useState(false);
 
   const expanfSubmenu = () => {
@@ -65,7 +68,6 @@ const SubAgendaView = ({ MainAgendaData, MainAgendaIndex }) => {
                                               ? blackArrowUpper
                                               : dropmdownblack
                                           }
-                                          alt=""
                                           width="18.71px"
                                           height="9.36px"
                                           className={
@@ -132,7 +134,6 @@ const SubAgendaView = ({ MainAgendaData, MainAgendaIndex }) => {
                                                       >
                                                         <img
                                                           src={profile}
-                                                          alt=""
                                                           height="27px"
                                                           width="27px"
                                                           className={
@@ -233,7 +234,8 @@ const SubAgendaView = ({ MainAgendaData, MainAgendaIndex }) => {
                                                       0
                                                         ? SubagendaData.subAgendaFiles.map(
                                                             (
-                                                              subAgendaFilesViewData
+                                                              subAgendaFilesViewData,
+                                                              subAgendaFilesViewDataIndex
                                                             ) => {
                                                               return (
                                                                 <>
@@ -266,7 +268,6 @@ const SubAgendaView = ({ MainAgendaData, MainAgendaIndex }) => {
                                                                             src={
                                                                               PDFIcon
                                                                             }
-                                                                            alt=""
                                                                             height="31.57px"
                                                                             width="31.57px"
                                                                           />

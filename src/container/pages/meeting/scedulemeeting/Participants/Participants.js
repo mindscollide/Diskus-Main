@@ -3,6 +3,7 @@ import styles from "./Participants.module.css";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import addmore from "../../../../../assets/images/addmore.png";
+
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
 import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
@@ -26,6 +27,7 @@ import {
   UpdateMeetingUserApiFunc,
   showAddParticipantsModal,
   showCancelModalPartipants,
+  showCrossConfirmationModal,
   meetingDetailsGlobalFlag,
   organizersGlobalFlag,
   agendaContributorsGlobalFlag,
@@ -58,9 +60,12 @@ const Participants = ({
   currentMeeting,
   setAgendaContributors,
   editorRole,
+  setEditMeeting,
   isEditMeeting,
   setPublishState,
   setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
   setCalendarViewModal,
   setDataroomMapFolderId,
   setCurrentMeetingID,
@@ -97,6 +102,11 @@ const Participants = ({
     callApiOnComponentMount();
   }, []);
 
+  //open row icon cross modal
+  const openCrossIconModal = () => {
+    dispatch(showCrossConfirmationModal(true));
+  };
+
   //Opens Add more modal
   const openAddPartcipantModal = () => {
     setEditableSave(2);
@@ -121,6 +131,8 @@ const Participants = ({
         setCalendarViewModal
       )
     );
+    // setParticipants(false);
+    // setAgenda(true);
   };
 
   //For menu Portal of the React select
@@ -362,37 +374,37 @@ const Participants = ({
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
+              <Tooltip placement='bottomLeft' title={t("Response-awaited")}>
                 <img
                   draggable={false}
                   src={AwaitingResponse}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 2) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Accepted")}>
+              <Tooltip placement='bottomLeft' title={t("Accepted")}>
                 <img
                   draggable={false}
                   src={thumbsup}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 3) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Rejected")}>
+              <Tooltip placement='bottomLeft' title={t("Rejected")}>
                 <img
                   draggable={false}
                   src={thumbsdown}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
@@ -401,13 +413,36 @@ const Participants = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           }
         },
+        // render: (text, record) => {
+        //   if (record.isRSVP === true) {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsup}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   } else {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsdown}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   }
+        // },
       },
 
       {
@@ -432,19 +467,18 @@ const Participants = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     {record.isComingApi === true ? (
                       ""
                     ) : (
                       <>
                         <img
                           src={redcrossIcon}
-                          className="cursor-pointer "
-                          height="21px"
-                          width="21px"
+                          className='cursor-pointer '
+                          height='21px'
+                          width='21px'
                           onClick={() => handleCancelingRow(record)}
-                          alt=""
+                          alt=''
                         />
                       </>
                     )}
@@ -599,19 +633,18 @@ const Participants = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     {record.isComingApi === true ? (
                       ""
                     ) : (
                       <>
                         <img
                           src={redcrossIcon}
-                          className="cursor-pointer "
-                          height="21px"
-                          width="21px"
+                          className='cursor-pointer '
+                          height='21px'
+                          width='21px'
                           onClick={() => handleCancelingRow(record)}
-                          alt=""
+                          alt=''
                         />
                       </>
                     )}
@@ -624,6 +657,12 @@ const Participants = ({
       },
     ];
   }
+
+  // Filter columns based on the RSVP Condition
+  // const finalColumns =
+  //   Number(editorRole.status) === 1
+  //     ? ParticipantsColoumn.filter((column) => column.key !== "rsvp")
+  //     : ParticipantsColoumn;
 
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
@@ -646,6 +685,12 @@ const Participants = ({
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
     dispatch(uploadGlobalFlag(false));
+  };
+
+  const previousTabOrganizer = () => {
+    // dispatch(showPreviousConfirmationModal(true));
+    setAgendaContributors(true);
+    setParticipants(false);
   };
 
   //canceling the participants page
@@ -743,6 +788,17 @@ const Participants = ({
     }
   }, [rspvRows]);
 
+  // useEffect(() => {
+  //   dispatch(getAgendaAndVotingInfo_success([], ""));
+  //   dispatch(GetCurrentAgendaDetails([]));
+  //   dispatch(getAgendaVotingDetails_success([], ""));
+  //   dispatch(saveFiles_success(null, ""));
+  //   dispatch(saveAgendaVoting_success([], ""));
+  //   dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
+  //   dispatch(uploadDocument_success(null, ""));
+  //   dispatch(getAllVotingResultDisplay_success([], ""));
+  // }, []);
+
   return (
     <>
       {proposedMeetingDates ? (
@@ -755,13 +811,12 @@ const Participants = ({
         />
       ) : (
         <>
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
+              className='d-flex justify-content-end gap-2'>
               {((Number(editorRole.status) === 9 ||
                 Number(editorRole.status) === 8 ||
                 Number(editorRole.status) === 10) &&
@@ -771,7 +826,7 @@ const Participants = ({
                 isEditMeeting === true) ? null : isEditable || isEditClicked ? (
                 <>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Button
                         text={t("Cancel")}
                         className={styles["Cancel_Organization"]}
@@ -787,6 +842,7 @@ const Participants = ({
                   </Row>
                 </>
               ) : (
+                // ) : Number(editorRole.status) === 1 ? null : (
                 <>
                   <Button
                     text={t("Edit")}
@@ -795,9 +851,9 @@ const Participants = ({
                       <img
                         draggable={false}
                         src={EditIcon}
-                        width="11.75px"
-                        height="11.75px"
-                        alt=""
+                        width='11.75px'
+                        height='11.75px'
+                        alt=''
                       />
                     }
                     onClick={handleEditFunction}
@@ -805,7 +861,7 @@ const Participants = ({
 
                   <Button
                     text={t("Add-more")}
-                    icon={<img draggable={false} src={addmore} alt="" />}
+                    icon={<img draggable={false} src={addmore} alt='' />}
                     className={styles["AddMoreBtn"]}
                     onClick={openAddPartcipantModal}
                   />
@@ -828,15 +884,14 @@ const Participants = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <img
                               draggable={false}
                               src={emptyContributorState}
-                              width="274.05px"
-                              className="cursor-pointer"
-                              alt=""
-                              height="230.96px"
+                              width='274.05px'
+                              className='cursor-pointer'
+                              alt=''
+                              height='230.96px'
                               onClick={handleParticipantEmptyStateIntiate}
                             />
                           </Col>
@@ -846,8 +901,7 @@ const Participants = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_heading"]}>
                               {t("No-Participant")}
                             </span>
@@ -858,8 +912,7 @@ const Participants = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_Subheading"]}>
                               {t("There-are-no-agenda-contributors")}
                             </span>
@@ -868,18 +921,17 @@ const Participants = ({
                       </>
                     ),
                   }}
-                  className="Polling_table"
+                  className='Polling_table'
                   rows={rspvRows}
                 />
               </Col>
             </Row>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 {isEditable ? (
                   <>
                     <div className={styles["definedHeight"]}></div>
@@ -911,6 +963,12 @@ const Participants = ({
                           onClick={handleCancelParticipants}
                         />
 
+                        {/* <Button
+                        text={t("Previous")}
+                        className={styles["publish_button_participant"]}
+                        onClick={previousTabOrganizer}
+                      /> */}
+
                         <Button
                           text={t("Next")}
                           className={styles["publish_button_participant"]}
@@ -925,6 +983,11 @@ const Participants = ({
                           className={styles["Cancel_Organization"]}
                           onClick={handleCancelParticipants}
                         />
+                        {/* <Button
+                  text={t("Previous")}
+                  className={styles["publish_button_participant"]}
+                  onClick={previousTabOrganizer}
+                /> */}
                         <Button
                           text={t("Next")}
                           className={styles["publish_button_participant"]}
@@ -945,6 +1008,12 @@ const Participants = ({
                           onClick={handleCancelParticipants}
                         />
 
+                        {/* <Button
+                        text={t("Previous")}
+                        className={styles["publish_button_participant"]}
+                        onClick={previousTabOrganizer}
+                      /> */}
+
                         <Button
                           text={t("Next")}
                           className={styles["publish_button_participant"]}
@@ -953,6 +1022,19 @@ const Participants = ({
                       </>
                     )}
 
+                    {/* {((Number(editorRole.status) === 9 ||
+                    Number(editorRole.status) === 8 ||
+                    Number(editorRole.status) === 10) &&
+                    editorRole.role === "Organizer" &&
+                    isEditMeeting === true) ||
+                  (editorRole.role === "Agenda Contributor" &&
+                    isEditMeeting === true) ? null : (
+                    <Button
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  )} */}
                     {Number(editorRole.status) === 11 ||
                     Number(editorRole.status) === 12 ? (
                       <Button

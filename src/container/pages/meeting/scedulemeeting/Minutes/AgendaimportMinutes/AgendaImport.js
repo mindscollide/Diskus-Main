@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./AgendaImport.module.css";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import profile from "../../../../../../assets/images/newprofile.png";
+import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { Col, Row } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
@@ -14,9 +17,18 @@ import AfterSavedAgenda from "./AfterSavedAgenda/AfterSavedAgenda";
 const AgendaImport = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const Delta = Quill.import("delta");
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [expanded, setExpanded] = useState(false);
+  const [subExpand, setSubExpand] = useState(false);
+  const [allowEditMainAgenda, setallowEditMainAgenda] = useState(false);
+  const [allowEditSubAgenda, setallowEditSubAgenda] = useState(false);
   const [savedAgenda, setsavedAgenda] = useState(false);
+  const [mainAgendaMinuteRemove, setmainAgendaMinuteRemove] = useState(0);
+  const [subAgendaMinuteRemove, setSubAgendaMinuteRemove] = useState(0);
+  const [indexForMainEdit, setIndexForMainEdit] = useState(0);
+  const [indexForSubAgendaEdit, setIndexForSubAgendaEdit] = useState(0);
   const [createAnotherMinuteMainAgenda, setCreateAnotherMinuteMainAgenda] =
     useState(false);
   const [createAnotherMinutesSubAgenda, setCreateAnotherMinutesSubAgenda] =
@@ -52,6 +64,82 @@ const AgendaImport = () => {
   FontAttributor.whitelist = fonts;
   Quill.register(FontAttributor, true);
   const editorRef = useRef(null);
+
+  console.log(subAgendaMinuteRemove, "mainAgendaMinuteRemove");
+  const [showAgendaMinutes, setShowAgendaMinutes] = useState([
+    {
+      name: "Contrary to popular belis, very popular during the Renaissance. The first line of Lorem Ipsum,Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.",
+      subAgendaMinute: [
+        {
+          subAgenda:
+            "Saif ul islam Contrary to popular belis, very popular during theContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The first Renaissance. The first line of Lorem Ipsum,Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.",
+        },
+        {
+          subAgenda: "SubOne",
+        },
+      ],
+    },
+    {
+      name: "Contrary to popular belis, very popular during the Renaissance. The first line of Lorem Ipsum,Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.",
+      subAgendaMinute: [],
+    },
+  ]);
+
+  const EditSubAgendaMinutes = (index, subAgendaIndex) => {
+    setIndexForMainEdit(index);
+    setIndexForSubAgendaEdit(subAgendaIndex);
+    setallowEditSubAgenda(true);
+  };
+
+  const cancelEditFunctionality = () => {
+    setallowEditMainAgenda(false);
+  };
+
+  const canceLsubAgendaEditFunctionality = () => {
+    setallowEditSubAgenda(false);
+  };
+
+  const toggleExpansion = () => {
+    setExpanded(!expanded);
+  };
+
+  const SubtoggleExpansion = () => {
+    setSubExpand(!subExpand);
+  };
+
+  const handleRemoveFiles = (index) => {
+    setmainAgendaMinuteRemove(index);
+    let optionscross = [...showAgendaMinutes];
+    optionscross.splice(mainAgendaMinuteRemove, 1);
+    setShowAgendaMinutes(optionscross);
+  };
+
+  const handleRemoveFilesForSubFiles = (index, subAgendaIndex) => {
+    setmainAgendaMinuteRemove(index);
+    setSubAgendaMinuteRemove(subAgendaIndex);
+    let optionscross = [...showAgendaMinutes];
+    optionscross[index].subAgendaMinute.splice(subAgendaIndex, 1);
+    console.log(optionscross[index], "optionscross[index]");
+    console.log(
+      optionscross[index].subAgendaMinute.splice(subAgendaIndex, 1),
+      "optionscross[index]"
+    );
+    setShowAgendaMinutes(optionscross);
+  };
+
+  const handleMainAgendaEditOptions = (index) => {
+    setIndexForMainEdit(index);
+    setallowEditMainAgenda(true);
+  };
+
+  const enterKeyHandler = (event) => {
+    if (event.key === "Tab" && !event.shiftKey) {
+      event.preventDefault();
+      const quill = editorRef.current.getEditor();
+      quill.root.setAttribute("autofocus", "");
+      quill.focus();
+    }
+  };
 
   const modules = {
     toolbar: {
@@ -166,13 +254,13 @@ const AgendaImport = () => {
                                     <ReactQuill
                                       ref={editorRef}
                                       theme="snow"
+                                      // value={data.name}
                                       placeholder={t("Note-details")}
                                       modules={modules}
                                       className={styles["quill-height-addNote"]}
                                     />
                                     <img
                                       draggable={false}
-                                      alt=""
                                       src={RedCroseeIcon}
                                       className={styles["RedCrossForEdit"]}
                                     />
@@ -197,7 +285,10 @@ const AgendaImport = () => {
                               >
                                 <Row>
                                   {createData.SubAgenda.map(
-                                    (createsubAgendaTitle) => {
+                                    (
+                                      createsubAgendaTitle,
+                                      createSubAgendaIndex
+                                    ) => {
                                       return (
                                         <>
                                           <Col
@@ -281,7 +372,6 @@ const AgendaImport = () => {
                                                         />
                                                         <img
                                                           draggable={false}
-                                                          alt=""
                                                           src={RedCroseeIcon}
                                                           className={
                                                             styles[

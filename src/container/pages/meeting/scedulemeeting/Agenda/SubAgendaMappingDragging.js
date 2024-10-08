@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
@@ -15,13 +15,17 @@ import { useTranslation } from "react-i18next";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import {
   showAgenItemsRemovedModal,
+  GetAllMeetingUserApiFunc,
   UpateMeetingStatusLockApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
+import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import { clearResponseMessage } from "../../../../../store/actions/MeetingAgenda_action";
 import { useDispatch } from "react-redux";
 import desh from "../../../../../assets/images/desh.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import { Radio } from "antd";
 import Key from "../../../../../assets/images/KEY.svg";
+import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -30,6 +34,7 @@ import closedLocked from "../../../../../assets/images/CloseLocked.svg";
 import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import Lock from "../../../../../assets/images/LOCK.svg";
 import Cast from "../../../../../assets/images/CAST.svg";
+import { message, Upload } from "antd";
 import SubDocumnets from "./SubDocumnets";
 import SubUrls from "./SubUrls";
 import SubRequestContributor from "./SubRequestContributor";
@@ -47,6 +52,9 @@ const SubAgendaMappingDragging = ({
   expandSubIndex,
   subExpand,
   parentIslockedCheck,
+  subLockArry,
+  setSubLockArray,
+  agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
   setsubexpandIndex,
@@ -64,13 +72,20 @@ const SubAgendaMappingDragging = ({
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
+
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
+  );
 
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenters, setPresenters] = useState([]);
   const dispatch = useDispatch();
+  const { Dragger } = Upload;
 
   const navigate = useNavigate();
 
@@ -78,6 +93,15 @@ const SubAgendaMappingDragging = ({
     open: false,
     message: "",
   });
+
+  function getCurrentUTCDate() {
+    const currentDate = new Date();
+    const year = currentDate.getUTCFullYear();
+    const month = String(currentDate.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(currentDate.getUTCDate()).padStart(2, "0");
+
+    return `${year}${month}${day}`;
+  }
 
   // Function to handle changes in sub-agenda title
   const handleSubAgendaTitleChange = (index, subIndex, e) => {
@@ -89,6 +113,18 @@ const SubAgendaMappingDragging = ({
     }
     setRows(updatedRows);
   };
+
+  // Function to handle changes in sub-agenda select
+  // const handleSubAgendaSelectChange = (index, subIndex, value) => {
+  //   const updatedRows = [...rows];
+  //   let SelectValue = {
+  //     value: value.value,
+  //     label: value.label,
+  //   };
+  //   updatedRows[index].subAgenda[subIndex].selectedOption = SelectValue;
+  //   console.log(updatedRows, "SubagendaSelectSubagendaSelect");
+  //   setRows(updatedRows);
+  // };
 
   const handleSelectChange = (index, subIndex, value) => {
     const updatedAgendaItems = [...rows];
@@ -117,6 +153,10 @@ const SubAgendaMappingDragging = ({
     } else {
       console.error("Invalid date and time object:", date);
     }
+    // const updatedRows = [...rows];
+    // updatedRows[index].subAgenda[subIndex].startDate = date;
+    // console.log(updatedRows, "startCasestartCasestartCase");
+    // setRows(updatedRows);
   };
 
   // Function to handle changes in sub-agenda end date
@@ -261,6 +301,65 @@ const SubAgendaMappingDragging = ({
     }
   };
 
+  // useEffect(() => {
+  //   if (
+  //     getAllMeetingDetails !== null &&
+  //     getAllMeetingDetails !== undefined &&
+  //     getAllMeetingDetails.length !== 0 &&
+  //     Object.keys(getAllMeetingDetails) !== 0
+  //   ) {
+  //     const updatedAgendaItems = [...rows];
+
+  //     let meetingStartTime =
+  //       getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
+  //       getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].startTime;
+  //     let meetingEndTime =
+  //       getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
+  //       getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].endTime;
+
+  //     if (updatedAgendaItems[index].subAgenda.length > 0) {
+  //       updatedAgendaItems[index].subAgenda[expandSubIndex].startDate =
+  //         resolutionResultTable(meetingStartTime);
+  //       updatedAgendaItems[index].subAgenda[expandSubIndex].endDate =
+  //         resolutionResultTable(meetingEndTime);
+
+  //       setRows(updatedAgendaItems);
+  //     }
+  //   }
+  // }, [getAllMeetingDetails]);
+
+  // useEffect(() => {
+  //   if (
+  //     getAllMeetingDetails !== null &&
+  //     getAllMeetingDetails !== undefined &&
+  //     getAllMeetingDetails.length !== 0 &&
+  //     Object.keys(getAllMeetingDetails) !== 0
+  //   ) {
+  //     const updatedAgendaItems = [...rows];
+
+  //     if (updatedAgendaItems[index].subAgenda.length > 0) {
+  //       updatedAgendaItems[index].subAgenda.forEach((subAgenda, subIndex) => {
+  //         let meetingStartTime =
+  //           getAllMeetingDetails.advanceMeetingDetails.meetingDates[0]
+  //             .meetingDate +
+  //           getAllMeetingDetails.advanceMeetingDetails.meetingDates[0]
+  //             .startTime;
+  //         let meetingEndTime =
+  //           getAllMeetingDetails.advanceMeetingDetails.meetingDates[0]
+  //             .meetingDate +
+  //           getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].endTime;
+
+  //         updatedAgendaItems[index].subAgenda[subIndex].startDate =
+  //           resolutionResultTable(meetingStartTime);
+  //         updatedAgendaItems[index].subAgenda[subIndex].endDate =
+  //           resolutionResultTable(meetingEndTime);
+  //       });
+  //     }
+
+  //     setRows(updatedAgendaItems);
+  //   }
+  // }, [getAllMeetingDetails]);
+
   useEffect(() => {
     if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
@@ -324,6 +423,7 @@ const SubAgendaMappingDragging = ({
   // console.log(allSavedPresenters, "allSavedPresentersallSaved");
 
   const filterSubAgendaFunc = (options, searchText) => {
+    // console.log(options, "filterFuncfilterFunc");
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {
@@ -736,6 +836,18 @@ const SubAgendaMappingDragging = ({
                                           </Row>
                                           <Row>
                                             <Col lg={12} md={12} sm={12}>
+                                              {/* <span
+                                                className={
+                                                  styles["Show_More_Styles"]
+                                                }
+                                                onClick={() => {
+                                                  parentIslockedCheck ||
+                                                    handleSubMenuExpand(
+                                                      index,
+                                                      subIndex
+                                                    );
+                                                }}
+                                              > */}
                                               {subexpandIndex === index &&
                                               expandSubIndex === subIndex &&
                                               subExpand ? (
@@ -777,6 +889,7 @@ const SubAgendaMappingDragging = ({
                                                   }}
                                                 />
                                               )}
+                                              {/* </span> */}
                                               {subAgendaData.subfiles.length >
                                               0 ? (
                                                 <img
@@ -839,7 +952,23 @@ const SubAgendaMappingDragging = ({
                                                     />
                                                   </Col>
                                                 </Row>
-
+                                                {/* <Row
+                                                  key={index + Math.random()}
+                                                  className="mt-3"
+                                                >
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <Button
+                                                      text={t(
+                                                        "Add-attachments"
+                                                      )}
+                                                      className={
+                                                        styles[
+                                                          "show-attachments-button"
+                                                        ]
+                                                      }
+                                                    />
+                                                  </Col>
+                                                </Row> */}
                                                 <Row className="mt-3">
                                                   <Col lg={12} md={12} sm={12}>
                                                     <span
@@ -901,6 +1030,19 @@ const SubAgendaMappingDragging = ({
                                                           {t("URL")}
                                                         </span>
                                                       </Radio>
+                                                      {/* <Radio value={3}>
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "Radio_Button_options"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {t(
+                                                          "Request from contributor"
+                                                        )}
+                                                      </span>
+                                                    </Radio> */}
                                                     </Radio.Group>
                                                   </Col>
                                                   <Col
@@ -972,7 +1114,7 @@ const SubAgendaMappingDragging = ({
                                                                   : openVoteMOdal(
                                                                       subAgendaData.subAgendaID,
                                                                       subAgendaData.agendaVotingID,
-                                                                      subAgendaData.subTitle
+                                                                      subAgendaData.subTitle,
                                                                     )
                                                               }
                                                             />

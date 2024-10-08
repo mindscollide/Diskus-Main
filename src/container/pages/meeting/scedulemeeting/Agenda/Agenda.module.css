@@ -2,6 +2,8 @@
   width: 100% !important;
   height: auto !important;
   min-height: 126px !important;
+  /* border: 1px solid #bbbbbb !important; */
+  /* border-radius: 4px !important; */
   padding: 1px 15px !important;
   position: relative;
 }
@@ -10,6 +12,8 @@
   width: 100% !important;
   min-height: 126px !important;
   height: auto !important;
+  /* border: 1px solid #bbbbbb !important; */
+  /* border-radius: 4px !important; */
   padding: 1px 15px !important;
   filter: opacity(0.5);
   position: relative;
@@ -32,9 +36,12 @@
   width: 90% !important;
   height: auto !important;
   min-height: 126px !important;
+  /* border: 1px solid #bbbbbb !important; */
+  /* border-radius: 4px !important; */
   padding: 10px 15px !important;
   margin-left: 10px !important;
   position: relative;
+  /* z-index: 0 !important; */
 }
 
 .SubajendaBox_Inactive {
@@ -47,6 +54,7 @@
   margin-left: 10px !important;
   filter: opacity(0.5);
   position: relative;
+  /* pointer-events: none !important; */
 }
 
 .Agenda_Heading {
@@ -423,6 +431,7 @@ body[dir="rtl"] .backGorund {
 .SubAgendaSection {
   width: 96% !important;
   margin-left: 36px !important;
+  /* z-index: 1; */
 }
 
 body[dir="rtl"] .SubAgendaSection {
@@ -435,6 +444,10 @@ body[dir="rtl"] .SubAgendaSection {
   font-weight: 600 !important;
   cursor: pointer !important;
 }
+
+/* .Padding_SubAgenda {
+  padding: 0px 20px !important;
+} */
 
 .filter_grayscale {
   filter: grayscale(1) !important;
@@ -523,7 +536,9 @@ body[dir="rtl"] img.AttachmentIconImage {
 
 .show-attachments-button-hide {
   padding: 10px 14px !important;
+  /* border: none !important; */
   border-radius: 4px !important;
+  /* border-color: #5f78d6 !important; */
   border: 3px solid #5f78d6 !important;
   color: #5f78d6 !important;
   font-size: 12px !important;
@@ -536,9 +551,11 @@ body[dir="rtl"] img.AttachmentIconImage {
 .show-attachments-button-hide:focus,
 .show-attachments-button-hide:focus-visible {
   padding: 10px 14px !important;
+  /* border: none !important; */
   color: #5f78d6 !important;
   border: 3px solid #5f78d6 !important;
   border-radius: 4px !important;
+  /* border-color: #5f78d6 !important; */
   font-size: 12px !important;
   background: #fff !important;
   font-weight: 600 !important;
@@ -571,7 +588,9 @@ body[dir="rtl"] img.AttachmentIconImage {
 
 .show-attachments-button-hide-subagenda {
   padding: 10px 14px !important;
+  /* border: none !important; */
   border-radius: 4px !important;
+  /* border-color: #5f78d6 !important; */
   border: 3px solid #4adede !important;
   color: #4adede !important;
   font-size: 12px !important;
@@ -584,9 +603,11 @@ body[dir="rtl"] img.AttachmentIconImage {
 .show-attachments-button-hide-subagenda:focus,
 .show-attachments-button-hide-subagenda:focus-visible {
   padding: 10px 14px !important;
+  /* border: none !important; */
   color: #4adede !important;
   border: 3px solid #4adede !important;
   border-radius: 4px !important;
+  /* border-color: #5f78d6 !important; */
   font-size: 12px !important;
   background: #fff !important;
   font-weight: 600 !important;

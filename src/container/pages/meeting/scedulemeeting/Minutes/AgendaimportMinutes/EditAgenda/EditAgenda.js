@@ -1,6 +1,9 @@
 import React, { useRef, useState } from "react";
 import styles from "./EditAgenda.module.css";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import profile from "../../../../../../../assets/images/newprofile.png";
 import Editicon from "../../../../../../../assets/images/Edit-Icon.png";
 import { Col, Row } from "react-bootstrap";
@@ -10,6 +13,9 @@ import { Button } from "../../../../../../../components/elements";
 
 const EditAgenda = ({ AgendaData }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [expanded, setExpanded] = useState(false);
   const [expandIndex, setExpandIndex] = useState(0);
   const [editSpecificAgenda, setEditSpecificAgenda] = useState(false);
@@ -113,6 +119,7 @@ const EditAgenda = ({ AgendaData }) => {
                                       <ReactQuill
                                         ref={editorRef}
                                         theme="snow"
+                                        // value={data.name}
                                         placeholder={t("Note-details")}
                                         modules={modules}
                                         className={
@@ -121,7 +128,6 @@ const EditAgenda = ({ AgendaData }) => {
                                       />
                                       <img
                                         draggable={false}
-                                        alt=""
                                         src={RedCroseeIcon}
                                         className={styles["RedCrossForEdit"]}
                                       />
@@ -189,7 +195,6 @@ const EditAgenda = ({ AgendaData }) => {
                                         <img
                                           draggable={false}
                                           src={profile}
-                                          alt=""
                                           height="39px"
                                           width="39px"
                                           className={styles["Profile_minutes"]}
@@ -228,7 +233,6 @@ const EditAgenda = ({ AgendaData }) => {
                                       >
                                         <img
                                           draggable={false}
-                                          alt=""
                                           src={Editicon}
                                           height="21.55px"
                                           width="21.55px"
@@ -243,7 +247,6 @@ const EditAgenda = ({ AgendaData }) => {
                                 </Row>
                                 <img
                                   draggable={false}
-                                  alt=""
                                   src={RedCroseeIcon}
                                   height="20.76px"
                                   width="20.76px"
@@ -298,6 +301,7 @@ const EditAgenda = ({ AgendaData }) => {
                                                           lg={12}
                                                           md={12}
                                                           sm={12}
+                                                          //   className=""
                                                         >
                                                           <Row
                                                             className={
@@ -320,6 +324,7 @@ const EditAgenda = ({ AgendaData }) => {
                                                               <ReactQuill
                                                                 ref={editorRef}
                                                                 theme="snow"
+                                                                // value={data.name}
                                                                 placeholder={t(
                                                                   "Note-details"
                                                                 )}
@@ -336,7 +341,6 @@ const EditAgenda = ({ AgendaData }) => {
                                                                 draggable={
                                                                   false
                                                                 }
-                                                                alt=""
                                                                 src={
                                                                   RedCroseeIcon
                                                                 }
@@ -496,7 +500,6 @@ const EditAgenda = ({ AgendaData }) => {
                                                                       src={
                                                                         profile
                                                                       }
-                                                                      alt=""
                                                                       height="39px"
                                                                       width="39px"
                                                                       className={
@@ -567,7 +570,6 @@ const EditAgenda = ({ AgendaData }) => {
                                                                       src={
                                                                         Editicon
                                                                       }
-                                                                      alt=""
                                                                       height="21.55px"
                                                                       width="21.55px"
                                                                       className="cursor-pointer"
@@ -583,7 +585,6 @@ const EditAgenda = ({ AgendaData }) => {
                                                                       draggable={
                                                                         false
                                                                       }
-                                                                      alt=""
                                                                       src={
                                                                         RedCroseeIcon
                                                                       }

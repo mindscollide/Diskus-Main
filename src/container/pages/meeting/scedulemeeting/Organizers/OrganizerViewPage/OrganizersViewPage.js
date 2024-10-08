@@ -3,10 +3,12 @@ import styles from "./OrganizersViewPage.module.css";
 import { Button, Table } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const OrganizersViewPage = () => {
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const notificationData = [
     {
       key: "1",

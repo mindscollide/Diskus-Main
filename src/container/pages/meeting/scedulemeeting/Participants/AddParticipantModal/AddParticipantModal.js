@@ -4,15 +4,19 @@ import {
   Modal,
   Button,
   Notification,
+  InputSearchFilter,
 } from "../../../../../../components/elements";
 import {
   GetAllCommitteesUsersandGroupsParticipants,
   showAddParticipantsModal,
+  showAddUserModal,
 } from "../../../../../../store/actions/NewMeetingActions";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
+import committeicon from "../../../../../../assets/images/Group 2584.png";
 import { useDispatch, useSelector } from "react-redux";
 import GroupIcon from "../../../../../../assets/images/GroupSetting.svg";
 import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
+import profile from "../../../../../../assets/images/newprofile.png";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
@@ -27,6 +31,8 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   // let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  const [dropdowndata, setDropdowndata] = useState([]);
+  const [participantUsers, setParticipantUsers] = useState("");
   const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [open, setOpen] = useState({
@@ -50,7 +56,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
     let tem = [...membersParticipants];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData) => {
+        selectedsearch.map((seledtedData, index) => {
           if (seledtedData.type === 1) {
             let check1 = newOrganizersData.groups.find(
               (data, index) => data.groupID === seledtedData.value
@@ -88,12 +94,12 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
             }
           } else if (seledtedData.type === 2) {
             let check1 = newOrganizersData.committees.find(
-              (data) => data.committeeID === seledtedData.value
+              (data, index) => data.committeeID === seledtedData.value
             );
             if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.forEach((cUser) => {
+                committeesUsers.forEach((cUser, index) => {
                   let check2 = membersParticipants.find(
                     (data, index) => data.UserID === cUser.userID
                   );
@@ -187,7 +193,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.map((a) => {
+          newOrganizersData.groups.map((a, index) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -202,7 +208,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                     >
                       <img
                         src={GroupIcon}
-                        alt=""
                         height="16.45px"
                         width="18.32px"
                         draggable="false"
@@ -220,7 +225,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
           });
         }
         if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.map((a) => {
+          newOrganizersData.committees.map((a, index) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -235,7 +240,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                     >
                       <img
                         src={committeeicon}
-                        alt=""
                         width="21.71px"
                         height="18.61px"
                         draggable="false"
@@ -253,7 +257,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
           });
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.map((a) => {
+          newOrganizersData.organizationUsers.map((a, index) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -268,6 +272,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                     >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
                         alt=""
                         className={styles["UserProfilepic"]}
                         width="18px"
@@ -293,6 +298,116 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
     }
   }, [NewMeetingreducer.getAllCommitteeAndGroupPartcipants]);
 
+  const onSearch = (name, id, type, item) => {
+    let newOrganizersData =
+      NewMeetingreducer.getAllCommitteeAndGroupPartcipants;
+    let tem = [...membersParticipants];
+    if (type === 1) {
+      // Groups Search
+      let check1 = newOrganizersData.groups.find(
+        (data, index) => data.groupID === id
+      );
+      if (check1 !== undefined) {
+        let groupUsers = check1.groupUsers;
+        if (Object.keys(groupUsers).length > 0) {
+          groupUsers.forEach((gUser, index) => {
+            let check2 = membersParticipants.find(
+              (data, index) => data.UserID === gUser.userID
+            );
+            if (check2 !== undefined) {
+            } else {
+              let newUser = {
+                userName: gUser.userName,
+                userID: gUser.userID,
+                displayPicture: gUser.profilePicture.displayProfilePictureName,
+                email: gUser.emailAddress,
+                IsPrimaryOrganizer: false,
+                IsOrganizerNotified: false,
+                Title: "",
+                isRSVP: false,
+                participantRole: {
+                  participantRole: "Participant",
+                  participantRoleID: 2,
+                },
+                isComingApi: false,
+              };
+              tem.push(newUser);
+            }
+          });
+        }
+      }
+    } else if (type === 2) {
+      // Committees Search
+      let check1 = newOrganizersData.committees.find(
+        (data, index) => data.committeeID === id
+      );
+
+      if (check1 !== undefined) {
+        let committeesUsers = check1.committeeUsers;
+        if (Object.keys(committeesUsers).length > 0) {
+          committeesUsers.forEach((cUser, index) => {
+            let check2 = membersParticipants.find(
+              (data, index) => data.UserID === cUser.userID
+            );
+            if (check2 !== undefined) {
+            } else {
+              let newUser = {
+                userName: cUser.userName,
+                userID: cUser.userID,
+                displayPicture: cUser.profilePicture.displayProfilePictureName,
+                email: cUser.emailAddress,
+                IsPrimaryOrganizer: false,
+                IsOrganizerNotified: false,
+                Title: "",
+                isRSVP: false,
+                participantRole: {
+                  participantRole: "Participant",
+                  participantRoleID: 2,
+                },
+                isComingApi: false,
+              };
+              tem.push(newUser);
+            }
+          });
+        }
+      }
+    } else if (type === 3) {
+      // User Search
+      let check1 = membersParticipants.find(
+        (data, index) => data.UserID === id
+      );
+
+      if (check1 !== undefined) {
+      } else {
+        let check2 = newOrganizersData.organizationUsers.find(
+          (data, index) => data.userID === id
+        );
+        if (check2 !== undefined) {
+          let newUser = {
+            userName: check2.userName,
+            userID: check2.userID,
+            displayPicture: check2.profilePicture.displayProfilePictureName,
+            email: check2.emailAddress,
+            IsPrimaryOrganizer: false,
+            IsOrganizerNotified: false,
+            Title: "",
+            isRSVP: false,
+            participantRole: {
+              participantRole: "Participant",
+              participantRoleID: 2,
+            },
+            isComingApi: false,
+          };
+          tem.push(newUser);
+        }
+      }
+    }
+    const uniqueData = new Set(tem.map(JSON.stringify));
+
+    const result = Array.from(uniqueData).map(JSON.parse);
+    setMembersParticipants(result);
+    setParticipantUsers("");
+  };
   const handleClickDone = () => {
     let rspvRowsCopy = [...rspvRows, ...membersParticipants];
 
@@ -355,7 +470,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                     <img
                       draggable={false}
                       src={BlackCrossIcon}
-                      alt=""
                       className={"cursor-pointer"}
                       width="16px"
                       height="16px"
@@ -413,7 +527,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                                         <Col sm={12} md={10} lg={10}>
                                           <img
                                             draggable={false}
-                                            alt=""
                                             src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                             width="33px"
                                             height="33px"
@@ -428,7 +541,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                                           <img
                                             draggable={false}
                                             src={CrossIcon}
-                                            alt=""
                                             width="14px"
                                             height="14px"
                                             className="cursor-pointer"

@@ -9,9 +9,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import { useNavigate } from "react-router-dom";
+import profile from "../../../../../../assets/images/newprofile.png";
 import {
   SendNotificationApiFunc,
   showAgendaContributorsModals,
+  showNotifyOrganizors,
 } from "../../../../../../store/actions/NewMeetingActions";
 import UpperArrow from "../../../../../../assets/images/blueUp.svg";
 import { Col, Row } from "react-bootstrap";
@@ -33,8 +35,11 @@ const NotifyAgendaModal = ({
   const { NewMeetingreducer } = useSelector((state) => state);
   const [hidemembes, setHidemembes] = useState(false);
   let userID = localStorage.getItem("userID");
+  const [agendaMessege, setAgendaMessege] = useState({
+    Messege: "",
+  });
 
-  const HandleChange = (e) => {
+  const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "AgendaMessege") {
@@ -76,8 +81,12 @@ const NotifyAgendaModal = ({
     });
   };
 
+  const [NotifyMessageError, setNotifyMessaegError] = useState(false);
+
   const handleSendIcon = () => {
     if (specificUser !== 0) {
+      // if (notifyMessageField === "") {
+      // Corrected variable name
       let Data = {
         UserID: Number(userID),
         Message: notifyMessageField,
@@ -87,6 +96,9 @@ const NotifyAgendaModal = ({
       dispatch(SendNotificationApiFunc(Data, navigate, t));
       dispatch(showAgendaContributorsModals(false));
       setSpecifiUser(0);
+      // } else {
+      // setNotifyMessaegError(true);
+      // }
     } else {
       dispatch(showAgendaContributorsModals(false));
     }
@@ -140,6 +152,17 @@ const NotifyAgendaModal = ({
                   change={HandleChange}
                   required={true}
                 />
+                {/* {NotifyMessageError && notifyMessageField === "" ? (
+                  <span
+                    className={
+                      NotifyMessageError && notifyMessageField === ""
+                        ? `${styles["errorMessage-inLogin"]}`
+                        : `${styles["errorMessage-inLogin_hidden"]}`
+                    }
+                  >
+                    {t("Response-Message-is-required")}
+                  </span>
+                ) : null} */}
               </Col>
             </Row>
             {specificUser === 0 && (
@@ -152,6 +175,7 @@ const NotifyAgendaModal = ({
                     sm={6}
                     className="d-flex justify-content-start align-items-center gap-2"
                   >
+                    {/* {specificUser === 0 && ( */}
                     <>
                       <Checkbox
                         checked={notifiedMembersData.every(
@@ -163,6 +187,7 @@ const NotifyAgendaModal = ({
                         {t("All-agenda-contributors")}
                       </p>
                     </>
+                    {/* )} */}
                   </Col>
                   <Col
                     lg={6}
@@ -199,7 +224,9 @@ const NotifyAgendaModal = ({
                     <Row>
                       {specificUser !== 0
                         ? notifiedMembersData
-                            .filter((data) => data.userID === specificUser)
+                            .filter(
+                              (data, index) => data.userID === specificUser
+                            )
                             .map((mapData, index) => {
                               return (
                                 <Col lg={6} md={6} sm={12} className="mt-2">
@@ -253,8 +280,8 @@ const NotifyAgendaModal = ({
                               );
                             })
                         : notifiedMembersData
-                            .filter((data) => data.isEdit === false)
-                            .map((data) => {
+                            .filter((data, index) => data.isEdit === false)
+                            .map((data, index) => {
                               return (
                                 <Col lg={6} md={6} sm={12} className="mt-2">
                                   <Row className="m-0 p-0">

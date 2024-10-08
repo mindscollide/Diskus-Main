@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
+import Profile from "../../../../../../assets/images/newprofile.png";
 import { Button, Checkbox } from "../../../../../../components/elements";
 import { Progress } from "antd";
 import ViewVotesScreen from "../ViewVotes/ViewVotesScreen";
@@ -69,6 +70,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
       PollID: viewPublishedPollDetails.PollID,
     };
     dispatch(viewVotesApi(navigate, data, t, 1, setviewVotes));
+    // setviewVotes(true);
   };
   return (
     <>
@@ -191,7 +193,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                   >
                     <Row>
                       {pollParticipants.length > 0
-                        ? pollParticipants.map((data) => {
+                        ? pollParticipants.map((data, index) => {
                             return (
                               <>
                                 <Col lg={6} md={6} sm={6} className="mt-2">

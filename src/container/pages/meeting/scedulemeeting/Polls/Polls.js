@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../../../assets/images/bin.svg";
-import { Tooltip } from "antd";
+import { Pagination, Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -43,6 +43,7 @@ import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
   createPollMeetingMQTT,
+  deleteMeetingPollApi,
   deletePollsMQTT,
   getPollByPollIdforMeeting,
   getPollsByPollIdApi,
@@ -66,7 +67,9 @@ const Polls = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const { NewMeetingreducer, CommitteeReducer, PollsReducer } = useSelector(
+    (state) => state
+  );
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -76,6 +79,7 @@ const Polls = ({
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
+  console.log(currentMeeting, "currentMeetingcurrentMeeting");
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
   const [open, setOpen] = useState({
@@ -309,7 +313,10 @@ const Polls = ({
         return (
           <span
             className={styles["DateClass"]}
-            onClick={() => handleClickTitle(record)}
+            onClick={
+              () => handleClickTitle(record)
+              // navigate("/DisKus/polling", { state: { record, isVote: false } })
+            }
           >
             {text}
           </span>
@@ -343,7 +350,7 @@ const Polls = ({
       ),
       onFilter: (value, record) =>
         record.pollStatus.status.indexOf(value) === 0,
-      render: (record) => {
+      render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
           return <span className="text-success">{t("Published")}</span>;
         } else if (record.pollStatus?.pollStatusId === 1) {
@@ -370,11 +377,17 @@ const Polls = ({
           b.dueDate.slice(6, 8)
         ),
       sortDirections: ["ascend", "descend"],
-      render: (text) => {
+      render: (text, record) => {
         return _justShowDateformatBilling(text);
       },
     },
 
+    // {
+    //   title: t("Poll-type"),
+    //   dataIndex: "PollType",
+    //   key: "PollType",
+    //   width: "90px",
+    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
@@ -540,6 +553,12 @@ const Polls = ({
   const handleCreatepolls = () => {
     dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(true);
+  };
+
+  const handleClickPrevPolls = () => {
+    setactionsPage(true);
+    setPolls(false);
+    // if(editorRole.statu)
   };
 
   const handleNextButtonPolls = () => {
@@ -731,12 +750,22 @@ const Polls = ({
                     sm={12}
                     className="d-flex justify-content-end gap-2"
                   >
+                    {/* <Button
+                      text={t("Clone-meeting")}
+                      className={styles["Cancel_Button_Polls_meeting"]}
+                      onClick={enableAfterSavedViewPolls}
+                    /> */}
+
                     <Button
                       text={t("Cancel")}
                       className={styles["Cancel_Button_Polls_meeting"]}
                       onClick={handleCacnelbutton}
                     />
-
+                    {/* <Button
+                      text={t("Previous")}
+                      className={styles["Save_Button_Polls_meeting"]}
+                      onClick={handleClickPrevPolls}
+                    /> */}
                     {Number(editorRole.status) === 10 &&
                     editorRole.role === "Agenda Contributor" ? null : (
                       <Button
@@ -753,6 +782,17 @@ const Polls = ({
                         className={styles["Save_Button_Polls_meeting"]}
                       />
                     ) : null}
+
+                    {/* <Button
+                      text={t("Save-and-publish")}
+                      className={styles["Cancel_Button_Polls_meeting"]}
+                    />
+
+                    <Button
+                      text={t("Save-and-next")}
+                      className={styles["Save_Button_Polls_meeting"]}
+                      onClick={handleSaveAndnext}
+                    /> */}
                   </Col>
                 </Row>
               </>

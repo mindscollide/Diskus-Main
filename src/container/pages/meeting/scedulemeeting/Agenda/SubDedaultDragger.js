@@ -30,6 +30,7 @@ const SubDedaultDragger = ({
 
   const Subprops = {
     name: "file",
+    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
@@ -90,6 +91,7 @@ const SubDedaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
+            // setFileForSend([...fileForSend, fileData.originFileObj]);
             setFileForSend((prevFiles) => [
               ...prevFiles,
               fileData.originFileObj,
@@ -127,6 +129,7 @@ const SubDedaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
+            // setFileForSend([...fileForSend, fileData.originFileObj]);
             setFileForSend((prevFiles) => [
               ...prevFiles,
               fileData.originFileObj,

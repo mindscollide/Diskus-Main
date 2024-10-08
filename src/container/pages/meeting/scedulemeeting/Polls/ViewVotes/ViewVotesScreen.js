@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ViewVoteScreen.module.css";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Progress } from "antd";
+import Profile from "../../../../../../assets/images/newprofile.png";
 import { Button } from "../../../../../../components/elements";
 
 const ViewVotesScreen = ({ setviewVotes }) => {
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
   const [pollId, setPollId] = useState(0);
+  let userID = localStorage.getItem("userID");
   const [pollTitle, setPollTitle] = useState("");
   const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
     []
@@ -38,7 +43,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
 
           // for options
           if (Object.keys(pollOptions).length > 0) {
-            pollOptions.forEach((data) => {
+            pollOptions.forEach((data, index) => {
               Options.push(data);
             });
             setVotePollDetailsOptions(Options);
@@ -76,7 +81,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
             >
               <Row>
                 {votePollDetailsOptions.length > 0
-                  ? votePollDetailsOptions.map((data) => {
+                  ? votePollDetailsOptions.map((data, index) => {
                       return (
                         <>
                           <Col lg={12} md={12} sm={12} className="mt-2">
@@ -124,7 +129,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
           <Row className="mt-3">
             <section className={styles["Scroller_View_Published_Polls"]}>
               {pollAttendiesOpptionsVise.length > 0 &&
-                pollAttendiesOpptionsVise.map((data) => {
+                pollAttendiesOpptionsVise.map((data, index) => {
                   return (
                     <Col lg={12} md={12} sm={12}>
                       <Row className="mt-1">
@@ -135,7 +140,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                         </Col>
                       </Row>
                       <Row>
-                        {data.pollParticipants.map((participantData) => {
+                        {data.pollParticipants.map((participantData, index) => {
                           return (
                             <>
                               <Col lg={6} md={6} sm={6} className="mt-2">

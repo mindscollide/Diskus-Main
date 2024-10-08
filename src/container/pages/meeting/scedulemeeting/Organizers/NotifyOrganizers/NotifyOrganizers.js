@@ -9,7 +9,14 @@ import { useTranslation } from "react-i18next";
 import styles from "./NotifyOrganizors.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
-import { meetingOrganizers } from "../../../../../../store/actions/MeetingOrganizers_action";
+import {
+  selectedMeetingOrganizers,
+  meetingOrganizers,
+  saveMeetingFlag,
+  editMeetingFlag,
+} from "../../../../../../store/actions/MeetingOrganizers_action";
+import { useNavigate } from "react-router-dom";
+import profile from "../../../../../../assets/images/newprofile.png";
 import { showNotifyOrganizors } from "../../../../../../store/actions/NewMeetingActions";
 import UpperArrow from "../../../../../../assets/images/UpperArrow.svg";
 import { Col, Row } from "react-bootstrap";
@@ -23,6 +30,7 @@ const NotifyOrganizers = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
@@ -30,9 +38,36 @@ const NotifyOrganizers = ({
     Messege: "",
     allOrganizersAccept: false,
   });
-
+  console.log(
+    notifyOrganizerData,
+    notificationMessage,
+    "notifyOrganizerDatanotifyOrganizerData"
+  );
   const [membersHide, setMembersHide] = useState(false);
   const [allOrganizersAccept, setAllOrganizersAccept] = useState(true);
+  // const [members, setMembers] = useState([
+  //   {
+  //     name: 'saif',
+  //   },
+  //   {
+  //     name: 'owais wAJID',
+  //   },
+  //   {
+  //     name: 'ALI RAZA',
+  //   },
+  //   {
+  //     name: 'huzeifa',
+  //   },
+  //   {
+  //     name: 'mamdani',
+  //   },
+  //   {
+  //     name: 'aun',
+  //   },
+  //   {
+  //     name: 'saroush',
+  //   },
+  // ])
 
   // Initialize membersOrganizers state with the modified 'isOrganizerNotified' property
   const initialMembersOrganizers =
@@ -54,7 +89,7 @@ const NotifyOrganizers = ({
     dispatch(showNotifyOrganizors(false));
   };
 
-  const HandleChange = (e) => {
+  const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "Message") {
@@ -113,7 +148,10 @@ const NotifyOrganizers = ({
     setMembersOrganizers(updatedMembers);
   };
 
+  const [NotifyMessageError, setNotifyMessaegError] = useState(false);
+
   const sendNotification = () => {
+    // if (notifyOrganizerData.Messege !== "") {
     setIsEdit(true);
     dispatch(showNotifyOrganizors(false));
     const updatedMembersOrganizers = membersOrganizers.map((member) => ({
@@ -122,6 +160,10 @@ const NotifyOrganizers = ({
     }));
     console.log(updatedMembersOrganizers, "updatedMembersOrganizers");
     dispatch(meetingOrganizers(updatedMembersOrganizers));
+    // setNotificationMessage("");
+    // } else {
+    // setNotifyMessaegError(true);
+    // }
   };
 
   const handleCancelButton = () => {
@@ -148,6 +190,10 @@ const NotifyOrganizers = ({
       setMembersOrganizers(modifiedData);
     }
   }, [MeetingOrganizersReducer.MeetingOrganizersData]);
+
+  console.log("MeetingOrganizersReducer", MeetingOrganizersReducer);
+
+  console.log("Checkboxes state check", memberCheckboxes, membersOrganizers);
 
   return (
     <section>
@@ -193,6 +239,17 @@ const NotifyOrganizers = ({
                   name="Message"
                   maxLength={500}
                 />
+                {/* {NotifyMessageError && notificationMessage === "" ? (
+                  <span
+                    className={
+                      NotifyMessageError && notificationMessage === ""
+                        ? `${styles["errorMessage-inLogin"]}`
+                        : `${styles["errorMessage-inLogin_hidden"]}`
+                    }
+                  >
+                    {t("Response-Message-is-required")}
+                  </span>
+                ) : null} */}
               </Col>
             </Row>
             <Row className="mt-2">

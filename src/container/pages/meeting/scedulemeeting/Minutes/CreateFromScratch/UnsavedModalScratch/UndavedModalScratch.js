@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./UnsavedModalScratch.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { showUnsavedCreateFromScratch } from "../../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
@@ -10,6 +11,7 @@ import { Modal, Button } from "../../../../../../../components/elements";
 const UndavedModalScratch = ({ setEditable }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleYesFunctionality = () => {

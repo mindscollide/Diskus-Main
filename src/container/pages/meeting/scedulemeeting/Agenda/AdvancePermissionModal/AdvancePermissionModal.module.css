@@ -85,6 +85,7 @@
 
 .SecurityMenu > ant-menu-submenu-arrow,
 .ant-menu-submenu-arrow {
+  /* right: 10px !important; */
   transform: rotate(270deg) translateX(2.5px) !important;
 }
 
@@ -105,6 +106,11 @@ section.ant-layout.ant-layout-has-sider.css-dev-only-do-not-override-1e3x2xa {
 aside.ant-layout-sider.ant-layout-sider-dark {
   border-top-right-radius: 10px !important;
 }
+
+/* :where(.css-dev-only-do-not-override-1e3x2xa).ant-layout
+  .ant-layout-sider-children {
+  width: 250px !important;
+} */
 
 :where(
     .css-dev-only-do-not-override-1e3x2xa
@@ -295,7 +301,10 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   background: #f6f6f6 !important;
 }
 .SubAgendaBackground {
+  /* background: #f6f6f6 !important; */
   display: flex !important;
+}
+.SubAgendaBox {
 }
 
 .SidebarSection_expanded {

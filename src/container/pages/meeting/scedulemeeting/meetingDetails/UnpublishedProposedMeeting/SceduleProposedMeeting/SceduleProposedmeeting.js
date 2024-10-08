@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./SceduleProposedMeeting.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Modal, Button, Table } from "../../../../../../../components/elements";
+import {
+  Modal,
+  Button,
+  Table,
+  Loader,
+} from "../../../../../../../components/elements";
 import { useSelector } from "react-redux";
 import {
   showSceduleProposedMeeting,
@@ -14,9 +19,11 @@ import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
 import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMeetingActions";
 import {
+  newTimeFormaterAsPerUTCFullDate,
   newTimeFormaterViewPoll,
   utcConvertintoGMT,
 } from "../../../../../../../commen/functions/date_formater";
+import { update } from "lodash";
 const SceduleProposedmeeting = ({
   setDataroomMapFolderId,
   setCurrentMeetingID,
@@ -37,6 +44,8 @@ const SceduleProposedmeeting = ({
     (state) => state.NewMeetingreducer.getUserProposedOrganizerData
   );
 
+  const [isActive, setIsActive] = useState(false);
+  const [selectProposedDate, setselectProposedDate] = useState(null);
   const [formattedDates, setFormattedDates] = useState([]);
   const [updateTableRows, setUpdateTableRows] = useState([]);
   const [proposedDatesData, setProposedDatesData] = useState([]);
@@ -46,6 +55,7 @@ const SceduleProposedmeeting = ({
   const [proposedDates, setProposedDates] = useState([]);
 
   console.log(updateTableRows, "updateTableRowsupdateTableRows");
+  const [maxTotalCountIndex, setMaxTotalCountIndex] = useState(null);
 
   // dispatch Api in useEffect
   useEffect(() => {
@@ -129,7 +139,7 @@ const SceduleProposedmeeting = ({
     }
   }, [organizerRows, proposedDates]);
 
-  const toggleActive = (record) => {
+  const toggleActive = (index, record, formattedDate) => {
     if (record !== undefined) {
       setProposedDatesData((newData) =>
         newData.map((proposedData) => ({
@@ -186,6 +196,22 @@ const SceduleProposedmeeting = ({
           viewProposeDatePollMeetingID
         )
       );
+      // let Data = {
+      //         MeetingID: Number(id),
+      //       };
+      //       await dispatch(
+      //         GetAllMeetingDetailsApiFunc(
+      //           navigate,
+      //           t,
+      //           Data,
+      //           false,
+      //           setCurrentMeetingID,
+      //           setSceduleMeeting,
+      //           setDataroomMapFolderId,
+      //           0,
+      //           1
+      //         )
+      //       );
     }
   };
 
@@ -193,14 +219,13 @@ const SceduleProposedmeeting = ({
     {
       dataIndex: "userName",
       key: "userName",
-      render: (record) => (
+      render: (text, record) => (
         <>
           <span className={styles["WidthOFSpan"]}>
             {record.userName === "Total" ? (
               <span
                 className={styles["TotalCount_HEading"]}
-                title={record.userName}
-              >
+                title={record.userName}>
                 {record.userName}
               </span>
             ) : (
@@ -232,8 +257,7 @@ const SceduleProposedmeeting = ({
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail"]
             }
-            onClick={() => toggleActive(index, record, formattedDate)}
-          >
+            onClick={() => toggleActive(index, record, formattedDate)}>
             <span className={styles["date-time-column"]}>
               {newTimeFormaterViewPoll(formattedDate)}
             </span>
@@ -263,9 +287,9 @@ const SceduleProposedmeeting = ({
                 <img
                   src={BlueTick}
                   className={styles["TickIconClass"]}
-                  width="20.7px"
-                  height="14.21px"
-                  alt=""
+                  width='20.7px'
+                  height='14.21px'
+                  alt=''
                 />
               );
             }
@@ -310,7 +334,7 @@ const SceduleProposedmeeting = ({
                     column={scheduleColumn}
                     scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
-                    className="SceduleProposedMeeting"
+                    className='SceduleProposedMeeting'
                     rows={updateTableRows}
                   />
                   <span>
@@ -319,8 +343,7 @@ const SceduleProposedmeeting = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center mt-4"
-                      >
+                        className='d-flex justify-content-center mt-4'>
                         <Button
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}

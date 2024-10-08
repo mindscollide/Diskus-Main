@@ -24,10 +24,16 @@
   cursor: pointer !important;
   overflow: hidden !important;
   display: block !important;
+  /* width: 200px !important; */
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
 }
 
+/* .newMeetingProgressbar {
+  background: #6172d6 !important;
+  margin: 3px !important;
+  border-radius: 5px !important;
+} */
 .meeting_date {
   white-space: nowrap;
   text-align: center;

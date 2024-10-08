@@ -7,10 +7,12 @@ import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Table,
+  Loader,
   Notification,
 } from "../../../../../components/elements";
 import {
   clearAttendanceResponse,
+  clearAttendanceState,
   getAllAttendanceMeetingApi,
   saveMeetingAttendanceApi,
 } from "../../../../../store/actions/Attendance_Meeting";
@@ -30,6 +32,7 @@ import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
 const Attendence = ({
   currentMeeting,
   setSceduleMeeting,
+  setDataroomMapFolderId,
   setEdiorRole,
   setPolls,
   setAttendance,
@@ -52,14 +55,19 @@ const Attendence = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingID = Number(localStorage.getItem("meetingID"));
   let userID = localStorage.getItem("userID");
 
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
+  console.log(open, "setOpensetOpen");
 
   const [attendenceRows, setAttendenceRows] = useState([]);
+  console.log(attendenceRows, "attendenceRowsattendenceRows");
+
+  console.log(meetingID, ResponseMessage, "meetingIDmeetingID");
 
   const enablePresent = (record, status) => {
     const updatedRows = attendenceRows.map((row) => {
@@ -266,6 +274,11 @@ const Attendence = ({
     }
   }, [attendanceMeetingReducer.attendanceMeetings]);
 
+  console.log(
+    attendanceMeetingReducer.attendanceMeetings,
+    "attendanceMeetingReducerattendanceMeetings"
+  );
+
   // dispatch Api in useEffect
   useEffect(() => {
     let meetingData = {
@@ -273,6 +286,23 @@ const Attendence = ({
     };
     dispatch(getAllAttendanceMeetingApi(navigate, t, meetingData));
   }, []);
+
+  // for save the meeting
+  // const saveHandler = () => {
+  //   let newData = [];
+  //   attendenceRows.forEach((data, index) => {
+  //     newData.push({
+  //       AttendanceStatusID: data.meetingAttendancestatus.attendanceStatusID,
+  //       UserID: data.userID,
+  //     });
+  //   });
+  //   let Data = {
+  //     MeetingAttendance: newData,
+  //     MeetingID: Number(currentMeeting),
+  //   };
+  //   console.log(Data, "DataData");
+  //   dispatch(saveMeetingAttendanceApi(navigate, t, Data));
+  // };
 
   const handleSaveNotification = () => {
     if (ResponseMessage) {
@@ -327,6 +357,20 @@ const Attendence = ({
       setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
     } else {
       setAttendenceRows([]);
+    }
+  };
+
+  const navigatePrevHandler = () => {
+    let ReducerAttendeceData = deepEqual(
+      attendanceMeetingReducer.attendanceMeetings,
+      attendenceRows
+    );
+    if (ReducerAttendeceData) {
+      setPolls(true);
+      setAttendance(false);
+    } else {
+      dispatch(showAttendanceConfirmationModal(true));
+      setUseCase(1);
     }
   };
 
@@ -385,7 +429,11 @@ const Attendence = ({
             className={styles["CloneMeetingStyles"]}
             onClick={handleCancelBtn}
           />
-
+          {/* <Button
+            text={t("Previous")}
+            onClick={navigatePrevHandler}
+            className={styles["CloneMeetingStyles"]}
+          /> */}
           <Button
             text={t("Save")}
             onClick={() => saveHandler()}

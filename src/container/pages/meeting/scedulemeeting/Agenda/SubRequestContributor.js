@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Agenda.module.css";
+import { useNavigate } from "react-router-dom";
+import { getAllAgendaContributorApi } from "../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
@@ -20,12 +22,35 @@ const SubRequestContributor = ({
 
   const { NewMeetingreducer } = useSelector((state) => state);
 
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+
   const [agendaContributors, setAgendaContributors] = useState([]);
+
+  // Function to handle changes in sub-agenda additional Request Contributor Enter URl Radio text field
+  const handleSubAgendaRequestContributorEnterUrl = (index, subIndex, e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log(value, name, "valuevaluevalue");
+
+    const updatedRows = [...rows];
+
+    if (name === "SubAgendaRequestContributorUrlField") {
+      updatedRows[index].subAgenda[subIndex].subAgendarequestContributorUrl =
+        value;
+    }
+    console.log(updatedRows, "SubAgendaRequestContributorUrlField");
+    setRows(updatedRows);
+  };
 
   // Function to handle changes in sub-agenda additional Request Contributor Enter Note Radio text field
   const handleSubAgendaRequestContributorEnterNote = (index, subIndex, e) => {
     let name = e.target.name;
     let value = e.target.value;
+    console.log(value, name, "valuevaluevalue");
 
     const updatedRows = [...rows];
 
@@ -34,8 +59,16 @@ const SubRequestContributor = ({
         subIndex
       ].subAgendarequestContributorEnterNotes = value;
     }
+    console.log(updatedRows, "SubAgendaRequestContributorEnterNotesFiled");
     setRows(updatedRows);
   };
+
+  // useEffect(() => {
+  //   let getAllData = {
+  //     MeetingID: currentMeetingID !== null ? currentMeetingID : 0,
+  //   };
+  //   dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+  // }, []);
 
   useEffect(() => {
     if (
@@ -50,12 +83,15 @@ const SubRequestContributor = ({
   }, [NewMeetingreducer.getAllAgendaContributors]);
 
   const handleSelectChange = (index, subIndex, value) => {
+    console.log(value, "valuevaluevalue");
     const updatedAgendaItems = [...rows];
     let SelectValue = {
       value: value.value,
       label: value.label,
     };
-
+    // updatedAgendaItems[index].subAgenda[
+    //   subIndex
+    // ].subAgendarequestContributorUrl = SelectValue.value;
     updatedAgendaItems[index].subAgenda[subIndex].userID = SelectValue.value;
     updatedAgendaItems[index].subAgenda[
       subIndex
@@ -96,6 +132,27 @@ const SubRequestContributor = ({
     }
   }, [agendaContributors]);
 
+  // const allAgendaContributors = agendaContributors.map((contributor) => ({
+  //   value: contributor.userID,
+  //   label: (
+  //     <>
+  //       <Row>
+  //         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+  //           <img
+  //             src={`data:image/jpeg;base64,${contributor.userProfilePicture.displayProfilePictureName}`}
+  //             width="17px"
+  //             height="17px"
+  //             className={styles["Image_class_Agenda"]}
+  //           />
+  //           <span className={styles["Name_Class"]}>{contributor.userName}</span>
+  //         </Col>
+  //       </Row>
+  //     </>
+  //   ),
+  // }));
+
+  console.log("New Meeting Reducer", NewMeetingreducer);
+
   return (
     <>
       <Row className="mt-2">
@@ -116,6 +173,15 @@ const SubRequestContributor = ({
             }
             isSearchable={false}
           />
+          {/* <TextField
+            labelclass={"d-none"}
+            placeholder={"Enter-url"}
+            name={"SubAgendaRequestContributorUrlField"}
+            value={subAgendaData.subAgendarequestContributorUrl}
+            change={(e) => {
+              handleSubAgendaRequestContributorEnterUrl(index, subIndex, e);
+            }}
+          /> */}
         </Col>
       </Row>
       <Row>

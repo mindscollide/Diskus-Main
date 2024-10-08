@@ -17,7 +17,11 @@ import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../../assets/images/featherupload.svg";
 import ReactQuill, { Quill } from "react-quill";
+import Leftploygon from "../../../../../../assets/images/Polygon 3.svg";
+import file_image from "../../../../../../assets/images/file_image.svg";
 import { AccordionDetails } from "@mui/material";
+import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
+import Rightploygon from "../../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
@@ -35,6 +39,10 @@ import {
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../../DataRoom/SearchFunctionality/option";
 import FilesMappingAgendaWiseMinutes from "./FilesMappingAgendaWiseMinutes";
 import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
 
@@ -51,6 +59,7 @@ const AgendaWise = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const Delta = Quill.import("delta");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   const [open, setOpen] = useState({
     flag: false,
@@ -84,6 +93,7 @@ const AgendaWise = ({
       title: "",
     },
   });
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let Data = {
@@ -112,20 +122,26 @@ const AgendaWise = ({
         AgendaWiseAgendaListReducer.AllAgendas !== undefined
       ) {
         let NewData = [];
-
-        AgendaWiseAgendaListReducer.AllAgendas.agendaList.map((agenda) => {
-          NewData.push({
-            value: agenda.id,
-            label: agenda.title,
-          });
-
-          agenda.subAgenda.map((subajendaData, index) => {
+        console.log(
+          AgendaWiseAgendaListReducer.AllAgendas,
+          "agendaListagendaList"
+        );
+        AgendaWiseAgendaListReducer.AllAgendas.agendaList.map(
+          (agenda, index) => {
+            console.log(agenda, "agendaListagendaList");
             NewData.push({
-              value: subajendaData.subAgendaID,
-              label: subajendaData.subTitle,
+              value: agenda.id,
+              label: agenda.title,
             });
-          });
-        });
+
+            agenda.subAgenda.map((subajendaData, index) => {
+              NewData.push({
+                value: subajendaData.subAgendaID,
+                label: subajendaData.subTitle,
+              });
+            });
+          }
+        );
         setAgendaOptions(NewData);
         setAgendaID(NewData);
       }
@@ -169,11 +185,14 @@ const AgendaWise = ({
             });
           }
 
+          console.log(acc, "groupedDatagroupedDatagroupedData");
+
           return acc;
         }, {});
 
         // Convert groupedData object to an array of values
         const combinedDataArray = Object.values(groupedData).flat();
+        console.log(combinedDataArray, "groupedDatagroupedDatagroupedData");
 
         // Store combined data in the messages state
         setMessages(combinedDataArray);
@@ -223,8 +242,11 @@ const AgendaWise = ({
       });
     }
 
+    console.log(acc, "returnreturnreturn");
     return acc;
   }, {});
+
+  console.log(groupedMessages, "messagesmessagesmessages2");
 
   let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
@@ -275,6 +297,7 @@ const AgendaWise = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
+      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -340,6 +363,18 @@ const AgendaWise = ({
   // Initialize previousFileList to an empty array
   let previousFileList = [];
 
+  //Sliders For Attachments
+
+  const SlideLeft = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft - 300;
+  };
+
+  const Slideright = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft + 300;
+  };
+
   const onTextChange = (content, delta, source) => {
     const deltaOps = delta.ops || [];
 
@@ -386,6 +421,22 @@ const AgendaWise = ({
         });
       }
     }
+    // else {
+    //   if (source === "user") {
+    //     // Update state only if no image is detected in the content
+    //     setAgendaWiseFields({
+    //       ...addAgendaWiseFields,
+    //       Description: {
+    //         value: content,
+    //         errorMessage:
+    //           contentTrimmed !== ""
+    //             ? ""
+    //             : addAgendaWiseFields.Description.errorMessage,
+    //         errorStatus: contentTrimmed === "",
+    //       },
+    //     });
+    //   }
+    // }
   };
 
   const handleAgendaSelect = (selectoptions) => {
@@ -449,6 +500,7 @@ const AgendaWise = ({
           t,
           newData,
           folderID,
+          // newFolder,
           newfile
         )
       );
@@ -468,7 +520,7 @@ const AgendaWise = ({
     let docsData = {
       FK_MeetingAgendaMinutesID: minuteID,
       FK_MDID: currentMeeting,
-      UpdateFileList: newFolder.map((data) => {
+      UpdateFileList: newFolder.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
@@ -495,6 +547,10 @@ const AgendaWise = ({
   // For getting the MinuteID
   useEffect(() => {
     if (NewMeetingreducer.agendaWiseMinuteID !== 0) {
+      console.log(
+        NewMeetingreducer.agendaWiseMinuteID,
+        "agendaWiseMinuteIDagendaWiseMinuteID"
+      );
       documentUploadingFunc(NewMeetingreducer.agendaWiseMinuteID);
     }
   }, [NewMeetingreducer.agendaWiseMinuteID]);
@@ -574,6 +630,7 @@ const AgendaWise = ({
       });
       setisEdit(true);
     } else {
+      console.log("data.minutesDetails is undefined or null");
     }
   };
 
@@ -587,7 +644,7 @@ const AgendaWise = ({
       ) {
         let files = [];
         let prevData = [];
-        NewMeetingreducer.RetriveAgendaWiseDocuments.data.map((data) => {
+        NewMeetingreducer.RetriveAgendaWiseDocuments.data.map((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
@@ -641,7 +698,7 @@ const AgendaWise = ({
       let docsData = {
         FK_MeetingAgendaMinutesID: Number(updateData.MinutesID),
         FK_MDID: currentMeeting,
-        UpdateFileList: newfile.map((data) => {
+        UpdateFileList: newfile.map((data, index) => {
           return { PK_FileID: Number(data.pK_FileID) };
         }),
       };
@@ -683,7 +740,7 @@ const AgendaWise = ({
 
   const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
     let minutesID = 0;
-    AgendaWiseData.items.map((id) => {
+    AgendaWiseData.items.map((id, index) => {
       minutesID = Number(id.minuteID);
     });
 
@@ -711,6 +768,7 @@ const AgendaWise = ({
     });
 
     setFileAttachments([]);
+    // setAgendaOptions([]);
   };
 
   //Expanding and collapsing function
@@ -748,11 +806,13 @@ const AgendaWise = ({
   }, [NewMeetingreducer.ResponseMessage]);
 
   const toggleAcordion = (agendaID) => {
+    // setExpanded((prev) => (prev === notesID ? true : false));
     if (accordianExpand === agendaID) {
       setAccordianExpand(false);
     } else {
       setAccordianExpand(agendaID);
     }
+    // setExpand(!isExpand);
   };
 
   return (
@@ -860,7 +920,8 @@ const AgendaWise = ({
                   <>
                     <Row className="mt-1">
                       {fileAttachments.length > 0
-                        ? fileAttachments.map((data) => {
+                        ? fileAttachments.map((data, index) => {
+                            console.log(data, "datadatadata");
                             return (
                               <>
                                 <Col lg={4} md={4} sm={4}>
@@ -934,6 +995,7 @@ const AgendaWise = ({
                         id="panel1a-header"
                         className={styles["notes_accordion"]}
                         key={data.agendaID}
+                        // onChange={handleChangeExpanded(data?.pK_NotesID)}
                       >
                         <AccordionSummary
                           disableRipple={true}
@@ -985,6 +1047,10 @@ const AgendaWise = ({
                                 className={styles["Sizing_Saved_Minutes"]}
                               >
                                 {data.items.map((Itemsdata, detailIndex) => {
+                                  console.log(
+                                    data,
+                                    "groupedMessagesgroupedMessages"
+                                  );
                                   return (
                                     <>
                                       <div key={detailIndex}>

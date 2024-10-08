@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./DeleteMeetingModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { Modal, Button } from "../../../../../../../components/elements";
 import { showDeleteMeetingModal } from "../../../../../../../store/actions/NewMeetingActions";
@@ -10,6 +11,7 @@ import { useSelector } from "react-redux";
 const DeleteMeetingModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleCancelEvent = () => {
