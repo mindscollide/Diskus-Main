@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
 import OrganizerViewModal from "../../../scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
+
 import { ChevronDown } from "react-bootstrap-icons";
 import {
   Button,
@@ -17,6 +18,7 @@ import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,
+  showDeleteMeetingModal,
   showSceduleProposedMeeting,
   scheduleMeetingPageFlag,
   viewProposeDateMeetingPageFlag,
@@ -66,6 +68,7 @@ import { checkFeatureIDAvailability } from "../../../../../../commen/functions/u
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
   setViewProposeOrganizerPoll,
+  viewProposeDatePoll,
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModalUnpublish,
   setSceduleMeeting,
@@ -295,12 +298,12 @@ const UnpublishedProposedMeeting = ({
       ],
       filterResetToDefaultFilteredValue: true,
       defaultFilteredValue: ["11", "12"],
-      filterIcon: () => (
+      filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) =>
         record.status.toLowerCase().includes(value.toLowerCase()),
-      render: (record) => {
+      render: (text, record) => {
         return StatusValue(t, record.status);
       },
     },
@@ -317,7 +320,7 @@ const UnpublishedProposedMeeting = ({
         const nameB = b.userDetails?.name || "";
         return nameA.localeCompare(nameB);
       },
-      render: (record) => {
+      render: (text, record) => {
         return <span className={styles["orgaizer_value"]}>{record.host}</span>;
       },
     },
@@ -328,7 +331,7 @@ const UnpublishedProposedMeeting = ({
       width: "155px",
       ellipsis: true,
 
-      render: (record) => {
+      render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
             <span className="text-truncate d-block">
@@ -354,7 +357,7 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
       width: "115px",
-      render: (record) => {
+      render: (text, record) => {
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
         let value = record.meetingPoll?.totalNoOfDirectorsVoted;
         if (record.meetingPoll) {
@@ -410,7 +413,7 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "responseDeadLine",
       key: "responseDeadLine",
       width: "115px",
-      render: (record) => {
+      render: (text, record) => {
         return (
           <>
             {record.status === "12" ? (
@@ -429,7 +432,7 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "Edit",
       key: "Edit",
       width: "33px",
-      render: (record) => {
+      render: (text, record) => {
         return (
           <>
             <Row>
@@ -452,6 +455,7 @@ const UnpublishedProposedMeeting = ({
                         handleEditMeeting(
                           record.pK_MDID,
                           record.isQuickMeeting,
+                          // record.isAgendaContributor,
                           record
                         );
                         setVideoTalk({
@@ -497,6 +501,7 @@ const UnpublishedProposedMeeting = ({
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
+                            // record.isAgendaContributor,
                             record
                           );
                           setVideoTalk({
@@ -786,7 +791,10 @@ const UnpublishedProposedMeeting = ({
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setRow([getData, ...rows]);
-          } catch (error) {}
+            console.log(getData, "getDatagetDatagetData");
+          } catch (error) {
+            console.log(error, "getDatagetDatagetData");
+          }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
