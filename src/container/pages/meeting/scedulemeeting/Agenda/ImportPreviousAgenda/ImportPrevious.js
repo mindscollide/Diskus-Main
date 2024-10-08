@@ -3,7 +3,6 @@ import styles from "./ImportPrevious.module.css";
 import {
   Modal,
   Button,
-  InputSearchFilter,
   Table,
   CustomRadio2,
 } from "../../../../../../components/elements";
@@ -19,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { current } from "@reduxjs/toolkit";
 const ImportPrevious = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -27,9 +25,7 @@ const ImportPrevious = () => {
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
-  // const [importAgendaData, setImportAgendaData] = useState({
-  //   InputSearchVal: "",
-  // });
+
   const [isPageSize, setIsPageSize] = useState(20);
   const [isCurrent, setIsCurrent] = useState(1);
 
@@ -40,7 +36,6 @@ const ImportPrevious = () => {
 
   const handleRadioChange = (record) => {
     setSelectedRow(record);
-    console.log("Selected Row: ", record);
   };
 
   const MeetingColoumns = [
@@ -113,14 +108,6 @@ const ImportPrevious = () => {
     },
   ];
 
-  // const handleSearchFilter = (e) => {
-  //   let value = e.target.value;
-  //   setImportAgendaData({
-  //     ...importAgendaData,
-  //     InputSearchVal: value,
-  //   });
-  // };
-
   useEffect(() => {
     let Data = {
       PageNumber: 1,
@@ -131,7 +118,6 @@ const ImportPrevious = () => {
   }, []);
 
   const handelChangePagination = async (current, PageSize) => {
-    console.log(current, PageSize, "PageSizePageSizePageSize");
     let Data = {
       PageNumber: current,
       Length: PageSize,
@@ -170,10 +156,6 @@ const ImportPrevious = () => {
     dispatch(showImportPreviousAgendaModal(false));
   };
 
-  console.log("Rows Data", rowsData);
-
-  console.log("Imported Agendas", MeetingAgendaReducer);
-
   return (
     <section>
       <Modal
@@ -184,7 +166,7 @@ const ImportPrevious = () => {
         onHide={() => {
           dispatch(showImportPreviousAgendaModal(false));
         }}
-        size={"xl"}  
+        size={"xl"}
         ModalTitle={
           <>
             <Row>
@@ -210,6 +192,7 @@ const ImportPrevious = () => {
                       src={BlackCrossIcon}
                       height="16px"
                       width="16px"
+                      alt=""
                       className="cursor-pointer"
                       onClick={() => {
                         dispatch(showImportPreviousAgendaModal(false));
@@ -230,21 +213,6 @@ const ImportPrevious = () => {
                 sm={12}
                 className={styles["OverAll_Padding"]}
               >
-                {/* <Row>
-                  <Col lg={10} md={10} sm={12} className="group-fields">
-                    <InputSearchFilter
-                      value={importAgendaData.InputSearchVal}
-                      change={handleSearchFilter}
-                      labelclass={"d-none"}
-                    />
-                  </Col>
-                  <Col lg={2} md={2} sm={12}>
-                    <Button
-                      text={t("Search")}
-                      className={styles["Search_Btn_Import"]}
-                    />
-                  </Col>
-                </Row> */}
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <Table

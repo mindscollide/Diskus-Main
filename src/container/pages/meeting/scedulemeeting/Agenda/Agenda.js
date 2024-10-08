@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
-import { removePropertiesFromObject } from "../../../../../commen/functions/validations";
 import { Col, Row } from "react-bootstrap";
-import {
-  Button,
-  Loader,
-  Notification,
-} from "../../../../../components/elements";
+import { Button, Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Upload } from "antd";
 import {
   convertDateFieldsToUTC,
   convertUtcToGmt,
-  resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
-import line from "../../../../../assets/images/LineAgenda.svg";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
 import {
   showCancelModalAgenda,
@@ -28,7 +20,6 @@ import {
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
-  CreateUpdateMeetingDataRoomMap,
   UploadDocumentsAgendaApi,
   SaveFilesAgendaApi,
   AddUpdateAdvanceMeetingAgenda,
@@ -48,13 +39,8 @@ import ParentAgenda from "./ParentAgenda";
 import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
-import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import NextAgenda from "./NextAgenda/NextAgenda";
 import PreviousAgenda from "./PreviousAgenda/PreviousAgenda";
-import {
-  previousTabAgenda,
-  nextTabAgenda,
-} from "../../../../../store/actions/MeetingAgenda_action";
 
 const Agenda = ({
   setSceduleMeeting,
@@ -62,14 +48,11 @@ const Agenda = ({
   isEditMeeting,
   editorRole,
   setEdiorRole,
-  dataroomMapFolderId,
   setMeetingMaterial,
   setAgenda,
   setParticipants,
   setPublishState,
   setAdvanceMeetingModalID,
-  setViewFlag,
-  setEditFlag,
   setCalendarViewModal,
   setDataroomMapFolderId,
 }) => {
@@ -89,14 +72,12 @@ const Agenda = ({
 
   const [allUsersRC, setAllUsersRC] = useState([]);
 
-  const { NewMeetingreducer, MeetingAgendaReducer, DataRoomReducer } =
-    useSelector((state) => state);
-
-  let meetingTitle = localStorage.getItem("MeetingTitle");
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
 
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
 
-  const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
   const [fileForSend, setFileForSend] = useState([]);
@@ -232,7 +213,6 @@ const Agenda = ({
       Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData)
         .length === 0
     ) {
-      console.log("updated Rows ROWS ROWS");
       setRows({
         ...rows,
         iD: getRandomUniqueNumber().toString() + "A",
@@ -262,7 +242,6 @@ const Agenda = ({
   //Function For Adding Main Agendas
   const addRow = () => {
     const updatedRows = [...rows];
-    const nextID = updatedRows.length.toString();
 
     const newMainAgenda = {
       iD: getRandomUniqueNumber().toString() + "A",
@@ -287,7 +266,6 @@ const Agenda = ({
       canView: false,
     };
     updatedRows.push(newMainAgenda);
-    console.log("updated Rows", updatedRows);
     setRows(updatedRows);
   };
 
@@ -295,24 +273,6 @@ const Agenda = ({
 
   const importPreviousAgenda = () => {
     dispatch(showImportPreviousAgendaModal(true));
-  };
-
-  const handleNextAgenda = () => {
-    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
-      dispatch(nextTabAgenda(true));
-    } else {
-      setMeetingMaterial(true);
-      setAgenda(false);
-    }
-  };
-
-  const handlePerviousAgenda = () => {
-    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
-      dispatch(previousTabAgenda(true));
-    } else {
-      setAgenda(false);
-      setParticipants(true);
-    }
   };
 
   const handleCancelClick = async () => {
@@ -382,8 +342,6 @@ const Agenda = ({
     }
   }
 
-  // const [newFile, setNewFile] = useState([]);
-
   const updateSave = async (flag) => {
     // Upload documents
 
@@ -392,7 +350,6 @@ const Agenda = ({
 
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
-        console.log("newDatanewData", newData);
         await dispatch(
           UploadDocumentsAgendaApi(
             navigate,
@@ -404,7 +361,6 @@ const Agenda = ({
           )
         );
       });
-      console.log("uploadPromisesuploadPromises", uploadPromises);
       // Wait for all promises to resolve
       await Promise.all(uploadPromises); //till here the files get upload
       await dispatch(
@@ -417,47 +373,12 @@ const Agenda = ({
         )
       );
     }
-    // await Promise.all(
-    //   fileForSend.map(async (newData) => {
-    //     console.log("newDatanewData", newData);
-    //     try {
-    //       const result = await dispatch(
-    //         UploadDocumentsAgendaApi(
-    //           navigate,
-    //           t,
-    //           newData,
-    //           folderDataRoomMeeting,
-    //           newFolder
-    //         )
-    //       );
-    //       if (result && result.success) {
-    //         newfile = [...newfile, result.dummyData];
-    //         // setNewFile((prevState) => [...prevState, result.dummyData]);
-    //         console.log("newfilenewfile", newfile);
-    //         console.log("newfoldernewfolder", newFolder);
-    //       }
-    //       console.log("resultresult", result);
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    //   })
-    // );
 
-    // Convert date fields to UTC
     const convertedRows = convertDateFieldsToUTC(rows);
-    console.log("newfile", newfile);
-
-    // // Save files
-    // await dispatch(
-    //   SaveFilesAgendaApi(navigate, t, newfile, folderDataRoomMeeting, newFolder)
-    // );
 
     // Process data and update properties
     let cleanedData = removeProperties(convertedRows);
-    console.log(
-      { newFolder, cleanedData },
-      "newFoldernewFoldernewFoldernewFolder"
-    );
+
     let mappingObject = {};
     newFolder.forEach((folder) => {
       mappingObject[folder.displayAttachmentName] = folder.pK_FileID.toString();
@@ -481,10 +402,7 @@ const Agenda = ({
         })),
       })),
     }));
-    console.log(
-      { newFolder, cleanedData, mappingObject, updatedData },
-      "newFoldernewFoldernewFoldernewFolder"
-    );
+
     // Clear fileForSend array
     setFileForSend([]);
 
@@ -583,9 +501,6 @@ const Agenda = ({
       }
 
       if (row.selectedRadio === 2 && row.urlFieldMain === "") {
-        console.log(
-          `Parent object urlMain should not be empty at index ${rowIndex}`
-        );
         setTimeout(
           setOpen({
             ...open,
@@ -602,9 +517,6 @@ const Agenda = ({
         row.selectedRadio === 3 &&
         (row.userID === 0 || row.mainNote === "")
       ) {
-        // console.log(
-        //   `Parent object userID should not be 0 and mainNote should not be empty at index ${rowIndex}`
-        // );
         setTimeout(
           setOpen({
             ...open,
@@ -735,8 +647,6 @@ const Agenda = ({
     }
   };
 
-  console.log("fileForSendAgendafileForSendAgenda", fileForSend);
-
   useEffect(() => {
     if (
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null ||
@@ -752,7 +662,6 @@ const Agenda = ({
         updatedRows[0].presenterID = allSavedPresenters[0]?.value;
         updatedRows[0].presenterName = allSavedPresenters[0]?.label;
         setRows(updatedRows);
-        console.log("updated Rows ROWS ROWS");
       }
     }
   }, [allSavedPresenters, allUsersRC]);
@@ -923,7 +832,6 @@ const Agenda = ({
       let newData =
         MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData.agendaList;
 
-      console.log("updated Rows ROWS ROWS");
       setRows((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
           const {
@@ -1032,8 +940,6 @@ const Agenda = ({
           isAgendaEmpty =
             agendaItem.title === "" &&
             agendaItem.description === "" &&
-            // agendaItem.presenterID === 0 &&
-            // agendaItem.presenterName === "" &&
             agendaItem.startDate === "" &&
             agendaItem.endDate === "" &&
             agendaItem.urlFieldMain === "" &&
@@ -1055,8 +961,6 @@ const Agenda = ({
                 return (
                   subAgendaItem.subTitle === "" &&
                   subAgendaItem.description === "" &&
-                  // subAgendaItem.presenterID === 0 &&
-                  // subAgendaItem.presenterName === "" &&
                   subAgendaItem.startDate === "" &&
                   subAgendaItem.endDate === "" &&
                   subAgendaItem.subAgendarequestContributorUrlName === "" &&
@@ -1077,11 +981,7 @@ const Agenda = ({
           } else {
             areSubAgendasEmpty = true;
           }
-          console.log(
-            "result agenda empty non empty",
-            isAgendaEmpty,
-            areSubAgendasEmpty
-          );
+
           // Include only non-empty items
           return !(isAgendaEmpty && areSubAgendasEmpty);
         });
@@ -1091,8 +991,6 @@ const Agenda = ({
           isAgendaEmptyCR =
             agendaItem.title === "" &&
             agendaItem.description === "" &&
-            // agendaItem.presenterID === 0 &&
-            // agendaItem.presenterName === "" &&
             agendaItem.startDate === "" &&
             agendaItem.endDate === "" &&
             agendaItem.urlFieldMain === "" &&
@@ -1113,8 +1011,6 @@ const Agenda = ({
                 return (
                   subAgendaItem.subTitle === "" &&
                   subAgendaItem.description === "" &&
-                  // subAgendaItem.presenterID === 0 &&
-                  // subAgendaItem.presenterName === "" &&
                   subAgendaItem.startDate === "" &&
                   subAgendaItem.endDate === "" &&
                   subAgendaItem.subAgendarequestContributorUrlName === "" &&
@@ -1135,11 +1031,6 @@ const Agenda = ({
           } else {
             areSubAgendasEmptyCR = true;
           }
-          console.log(
-            "result agenda empty non empty",
-            isAgendaEmptyCR,
-            areSubAgendasEmptyCR
-          );
 
           // Include only non-empty items
           return !(isAgendaEmptyCR && areSubAgendasEmptyCR);
@@ -1255,8 +1146,6 @@ const Agenda = ({
           isAgendaEmpty =
             agendaItem.title === "" &&
             agendaItem.description === "" &&
-            // agendaItem.presenterID === 0 &&
-            // agendaItem.presenterName === "" &&
             agendaItem.startDate === "" &&
             agendaItem.endDate === "" &&
             agendaItem.urlFieldMain === "" &&
@@ -1278,8 +1167,6 @@ const Agenda = ({
                 return (
                   subAgendaItem.subTitle === "" &&
                   subAgendaItem.description === "" &&
-                  // subAgendaItem.presenterID === 0 &&
-                  // subAgendaItem.presenterName === "" &&
                   subAgendaItem.startDate === "" &&
                   subAgendaItem.endDate === "" &&
                   subAgendaItem.subAgendarequestContributorUrlName === "" &&
@@ -1300,11 +1187,7 @@ const Agenda = ({
           } else {
             areSubAgendasEmpty = true;
           }
-          console.log(
-            "result agenda empty non empty",
-            isAgendaEmpty,
-            areSubAgendasEmpty
-          );
+
           // Include only non-empty items
           return !(isAgendaEmpty && areSubAgendasEmpty);
         });
@@ -1314,8 +1197,6 @@ const Agenda = ({
           isAgendaEmptyCR =
             agendaItem.title === "" &&
             agendaItem.description === "" &&
-            // agendaItem.presenterID === 0 &&
-            // agendaItem.presenterName === "" &&
             agendaItem.startDate === "" &&
             agendaItem.endDate === "" &&
             agendaItem.urlFieldMain === "" &&
@@ -1336,8 +1217,6 @@ const Agenda = ({
                 return (
                   subAgendaItem.subTitle === "" &&
                   subAgendaItem.description === "" &&
-                  // subAgendaItem.presenterID === 0 &&
-                  // subAgendaItem.presenterName === "" &&
                   subAgendaItem.startDate === "" &&
                   subAgendaItem.endDate === "" &&
                   subAgendaItem.subAgendarequestContributorUrlName === "" &&
@@ -1358,11 +1237,6 @@ const Agenda = ({
           } else {
             areSubAgendasEmptyCR = true;
           }
-          console.log(
-            "result agenda empty non empty",
-            isAgendaEmptyCR,
-            areSubAgendasEmptyCR
-          );
 
           // Include only non-empty items
           return !(isAgendaEmptyCR && areSubAgendasEmptyCR);
@@ -1468,10 +1342,6 @@ const Agenda = ({
     }
   }, [rows.length]);
 
-  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
-
-  console.log("Agenda Data", rows);
-
   return (
     <>
       {savedViewAgenda ? (
@@ -1482,19 +1352,6 @@ const Agenda = ({
         <VotingPage />
       ) : (
         <>
-          {/* <Row className="m-0">
-            <Col className="p-0">
-              {editorRole.status === "9" ||
-              editorRole.status === 9 ||
-              editorRole.role === "Agenda Contributor" ? null : (
-                <Button
-                  text={t("Import-previous-agenda")}
-                  className={styles["Import_Agenda_Buttons"]}
-                  onClick={importPreviousAgenda}
-                />
-              )}
-            </Col>
-          </Row> */}
           <section>
             {editorRole.role === "Agenda Contributor" &&
             rows[0].title === "" ? null : (
@@ -1515,12 +1372,7 @@ const Agenda = ({
                           : styles["Scroller_Agenda"]
                       }
                     >
-                      <Droppable
-                        //  key={`main-agenda-${rows.id}`}
-                        //  droppableId={`main-agenda-${rows.id}`}
-                        droppableId="board"
-                        type="PARENT"
-                      >
+                      <Droppable droppableId="board" type="PARENT">
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
@@ -1531,7 +1383,6 @@ const Agenda = ({
                                   return (
                                     <>
                                       <div
-                                        // className={styles["agenda-border-class"]}
                                         className={
                                           data.canView === false &&
                                           editorRole.role ===
@@ -1572,22 +1423,6 @@ const Agenda = ({
                                           setSelectedID={setSelectedID}
                                         />
                                       </div>
-                                      {/* Line Seperator */}
-                                      {/* <Row className="mt-3">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <img
-                                          draggable={false}
-                                          src={line}
-                                          className={
-                                            data.canView === false &&
-                                            editorRole.role ===
-                                              "Agenda Contributor"
-                                              ? "d-none"
-                                              : styles["LineStyles"]
-                                          }
-                                        />
-                                      </Col>
-                                    </Row> */}
                                     </>
                                   );
                                 })
@@ -1697,21 +1532,6 @@ const Agenda = ({
                   className={styles["Agenda_Buttons"]}
                   onClick={handleCancelClick}
                 />
-                {/* 
-                <Button
-                  text={t("Save-and-publish")}
-                  className={styles["Agenda_Buttons"]}
-                /> */}
-                {/* <Button
-                  text={t("Previous")}
-                  className={styles["Save_Agenda_btn"]}
-                  onClick={handlePerviousAgenda}
-                /> */}
-                {/* <Button
-                  text={t("Next")}
-                  className={styles["Save_Agenda_btn"]}
-                  onClick={handleNextAgenda}
-                /> */}
 
                 {editorRole.status === "9" || editorRole.status === 9 ? null : (
                   <Button
@@ -1745,12 +1565,6 @@ const Agenda = ({
                     onClick={() => saveAgendaData(2)}
                   />
                 )}
-
-                {/* <Button
-                  text={t("Publish")}
-                  className={styles["Save_Agenda_btn"]}
-                  onClick={handlePublishClick}
-                /> */}
               </Col>
             </Row>
           </section>

@@ -12,19 +12,12 @@ import {
   showAdvancePermissionModal,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
-import PlusIcon from "../../../../../../assets/images/SVGPLUS.svg";
-import PDF from "../../../../../../assets/images/pdf_icon.svg";
-import Minus from "../../../../../../assets/images/SVGMINUS.svg";
-import profile from "../../../../../../assets/images/newprofile.png";
 import Key from "../../../../../../assets/images/KEY.svg";
-import { style } from "@mui/system";
 const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { SubMenu } = Menu;
-  const { Sider } = Layout;
+
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
@@ -68,17 +61,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
   }, []);
 
   const OpenConfirmation = () => {
-    // dispatch(showAdvancePermissionModal(false));
     dispatch(showAdvancePermissionConfirmation(true));
-  };
-
-  const handleExpandIntroduction = (index) => {
-    setSidebarindex(index);
-    setExpandmenuIntroduction(!expandmenuIntroduction);
-  };
-
-  const subAgendaExpandFunction = () => {
-    setsubAgendaExpand(!subAgendaExpand);
   };
 
   const handleSwitchChangeView = (checked, data, index) => {
@@ -154,7 +137,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
 
   const handleSaveAdvancedPermissionModal = () => {
     let newarray = [];
-    members.map((data, index) => {
+    members.map((data) => {
       newarray.push({
         UserID: data.userID,
         CanView: data.canView,
@@ -165,7 +148,6 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
       AgendaID: selectedID,
       UserAttachmentPermissions: newarray,
     };
-    console.log(Data, "AgendaIDAgendaID");
     dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
   };
 
@@ -178,7 +160,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
       ) {
         let agendaListArry = [];
         MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
-          (agenda, index) => {
+          (agenda) => {
             agendaListArry.push(agenda);
           }
         );
@@ -198,8 +180,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
           let getUserrightsdetails =
             NewMeetingreducer.agendaRights.agendaUserRights;
 
-          getUserrightsdetails.map((agendaRightsData, agendaRightsIndex) => {
-            console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
+          getUserrightsdetails.map((agendaRightsData) => {
             agendaUserRightsarray.push({
               userName: agendaRightsData.userName,
               canView: agendaRightsData.canView,
@@ -224,7 +205,11 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
           setShow={dispatch(showAdvancePermissionModal)}
           modalFooterClassName={"d-block"}
           modalParentClass={"AgendaPermissionModal"}
-          className={NewMeetingreducer.advancePermissionConfirmation ? styles["AgendaPermissionModalHide"] : styles["AgendaPermissionModal"] }
+          className={
+            NewMeetingreducer.advancePermissionConfirmation
+              ? styles["AgendaPermissionModalHide"]
+              : styles["AgendaPermissionModal"]
+          }
           modalBodyClassName={styles["modal_body"]}
           modalHeaderClassName={styles["modal_header"]}
           onHide={() => {
@@ -242,6 +227,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                 >
                   <img
                     src={Key}
+                    alt=""
                     height="23.51px"
                     width="23.49px"
                     className="cursor-pointer"
@@ -301,7 +287,6 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                       <Row className="mt-2">
                         {sidebarOptions.length > 0
                           ? sidebarOptions.map((data, index) => {
-                              console.log(data, "sidebarOptionssidebarOptions");
                               const isLastItem =
                                 index === sidebarOptions.length - 1;
 
@@ -355,10 +340,6 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                                       <Row className="mt-2">
                                         {data?.subAgenda?.map(
                                           (SubAgendaData, SubAgendaIndex) => {
-                                            console.log(
-                                              SubAgendaData,
-                                              "SubAgendaDataSubAgendaData"
-                                            );
                                             return (
                                               <>
                                                 <Col
@@ -428,110 +409,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                                                           </span>
                                                         </span>
                                                       </span>
-                                                      {/* <img
-                                                        src={
-                                                          subAgendaExpand
-                                                            ? Minus
-                                                            : PlusIcon
-                                                        }
-                                                        height="14px"
-                                                        width="14px"
-                                                        className={
-                                                          styles[
-                                                            "Plus_icon-Class"
-                                                          ]
-                                                        }
-                                                        onClick={
-                                                          subAgendaExpandFunction
-                                                        }
-                                                      /> */}
                                                     </section>
-                                                    {/* {subAgendaExpand ? (
-                                                      <>
-                                                        <Row className="mt-2">
-                                                          <section
-                                                            className={
-                                                              subAgendaExpand
-                                                                ? styles[
-                                                                    "SubAgendaBackground"
-                                                                  ]
-                                                                : styles[
-                                                                    "Hidden"
-                                                                  ]
-                                                            }
-                                                          >
-                                                            <Col
-                                                              lg={7}
-                                                              md={7}
-                                                              sm={7}
-                                                            >
-                                                              <Row>
-                                                                <Col
-                                                                  lg={12}
-                                                                  md={12}
-                                                                  sm={12}
-                                                                  className="d-flex gap-1"
-                                                                >
-                                                                  <img
-                                                                    src={
-                                                                      profile
-                                                                    }
-                                                                    height="19px"
-                                                                    width="19px"
-                                                                    className={
-                                                                      styles[
-                                                                        "Profile"
-                                                                      ]
-                                                                    }
-                                                                  />
-                                                                  <span
-                                                                    className={
-                                                                      styles[
-                                                                        "ParticipantName"
-                                                                      ]
-                                                                    }
-                                                                  >
-                                                                    Salman Memon
-                                                                  </span>
-                                                                </Col>
-                                                              </Row>
-                                                            </Col>
-                                                            <Col
-                                                              lg={5}
-                                                              md={5}
-                                                              sm={5}
-                                                              className="d-flex align-items-center gap-1"
-                                                            >
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "Times_styles"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                12:15 PM
-                                                              </span>
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "minus_sign"
-                                                                  ]
-                                                                }
-                                                              ></span>
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "Times_styles"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                12:15 PM
-                                                              </span>
-                                                            </Col>
-                                                          </section>
-                                                        </Row>
-                                                      </>
-                                                    ) : null} */}
                                                   </section>
                                                 </Col>
                                               </>

@@ -1,13 +1,6 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
-import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../DataRoom/SearchFunctionality/option";
 import styles from "./Agenda.module.css";
 import { AttachmentViewer } from "../../../../../components/elements";
 
@@ -16,10 +9,7 @@ const SubDocumnets = ({
   parentId,
   setRows,
   rows,
-  index,
-  fileForSend,
   setFileForSend,
-  subIndex,
   editorRole,
 }) => {
   const handlesubAgendaCrossFiles = (subAgendaFilesIndex, subAgendaFiles) => {
@@ -53,15 +43,6 @@ const SubDocumnets = ({
       )
     );
   };
-
-  // const handlesubAgendaCrossFiles = (subAgendaFilesIndex) => {
-  //   let optionscross = [...rows];
-  //   optionscross[index].subAgenda[subIndex].subfiles.splice(
-  //     subAgendaFilesIndex,
-  //     1
-  //   );
-  //   setRows(optionscross);
-  // };
 
   let currentUserID = Number(localStorage.getItem("userID"));
 

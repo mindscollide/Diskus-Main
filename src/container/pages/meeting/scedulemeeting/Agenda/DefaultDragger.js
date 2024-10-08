@@ -17,7 +17,6 @@ const DefaultDragger = ({
   editorRole,
 }) => {
   const { t } = useTranslation();
-  console.log("ediorRoleediorRoleediorRole", editorRole);
 
   let currentUserID = Number(localStorage.getItem("userID"));
 
@@ -88,7 +87,6 @@ const DefaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
-            // setFileForSend([...fileForSend, fileData.originFileObj]);
             setFileForSend((prevFiles) => [
               ...prevFiles,
               fileData.originFileObj,
@@ -126,7 +124,6 @@ const DefaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
-            // setFileForSend([...fileForSend, fileData.originFileObj]);
             setFileForSend((prevFiles) => [
               ...prevFiles,
               fileData.originFileObj,
@@ -141,7 +138,6 @@ const DefaultDragger = ({
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   return (
     <>
       <Row key={index + 5} className="mt-4 mb-2">

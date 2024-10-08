@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./Agenda.module.css";
-import { useNavigate } from "react-router-dom";
-import { getAllAgendaContributorApi } from "../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
@@ -32,29 +30,7 @@ const RequestContributor = ({
       updatedRows[index].mainNote = value;
     }
     setRows(updatedRows);
-    console.log(updatedRows, "MainNoteReqContributor");
   };
-  // Function to handle changes in main agenda Main Request Contributor Url text field
-  // const handleMainAgendaAdditionalFieldChangeRequestContributorURL = (
-  //   index,
-  //   e
-  // ) => {
-  //   let name = e.target.name;
-  //   let value = e.target.value;
-  //   const updatedRows = [...rows];
-  //   if (name === "MainRequestContributorName") {
-  //     updatedRows[index].requestContributorURl = value;
-  //   }
-  //   setRows(updatedRows);
-  //   console.log(updatedRows, "MainRequestContributorName");
-  // };
-
-  // useEffect(() => {
-  //   let getAllData = {
-  //     MeetingID: currentMeetingID !== null ? currentMeetingID : 0,
-  //   };
-  //   dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
-  // }, []);
 
   useEffect(() => {
     if (
@@ -75,7 +51,6 @@ const RequestContributor = ({
       value: value.value,
       label: value.label,
     };
-    // updatedAgendaItems[index].requestContributorURl = SelectValue.value;
     updatedAgendaItems[index].userID = SelectValue.value;
     updatedAgendaItems[index].requestContributorURlName = SelectValue.label;
     setRows(updatedAgendaItems);
@@ -114,27 +89,6 @@ const RequestContributor = ({
     }
   }, [agendaContributors]);
 
-  // const allAgendaContributors = agendaContributors.map((contributor) => ({
-  //   value: contributor.userID,
-  //   label: (
-  //     <>
-  //       <Row>
-  //         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-  //           <img
-  //             src={`data:image/jpeg;base64,${contributor.userProfilePicture.displayProfilePictureName}`}
-  //             width="17px"
-  //             height="17px"
-  //             className={styles["Image_class_Agenda"]}
-  //           />
-  //           <span className={styles["Name_Class"]}>{contributor.userName}</span>
-  //         </Col>
-  //       </Row>
-  //     </>
-  //   ),
-  // }));
-
-  console.log("New Meeting Reducer", NewMeetingreducer);
-
   return (
     <>
       <Row key={index + 5} className="mt-2">
@@ -155,19 +109,6 @@ const RequestContributor = ({
             }
             isSearchable={false}
           />
-          {/* <TextField
-            applyClass={"AgendaTextField"}
-            labelclass={"d-none"}
-            placeholder={t("Enter-email-address-here")}
-            name={"MainRequestContributorName"}
-            value={data.requestContributorURl}
-            change={(e) => {
-              handleMainAgendaAdditionalFieldChangeRequestContributorURL(
-                index,
-                e
-              );
-            }}
-          /> */}
         </Col>
       </Row>
       <Row className="mb-2">

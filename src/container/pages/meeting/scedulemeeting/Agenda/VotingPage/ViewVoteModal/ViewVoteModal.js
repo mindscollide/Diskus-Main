@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./ViewVoteModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   Loader,
@@ -12,17 +11,12 @@ import {
 } from "../../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { Chart } from "react-google-charts";
-import profile from "../../../../../../../assets/images/newprofile.png";
-import down from "../../../../../../../assets/images/arrdown.png";
 import { showviewVotesAgenda } from "../../../../../../../store/actions/NewMeetingActions";
-import { ViewAgendaVotingResults } from "../../../../../../../store/actions/MeetingAgenda_action";
 import { Progress } from "antd";
 const ViewVoteModal = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
@@ -81,7 +75,7 @@ const ViewVoteModal = () => {
       dataIndex: "answer",
       key: "answer",
       width: "55px",
-      render: (text, record) => (
+      render: (text) => (
         <Row>
           <Col lg={12} md={12} sm={12}>
             <span className={styles["YesPercentage"]}>{text}</span>
@@ -120,6 +114,7 @@ const ViewVoteModal = () => {
                   src={`data:image/jpeg;base64,${participant.userProfilePicture.displayProfilePictureName}`}
                   height="22px"
                   width="22px"
+                  alt=""
                   className={styles["Image"]}
                 />
               ))}
@@ -173,11 +168,6 @@ const ViewVoteModal = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   let Data = { AgendaVotingID: 1, MeetingID: 1785 };
-  //   dispatch(ViewAgendaVotingResults(Data, navigate, t));
-  // }, []);
-
   useEffect(() => {
     if (
       MeetingAgendaReducer.ViewAgendaVotingResultData !== null &&
@@ -214,10 +204,6 @@ const ViewVoteModal = () => {
       setLoading(false);
     }
   }, [votingResults]);
-
-  console.log("VotingResults", votingResults, pieChartData, barChartData);
-
-  console.log("ViewVotingDetail Reducer", MeetingAgendaReducer);
 
   return (
     <section>

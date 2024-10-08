@@ -51,7 +51,7 @@ const AgendaContributorsModal = ({
         let temp = [];
         if (Object.keys(newOrganizersData).length > 0) {
           if (Object.keys(newOrganizersData.groups).length > 0) {
-            newOrganizersData.groups.map((a, index) => {
+            newOrganizersData.groups.map((a) => {
               let newData = {
                 value: a.groupID,
                 name: a.groupName,
@@ -85,7 +85,7 @@ const AgendaContributorsModal = ({
             });
           }
           if (Object.keys(newOrganizersData.committees).length > 0) {
-            newOrganizersData.committees.map((a, index) => {
+            newOrganizersData.committees.map((a) => {
               let newData = {
                 value: a.committeeID,
                 name: a.committeeName,
@@ -118,7 +118,7 @@ const AgendaContributorsModal = ({
             });
           }
           if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-            newOrganizersData.organizationUsers.map((a, index) => {
+            newOrganizersData.organizationUsers.map((a) => {
               let newData = {
                 value: a.userID,
                 name: a.userName,
@@ -133,7 +133,6 @@ const AgendaContributorsModal = ({
                       >
                         <img
                           src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                          // src={}
                           alt=""
                           className={styles["UserProfilepic"]}
                           width="18px"
@@ -188,17 +187,17 @@ const AgendaContributorsModal = ({
 
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData, index) => {
+        selectedsearch.map((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = newOrganizersData.groups.find(
-              (data, index) => data.groupID === seledtedData.value
+              (data) => data.groupID === seledtedData.value
             );
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser, index) => {
+                groupUsers.map((gUser) => {
                   let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === gUser.userID
+                    (data) => data.UserID === gUser.userID
                   );
                   if (check2 !== undefined) {
                   } else {
@@ -222,14 +221,14 @@ const AgendaContributorsModal = ({
             }
           } else if (seledtedData.type === 2) {
             let check1 = newOrganizersData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value
+              (data) => data.committeeID === seledtedData.value
             );
             if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser, index) => {
+                committeesUsers.map((cUser) => {
                   let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === cUser.userID
+                    (data) => data.UserID === cUser.userID
                   );
                   if (check2 !== undefined) {
                   } else {
@@ -253,12 +252,12 @@ const AgendaContributorsModal = ({
             }
           } else if (seledtedData.type === 3) {
             let check1 = membersOrganizers.find(
-              (data, index) => data.UserID === seledtedData.value
+              (data) => data.UserID === seledtedData.value
             );
             if (check1 !== undefined) {
             } else {
               let check2 = newOrganizersData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value
               );
               if (check2 !== undefined) {
                 let newUser = {
@@ -388,7 +387,7 @@ const AgendaContributorsModal = ({
 
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>
                   {membersOrganizers.length > 0
-                    ? membersOrganizers.map((data, index) => {
+                    ? membersOrganizers.map((data) => {
                         return (
                           <>
                             <Col lg={6} md={6} sm={6} className="mt-2">
