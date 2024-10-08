@@ -1,23 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { TourProvider, useTour } from "@reactour/tour";
-// import {} from '@reactour/tour'
-import { Row, Col } from "react-bootstrap";
-import Sidebar from "./Sidebar/Sidebar";
-import { Arrow90degDown } from "react-bootstrap-icons";
-import Header from "./Header/Header";
-import { TodoList } from "./Todolist/Todolist";
+import React, { useState } from "react";
+import { TourProvider } from "@reactour/tour";
 import OnBoardRoute from "./OnBoardRoutes";
-import { Meeting } from "./Meeting/Meeting";
-// import Steps from "../../../steps";
-import Welcome from "./welcomescreen/WelcomeScreen";
-import { useNavigate } from "react-router-dom";
 import ScheduleUpArrow from "../../../../src/assets/images/newElements/Schedule_Up_arrow.png";
 import ScheduleLeftArrow from "../../../../src/assets/images/newElements/Schedule-Left-Arrow.png";
 import ScheduleRightArrow from "../../../../src/assets/images/newElements/Schedule-Arrow-Right.png";
-import { ResultMessage, Button } from "../../../components/elements";
-
-import { ArrowLeft, ArrowRight, ArrowUp } from "react-bootstrap-icons";
-
 import { Popover } from "@reactour/popover";
 import "./../../../steps.css";
 import WelcomeScreen from "./welcomescreen/WelcomeScreen";
@@ -27,13 +13,7 @@ import { useTranslation } from "react-i18next";
 
 const OnBoard = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [showWelcome, setShowWelcome] = useState(false);
   const [show, setShow] = useState(false);
-  const { currentStep, setCurrentStep } = useTour();
-  console.log("show in onboard", show);
-
-  const circle = false;
 
   const onBoardSteps = [
     {
@@ -55,6 +35,7 @@ const OnBoard = () => {
             <div className="d-flex align-items-center ml-5">
               <img
                 draggable="false"
+                alt=""
                 width={70}
                 src={ScheduleLeftArrow}
                 className="meeting-icon-arrow"
@@ -73,6 +54,7 @@ const OnBoard = () => {
         <div className="dialog1-box">
           <img
             draggable="false"
+            alt=""
             src={ScheduleUpArrow}
             width={55}
             className="meeting-btn-arrow"
@@ -82,7 +64,6 @@ const OnBoard = () => {
           </h4>
         </div>
       ),
-      // observe: "[data-tut='show-modal']"
     },
     {
       selector: "[data-tut='meeting-modal']",
@@ -93,6 +74,7 @@ const OnBoard = () => {
           </h3>
           <img
             draggable="false"
+            alt=""
             src={ScheduleRightArrow}
             width={70}
             className="meeting-modal-arrow"
@@ -134,7 +116,6 @@ const OnBoard = () => {
           if (currentStep === steps.length < 0) {
             setIsOpen(false);
           }
-          // setCurrentStep((s) => (s === steps.length - 1 ? 0 : s + 1))
         }}
         scrollSmooth={true}
         disableKeyboardNavigation={true}

@@ -10,8 +10,7 @@ import ModalMeeting from "../modalmeeting/ModalMeeting";
 import { useTranslation } from "react-i18next";
 import Header2 from "../../../../components/layout/header2/Header2";
 
-const Header = ({ heading, user, currentUserImage, searchVisible }) => {
-  //For Localization
+const Header = ({ searchVisible }) => {
   const { t } = useTranslation();
   const location = useLocation();
   useEffect(() => {
@@ -55,7 +54,6 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
             sm={5}
             className="d-flex justify-content-start align-items-center mt-3"
           >
-            {/* <div className="heading  color-primary fw-600">{heading}</div> */}
             {isMeeting && (
               <ModalMeeting ModalTitle={"+ " + t("Schedule-a-meeting")} />
             )}

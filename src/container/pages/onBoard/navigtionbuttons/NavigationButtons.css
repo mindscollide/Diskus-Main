@@ -3,7 +3,6 @@
   position: fixed;
   height: 85px;
   bottom: 10px;
-  /* right: 32%; */
   z-index: 9999999999999;
   display: flex;
   justify-content: center;
@@ -13,7 +12,6 @@
 
 .tour-skip_demo {
   text-decoration: underline !important;
-  /* width: 100% !important; */
   display: flex;
   justify-content: center;
   align-items: center;

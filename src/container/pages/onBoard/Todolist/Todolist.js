@@ -1,10 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import {
-  Button,
-  CustomAccordion,
-  Loader,
-} from "../../../../components/elements";
+import { CustomAccordion } from "../../../../components/elements";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import UserImage from "../../../../assets/images/user.png";
 import { Paperclip } from "react-bootstrap-icons";
@@ -12,7 +8,6 @@ import Checkbox from "../../../../components/elements/check_box/Checkbox";
 import "antd/dist/antd.css";
 
 export const TodoList = () => {
-  const [show, setShow] = useState(false);
   function CustomToggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
       console.log("totally custom!")
