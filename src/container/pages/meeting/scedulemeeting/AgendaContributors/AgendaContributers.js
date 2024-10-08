@@ -62,6 +62,7 @@ const AgendaContributers = ({
   const navigate = useNavigate();
   const [specificUser, setSpecifiUser] = useState(0);
   const { NewMeetingreducer } = useSelector((state) => state);
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
   const [isEdit, setIsEdit] = useState(false);
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [isPublishedState, setIsPublishedState] = useState(false);
@@ -117,7 +118,9 @@ const AgendaContributers = ({
   };
 
   const handleRemoveContributor = (record) => {
-    let removeData = rowsData.filter((data) => data.userID !== record.userID);
+    let removeData = rowsData.filter(
+      (data, index) => data.userID !== record.userID
+    );
     setRowsData(removeData);
     if (rowsData.length === 1) {
       setIsEditClicked(true);
@@ -149,7 +152,7 @@ const AgendaContributers = ({
         align: "left",
         ellipsis: true,
 
-        render: (record) => {
+        render: (text, record) => {
           if (
             (Number(editorRole.status) === 9 ||
               Number(editorRole.status) === 8 ||
@@ -193,7 +196,7 @@ const AgendaContributers = ({
         ellipsis: true,
 
         className: "notification-class-table",
-        render: (record) => {
+        render: (text, record) => {
           if (
             ((Number(editorRole.status) === 9 ||
               Number(editorRole.status) === 8 ||
@@ -333,7 +336,7 @@ const AgendaContributers = ({
         key: "Close",
         ellipsis: true,
 
-        render: (record) => {
+        render: (text, record) => {
           return (
             <>
               <Row>
@@ -384,7 +387,7 @@ const AgendaContributers = ({
         align: "left",
         ellipsis: true,
 
-        render: (record) => {
+        render: (text, record) => {
           if (
             (Number(editorRole.status) === 9 ||
               Number(editorRole.status) === 8 ||
@@ -428,7 +431,7 @@ const AgendaContributers = ({
         ellipsis: true,
 
         className: "notification-class-table",
-        render: (record) => {
+        render: (text, record) => {
           if (
             ((Number(editorRole.status) === 9 ||
               Number(editorRole.status) === 8 ||
@@ -517,7 +520,7 @@ const AgendaContributers = ({
         dataIndex: "Close",
         key: "Close",
         width: "80px",
-        render: (record) => {
+        render: (text, record) => {
           return (
             <>
               <Row>

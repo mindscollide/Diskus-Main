@@ -140,7 +140,7 @@ const Participants = ({
       ) {
         let Newdata = [];
         NewMeetingreducer.getAllPartiicpantsRoles.participantRoles.map(
-          (data) => {
+          (data, index) => {
             Newdata.push({
               value: data.participantRoleID,
               label: data.participantRole,
@@ -176,6 +176,7 @@ const Participants = ({
           });
         });
       } else {
+        // IsParticipantsAddFlow;
       }
       setIsPublishedState(NewMeetingreducer.getAllSavedparticipantsIsPublished);
       setrspvRows(getAllData);
@@ -211,13 +212,13 @@ const Participants = ({
         });
       } else {
         let removingfromrow = rspvRows.filter(
-          (data) => data.userID !== record.userID
+          (data, index) => data.userID !== record.userID
         );
         setrspvRows(removingfromrow);
       }
     } else {
       let removingfromrow = rspvRows.filter(
-        (data) => data.userID !== record.userID
+        (data, index) => data.userID !== record.userID
       );
       setrspvRows(removingfromrow);
     }
@@ -306,7 +307,7 @@ const Participants = ({
         align: "left",
         ellipsis: true,
 
-        render: (record) => {
+        render: (text, record) => {
           if (
             ((Number(editorRole.status) === 9 ||
               Number(editorRole.status) === 8 ||
@@ -532,7 +533,7 @@ const Participants = ({
         align: "left",
         ellipsis: true,
 
-        render: (record) => {
+        render: (text, record) => {
           if (
             ((Number(editorRole.status) === 9 ||
               Number(editorRole.status) === 8 ||
@@ -630,6 +631,7 @@ const Participants = ({
   };
 
   const nextTabOrganizer = () => {
+    // dispatch(ShowNextConfirmationModal(true));
     setAgenda(true);
     setParticipants(false);
     dispatch(meetingDetailsGlobalFlag(false));
@@ -693,7 +695,7 @@ const Participants = ({
 
   const handleSaveparticpants = () => {
     let findshouldnotempty = rspvRows.every(
-      (newData) => Object.keys(newData.participantRole).length > 0
+      (newData, index) => Object.keys(newData.participantRole).length > 0
     );
     let newarry = [];
     let copyData = [...rspvRows];
@@ -733,7 +735,7 @@ const Participants = ({
   useEffect(() => {
     if (rspvRows.length > 0) {
       let removedublicates = rspvRows.some(
-        (data) => data.isComingApi === false
+        (data, index) => data.isComingApi === false
       );
       setIsEditable(removedublicates);
     } else {
