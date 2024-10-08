@@ -1542,13 +1542,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 </>
               ) : isAttachments ? (
                 <>
-                  <Row className='data-room-file-upload-section mt-4'>
+                  <Row className="mt-2">
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
                           return (
                             <Col sm={4} lg={4} md={4}>
                               <AttachmentViewer
                                 id={1}
+                                isQuickMeeting={true}
                                 // fk_UID={}
                                 handleClickDownload={() =>
                                   downloadClick(data)
