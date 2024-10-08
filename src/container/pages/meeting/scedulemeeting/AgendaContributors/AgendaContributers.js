@@ -794,10 +794,6 @@ const AgendaContributers = ({
         ...NewMeetingreducer.getAllAgendaContributors,
       ];
 
-      setIsPublishedState(
-        NewMeetingreducer.getAllAgendaContributorsIsPublished
-      );
-
       // // Initial values
       // const initialValues = {};
       // agendaContributorData.forEach((organizer) => {
@@ -825,6 +821,7 @@ const AgendaContributers = ({
     } else {
       setRowsData([]);
     }
+    setIsPublishedState(NewMeetingreducer.getAllAgendaContributorsIsPublished);
   }, [NewMeetingreducer.getAllAgendaContributors]);
 
   useEffect(() => {
@@ -847,7 +844,8 @@ const AgendaContributers = ({
   //   dispatch(getAllVotingResultDisplay_success([], ""));
   // }, []);
 
-  console.log("rowsDatarowsData", rowsData);
+  console.log("isPublishedStateisPublishedState", isPublishedState);
+  console.log("isPublishedStateisPublishedState", NewMeetingreducer);
 
   return (
     <>
