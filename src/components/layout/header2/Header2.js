@@ -729,122 +729,121 @@ const Header2 = ({ isVideo }) => {
                   <Nav.Link className='me-2'>
                     {checkFeatureIDAvailability(1) ||
                     checkFeatureIDAvailability(13) ? (
-                      <Tooltip placement='topRight' title={t("Shortcuts")}>
-                        <div className='dropdown-btn_dotted'>
-                          {location.pathname.includes("/Admin") ||
-                          location.pathname.includes(
-                            "/Admin"
-                          ) ? null : roleRoute ||
-                            TrialExpireSelectPac ? null : (
-                            <DropdownButton
-                              id='dropdown-btn_dotted'
-                              className='dropdown-btn_dotted'
-                              title={
+                      <div className='dropdown-btn_dotted'>
+                        {location.pathname.includes("/Admin") ||
+                        location.pathname.includes(
+                          "/Admin"
+                        ) ? null : roleRoute || TrialExpireSelectPac ? null : (
+                          <DropdownButton
+                            id='dropdown-btn_dotted'
+                            className='dropdown-btn_dotted'
+                            title={
+                              <Tooltip
+                                placement='topRight'
+                                title={t("Shortcuts")}>
                                 <img
                                   src={DiskusNotificationIcon}
                                   alt=''
                                   width={28}
                                   draggable='false'
                                 />
-                              }
-                              onClick={dropDownMenuFunction}>
-                              {checkFeatureIDAvailability(1) ? (
-                                <>
-                                  <Dropdown.Item
-                                    className='d-flex title-className'
-                                    onClick={openMeetingModal}>
-                                    <span className='New_folder_shortcutkeys'>
-                                      {t("Quick-meeting")}
-                                    </span>
-                                  </Dropdown.Item>
-                                </>
-                              ) : null}
-
-                              {checkFeatureIDAvailability(13) ? (
-                                <>
-                                  <Dropdown.Item className='d-flex title-className'>
-                                    {/* {t("Upload-document")} */}
-                                    {(NewMeetingreducer.scheduleMeetingPageFlag ===
-                                      true ||
-                                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                        true) &&
-                                    NewMeetingreducer.viewMeetingFlag ===
-                                      false ? (
-                                      <div
-                                        className='New_folder_shortcutkeys'
-                                        onClick={() => {
-                                          dispatch(
-                                            showCancelModalmeetingDeitals(true)
-                                          );
-                                          dispatch(uploadGlobalFlag(true));
-                                        }}>
-                                        {t("Upload-document")}
-                                      </div>
-                                    ) : (
-                                      <UploadTextField
-                                        title={t("Upload-document")}
-                                        handleFileUploadRequest={
-                                          handleUploadFile
-                                        }
-                                        // setProgress={setProgress}
-                                      />
-                                    )}
-
-                                    {/* <input type="file" /> */}
-                                  </Dropdown.Item>
-                                </>
-                              ) : null}
-
-                              {checkFeatureIDAvailability(13) ? (
-                                <>
-                                  <Dropdown.Item
-                                    className='d-flex title-className'
-                                    onClick={RecentFilesTab}>
-                                    <span className='New_folder_shortcutkeys'>
-                                      {t("Recently-added-files")}
-                                    </span>
-                                  </Dropdown.Item>
-                                </>
-                              ) : null}
-                              <Dropdown.Item className='d-flex title-className'>
-                                <Nav.Link
-                                  as={Link}
-                                  to={
-                                    (NewMeetingreducer.scheduleMeetingPageFlag ===
-                                      true ||
-                                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                        true) &&
-                                    NewMeetingreducer.viewMeetingFlag === false
-                                      ? "/DisKus/Meeting"
-                                      : "/DisKus/Minutes"
-                                  }
-                                  onClick={handleMeetingPendingApprovals}
-                                  className='pendingApprovalsNav'>
+                              </Tooltip>
+                            }
+                            onClick={dropDownMenuFunction}>
+                            {checkFeatureIDAvailability(1) ? (
+                              <>
+                                <Dropdown.Item
+                                  className='d-flex title-className'
+                                  onClick={openMeetingModal}>
                                   <span className='New_folder_shortcutkeys'>
-                                    {t("Pending-approvals")}
+                                    {t("Quick-meeting")}
                                   </span>
-                                </Nav.Link>
-                              </Dropdown.Item>
-                            </DropdownButton>
-                          )}
-                        </div>
-                      </Tooltip>
+                                </Dropdown.Item>
+                              </>
+                            ) : null}
+
+                            {checkFeatureIDAvailability(13) ? (
+                              <>
+                                <Dropdown.Item className='d-flex title-className'>
+                                  {/* {t("Upload-document")} */}
+                                  {(NewMeetingreducer.scheduleMeetingPageFlag ===
+                                    true ||
+                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                      true) &&
+                                  NewMeetingreducer.viewMeetingFlag ===
+                                    false ? (
+                                    <div
+                                      className='New_folder_shortcutkeys'
+                                      onClick={() => {
+                                        dispatch(
+                                          showCancelModalmeetingDeitals(true)
+                                        );
+                                        dispatch(uploadGlobalFlag(true));
+                                      }}>
+                                      {t("Upload-document")}
+                                    </div>
+                                  ) : (
+                                    <UploadTextField
+                                      title={t("Upload-document")}
+                                      handleFileUploadRequest={handleUploadFile}
+                                      // setProgress={setProgress}
+                                    />
+                                  )}
+
+                                  {/* <input type="file" /> */}
+                                </Dropdown.Item>
+                              </>
+                            ) : null}
+
+                            {checkFeatureIDAvailability(13) ? (
+                              <>
+                                <Dropdown.Item
+                                  className='d-flex title-className'
+                                  onClick={RecentFilesTab}>
+                                  <span className='New_folder_shortcutkeys'>
+                                    {t("Recently-added-files")}
+                                  </span>
+                                </Dropdown.Item>
+                              </>
+                            ) : null}
+                            <Dropdown.Item className='d-flex title-className'>
+                              <Nav.Link
+                                as={Link}
+                                to={
+                                  (NewMeetingreducer.scheduleMeetingPageFlag ===
+                                    true ||
+                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                      true) &&
+                                  NewMeetingreducer.viewMeetingFlag === false
+                                    ? "/DisKus/Meeting"
+                                    : "/DisKus/Minutes"
+                                }
+                                onClick={handleMeetingPendingApprovals}
+                                className='pendingApprovalsNav'>
+                                <span className='New_folder_shortcutkeys'>
+                                  {t("Pending-approvals")}
+                                </span>
+                              </Nav.Link>
+                            </Dropdown.Item>
+                          </DropdownButton>
+                        )}
+                      </div>
                     ) : null}
                   </Nav.Link>
 

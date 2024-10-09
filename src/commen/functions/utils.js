@@ -3,6 +3,8 @@ import {
   LoginFlowRoutes,
   signUpFlowRoutes,
 } from "../../store/actions/UserManagementActions";
+import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
+import { validateExtensionsforHTMLPage } from "./validations";
 
 // this is function save avalable feature for current user implementation its save all data in local storage
 export function savePackageFeatureIDs(userFeatures) {
@@ -450,6 +452,7 @@ export const fileFormatforSignatureFlow = [
   "ods",
   "odp",
   "wpf",
+  "txt",
 
   // Image Formats
   "bmp",
@@ -463,10 +466,79 @@ export const fileFormatforSignatureFlow = [
   "png",
   "tif",
   "tiff",
+  "jpeg",
 
   // Web Formats
-  "html",
-  "htm",
-  "mht",
   "svg",
 ];
+const NewfileFormatforSignatureFlow = [
+  // PDF Formats
+  "pdf",
+  "fdf",
+  "xfdf",
+
+  // Microsoft Office Formats
+  "doc",
+  "docx",
+  "xls",
+  "xlsx",
+  "ppt",
+  "pptx",
+  "pub",
+
+  // CAD Formats
+  "dwg",
+  "dxf",
+  "dgn",
+  "rvt",
+  "dwf",
+
+  // Document Formats
+  "rtf",
+  "odt",
+  "ods",
+  "odp",
+  "wpf",
+  "txt",
+
+  // Image Formats
+  "bmp",
+  "wmf",
+  "emf",
+  "gif",
+  "hdp",
+  "jpg",
+  "jp2",
+  "jpc",
+  "png",
+  "tif",
+  "tiff",
+  "jpeg",
+
+  // Web Formats
+  "svg",
+];
+
+export const openDocumentViewer = (
+  ext,
+  jsonData,
+  dispatch,
+  navigate,
+  t,
+  record
+) => {
+  if (NewfileFormatforSignatureFlow.includes(ext)) {
+    window.open(
+      `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(jsonData)}`,
+      "_blank",
+      "noopener noreferrer"
+    );
+  } else if (validateExtensionsforHTMLPage(ext)) {
+    let dataRoomData = {
+      FileID: record.id,
+    };
+    dispatch(
+      getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData, true)
+    );
+  }
+};
