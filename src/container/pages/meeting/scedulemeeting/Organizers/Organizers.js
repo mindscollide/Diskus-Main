@@ -688,7 +688,6 @@ const Organizers = ({
   };
 
   const previousTabOrganizer = () => {
-    // dispatch(showPreviousConfirmationModal(true));
     setmeetingDetails(true);
     setAgendaContributors(false);
     setorganizers(false);
@@ -705,7 +704,6 @@ const Organizers = ({
   };
 
   const handlePublishButton = () => {
-    // dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
@@ -724,55 +722,13 @@ const Organizers = ({
         setCalendarViewModal
       )
     );
-    // setorganizers(false)
-    // setAgendaContributors(true)
+
     setRowsData([]);
   };
 
   const nextTabOrganizer = () => {
-    // const allMeetingOrganizers =
-    //   MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers;
-    // let newrowsData = rowsData.map((newData, index) => {
-    //   return {
-    //     userID: newData.userID,
-    //     userName: newData.userName,
-    //     email: newData.email,
-    //     organizerTitle: newData.organizerTitle,
-    //     isPrimaryOrganizer: newData.isPrimaryOrganizer,
-    //     rsvp: newData.rsvp,
-    //     meetingID: Number(currentMeeting),
-    //     isOrganizerNotified: newData.isOrganizerNotified,
-    //     userProfilePicture: newData.userProfilePicture,
-    //   };
-    // });
-
-    // let checkValidation =
-    //   allMeetingOrganizers.length === newrowsData.length &&
-    //   allMeetingOrganizers.every((item, index) =>
-    //     deepEqual(item, newrowsData[index])
-    //   );
-    // if (checkValidation) {
-    //   setAgendaContributors(true);
-    //   setmeetingDetails(false);
-    //   setorganizers(false);
-    //   setParticipants(false);
-    //   setAgenda(false);
-    //   setMinutes(false);
-    //   setactionsPage(false);
-    //   setAttendance(false);
-    //   setPolls(false);
-    //   setMeetingMaterial(false);
-    //   setRowsData([]);
-    //   dispatch(saveMeetingFlag(false));
-    //   dispatch(editMeetingFlag(false));
-    // } else {
-    //   dispatch(ShowNextConfirmationModal(true));
-    // }
     setviewOrganizers(!viewOrganizers);
-    // let Data = { meetingID: currentMeeting, StatusID: 1 };
-    // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
     setRowsData([]);
-    // dispatch(ShowNextConfirmationModal(true));
     setAgendaContributors(true);
     setmeetingDetails(false);
     setorganizers(false);
@@ -821,7 +777,6 @@ const Organizers = ({
   };
 
   const handleCancelEdit = () => {
-    // setCurrentMeetingID(0);
     setIsEdit(false);
     setEditState(false);
     dispatch(meetingOrganizers([]));
@@ -844,11 +799,7 @@ const Organizers = ({
 
     setRowsData(updatedMeetingOrganizers);
   };
-  console.log(
-    notificationMessage,
-    rowsData,
-    "notificationMessagenotificationMessagenotificationMessage"
-  );
+
   const saveMeetingOrganizers = () => {
     let newarry = [];
     rowsData.forEach((organizerData, organizerIndex) => {
@@ -886,64 +837,6 @@ const Organizers = ({
     }
   };
 
-  const editMeetingOrganizers = () => {
-    let newarry = [];
-    rowsData.forEach((organizerData, organizerIndex) => {
-      newarry.push(organizerData.userID);
-    });
-    let findisOrganizerisExist = rowsData.some(
-      (data, index) => data.isPrimaryOrganizer === true
-    );
-
-    let Data = {
-      MeetingID: currentMeeting,
-      MeetingAttendeRoleID: 1,
-      UpdatedUsers: newarry,
-    };
-
-    if (findisOrganizerisExist) {
-      dispatch(
-        UpdateMeetingUserForOrganizers(
-          navigate,
-          Data,
-          t,
-          saveMeetingFlag,
-          editMeetingFlag,
-          rowsData,
-          currentMeeting,
-          2,
-          notificationMessage
-        )
-      );
-    } else {
-      setOpen({
-        message: t("At-least-one-primary-organizer-is-required"),
-        open: true,
-      });
-    }
-    // let Data = {
-    //   MeetingOrganizers: rowsData.map((item) => ({
-    //     IsPrimaryOrganizer: item.isPrimaryOrganizer,
-    //     IsOrganizerNotified: item.isOrganizerNotified,
-    //     Title: item.organizerTitle,
-    //     UserID: item.userID,
-    //   })),
-    //   MeetingID: currentMeeting,
-    //   IsOrganizerAddFlow: false,
-    //   NotificationMessage: rowsData[0].NotificationMessage,
-    // };
-    // if (findisOrganizerisExist) {
-    //   dispatch(SaveMeetingOrganizers(navigate, Data, t, currentMeeting));
-    //   dispatch(saveMeetingFlag(false));
-    //   dispatch(editMeetingFlag(false));
-    // } else {
-    //   setOpen({
-    //     message: t("At-least-one-primary-organizer-is-required"),
-    //     open: true,
-    //   });
-    // }
-  };
-
   useEffect(() => {
     if (
       MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
@@ -972,13 +865,6 @@ const Organizers = ({
       MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished
     );
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
-
-  console.log(
-    "MeetingOrganizersReducer.AllMeetingOrganizersData",
-    MeetingOrganizersReducer.AllMeetingOrganizersData
-  );
-
-  console.log("isPublishedStateisPublishedState", isPublishedState);
 
   useEffect(() => {
     if (
@@ -1063,16 +949,6 @@ const Organizers = ({
     // Update the rowsData state with the modified data
     setRowsData(updatedRowsData);
   }, [MeetingOrganizersReducer.NotificationUpdateData]);
-
-  // useEffect(() => {
-  //   if (rowsData.length > 0) {
-  //     const getIfFalse = rowsData.some((data) => data.isEdit === false);
-  //     setIsEdit(getIfFalse);
-  //   } else {
-  //     setIsEdit(false);
-  //   }
-  //
-  // }, [rowsData]);
 
   useEffect(() => {
     if (
@@ -1219,29 +1095,12 @@ const Organizers = ({
                         onClick={handleCancelOrganizer}
                       />
 
-                      {/* <Button
-                    text={t("Previous")}
-                    className={styles["publish_button_Organization"]}
-                    onClick={previousTabOrganizer}
-                  /> */}
-
                       <Button
                         text={t("Next")}
                         className={styles["publish_button_Organization"]}
                         onClick={nextTabOrganizer}
                       />
-                      {/* {(Number(editorRole.status) === 9 ||
-                    Number(editorRole.status) === 8 ||
-                    Number(editorRole.status) === 10) &&
-                  editorRole.role === "Organizer" &&
-                  isEditMeeting === true ? null : editorRole.role ===
-                      "Agenda Contributor" && isEditMeeting === true ? null : (
-                    <Button
-                      text={t("Publish")}
-                      className={styles["Next_Organization"]}
-                      onClick={handlePublishButton}
-                    />
-                  )} */}
+
                       {Number(editorRole.status) === 11 ||
                       Number(editorRole.status) === 12 ? (
                         <Button
@@ -1268,14 +1127,6 @@ const Organizers = ({
                           onClick={handlePublishButton}
                         />
                       )}
-                      {/* {Number(editorRole.status) === 11 ||
-                  Number(editorRole.status) === 12 ? (
-                    <Button
-                      text={t("Publish")}
-                      className={styles["Next_Organization"]}
-                      onClick={handlePublishButton}
-                    />
-                  ) : null} */}
                     </section>
                   </Col>
                 </Row>

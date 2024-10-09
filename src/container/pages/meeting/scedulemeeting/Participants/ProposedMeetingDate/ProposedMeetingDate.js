@@ -4,7 +4,6 @@ import { Button, Notification } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
 import DatePicker from "react-multi-date-picker";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { DateObject } from "react-multi-date-picker";
@@ -542,11 +541,6 @@ const ProposedMeetingDate = ({
 
   const CancelModal = () => {
     setProposedMeetingDates(false);
-
-    // setParticipants(true);
-    // setParticipants(true);
-
-    // dispatch(showPrposedMeetingUnsavedModal(true));
   };
 
   useEffect(() => {
@@ -964,11 +958,7 @@ const ProposedMeetingDate = ({
                 className={styles["Cancel_Button_ProposedMeeting"]}
                 onClick={CancelModal}
               />
-              {/* <Button
-                text={t("View")}
-                className={styles["Save_Button_ProposedMeeting"]}
-                onClick={EnabletheViewProposedmeetingDates}
-              /> */}
+
               {!isEdit ? (
                 <>
                   <Button

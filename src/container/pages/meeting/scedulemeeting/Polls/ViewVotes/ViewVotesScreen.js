@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ViewVoteScreen.module.css";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Progress } from "antd";
-import Profile from "../../../../../../assets/images/newprofile.png";
 import { Button } from "../../../../../../components/elements";
 
 const ViewVotesScreen = ({ setviewVotes }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
   const [pollId, setPollId] = useState(0);
-  let userID = localStorage.getItem("userID");
   const [pollTitle, setPollTitle] = useState("");
   const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
     []

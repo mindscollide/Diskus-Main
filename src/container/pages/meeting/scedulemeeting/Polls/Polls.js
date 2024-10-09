@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../../../assets/images/bin.svg";
-import { Pagination, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -43,7 +43,6 @@ import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
   createPollMeetingMQTT,
-  deleteMeetingPollApi,
   deletePollsMQTT,
   getPollByPollIdforMeeting,
   getPollsByPollIdApi,
@@ -58,18 +57,13 @@ const Polls = ({
   setAttendance,
   currentMeeting,
   editorRole,
-  setEditMeeting,
   isEditMeeting,
   setactionsPage,
-  setDataroomMapFolderId,
-  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, CommitteeReducer, PollsReducer } = useSelector(
-    (state) => state
-  );
+  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -313,10 +307,7 @@ const Polls = ({
         return (
           <span
             className={styles["DateClass"]}
-            onClick={
-              () => handleClickTitle(record)
-              // navigate("/DisKus/polling", { state: { record, isVote: false } })
-            }
+            onClick={() => handleClickTitle(record)}
           >
             {text}
           </span>
@@ -382,12 +373,6 @@ const Polls = ({
       },
     },
 
-    // {
-    //   title: t("Poll-type"),
-    //   dataIndex: "PollType",
-    //   key: "PollType",
-    //   width: "90px",
-    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
@@ -553,12 +538,6 @@ const Polls = ({
   const handleCreatepolls = () => {
     dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(true);
-  };
-
-  const handleClickPrevPolls = () => {
-    setactionsPage(true);
-    setPolls(false);
-    // if(editorRole.statu)
   };
 
   const handleNextButtonPolls = () => {
@@ -750,22 +729,12 @@ const Polls = ({
                     sm={12}
                     className="d-flex justify-content-end gap-2"
                   >
-                    {/* <Button
-                      text={t("Clone-meeting")}
-                      className={styles["Cancel_Button_Polls_meeting"]}
-                      onClick={enableAfterSavedViewPolls}
-                    /> */}
-
                     <Button
                       text={t("Cancel")}
                       className={styles["Cancel_Button_Polls_meeting"]}
                       onClick={handleCacnelbutton}
                     />
-                    {/* <Button
-                      text={t("Previous")}
-                      className={styles["Save_Button_Polls_meeting"]}
-                      onClick={handleClickPrevPolls}
-                    /> */}
+
                     {Number(editorRole.status) === 10 &&
                     editorRole.role === "Agenda Contributor" ? null : (
                       <Button
@@ -782,17 +751,6 @@ const Polls = ({
                         className={styles["Save_Button_Polls_meeting"]}
                       />
                     ) : null}
-
-                    {/* <Button
-                      text={t("Save-and-publish")}
-                      className={styles["Cancel_Button_Polls_meeting"]}
-                    />
-
-                    <Button
-                      text={t("Save-and-next")}
-                      className={styles["Save_Button_Polls_meeting"]}
-                      onClick={handleSaveAndnext}
-                    /> */}
                   </Col>
                 </Row>
               </>
