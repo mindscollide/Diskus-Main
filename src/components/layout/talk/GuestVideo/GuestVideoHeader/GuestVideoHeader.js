@@ -15,8 +15,26 @@ import TileView from "../../../../../assets/images/Recent Activity Icons/Video/T
 import Participant from "../../../../../assets/images/Recent Activity Icons/Video/Participant.png";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
 import "./GuestVideoHeader.css";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import {
+  muteUnMuteParticipantMainApi,
+  raiseUnRaisedHandMainApi,
+} from "../../../../../store/actions/Guest_Video";
+import { useSelector } from "react-redux";
 
-const GuestVideoHeader = ({ extractMeetingTitle }) => {
+const GuestVideoHeader = ({ extractMeetingTitle, roomId }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const joinGuestData = useSelector(
+    (state) => state.GuestVideoReducer.joinGuestData
+  );
+
+  console.log(joinGuestData.guestGuid, "lahaahhahbskjsdajksdasjkdasjhkdb");
+
   const [micOn, setMicOn] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [isScreenShare, setIsScreenShare] = useState(false);
@@ -26,6 +44,17 @@ const GuestVideoHeader = ({ extractMeetingTitle }) => {
 
   const openMicStatus = () => {
     setMicOn(!micOn);
+    let data = {
+      UID: String(joinGuestData.guestGuid),
+      IsMuted: micOn ? true : false,
+    };
+
+    // Wrap the data object in an array and create the request structure
+    let requestData = {
+      MuteUnMuteList: [data],
+    };
+    // Dispatch the API call with the structured request data
+    dispatch(muteUnMuteParticipantMainApi(navigate, t, requestData));
   };
 
   const openVideoStatus = () => {
@@ -38,6 +67,13 @@ const GuestVideoHeader = ({ extractMeetingTitle }) => {
 
   const openRaiseHand = () => {
     setIsRaiseHand(!isRaiseHand);
+    let data = {
+      RoomID: String(roomId),
+      UID: String(joinGuestData.guestGuid),
+      IsHandRaised: isRaiseHand ? true : false,
+    };
+
+    dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
   };
 
   const openSpeaker = () => {

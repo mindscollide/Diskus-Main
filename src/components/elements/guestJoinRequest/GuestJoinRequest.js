@@ -11,7 +11,10 @@ import {
   guestJoinPopup,
   participantWaitingListBox,
 } from "../../../store/actions/VideoFeature_actions";
-import { admitRejectAttendeeMainApi } from "../../../store/actions/Guest_Video";
+import {
+  admitRejectAttendeeMainApi,
+  setAdmittedParticipant,
+} from "../../../store/actions/Guest_Video";
 
 const GuestJoinRequest = () => {
   const { t } = useTranslation();
@@ -21,13 +24,18 @@ const GuestJoinRequest = () => {
   const { GuestVideoReducer, videoFeatureReducer } = useSelector(
     (state) => state
   );
-  console.log(waitingOnParticipant, "waitingOnParticipantwaitingOnParticipant")
+  console.log(
+    GuestVideoReducer?.admitGuestUserRequestData,
+    "waitingOnParticipantwaitingOnParticipant"
+  );
   const {
     name = "",
     meetingID = "",
     uid = "",
     isGuest = true,
   } = GuestVideoReducer?.admitGuestUserRequestData || {};
+
+  console.log(GuestVideoReducer?.admitGuestUserRequestData, "Datatatacatcas");
 
   const handleAdmit = (flag) => {
     // let Data = {
@@ -48,6 +56,11 @@ const GuestJoinRequest = () => {
         },
       ],
     };
+    if (flag === 1) {
+      let getNames = Data.AttendeeResponseList.map((userData) => userData.Name);
+      console.log(getNames, "getNamesgetNames");
+      dispatch(setAdmittedParticipant(getNames));
+    }
     dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
   };
 
@@ -82,13 +95,12 @@ const GuestJoinRequest = () => {
       }
     } else {
       setWaitingOnParticipant([]);
-
     }
   }, [videoFeatureReducer.participantWaitingList]);
 
   return (
     <div className={styles["box-positioning"]}>
-      <Container className='d-flex justify-content-center align-items-center'>
+      <Container className="d-flex justify-content-center align-items-center">
         {waitingOnParticipant?.length === 1 ? (
           <>
             <Card className={styles["card-ui"]}>
@@ -96,13 +108,13 @@ const GuestJoinRequest = () => {
                 onClick={() => dispatch(guestJoinPopup(false))}
                 className={styles["handle-close"]}
                 src={CrossIcon}
-                alt=''
+                alt=""
               />
-              <Card.Body className='text-center'>
+              <Card.Body className="text-center">
                 <div>
                   <img
                     src={ProfileIcon}
-                    alt=''
+                    alt=""
                     style={{
                       borderRadius: "50%",
                       width: "75px",
@@ -115,7 +127,7 @@ const GuestJoinRequest = () => {
                   <strong>{name + " "}</strong>
                   {t("has-requested-to-join-this-video-call")}
                 </p>
-                <Row className='justify-content-center'>
+                <Row className="justify-content-center">
                   <Col xs={5}>
                     <Button
                       className={styles["title-deny"]}
@@ -138,17 +150,15 @@ const GuestJoinRequest = () => {
           <Card className={styles["card-ui-400"]}>
             <div className={styles["content-section"]}>
               <div className={styles["avatars"]}>
-                {waitingOnParticipant.map(
-                  (participantData, index) => {
-                    return (
-                      <img
-                        src={ProfileIcon}
-                        alt='Avatar 1'
-                        className={styles["avatar"]}
-                      />
-                    );
-                  }
-                )}
+                {waitingOnParticipant.map((participantData, index) => {
+                  return (
+                    <img
+                      src={ProfileIcon}
+                      alt="Avatar 1"
+                      className={styles["avatar"]}
+                    />
+                  );
+                })}
               </div>
               <p className={styles["text"]}>
                 Multiple people want to join the meeting.

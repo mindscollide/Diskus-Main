@@ -168,7 +168,7 @@ const PrivateRoutes = () => {
       // Add action-specific logic here if needed
     }
 
-    if (currentUrl.includes("Diskus/GuestVideoCall?validateguest_action")) {
+    if (currentUrl.includes("GuestVideoCall?validateguest_action")) {
       console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
     }
     if (currentUrl.includes("DisKus/Meeting?Activeagendaedit_action")) {

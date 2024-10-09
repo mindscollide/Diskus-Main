@@ -10,6 +10,11 @@ const initialState = {
   admitRejectData: null,
   admitGuestUserRequestData: null,
   guestVideoNavigationData: 1,
+  raiseUnRaiseData: null,
+  muteUnMuteData: null,
+  transferMeetingData: null,
+  removeParticipantMeetingData: null,
+  participantNameDataAccept: [],
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -142,6 +147,91 @@ const GuestVideoReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.RAISE_UNRAISED_HAND_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.RAISE_UNRAISED_HAND_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        raiseUnRaiseData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.RAISE_UNRAISED_HAND_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        raiseUnRaiseData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_PARTICIPANT_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_PARTICIPANT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        muteUnMuteData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_PARTICIPANT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        muteUnMuteData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.REMOVE_PARTICIPANT_FROM_MEETING_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.REMOVE_PARTICIPANT_FROM_MEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        removeParticipantMeetingData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.REMOVE_PARTICIPANT_FROM_MEETING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        removeParticipantMeetingData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SET_PARTICIPANT_NAME: {
+      console.log(action, "datdtatdatdtatddatdtatdatdtatd");
+      return {
+        ...state,
+        participantNameDataAccept: [
+          ...state.participantNameDataAccept,
+          ...action.response,
+        ],
+      };
+    }
 
     default:
       return { ...state };

@@ -1796,6 +1796,22 @@ const admitRejectAttendee = {
   RequestMethod: "ServiceManager.AdmitRejectAttendee",
 };
 
+const raiseUnRaisedHand = {
+  RequestMethod: "ServiceManager.RaiseUnRaiseHand",
+};
+
+const muteUnMuteParticipant = {
+  RequestMethod: "ServiceManager.MuteUnMuteParticpant",
+};
+
+const transferMeetingHost = {
+  RequestMethod: "ServiceManager.TransferMeetingHost",
+};
+
+const removeParticipantMeeting = {
+  RequestMethod: "ServiceManager.RemoveParticipantFromMeeting",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2271,4 +2287,8 @@ export {
   ValidateEncryptedStringGuestVideoLink,
   joinGuestVideo,
   admitRejectAttendee,
+  raiseUnRaisedHand,
+  muteUnMuteParticipant,
+  transferMeetingHost,
+  removeParticipantMeeting,
 };

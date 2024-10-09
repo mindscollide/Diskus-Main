@@ -218,7 +218,7 @@ const GuestJoinVideo = ({
                           </>
                         ) : (
                           <>
-                            <div className="waiting-text-animation"> 
+                            <div className="waiting-text-animation">
                               <p className="waiting-room-class">
                                 {t("You-are-in-the-waiting-room")}
                               </p>

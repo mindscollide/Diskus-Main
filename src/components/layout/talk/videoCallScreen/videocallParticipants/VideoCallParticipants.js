@@ -7,7 +7,10 @@ import UserImage from "../../../../../assets/images/user.png";
 import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { admitRejectAttendeeMainApi } from "../../../../../store/actions/Guest_Video";
+import {
+  admitRejectAttendeeMainApi,
+  setAdmittedParticipant,
+} from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -51,6 +54,11 @@ const VideoCallParticipants = () => {
         };
       }),
     };
+    if (flag === 1) {
+      let getNames = participantsList.map((userData) => userData.name);
+      console.log(getNames, "getNamesgetNames");
+      dispatch(setAdmittedParticipant(getNames));
+    }
     dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
   };
   const handleClickAcceptAndReject = (participantInfo, flag) => {
@@ -77,13 +85,15 @@ const VideoCallParticipants = () => {
         videoFeatureReducer.NormalizeVideoFlag
           ? styles["WaitingParticipantBoxNorm"]
           : styles["WaitingParticipantBox"]
-      }>
+      }
+    >
       <Row>
         <Col
           sm={12}
           md={12}
           lg={12}
-          className='d-flex justify-content-between '>
+          className="d-flex justify-content-between "
+        >
           <span className={styles["waiting_participants_box_title"]}>
             Waiting for entry
           </span>
@@ -127,7 +137,8 @@ const VideoCallParticipants = () => {
               videoFeatureReducer.NormalizeVideoFlag
                 ? styles["AcceptAndDeniedManual_Nor"]
                 : styles["AcceptAndDeniedManual"]
-            }>
+            }
+          >
             {participantsList?.length > 0 &&
               participantsList.map((data, index) => {
                 console.log(
@@ -135,12 +146,13 @@ const VideoCallParticipants = () => {
                   "participantsListparticipantsListparticipantsList"
                 );
                 return (
-                  <Row className='mb-2' key={data.uid}>
+                  <Row className="mb-2" key={data.uid}>
                     <Col
                       sm={6}
                       md={6}
                       lg={6}
-                      className='d-flex align-items-center gap-2'>
+                      className="d-flex align-items-center gap-2"
+                    >
                       <img
                         src={UserImage}
                         className={styles["participantImage"]}
@@ -153,10 +165,11 @@ const VideoCallParticipants = () => {
                       sm={6}
                       md={6}
                       lg={6}
-                      className='d-flex align-items-center gap-2'>
+                      className="d-flex align-items-center gap-2"
+                    >
                       <Button
                         className={styles["denyAllBtn-small"]}
-                        text='Deny'
+                        text="Deny"
                         onClick={() => handleClickAcceptAndReject(data, 2)}
                       />
                       <Button

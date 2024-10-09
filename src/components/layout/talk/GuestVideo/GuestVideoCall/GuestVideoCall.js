@@ -44,7 +44,8 @@ const GuestVideoCall = () => {
   // extract Meeting Title
   const [extractMeetingTitle, setExtractMeetingTitle] = useState("");
   const [guestName, setGuestName] = useState("");
-  console.log(guestName, "guestName");
+  const [roomId, setRoomId] = useState("");
+  console.log(roomId, "guestName");
 
   let guestVideoClient = Helper.guestSocket;
 
@@ -75,6 +76,7 @@ const GuestVideoCall = () => {
       ) {
         if (data.payload.isAccepted === true) {
           setVideoUrl(data.payload.videoUrl);
+          setRoomId(data.payload.roomID);
           dispatch(guestVideoNavigationScreen(2));
         } else {
           dispatch(guestVideoNavigationScreen(3));
@@ -172,7 +174,7 @@ const GuestVideoCall = () => {
         </>
       ) : guestVideoNavigationData === 2 ? (
         <>
-          <GuestVideoScreen videoUrlName={videoUrl} />
+          <GuestVideoScreen videoUrlName={videoUrl} roomId={roomId} />
         </>
       ) : guestVideoNavigationData === 3 ? (
         <>

@@ -5,7 +5,7 @@ import { Button } from "../../../../elements";
 import GuestVideoHeader from "../GuestVideoHeader/GuestVideoHeader";
 import "./GuestVideoScreen.css";
 
-const GuestVideoScreen = ({ videoUrlName }) => {
+const GuestVideoScreen = ({ videoUrlName, roomId }) => {
   const frameRef = useRef(null);
 
   const validateData = useSelector(
@@ -25,7 +25,7 @@ const GuestVideoScreen = ({ videoUrlName }) => {
   return (
     <>
       <Container fluid>
-        <GuestVideoHeader extractMeetingTitle={meetingTitle} />
+        <GuestVideoHeader extractMeetingTitle={meetingTitle} roomId={roomId} />
         <div className="new-div">
           <iframe
             src={videoUrlName}

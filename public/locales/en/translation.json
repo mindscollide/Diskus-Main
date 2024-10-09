@@ -2219,5 +2219,6 @@
   "The-meeting-has-ended-and-this-link-is-no-longer-active": " The meeting has ended, and this link is no longer active.",
   "Ready-to-join": "Ready To Join?",
   "You-are-in-the-waiting-room": "You are in the waiting room",
-  "The-organizer-will-allow-you-to-join-shortly": "The organizer will allow you to join shortly."
+  "The-organizer-will-allow-you-to-join-shortly": "The organizer will allow you to join shortly.",
+  "Invalid-request-data-2": "Invalid Request Data"
 }
