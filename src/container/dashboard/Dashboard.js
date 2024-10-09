@@ -344,25 +344,34 @@ const Dashboard = () => {
                   ),
                 });
                 setNotificationID(id);
-                if (meetingVideoID === data.payload.meeting.pK_MDID) {
-                  dispatch(normalizeVideoPanelFlag(false));
-                  dispatch(maximizeVideoPanelFlag(false));
-                  dispatch(minimizeVideoPanelFlag(false));
-                  localStorage.setItem("activeCall", false);
-                  localStorage.setItem("isMeeting", false);
-                  localStorage.setItem("meetingTitle", "");
-                  localStorage.setItem("acceptedRecipientID", 0);
-                  localStorage.setItem("acceptedRoomID", 0);
-                  localStorage.setItem("activeRoomID", 0);
-                  localStorage.setItem("meetingVideoID", 0);
-                  localStorage.setItem("MicOff", true);
-                  localStorage.setItem("VidOff", true);
-                  let Data = {
-                    RoomID: currentMeetingVideoID,
-                    UserGUID: userGUID,
-                  };
-                  dispatch(LeaveMeetingVideo(Data, navigate, t));
-                }
+              }
+              if (
+                Number(meetingVideoID) === Number(data.payload.meeting.pK_MDID)
+              ) {
+                console.log(
+                  Number(meetingVideoID),
+                  Number(data.payload.meeting.pK_MDID),
+                  Number(meetingVideoID) ===
+                    Number(data.payload.meeting.pK_MDID),
+                  "isMeetingVideoisMeetingVideoisMeetingVideo"
+                );
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+                localStorage.setItem("activeCall", false);
+                localStorage.setItem("isMeeting", false);
+                localStorage.setItem("meetingTitle", "");
+                localStorage.setItem("acceptedRecipientID", 0);
+                localStorage.setItem("acceptedRoomID", 0);
+                localStorage.setItem("activeRoomID", 0);
+                localStorage.setItem("meetingVideoID", 0);
+                localStorage.setItem("MicOff", true);
+                localStorage.setItem("VidOff", true);
+                let Data = {
+                  RoomID: currentMeetingVideoID,
+                  UserGUID: userGUID,
+                };
+                dispatch(LeaveMeetingVideo(Data, navigate, t));
               }
               // let Data2 = {
               //   UserID: Number(createrID),
