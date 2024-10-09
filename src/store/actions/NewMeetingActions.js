@@ -2328,9 +2328,7 @@ const GetAllMeetingDetailsApiFunc = (
                     GetAllMeetingRecurringApiNew(navigate, t, true)
                   );
                 } else if (flag === 2) {
-                  console.log("recordrecordrecord");
-                  dispatch(scheduleMeetingPageFlag(false));
-                  <ProposedNewMeeting />;
+                  console.log("Flag for proposed meeting Edit flow only");
                 }
               }
               console.log("hello loader check", loader);

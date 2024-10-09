@@ -85,6 +85,7 @@ const UnpublishedProposedMeeting = ({
   setResponseByDate,
   setVideoTalk,
   videoTalk,
+  setProposedNewMeeting,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -216,6 +217,7 @@ const UnpublishedProposedMeeting = ({
           2
         )
       );
+      setProposedNewMeeting(true);
     } else if (agendaContributorFlag === false) {
       let Data = {
         MeetingID: Number(id),

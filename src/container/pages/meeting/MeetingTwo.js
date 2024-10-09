@@ -195,6 +195,7 @@ const NewMeeting = () => {
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
+  console.log(proposedNewMeeting, "proposedNewMeetingproposedNewMeeting");
   const [searchMeeting, setSearchMeeting] = useState(false);
 
   // const [isMeetingTypeFilter, setMeetingTypeFilter] =
@@ -3001,6 +3002,7 @@ const NewMeeting = () => {
                       setDataroomMapFolderId={setDataroomMapFolderId}
                       videoTalk={videoTalk}
                       setVideoTalk={setVideoTalk}
+                      setProposedNewMeeting={setProposedNewMeeting}
                     />
                   ) : Number(currentView) === 1 ? (
                     <Row className="mt-2">
