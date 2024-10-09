@@ -18,14 +18,11 @@ import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,
-  showDeleteMeetingModal,
   showSceduleProposedMeeting,
   scheduleMeetingPageFlag,
   viewProposeDateMeetingPageFlag,
-  viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
   viewMeetingFlag,
   meetingDetailsGlobalFlag,
   organizersGlobalFlag,
@@ -43,7 +40,6 @@ import {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
-  validateStringEmailApi,
   validateStringParticipantProposedApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
@@ -56,7 +52,6 @@ import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeet
 import { useEffect } from "react";
 import { StatusValue } from "../../../statusJson";
 import {
-  convertDateinGMT,
   forRecentActivity,
   getDifferentisDateisPassed,
   newTimeFormaterAsPerUTCFullDate,
@@ -72,20 +67,17 @@ import { checkFeatureIDAvailability } from "../../../../../../commen/functions/u
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
   setViewProposeOrganizerPoll,
-  viewProposeDatePoll,
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModalUnpublish,
   setSceduleMeeting,
   setEdiorRole,
   setEditMeeting,
   setCurrentMeetingID,
-  currentMeeting,
-  editorRole,
   setDataroomMapFolderId,
   setResponseByDate,
   setVideoTalk,
-  videoTalk,
   setProposedNewMeeting,
+  setIsProposedMeetEdit,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -117,15 +109,6 @@ const UnpublishedProposedMeeting = ({
   const [rows, setRow] = useState([]);
   const [publishState, setPublishState] = useState(null);
   const [organizerViewModal, setOrganizerViewModal] = useState(false);
-  let Meetingprop = localStorage.getItem("meetingprop");
-
-  const handleDeleteMeetingModal = () => {
-    dispatch(showDeleteMeetingModal(true));
-  };
-
-  const enableScedulePrposedMeetingModal = () => {
-    dispatch(showSceduleProposedMeeting(true));
-  };
 
   // Empty text data
   const emptyText = () => {
@@ -196,10 +179,7 @@ const UnpublishedProposedMeeting = ({
   };
 
   const handleEditMeeting = async (id, agendaContributorFlag, record) => {
-    console.log(record, "recordrecordrecord");
-    console.log(agendaContributorFlag, "recordrecordrecord");
     if (agendaContributorFlag === false && record.status === "12") {
-      console.log("recordrecordrecord");
       let Data = {
         MeetingID: Number(id),
       };
@@ -217,6 +197,7 @@ const UnpublishedProposedMeeting = ({
           2
         )
       );
+      setIsProposedMeetEdit(true);
       setProposedNewMeeting(true);
     } else if (agendaContributorFlag === false) {
       let Data = {
