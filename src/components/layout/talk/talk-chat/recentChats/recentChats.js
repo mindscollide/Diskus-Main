@@ -87,9 +87,6 @@ const RecentChats = () => {
     } else {
       setAllChatData([]);
     }
-    return () => {
-      setAllChatData([]);
-    };
   }, [talkStateData.AllUserChats.AllUserChatsData]);
 
   //Search Chats

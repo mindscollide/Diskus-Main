@@ -946,7 +946,7 @@ const Participants = ({
                     (editorRole.role === "Agenda Contributor" &&
                       isEditMeeting === true) ? (
                       <>
-                        {Number(editorRole.status) ===
+                        {/* {Number(editorRole.status) ===
                         10 ? null : checkFeatureIDAvailability(12) ? (
                           <>
                             <Button
@@ -955,7 +955,7 @@ const Participants = ({
                               onClick={handleProposedmeetingDates}
                             />
                           </>
-                        ) : null}
+                        ) : null} */}
 
                         <Button
                           text={t("Cancel")}
@@ -996,11 +996,11 @@ const Participants = ({
                       </>
                     ) : isEditClicked ? null : (
                       <>
-                        <Button
+                        {/* <Button
                           text={t("Propose-meeting-dates")}
                           className={styles["Next_Organization"]}
                           onClick={handleProposedmeetingDates}
-                        />
+                        /> */}
 
                         <Button
                           text={t("Cancel")}
