@@ -828,6 +828,12 @@ const NewMeeting = () => {
 
   const openSceduleMeetingPage = async () => {
     setSceduleMeeting(true);
+    setEdiorRole({
+      ...editorRole,
+      status: "11",
+      role: "Organizer",
+      isPrimaryOrganizer: true,
+    });
     dispatch(scheduleMeetingPageFlag(true));
     setCurrentMeetingID(0);
     dispatch(meetingDetailsGlobalFlag(true));
