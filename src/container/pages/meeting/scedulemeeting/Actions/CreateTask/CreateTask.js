@@ -14,7 +14,6 @@ import {
 import Select from "react-select";
 import { Upload } from "antd";
 import DrapDropIcon from "../../../../../../assets/images/DrapDropIcon.svg";
-import RedCrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import UnsavedActions from "../UnsavedActionModal/UnsavedActions";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -31,25 +30,17 @@ import {
 } from "../../../../../../store/actions/Action_Meeting";
 
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
-import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import { convertGMTDateintoUTC } from "../../../../../../commen/functions/date_formater";
 import {
   CreateToDoList,
   saveFilesTaskApi,
 } from "../../../../../../store/actions/ToDoList_action";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../../DataRoom/SearchFunctionality/option";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 const CreateTask = ({
   setCreateaTask,
   currentMeeting,
-  setActionState,
-  actionState,
   dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
@@ -136,7 +127,6 @@ const CreateTask = ({
   const actionSaveHandler = () => {
     if (
       createTaskDetails.ActionsToTake !== "" &&
-      // createTaskDetails.Description !== "" &&
       createTaskDetails.AssignedTo > 0 &&
       createTaskDetails.date !== ""
     ) {
@@ -163,14 +153,12 @@ const CreateTask = ({
     showUploadList: false,
     onChange(data) {
       const { fileList } = data;
-      console.log(fileList, "fileListfileListfileList");
       // Check if the fileList is the same as the previous one
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -633,7 +621,6 @@ const CreateTask = ({
 
   // for selecting Data
   const handleSelectMemberValue = (e) => {
-    console.log(e, "valuevaluevaluevaluevalue");
     setcreateTaskDetails({
       ...createTaskDetails,
       AssignedTo: [e.value],
@@ -655,21 +642,6 @@ const CreateTask = ({
             sm={12}
             className={styles["Create_Task_main_Scroller"]}
           >
-            {/* <Row className="mt-4">
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["MainHeading_Create_Action"]}>
-                      ext ever since the 1500s, when an unknown printer took a
-                      galley of type and scrambled it to make a type specimen
-                      book. It has survived not only five centuries, but also
-                      the leap into electronic typesetting, remaining
-                      essentially unchanged. It was popularised in the 1960s
-                      with the release of Letraset sheets containing Lorem Ipsum
-                      passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
-                    </span>
-                  </Col>
-                </Row> */}
             <Row className="mt-1">
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["SubHeading"]}>
@@ -814,7 +786,6 @@ const CreateTask = ({
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["SubHeading"]}>
                   {t("Description")}{" "}
-                  {/* <span className={styles["Steric"]}>*</span> */}
                 </span>
               </Col>
             </Row>
@@ -830,21 +801,7 @@ const CreateTask = ({
                   maxLength={2000}
                   rows="4"
                   placeholder={t("Description")}
-                  // required={true}
                 />
-                {/* <Row>
-                    <Col>
-                      <p
-                        className={
-                          error && createTaskDetails.Description === ""
-                            ? ` ${styles["errorMessage-inLogin"]} `
-                            : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
-                        {t("Description-is-required-action")}
-                      </p>
-                    </Col>
-                  </Row> */}
               </Col>
             </Row>
             <Row className="mt-2">
@@ -872,55 +829,6 @@ const CreateTask = ({
                                         removeFileFunction(data)
                                       }
                                     />
-                                    {/* <section className={styles["box_For_File"]}>
-                                      <Row>
-                                        <Col lg={10} md={10} sm={10}>
-                                          <Row className="mt-2">
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
-                                              <img
-                                                alt="File Format"
-                                                draggable={false}
-                                                src={getIconSource(
-                                                  getFileExtension(data.name)
-                                                )}
-                                                height="31.57px"
-                                                width="31.57px"
-                                              />
-                                              <span
-                                                className={styles["FileName"]}
-                                                title={data.name}
-                                              >
-                                                {data.name}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={2}
-                                          className="d-flex align-items-center justify-content-start mt-1"
-                                        >
-                                          <img
-                                            alt="dragger"
-                                            draggable={false}
-                                            src={RedCrossIcon}
-                                            height="20.76px"
-                                            width="20.76px"
-                                            className={styles["CrossIconClass"]}
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              removeFileFunction(index);
-                                            }}
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </section> */}
                                   </Col>
                                 </>
                               );
@@ -1006,21 +914,6 @@ const CreateTask = ({
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
-            {/* <Button
-                  text={t("Clone-meeting")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                />
-
-                <Button
-                  text={t("Delete-meeting")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                />
-
-                <Button
-                  text={t("Publish-the-meeting")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                /> */}
-
             <Button
               text={t("Cancel")}
               className={styles["Cancel_Button_Polls_meeting"]}

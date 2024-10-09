@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  TextField,
-  Button,
-  Modal,
-  Notification,
-  EmployeeCard,
-  SelectBox,
-} from "../../components/elements";
+import React, { useState } from "react";
+import { TextField, Button, Modal, SelectBox } from "../../components/elements";
 
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./UpdateGroupModal.module.css";

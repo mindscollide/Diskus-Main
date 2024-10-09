@@ -15,10 +15,7 @@ import NoMeetingsIcon from "../../../../../assets/images/No-Meetings.png";
 import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useSelector } from "react-redux";
 import {
-  ShowNextConfirmationModal,
   searchNewUserMeeting,
-  showCancelMeetingMaterial,
-  showPreviousConfirmationModal,
   meetingDetailsGlobalFlag,
   organizersGlobalFlag,
   agendaContributorsGlobalFlag,
@@ -243,29 +240,6 @@ const MeetingMaterial = ({
         );
       }
     }
-    // if (ext.toLowerCase().includes("pdf")) {
-    //   const documentData = {
-    //     taskId: record.agendaID,
-    //     commingFrom: 4,
-    //     fileName: record.displayFileName,
-    //     attachmentID: Number(record.originalFileName),
-    //   };
-    //   const documentDataJson = JSON.stringify(documentData);
-    //   window.open(
-    //     `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-    //       documentDataJson
-    //     )}`,
-    //     "_blank",
-    //     "noopener noreferrer"
-    //   );
-    // } else {
-    //   let data = {
-    //     FileID: Number(record.originalFileName),
-    //   };
-    //   dispatch(
-    //     DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
-    //   );
-    // }
   };
   // Modify your materialColoumn definition to handle parent and child agendas
   const materialColoumn = [
@@ -279,13 +253,14 @@ const MeetingMaterial = ({
           <div>
             <section
               className={styles["docx-name-title"]}
-              onClick={() => handleDoubeClick(record)}>
+              onClick={() => handleDoubeClick(record)}
+            >
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
-                alt=''
+                alt=""
                 width={"25px"}
                 height={"25px"}
-                className='me-2'
+                className="me-2"
               />
               <abbr title={`${text}`}>
                 <span className={styles["docx-name-title"]}>{text}</span>
@@ -315,7 +290,8 @@ const MeetingMaterial = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex gap-3 align-items-center justify-content-center'>
+                className="d-flex gap-3 align-items-center justify-content-center"
+              >
                 <Eye
                   fontSize={22}
                   cursor={
@@ -329,7 +305,6 @@ const MeetingMaterial = ({
                   onClick={() => handleClickOpenFile(record)}
                 />
                 <Button
-                  // disableBtn={ext !== "pdf" ? false : true}
                   text={t("Download")}
                   className={styles["downloadButton"]}
                   onClick={() => handleClickDownload(record)}
@@ -361,7 +336,6 @@ const MeetingMaterial = ({
   console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   const handleCancelButton = async () => {
-    // dispatch(showCancelMeetingMaterial(true));
     let searchData = {
       Date: "",
       Title: "",
@@ -377,17 +351,6 @@ const MeetingMaterial = ({
   };
 
   const handleSaveAndNext = () => {
-    // dispatch(ShowNextConfirmationModal(true));
-    // if (
-    //   Number(editorRole.status) === 10 &&
-    //   editorRole.role === "Agenda Contributor"
-    // ) {
-    //   setactionsPage(true);
-    //   setMeetingMaterial(false);
-    // } else {
-    //   setMeetingMaterial(false);
-    //   setMinutes(true);
-    // }
     setMeetingMaterial(false);
     setMinutes(true);
     dispatch(meetingDetailsGlobalFlag(false));
@@ -421,25 +384,19 @@ const MeetingMaterial = ({
       )
     );
   };
-  const handlePreviousButtonMeetingMaterial = () => {
-    // dispatch(showPreviousConfirmationModal(true));
-    setAgenda(true);
-    setMeetingMaterial(false);
-  };
 
   return (
     <section>
-      <Row className='mt-5'>
+      <Row className="mt-5">
         <Col lg={12} md={12} sm={12}>
           {rows.length === 0 && !Loading ? (
             <>
               <ResultMessage
                 icon={
                   <img
-                    alt='NonMeeting'
-                    draggable='false'
+                    alt="NonMeeting"
+                    draggable="false"
                     src={NoMeetingsIcon}
-                    // className="nodata-table-icon"
                   />
                 }
               />
@@ -448,7 +405,8 @@ const MeetingMaterial = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <span className={styles["No-meeting-material-title"]}>
                     {t("No-Meeting-Material")}
                   </span>
@@ -461,7 +419,7 @@ const MeetingMaterial = ({
                 column={materialColoumn}
                 scroll={{ y: "46vh" }}
                 pagination={false}
-                className='Polling_table'
+                className="Polling_table"
                 rows={rows}
               />
             </>
@@ -473,33 +431,21 @@ const MeetingMaterial = ({
           lg={12}
           md={12}
           sm={12}
-          className='d-flex justify-content-end gap-2 mt-3'>
-          {/* <Button
-            text={t("Clone-meeting")}
-            className={styles["Cancel_Classname"]}
-          /> */}
+          className="d-flex justify-content-end gap-2 mt-3"
+        >
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Classname"]}
             onClick={handleCancelButton}
           />
-          {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} /> */}
-          {/* <Button
-            text={t("Previous")}
-            className={styles["Save_Classname"]}
-            onClick={handlePreviousButtonMeetingMaterial}
-          /> */}
+
           <Button
             text={t("Next")}
             className={styles["Save_Classname"]}
             onClick={handleSaveAndNext}
             disableBtn={Number(editorRole.status) === 10 ? false : true}
           />
-          {/* <Button
-            text={t("Save")}
-            className={styles["Save_Classname"]}
-            onClick={handleSaveAndNext}
-          /> */}
+
           {Number(editorRole.status) === 11 ||
           Number(editorRole.status) === 12 ? (
             <Button
@@ -524,14 +470,6 @@ const MeetingMaterial = ({
               onClick={handlePublish}
             />
           )}
-          {/* {Number(editorRole.status) === 11 ||
-          Number(editorRole.status) === 12 ? (
-            <Button
-              text={t("Publish")}
-              className={styles["Save_Classname"]}
-              onClick={handlePublish}
-            />
-          ) : null} */}
         </Col>
       </Row>
       {cancelMeetingMaterial && (

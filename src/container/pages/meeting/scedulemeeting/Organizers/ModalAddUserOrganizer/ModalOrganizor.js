@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ModalOrganizor.module.css";
-import {
-  Modal,
-  Table,
-  TextField,
-  Button,
-  Loader,
-  Notification,
-  InputSearchFilter,
-} from "../../../../../../components/elements";
+import { Modal, Button } from "../../../../../../components/elements";
 import {
   showAddUserModal,
   showNotifyOrganizors,
 } from "../../../../../../store/actions/NewMeetingActions";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
-import committeicon from "../../../../../../assets/images/Group 2584.png";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import {
   GetAllCommitteesUsersandGroups,
@@ -24,7 +15,6 @@ import {
 } from "../../../../../../store/actions/MeetingOrganizers_action";
 import { useDispatch, useSelector } from "react-redux";
 import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
-import profile from "../../../../../../assets/images/newprofile.png";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
@@ -60,10 +50,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
     if (Object.keys(selectedsearch).length > 0) {
       try {
         selectedsearch.map((seledtedData, index) => {
-          console.log(
-            seledtedData,
-            "seledtedDataseledtedDataseledtedDataseledtedData"
-          );
           if (seledtedData.type === 1) {
             let check1 = newOrganizersData.groups.find(
               (data, index) => data.groupID === seledtedData.value
@@ -264,6 +250,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     >
                       <img
                         src={GroupIcon}
+                        alt=""
                         height="16.45px"
                         width="18.32px"
                         draggable="false"
@@ -297,6 +284,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     >
                       <img
                         src={committeeicon}
+                        alt=""
                         width="21.71px"
                         height="18.61px"
                         draggable="false"
@@ -314,10 +302,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
           });
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          console.log(
-            newOrganizersData.organizationUsers,
-            "organizationUsersorganizationUsersorganizationUsers"
-          );
           newOrganizersData.organizationUsers.map((a, index) => {
             let newData = {
               value: a.userID,
@@ -333,7 +317,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        // src={}
                         alt=""
                         className={styles["UserProfilepic"]}
                         width="18px"
@@ -359,10 +342,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
     }
   }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
 
-  //Drop Down Values
-  const onChangeSearch = (e) => {
-    setInputSearchValue(e.target.value.trimStart());
-  };
   const onSearch = (name, id, type, item) => {
     let newOrganizersData =
       MeetingOrganizersReducer.AllUserCommitteesGroupsData;
@@ -605,6 +584,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     <img
                       draggable={false}
                       src={BlackCrossIcon}
+                      alt=""
                       className={"cursor-pointer"}
                       width="16px"
                       height="16px"
@@ -709,13 +689,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
                 sm={12}
                 className="d-flex justify-content-end"
               >
-                {/* <Row className="mt-2">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end"
-                  > */}
                 {membersOrganizers.length > 0 && (
                   <Button
                     text={t("Done")}
@@ -723,9 +696,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     onClick={saveOrganizers}
                   />
                 )}
-
-                {/* </Col> */}
-                {/* </Row> */}
               </Col>
             </Row>
           </>

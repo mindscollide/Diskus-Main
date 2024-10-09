@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import {
-  getAllAgendaContributorApi,
   searchNewUserMeeting,
   showCancelModalAgendaContributor,
 } from "../../../../../../store/actions/NewMeetingActions";

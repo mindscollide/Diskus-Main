@@ -4,10 +4,6 @@
   color: #6172d6;
 }
 
-/* .modal-class-width {
-  width: 1150px !important;
-} */
-
 .custom-modal-dialog {
   max-width: 1470px; /* Set your desired max-width */
   width: 100%; /* Adjust the width as needed */
@@ -127,9 +123,6 @@
 }
 
 .TotalCount {
-  /* width: 117px !important; */
-  /* display: flex !important;
-  justify-content: center !important; */
   color: #6172d6;
   font-weight: 600 !important;
   margin-left: 35px !important;
@@ -141,11 +134,6 @@
   min-width: 103% !important ;
   border: 1px solid #e1e1e1 !important;
   margin-top: 10px !important;
-}
-
-.OverAll_Padding {
-  /* max-width: 900px !important;
-  overflow-x: scroll !important; */
 }
 
 .OuterBoxCheck {
@@ -184,8 +172,6 @@
   font-weight: 600 !important;
   font-size: 16px !important;
   color: #6172d6;
-
-  /* padding-left: 17px !important; */
 }
 
 .Sizing {
@@ -263,9 +249,3 @@
   flex-direction: column !important;
   justify-content: center !important;
 }
-
-/* .schedule-footer-class {
-  display: block;
-  margin: 0 !important;
-  padding: 0 !important;
-} */
