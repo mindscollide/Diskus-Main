@@ -38,6 +38,8 @@ import {
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
+  ProposedMeetingformatDate,
+  ProposedMeetingformatTime,
 } from "../../../../../commen/functions/time_formatter";
 import {
   SaveMeetingDetialsNewApiFunction,
@@ -72,6 +74,10 @@ const ProposedNewMeeting = ({
   const getAllParticipants = useSelector(
     (state) => state.NewMeetingreducer.getAllSavedparticipants
   );
+  const getAllProposedDatesEditFlow = useSelector(
+    (state) => state.NewMeetingreducer.getAllProposedDates
+  );
+
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
@@ -126,7 +132,6 @@ const ProposedNewMeeting = ({
         getAllParticipants.length > 0 &&
         getAllParticipants !== undefined
       ) {
-        console.log(getAllParticipants, "getAllParticipantsgetAllParticipants");
         setEditFlowParticipant(getAllParticipants);
       }
     } catch (error) {
@@ -134,7 +139,6 @@ const ProposedNewMeeting = ({
     }
   }, [getAllParticipants]);
 
-  console.log(editFlowParticipant, "editFlowParticipanteditFlowParticipant");
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
@@ -161,6 +165,60 @@ const ProposedNewMeeting = ({
       endTime: getEndTime?.newFormatTime,
     },
   ]);
+  // State for Editing Proposed Dates
+  const [editProposedOnDates, setEditProposedOnDates] = useState([]);
+
+  // Getting all proposed Dates data
+  useEffect(() => {
+    try {
+      if (
+        getAllProposedDatesEditFlow &&
+        getAllProposedDatesEditFlow !== undefined
+      ) {
+        let DatesDataEditFlow =
+          getAllProposedDatesEditFlow.meetingProposedDates;
+        let dateArray = DatesDataEditFlow.map((datedata) => ({
+          ProposedDate: datedata.proposedDate,
+          StartTime: datedata.startTime,
+          EndTime: datedata.endTime,
+        }));
+
+        setEditProposedOnDates(dateArray);
+
+        console.log(dateArray, "Updated dateArray");
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [getAllProposedDatesEditFlow]);
+
+  //Setting the Editted Value to initial state of the proposed dates Edit Flow
+  useEffect(() => {
+    if (isProposedMeetEdit && editProposedOnDates.length > 0) {
+      // Map over the editProposedOnDates to update the rows state
+      const updatedRows = editProposedOnDates.map((proposedDate) => {
+        console.log(proposedDate, "proposedDateproposedDate");
+        return {
+          selectedOption: proposedDate.ProposedDate,
+          dateForView: ProposedMeetingformatDate(proposedDate.ProposedDate), //Formatting Time
+          startDate: ProposedMeetingformatTime(proposedDate.StartTime), //Formatting Time
+          startTime: proposedDate.StartTime,
+          endDate: ProposedMeetingformatTime(proposedDate.EndTime), //Formatting Time
+          endTime: proposedDate.EndTime,
+        };
+      });
+      console.log(updatedRows, "updatedRowsupdatedRows");
+      // Update the rows state with the new values
+      setRows(updatedRows);
+    }
+  }, []);
+
+  console.log(rows[0].selectedOption, "updatedRowsupdatedRows");
+  console.log(rows[0].dateForView, "updatedRowsupdatedRows");
+  console.log(rows[0].startDate, "updatedRowsupdatedRows");
+  console.log(rows[0].startTime, "updatedRowsupdatedRows");
+  console.log(rows[0].endDate, "updatedRowsupdatedRows");
+  console.log(rows[0].endTime, "updatedRowsupdatedRows");
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
@@ -318,7 +376,6 @@ const ProposedNewMeeting = ({
     isProposedMeetEdit,
     editFlowParticipant,
   ]);
-
   //Getting all meeting Types
   useEffect(() => {
     if (
@@ -359,11 +416,17 @@ const ProposedNewMeeting = ({
     setParticipantUsers(event);
   };
 
-  //Removing the Added Participants
-  const hanleRemovingParticipants = (index) => {
+  //Removing the Added Participants Edit Flow
+  const hanleRemovingParticipantsEditFlow = (index) => {
     let removeParticipant = [...editFlowParticipant];
     removeParticipant.splice(index, 1);
     setEditFlowParticipant(removeParticipant);
+  };
+  //Removing the Added Participants
+  const hanleRemovingParticipants = (index) => {
+    let removeParticipant = [...membersParticipants];
+    removeParticipant.splice(index, 1);
+    setMembersParticipants(removeParticipant);
   };
 
   //Adding the Dates Rows
@@ -746,7 +809,6 @@ const ProposedNewMeeting = ({
     let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
     console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
 
-    // Initialize the appropriate array based on isProposedMeetEdit
     let tem = isProposedMeetEdit
       ? [...editFlowParticipant]
       : [...membersParticipants];
@@ -873,10 +935,11 @@ const ProposedNewMeeting = ({
         setMembersParticipants(result);
       }
 
-      // Clear participant users after adding
       setParticipantUsers([]);
     }
   };
+
+  console.log(rows.selectedOption);
 
   return (
     <section>
@@ -1065,7 +1128,7 @@ const ProposedNewMeeting = ({
                                                   style={{ cursor: "pointer" }}
                                                   alt=""
                                                   onClick={() =>
-                                                    hanleRemovingParticipants(
+                                                    hanleRemovingParticipantsEditFlow(
                                                       index
                                                     )
                                                   }
@@ -1203,6 +1266,7 @@ const ProposedNewMeeting = ({
                   >
                     {rows.length > 0
                       ? rows.map((data, index) => {
+                          console.log(data, "datadatadatadatadata");
                           return (
                             <>
                               <Row key={index}>
@@ -1285,7 +1349,6 @@ const ProposedNewMeeting = ({
                                         locale={localValue}
                                         format="hh:mm A"
                                         selected={data.startDate}
-                                        // onOpen={() => handleOpenStartTime(index)}
                                         value={data.startTime}
                                         editable={false}
                                         plugins={[<TimePicker hideSeconds />]}
@@ -1339,12 +1402,7 @@ const ProposedNewMeeting = ({
                                         alt=""
                                       />
                                     </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={12}
-                                      // className="d-flex justify-content-end"
-                                    >
+                                    <Col lg={3} md={3} sm={12}>
                                       <DatePicker
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
@@ -1355,8 +1413,6 @@ const ProposedNewMeeting = ({
                                         locale={localValue}
                                         value={data.endTime}
                                         format="hh:mm A"
-                                        // onOpen={() => handleOpenEndTime(index)}
-                                        // onOpen={() => handleOpenStartTime()}
                                         selected={data.endDate}
                                         plugins={[<TimePicker hideSeconds />]}
                                         editable={false}
