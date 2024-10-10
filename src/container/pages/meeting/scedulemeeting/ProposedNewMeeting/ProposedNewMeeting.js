@@ -13,7 +13,6 @@ import {
   Button,
   TextField,
   Notification,
-  InputSearchFilter,
 } from "../../../../../components/elements";
 import { useState } from "react";
 import DatePicker from "react-multi-date-picker";
@@ -71,14 +70,16 @@ const ProposedNewMeeting = ({
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
+  const getAllParticipants = useSelector(
+    (state) => state.NewMeetingreducer.getAllSavedparticipants
+  );
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
   const [sendResponseVal, setSendResponseVal] = useState("");
   const [participantUsers, setParticipantUsers] = useState([]);
-  const [members, setMembers] = useState([]);
   const [membersParticipants, setMembersParticipants] = useState([]);
-  const [selectedsearch, setSelectedsearch] = useState([]);
+  const [editFlowParticipant, setEditFlowParticipant] = useState([]);
   const [meetingTypeDetails, setMeetingTypeDetails] = useState({
     MeetingType: {
       PK_MTID: 1,
@@ -94,6 +95,7 @@ const ProposedNewMeeting = ({
     MeetingTitle: "",
     Description: "",
   });
+
   //Now Working on Edit Flow Proposed new  Meeting
   useEffect(() => {
     try {
@@ -116,7 +118,24 @@ const ProposedNewMeeting = ({
       console.log(error, "error");
     }
   }, [NewMeetingreducer.getAllMeetingDetails]);
-  console.log(isProposedMeetEdit, "isProposedMeetEdit");
+
+  //Getting All the Participants for edit flow
+  useEffect(() => {
+    try {
+      if (
+        getAllParticipants &&
+        getAllParticipants.length > 0 &&
+        getAllParticipants !== undefined
+      ) {
+        console.log(getAllParticipants, "getAllParticipantsgetAllParticipants");
+        setEditFlowParticipant(getAllParticipants);
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [getAllParticipants]);
+
+  console.log(editFlowParticipant, "editFlowParticipanteditFlowParticipant");
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
@@ -149,7 +168,6 @@ const ProposedNewMeeting = ({
     dispatch(getAllCommitteesandGroups(navigate, t, false));
     dispatch(newMeetingGlobalLoader(false));
     return () => {
-      setMembers([]);
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",
@@ -159,12 +177,14 @@ const ProposedNewMeeting = ({
       });
     };
   }, []);
+
   //Getting All Groups And Committees and users data from polls api
   useEffect(() => {
     let newParticpantData = PollsReducer.gellAllCommittesandGroups;
     try {
       if (newParticpantData !== null && newParticpantData !== undefined) {
         let temp = [];
+
         if (Object.keys(newParticpantData).length > 0) {
           if (Object.keys(newParticpantData.groups).length > 0) {
             newParticpantData.groups.forEach((a, index) => {
@@ -194,12 +214,12 @@ const ProposedNewMeeting = ({
                     </Row>
                   </>
                 ),
-                // profilePic: GroupIcon,
                 type: 1,
               };
               temp.push(newData);
             });
           }
+
           if (Object.keys(newParticpantData.committees).length > 0) {
             newParticpantData.committees.forEach((a, index) => {
               let newData = {
@@ -228,23 +248,34 @@ const ProposedNewMeeting = ({
                     </Row>
                   </>
                 ),
-                // profilePic: committeeicon,
-
                 type: 2,
               };
               temp.push(newData);
             });
           }
+
           if (Object.keys(newParticpantData.organizationUsers).length > 0) {
-            let filterOutCreatorUser =
-              newParticpantData?.organizationUsers?.filter(
-                (data, index) => Number(data?.userID) !== Number(userID)
+            let filteredUsers = newParticpantData.organizationUsers;
+
+            // If isProposedMeetEdit is true, filter out users that are in editFlowParticipant
+            if (isProposedMeetEdit && editFlowParticipant?.length > 0) {
+              const editFlowParticipantIDs = editFlowParticipant.map(
+                (p) => p.userID
               );
+              filteredUsers = newParticpantData.organizationUsers.filter(
+                (data) => !editFlowParticipantIDs.includes(data.userID)
+              );
+            }
+
+            // Filter out the creator user
+            let filterOutCreatorUser = filteredUsers.filter(
+              (data, index) => Number(data?.userID) !== Number(userID)
+            );
+
             filterOutCreatorUser.forEach((a, index) => {
               let newData = {
                 value: a.userID,
                 name: a.userName,
-                // profilePic: a?.profilePicture?.displayProfilePictureName,
                 label: (
                   <>
                     <Row>
@@ -256,7 +287,6 @@ const ProposedNewMeeting = ({
                       >
                         <img
                           src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                          // src={}
                           alt=""
                           className={styles["UserProfilepic"]}
                           width="18px"
@@ -275,13 +305,21 @@ const ProposedNewMeeting = ({
               temp.push(newData);
             });
           }
+
           setDropdowndata(temp);
         } else {
           setDropdowndata([]);
         }
       }
-    } catch {}
-  }, [PollsReducer.gellAllCommittesandGroups]);
+    } catch (error) {
+      console.error("Error processing participant data:", error);
+    }
+  }, [
+    PollsReducer.gellAllCommittesandGroups,
+    isProposedMeetEdit,
+    editFlowParticipant,
+  ]);
+
   //Getting all meeting Types
   useEffect(() => {
     if (
@@ -324,9 +362,9 @@ const ProposedNewMeeting = ({
 
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
-    let removeParticipant = [...membersParticipants];
+    let removeParticipant = [...editFlowParticipant];
     removeParticipant.splice(index, 1);
-    setMembersParticipants(removeParticipant);
+    setEditFlowParticipant(removeParticipant);
   };
 
   //Adding the Dates Rows
@@ -951,89 +989,178 @@ const ProposedNewMeeting = ({
                     sm={12}
                     className={styles["Scroller_ProposedMeeting"]}
                   >
-                    <Row className="mt-2">
-                      {membersParticipants.length > 0
-                        ? membersParticipants.map((participant, index) => {
-                            console.log(participant, "participantparticipant");
-                            return (
-                              <>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={12}
-                                  className="mt-2"
-                                  key={index}
-                                >
-                                  <Row className="m-0 p-0">
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className={styles["Box_for_Assignee"]}
-                                    >
-                                      <Row className="mt-1">
-                                        <Col
-                                          lg={10}
-                                          md={10}
-                                          sm={12}
-                                          className="d-flex gap-2 align-items-center"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={`data:image/jpeg;base64,${participant.displayPicture}`}
-                                            width="50px"
-                                            alt=""
-                                            height="50px"
-                                            className={styles["ProfilePic"]}
-                                          />
-                                          <span
+                    {isProposedMeetEdit ? (
+                      <>
+                        <Row className="mt-2">
+                          {editFlowParticipant.length > 0
+                            ? editFlowParticipant.map(
+                                (editFlowparticipant, index) => {
+                                  return (
+                                    <>
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={12}
+                                        className="mt-2"
+                                        key={index}
+                                      >
+                                        <Row className="m-0 p-0">
+                                          <Col
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
                                             className={
-                                              styles["ParticipantName"]
+                                              styles["Box_for_Assignee"]
                                             }
                                           >
-                                            {participant.userName}
-                                          </span>
-                                        </Col>
+                                            <Row className="mt-1">
+                                              <Col
+                                                lg={10}
+                                                md={10}
+                                                sm={12}
+                                                className="d-flex gap-2 align-items-center"
+                                              >
+                                                <img
+                                                  draggable={false}
+                                                  src={`data:image/jpeg;base64,${editFlowparticipant.displayPicture}`}
+                                                  width="50px"
+                                                  alt=""
+                                                  height="50px"
+                                                  className={
+                                                    styles["ProfilePic"]
+                                                  }
+                                                />
+                                                <span
+                                                  className={
+                                                    styles["ParticipantName"]
+                                                  }
+                                                >
+                                                  {editFlowparticipant.userName}
+                                                </span>
+                                              </Col>
+                                              <Col
+                                                lg={2}
+                                                md={2}
+                                                sm={2}
+                                                className="d-flex  align-items-center"
+                                              >
+                                                <img
+                                                  src={CrossIcon}
+                                                  width="14px"
+                                                  height="14px"
+                                                  draggable="false"
+                                                  style={{ cursor: "pointer" }}
+                                                  alt=""
+                                                  onClick={() =>
+                                                    hanleRemovingParticipants(
+                                                      index
+                                                    )
+                                                  }
+                                                />
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </>
+                                  );
+                                }
+                              )
+                            : null}{" "}
+                        </Row>
+                      </>
+                    ) : (
+                      <>
+                        <Row className="mt-2">
+                          {membersParticipants.length > 0
+                            ? membersParticipants.map((participant, index) => {
+                                console.log(
+                                  participant,
+                                  "participantparticipant"
+                                );
+                                return (
+                                  <>
+                                    <Col
+                                      lg={6}
+                                      md={6}
+                                      sm={12}
+                                      className="mt-2"
+                                      key={index}
+                                    >
+                                      <Row className="m-0 p-0">
                                         <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={2}
-                                          className="d-flex  align-items-center"
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={styles["Box_for_Assignee"]}
                                         >
-                                          <img
-                                            src={CrossIcon}
-                                            width="14px"
-                                            height="14px"
-                                            draggable="false"
-                                            style={{ cursor: "pointer" }}
-                                            alt=""
-                                            onClick={() =>
-                                              hanleRemovingParticipants(index)
-                                            }
-                                          />
+                                          <Row className="mt-1">
+                                            <Col
+                                              lg={10}
+                                              md={10}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                draggable={false}
+                                                src={`data:image/jpeg;base64,${participant.displayPicture}`}
+                                                width="50px"
+                                                alt=""
+                                                height="50px"
+                                                className={styles["ProfilePic"]}
+                                              />
+                                              <span
+                                                className={
+                                                  styles["ParticipantName"]
+                                                }
+                                              >
+                                                {participant.userName}
+                                              </span>
+                                            </Col>
+                                            <Col
+                                              lg={2}
+                                              md={2}
+                                              sm={2}
+                                              className="d-flex  align-items-center"
+                                            >
+                                              <img
+                                                src={CrossIcon}
+                                                width="14px"
+                                                height="14px"
+                                                draggable="false"
+                                                style={{ cursor: "pointer" }}
+                                                alt=""
+                                                onClick={() =>
+                                                  hanleRemovingParticipants(
+                                                    index
+                                                  )
+                                                }
+                                              />
+                                            </Col>
+                                          </Row>
                                         </Col>
                                       </Row>
                                     </Col>
-                                  </Row>
-                                </Col>
-                              </>
-                            );
-                          })
-                        : null}
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error && membersParticipants.length === 0
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {t("Add-at-least-one-participant")}
-                          </p>
-                        </Col>
-                      </Row>
-                    </Row>
+                                  </>
+                                );
+                              })
+                            : null}
+                          <Row>
+                            <Col>
+                              <p
+                                className={
+                                  error && membersParticipants.length === 0
+                                    ? ` ${styles["errorMessage-inLogin"]} `
+                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                }
+                              >
+                                {t("Add-at-least-one-participant")}
+                              </p>
+                            </Col>
+                          </Row>
+                        </Row>
+                      </>
+                    )}
                   </Col>
                 </Row>
               </Col>
