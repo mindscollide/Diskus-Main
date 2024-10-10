@@ -155,6 +155,7 @@ const initialState = {
   getDashboardMeetingData: null,
   validateEncryptedStringParticipantProposed: null,
   getMeetingUsersRSVP: null,
+  meetingReminderNotification:null
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1994,6 +1995,13 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         meetingStatusNotConductedMqttData: action.response,
       };
+    }
+
+    case actions.MEETING_REMINDER_NOTIFICATION: {
+      return {
+        ...state,
+        meetingReminderNotification: action.response
+      }
     }
 
     //Validate Empty String User Availibility For Meeting

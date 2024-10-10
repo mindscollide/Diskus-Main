@@ -2144,5 +2144,7 @@
   "Meeting-link-copied": "Meeting link copied",
   "Unable-to-generate-meeting-link": "Unable to generate meeting link",
   "Your-vote-is-submitted-successfully": "Your vote is submitted successfully",
-  "has-requested-to-join-this-video-call": "has requested to join this video call"
+  "has-requested-to-join-this-video-call": "has requested to join this video call",
+  "Start-time": "Start time",
+  "End-time": "End time"
 }

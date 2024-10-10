@@ -251,6 +251,15 @@ const EditUserModal = ({ editModalData }) => {
           },
         });
       }
+    } else if (name === "MobileNumber" && value === "") {
+      setEditUserModalValues({
+        ...editUserModalValues,
+        MobileNumber: {
+          value: "",
+          errorMessage: "",
+          errorStatus: true,
+        },
+      });
     }
   };
 
@@ -522,7 +531,6 @@ const EditUserModal = ({ editModalData }) => {
                     </Col>
                   </Row>
                 </Col>
-
               </Row>
             </section>
           </>

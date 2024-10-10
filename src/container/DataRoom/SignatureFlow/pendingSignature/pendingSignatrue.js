@@ -344,61 +344,66 @@ const SignatureViewer = () => {
   // === Get  the file details by Id from API and Set it === //
   useEffect(() => {
     if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
-      let currentUserID =
-        localStorage.getItem("userID") !== null
-          ? Number(localStorage.getItem("userID"))
-          : 0;
+      try {
+        let currentUserID =
+          localStorage.getItem("userID") !== null
+            ? Number(localStorage.getItem("userID"))
+            : 0;
 
-      let HideArray = [];
-      let ReadArray = [];
+        let HideArray = [];
+        let ReadArray = [];
 
-      // Iterate over each object in the data array
-      userAnnotationsRef.current.forEach((obj) => {
-        // Check if userID does not match currentID
-        if (obj.userID !== currentUserID) {
-          // Iterate over xml array in the current object
-          obj.xml.forEach((item) => {
-            // Extract all 'name' attributes from ffield excluding font tag
-            let ffield = item.ffield;
-            let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
-            if (matches) {
-              matches.forEach((match) => {
-                // Extract the name value and push into nameArray
-                let name = match.match(/name="([^"]+)"/)[1];
-                if (hiddenUsersRef.current.includes(obj.userID)) {
-                  HideArray.push(name);
-                } else if (readOnlyUsersRef.current.includes(obj.userID)) {
-                  ReadArray.push(name);
-                }
-              });
-            }
-          });
-        }
-      });
-      let newProcessXmlForReadOnly = processXmlForReadOnly(
-        getDataroomAnnotation.annotationString,
-        ReadArray
-      );
+        // Iterate over each object in the data array
+        userAnnotationsRef.current.forEach((obj) => {
+          // Check if userID does not match currentID
+          if (obj.userID !== currentUserID) {
+            // Iterate over xml array in the current object
+            obj.xml.forEach((item) => {
+              // Extract all 'name' attributes from ffield excluding font tag
+              let ffield = item.ffield;
+              let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
+              if (matches) {
+                matches.forEach((match) => {
+                  // Extract the name value and push into nameArray
+                  let name = match.match(/name="([^"]+)"/)[1];
+                  if (hiddenUsersRef.current.includes(obj.userID)) {
+                    HideArray.push(name);
+                  } else if (readOnlyUsersRef.current.includes(obj.userID)) {
+                    ReadArray.push(name);
+                  }
+                });
+              }
+            });
+          }
+        });
+        let newProcessXmlForReadOnly = processXmlForReadOnly(
+          getDataroomAnnotation.annotationString,
+          ReadArray
+        );
 
-      // Process the XML to hide fields
-      const { updatedXmlString, removedItems } = processXmlToHideFields(
-        newProcessXmlForReadOnly,
-        HideArray
-      );
+        // Process the XML to hide fields
+        const { updatedXmlString, removedItems } = processXmlToHideFields(
+          newProcessXmlForReadOnly,
+          HideArray
+        );
 
-      setRemoveXmlAfterHideDAta(removedItems);
-      const readonlyFreetextXmlString = readOnlyFreetextElements(
-        updatedXmlString,
-        readOnlyUsersRef.current
-      );
-      const { hideFreetextXmlString, removedHideFreetextElements } =
-        hideFreetextElements(readonlyFreetextXmlString, hiddenUsersRef.current);
-      setRemoveXmlAfterFreetextHideDAta(removedHideFreetextElements);
-      setPdfResponceData((prevData) => ({
-        ...prevData,
-        xfdfData: hideFreetextXmlString,
-        attachmentBlob: getDataroomAnnotation.attachmentBlob,
-      }));
+        setRemoveXmlAfterHideDAta(removedItems);
+        const readonlyFreetextXmlString = readOnlyFreetextElements(
+          updatedXmlString,
+          readOnlyUsersRef.current
+        );
+        const { hideFreetextXmlString, removedHideFreetextElements } =
+          hideFreetextElements(
+            readonlyFreetextXmlString,
+            hiddenUsersRef.current
+          );
+        setRemoveXmlAfterFreetextHideDAta(removedHideFreetextElements);
+        setPdfResponceData((prevData) => ({
+          ...prevData,
+          xfdfData: hideFreetextXmlString,
+          attachmentBlob: getDataroomAnnotation.attachmentBlob,
+        }));
+      } catch (error) {}
     }
   }, [getDataroomAnnotation]);
   // === End === //
@@ -406,320 +411,322 @@ const SignatureViewer = () => {
   // === It's triggered when we update the blob file in our local state ===
   useEffect(() => {
     if (pdfResponceData.attachmentBlob !== "") {
-      WebViewer(
-        {
-          path: "/webviewer/lib",
-          showLocalFilePicker: true,
-          fullAPI: true,
-          licenseKey:
-            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
-        },
-        viewer.current
-      ).then(async (instance) => {
-        setInstance(instance);
-        instance.UI.loadDocument(
-          handleBlobFiles(pdfResponceData.attachmentBlob),
+      try {
+        WebViewer(
           {
-            filename: pdfResponceData.title,
-          }
-        );
+            path: "/webviewer/lib",
+            showLocalFilePicker: true,
+            fullAPI: true,
+            licenseKey:
+              "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
+          },
+          viewer.current
+        ).then(async (instance) => {
+          setInstance(instance);
+          instance.UI.loadDocument(
+            handleBlobFiles(pdfResponceData.attachmentBlob),
+            {
+              filename: pdfResponceData.title,
+            }
+          );
 
-        const { documentViewer, annotationManager, Tools } = instance.Core;
+          const { documentViewer, annotationManager, Tools } = instance.Core;
 
-        // Add event listener for when the document is loaded
-        documentViewer.addEventListener("documentLoaded", async () => {
-          // Ensure the annotations are fully loaded
-          await documentViewer.getAnnotationsLoadedPromise();
+          // Add event listener for when the document is loaded
+          documentViewer.addEventListener("documentLoaded", async () => {
+            // Ensure the annotations are fully loaded
+            await documentViewer.getAnnotationsLoadedPromise();
 
-          // If XFDF data exists, import it
-          if (pdfResponceData.xfdfData !== "" && annotationManager) {
+            // If XFDF data exists, import it
+            if (pdfResponceData.xfdfData !== "" && annotationManager) {
+              try {
+                await annotationManager.importAnnotations(
+                  pdfResponceDataRef.current
+                );
+              } catch (error) {
+                console.error("Error importing annotations:", error);
+              }
+            }
+
+            // Refresh to apply the changes
+            documentViewer.refreshAll();
+            documentViewer.updateView();
+          });
+
+          // Disable header tools and elements
+          instance.UI.disableTools([Tools.disableTextSelection]);
+          instance.UI.disableElements([
+            "colorPalette",
+            "underlineToolGroupButton",
+            "textSelectButton",
+            "textSelectButtonGroup",
+            "textSelectButtonGroupButton",
+            "textPopup",
+            "outlinesPanelButton",
+            "comboBoxFieldToolGroupButton",
+            "listBoxFieldToolGroupButton",
+            "toolsOverlay",
+            "toolbarGroup-Shapes",
+            "toolbarGroup-Edit",
+            "toolbarGroup-Insert",
+            "shapeToolGroupButton",
+            "menuButton",
+            "freeHandHighlightToolGroupButton",
+            "underlineToolGroupButton",
+            "freeHandToolGroupButton",
+            "stickyToolGroupButton",
+            "squigglyToolGroupButton",
+            "strikeoutToolGroupButton",
+            "notesPanel",
+            "viewControlsButton",
+            "selectToolButton",
+            "toggleNotesButton",
+            "searchButton",
+            "freeTextToolGroupButton",
+            "crossStampToolButton",
+            "checkStampToolButton",
+            "dotStampToolButton",
+            "rubberStampToolGroupButton",
+            "dateFreeTextToolButton",
+            "eraserToolButton",
+            "panToolButton",
+            "signatureToolGroupButton",
+            "viewControlsOverlay",
+            "contextMenuPopup",
+            "signaturePanelButton",
+            "annotationPopup",
+            "textPopup",
+            "richTextPopup",
+            "toolbarGroup-Annotate",
+            "leftPanelButton",
+            "zoomOverlayButton",
+            "toolbarGroup-Forms",
+          ]);
+
+          // Custom header buttons
+          const handleClickDeclineBtn = () => {
+            setReasonModal(true);
+            // alert("Decline Button Clicked");
+          };
+
+          const handleClickSaveBtn = async () => {
             try {
-              await annotationManager.importAnnotations(
-                pdfResponceDataRef.current
+              const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
+              let currentUserID =
+                localStorage.getItem("userID") !== null
+                  ? Number(localStorage.getItem("userID"))
+                  : 0;
+              // this one sent do save signature document
+              let HideArray = [];
+              let ReadArray = [];
+
+              // Iterate over each object in the data array
+              await userAnnotationsRef.current.forEach((obj) => {
+                // Check if userID does not match currentID
+                if (obj.userID !== currentUserID) {
+                  // Iterate over xml array in the current object
+                  obj.xml.forEach((item) => {
+                    // Extract all 'name' attributes from ffield excluding font tag
+                    let ffield = item.ffield;
+                    let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
+                    if (matches) {
+                      matches.forEach((match) => {
+                        // Extract the name value and push into nameArray
+                        let name = match.match(/name="([^"]+)"/)[1];
+                        if (hiddenUsersRef.current.includes(obj.userID)) {
+                          HideArray.push(name);
+                        } else if (
+                          readOnlyUsersRef.current.includes(obj.userID)
+                        ) {
+                          ReadArray.push(name);
+                        }
+                      });
+                    }
+                  });
+                }
+              });
+
+              let newProcessXmlForReadOnly = await revertProcessXmlForReadOnly(
+                xfdfString,
+                ReadArray
+              );
+
+              const revertedHideFieldsXml = await revertProcessXmlToHideFields(
+                newProcessXmlForReadOnly,
+                removeXmlAfterHideDAtaRef.current
+              );
+
+              const afterAddReadOnlyFreetextElements =
+                await revertReadOnlyFreetextElements(
+                  revertedHideFieldsXml,
+                  readOnlyUsersRef.current
+                );
+
+              const afterAddRevertHideFreetextElements =
+                await revertHideFreetextElements(
+                  afterAddReadOnlyFreetextElements,
+                  removeXmlAfterFreetextHideDAtaRef.current
+                );
+
+              const parser = new DOMParser();
+              const mainXmlDoc = parser.parseFromString(
+                afterAddRevertHideFreetextElements,
+                "text/xml"
+              );
+
+              function existsInMainXML(name, type, mainXmlDoc) {
+                const elements = mainXmlDoc.querySelectorAll(
+                  `${type}[name="${name}"]`
+                );
+                return elements.length > 0;
+              }
+              let covert = userAnnotationsRef.current.map((user) => {
+                let filteredXml = user.xml.filter((item) => {
+                  const ffieldDoc = parser.parseFromString(
+                    item.ffield,
+                    "text/xml"
+                  );
+                  const widgetDoc = parser.parseFromString(
+                    item.widget,
+                    "text/xml"
+                  );
+                  const ffieldName =
+                    ffieldDoc.documentElement.getAttribute("name");
+                  const widgetName =
+                    widgetDoc.documentElement.getAttribute("name");
+
+                  return (
+                    existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
+                    existsInMainXML(widgetName, "widget", mainXmlDoc)
+                  );
+                });
+
+                return { ...user, xml: filteredXml };
+              });
+              let convertData = [];
+              covert.forEach((data) => {
+                const xmlListStrings = data.xml.map((xmlObj) =>
+                  JSON.stringify(xmlObj)
+                );
+                convertData.push({
+                  ActorID: data.actorID,
+                  xmlList: xmlListStrings,
+                });
+              });
+
+              // add annotation  of files attachment api
+              let addAnnoatationofFilesAttachment = {
+                FileID: Number(docWorkflowID),
+                AnnotationString: afterAddRevertHideFreetextElements,
+              };
+              let userID =
+                localStorage.getItem("userID") !== null
+                  ? Number(localStorage.getItem("userID"))
+                  : 0;
+              let findActionBundleID = FieldsData.find(
+                (actorData, index) => Number(actorData.userID) === userID
+              );
+              // Update Actor Bundle Status APi Call
+              let UpdateActorBundle = {
+                WorkFlowID: pdfResponceData.workFlowID,
+                UserID: userID,
+                WorkFlowActionableBundleID: findActionBundleID
+                  ? findActionBundleID.pK_WorkFlowActionableBundle_ID
+                  : 0,
+              };
+
+              let newData = { ActorsFieldValuesList: convertData };
+              // console.log(
+              //   newData,
+              //   UpdateActorBundle,
+              //   addAnnoatationofFilesAttachment,
+              //   "handleClickSaveBtnhandleClickSaveBtn"
+              // );
+
+              dispatch(
+                addUpdateFieldValueApi(
+                  newData,
+                  navigate,
+                  t,
+                  addAnnoatationofFilesAttachment,
+                  "",
+                  3,
+                  "",
+                  UpdateActorBundle
+                )
               );
             } catch (error) {
-              console.error("Error importing annotations:", error);
+              console.log(error, "handleClickSaveBtnhandleClickSaveBtn");
             }
-          }
 
-          // Refresh to apply the changes
-          documentViewer.refreshAll();
-          documentViewer.updateView();
-        });
+            // try {
+            //   const annots = await annotationManager.getAnnotationsList();
+            //   if (annots && annots.length > 0) {
+            //     // Log the annotations before deletion
+            //     console.log("Annotations before deletion:", annots);
 
-        // Disable header tools and elements
-        instance.UI.disableTools([Tools.disableTextSelection]);
-        instance.UI.disableElements([
-          "colorPalette",
-          "underlineToolGroupButton",
-          "textSelectButton",
-          "textSelectButtonGroup",
-          "textSelectButtonGroupButton",
-          "textPopup",
-          "outlinesPanelButton",
-          "comboBoxFieldToolGroupButton",
-          "listBoxFieldToolGroupButton",
-          "toolsOverlay",
-          "toolbarGroup-Shapes",
-          "toolbarGroup-Edit",
-          "toolbarGroup-Insert",
-          "shapeToolGroupButton",
-          "menuButton",
-          "freeHandHighlightToolGroupButton",
-          "underlineToolGroupButton",
-          "freeHandToolGroupButton",
-          "stickyToolGroupButton",
-          "squigglyToolGroupButton",
-          "strikeoutToolGroupButton",
-          "notesPanel",
-          "viewControlsButton",
-          "selectToolButton",
-          "toggleNotesButton",
-          "searchButton",
-          "freeTextToolGroupButton",
-          "crossStampToolButton",
-          "checkStampToolButton",
-          "dotStampToolButton",
-          "rubberStampToolGroupButton",
-          "dateFreeTextToolButton",
-          "eraserToolButton",
-          "panToolButton",
-          "signatureToolGroupButton",
-          "viewControlsOverlay",
-          "contextMenuPopup",
-          "signaturePanelButton",
-          "annotationPopup",
-          "textPopup",
-          "richTextPopup",
-          "toolbarGroup-Annotate",
-          "leftPanelButton",
-          "zoomOverlayButton",
-          "toolbarGroup-Forms",
-        ]);
+            //     // Process and delete annotations
+            //     await annotationManager.deleteAnnotations(annots);
 
-        // Custom header buttons
-        const handleClickDeclineBtn = () => {
-          setReasonModal(true);
-          // alert("Decline Button Clicked");
-        };
+            //     // Log the annotations after deletion attempt
+            //     console.log("Annotations after deletion:", annots);
 
-        const handleClickSaveBtn = async () => {
-          try {
-            const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
-            let currentUserID =
-              localStorage.getItem("userID") !== null
-                ? Number(localStorage.getItem("userID"))
-                : 0;
-            // this one sent do save signature document
-            let HideArray = [];
-            let ReadArray = [];
+            //     // Import new annotations
+            //     await annotationManager.importAnnotations(
+            //       afterAddRevertHideFreetextElements
+            //     );
 
-            // Iterate over each object in the data array
-            await userAnnotationsRef.current.forEach((obj) => {
-              // Check if userID does not match currentID
-              if (obj.userID !== currentUserID) {
-                // Iterate over xml array in the current object
-                obj.xml.forEach((item) => {
-                  // Extract all 'name' attributes from ffield excluding font tag
-                  let ffield = item.ffield;
-                  let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
-                  if (matches) {
-                    matches.forEach((match) => {
-                      // Extract the name value and push into nameArray
-                      let name = match.match(/name="([^"]+)"/)[1];
-                      if (hiddenUsersRef.current.includes(obj.userID)) {
-                        HideArray.push(name);
-                      } else if (
-                        readOnlyUsersRef.current.includes(obj.userID)
-                      ) {
-                        ReadArray.push(name);
-                      }
-                    });
-                  }
-                });
-              }
+            //     // Redraw annotations
+            //     annotationManager.redrawAnnotation(
+            //       afterAddRevertHideFreetextElements
+            //     );
+            //   } else {
+            //     console.error(
+            //       "No annotations found or annotations list is empty."
+            //     );
+            //   }
+            // } catch (error) {
+            //   console.error("Error importing or drawing annotations:", error);
+            //   // Handle
+            // }
+          };
+
+          instance.UI.setHeaderItems((header) => {
+            header.push({
+              type: "customElement",
+              render: () => {
+                const textBoxButton = document.createElement("button");
+                textBoxButton.textContent = "Decline";
+                textBoxButton.style.background = "#fff";
+                textBoxButton.style.border = "1px solid #e1e1e1";
+                textBoxButton.style.color = "#5a5a5a";
+                textBoxButton.style.padding = "8px 30px";
+                textBoxButton.style.cursor = "pointer";
+                textBoxButton.style.borderRadius = "4px";
+                textBoxButton.onclick = handleClickDeclineBtn;
+                return textBoxButton;
+              },
             });
 
-            let newProcessXmlForReadOnly = await revertProcessXmlForReadOnly(
-              xfdfString,
-              ReadArray
-            );
-
-            const revertedHideFieldsXml = await revertProcessXmlToHideFields(
-              newProcessXmlForReadOnly,
-              removeXmlAfterHideDAtaRef.current
-            );
-
-            const afterAddReadOnlyFreetextElements =
-              await revertReadOnlyFreetextElements(
-                revertedHideFieldsXml,
-                readOnlyUsersRef.current
-              );
-
-            const afterAddRevertHideFreetextElements =
-              await revertHideFreetextElements(
-                afterAddReadOnlyFreetextElements,
-                removeXmlAfterFreetextHideDAtaRef.current
-              );
-
-            const parser = new DOMParser();
-            const mainXmlDoc = parser.parseFromString(
-              afterAddRevertHideFreetextElements,
-              "text/xml"
-            );
-
-            function existsInMainXML(name, type, mainXmlDoc) {
-              const elements = mainXmlDoc.querySelectorAll(
-                `${type}[name="${name}"]`
-              );
-              return elements.length > 0;
-            }
-            let covert = userAnnotationsRef.current.map((user) => {
-              let filteredXml = user.xml.filter((item) => {
-                const ffieldDoc = parser.parseFromString(
-                  item.ffield,
-                  "text/xml"
-                );
-                const widgetDoc = parser.parseFromString(
-                  item.widget,
-                  "text/xml"
-                );
-                const ffieldName =
-                  ffieldDoc.documentElement.getAttribute("name");
-                const widgetName =
-                  widgetDoc.documentElement.getAttribute("name");
-
-                return (
-                  existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
-                  existsInMainXML(widgetName, "widget", mainXmlDoc)
-                );
-              });
-
-              return { ...user, xml: filteredXml };
+            header.push({
+              type: "customElement",
+              render: () => {
+                const SaveButton = document.createElement("button");
+                SaveButton.textContent = "Save";
+                SaveButton.style.background = "#6172d6";
+                SaveButton.style.color = "#fff";
+                SaveButton.style.borderRadius = "4px";
+                SaveButton.style.cursor = "pointer";
+                SaveButton.style.padding = "8px 30px";
+                SaveButton.style.margin = "10px 0 10px 10px";
+                SaveButton.style.border = "1px solid #6172d6";
+                SaveButton.onclick = handleClickSaveBtn;
+                return SaveButton;
+              },
             });
-            let convertData = [];
-            covert.forEach((data) => {
-              const xmlListStrings = data.xml.map((xmlObj) =>
-                JSON.stringify(xmlObj)
-              );
-              convertData.push({
-                ActorID: data.actorID,
-                xmlList: xmlListStrings,
-              });
-            });
-
-            // add annotation  of files attachment api
-            let addAnnoatationofFilesAttachment = {
-              FileID: Number(docWorkflowID),
-              AnnotationString: afterAddRevertHideFreetextElements,
-            };
-            let userID =
-              localStorage.getItem("userID") !== null
-                ? Number(localStorage.getItem("userID"))
-                : 0;
-            let findActionBundleID = FieldsData.find(
-              (actorData, index) => Number(actorData.userID) === userID
-            );
-            // Update Actor Bundle Status APi Call
-            let UpdateActorBundle = {
-              WorkFlowID: pdfResponceData.workFlowID,
-              UserID: userID,
-              WorkFlowActionableBundleID: findActionBundleID
-                ? findActionBundleID.pK_WorkFlowActionableBundle_ID
-                : 0,
-            };
-
-            let newData = { ActorsFieldValuesList: convertData };
-            // console.log(
-            //   newData,
-            //   UpdateActorBundle,
-            //   addAnnoatationofFilesAttachment,
-            //   "handleClickSaveBtnhandleClickSaveBtn"
-            // );
-
-            dispatch(
-              addUpdateFieldValueApi(
-                newData,
-                navigate,
-                t,
-                addAnnoatationofFilesAttachment,
-                "",
-                3,
-                "",
-                UpdateActorBundle
-              )
-            );
-          } catch (error) {
-            console.log(error, "handleClickSaveBtnhandleClickSaveBtn");
-          }
-
-          // try {
-          //   const annots = await annotationManager.getAnnotationsList();
-          //   if (annots && annots.length > 0) {
-          //     // Log the annotations before deletion
-          //     console.log("Annotations before deletion:", annots);
-
-          //     // Process and delete annotations
-          //     await annotationManager.deleteAnnotations(annots);
-
-          //     // Log the annotations after deletion attempt
-          //     console.log("Annotations after deletion:", annots);
-
-          //     // Import new annotations
-          //     await annotationManager.importAnnotations(
-          //       afterAddRevertHideFreetextElements
-          //     );
-
-          //     // Redraw annotations
-          //     annotationManager.redrawAnnotation(
-          //       afterAddRevertHideFreetextElements
-          //     );
-          //   } else {
-          //     console.error(
-          //       "No annotations found or annotations list is empty."
-          //     );
-          //   }
-          // } catch (error) {
-          //   console.error("Error importing or drawing annotations:", error);
-          //   // Handle
-          // }
-        };
-
-        instance.UI.setHeaderItems((header) => {
-          header.push({
-            type: "customElement",
-            render: () => {
-              const textBoxButton = document.createElement("button");
-              textBoxButton.textContent = "Decline";
-              textBoxButton.style.background = "#fff";
-              textBoxButton.style.border = "1px solid #e1e1e1";
-              textBoxButton.style.color = "#5a5a5a";
-              textBoxButton.style.padding = "8px 30px";
-              textBoxButton.style.cursor = "pointer";
-              textBoxButton.style.borderRadius = "4px";
-              textBoxButton.onclick = handleClickDeclineBtn;
-              return textBoxButton;
-            },
-          });
-
-          header.push({
-            type: "customElement",
-            render: () => {
-              const SaveButton = document.createElement("button");
-              SaveButton.textContent = "Save";
-              SaveButton.style.background = "#6172d6";
-              SaveButton.style.color = "#fff";
-              SaveButton.style.borderRadius = "4px";
-              SaveButton.style.cursor = "pointer";
-              SaveButton.style.padding = "8px 30px";
-              SaveButton.style.margin = "10px 0 10px 10px";
-              SaveButton.style.border = "1px solid #6172d6";
-              SaveButton.onclick = handleClickSaveBtn;
-              return SaveButton;
-            },
           });
         });
-      });
+      } catch (error) {}
     }
   }, [pdfResponceData.attachmentBlob]);
 

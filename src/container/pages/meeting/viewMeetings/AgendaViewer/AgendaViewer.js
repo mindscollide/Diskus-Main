@@ -304,7 +304,10 @@ const AgendaViewer = ({
         currentUserID,
         currentOrganization,
         1,
-        meetingTitle
+        meetingTitle,
+        advanceMeetingModalID
+
+
       )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
@@ -344,7 +347,8 @@ const AgendaViewer = ({
         currentUserID,
         currentOrganization,
         1,
-        meetingTitle
+        meetingTitle,
+        advanceMeetingModalID
       )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
@@ -376,7 +380,8 @@ const AgendaViewer = ({
           currentUserID,
           currentOrganization,
           1,
-          meetingTitle
+          meetingTitle,
+          advanceMeetingModalID
         )
       );
       localStorage.setItem("meetingTitle", meetingTitle);

@@ -91,6 +91,7 @@ import {
   meetingParticipantRemoved,
   meetingParticipantAdded,
   LeaveMeetingVideo,
+  meetingReminderNotifcation,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -281,75 +282,88 @@ const Dashboard = () => {
         // if (data.action && data.payload ) {
 
         if (data.action && data.payload) {
-          if (
-            data?.payload?.message.toLowerCase() ===
-            "NEW_MEETING_CREATION".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
-                  "[Place holder]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
-            dispatch(allMeetingsSocket(data.payload.meeting));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_EDITED_HOST".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_EDITED_HOST"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
-            dispatch(allMeetingsSocket(data.payload.meeting));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_STATUS_EDITED_STARTED".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_STATUS_EDITED_STARTED"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
-            dispatch(getMeetingStatusfromSocket(data.payload));
-          } else if (
-            data.payload.message
-              .toLowerCase()
-              .includes("MEETING_STATUS_EDITED_END".toLowerCase())
-          ) {
-            let meetingVideoID = Number(localStorage.getItem("meetingVideoID"));
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_STATUS_EDITED_END"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-              if (meetingVideoID === data.payload.meeting.pK_MDID) {
+          try {
+            if (
+              data?.payload?.message.toLowerCase() ===
+              "NEW_MEETING_CREATION".toLowerCase()
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("NEW_MEETING_CREATION"),
+                    "[Place holder]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              dispatch(allMeetingsSocket(data.payload.meeting));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_EDITED_HOST".toLowerCase()
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_EDITED_HOST"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              dispatch(allMeetingsSocket(data.payload.meeting));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_STARTED".toLowerCase()
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_STARTED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              dispatch(getMeetingStatusfromSocket(data.payload));
+            } else if (
+              data.payload.message
+                .toLowerCase()
+                .includes("MEETING_STATUS_EDITED_END".toLowerCase())
+            ) {
+              let meetingVideoID = Number(
+                localStorage.getItem("meetingVideoID")
+              );
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_END"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              if (
+                Number(meetingVideoID) === Number(data.payload.meeting.pK_MDID)
+              ) {
+                console.log(
+                  Number(meetingVideoID),
+                  Number(data.payload.meeting.pK_MDID),
+                  Number(meetingVideoID) ===
+                    Number(data.payload.meeting.pK_MDID),
+                  "isMeetingVideoisMeetingVideoisMeetingVideo"
+                );
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -368,141 +382,77 @@ const Dashboard = () => {
                 };
                 dispatch(LeaveMeetingVideo(Data, navigate, t));
               }
-            }
-            // let Data2 = {
-            //   UserID: Number(createrID),
-            // };
-            // dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
-            dispatch(mqttCurrentMeetingEnded(data.payload));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_STATUS_EDITED_CANCELLED".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_STATUS_EDITED_CANCELLED"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
+              // let Data2 = {
+              //   UserID: Number(createrID),
+              // };
+              // dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
+              dispatch(mqttCurrentMeetingEnded(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_CANCELLED".toLowerCase()
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_CANCELLED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
 
-            dispatch(getMeetingStatusfromSocket(data.payload));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_STATUS_EDITED_ADMIN".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_STATUS_EDITED_ADMIN"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
-            dispatch(getMeetingStatusfromSocket(data.payload));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "NEW_UPCOMING_EVENTS".toLowerCase()
-          ) {
-            let Data2 = {
-              UserID: Number(createrID),
-            };
-            dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
-            dispatch(
-              setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
-            );
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_STATUS_EDITED_PROPOSED".toLowerCase()
-          ) {
-            dispatch(meetingStatusProposedMqtt(data.payload.meeting));
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_STATUS_EDITED_PROPOSED"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-            }
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_STATUS_EDITED_PUBLISHED".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_STATUS_EDITED_PUBLISHED"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
-            dispatch(meetingStatusPublishedMqtt(data.payload.meeting));
-            setNotificationID(id);
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "AGENDA_VOTING_STARTED".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: t("AGENDA_VOTING_STARTED"),
-              });
-              setNotificationID(id);
-            }
-            dispatch(meetingAgendaStartedMQTT(data.payload));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "AGENDA_VOTING_ENDED".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: t("AGENDA_VOTING_ENDED"),
-              });
-              setNotificationID(id);
-            }
-            dispatch(meetingAgendaEndedMQTT(data.payload));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "NEW_MEETING_AGENDA_ADDED".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: t("NEW_MEETING_AGENDA_ADDED"),
-              });
-              setNotificationID(id);
-            }
-            dispatch(meetingAgendaUpdatedMQTT(data.payload));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "NEW_MEETINGS_COUNT".toLowerCase()
-          ) {
-            dispatch(meetingCount(data.payload));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_STATUS_EDITED_PUBLISHED_GROUP".toLowerCase()
-          ) {
-            try {
+              dispatch(getMeetingStatusfromSocket(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_ADMIN".toLowerCase()
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_ADMIN"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              dispatch(getMeetingStatusfromSocket(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "NEW_UPCOMING_EVENTS".toLowerCase()
+            ) {
+              let Data2 = {
+                UserID: Number(createrID),
+              };
+              dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
+              dispatch(
+                setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
+              );
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_PROPOSED".toLowerCase()
+            ) {
+              dispatch(meetingStatusProposedMqtt(data.payload.meeting));
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_PROPOSED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+              }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_PUBLISHED".toLowerCase()
+            ) {
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -515,198 +465,259 @@ const Dashboard = () => {
                 });
                 setNotificationID(id);
               }
-              dispatch(createGroupMeeting(data.payload));
-            } catch (error) {
-              console.log(error);
-            }
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_STATUS_EDITED_PUBLISHED_COMMITTEE".toLowerCase()
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_STATUS_EDITED_PUBLISHED"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
+              dispatch(meetingStatusPublishedMqtt(data.payload.meeting));
               setNotificationID(id);
-            }
-            dispatch(createCommitteeMeeting(data.payload));
-          } else if (
-            data.payload.message?.toLowerCase() ===
-            "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
-          ) {
-            // if (data.viewable) {
-            //   setNotification({
-            //     ...notification,
-            //     notificationShow: true,
-            //     message: changeMQTTJSONOne(
-            //       t("NEW_MEETING_CREATION"),
-            //       "[Place holder]",
-            //       data.payload.meetingTitle.substring(0, 100)
-            //     ),
-            //   });
-            // setNotificationID(id);
-
-            // }
-
-            dispatch(meetingAgendaContributorAdded(data.payload));
-          } else if (
-            data.payload.message
-              ?.toLowerCase()
-              .includes("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase())
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED"),
-                  "[Place holder]",
-                  data.payload.title.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
-
-            dispatch(meetingAgendaContributorRemoved(data.payload));
-          } else if (
-            data.payload.message
-              ?.toLowerCase()
-              .includes("NEW_MEETING_ORGANIZER_ADDED".toLowerCase())
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
-                  "[Place holder]",
-                  data.payload.title.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
-            dispatch(meetingOrganizerAdded(data.payload));
-          } else if (
-            data.payload.message
-              ?.toLowerCase()
-              .includes("MEETING_ORGANIZER_DELETED".toLowerCase())
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
-                  "[Place holder]",
-                  data.payload.title.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
-            dispatch(meetingOrganizerRemoved(data.payload));
-          } else if (
-            data.payload.message?.toLowerCase() ===
-            "MeetingNotConductedNotification".toLowerCase()
-          ) {
-            try {
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "AGENDA_VOTING_STARTED".toLowerCase()
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: t("AGENDA_VOTING_STARTED"),
+                });
+                setNotificationID(id);
+              }
+              dispatch(meetingAgendaStartedMQTT(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "AGENDA_VOTING_ENDED".toLowerCase()
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: t("AGENDA_VOTING_ENDED"),
+                });
+                setNotificationID(id);
+              }
+              dispatch(meetingAgendaEndedMQTT(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "NEW_MEETING_AGENDA_ADDED".toLowerCase()
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: t("NEW_MEETING_AGENDA_ADDED"),
+                });
+                setNotificationID(id);
+              }
+              dispatch(meetingAgendaUpdatedMQTT(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "NEW_MEETINGS_COUNT".toLowerCase()
+            ) {
+              dispatch(meetingCount(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_PUBLISHED_GROUP".toLowerCase()
+            ) {
+              try {
+                if (data.viewable) {
+                  setNotification({
+                    ...notification,
+                    notificationShow: true,
+                    message: changeMQTTJSONOne(
+                      t("MEETING_STATUS_EDITED_PUBLISHED"),
+                      "[Meeting Title]",
+                      data.payload.meetingTitle.substring(0, 100)
+                    ),
+                  });
+                  setNotificationID(id);
+                }
+                dispatch(createGroupMeeting(data.payload));
+              } catch (error) {
+                console.log(error);
+              }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_PUBLISHED_COMMITTEE".toLowerCase()
+            ) {
               if (data.viewable) {
                 setNotification({
                   ...notification,
                   notificationShow: true,
                   message: changeMQTTJSONOne(
-                    t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
+                    t("MEETING_STATUS_EDITED_PUBLISHED"),
                     "[Meeting Title]",
                     data.payload.meetingTitle.substring(0, 100)
                   ),
                 });
                 setNotificationID(id);
               }
-              dispatch(meetingNotConductedMQTT(data.payload));
-            } catch (error) {}
-          } else if (
-            data.payload.message?.toLowerCase() ===
-            "MeetingReminderNotification".toLowerCase()
-          ) {
-            dispatch(meetingNotConductedMQTT(data.payload));
-
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MeetingReminderNotification"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-              setNotificationID(id);
-            }
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_PARTICIPANT_DELETED".toLowerCase()
-          ) {
-            dispatch(meetingParticipantRemoved(data.payload));
-
-            if (data.viewable) {
-              // setNotification({
-              //   ...notification,
-              //   notificationShow: true,
-              //   message: changeMQTTJSONOne(
-              //     t("MeetingReminderNotification"),
-              //     "[Meeting Title]",
-              //     data.payload.meetingTitle.substring(0, 100)
-              //   ),
-              // });
-              setNotificationID(id);
-            }
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "NEW_MEETING_PARTICIPANT_ADDED".toLowerCase()
-          ) {
-            if (
-              Number(data.payload.status) !== 11 &&
-              Number(data.payload.status) !== 12
+              dispatch(createCommitteeMeeting(data.payload));
+            } else if (
+              data.payload.message?.toLowerCase() ===
+              "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
             ) {
-              dispatch(meetingParticipantAdded(data.payload));
+              // if (data.viewable) {
+              //   setNotification({
+              //     ...notification,
+              //     notificationShow: true,
+              //     message: changeMQTTJSONOne(
+              //       t("NEW_MEETING_CREATION"),
+              //       "[Place holder]",
+              //       data.payload.meetingTitle.substring(0, 100)
+              //     ),
+              //   });
+              // setNotificationID(id);
 
+              // }
+
+              dispatch(meetingAgendaContributorAdded(data.payload));
+            } else if (
+              data.payload.message
+                ?.toLowerCase()
+                .includes(
+                  "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase()
+                )
+            ) {
               if (data.viewable) {
                 setNotification({
                   ...notification,
                   notificationShow: true,
                   message: changeMQTTJSONOne(
-                    t("MeetingReminderNotification"),
-                    "[Meeting Title]",
+                    t("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED"),
+                    "[Place holder]",
                     data.payload.title.substring(0, 100)
                   ),
                 });
                 setNotificationID(id);
               }
+
+              dispatch(meetingAgendaContributorRemoved(data.payload));
+            } else if (
+              data.payload.message
+                ?.toLowerCase()
+                .includes("NEW_MEETING_ORGANIZER_ADDED".toLowerCase())
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("NEW_MEETING_CREATION"),
+                    "[Place holder]",
+                    data.payload.title.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              dispatch(meetingOrganizerAdded(data.payload));
+            } else if (
+              data.payload.message
+                ?.toLowerCase()
+                .includes("MEETING_ORGANIZER_DELETED".toLowerCase())
+            ) {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("NEW_MEETING_CREATION"),
+                    "[Place holder]",
+                    data.payload.title.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              dispatch(meetingOrganizerRemoved(data.payload));
+            } else if (
+              data?.payload?.message?.toLowerCase() ===
+              "MeetingNotConductedNotification".toLowerCase()
+            ) {
+              try {
+                if (data.viewable) {
+                  setNotification({
+                    ...notification,
+                    notificationShow: true,
+                    message: changeMQTTJSONOne(
+                      t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
+                      "[Meeting Title]",
+                      data.payload.meetingTitle.substring(0, 100)
+                    ),
+                  });
+                  setNotificationID(id);
+                }
+                dispatch(meetingNotConductedMQTT(data.payload));
+              } catch (error) {
+                console.log(
+                  error,
+                  "MeetingReminderNotificationMeetingReminderNotification"
+                );
+              }
+            } else if (
+              data?.payload?.message?.toLowerCase() ===
+              "MeetingReminderNotification".toLowerCase()
+            ) {
+              try {
+                dispatch(meetingReminderNotifcation(data.payload));
+
+                if (data.viewable) {
+                  setNotification({
+                    ...notification,
+                    notificationShow: true,
+                    message: changeMQTTJSONOne(
+                      t("MeetingReminderNotification"),
+                      "[Meeting Title]",
+                      data.payload.calenderEvents.title.substring(0, 100)
+                    ),
+                  });
+                  setNotificationID(id);
+                }
+              } catch (error) {
+                console.log(
+                  error,
+                  "MeetingReminderNotificationMeetingReminderNotification"
+                );
+              }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_PARTICIPANT_DELETED".toLowerCase()
+            ) {
+              dispatch(meetingParticipantRemoved(data.payload));
+
+              if (data.viewable) {
+                // setNotification({
+                //   ...notification,
+                //   notificationShow: true,
+                //   message: changeMQTTJSONOne(
+                //     t("MeetingReminderNotification"),
+                //     "[Meeting Title]",
+                //     data.payload.meetingTitle.substring(0, 100)
+                //   ),
+                // });
+                setNotificationID(id);
+              }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "NEW_MEETING_PARTICIPANT_ADDED".toLowerCase()
+            ) {
+              if (
+                Number(data.payload.status) !== 11 &&
+                Number(data.payload.status) !== 12
+              ) {
+                dispatch(meetingParticipantAdded(data.payload));
+
+                if (data.viewable) {
+                  setNotification({
+                    ...notification,
+                    notificationShow: true,
+                    message: changeMQTTJSONOne(
+                      t("MeetingReminderNotification"),
+                      "[Meeting Title]",
+                      data.payload.title.substring(0, 100)
+                    ),
+                  });
+                  setNotificationID(id);
+                }
+              }
             }
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
-          ) {
-            dispatch(participantWaitingList(data.payload))
-            dispatch(admitGuestUserRequest(data.payload));
-            dispatch(guestJoinPopup(true));
-            // if (data.viewable) {
-            //   setNotification({
-            //     ...notification,
-            //     notificationShow: true,
-            //     message: changeMQTTJSONOne(
-            //       t("MeetingReminderNotification"),
-            //       "[Meeting Title]",
-            //       data.payload.title.substring(0, 100)
-            //     ),
-            //   });
-            //   setNotificationID(id);
-            // }
+          } catch (error) {
+            console.log(error);
           }
         }
       }

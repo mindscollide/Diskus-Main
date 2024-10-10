@@ -3241,7 +3241,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(DownloadTalkFile(navigate, Data, ext, data.fileName, t));
   };
 
-  console.log("talkStateDatatalkStateData", talkStateData);
+  console.log("All Messages All Messages", allMessages);
 
   return (
     <>

@@ -2152,7 +2152,7 @@ const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
           );
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", meetingTitle + " - Meeting Agenda");
+          link.setAttribute("download", `Agenda - ${meetingTitle}` );
           document.body.appendChild(link);
           link.click();
           dispatch(setLoaderFalse());
