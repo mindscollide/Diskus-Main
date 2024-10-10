@@ -294,7 +294,12 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       MeetingID: currentMeeting,
     };
     dispatch(
-      GetAllSavedparticipantsAPI(dataForAllMeetingParticipants, navigate, t)
+      GetAllSavedparticipantsAPI(
+        dataForAllMeetingParticipants,
+        navigate,
+        t,
+        false
+      )
     );
 
     dispatch(GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t));
@@ -745,7 +750,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       { votingAnswer: "No", votingAnswerID: 2 },
     ]);
     dispatch(getAgendaVotingDetails_success([], ""));
-    dispatch(showAllMeetingParticipantsSuccess([], ""));
+    dispatch(showAllMeetingParticipantsSuccess([], "", false));
     localStorage.setItem("currentAgendaVotingID", 0);
   };
 

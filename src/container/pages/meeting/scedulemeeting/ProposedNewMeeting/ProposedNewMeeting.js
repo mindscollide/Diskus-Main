@@ -44,6 +44,7 @@ import {
 import {
   SaveMeetingDetialsNewApiFunction,
   GetAllMeetingTypesNewFunction,
+  newMeetingGlobalLoader,
 } from "../../../../../store/actions/NewMeetingActions";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
@@ -66,8 +67,7 @@ const ProposedNewMeeting = ({
   const calendRef = useRef();
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
+  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
@@ -90,11 +90,34 @@ const ProposedNewMeeting = ({
   const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
-  const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
+  const [editproposedMeetingDetails, setEditProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
   });
-  const [editproposedMeetingDetails, setEditProposedMeetingDetails] = useState({
+  //Now Working on Edit Flow Proposed new  Meeting
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllMeetingDetails !== null &&
+        NewMeetingreducer.getAllMeetingDetails !== undefined
+      ) {
+        console.log(
+          NewMeetingreducer.getAllMeetingDetails,
+          "getAllMeetingDetailsgetAllMeetingDetails"
+        );
+        let EditFlowData =
+          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+        setEditProposedMeetingDetails({
+          MeetingTitle: EditFlowData.meetingTitle,
+          Description: EditFlowData.description,
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [NewMeetingreducer.getAllMeetingDetails]);
+  console.log(isProposedMeetEdit, "isProposedMeetEdit");
+  const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
   });
@@ -103,9 +126,6 @@ const ProposedNewMeeting = ({
     flag: false,
     message: "",
   });
-
-  //Getting Data from States
-  const { PollsReducer } = useSelector((state) => state);
 
   //Send Response By Date
   const [sendResponseBy, setSendResponseBy] = useState({
@@ -126,7 +146,8 @@ const ProposedNewMeeting = ({
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
-    dispatch(getAllCommitteesandGroups(navigate, t));
+    dispatch(getAllCommitteesandGroups(navigate, t, false));
+    dispatch(newMeetingGlobalLoader(false));
     return () => {
       setMembers([]);
       setProposedMeetingDetails({
@@ -296,162 +317,19 @@ const ProposedNewMeeting = ({
     } catch (error) {}
   }, [getALlMeetingTypes.meetingTypes]);
 
-  //Now Working on Edit Flow Proposed new  Meeting
-  useEffect(() => {
-    try {
-      if (
-        NewMeetingreducer.getAllMeetingDetails !== null &&
-        NewMeetingreducer.getAllMeetingDetails !== undefined
-      ) {
-        console.log(
-          NewMeetingreducer.getAllMeetingDetails,
-          "getAllMeetingDetailsgetAllMeetingDetails"
-        );
-        let EditFlowData = NewMeetingreducer.getAllMeetingDetails;
-        console.log(EditFlowData, "EditFlowDataEditFlowData");
-        setEditProposedMeetingDetails({
-          MeetingTitle: "",
-          Description: "",
-        });
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [NewMeetingreducer.getAllMeetingDetails]);
-
   //onChange function Search
   const onChangeSearch = (event) => {
-    console.log(event, "eventeventeventevent");
     setParticipantUsers(event);
-    // setParticipantUsers(e.target.value.trimStart());
-  };
-
-  //onSearch function
-  const onSearch = (name, id, type, item) => {
-    let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
-    let tem = [...membersParticipants];
-    if (type === 1) {
-      // Groups Search
-      let check1 = newOrganizersData.groups.find(
-        (data, index) => data.groupID === id
-      );
-      if (check1 !== undefined) {
-        let groupUsers = check1.groupUsers;
-        if (Object.keys(groupUsers).length > 0) {
-          groupUsers.forEach((gUser, index) => {
-            let check2 = membersParticipants.find(
-              (data, index) => data.UserID === gUser.userID
-            );
-            if (check2 !== undefined) {
-            } else {
-              let newUser = {
-                userName: gUser.userName,
-                userID: gUser.userID,
-                displayPicture: gUser.profilePicture.displayProfilePictureName,
-                email: gUser.emailAddress,
-                IsPrimaryOrganizer: false,
-                IsOrganizerNotified: false,
-                Title: "",
-                isRSVP: false,
-                participantRole: {
-                  participantRole: "Participant",
-                  participantRoleID: 2,
-                },
-                isComingApi: false,
-              };
-              tem.push(newUser);
-            }
-          });
-        }
-      }
-    } else if (type === 2) {
-      // Committees Search
-      let check1 = newOrganizersData.committees.find(
-        (data, index) => data.committeeID === id
-      );
-
-      if (check1 !== undefined) {
-        let committeesUsers = check1.committeeUsers;
-        if (Object.keys(committeesUsers).length > 0) {
-          committeesUsers.forEach((cUser, index) => {
-            let check2 = membersParticipants.find(
-              (data, index) => data.UserID === cUser.userID
-            );
-            if (check2 !== undefined) {
-            } else {
-              let newUser = {
-                userName: cUser.userName,
-                userID: cUser.userID,
-                displayPicture: cUser.profilePicture.displayProfilePictureName,
-                email: cUser.emailAddress,
-                IsPrimaryOrganizer: false,
-                IsOrganizerNotified: false,
-                Title: "",
-                isRSVP: false,
-                participantRole: {
-                  participantRole: "Participant",
-                  participantRoleID: 2,
-                },
-                isComingApi: false,
-              };
-              tem.push(newUser);
-            }
-          });
-        }
-      }
-    } else if (type === 3) {
-      // User Search
-      let check1 = membersParticipants.find(
-        (data, index) => data.UserID === id
-      );
-
-      if (check1 !== undefined) {
-      } else {
-        let check2 = newOrganizersData.organizationUsers.find(
-          (data, index) => data.userID === id
-        );
-        if (check2 !== undefined) {
-          let newUser = {
-            userName: check2.userName,
-            userID: check2.userID,
-            displayPicture: check2.profilePicture.displayProfilePictureName,
-            email: check2.emailAddress,
-            IsPrimaryOrganizer: false,
-            IsOrganizerNotified: false,
-            Title: "",
-            isRSVP: false,
-            participantRole: {
-              participantRole: "Participant",
-              participantRoleID: 2,
-            },
-            isComingApi: false,
-          };
-          tem.push(newUser);
-        }
-      }
-    }
-    const uniqueData = new Set(tem.map(JSON.stringify));
-
-    const result = Array.from(uniqueData).map(JSON.parse);
-    setMembersParticipants(result);
-    setParticipantUsers([]);
-  };
-
-  // for selection of data
-  const handleSelectValue = (value) => {
-    setSelectedsearch(value);
   };
 
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
-    console.log(index, "indexindexindexindex");
     let removeParticipant = [...membersParticipants];
     removeParticipant.splice(index, 1);
     setMembersParticipants(removeParticipant);
   };
 
   //Adding the Dates Rows
-
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
 
@@ -474,7 +352,6 @@ const ProposedNewMeeting = ({
   };
   //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
   const isValidRow = (row) => {
-    console.log(row, "isValidRowisValidRowisValidRow");
     return (
       row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
     );
@@ -615,19 +492,9 @@ const ProposedNewMeeting = ({
       updatedRows[index].selectedOption = DateDate;
       updatedRows[index].dateForView = newDate;
       setRows(updatedRows);
-      // if (
-      //   index > 0 &&
-      //   Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
-      // ) {
-      //   setOpen({
-      //     flag: true,
-      //     message: t("Selected-date-should-not-be-less-than-the-previous-one"),
-      //   });
-      //   return;
-      // } else {
-
-      // }
-    } catch {}
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   //Removing the Date Time Rows
@@ -992,7 +859,11 @@ const ProposedNewMeeting = ({
                       labelclass={"d-none"}
                       name={"MeetingTitle"}
                       change={HandleChange}
-                      value={proposedMeetingDetails.MeetingTitle}
+                      value={
+                        isProposedMeetEdit
+                          ? editproposedMeetingDetails.MeetingTitle
+                          : proposedMeetingDetails.MeetingTitle
+                      }
                       maxLength={250}
                     />
                     <Row>
@@ -1015,7 +886,6 @@ const ProposedNewMeeting = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Sub_headings"]}>
                       {t("Description")}
-                      {/* <span className={styles["res_steric"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
@@ -1029,7 +899,11 @@ const ProposedNewMeeting = ({
                       as={"textarea"}
                       labelclass={"d-none"}
                       rows="7"
-                      value={proposedMeetingDetails.Description}
+                      value={
+                        isProposedMeetEdit
+                          ? editproposedMeetingDetails.Description
+                          : proposedMeetingDetails.Description
+                      }
                       change={HandleChange}
                       required
                     />

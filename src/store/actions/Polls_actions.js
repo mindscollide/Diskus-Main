@@ -177,12 +177,7 @@ const searchPollsApi = (navigate, t, data) => {
                   "Polls_PollsServiceManager_SearchPolls_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                searchPolls_success(
-                  response.data.responseResult,
-                  ""
-                )
-              );
+              dispatch(searchPolls_success(response.data.responseResult, ""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -546,7 +541,10 @@ const castVoteApi = (
               .includes("Polls_PollsServiceManager_CastVote_01".toLowerCase())
           ) {
             await dispatch(
-              castVoteSuccess(response.data.responseResult, t("Your-vote-is-submitted-successfully"))
+              castVoteSuccess(
+                response.data.responseResult,
+                t("Your-vote-is-submitted-successfully")
+              )
             );
             if (check) {
               if (check === 1) {
@@ -725,10 +723,7 @@ const getAllPollsStatusApi = (navigate, data, t) => {
               )
           ) {
             await dispatch(
-              getAllPollsStatusSuccess(
-                response.data.responseResult,
-                ""
-              )
+              getAllPollsStatusSuccess(response.data.responseResult, "")
             );
           } else if (
             response.data.responseResult.responseMessage
@@ -822,7 +817,7 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(globalFlag(false));
               await dispatch(viewVotesDetailsModal(false));
               await dispatch(setVotePollModal(false));
-              await dispatch(getAllCommitteesandGroups(navigate, t));
+              await dispatch(getAllCommitteesandGroups(navigate, t, false));
               await dispatch(setEditpollModal(true));
             } else if (parseInt(check) === 3) {
               await dispatch(setEditpollModal(false));
@@ -850,10 +845,7 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(setVotePollModal(true));
             }
             await dispatch(
-              getAllPollsByPollsIDSuccess(
-                response.data.responseResult,
-                ""
-              )
+              getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );
             if (typeof setEditPolls === "function") {
               setEditPolls(true);
@@ -945,10 +937,7 @@ const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
               if (Number(check) === 1) {
                 setviewVotes(true);
                 await dispatch(
-                  viewVotesSuccess(
-                    response.data.responseResult.voteDetails,
-                    ""
-                  )
+                  viewVotesSuccess(response.data.responseResult.voteDetails, "")
                 );
               }
             } else {
@@ -958,10 +947,7 @@ const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
               await dispatch(globalFlag(false));
               await dispatch(setviewpollProgressModal(false));
               await dispatch(
-                viewVotesSuccess(
-                  response.data.responseResult.voteDetails,
-                  ""
-                )
+                viewVotesSuccess(response.data.responseResult.voteDetails, "")
               );
 
               await dispatch(viewVotesDetailsModal(true));
@@ -1000,11 +986,12 @@ const getAllcommittesandGroups_init = () => {
     type: actions.GETALLCOMMITESANDGROUPSFORPOLLS_INIT,
   };
 };
-const getAllcommittesandGroups_success = (response, message) => {
+const getAllcommittesandGroups_success = (response, message, flag) => {
   return {
     type: actions.GETALLCOMMITESANDGROUPSFORPOLLS_SUCCESS,
     response: response,
     message: message,
+    loader: flag,
   };
 };
 const getAllcommittesandGroups_fail = (message) => {
@@ -1013,7 +1000,7 @@ const getAllcommittesandGroups_fail = (message) => {
     message: message,
   };
 };
-const getAllCommitteesandGroups = (navigate, t) => {
+const getAllCommitteesandGroups = (navigate, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = parseInt(localStorage.getItem("organizationID"));
   let Data = {
@@ -1038,7 +1025,7 @@ const getAllCommitteesandGroups = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllCommitteesandGroups(navigate, t));
+          dispatch(getAllCommitteesandGroups(navigate, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1051,7 +1038,8 @@ const getAllCommitteesandGroups = (navigate, t) => {
               dispatch(
                 getAllcommittesandGroups_success(
                   response.data.responseResult,
-                  ""
+                  "",
+                  flag
                 )
               );
             } else if (
@@ -1486,10 +1474,7 @@ const getPollsByGroupMainApi = (
                 )
             ) {
               dispatch(
-                getPollsByGroupSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getPollsByGroupSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1573,9 +1558,7 @@ const setGroupPollsMainApi = (navigate, t, Data) => {
                   "Polls_PollsServiceManager_SetGroupPolls_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                setGroupSuccess(response.data.responseResult, "")
-              );
+              dispatch(setGroupSuccess(response.data.responseResult, ""));
               let OrganizationID = localStorage.getItem("organizationID");
               let ViewGroupID = localStorage.getItem("ViewGroupID");
 
@@ -1769,12 +1752,7 @@ const getTasksByGroupIDApi = (navigate, t, newData) => {
                   "ToDoList_ToDoListServiceManager_GetTasksByGroupID_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                getTaskGroupIdSuccess(
-                  response.data.responseResult,
-                  ""
-                )
-              );
+              dispatch(getTaskGroupIdSuccess(response.data.responseResult, ""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1858,12 +1836,7 @@ const setTasksByGroupApi = (navigate, t, data) => {
                   "ToDoList_ToDoListServiceManager_SetGroupTasks_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                setTaskGroupSuccess(
-                  response.data.responseResult,
-                  ""
-                )
-              );
+              dispatch(setTaskGroupSuccess(response.data.responseResult, ""));
               let ViewGroupID = localStorage.getItem("ViewGroupID");
 
               let Data = {
@@ -1954,10 +1927,7 @@ const getTaskCommitteeIDApi = (navigate, t, newData) => {
                 )
             ) {
               dispatch(
-                getTaskCommitteeIdSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getTaskCommitteeIdSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2043,10 +2013,7 @@ const setTasksByCommitteeApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                setTaskCommitteeSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                setTaskCommitteeSuccess(response.data.responseResult, "")
               );
               let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -2486,10 +2453,7 @@ const getPollsByPollIdforCommitteeApi = (
             //   await dispatch(setVotePollModal(true));
             // }
             await dispatch(
-              getAllPollsByPollsIDSuccess(
-                response.data.responseResult,
-                ""
-              )
+              getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );
           } else if (
             response.data.responseResult.responseMessage
@@ -2630,10 +2594,7 @@ const getPollByPollIdforGroups = (
             //   await dispatch(setVotePollModal(true));
             // }
             await dispatch(
-              getAllPollsByPollsIDSuccess(
-                response.data.responseResult,
-                ""
-              )
+              getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );
           } else if (
             response.data.responseResult.responseMessage
@@ -2774,10 +2735,7 @@ const getPollByPollIdforMeeting = (
             //   await dispatch(setVotePollModal(true));
             // }
             await dispatch(
-              getAllPollsByPollsIDSuccess(
-                response.data.responseResult,
-                ""
-              )
+              getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );
           } else if (
             response.data.responseResult.responseMessage

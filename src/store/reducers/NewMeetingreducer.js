@@ -155,7 +155,7 @@ const initialState = {
   getDashboardMeetingData: null,
   validateEncryptedStringParticipantProposed: null,
   getMeetingUsersRSVP: null,
-  meetingReminderNotification:null
+  meetingReminderNotification: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -726,9 +726,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_SAVED_PARTICIPATNS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
-        // LoadingParticipants: false,
-
+        Loading: action.loader,
         getAllSavedparticipants: action.response,
         ResponseMessage: action.message,
       };
@@ -737,7 +735,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_SAVED_PARTICIPATNS_ISPUBLISHED_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         getAllSavedparticipantsIsPublished: action.response,
       };
     }
@@ -745,7 +743,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_SAVED_PARTICIPATNS_ALLOWRSVP: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         getAllSavedparticipantsAllowrsvp: action.response,
       };
     }
@@ -1525,7 +1523,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         meetingDataRoomMapFolderID: action.response,
         ResponseMessage: action.message,
       };
@@ -2000,8 +1998,8 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.MEETING_REMINDER_NOTIFICATION: {
       return {
         ...state,
-        meetingReminderNotification: action.response
-      }
+        meetingReminderNotification: action.response,
+      };
     }
 
     //Validate Empty String User Availibility For Meeting
@@ -2415,7 +2413,12 @@ const NewMeetingreducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-
+    case actions.NEW_MEETING_LOADER_REDUCER: {
+      return {
+        ...state,
+        Loading: action.loader,
+      };
+    }
     default:
       return {
         ...state,

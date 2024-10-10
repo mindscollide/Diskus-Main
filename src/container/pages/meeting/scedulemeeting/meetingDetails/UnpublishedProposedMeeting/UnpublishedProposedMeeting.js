@@ -42,6 +42,7 @@ import {
   meetingOrganizerRemoved,
   validateStringParticipantProposedApi,
   GetAllProposedMeetingDateApiFunc,
+  GetAllSavedparticipantsAPI,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -198,6 +199,7 @@ const UnpublishedProposedMeeting = ({
           2
         )
       );
+      await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
       await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
       setIsProposedMeetEdit(true);
       setProposedNewMeeting(true);
