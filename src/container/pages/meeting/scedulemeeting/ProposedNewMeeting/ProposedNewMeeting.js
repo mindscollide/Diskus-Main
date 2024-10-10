@@ -213,13 +213,6 @@ const ProposedNewMeeting = ({
     }
   }, []);
 
-  console.log(rows[0].selectedOption, "updatedRowsupdatedRows");
-  console.log(rows[0].dateForView, "updatedRowsupdatedRows");
-  console.log(rows[0].startDate, "updatedRowsupdatedRows");
-  console.log(rows[0].startTime, "updatedRowsupdatedRows");
-  console.log(rows[0].endDate, "updatedRowsupdatedRows");
-  console.log(rows[0].endTime, "updatedRowsupdatedRows");
-
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
     dispatch(getAllCommitteesandGroups(navigate, t, false));
@@ -939,8 +932,6 @@ const ProposedNewMeeting = ({
     }
   };
 
-  console.log(rows.selectedOption);
-
   return (
     <section>
       <Row>
@@ -1266,7 +1257,7 @@ const ProposedNewMeeting = ({
                   >
                     {rows.length > 0
                       ? rows.map((data, index) => {
-                          console.log(data, "datadatadatadatadata");
+                          console.log(data, "indexindexindex");
                           return (
                             <>
                               <Row key={index}>
