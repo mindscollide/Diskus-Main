@@ -206,6 +206,8 @@ const PrivateRoutes = () => {
           currentUrl.includes("DisKus/committee") ||
           currentUrl.includes("DisKus/resolution"))
           ? "/"
+          : currentUser === null && token === ""
+          ? "/"
           : "*"
       }
     />
