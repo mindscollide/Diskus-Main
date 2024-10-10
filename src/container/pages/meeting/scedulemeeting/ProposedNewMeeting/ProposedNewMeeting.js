@@ -90,11 +90,11 @@ const ProposedNewMeeting = ({
   const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
-  const getNextDateforMeeting = {
-    dateFormat: getNextDay(),
-  };
-
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
+    MeetingTitle: "",
+    Description: "",
+  });
+  const [editproposedMeetingDetails, setEditProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
   });
@@ -138,7 +138,7 @@ const ProposedNewMeeting = ({
       });
     };
   }, []);
-
+  //Getting All Groups And Committees and users data from polls api
   useEffect(() => {
     let newParticpantData = PollsReducer.gellAllCommittesandGroups;
     try {
@@ -261,7 +261,7 @@ const ProposedNewMeeting = ({
       }
     } catch {}
   }, [PollsReducer.gellAllCommittesandGroups]);
-
+  //Getting all meeting Types
   useEffect(() => {
     if (
       getALlMeetingTypes.length === 0 &&
@@ -270,7 +270,7 @@ const ProposedNewMeeting = ({
       dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     }
   }, []);
-
+  //Getting Data of All meeting types
   useEffect(() => {
     try {
       if (
@@ -295,6 +295,29 @@ const ProposedNewMeeting = ({
       }
     } catch (error) {}
   }, [getALlMeetingTypes.meetingTypes]);
+
+  //Now Working on Edit Flow Proposed new  Meeting
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllMeetingDetails !== null &&
+        NewMeetingreducer.getAllMeetingDetails !== undefined
+      ) {
+        console.log(
+          NewMeetingreducer.getAllMeetingDetails,
+          "getAllMeetingDetailsgetAllMeetingDetails"
+        );
+        let EditFlowData = NewMeetingreducer.getAllMeetingDetails;
+        console.log(EditFlowData, "EditFlowDataEditFlowData");
+        setEditProposedMeetingDetails({
+          MeetingTitle: "",
+          Description: "",
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [NewMeetingreducer.getAllMeetingDetails]);
 
   //onChange function Search
   const onChangeSearch = (event) => {

@@ -41,6 +41,7 @@ import {
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
   validateStringParticipantProposedApi,
+  GetAllProposedMeetingDateApiFunc,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -197,6 +198,7 @@ const UnpublishedProposedMeeting = ({
           2
         )
       );
+      await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
       setIsProposedMeetEdit(true);
       setProposedNewMeeting(true);
     } else if (agendaContributorFlag === false) {
