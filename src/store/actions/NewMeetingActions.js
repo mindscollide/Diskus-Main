@@ -1388,14 +1388,16 @@ const FetchMeetingURLApi = (
   currentUserID,
   currentOrganization,
   flag,
-  currentMeetingTitle
+  currentMeetingTitle,
+  meetingID
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     // dispatch(showMeetingURLInit());
     dispatch(MeetingUrlSpinner(true));
     let form = new FormData();
-    let videoMeetingID = Data.MeetingID;
+    let videoMeetingID = Number(meetingID);
+    console.log(videoMeetingID, "videoMeetingIDvideoMeetingID")
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", FetchVideoUrl.RequestMethod);
     axios({
@@ -1417,7 +1419,8 @@ const FetchMeetingURLApi = (
               currentUserID,
               currentOrganization,
               flag,
-              currentMeetingTitle
+              currentMeetingTitle,
+              meetingID
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -8958,7 +8961,14 @@ const LeaveMeetingVideo = (Data, navigate, t) => {
   };
 };
 
+const meetingReminderNotifcation = (response) => {
+  return {
+    type: actions.MEETING_REMINDER_NOTIFICATION,
+    response: response,
+  };
+};
 export {
+  meetingReminderNotifcation,
   getAllMeetingUsersRSVPApi,
   getDashbardMeetingDataApi,
   emailRouteID,

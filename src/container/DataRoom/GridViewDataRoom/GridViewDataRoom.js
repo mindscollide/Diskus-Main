@@ -45,7 +45,11 @@ import {
   getFilesandFolderDetailsApi,
 } from "../../../store/actions/DataRoom2_actions";
 import { createWorkflowApi } from "../../../store/actions/workflow_actions";
-import { checkFeatureIDAvailability, fileFormatforSignatureFlow } from "../../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  fileFormatforSignatureFlow,
+  openDocumentViewer,
+} from "../../../commen/functions/utils";
 import {
   validateExtensionsforHTMLPage,
   validationExtension,
@@ -228,22 +232,7 @@ const GridViewDataRoom = ({
           isPermission: record.permissionID,
         };
         const pdfDataJson = JSON.stringify(pdfData);
-        if (validationExtension(ext)) {
-          window.open(
-            `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-              pdfDataJson
-            )}`,
-            "_blank",
-            "noopener noreferrer"
-          );
-        } else if (validateExtensionsforHTMLPage(ext)) {
-          let dataRoomData = {
-            FileID: record.id,
-          };
-          dispatch(
-            getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
-          );
-        }
+        openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
       }
     } else if (data.value === 2) {
       // Share File Modal
@@ -806,7 +795,9 @@ const GridViewDataRoom = ({
                                           />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                          {fileFormatforSignatureFlow.includes(getExtension)
+                                          {fileFormatforSignatureFlow.includes(
+                                            getExtension
+                                          )
                                             ? optionsforPDFandSignatureFlow(
                                                 t
                                               ).map((data, index) => {

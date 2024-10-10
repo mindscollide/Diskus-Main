@@ -151,6 +151,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     MeetingAttendees: [],
     ExternalMeetingAttendees: [],
     MinutesOfMeeting: [],
+    MeetingID: 0,
   });
 
   const changeSelectDetails = () => {
@@ -515,6 +516,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         }
         setattachmentsList(meetingAgenAtclis);
         setCreateMeeting({
+          ...createMeeting,
           MeetingID: viewData.meetingDetails.pK_MDID,
           MeetingTitle: viewData.meetingDetails.title,
           MeetingDescription: viewData.meetingDetails.description,
@@ -733,6 +735,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         }
         setattachmentsList(meetingAgenAtclis);
         setCreateMeeting({
+          ...createMeeting,
           MeetingID: calendarMeetingData.meetingDetails.pK_MDID,
           MeetingTitle: calendarMeetingData.meetingDetails.title,
           MeetingDescription: calendarMeetingData.meetingDetails.description,
@@ -824,6 +827,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setParticipantRoleName("");
         setSelectedAttendeesName("");
         setCreateMeeting({
+          ...createMeeting,
+          MeetingID: 0,
           MeetingTitle: "",
           MeetingDescription: "",
           MeetingTypeID: 0,
@@ -1010,7 +1015,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           currentUserID,
           currentOrganization,
           0,
-          createMeeting.MeetingTitle
+          createMeeting.MeetingTitle,
+          createMeeting.MeetingID
         )
       );
       localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
@@ -1055,6 +1061,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           setParticipantRoleName("");
           setSelectedAttendeesName("");
           setCreateMeeting({
+            ...createMeeting,
+            MeetingID: 0,
             MeetingTitle: "",
             MeetingDescription: "",
             MeetingTypeID: 0,
@@ -1542,17 +1550,16 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 </>
               ) : isAttachments ? (
                 <>
-                  <Row className='data-room-file-upload-section mt-4'>
+                  <Row className='mt-2'>
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
                           return (
                             <Col sm={4} lg={4} md={4}>
                               <AttachmentViewer
                                 id={1}
+                                isQuickMeeting={true}
                                 // fk_UID={}
-                                handleClickDownload={() =>
-                                  downloadClick(data)
-                                }
+                                handleClickDownload={() => downloadClick(data)}
                                 data={data}
                                 name={data.DisplayAttachmentName}
                               />

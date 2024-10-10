@@ -429,10 +429,13 @@ const ModalShareFile = ({
                             value: permissionID.value,
                             label: permissionID.label,
                           }}
+                          defaultValue={{
+                            value: permissionID.value,
+                            label: permissionID.label,
+                          }}
                           options={options}
                           isSearchable={false}
                           placeholder={t("Editor")}
-                          className={styles["Editor_select"]}
                           onChange={handlechange}
                           classNamePrefix={
                             permissionID.value === 0
@@ -441,24 +444,7 @@ const ModalShareFile = ({
                           }
                         />
                       </Col>
-                      {/* <Col lg={3} md={3} sm={3}>
-                        <Select
-                          value={{
-                            value: generalAccess.value,
-                            label: generalAccess.label,
-                          }}
-                          isSearchable={false}
-                          options={optionsgeneralAccess}
-                          placeholder={t("General-access")}
-                          className={styles["Editor_select"]}
-                          onChange={handleChangeGeneralAccess}
-                          classNamePrefix={
-                            generalAccess.value === 0
-                              ? "shareFolderEditor_Selector_empty"
-                              : "shareFolderEditor_Selector"
-                          }
-                        />
-                      </Col> */}
+
                       <Col lg={2} md={2} sm={2}>
                         <Button
                           text={t("Add")}

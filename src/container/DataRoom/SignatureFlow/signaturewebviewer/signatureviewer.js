@@ -109,7 +109,6 @@ const SignatureViewer = () => {
   const annotationsColorRecordRef = useRef(annotationsColorRecord);
   const orderButtonChecked = useRef(orderCheckBox);
   const copySignersData = useRef(copyOfSigners);
-  console.log(orderButtonChecked, "orderButtonCheckedorderButtonChecked");
 
   // ===== this use for current state update get =====//
   // Ensure the ref stays in sync with the state
@@ -764,6 +763,8 @@ const SignatureViewer = () => {
         };
 
         const handleClickSaveBtn = async () => {
+          console.log(signerDataRef, signerData, "signerDataRef")
+
           // status of 1 for save button
           const doc = documentViewer.getDocument();
           const data = await doc.getFileData({}); // No xfdfString for annotations
@@ -815,7 +816,7 @@ const SignatureViewer = () => {
                 ? ""
                 : pdfResponceData.deadlineDatetime,
             CreatorID: pdfResponceData.creatorID,
-            ListOfActionAbleBundle: signerData.map((sendData, index) => {
+            ListOfActionAbleBundle: signerDataRef.current.map((sendData, index) => {
               const bundle = {
                 ID: `BundleID_#${index + 1}`,
                 Title: "",
@@ -1546,7 +1547,7 @@ const SignatureViewer = () => {
           ? ""
           : pdfResponceData.deadlineDatetime,
       CreatorID: pdfResponceData.creatorID,
-      ListOfActionAbleBundle: signerData.map((sendData, index) => {
+      ListOfActionAbleBundle: signerDataRef.current.map((sendData, index) => {
         const bundle = {
           ID: `BundleID_#${index + 1}`,
           Title: "",

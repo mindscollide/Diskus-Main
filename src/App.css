@@ -6423,21 +6423,19 @@ input[type="time"]::-webkit-clear-button {
   color: #fff !important;
 }
 
-/* .shareFolderEditor_Selector__option--is-selected, */
-.shareFolderEditor_Selector__option--is-selected {
-  background: #fff !important;
-  color: #000 !important;
+.shareFolderEditor_Selector__option--is-focused {
+  background: none !important;
+  color: #5a5a5a !important;
 }
 
-.shareFolderEditor_Selector__option--is-focused {
+.shareFolderEditor_Selector__option--is-selected {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
-
 /* .shareFolderEditor_Selector_empty__option--is-selected, */
 .shareFolderEditor_Selector_empty__option--is-selected {
-  background: #fff !important;
-  color: #000 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
 }
 
 .shareFolderEditor_Selector_empty__option--is-focused {

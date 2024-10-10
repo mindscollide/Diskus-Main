@@ -439,3 +439,7 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
   align-items: center;
   gap: 5px;
 }
+.isemptySpace {
+  width: 15px;
+  height: 15px;
+}

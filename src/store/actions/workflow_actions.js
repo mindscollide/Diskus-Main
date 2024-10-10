@@ -645,7 +645,7 @@ const saveSignatureDocumentApi = (
                 dispatch(
                   saveSignatureDocument_success(
                     response.data.responseResult,
-                    t("Signature-file-created-and-added-to-dataroom")
+                    ""
                   )
                 );
               }
