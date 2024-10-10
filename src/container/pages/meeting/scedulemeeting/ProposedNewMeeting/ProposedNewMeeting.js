@@ -35,7 +35,6 @@ import makeAnimated from "react-select/animated";
 import { getAllCommitteesandGroups } from "../../../../../store/actions/Polls_actions";
 import {
   getCurrentDate,
-  getNextDay,
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
@@ -746,7 +745,12 @@ const ProposedNewMeeting = ({
   const handleClickAddParticipants = () => {
     let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
     console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
-    let tem = [...membersParticipants];
+
+    // Initialize the appropriate array based on isProposedMeetEdit
+    let tem = isProposedMeetEdit
+      ? [...editFlowParticipant]
+      : [...membersParticipants];
+
     if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
         if (userData.type === 1) {
@@ -763,11 +767,10 @@ const ProposedNewMeeting = ({
                     Number(groupFilter.userID) !== Number(userID)
                 )
                 .forEach((gUser, index) => {
-                  let check2 = membersParticipants.find(
-                    (data, index) => data.UserID === gUser.userID
+                  let check2 = tem.find(
+                    (data, index) => data.userID === gUser.userID
                   );
-                  if (check2 !== undefined) {
-                  } else {
+                  if (check2 === undefined) {
                     let newUser = {
                       userName: gUser.userName,
                       userID: gUser.userID,
@@ -794,7 +797,6 @@ const ProposedNewMeeting = ({
           let check1 = newOrganizersData.committees.find(
             (data, index) => data.committeeID === userData.value
           );
-
           if (check1 !== undefined) {
             let committeesUsers = check1.committeeUsers;
             if (Object.keys(committeesUsers).length > 0) {
@@ -804,11 +806,10 @@ const ProposedNewMeeting = ({
                     Number(filterData.userID) !== Number(userID)
                 )
                 .forEach((cUser, index) => {
-                  let check2 = membersParticipants.find(
-                    (data, index) => data.UserID === cUser.userID
+                  let check2 = tem.find(
+                    (data, index) => data.userID === cUser.userID
                   );
-                  if (check2 !== undefined) {
-                  } else {
+                  if (check2 === undefined) {
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
@@ -832,12 +833,10 @@ const ProposedNewMeeting = ({
           }
         } else if (userData.type === 3) {
           // User Search
-          let check1 = membersParticipants.find(
-            (data, index) => data.UserID === userData.value
+          let check1 = tem.find(
+            (data, index) => data.userID === userData.value
           );
-
-          if (check1 !== undefined) {
-          } else {
+          if (check1 === undefined) {
             let check2 = newOrganizersData.organizationUsers.find(
               (data, index) => data.userID === userData.value
             );
@@ -861,11 +860,21 @@ const ProposedNewMeeting = ({
             }
           }
         }
-        const uniqueData = new Set(tem.map(JSON.stringify));
-        const result = Array.from(uniqueData).map(JSON.parse);
-        setMembersParticipants(result);
-        setParticipantUsers([]);
       });
+
+      // Remove duplicates
+      const uniqueData = new Set(tem.map(JSON.stringify));
+      const result = Array.from(uniqueData).map(JSON.parse);
+
+      // Set the appropriate state based on isProposedMeetEdit
+      if (isProposedMeetEdit) {
+        setEditFlowParticipant(result);
+      } else {
+        setMembersParticipants(result);
+      }
+
+      // Clear participant users after adding
+      setParticipantUsers([]);
     }
   };
 
@@ -995,6 +1004,10 @@ const ProposedNewMeeting = ({
                           {editFlowParticipant.length > 0
                             ? editFlowParticipant.map(
                                 (editFlowparticipant, index) => {
+                                  console.log(
+                                    editFlowparticipant,
+                                    "indexindexindex"
+                                  );
                                   return (
                                     <>
                                       <Col
