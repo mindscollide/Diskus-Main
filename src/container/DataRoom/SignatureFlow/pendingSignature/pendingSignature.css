@@ -31,7 +31,7 @@
   .inputlabel_style {
     color: #6172d6 !important;
     font-size: 0.625rem !important;
-    font-weight: 600;
+    font-weight: 600 !important;
   }
   .addOther_field {
     color: #5a5a5a !important;
