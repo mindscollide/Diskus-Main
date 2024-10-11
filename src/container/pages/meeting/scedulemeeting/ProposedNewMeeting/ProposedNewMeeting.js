@@ -479,7 +479,7 @@ const ProposedNewMeeting = ({
             ),
           });
           //if the scnario gets exist paste the current value that is assigned to it already
-          updatedRows[index].startTime = getStartTime?.newFormatTime;
+          updatedRows[index].startTime = updatedRows[index - 1].endTime;
           setRows(updatedRows);
           return;
         } else {
