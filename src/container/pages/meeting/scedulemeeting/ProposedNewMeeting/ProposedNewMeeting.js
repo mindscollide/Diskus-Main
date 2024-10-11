@@ -755,13 +755,13 @@ const ProposedNewMeeting = ({
   }, [currentLanguage]);
 
   const today = moment().startOf("day");
-  const firstSelectedDate = moment(rows[0].selectedOption, "YYYYMMDD").startOf(
-    "day"
-  ); // Date selected at zero index
+  const firstSelectedDate = moment(rows[0].dateSelect).startOf("day"); // No format needed for ISO string
   const minSelectableDate = today.isSameOrBefore(firstSelectedDate)
     ? today
     : firstSelectedDate;
   const maxSelectableDate = firstSelectedDate;
+
+  console.log(rows, "rowsrowsrowsrows");
 
   //Custom Filter for Selector
   const customFilter = (options, searchText) => {
