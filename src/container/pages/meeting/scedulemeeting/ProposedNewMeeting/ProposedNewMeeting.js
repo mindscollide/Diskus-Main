@@ -18,16 +18,12 @@ import { useState } from "react";
 import DatePicker from "react-multi-date-picker";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { DateObject } from "react-multi-date-picker";
 import desh from "../../../../../assets/images/desh.svg";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
 import {
-  convertDateTimetoGMTMeetingDetail,
-  convertToUTC,
-  createConvert,
   forRecentActivity,
   multiDatePickerDateChangIntoUTC,
   resolutionResultTable,
@@ -107,6 +103,7 @@ const ProposedNewMeeting = ({
       Type: "",
     },
   });
+
   const [meetingTypeDetails, setMeetingTypeDetails] = useState({
     MeetingType: {
       PK_MTID: isProposedMeetEdit ? EditmeetingTypeDetails.pK_MTID : 1,
@@ -115,6 +112,7 @@ const ProposedNewMeeting = ({
         : t("Board-meeting"),
     },
   });
+
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
@@ -245,7 +243,7 @@ const ProposedNewMeeting = ({
       console.log(error, "error");
     }
   }, [getAllProposedDatesEditFlow]);
-  console.log(sendResponseBy, "sendResponseBysendResponseBy");
+
   //Getting All Groups And Committees and users data from polls api
   useEffect(() => {
     let newParticpantData = PollsReducer.gellAllCommittesandGroups;
@@ -633,17 +631,7 @@ const ProposedNewMeeting = ({
         return a.EndTime.localeCompare(b.EndTime);
       }
     });
-    console.log(Dates, "hell");
-    console.log(sortedDates, "hell");
-    console.log(membersParticipants, "hell");
-    console.log(proposedMeetingDetails.MeetingTitle, "hell");
-    console.log(membersParticipants.length !== 0, "hell");
-    console.log(sendResponseVal, "hell");
-    console.log(rows.length !== 1, "hell");
-    console.log(
-      multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
-      "multiDatePickerDateChangIntoUTC"
-    );
+
     if (
       proposedMeetingDetails.MeetingTitle !== "" &&
       membersParticipants.length !== 0 &&
