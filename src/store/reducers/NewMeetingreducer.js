@@ -2419,6 +2419,13 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: action.loader,
       };
     }
+
+    case actions.PROPOSED_MEETING_DATES_DATA: {
+      return {
+        ...state,
+        getAllProposedDates: [],
+      };
+    }
     default:
       return {
         ...state,

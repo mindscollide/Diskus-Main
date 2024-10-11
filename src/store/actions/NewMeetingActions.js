@@ -9006,6 +9006,12 @@ const newMeetingGlobalLoader = (response = false) => {
     loader: response,
   };
 };
+
+const proposedMeetingData = () => {
+  return {
+    type: actions.PROPOSED_MEETING_DATES_DATA,
+  };
+};
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9175,4 +9181,5 @@ export {
   AllDocumentsForAgendaWiseMinutesApiFunc,
   validateStringParticipantProposedApi,
   LeaveMeetingVideo,
+  proposedMeetingData,
 };
