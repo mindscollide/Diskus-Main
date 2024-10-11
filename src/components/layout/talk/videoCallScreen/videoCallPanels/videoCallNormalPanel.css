@@ -2,7 +2,7 @@
   position: fixed;
   left: 65px;
   width: 90%;
-  height: 55vh;
+  height: 57vh;
   background-color: #fff !important;
   bottom: 0;
   padding: 10px 15px 15px 15px;
@@ -19,7 +19,7 @@
   position: fixed;
   left: 65px;
   width: 90%;
-  height: 55vh;
+  height: 57vh;
   background-color: #fff !important;
   bottom: 0;
   padding: 10px 15px 15px 15px;
@@ -94,7 +94,7 @@ body[dir="rtl"] .videoCallScreen {
 }
 
 .normal-avatar {
-  height: 42.5vh;
+  height: 45vh;
   margin-top: -5px !important;
 }
 
