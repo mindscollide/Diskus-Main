@@ -41,21 +41,14 @@ import {
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
 import {
-  SaveMeetingDetialsNewApiFunction,
   GetAllMeetingTypesNewFunction,
   newMeetingGlobalLoader,
   proposedMeetingData,
 } from "../../../../../store/actions/NewMeetingActions";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
-  setorganizers,
-  setmeetingDetails,
-  setSceduleMeeting,
-  setCurrentMeetingID,
-  currentMeeting,
   editorRole,
   isEditMeeting,
-  setDataroomMapFolderId,
   isProposedMeetEdit,
   setIsProposedMeetEdit,
 }) => {
@@ -91,10 +84,6 @@ const ProposedNewMeeting = ({
   const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
-  const [editproposedMeetingDetails, setEditProposedMeetingDetails] = useState({
-    MeetingTitle: "",
-    Description: "",
-  });
   const [EditmeetingTypeDetails, setEditmeetingTypeDetails] = useState({
     MeetingType: {
       PK_MTID: 0,
@@ -109,6 +98,10 @@ const ProposedNewMeeting = ({
         : t("Board-meeting"),
     },
   });
+  const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
+    MeetingTitle: "",
+    Description: "",
+  });
   //Now Working on Edit Flow Proposed new  Meeting
   useEffect(() => {
     try {
@@ -118,13 +111,14 @@ const ProposedNewMeeting = ({
       ) {
         let EditFlowData =
           NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
-        setEditProposedMeetingDetails({
-          MeetingTitle: EditFlowData.meetingTitle,
-          Description: EditFlowData.description,
-        });
         setEditmeetingTypeDetails({
           PK_MTID: EditFlowData.meetingType.pK_MTID,
           Type: EditFlowData.meetingType.type,
+        });
+
+        setProposedMeetingDetails({
+          MeetingTitle: EditFlowData.meetingTitle,
+          Description: EditFlowData.description,
         });
       }
     } catch (error) {
@@ -146,11 +140,6 @@ const ProposedNewMeeting = ({
       console.log(error, "error");
     }
   }, [getAllParticipants]);
-
-  const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
-    MeetingTitle: "",
-    Description: "",
-  });
 
   const [open, setOpen] = useState({
     flag: false,
@@ -931,11 +920,7 @@ const ProposedNewMeeting = ({
                       labelclass={"d-none"}
                       name={"MeetingTitle"}
                       change={HandleChange}
-                      value={
-                        isProposedMeetEdit
-                          ? editproposedMeetingDetails.MeetingTitle
-                          : proposedMeetingDetails.MeetingTitle
-                      }
+                      value={proposedMeetingDetails.MeetingTitle}
                       maxLength={250}
                     />
                     <Row>
@@ -971,11 +956,7 @@ const ProposedNewMeeting = ({
                       as={"textarea"}
                       labelclass={"d-none"}
                       rows="7"
-                      value={
-                        isProposedMeetEdit
-                          ? editproposedMeetingDetails.Description
-                          : proposedMeetingDetails.Description
-                      }
+                      value={proposedMeetingDetails.Description}
                       change={HandleChange}
                       required
                     />
