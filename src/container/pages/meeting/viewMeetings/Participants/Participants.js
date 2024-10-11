@@ -65,7 +65,7 @@ const Participants = ({
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, false));
     return () => {
       dispatch(cleareAllState());
       setRowsData([]);

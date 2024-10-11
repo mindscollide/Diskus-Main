@@ -13,7 +13,6 @@ import {
   Button,
   TextField,
   Notification,
-  InputSearchFilter,
 } from "../../../../../components/elements";
 import { useState } from "react";
 import DatePicker from "react-multi-date-picker";
@@ -26,8 +25,12 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
 import {
+  convertDateTimetoGMTMeetingDetail,
   convertToUTC,
   createConvert,
+  forRecentActivity,
+  multiDatePickerDateChangIntoUTC,
+  resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -36,24 +39,30 @@ import makeAnimated from "react-select/animated";
 import { getAllCommitteesandGroups } from "../../../../../store/actions/Polls_actions";
 import {
   getCurrentDate,
-  getNextDay,
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
-import { SaveMeetingDetialsNewApiFunction, GetAllMeetingTypesNewFunction } from "../../../../../store/actions/NewMeetingActions";
+import {
+  GetAllMeetingDetialsData,
+  GetAllMeetingTypesNewFunction,
+  newMeetingGlobalLoader,
+  ParticipantsData,
+  proposedMeetingData,
+  SaveMeetingDetialsNewApiFunction,
+} from "../../../../../store/actions/NewMeetingActions";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
+  editorRole,
+  isEditMeeting,
+  isProposedMeetEdit,
+  setSceduleMeeting,
   setorganizers,
   setmeetingDetails,
-  setSceduleMeeting,
   setCurrentMeetingID,
-  currentMeeting,
-  editorRole,
-  setEditMeeting,
-  isEditMeeting,
   setDataroomMapFolderId,
-  setEdiorRole,
+  currentMeeting,
+  setIsProposedMeetEdit,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -63,44 +72,97 @@ const ProposedNewMeeting = ({
   const calendRef = useRef();
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
+  );
+  const getAllParticipants = useSelector(
+    (state) => state.NewMeetingreducer.getAllSavedparticipants
+  );
+  const getAllProposedDatesEditFlow = useSelector(
+    (state) => state.NewMeetingreducer.getAllProposedDates
+  );
+  console.log(
+    getAllProposedDatesEditFlow,
+    "getAllProposedDatesEditFlowgetAllProposedDatesEditFlow"
   );
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
+  const [editsendResponseVal, setEditsendResponseVal] = useState("");
   const [sendResponseVal, setSendResponseVal] = useState("");
   const [participantUsers, setParticipantUsers] = useState([]);
-  const [members, setMembers] = useState([]);
   const [membersParticipants, setMembersParticipants] = useState([]);
-  const [selectedsearch, setSelectedsearch] = useState([]);
-  const [meetingTypeDetails, setMeetingTypeDetails] = useState({
-    MeetingType: {
-      PK_MTID: 1,
-      Type: t("Board-meeting"),
-    },
-  });
+  console.log(membersParticipants, "dropdowndatadropdowndata");
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
+  console.log(dropdowndata, "dropdowndatadropdowndata");
+
   const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
-  const getNextDateforMeeting = {
-    dateFormat: getNextDay(),
-  };
-
+  const [EditmeetingTypeDetails, setEditmeetingTypeDetails] = useState({
+    MeetingType: {
+      PK_MTID: 0,
+      Type: "",
+    },
+  });
+  const [meetingTypeDetails, setMeetingTypeDetails] = useState({
+    MeetingType: {
+      PK_MTID: isProposedMeetEdit ? EditmeetingTypeDetails.pK_MTID : 1,
+      Type: isProposedMeetEdit
+        ? EditmeetingTypeDetails.Type
+        : t("Board-meeting"),
+    },
+  });
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
   });
+  //Now Working on Edit Flow Proposed new  Meeting
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllMeetingDetails !== null &&
+        NewMeetingreducer.getAllMeetingDetails !== undefined
+      ) {
+        let EditFlowData =
+          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+        setEditmeetingTypeDetails({
+          PK_MTID: EditFlowData.meetingType.pK_MTID,
+          Type: EditFlowData.meetingType.type,
+        });
+
+        setProposedMeetingDetails({
+          MeetingTitle: EditFlowData.meetingTitle,
+          Description: EditFlowData.description,
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [NewMeetingreducer.getAllMeetingDetails]);
+
+  //Getting All the Participants for edit flow
+  useEffect(() => {
+    try {
+      if (
+        getAllParticipants &&
+        getAllParticipants.length > 0 &&
+        getAllParticipants !== undefined
+      ) {
+        setMembersParticipants(getAllParticipants);
+        setDropdowndata(getAllParticipants);
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [getAllParticipants]);
 
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
-
-  //Getting Data from States
-  const { PollsReducer } = useSelector((state) => state);
 
   //Send Response By Date
   const [sendResponseBy, setSendResponseBy] = useState({
@@ -110,20 +172,20 @@ const ProposedNewMeeting = ({
   //state for adding Date and Time Rows
   const [rows, setRows] = useState([
     {
-      selectedOption: getCurrentDateforMeeting.dateFormat,
-      dateForView: getCurrentDateforMeeting.DateGMT,
-      startDate: getStartTime?.formattedTime,
+      dateSelect: getCurrentDateforMeeting.DateGMT,
       startTime: getStartTime?.newFormatTime,
-      endDate: getEndTime?.formattedTime,
       endTime: getEndTime?.newFormatTime,
     },
   ]);
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
-    dispatch(getAllCommitteesandGroups(navigate, t));
+    dispatch(getAllCommitteesandGroups(navigate, t, false));
+    dispatch(newMeetingGlobalLoader(false));
     return () => {
-      setMembers([]);
+      dispatch(proposedMeetingData());
+      dispatch(ParticipantsData());
+      dispatch(GetAllMeetingDetialsData());
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",
@@ -134,11 +196,63 @@ const ProposedNewMeeting = ({
     };
   }, []);
 
+  // Getting all proposed Dates data
+  useEffect(() => {
+    try {
+      if (
+        getAllProposedDatesEditFlow &&
+        getAllProposedDatesEditFlow !== undefined &&
+        getAllProposedDatesEditFlow.meetingProposedDates.length > 0 &&
+        isProposedMeetEdit
+      ) {
+        let DatesDataEditFlow =
+          getAllProposedDatesEditFlow.meetingProposedDates;
+        console.log(DatesDataEditFlow, "DatesDataEditFlowDatesDataEditFlow");
+
+        let dateArray = DatesDataEditFlow.map((datedata) => {
+          console.log(datedata, "datedata");
+          if (
+            datedata.proposedDate === "10000101" &&
+            datedata.endTime === "000000" &&
+            datedata.startTime === "000000"
+          ) {
+            return false;
+          } else {
+            return {
+              dateSelect: resolutionResultTable(
+                datedata.proposedDate + datedata.startTime
+              ),
+              startTime: resolutionResultTable(
+                datedata.proposedDate + datedata.startTime
+              ),
+              endTime: resolutionResultTable(
+                datedata.proposedDate + datedata.endTime
+              ),
+            };
+          }
+        });
+        setRows(dateArray);
+        let convertResponseDate = forRecentActivity(
+          getAllProposedDatesEditFlow.deadLineDate + "000000"
+        );
+
+        setSendResponseBy({
+          ...sendResponseBy,
+          date: convertResponseDate,
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [getAllProposedDatesEditFlow]);
+  console.log(sendResponseBy, "sendResponseBysendResponseBy");
+  //Getting All Groups And Committees and users data from polls api
   useEffect(() => {
     let newParticpantData = PollsReducer.gellAllCommittesandGroups;
     try {
       if (newParticpantData !== null && newParticpantData !== undefined) {
         let temp = [];
+
         if (Object.keys(newParticpantData).length > 0) {
           if (Object.keys(newParticpantData.groups).length > 0) {
             newParticpantData.groups.forEach((a, index) => {
@@ -146,114 +260,132 @@ const ProposedNewMeeting = ({
                 value: a.groupID,
                 name: a.groupName,
                 label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className='d-flex gap-2 align-items-center'>
-                        <img
-                          src={GroupIcon}
-                          height='16.45px'
-                          width='18.32px'
-                          draggable='false'
-                          alt=''
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.groupName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
                 ),
-                // profilePic: GroupIcon,
                 type: 1,
               };
               temp.push(newData);
             });
           }
+
           if (Object.keys(newParticpantData.committees).length > 0) {
             newParticpantData.committees.forEach((a, index) => {
               let newData = {
                 value: a.committeeID,
                 name: a.committeeName,
                 label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className='d-flex gap-2 align-items-center'>
-                        <img
-                          src={committeeicon}
-                          height='16.45px'
-                          width='18.32px'
-                          draggable='false'
-                          alt=''
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.committeeName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
                 ),
-                // profilePic: committeeicon,
-
                 type: 2,
               };
               temp.push(newData);
             });
           }
+
           if (Object.keys(newParticpantData.organizationUsers).length > 0) {
-            let filterOutCreatorUser =
-              newParticpantData?.organizationUsers?.filter(
-                (data, index) => Number(data?.userID) !== Number(userID)
-              );
+            let filteredUsers = newParticpantData.organizationUsers;
+
+            // Filter out the creator user
+            let filterOutCreatorUser = filteredUsers.filter(
+              (data, index) => Number(data?.userID) !== Number(userID)
+            );
+
             filterOutCreatorUser.forEach((a, index) => {
               let newData = {
                 value: a.userID,
                 name: a.userName,
-                // profilePic: a?.profilePicture?.displayProfilePictureName,
                 label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className='d-flex gap-2 align-items-center'>
-                        <img
-                          src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                          // src={}
-                          alt=''
-                          className={styles["UserProfilepic"]}
-                          width='18px'
-                          height='18px'
-                          draggable='false'
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.userName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
                 ),
                 type: 3,
               };
               temp.push(newData);
             });
+
+            // Check if isProposedMeetEdit is true
+            if (isProposedMeetEdit && membersParticipants?.length > 0) {
+              // Filter out the users that are already part of membersParticipants
+              temp = temp.filter(
+                (participant) =>
+                  !membersParticipants.some(
+                    (member) =>
+                      Number(member.userID) === Number(participant.value)
+                  )
+              );
+            }
           }
+
           setDropdowndata(temp);
         } else {
           setDropdowndata([]);
         }
       }
-    } catch {}
-  }, [PollsReducer.gellAllCommittesandGroups]);
+    } catch (error) {
+      console.error("Error processing participant data:", error);
+    }
+  }, [
+    PollsReducer.gellAllCommittesandGroups,
+    isProposedMeetEdit,
+    membersParticipants,
+    userID,
+  ]);
 
+  //Getting all meeting Types
   useEffect(() => {
     if (
       getALlMeetingTypes.length === 0 &&
@@ -263,6 +395,7 @@ const ProposedNewMeeting = ({
     }
   }, []);
 
+  //Getting Data of All meeting types
   useEffect(() => {
     try {
       if (
@@ -290,198 +423,70 @@ const ProposedNewMeeting = ({
 
   //onChange function Search
   const onChangeSearch = (event) => {
-    console.log(event, "eventeventeventevent");
     setParticipantUsers(event);
-    // setParticipantUsers(e.target.value.trimStart());
-  };
-
-  //onSearch function
-  const onSearch = (name, id, type, item) => {
-    let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
-    let tem = [...membersParticipants];
-    if (type === 1) {
-      // Groups Search
-      let check1 = newOrganizersData.groups.find(
-        (data, index) => data.groupID === id
-      );
-      if (check1 !== undefined) {
-        let groupUsers = check1.groupUsers;
-        if (Object.keys(groupUsers).length > 0) {
-          groupUsers.forEach((gUser, index) => {
-            let check2 = membersParticipants.find(
-              (data, index) => data.UserID === gUser.userID
-            );
-            if (check2 !== undefined) {
-            } else {
-              let newUser = {
-                userName: gUser.userName,
-                userID: gUser.userID,
-                displayPicture: gUser.profilePicture.displayProfilePictureName,
-                email: gUser.emailAddress,
-                IsPrimaryOrganizer: false,
-                IsOrganizerNotified: false,
-                Title: "",
-                isRSVP: false,
-                participantRole: {
-                  participantRole: "Participant",
-                  participantRoleID: 2,
-                },
-                isComingApi: false,
-              };
-              tem.push(newUser);
-            }
-          });
-        }
-      }
-    } else if (type === 2) {
-      // Committees Search
-      let check1 = newOrganizersData.committees.find(
-        (data, index) => data.committeeID === id
-      );
-
-      if (check1 !== undefined) {
-        let committeesUsers = check1.committeeUsers;
-        if (Object.keys(committeesUsers).length > 0) {
-          committeesUsers.forEach((cUser, index) => {
-            let check2 = membersParticipants.find(
-              (data, index) => data.UserID === cUser.userID
-            );
-            if (check2 !== undefined) {
-            } else {
-              let newUser = {
-                userName: cUser.userName,
-                userID: cUser.userID,
-                displayPicture: cUser.profilePicture.displayProfilePictureName,
-                email: cUser.emailAddress,
-                IsPrimaryOrganizer: false,
-                IsOrganizerNotified: false,
-                Title: "",
-                isRSVP: false,
-                participantRole: {
-                  participantRole: "Participant",
-                  participantRoleID: 2,
-                },
-                isComingApi: false,
-              };
-              tem.push(newUser);
-            }
-          });
-        }
-      }
-    } else if (type === 3) {
-      // User Search
-      let check1 = membersParticipants.find(
-        (data, index) => data.UserID === id
-      );
-
-      if (check1 !== undefined) {
-      } else {
-        let check2 = newOrganizersData.organizationUsers.find(
-          (data, index) => data.userID === id
-        );
-        if (check2 !== undefined) {
-          let newUser = {
-            userName: check2.userName,
-            userID: check2.userID,
-            displayPicture: check2.profilePicture.displayProfilePictureName,
-            email: check2.emailAddress,
-            IsPrimaryOrganizer: false,
-            IsOrganizerNotified: false,
-            Title: "",
-            isRSVP: false,
-            participantRole: {
-              participantRole: "Participant",
-              participantRoleID: 2,
-            },
-            isComingApi: false,
-          };
-          tem.push(newUser);
-        }
-      }
-    }
-    const uniqueData = new Set(tem.map(JSON.stringify));
-
-    const result = Array.from(uniqueData).map(JSON.parse);
-    setMembersParticipants(result);
-    setParticipantUsers([]);
-  };
-
-  // for selection of data
-  const handleSelectValue = (value) => {
-    setSelectedsearch(value);
   };
 
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
-    console.log(index, "indexindexindexindex");
     let removeParticipant = [...membersParticipants];
     removeParticipant.splice(index, 1);
     setMembersParticipants(removeParticipant);
   };
 
   //Adding the Dates Rows
-
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
-
+    console.log(lastRow, "lastRowlastRowlastRow");
     if (isValidRow(lastRow)) {
-      let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
-        lastRow.dateForView
-      );
+      let { DateGMT } = incrementDateforPropsedMeeting(lastRow.dateSelect);
       setRows([
         ...rows,
         {
-          selectedOption: dateFormat,
-          dateForView: DateGMT,
-          startDate: getStartTime?.formattedTime,
+          dateSelect: DateGMT,
           startTime: getStartTime?.newFormatTime,
-          endDate: getEndTime?.formattedTime,
           endTime: getEndTime?.newFormatTime,
         },
       ]);
     }
   };
-  //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
+
+  //Validating Row Function if its Empty or not
   const isValidRow = (row) => {
-    console.log(row, "isValidRowisValidRowisValidRow");
-    return (
-      row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
-    );
+    return row.dateSelect !== "" && row.startTime !== "" && row.endTime !== "";
   };
 
-  //OnChange Function For Select Dates
-  const handleStartDateChange = (index, date) => {
-    let newDate = new Date(date);
+  //Handle StartTime Change
+  const handleStartTimeChange = (index, date) => {
+    let newDate = new Date(date); //Getting the instance of the date
 
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours}${minutes}${"00"}`;
-
-      const updatedRows = [...rows];
+      const updatedRows = [...rows]; // Making copy of the array of object
 
       if (
+        //Main Check of Checking that is the upper row and lower date are same along if the index is > 0
         index > 0 &&
-        updatedRows[index - 1].selectedOption ===
-          updatedRows[index].selectedOption
+        updatedRows[index - 1].dateSelect?.toDateString() ===
+          updatedRows[index].dateSelect?.toDateString()
       ) {
-        if (formattedTime <= updatedRows[index - 1].endDate) {
+        if (
+          //Checks that if the start time of lower row is less then end time of upper row (same date scenario)
+          updatedRows[index - 1].startTime <= updatedRows[index - 1].endTime
+        ) {
           setOpen({
             flag: true,
             message: t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
           });
-          updatedRows[index].startDate = getStartTime?.formattedTime;
-          updatedRows[index].startTime = getStartTime?.newFormatTime;
+          //if the scnario gets exist paste the current value that is assigned to it already
+          updatedRows[index].startTime = updatedRows[index - 1].endTime;
           setRows(updatedRows);
           return;
         } else {
           if (
-            updatedRows[index].endDate !== "" &&
-            formattedTime >= updatedRows[index].endDate
+            //checks the condtion that the start time should not be greater then end time
+            updatedRows[index].endTime !== "" &&
+            newDate >= updatedRows[index].endTime
           ) {
             setOpen({
               flag: true,
@@ -489,20 +494,18 @@ const ProposedNewMeeting = ({
                 "Selected-start-time-should-not-be-greater-than-the-endTime"
               ),
             });
-            updatedRows[index].startDate = formattedTime;
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
             return;
           } else {
-            updatedRows[index].startDate = formattedTime;
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
           }
         }
       } else {
         if (
-          updatedRows[index].endDate !== "" &&
-          formattedTime >= updatedRows[index].endDate
+          updatedRows[index].endTime !== "" &&
+          newDate >= updatedRows[index].endTime
         ) {
           setOpen({
             flag: true,
@@ -510,12 +513,10 @@ const ProposedNewMeeting = ({
               "Selected-start-time-should-not-be-greater-than-the-endTime"
             ),
           });
-          updatedRows[index].startDate = formattedTime;
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
           return;
         } else {
-          updatedRows[index].startDate = formattedTime;
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
         }
@@ -523,142 +524,107 @@ const ProposedNewMeeting = ({
     } else {
     }
   };
-
-  const handleEndDateChange = (index, date) => {
+  //Handle EndTime Change
+  const handleEndTimeChange = (index, date) => {
     let newDate = new Date(date);
 
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours}${minutes}${"00"}`;
-
       const updatedRows = [...rows];
 
       if (
         index > 0 &&
-        updatedRows[index - 1].selectedOption ===
-          updatedRows[index].selectedOption
+        updatedRows[index - 1].dateSelect?.toDateString() ===
+          updatedRows[index].dateSelect?.toDateString()
       ) {
-        if (formattedTime <= updatedRows[index].startDate) {
+        if (updatedRows[index - 1].endTime <= updatedRows[index].startTime) {
           setOpen({
             flag: true,
             message: t(
               "Selected-end-time-should-not-be-less-than-the-previous-one"
             ),
           });
-          updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           return;
         } else {
-          updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       } else {
-        if (formattedTime <= updatedRows[index].startDate) {
+        if (newDate <= updatedRows[index].startTime) {
           setOpen({
             flag: true,
             message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
-          updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           return;
         } else {
-          updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       }
-      // }
     } else {
     }
   };
-
-  const changeDateStartHandler = (date, index) => {
+  //Handle Date Selection Change
+  const handleDateSelector = (date, index) => {
     try {
       let newDate = new Date(date);
-      let DateDate = new DateObject(date).format("YYYYMMDD");
       const updatedRows = [...rows];
-      updatedRows[index].selectedOption = DateDate;
-      updatedRows[index].dateForView = newDate;
+      updatedRows[index].dateSelect = newDate;
       setRows(updatedRows);
-      // if (
-      //   index > 0 &&
-      //   Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
-      // ) {
-      //   setOpen({
-      //     flag: true,
-      //     message: t("Selected-date-should-not-be-less-than-the-previous-one"),
-      //   });
-      //   return;
-      // } else {
-
-      // }
-    } catch {}
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   //Removing the Date Time Rows
   const HandleCancelFunction = (index) => {
-    let optionscross = [...rows];
-    optionscross.splice(index, 1);
-    setRows(optionscross);
+    if (index === 0) {
+      setOpen({
+        flag: true,
+        message: t("At-least-one-date-time-slot-is-mandatory"),
+      });
+    } else {
+      let optionscross = [...rows];
+      optionscross.splice(index, 1);
+      setRows(optionscross);
+    }
   };
 
   //Send Response By Handler
   const SendResponseHndler = (date) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = convertToUTC(meetingDateValueFormat);
-    setSendResponseVal(meetingDateValueFormat);
     setSendResponseBy({
       ...sendResponseBy,
-      date: DateDate.slice(0, 8),
+      date: new Date(date),
     });
   };
 
   //for handling Cancel the ProposedMeeting Page
   const handleCancelButtonProposedMeeting = () => {
     setProposedNewMeeting(false);
+    setIsProposedMeetEdit(false);
+    dispatch(proposedMeetingData());
+    dispatch(ParticipantsData());
+    dispatch(GetAllMeetingDetialsData());
   };
-
+  console.log(rows, "hell");
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
     let Dates = [];
+
     rows.forEach((data, index) => {
       Dates.push({
-        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
+        MeetingDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
           0,
           8
         ),
-        StartTime: createConvert(data.selectedOption + data.startDate).slice(
-          8,
-          14
-        ),
-        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
-      });
-    });
-
-    console.log(rows, "sortedDatessortedDates");
-
-    //For Set Proposed  Dates
-    let ProposedDates = [];
-    rows.forEach((data, index) => {
-      ProposedDates.push({
-        ProposedDate: createConvert(data.selectedOption + data.startDate).slice(
-          0,
-          8
-        ),
-        StartTime: createConvert(data.selectedOption + data.startDate).slice(
-          8,
-          14
-        ),
-        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+        StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(8, 14),
+        EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
       });
     });
 
     // Sorting the Dates array
-    let sortedDates = ProposedDates.sort((a, b) => {
+    let sortedDates = Dates.sort((a, b) => {
       if (a.ProposedDate !== b.ProposedDate) {
         return a.ProposedDate.localeCompare(b.ProposedDate);
       } else if (a.StartTime !== b.StartTime) {
@@ -667,13 +633,21 @@ const ProposedNewMeeting = ({
         return a.EndTime.localeCompare(b.EndTime);
       }
     });
-
-    console.log(sortedDates, "sortedDatessortedDates");
-
+    console.log(Dates, "hell");
+    console.log(sortedDates, "hell");
+    console.log(membersParticipants, "hell");
+    console.log(proposedMeetingDetails.MeetingTitle, "hell");
+    console.log(membersParticipants.length !== 0, "hell");
+    console.log(sendResponseVal, "hell");
+    console.log(rows.length !== 1, "hell");
+    console.log(
+      multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
+      "multiDatePickerDateChangIntoUTC"
+    );
     if (
       proposedMeetingDetails.MeetingTitle !== "" &&
       membersParticipants.length !== 0 &&
-      sendResponseVal !== "" &&
+      sendResponseBy.date !== "" &&
       rows.length !== 1
     ) {
       let data = {
@@ -696,7 +670,6 @@ const ProposedNewMeeting = ({
           MeetingStatusID: 11,
         },
       };
-      console.log(data, "sortedDatessortedDates");
 
       dispatch(
         SaveMeetingDetialsNewApiFunction(
@@ -713,7 +686,7 @@ const ProposedNewMeeting = ({
           setDataroomMapFolderId,
           membersParticipants,
           sortedDates,
-          sendResponseBy.date,
+          multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
           setProposedNewMeeting
         )
       );
@@ -721,7 +694,7 @@ const ProposedNewMeeting = ({
       seterror(false);
     } else if (
       proposedMeetingDetails.MeetingTitle === "" &&
-      membersParticipants.length === 0 &&
+      membersParticipants.length !== 0 &&
       sendResponseVal === ""
     ) {
       seterror(true);
@@ -789,16 +762,15 @@ const ProposedNewMeeting = ({
   }, [currentLanguage]);
 
   const today = moment().startOf("day");
-  const firstSelectedDate = moment(rows[0].selectedOption, "YYYYMMDD").startOf(
-    "day"
-  ); // Date selected at zero index
+  const firstSelectedDate = moment(rows[0].dateSelect).startOf("day");
   const minSelectableDate = today.isSameOrBefore(firstSelectedDate)
     ? today
     : firstSelectedDate;
   const maxSelectableDate = firstSelectedDate;
 
-  //Custom Filter for Selector
+  console.log(rows, "rowsrowsrowsrows");
 
+  //Custom Filter for Selector
   const customFilter = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
@@ -807,10 +779,13 @@ const ProposedNewMeeting = ({
     }
   };
 
+  //Click Function for adding the participants
   const handleClickAddParticipants = () => {
     let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
-    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData")
+    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
+
     let tem = [...membersParticipants];
+
     if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
         if (userData.type === 1) {
@@ -827,11 +802,10 @@ const ProposedNewMeeting = ({
                     Number(groupFilter.userID) !== Number(userID)
                 )
                 .forEach((gUser, index) => {
-                  let check2 = membersParticipants.find(
-                    (data, index) => data.UserID === gUser.userID
+                  let check2 = tem.find(
+                    (data, index) => data.userID === gUser.userID
                   );
-                  if (check2 !== undefined) {
-                  } else {
+                  if (check2 === undefined) {
                     let newUser = {
                       userName: gUser.userName,
                       userID: gUser.userID,
@@ -858,7 +832,6 @@ const ProposedNewMeeting = ({
           let check1 = newOrganizersData.committees.find(
             (data, index) => data.committeeID === userData.value
           );
-
           if (check1 !== undefined) {
             let committeesUsers = check1.committeeUsers;
             if (Object.keys(committeesUsers).length > 0) {
@@ -868,11 +841,10 @@ const ProposedNewMeeting = ({
                     Number(filterData.userID) !== Number(userID)
                 )
                 .forEach((cUser, index) => {
-                  let check2 = membersParticipants.find(
-                    (data, index) => data.UserID === cUser.userID
+                  let check2 = tem.find(
+                    (data, index) => data.userID === cUser.userID
                   );
-                  if (check2 !== undefined) {
-                  } else {
+                  if (check2 === undefined) {
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
@@ -896,12 +868,10 @@ const ProposedNewMeeting = ({
           }
         } else if (userData.type === 3) {
           // User Search
-          let check1 = membersParticipants.find(
-            (data, index) => data.UserID === userData.value
+          let check1 = tem.find(
+            (data, index) => data.userID === userData.value
           );
-
-          if (check1 !== undefined) {
-          } else {
+          if (check1 === undefined) {
             let check2 = newOrganizersData.organizationUsers.find(
               (data, index) => data.userID === userData.value
             );
@@ -925,11 +895,17 @@ const ProposedNewMeeting = ({
             }
           }
         }
-        const uniqueData = new Set(tem.map(JSON.stringify));
-        const result = Array.from(uniqueData).map(JSON.parse);
-        setMembersParticipants(result);
-        setParticipantUsers([]);
       });
+
+      // Remove duplicates
+      const uniqueData = new Set(tem.map(JSON.stringify));
+      const result = Array.from(uniqueData).map(JSON.parse);
+
+      // Set the appropriate state based on isProposedMeetEdit
+
+      setMembersParticipants(result);
+
+      setParticipantUsers([]);
     }
   };
 
@@ -955,7 +931,7 @@ const ProposedNewMeeting = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className='mt-1'>
+                <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       labelclass={"d-none"}
@@ -971,7 +947,8 @@ const ProposedNewMeeting = ({
                             error && proposedMeetingDetails.MeetingTitle === ""
                               ? ` ${styles["errorMessage-inLogin"]} `
                               : `${styles["errorMessage-inLogin_hidden"]}`
-                          }>
+                          }
+                        >
                           {t("Please-enter-meeting-title")}
                         </p>
                       </Col>
@@ -979,31 +956,30 @@ const ProposedNewMeeting = ({
                   </Col>
                 </Row>
 
-                <Row className='mt-2'>
+                <Row className="mt-2">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Sub_headings"]}>
                       {t("Description")}
-                      {/* <span className={styles["res_steric"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <TextField
-                      name='MeetingDescription'
-                      applyClass='TextAreaProposedMeetingDetails'
-                      type='text'
+                      name="MeetingDescription"
+                      applyClass="TextAreaProposedMeetingDetails"
+                      type="text"
                       placeholder={t("Description")}
                       as={"textarea"}
                       labelclass={"d-none"}
-                      rows='7'
+                      rows="7"
                       value={proposedMeetingDetails.Description}
                       change={HandleChange}
                       required
                     />
                   </Col>
                 </Row>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Sub_headings"]}>
                       {t("Participant")}
@@ -1038,89 +1014,101 @@ const ProposedNewMeeting = ({
                     />
                   </Col>
                 </Row>
-                <Row className='mt-2'>
+                <Row className="mt-2">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_ProposedMeeting"]}>
-                    <Row className='mt-2'>
-                      {membersParticipants.length > 0
-                        ? membersParticipants.map((participant, index) => {
-                            console.log(participant, "participantparticipant");
-                            return (
-                              <>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={12}
-                                  className='mt-2'
-                                  key={index}>
-                                  <Row className='m-0 p-0'>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className={styles["Box_for_Assignee"]}>
-                                      <Row className='mt-1'>
-                                        <Col
-                                          lg={10}
-                                          md={10}
-                                          sm={12}
-                                          className='d-flex gap-2 align-items-center'>
-                                          <img
-                                            draggable={false}
-                                            src={`data:image/jpeg;base64,${participant.displayPicture}`}
-                                            width='50px'
-                                            alt=''
-                                            height='50px'
-                                            className={styles["ProfilePic"]}
-                                          />
-                                          <span
-                                            className={
-                                              styles["ParticipantName"]
-                                            }>
-                                            {participant.userName}
-                                          </span>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={2}
-                                          className='d-flex  align-items-center'>
-                                          <img
-                                            src={CrossIcon}
-                                            width='14px'
-                                            height='14px'
-                                            draggable='false'
-                                            style={{ cursor: "pointer" }}
-                                            alt=''
-                                            onClick={() =>
-                                              hanleRemovingParticipants(index)
-                                            }
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </>
-                            );
-                          })
-                        : null}
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error && membersParticipants.length === 0
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }>
-                            {t("Add-at-least-one-participant")}
-                          </p>
-                        </Col>
+                    className={styles["Scroller_ProposedMeeting"]}
+                  >
+                    <>
+                      <Row className="mt-2">
+                        {membersParticipants.length > 0
+                          ? membersParticipants.map((participant, index) => {
+                              console.log(
+                                participant,
+                                "participantparticipant"
+                              );
+                              return (
+                                <>
+                                  <Col
+                                    lg={6}
+                                    md={6}
+                                    sm={12}
+                                    className="mt-2"
+                                    key={index}
+                                  >
+                                    <Row className="m-0 p-0">
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className={styles["Box_for_Assignee"]}
+                                      >
+                                        <Row className="mt-1">
+                                          <Col
+                                            lg={10}
+                                            md={10}
+                                            sm={12}
+                                            className="d-flex gap-2 align-items-center"
+                                          >
+                                            <img
+                                              draggable={false}
+                                              src={`data:image/jpeg;base64,${participant.displayPicture}`}
+                                              width="50px"
+                                              alt=""
+                                              height="50px"
+                                              className={styles["ProfilePic"]}
+                                            />
+                                            <span
+                                              className={
+                                                styles["ParticipantName"]
+                                              }
+                                            >
+                                              {participant.userName}
+                                            </span>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={2}
+                                            className="d-flex  align-items-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              width="14px"
+                                              height="14px"
+                                              draggable="false"
+                                              style={{ cursor: "pointer" }}
+                                              alt=""
+                                              onClick={() =>
+                                                hanleRemovingParticipants(index)
+                                              }
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
+                        <Row>
+                          <Col>
+                            <p
+                              className={
+                                error && membersParticipants.length === 0
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Add-at-least-one-participant")}
+                            </p>
+                          </Col>
+                        </Row>
                       </Row>
-                    </Row>
+                    </>
                   </Col>
                 </Row>
               </Col>
@@ -1128,7 +1116,8 @@ const ProposedNewMeeting = ({
                 lg={1}
                 md={1}
                 sm={1}
-                className='d-flex align-items-center justify-content-center'>
+                className="d-flex align-items-center justify-content-center"
+              >
                 <span className={styles["VerticalSeperator"]}></span>
               </Col>
               <Col lg={5} md={5} sm={5}>
@@ -1145,40 +1134,41 @@ const ProposedNewMeeting = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_Proposed_Dates"]}>
+                    className={styles["Scroller_Proposed_Dates"]}
+                  >
                     {rows.length > 0
                       ? rows.map((data, index) => {
+                          console.log(data, "indexindexindex");
                           return (
                             <>
                               <Row key={index}>
                                 <Col lg={12} md={12} sm={12} key={index}>
-                                  <Row className='mt-2'>
+                                  <Row className="mt-2">
                                     <Col lg={4} md={4} sm={12}>
                                       <DatePicker
-                                        selected={data.selectedOption}
-                                        value={data.dateForView}
+                                        value={data.dateSelect}
                                         format={"DD/MM/YYYY"}
                                         minDate={
                                           index > 0
                                             ? rows[index - 1].selectedOption
                                             : moment().toDate()
                                         }
-                                        placeholder='DD/MM/YYYY'
+                                        placeholder="DD/MM/YYYY"
                                         render={
                                           <InputIcon
-                                            placeholder='DD/MM/YYYY'
-                                            className='datepicker_input'
+                                            placeholder="DD/MM/YYYY"
+                                            className="datepicker_input"
                                           />
                                         }
                                         editable={false}
-                                        className='datePickerTodoCreate2'
+                                        className="datePickerTodoCreate2"
                                         onOpenPickNewDate={true}
-                                        inputMode=''
+                                        inputMode=""
                                         calendar={calendarValue}
                                         locale={localValue}
                                         ref={calendRef}
                                         onFocusedDateChange={(value) =>
-                                          changeDateStartHandler(value, index)
+                                          handleDateSelector(value, index)
                                         }
                                         disabled={
                                           (Number(editorRole.status) === 9 ||
@@ -1209,7 +1199,8 @@ const ProposedNewMeeting = ({
                                           error && data.selectedOption === ""
                                             ? ` ${styles["errorMessage-inLogin"]} `
                                             : `${styles["errorMessage-inLogin_hidden"]}`
-                                        }>
+                                        }
+                                      >
                                         {t("Scheduled-date-is-required")}
                                       </p>
                                     </Col>
@@ -1217,23 +1208,22 @@ const ProposedNewMeeting = ({
                                       lg={3}
                                       md={3}
                                       sm={3}
-                                      className='timePicker'>
+                                      className="timePicker"
+                                    >
                                       <DatePicker
-                                        arrowClassName='arrowClass'
-                                        containerClassName='containerClassTimePicker'
-                                        className='timePicker'
+                                        arrowClassName="arrowClass"
+                                        containerClassName="containerClassTimePicker"
+                                        className="timePicker"
                                         disableDayPicker
-                                        inputClass='inputTImeMeeting'
+                                        inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
-                                        format='hh:mm A'
-                                        selected={data.startDate}
-                                        // onOpen={() => handleOpenStartTime(index)}
+                                        format="hh:mm A"
                                         value={data.startTime}
                                         editable={false}
                                         plugins={[<TimePicker hideSeconds />]}
                                         onChange={(date) =>
-                                          handleStartDateChange(index, date)
+                                          handleStartTimeChange(index, date)
                                         }
                                         disabled={
                                           (Number(editorRole.status) === 9 ||
@@ -1264,7 +1254,8 @@ const ProposedNewMeeting = ({
                                           error && data.startDate === ""
                                             ? ` ${styles["errorMessage-inLogin"]} `
                                             : `${styles["errorMessage-inLogin_hidden"]}`
-                                        }>
+                                        }
+                                      >
                                         {t("start-time-is-required")}
                                       </p>
                                     </Col>
@@ -1272,37 +1263,30 @@ const ProposedNewMeeting = ({
                                       lg={1}
                                       md={1}
                                       sm={12}
-                                      className='d-flex justify-content-center align-items-center'>
+                                      className="d-flex justify-content-center align-items-center"
+                                    >
                                       <img
                                         draggable={false}
                                         src={desh}
-                                        width='19.02px'
-                                        alt=''
+                                        width="19.02px"
+                                        alt=""
                                       />
                                     </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={12}
-                                      // className="d-flex justify-content-end"
-                                    >
+                                    <Col lg={3} md={3} sm={12}>
                                       <DatePicker
-                                        arrowClassName='arrowClass'
-                                        containerClassName='containerClassTimePicker'
-                                        className='timePicker'
+                                        arrowClassName="arrowClass"
+                                        containerClassName="containerClassTimePicker"
+                                        className="timePicker"
                                         disableDayPicker
-                                        inputClass='inputTImeMeeting'
+                                        inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
                                         value={data.endTime}
-                                        format='hh:mm A'
-                                        // onOpen={() => handleOpenEndTime(index)}
-                                        // onOpen={() => handleOpenStartTime()}
-                                        selected={data.endDate}
+                                        format="hh:mm A"
                                         plugins={[<TimePicker hideSeconds />]}
                                         editable={false}
                                         onChange={(date) =>
-                                          handleEndDateChange(index, date)
+                                          handleEndTimeChange(index, date)
                                         }
                                         disabled={
                                           (Number(editorRole.status) === 9 ||
@@ -1333,7 +1317,8 @@ const ProposedNewMeeting = ({
                                           error && data.endDate === ""
                                             ? ` ${styles["errorMessage-inLogin"]} `
                                             : `${styles["errorMessage-inLogin_hidden"]}`
-                                        }>
+                                        }
+                                      >
                                         {t("end-time-is-required")}
                                       </p>
                                     </Col>
@@ -1341,20 +1326,19 @@ const ProposedNewMeeting = ({
                                       lg={1}
                                       md={1}
                                       sm={12}
-                                      className='d-flex justify-content-end position-relative align-items-center'>
-                                      {index === 0 ? null : Number(
-                                          editorRole.status
-                                        ) === 9 &&
-                                        isEditMeeting ===
-                                          true ? null : editorRole.role ===
+                                      className="d-flex justify-content-end position-relative align-items-center"
+                                    >
+                                      {Number(editorRole.status) === 9 &&
+                                      isEditMeeting ===
+                                        true ? null : editorRole.role ===
                                           "Agenda Contributor" &&
                                         isEditMeeting === true ? null : (
                                         <img
                                           draggable={false}
                                           src={redcrossIcon}
-                                          width='23px'
-                                          alt=''
-                                          height='23px'
+                                          width="23px"
+                                          alt=""
+                                          height="23px"
                                           className={styles["Cross_icon_class"]}
                                           onClick={() => {
                                             HandleCancelFunction(index);
@@ -1371,23 +1355,24 @@ const ProposedNewMeeting = ({
                       : null}
                   </Col>
                 </Row>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <Button
                       text={
                         <>
-                          <Row className='mt-1'>
+                          <Row className="mt-1">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-center gap-2 align-items-center'>
+                              className="d-flex justify-content-center gap-2 align-items-center"
+                            >
                               <img
                                 draggable={false}
                                 src={plusFaddes}
-                                alt=''
-                                width='15.87px'
-                                height='15.87px'
+                                alt=""
+                                width="15.87px"
+                                height="15.87px"
                               />
                               <span className={styles["Add_dates_label"]}>
                                 {t("Add-dates")}
@@ -1408,20 +1393,22 @@ const ProposedNewMeeting = ({
                           error && rows.length === 1
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
-                        }>
+                        }
+                      >
                         {t("Add-at-least-two-proposed-dates")}
                       </p>
                     </Col>
                   </Row>
                 </Row>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col lg={6} md={6} sm={6}>
                     <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex flex-column flex-wrap'>
+                        className="d-flex flex-column flex-wrap"
+                      >
                         <span className={styles["Sub_headings"]}>
                           {t("Meeting-type")}{" "}
                           <span className={styles["res_steric"]}>*</span>
@@ -1445,33 +1432,29 @@ const ProposedNewMeeting = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex flex-column flex-wrap justify-content-end'>
+                        className="d-flex flex-column flex-wrap justify-content-end"
+                      >
                         <span className={styles["Sub_headings"]}>
                           {t("Send-response-by")}{" "}
                           <span className={styles["res_steric"]}>*</span>
                         </span>
 
                         <DatePicker
-                          value={sendResponseVal === "" ? "" : sendResponseVal}
-                          selected={
-                            sendResponseBy.date === ""
-                              ? ""
-                              : sendResponseBy.date
-                          }
+                          value={sendResponseBy.date}
                           format={"DD/MM/YYYY"}
                           minDate={minSelectableDate.toDate()}
                           maxDate={maxSelectableDate.toDate()}
-                          placeholder='DD/MM/YYYY'
+                          placeholder="DD/MM/YYYY"
                           render={
                             <InputIcon
-                              placeholder='DD/MM/YYYY'
-                              className='datepicker_input'
+                              placeholder="DD/MM/YYYY"
+                              className="datepicker_input"
                             />
                           }
                           editable={false}
-                          className='proposedMeetindatesDatePicker'
+                          className="proposedMeetindatesDatePicker"
                           onOpenPickNewDate={true}
-                          inputMode=''
+                          inputMode=""
                           calendar={calendarValue}
                           locale={localValue}
                           ref={calendRef}
@@ -1487,10 +1470,11 @@ const ProposedNewMeeting = ({
                           <Col>
                             <p
                               className={
-                                error && sendResponseVal === ""
+                                error && sendResponseBy.date === ""
                                   ? ` ${styles["errorMessage-inLogin"]} `
                                   : `${styles["errorMessage-inLogin_hidden"]}`
-                              }>
+                              }
+                            >
                               {t("Please-select-send-response-by-date")}
                             </p>
                           </Col>
@@ -1500,12 +1484,13 @@ const ProposedNewMeeting = ({
                   </Col>
                 </Row>
 
-                <Row className='mt-5'>
+                <Row className="mt-5">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-end gap-2'>
+                    className="d-flex justify-content-end gap-2"
+                  >
                     <Button
                       text={t("Cancel")}
                       className={styles["Cancel_Button_Proposed_Meeting"]}

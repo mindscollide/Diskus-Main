@@ -137,7 +137,7 @@ const CreatePolling = () => {
   }, [currentLanguage]);
 
   useEffect(() => {
-    dispatch(getAllCommitteesandGroups(navigate, t));
+    dispatch(getAllCommitteesandGroups(navigate, t, false));
   }, []);
 
   useEffect(() => {
