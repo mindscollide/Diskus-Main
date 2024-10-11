@@ -9012,6 +9012,19 @@ const proposedMeetingData = () => {
     type: actions.PROPOSED_MEETING_DATES_DATA,
   };
 };
+
+const ParticipantsData = () => {
+  return {
+    type: actions.PARTICIPANT_PROPOSED_MEETING,
+  };
+};
+
+const GetAllMeetingDetialsData = () => {
+  return {
+    type: actions.GET_ALL_MEETING_DETAILS_DATA,
+  };
+};
+
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9182,4 +9195,6 @@ export {
   validateStringParticipantProposedApi,
   LeaveMeetingVideo,
   proposedMeetingData,
+  ParticipantsData,
+  GetAllMeetingDetialsData,
 };

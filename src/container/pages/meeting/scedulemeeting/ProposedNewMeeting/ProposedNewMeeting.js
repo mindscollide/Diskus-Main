@@ -44,8 +44,10 @@ import {
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
 import {
+  GetAllMeetingDetialsData,
   GetAllMeetingTypesNewFunction,
   newMeetingGlobalLoader,
+  ParticipantsData,
   proposedMeetingData,
   SaveMeetingDetialsNewApiFunction,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -181,7 +183,9 @@ const ProposedNewMeeting = ({
     dispatch(getAllCommitteesandGroups(navigate, t, false));
     dispatch(newMeetingGlobalLoader(false));
     return () => {
-      // dispatch(proposedMeetingData());
+      dispatch(proposedMeetingData());
+      dispatch(ParticipantsData());
+      dispatch(GetAllMeetingDetialsData());
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",
@@ -201,10 +205,6 @@ const ProposedNewMeeting = ({
         getAllProposedDatesEditFlow.meetingProposedDates.length > 0 &&
         isProposedMeetEdit
       ) {
-        console.log(
-          getAllProposedDatesEditFlow,
-          "getAllProposedDatesEditFlowgetAllProposedDatesEditFlow"
-        );
         let DatesDataEditFlow =
           getAllProposedDatesEditFlow.meetingProposedDates;
         console.log(DatesDataEditFlow, "DatesDataEditFlowDatesDataEditFlow");
@@ -433,8 +433,6 @@ const ProposedNewMeeting = ({
     setMembersParticipants(removeParticipant);
   };
 
-  console.log(membersParticipants, "membersParticipants");
-
   //Adding the Dates Rows
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
@@ -588,9 +586,6 @@ const ProposedNewMeeting = ({
 
   //Send Response By Handler
   const SendResponseHndler = (date) => {
-    // let meetingDateValueFormat = new Date(date);
-    // let DateDate = convertToUTC(meetingDateValueFormat);
-    // setSendResponseVal(meetingDateValueFormat);
     setSendResponseBy({
       ...sendResponseBy,
       date: new Date(date),
@@ -600,6 +595,10 @@ const ProposedNewMeeting = ({
   //for handling Cancel the ProposedMeeting Page
   const handleCancelButtonProposedMeeting = () => {
     setProposedNewMeeting(false);
+    setIsProposedMeetEdit(false);
+    dispatch(proposedMeetingData());
+    dispatch(ParticipantsData());
+    dispatch(GetAllMeetingDetialsData());
   };
   console.log(rows, "hell");
   //For handling  Proposed button ProposedMeeting Page
@@ -630,10 +629,18 @@ const ProposedNewMeeting = ({
     console.log(Dates, "hell");
     console.log(sortedDates, "hell");
     console.log(membersParticipants, "hell");
+    console.log(proposedMeetingDetails.MeetingTitle, "hell");
+    console.log(membersParticipants.length !== 0, "hell");
+    console.log(sendResponseVal, "hell");
+    console.log(rows.length !== 1, "hell");
+    console.log(
+      multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
+      "multiDatePickerDateChangIntoUTC"
+    );
     if (
       proposedMeetingDetails.MeetingTitle !== "" &&
       membersParticipants.length !== 0 &&
-      sendResponseVal !== "" &&
+      sendResponseBy.date !== "" &&
       rows.length !== 1
     ) {
       let data = {
@@ -656,27 +663,26 @@ const ProposedNewMeeting = ({
           MeetingStatusID: 11,
         },
       };
-      console.log(data, "hell");
 
-      // dispatch(
-      //   SaveMeetingDetialsNewApiFunction(
-      //     navigate,
-      //     t,
-      //     data,
-      //     setSceduleMeeting,
-      //     setorganizers,
-      //     setmeetingDetails,
-      //     1,
-      //     setCurrentMeetingID,
-      //     currentMeeting,
-      //     proposedMeetingDetails,
-      //     setDataroomMapFolderId,
-      //     membersParticipants,
-      //     sortedDates,
-      //     sendResponseBy.date,
-      //     setProposedNewMeeting
-      //   )
-      // );
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails,
+          1,
+          setCurrentMeetingID,
+          currentMeeting,
+          proposedMeetingDetails,
+          setDataroomMapFolderId,
+          membersParticipants,
+          sortedDates,
+          multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
+          setProposedNewMeeting
+        )
+      );
 
       seterror(false);
     } else if (

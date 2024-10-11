@@ -2426,6 +2426,21 @@ const NewMeetingreducer = (state = initialState, action) => {
         getAllProposedDates: null,
       };
     }
+
+    case actions.PARTICIPANT_PROPOSED_MEETING: {
+      return {
+        ...state,
+        getAllSavedparticipants: [],
+      };
+    }
+
+    case actions.GET_ALL_MEETING_DETAILS_DATA: {
+      return {
+        ...state,
+        getAllMeetingDetails: null,
+      };
+    }
+
     default:
       return {
         ...state,
