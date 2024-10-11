@@ -974,14 +974,14 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getAllProposedDates: [],
+        getAllProposedDates: null,
         ResponseMessage: action.message,
       };
     }
     case actions.CLEARE_ALL_PROPOSED_MEETING_DATES: {
       return {
         ...state,
-        getAllProposedDates: [],
+        getAllProposedDates: null,
       };
     }
     case actions.SET_MEETING_RESPONSE_INIT: {
@@ -1886,7 +1886,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         getPollsMeetingID: null,
         getMeetingusers: [],
         setMeetingProposeDate: [],
-        getAllProposedDates: [],
+        getAllProposedDates: null,
         meetingResponse: [],
         meetingMaterialData: [],
         agendaRights: null,
@@ -2423,7 +2423,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.PROPOSED_MEETING_DATES_DATA: {
       return {
         ...state,
-        getAllProposedDates: [],
+        getAllProposedDates: null,
       };
     }
     default:

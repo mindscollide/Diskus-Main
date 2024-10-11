@@ -25,8 +25,11 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
 import {
+  convertDateTimetoGMTMeetingDetail,
   convertToUTC,
   createConvert,
+  forRecentActivity,
+  multiDatePickerDateChangIntoUTC,
   resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
@@ -44,12 +47,19 @@ import {
   GetAllMeetingTypesNewFunction,
   newMeetingGlobalLoader,
   proposedMeetingData,
+  SaveMeetingDetialsNewApiFunction,
 } from "../../../../../store/actions/NewMeetingActions";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
   editorRole,
   isEditMeeting,
   isProposedMeetEdit,
+  setSceduleMeeting,
+  setorganizers,
+  setmeetingDetails,
+  setCurrentMeetingID,
+  setDataroomMapFolderId,
+  currentMeeting,
   setIsProposedMeetEdit,
 }) => {
   const { t } = useTranslation();
@@ -70,7 +80,10 @@ const ProposedNewMeeting = ({
   const getAllProposedDatesEditFlow = useSelector(
     (state) => state.NewMeetingreducer.getAllProposedDates
   );
-
+  console.log(
+    getAllProposedDatesEditFlow,
+    "getAllProposedDatesEditFlowgetAllProposedDatesEditFlow"
+  );
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
@@ -78,9 +91,11 @@ const ProposedNewMeeting = ({
   const [sendResponseVal, setSendResponseVal] = useState("");
   const [participantUsers, setParticipantUsers] = useState([]);
   const [membersParticipants, setMembersParticipants] = useState([]);
-  const [editFlowParticipant, setEditFlowParticipant] = useState([]);
+  console.log(membersParticipants, "dropdowndatadropdowndata");
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
+  console.log(dropdowndata, "dropdowndatadropdowndata");
+
   const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
@@ -134,7 +149,8 @@ const ProposedNewMeeting = ({
         getAllParticipants.length > 0 &&
         getAllParticipants !== undefined
       ) {
-        setEditFlowParticipant(getAllParticipants);
+        setMembersParticipants(getAllParticipants);
+        setDropdowndata(getAllParticipants);
       }
     } catch (error) {
       console.log(error, "error");
@@ -165,7 +181,7 @@ const ProposedNewMeeting = ({
     dispatch(getAllCommitteesandGroups(navigate, t, false));
     dispatch(newMeetingGlobalLoader(false));
     return () => {
-      dispatch(proposedMeetingData());
+      // dispatch(proposedMeetingData());
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",
@@ -182,41 +198,54 @@ const ProposedNewMeeting = ({
       if (
         getAllProposedDatesEditFlow &&
         getAllProposedDatesEditFlow !== undefined &&
+        getAllProposedDatesEditFlow.meetingProposedDates.length > 0 &&
         isProposedMeetEdit
       ) {
-        console.log(getAllProposedDatesEditFlow, "getAllProposedDatesEditFlow");
+        console.log(
+          getAllProposedDatesEditFlow,
+          "getAllProposedDatesEditFlowgetAllProposedDatesEditFlow"
+        );
         let DatesDataEditFlow =
           getAllProposedDatesEditFlow.meetingProposedDates;
+        console.log(DatesDataEditFlow, "DatesDataEditFlowDatesDataEditFlow");
 
         let dateArray = DatesDataEditFlow.map((datedata) => {
           console.log(datedata, "datedata");
-          return {
-            dateSelect: resolutionResultTable(
-              datedata.proposedDate + datedata.startTime
-            ),
-            startTime: resolutionResultTable(
-              datedata.proposedDate + datedata.startTime
-            ),
-            endTime: resolutionResultTable(
-              datedata.proposedDate + datedata.endTime
-            ),
-          };
+          if (
+            datedata.proposedDate === "10000101" &&
+            datedata.endTime === "000000" &&
+            datedata.startTime === "000000"
+          ) {
+            return false;
+          } else {
+            return {
+              dateSelect: resolutionResultTable(
+                datedata.proposedDate + datedata.startTime
+              ),
+              startTime: resolutionResultTable(
+                datedata.proposedDate + datedata.startTime
+              ),
+              endTime: resolutionResultTable(
+                datedata.proposedDate + datedata.endTime
+              ),
+            };
+          }
         });
         setRows(dateArray);
-        let meetingDateValueFormat = new DateObject(
-          getAllProposedDatesEditFlow.deadLineDate
-        ).format("DD/MM/YYYY");
-        console.log(meetingDateValueFormat, "logloglogloglog");
+        let convertResponseDate = forRecentActivity(
+          getAllProposedDatesEditFlow.deadLineDate + "000000"
+        );
 
-        setEditsendResponseVal(meetingDateValueFormat);
+        setSendResponseBy({
+          ...sendResponseBy,
+          date: convertResponseDate,
+        });
       }
     } catch (error) {
       console.log(error, "error");
     }
   }, [getAllProposedDatesEditFlow]);
-
-  console.log(editsendResponseVal, "logloglogloglog");
-
+  console.log(sendResponseBy, "sendResponseBysendResponseBy");
   //Getting All Groups And Committees and users data from polls api
   useEffect(() => {
     let newParticpantData = PollsReducer.gellAllCommittesandGroups;
@@ -231,27 +260,25 @@ const ProposedNewMeeting = ({
                 value: a.groupID,
                 name: a.groupName,
                 label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={GroupIcon}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.groupName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
                 ),
                 type: 1,
               };
@@ -265,27 +292,25 @@ const ProposedNewMeeting = ({
                 value: a.committeeID,
                 name: a.committeeName,
                 label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={committeeicon}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.committeeName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
                 ),
                 type: 2,
               };
@@ -295,16 +320,6 @@ const ProposedNewMeeting = ({
 
           if (Object.keys(newParticpantData.organizationUsers).length > 0) {
             let filteredUsers = newParticpantData.organizationUsers;
-
-            // If isProposedMeetEdit is true, filter out users that are in editFlowParticipant
-            if (isProposedMeetEdit && editFlowParticipant?.length > 0) {
-              const editFlowParticipantIDs = editFlowParticipant.map(
-                (p) => p.userID
-              );
-              filteredUsers = newParticpantData.organizationUsers.filter(
-                (data) => !editFlowParticipantIDs.includes(data.userID)
-              );
-            }
 
             // Filter out the creator user
             let filterOutCreatorUser = filteredUsers.filter(
@@ -316,33 +331,43 @@ const ProposedNewMeeting = ({
                 value: a.userID,
                 name: a.userName,
                 label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                          alt=""
-                          className={styles["UserProfilepic"]}
-                          width="18px"
-                          height="18px"
-                          draggable="false"
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.userName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
                 ),
                 type: 3,
               };
               temp.push(newData);
             });
+
+            // Check if isProposedMeetEdit is true
+            if (isProposedMeetEdit && membersParticipants?.length > 0) {
+              // Filter out the users that are already part of membersParticipants
+              temp = temp.filter(
+                (participant) =>
+                  !membersParticipants.some(
+                    (member) =>
+                      Number(member.userID) === Number(participant.value)
+                  )
+              );
+            }
           }
 
           setDropdowndata(temp);
@@ -356,8 +381,10 @@ const ProposedNewMeeting = ({
   }, [
     PollsReducer.gellAllCommittesandGroups,
     isProposedMeetEdit,
-    editFlowParticipant,
+    membersParticipants,
+    userID,
   ]);
+
   //Getting all meeting Types
   useEffect(() => {
     if (
@@ -399,19 +426,14 @@ const ProposedNewMeeting = ({
     setParticipantUsers(event);
   };
 
-  //Removing the Added Participants Edit Flow
-  const hanleRemovingParticipantsEditFlow = (index) => {
-    let removeParticipant = [...editFlowParticipant];
-    removeParticipant.splice(index, 1);
-    setEditFlowParticipant(removeParticipant);
-  };
-
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
     let removeParticipant = [...membersParticipants];
     removeParticipant.splice(index, 1);
     setMembersParticipants(removeParticipant);
   };
+
+  console.log(membersParticipants, "membersParticipants");
 
   //Adding the Dates Rows
   const addRow = () => {
@@ -566,12 +588,12 @@ const ProposedNewMeeting = ({
 
   //Send Response By Handler
   const SendResponseHndler = (date) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = convertToUTC(meetingDateValueFormat);
-    setSendResponseVal(meetingDateValueFormat);
+    // let meetingDateValueFormat = new Date(date);
+    // let DateDate = convertToUTC(meetingDateValueFormat);
+    // setSendResponseVal(meetingDateValueFormat);
     setSendResponseBy({
       ...sendResponseBy,
-      date: DateDate.slice(0, 8),
+      date: new Date(date),
     });
   };
 
@@ -579,36 +601,24 @@ const ProposedNewMeeting = ({
   const handleCancelButtonProposedMeeting = () => {
     setProposedNewMeeting(false);
   };
-
+  console.log(rows, "hell");
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
     let Dates = [];
+
     rows.forEach((data, index) => {
       Dates.push({
-        MeetingDate: createConvert(data.dateSelect + data.startTime).slice(
+        MeetingDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
           0,
           8
         ),
-        StartTime: createConvert(data.dateSelect + data.startTime).slice(8, 14),
-        EndTime: createConvert(data.dateSelect + data.endTime).slice(8, 14),
-      });
-    });
-
-    //For Set Proposed  Dates
-    let ProposedDates = [];
-    rows.forEach((data, index) => {
-      ProposedDates.push({
-        ProposedDate: createConvert(data.dateSelect + data.startTime).slice(
-          0,
-          8
-        ),
-        StartTime: createConvert(data.dateSelect + data.startTime).slice(8, 14),
-        EndTime: createConvert(data.dateSelect + data.endTime).slice(8, 14),
+        StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(8, 14),
+        EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
       });
     });
 
     // Sorting the Dates array
-    let sortedDates = ProposedDates.sort((a, b) => {
+    let sortedDates = Dates.sort((a, b) => {
       if (a.ProposedDate !== b.ProposedDate) {
         return a.ProposedDate.localeCompare(b.ProposedDate);
       } else if (a.StartTime !== b.StartTime) {
@@ -617,7 +627,9 @@ const ProposedNewMeeting = ({
         return a.EndTime.localeCompare(b.EndTime);
       }
     });
-
+    console.log(Dates, "hell");
+    console.log(sortedDates, "hell");
+    console.log(membersParticipants, "hell");
     if (
       proposedMeetingDetails.MeetingTitle !== "" &&
       membersParticipants.length !== 0 &&
@@ -644,7 +656,7 @@ const ProposedNewMeeting = ({
           MeetingStatusID: 11,
         },
       };
-      console.log(data, "sortedDatessortedDates");
+      console.log(data, "hell");
 
       // dispatch(
       //   SaveMeetingDetialsNewApiFunction(
@@ -669,7 +681,7 @@ const ProposedNewMeeting = ({
       seterror(false);
     } else if (
       proposedMeetingDetails.MeetingTitle === "" &&
-      membersParticipants.length === 0 &&
+      membersParticipants.length !== 0 &&
       sendResponseVal === ""
     ) {
       seterror(true);
@@ -759,9 +771,7 @@ const ProposedNewMeeting = ({
     let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
     console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
 
-    let tem = isProposedMeetEdit
-      ? [...editFlowParticipant]
-      : [...membersParticipants];
+    let tem = [...membersParticipants];
 
     if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
@@ -879,18 +889,12 @@ const ProposedNewMeeting = ({
       const result = Array.from(uniqueData).map(JSON.parse);
 
       // Set the appropriate state based on isProposedMeetEdit
-      if (isProposedMeetEdit) {
-        setEditFlowParticipant(result);
-      } else {
-        setMembersParticipants(result);
-      }
+
+      setMembersParticipants(result);
 
       setParticipantUsers([]);
     }
   };
-
-  console.log(editsendResponseVal, "sendResponseValsendResponseVal");
-  console.log(sendResponseVal, "sendResponseValsendResponseVal");
 
   return (
     <section>
@@ -1004,182 +1008,94 @@ const ProposedNewMeeting = ({
                     sm={12}
                     className={styles["Scroller_ProposedMeeting"]}
                   >
-                    {isProposedMeetEdit ? (
-                      <>
-                        <Row className="mt-2">
-                          {editFlowParticipant.length > 0
-                            ? editFlowParticipant.map(
-                                (editFlowparticipant, index) => {
-                                  console.log(
-                                    editFlowparticipant,
-                                    "indexindexindex"
-                                  );
-                                  return (
-                                    <>
+                    <>
+                      <Row className="mt-2">
+                        {membersParticipants.length > 0
+                          ? membersParticipants.map((participant, index) => {
+                              console.log(
+                                participant,
+                                "participantparticipant"
+                              );
+                              return (
+                                <>
+                                  <Col
+                                    lg={6}
+                                    md={6}
+                                    sm={12}
+                                    className="mt-2"
+                                    key={index}
+                                  >
+                                    <Row className="m-0 p-0">
                                       <Col
-                                        lg={6}
-                                        md={6}
+                                        lg={12}
+                                        md={12}
                                         sm={12}
-                                        className="mt-2"
-                                        key={index}
+                                        className={styles["Box_for_Assignee"]}
                                       >
-                                        <Row className="m-0 p-0">
+                                        <Row className="mt-1">
                                           <Col
-                                            lg={12}
-                                            md={12}
+                                            lg={10}
+                                            md={10}
                                             sm={12}
-                                            className={
-                                              styles["Box_for_Assignee"]
-                                            }
+                                            className="d-flex gap-2 align-items-center"
                                           >
-                                            <Row className="mt-1">
-                                              <Col
-                                                lg={10}
-                                                md={10}
-                                                sm={12}
-                                                className="d-flex gap-2 align-items-center"
-                                              >
-                                                <img
-                                                  draggable={false}
-                                                  src={`data:image/jpeg;base64,${editFlowparticipant.displayPicture}`}
-                                                  width="50px"
-                                                  alt=""
-                                                  height="50px"
-                                                  className={
-                                                    styles["ProfilePic"]
-                                                  }
-                                                />
-                                                <span
-                                                  className={
-                                                    styles["ParticipantName"]
-                                                  }
-                                                >
-                                                  {editFlowparticipant.userName}
-                                                </span>
-                                              </Col>
-                                              <Col
-                                                lg={2}
-                                                md={2}
-                                                sm={2}
-                                                className="d-flex  align-items-center"
-                                              >
-                                                <img
-                                                  src={CrossIcon}
-                                                  width="14px"
-                                                  height="14px"
-                                                  draggable="false"
-                                                  style={{ cursor: "pointer" }}
-                                                  alt=""
-                                                  onClick={() =>
-                                                    hanleRemovingParticipantsEditFlow(
-                                                      index
-                                                    )
-                                                  }
-                                                />
-                                              </Col>
-                                            </Row>
+                                            <img
+                                              draggable={false}
+                                              src={`data:image/jpeg;base64,${participant.displayPicture}`}
+                                              width="50px"
+                                              alt=""
+                                              height="50px"
+                                              className={styles["ProfilePic"]}
+                                            />
+                                            <span
+                                              className={
+                                                styles["ParticipantName"]
+                                              }
+                                            >
+                                              {participant.userName}
+                                            </span>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={2}
+                                            className="d-flex  align-items-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              width="14px"
+                                              height="14px"
+                                              draggable="false"
+                                              style={{ cursor: "pointer" }}
+                                              alt=""
+                                              onClick={() =>
+                                                hanleRemovingParticipants(index)
+                                              }
+                                            />
                                           </Col>
                                         </Row>
                                       </Col>
-                                    </>
-                                  );
-                                }
-                              )
-                            : null}{" "}
+                                    </Row>
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
+                        <Row>
+                          <Col>
+                            <p
+                              className={
+                                error && membersParticipants.length === 0
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Add-at-least-one-participant")}
+                            </p>
+                          </Col>
                         </Row>
-                      </>
-                    ) : (
-                      <>
-                        <Row className="mt-2">
-                          {membersParticipants.length > 0
-                            ? membersParticipants.map((participant, index) => {
-                                console.log(
-                                  participant,
-                                  "participantparticipant"
-                                );
-                                return (
-                                  <>
-                                    <Col
-                                      lg={6}
-                                      md={6}
-                                      sm={12}
-                                      className="mt-2"
-                                      key={index}
-                                    >
-                                      <Row className="m-0 p-0">
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={styles["Box_for_Assignee"]}
-                                        >
-                                          <Row className="mt-1">
-                                            <Col
-                                              lg={10}
-                                              md={10}
-                                              sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
-                                              <img
-                                                draggable={false}
-                                                src={`data:image/jpeg;base64,${participant.displayPicture}`}
-                                                width="50px"
-                                                alt=""
-                                                height="50px"
-                                                className={styles["ProfilePic"]}
-                                              />
-                                              <span
-                                                className={
-                                                  styles["ParticipantName"]
-                                                }
-                                              >
-                                                {participant.userName}
-                                              </span>
-                                            </Col>
-                                            <Col
-                                              lg={2}
-                                              md={2}
-                                              sm={2}
-                                              className="d-flex  align-items-center"
-                                            >
-                                              <img
-                                                src={CrossIcon}
-                                                width="14px"
-                                                height="14px"
-                                                draggable="false"
-                                                style={{ cursor: "pointer" }}
-                                                alt=""
-                                                onClick={() =>
-                                                  hanleRemovingParticipants(
-                                                    index
-                                                  )
-                                                }
-                                              />
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </>
-                                );
-                              })
-                            : null}
-                          <Row>
-                            <Col>
-                              <p
-                                className={
-                                  error && membersParticipants.length === 0
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
-                                }
-                              >
-                                {t("Add-at-least-one-participant")}
-                              </p>
-                            </Col>
-                          </Row>
-                        </Row>
-                      </>
-                    )}
+                      </Row>
+                    </>
                   </Col>
                 </Row>
               </Col>
@@ -1513,11 +1429,7 @@ const ProposedNewMeeting = ({
                         </span>
 
                         <DatePicker
-                          value={
-                            isProposedMeetEdit
-                              ? editsendResponseVal
-                              : sendResponseVal
-                          }
+                          value={sendResponseBy.date}
                           format={"DD/MM/YYYY"}
                           minDate={minSelectableDate.toDate()}
                           maxDate={maxSelectableDate.toDate()}
@@ -1547,7 +1459,7 @@ const ProposedNewMeeting = ({
                           <Col>
                             <p
                               className={
-                                error && sendResponseVal === ""
+                                error && sendResponseBy.date === ""
                                   ? ` ${styles["errorMessage-inLogin"]} `
                                   : `${styles["errorMessage-inLogin_hidden"]}`
                               }
