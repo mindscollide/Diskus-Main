@@ -165,6 +165,19 @@ button.dataRoom {
   /* margin-left: 20px !important; */
 }
 
+.end-meeting-btn_view-org {
+  background-color: #fff !important;
+  outline: none;
+  border: 1px solid #f16b6b !important;
+  color: #f16b6b !important;
+  padding: 12px 30px;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  margin-right: 10px;
+  /* margin-left: 20px !important; */
+}
+
 .textAreaDivView textarea {
   border: none !important;
 }
