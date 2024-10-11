@@ -2202,5 +2202,6 @@
   "Unable-to-generate-meeting-link": "Unable to generate meeting link",
   "Your-vote-is-submitted-successfully": "Your vote is submitted successfully",
   "Start-time": "Start time",
-  "End-time": "End time"
+  "End-time": "End time",
+  "At-least-one-date-time-slot-is-mandatory": "At least one Date & Time slot is mandatory"
 }

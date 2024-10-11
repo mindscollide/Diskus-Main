@@ -579,9 +579,16 @@ const ProposedNewMeeting = ({
 
   //Removing the Date Time Rows
   const HandleCancelFunction = (index) => {
-    let optionscross = [...rows];
-    optionscross.splice(index, 1);
-    setRows(optionscross);
+    if (index === 0) {
+      setOpen({
+        flag: true,
+        message: t("At-least-one-date-time-slot-is-mandatory"),
+      });
+    } else {
+      let optionscross = [...rows];
+      optionscross.splice(index, 1);
+      setRows(optionscross);
+    }
   };
 
   //Send Response By Handler
@@ -755,7 +762,7 @@ const ProposedNewMeeting = ({
   }, [currentLanguage]);
 
   const today = moment().startOf("day");
-  const firstSelectedDate = moment(rows[0].dateSelect).startOf("day"); // No format needed for ISO string
+  const firstSelectedDate = moment(rows[0].dateSelect).startOf("day");
   const minSelectableDate = today.isSameOrBefore(firstSelectedDate)
     ? today
     : firstSelectedDate;
@@ -1321,11 +1328,9 @@ const ProposedNewMeeting = ({
                                       sm={12}
                                       className="d-flex justify-content-end position-relative align-items-center"
                                     >
-                                      {index === 0 ? null : Number(
-                                          editorRole.status
-                                        ) === 9 &&
-                                        isEditMeeting ===
-                                          true ? null : editorRole.role ===
+                                      {Number(editorRole.status) === 9 &&
+                                      isEditMeeting ===
+                                        true ? null : editorRole.role ===
                                           "Agenda Contributor" &&
                                         isEditMeeting === true ? null : (
                                         <img

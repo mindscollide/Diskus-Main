@@ -1,22 +1,9 @@
 {
-  "MeetingDetails": {
-    "MeetingID": 0,
-    "MeetingTitle": "Proposed meeting test updated ",
-    "MeetingType": { "PK_MTID": 498, "Type": "Committee Meeting" },
-    "Location": "",
-    "Description": "description  updateed ",
-    "IsVideoChat": true,
-    "IsTalkGroup": false,
-    "OrganizationId": 561,
-    "MeetingDates": [
-      { "MeetingDate": "20241010", "StartTime": "120000", "EndTime": "130000" }
-    ],
-    "MeetingReminders": [4],
-    "Notes": "",
-    "AllowRSVP": true,
-    "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 1,
-    "VideoURL": "",
-    "MeetingStatusID": 11
-  }
+  "MeetingID": 3863,
+  "SendResponsebyDate": "20241012",
+  "ProposedDates": [
+    { "MeetingDate": "20241011", "StartTime": "150000", "EndTime": "160000" },
+    { "MeetingDate": "20241012", "StartTime": "150000", "EndTime": "160000" },
+    { "MeetingDate": "20241013", "StartTime": "150000", "EndTime": "160000" }
+  ]
 }
