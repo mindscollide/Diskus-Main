@@ -2350,6 +2350,20 @@ const GetAllMeetingDetailsApiFunc = (
                   );
                 } else if (flag === 2) {
                   console.log("Flag for proposed meeting Edit flow only");
+                  await dispatch(
+                    CreateUpdateMeetingDataRoomMapeedApiFunc(
+                      navigate,
+                      MappedData,
+                      t,
+                      setDataroomMapFolderId,
+                      false,
+                      false,
+                      false,
+                      false,
+                      false,
+                      true
+                    )
+                  );
                 }
               }
               console.log("hello loader check", loader);
@@ -2364,7 +2378,7 @@ const GetAllMeetingDetailsApiFunc = (
                   false,
                   false,
                   false,
-                  true
+                  false
                 )
               );
               await dispatch(
