@@ -78,22 +78,14 @@ const ProposedNewMeeting = ({
   const getAllProposedDatesEditFlow = useSelector(
     (state) => state.NewMeetingreducer.getAllProposedDates
   );
-  console.log(
-    getAllProposedDatesEditFlow,
-    "getAllProposedDatesEditFlowgetAllProposedDatesEditFlow"
-  );
+
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
-  const [editsendResponseVal, setEditsendResponseVal] = useState("");
-  const [sendResponseVal, setSendResponseVal] = useState("");
   const [participantUsers, setParticipantUsers] = useState([]);
   const [membersParticipants, setMembersParticipants] = useState([]);
-  console.log(membersParticipants, "dropdowndatadropdowndata");
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
-  console.log(dropdowndata, "dropdowndatadropdowndata");
-
   const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
@@ -104,11 +96,17 @@ const ProposedNewMeeting = ({
     },
   });
 
+  console.log(EditmeetingTypeDetails.MeetingType.PK_MTID, "MeetingType");
+  console.log(EditmeetingTypeDetails.MeetingType.Type, "MeetingType");
+  console.log(isProposedMeetEdit, "MeetingType");
+
   const [meetingTypeDetails, setMeetingTypeDetails] = useState({
     MeetingType: {
-      PK_MTID: isProposedMeetEdit ? EditmeetingTypeDetails.pK_MTID : 1,
+      PK_MTID: isProposedMeetEdit
+        ? EditmeetingTypeDetails.MeetingType.PK_MTID
+        : 0,
       Type: isProposedMeetEdit
-        ? EditmeetingTypeDetails.Type
+        ? EditmeetingTypeDetails.MeetingType.Type
         : t("Board-meeting"),
     },
   });
@@ -124,22 +122,30 @@ const ProposedNewMeeting = ({
         NewMeetingreducer.getAllMeetingDetails !== null &&
         NewMeetingreducer.getAllMeetingDetails !== undefined
       ) {
-        let EditFlowData =
+        const EditFlowData =
           NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
-        setEditmeetingTypeDetails({
-          PK_MTID: EditFlowData.meetingType.pK_MTID,
-          Type: EditFlowData.meetingType.type,
-        });
 
-        setProposedMeetingDetails({
-          MeetingTitle: EditFlowData.meetingTitle,
-          Description: EditFlowData.description,
-        });
+        if (isProposedMeetEdit) {
+          setEditmeetingTypeDetails({
+            MeetingType: {
+              PK_MTID: EditFlowData.meetingType.pK_MTID,
+              Type: EditFlowData.meetingType.type,
+            },
+          });
+
+          // Update meetingTypeDetails based on the edit flow
+          setMeetingTypeDetails({
+            MeetingType: {
+              PK_MTID: EditFlowData.meetingType.pK_MTID,
+              Type: EditFlowData.meetingType.type,
+            },
+          });
+        }
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [NewMeetingreducer.getAllMeetingDetails]);
+  }, [NewMeetingreducer.getAllMeetingDetails, isProposedMeetEdit]);
 
   //Getting All the Participants for edit flow
   useEffect(() => {
@@ -400,24 +406,26 @@ const ProposedNewMeeting = ({
         getALlMeetingTypes.meetingTypes !== null &&
         getALlMeetingTypes.meetingTypes !== undefined
       ) {
-        let Newdata = [];
-        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
-          Newdata.push({
-            value: data.pK_MTID,
-            label: data.type,
-          });
+        const Newdata = getALlMeetingTypes.meetingTypes.map((data) => ({
+          value: data.pK_MTID,
+          label: data.type,
+        }));
+        setmeetingTypeDropdown(Newdata);
+
+        // Only set meetingTypeDetails if it wasn't set from the Edit flow
+        if (!isProposedMeetEdit) {
           setMeetingTypeDetails({
-            ...meetingTypeDetails,
             MeetingType: {
               PK_MTID: getALlMeetingTypes.meetingTypes[0].pK_MTID,
               Type: getALlMeetingTypes.meetingTypes[0].type,
             },
           });
-        });
-        setmeetingTypeDropdown(Newdata);
+        }
       }
-    } catch (error) {}
-  }, [getALlMeetingTypes.meetingTypes]);
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [getALlMeetingTypes.meetingTypes, isProposedMeetEdit]);
 
   //onChange function Search
   const onChangeSearch = (event) => {
@@ -605,7 +613,7 @@ const ProposedNewMeeting = ({
     dispatch(ParticipantsData());
     dispatch(GetAllMeetingDetialsData());
   };
-  console.log(rows, "hell");
+
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
     let Dates = [];
@@ -621,8 +629,20 @@ const ProposedNewMeeting = ({
       });
     });
 
+    let ProposedDates = [];
+    rows.forEach((data, index) => {
+      ProposedDates.push({
+        ProposedDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
+          0,
+          8
+        ),
+        StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(8, 14),
+        EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+      });
+    });
+
     // Sorting the Dates array
-    let sortedDates = Dates.sort((a, b) => {
+    let sortedDates = ProposedDates.sort((a, b) => {
       if (a.ProposedDate !== b.ProposedDate) {
         return a.ProposedDate.localeCompare(b.ProposedDate);
       } else if (a.StartTime !== b.StartTime) {
@@ -658,6 +678,8 @@ const ProposedNewMeeting = ({
           MeetingStatusID: 11,
         },
       };
+      console.log(data, "datadatadata");
+      console.log(sortedDates, "datadatadata");
 
       dispatch(
         SaveMeetingDetialsNewApiFunction(
@@ -682,8 +704,7 @@ const ProposedNewMeeting = ({
       seterror(false);
     } else if (
       proposedMeetingDetails.MeetingTitle === "" &&
-      membersParticipants.length !== 0 &&
-      sendResponseVal === ""
+      membersParticipants.length !== 0
     ) {
       seterror(true);
     } else {
@@ -755,8 +776,6 @@ const ProposedNewMeeting = ({
     ? today
     : firstSelectedDate;
   const maxSelectableDate = firstSelectedDate;
-
-  console.log(rows, "rowsrowsrowsrows");
 
   //Custom Filter for Selector
   const customFilter = (options, searchText) => {

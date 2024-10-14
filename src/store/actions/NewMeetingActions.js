@@ -1721,8 +1721,6 @@ const SaveparticipantsApi = (
                 )
               );
               if (flag === true) {
-                console.log(rows, "flagflag");
-
                 let Data = {
                   MeetingID: currentMeeting,
                   SendResponsebyDate: ResponseDate,
