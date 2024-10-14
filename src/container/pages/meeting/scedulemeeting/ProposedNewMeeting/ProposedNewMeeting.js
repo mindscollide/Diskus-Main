@@ -89,6 +89,7 @@ const ProposedNewMeeting = ({
   const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
+  const [editProposedMeetingID, setEditProposedMeetingID] = useState(0);
   const [EditmeetingTypeDetails, setEditmeetingTypeDetails] = useState({
     MeetingType: {
       PK_MTID: 0,
@@ -124,7 +125,7 @@ const ProposedNewMeeting = ({
       ) {
         const EditFlowData =
           NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
-
+        console.log(EditFlowData, "EditFlowData");
         if (isProposedMeetEdit) {
           setEditmeetingTypeDetails({
             MeetingType: {
@@ -140,6 +141,13 @@ const ProposedNewMeeting = ({
               Type: EditFlowData.meetingType.type,
             },
           });
+
+          setProposedMeetingDetails({
+            MeetingTitle: EditFlowData.meetingTitle,
+            Description: EditFlowData.description,
+          });
+
+          setEditProposedMeetingID(EditFlowData.meetingID);
         }
       }
     } catch (error) {
@@ -660,7 +668,7 @@ const ProposedNewMeeting = ({
     ) {
       let data = {
         MeetingDetails: {
-          MeetingID: 0,
+          MeetingID: isProposedMeetEdit ? Number(editProposedMeetingID) : 0,
           MeetingTitle: proposedMeetingDetails.MeetingTitle,
           MeetingType: meetingTypeDetails.MeetingType,
           Location: "",
