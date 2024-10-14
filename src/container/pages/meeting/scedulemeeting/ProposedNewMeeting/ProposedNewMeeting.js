@@ -40,7 +40,6 @@ import {
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
 import {
-  CleareMessegeNewMeeting,
   GetAllMeetingDetialsData,
   GetAllMeetingTypesNewFunction,
   newMeetingGlobalLoader,
@@ -97,10 +96,6 @@ const ProposedNewMeeting = ({
       Type: "",
     },
   });
-
-  console.log(EditmeetingTypeDetails.MeetingType.PK_MTID, "MeetingType");
-  console.log(EditmeetingTypeDetails.MeetingType.Type, "MeetingType");
-  console.log(isProposedMeetEdit, "MeetingType");
 
   const [meetingTypeDetails, setMeetingTypeDetails] = useState({
     MeetingType: {
