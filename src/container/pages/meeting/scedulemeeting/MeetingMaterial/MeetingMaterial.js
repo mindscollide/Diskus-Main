@@ -149,7 +149,7 @@ const MeetingMaterial = ({
   };
   //  handle Click download a file
   const handleClickDownload = (record) => {
-    console.log("editorRoleeditorRole", editorRole, record)
+    console.log("editorRoleeditorRole", editorRole, record);
     if (
       (editorRole.role.toLowerCase() === "Organizer".toLowerCase() ||
         editorRole.role.toLowerCase() === "Agenda Contributor".toLowerCase()) &&
@@ -501,8 +501,9 @@ const MeetingMaterial = ({
             className={styles["Save_Classname"]}
             onClick={handleSaveAndNext}
           /> */}
-          {Number(editorRole.status) === 11 ||
-          Number(editorRole.status) === 12 ? (
+          {(Number(editorRole.status) === 11 ||
+            Number(editorRole.status) === 12) &&
+          editorRole.role !== "Agenda Contributor" ? (
             <Button
               disableBtn={
                 Number(currentMeeting) === 0 || isPublishedState === false

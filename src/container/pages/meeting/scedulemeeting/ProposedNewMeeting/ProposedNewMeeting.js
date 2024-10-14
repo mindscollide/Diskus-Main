@@ -46,6 +46,7 @@ import {
   ParticipantsData,
   proposedMeetingData,
   SaveMeetingDetialsNewApiFunction,
+  searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
@@ -68,6 +69,9 @@ const ProposedNewMeeting = ({
   const calendRef = useRef();
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
   const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
@@ -96,10 +100,6 @@ const ProposedNewMeeting = ({
       Type: "",
     },
   });
-
-  console.log(EditmeetingTypeDetails.MeetingType.PK_MTID, "MeetingType");
-  console.log(EditmeetingTypeDetails.MeetingType.Type, "MeetingType");
-  console.log(isProposedMeetEdit, "MeetingType");
 
   const [meetingTypeDetails, setMeetingTypeDetails] = useState({
     MeetingType: {
@@ -612,7 +612,6 @@ const ProposedNewMeeting = ({
       date: new Date(date),
     });
   };
-
   //for handling Cancel the ProposedMeeting Page
   const handleCancelButtonProposedMeeting = () => {
     setProposedNewMeeting(false);
@@ -620,6 +619,17 @@ const ProposedNewMeeting = ({
     dispatch(proposedMeetingData());
     dispatch(ParticipantsData());
     dispatch(GetAllMeetingDetialsData());
+
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings: Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   //For handling  Proposed button ProposedMeeting Page
@@ -1513,7 +1523,7 @@ const ProposedNewMeeting = ({
                     />
 
                     <Button
-                      text={t("Propose")}
+                      text={isProposedMeetEdit ? t("Update") : t("Propose")}
                       className={styles["Proposed_Button_Proposed_Meeting"]}
                       onClick={handleProposedButtonProposedMeeting}
                     />

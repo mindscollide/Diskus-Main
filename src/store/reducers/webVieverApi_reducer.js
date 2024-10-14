@@ -181,7 +181,7 @@ const webViewerReducer = (state = initialState, action) => {
         Loading: false,
         xfdfData: action.xfdfData,
         attachmentBlob: action.attachmentBlob,
-        ResponseMessage: action.meessage,
+        ResponseMessage: "",
         isHTML: action.checking
       };
     }
@@ -189,7 +189,7 @@ const webViewerReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.meessag,
+        ResponseMessage: action.message,
       };
     }
     default:

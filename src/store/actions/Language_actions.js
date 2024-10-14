@@ -201,7 +201,7 @@ const getSelectedLanguageInitial = () => {
   };
 };
 
-const getSelectedLanguageSuccess = (response, message, loader) => {
+const getSelectedLanguageSuccess = (response, message, loader = false) => {
   return {
     type: actions.GET_SELECTED_LANGUAGE_SUCCESS,
     response: response,
@@ -250,7 +250,8 @@ const getSelectedLanguage = (data, navigate, t, flag, loader) => {
               await dispatch(
                 getSelectedLanguageSuccess(
                   response.data.responseResult.userSelectedLanguage,
-                  ""
+                  "",
+                  false
                 )
               );
               if (

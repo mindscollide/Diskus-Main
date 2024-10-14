@@ -1403,6 +1403,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                                 <AttachmentViewer
                                                   id={1}
                                                   // fk_UID={}
+                                                  isQuickMeeting={true}
                                                   handleClickDownload={() =>
                                                     downloadClick(
                                                       MeetingAgendaAttachmentsData

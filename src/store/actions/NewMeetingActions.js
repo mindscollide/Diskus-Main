@@ -2883,7 +2883,7 @@ const setProposedMeetingDateApiFunc = (
               dispatch(
                 showPrposedMeetingDateSuccess(
                   response.data.responseResult,
-                  t("Your-vote-is-submitted-successfully")
+                  t("Your-slots-has-been-added-successfully")
                 )
               );
               if (flag === true) {
