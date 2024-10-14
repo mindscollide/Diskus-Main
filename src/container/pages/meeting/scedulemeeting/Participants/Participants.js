@@ -94,7 +94,7 @@ const Participants = ({
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+    await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, false));
   };
 
   //For participants Role
@@ -374,37 +374,37 @@ const Participants = ({
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
-              <Tooltip placement='bottomLeft' title={t("Response-awaited")}>
+              <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
                 <img
                   draggable={false}
                   src={AwaitingResponse}
-                  height='30px'
-                  width='30px'
-                  alt=''
+                  height="30px"
+                  width="30px"
+                  alt=""
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 2) {
             return (
-              <Tooltip placement='bottomLeft' title={t("Accepted")}>
+              <Tooltip placement="bottomLeft" title={t("Accepted")}>
                 <img
                   draggable={false}
                   src={thumbsup}
-                  height='30px'
-                  width='30px'
-                  alt=''
+                  height="30px"
+                  width="30px"
+                  alt=""
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 3) {
             return (
-              <Tooltip placement='bottomLeft' title={t("Rejected")}>
+              <Tooltip placement="bottomLeft" title={t("Rejected")}>
                 <img
                   draggable={false}
                   src={thumbsdown}
-                  height='30px'
-                  width='30px'
-                  alt=''
+                  height="30px"
+                  width="30px"
+                  alt=""
                 />
               </Tooltip>
             );
@@ -413,9 +413,9 @@ const Participants = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           }
@@ -467,18 +467,19 @@ const Participants = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     {record.isComingApi === true ? (
                       ""
                     ) : (
                       <>
                         <img
                           src={redcrossIcon}
-                          className='cursor-pointer '
-                          height='21px'
-                          width='21px'
+                          className="cursor-pointer "
+                          height="21px"
+                          width="21px"
                           onClick={() => handleCancelingRow(record)}
-                          alt=''
+                          alt=""
                         />
                       </>
                     )}
@@ -633,18 +634,19 @@ const Participants = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     {record.isComingApi === true ? (
                       ""
                     ) : (
                       <>
                         <img
                           src={redcrossIcon}
-                          className='cursor-pointer '
-                          height='21px'
-                          width='21px'
+                          className="cursor-pointer "
+                          height="21px"
+                          width="21px"
                           onClick={() => handleCancelingRow(record)}
-                          alt=''
+                          alt=""
                         />
                       </>
                     )}
@@ -703,7 +705,7 @@ const Participants = ({
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, false));
     setIsEditClicked(false);
   };
 
@@ -811,12 +813,13 @@ const Participants = ({
         />
       ) : (
         <>
-          <Row className='mt-3'>
+          <Row className="mt-3">
             <Col
               lg={12}
               md={12}
               sm={12}
-              className='d-flex justify-content-end gap-2'>
+              className="d-flex justify-content-end gap-2"
+            >
               {((Number(editorRole.status) === 9 ||
                 Number(editorRole.status) === 8 ||
                 Number(editorRole.status) === 10) &&
@@ -826,7 +829,7 @@ const Participants = ({
                 isEditMeeting === true) ? null : isEditable || isEditClicked ? (
                 <>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                       <Button
                         text={t("Cancel")}
                         className={styles["Cancel_Organization"]}
@@ -851,9 +854,9 @@ const Participants = ({
                       <img
                         draggable={false}
                         src={EditIcon}
-                        width='11.75px'
-                        height='11.75px'
-                        alt=''
+                        width="11.75px"
+                        height="11.75px"
+                        alt=""
                       />
                     }
                     onClick={handleEditFunction}
@@ -861,7 +864,7 @@ const Participants = ({
 
                   <Button
                     text={t("Add-more")}
-                    icon={<img draggable={false} src={addmore} alt='' />}
+                    icon={<img draggable={false} src={addmore} alt="" />}
                     className={styles["AddMoreBtn"]}
                     onClick={openAddPartcipantModal}
                   />
@@ -884,14 +887,15 @@ const Participants = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex justify-content-center'>
+                            className="d-flex justify-content-center"
+                          >
                             <img
                               draggable={false}
                               src={emptyContributorState}
-                              width='274.05px'
-                              className='cursor-pointer'
-                              alt=''
-                              height='230.96px'
+                              width="274.05px"
+                              className="cursor-pointer"
+                              alt=""
+                              height="230.96px"
                               onClick={handleParticipantEmptyStateIntiate}
                             />
                           </Col>
@@ -901,7 +905,8 @@ const Participants = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex justify-content-center'>
+                            className="d-flex justify-content-center"
+                          >
                             <span className={styles["Empty_state_heading"]}>
                               {t("No-Participant")}
                             </span>
@@ -912,7 +917,8 @@ const Participants = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex justify-content-center'>
+                            className="d-flex justify-content-center"
+                          >
                             <span className={styles["Empty_state_Subheading"]}>
                               {t("There-are-no-agenda-contributors")}
                             </span>
@@ -921,17 +927,18 @@ const Participants = ({
                       </>
                     ),
                   }}
-                  className='Polling_table'
+                  className="Polling_table"
                   rows={rspvRows}
                 />
               </Col>
             </Row>
-            <Row className='mt-3'>
+            <Row className="mt-3">
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end gap-2'>
+                className="d-flex justify-content-end gap-2"
+              >
                 {isEditable ? (
                   <>
                     <div className={styles["definedHeight"]}></div>
