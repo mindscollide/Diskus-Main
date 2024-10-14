@@ -1722,7 +1722,7 @@ const Agenda = ({
                 )}
                 {(Number(editorRole.status) === 11 ||
                   Number(editorRole.status) === 12) &&
-                (editorRole.status !== "9" || editorRole.status !== 9) ? (
+                (editorRole.status !== "9" || editorRole.status !== 9) && editorRole.role !== "Agenda Contributor"   ? (
                   <Button
                     disableBtn={
                       Number(currentMeeting) === 0 || isPublishedState === false
@@ -1733,7 +1733,7 @@ const Agenda = ({
                     className={styles["Save_Agenda_btn"]}
                     onClick={() => saveAgendaData(2)}
                   />
-                ) : isEditMeeting === true ? null : (
+                ) : isEditMeeting === true? null : (
                   <Button
                     disableBtn={
                       Number(currentMeeting) === 0 || isPublishedState === false
