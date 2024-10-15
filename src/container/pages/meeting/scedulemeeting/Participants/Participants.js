@@ -90,7 +90,7 @@ const Participants = ({
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+    await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, false));
   };
 
   //For participants Role
@@ -665,7 +665,7 @@ const Participants = ({
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, false));
     setIsEditClicked(false);
   };
 
@@ -901,7 +901,7 @@ const Participants = ({
                     (editorRole.role === "Agenda Contributor" &&
                       isEditMeeting === true) ? (
                       <>
-                        {Number(editorRole.status) ===
+                        {/* {Number(editorRole.status) ===
                         10 ? null : checkFeatureIDAvailability(12) ? (
                           <>
                             <Button
@@ -910,7 +910,7 @@ const Participants = ({
                               onClick={handleProposedmeetingDates}
                             />
                           </>
-                        ) : null}
+                        ) : null} */}
 
                         <Button
                           text={t("Cancel")}
@@ -940,11 +940,11 @@ const Participants = ({
                       </>
                     ) : isEditClicked ? null : (
                       <>
-                        <Button
+                        {/* <Button
                           text={t("Propose-meeting-dates")}
                           className={styles["Next_Organization"]}
                           onClick={handleProposedmeetingDates}
-                        />
+                        /> */}
 
                         <Button
                           text={t("Cancel")}

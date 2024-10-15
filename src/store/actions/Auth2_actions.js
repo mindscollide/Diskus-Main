@@ -654,6 +654,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             }
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else if (response.data.responseResult.hasUserRights) {
+            dispatch(enterPasswordSuccess(response.data.responseResult, ""));
             mqttConnection(response.data.responseResult.authToken.userID);
             if (response.data.responseResult.authToken.isFirstLogIn) {
               if (RSVP !== undefined && RSVP !== null) {

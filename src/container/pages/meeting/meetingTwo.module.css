@@ -406,3 +406,14 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
   border: none !important;
   border-radius: 4px !important;
 }
+
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.isemptySpace {
+  width: 15px;
+  height: 15px;
+}

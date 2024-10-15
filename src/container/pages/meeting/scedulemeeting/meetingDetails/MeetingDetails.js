@@ -120,6 +120,13 @@ const MeetingDetails = ({
   const [error, seterror] = useState(false);
   const [publishedFlag, setPublishedFlag] = useState(false);
 
+  console.log(publishedFlag, "publishedFlagpublishedFlag");
+  console.log(
+    editorRole,
+    currentMeeting,
+    "editorRoleeditorRoleeditorRoleeditorRole"
+  );
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -247,6 +254,8 @@ const MeetingDetails = ({
       },
     });
   };
+
+  console.log("MeetingDetailsMeetingDetails", meetingDetails);
 
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
@@ -576,6 +585,7 @@ const MeetingDetails = ({
           MeetingStatusID: publishedFlag ? 1 : 11,
         },
       };
+      console.log(data, "newArrnewArrnewArrnewArr");
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
@@ -599,6 +609,7 @@ const MeetingDetails = ({
 
   //Update Meeting
   const UpdateMeetings = () => {
+    // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
 
@@ -693,6 +704,7 @@ const MeetingDetails = ({
           setDataroomMapFolderId
         )
       );
+      console.log("newArrnewArrnewArrnewArr", data);
     } else {
       seterror(true);
     }
@@ -732,6 +744,7 @@ const MeetingDetails = ({
     let name = e.target.name;
     let value = e.target.value;
     if (name === "Meetingtitle") {
+      // let valueCheck = containsStringandNumericCharacters(value);
       if (value.trimStart() !== "") {
         setMeetingDetails({
           ...meetingDetails,
@@ -955,7 +968,6 @@ const MeetingDetails = ({
         getAllMeetingDetails !== null &&
         getAllMeetingDetails !== undefined
       ) {
-        // setEditMeeting(true);
         let PublishedMeetingStatus = getAllMeetingDetails.isPublished;
         let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
         console.log(MeetingData, "MeetingDataMeetingData");
@@ -1661,6 +1673,7 @@ const MeetingDetails = ({
                     name={"Description"}
                     change={HandleChange}
                     value={meetingDetails.Description}
+                    // maxLength={300}
                     disable={
                       (Number(editorRole.status) === 9 ||
                         Number(editorRole.status) === 8 ||
@@ -1784,6 +1797,73 @@ const MeetingDetails = ({
                       </span>
                     </Col>
                   </Row>
+                  {/* <Row>
+                    <Col lg={1} md={1} sm={12} className="d-flex gap-3 m-0 p-0">
+                      <Button
+                        icon={
+                          Loading ? (
+                            <>
+                              <Spinner
+                                className={styles["checkEmailSpinner"]}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <img
+                                draggable={false}
+                                src={
+                                  meetingDetails.IsVideoCall
+                                    ? whiteVideIcon
+                                    : MeetingVideoChatIcon
+                                }
+                                width="22.32px"
+                                height="14.75px"
+                                alt=""
+                                className={
+                                  meetingDetails.IsVideoCall
+                                    ? styles["Camera_icon_active_IconStyles"]
+                                    : styles["Camera_icon"]
+                                }
+                              />
+                            </>
+                          )
+                        }
+                        className={
+                          meetingDetails.IsVideoCall
+                            ? styles["Camera_icon_Active"]
+                            : styles["Button_not_active"]
+                        }
+                        disableBtn={
+                          (Number(editorRole.status) === 9 ||
+                            Number(editorRole.status) === 8 ||
+                            Number(editorRole.status) === 10) &&
+                          editorRole.role === "Organizer" &&
+                          isEditMeeting === true
+                            ? true
+                            : editorRole.role === "Agenda Contributor" &&
+                              isEditMeeting === true
+                            ? true
+                            : false
+                        }
+                        onClick={handleVideoCameraButton}
+                      />
+                    </Col>
+                    <Col lg={11} md={11} sm={12}>
+                      <TextField
+                        disable={true}
+                        placeholder={t("Paste-microsoft-team-zoom-link") + "*"}
+                        applyClass={"meetinInnerSearch"}
+                        labelclass="d-none"
+                        name={"Link"}
+                        // change={HandleChange}
+                        value={
+                          meetingDetails.IsVideoCall
+                            ? t("Video-session-enabled")
+                            : ""
+                        }
+                      />
+                    </Col>
+                  </Row> */}
                 </Col>
               </Row>
               <Row className="mt-3">
@@ -1818,6 +1898,7 @@ const MeetingDetails = ({
                     menuPlacement="top" // Set menuPlacement to 'top' to open the dropdown upwards
                     menuPortalTarget={document.body}
                     isSearchable={false}
+                    // isDisabled={true} THIS IS TO BE DONE, When the build is to be done on production and comment the above isDisabled
                   />
                 </Col>
               </Row>
@@ -1863,25 +1944,18 @@ const MeetingDetails = ({
           )}
           {Number(currentMeeting) !== 0 && (
             <>
-              {Number(editorRole.status) === 11 ||
-              Number(editorRole.status) === 12 ? (
-                <Button
-                  disableBtn={
-                    meetingDetails.IsPublished === true ? false : true
-                  }
-                  text={t("Publish")}
-                  className={styles["Update_Next"]}
-                  onClick={handlePublish}
-                />
-              ) : isEditMeeting === true ? null : (
-                <Button
-                  disableBtn={
-                    meetingDetails.IsPublished === true ? false : true
-                  }
-                  text={t("Publish")}
-                  className={styles["Update_Next"]}
-                  onClick={handlePublish}
-                />
+              {(Number(editorRole.status) === 11 ||
+                Number(editorRole.status) === 12) && (
+                <>
+                  {editorRole.role === "Organizer" && (
+                    <Button
+                      disableBtn={!meetingDetails.IsPublished}
+                      text={t("Publish")}
+                      className={styles["Update_Next"]}
+                      onClick={handlePublish}
+                    />
+                  )}
+                </>
               )}
             </>
           )}

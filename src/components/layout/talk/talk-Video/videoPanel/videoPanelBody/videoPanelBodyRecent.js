@@ -212,7 +212,10 @@ const VideoPanelBodyRecent = () => {
         dispatch(getVideoRecipentData(data));
         dispatch(normalizeVideoPanelFlag(true));
         dispatch(videoChatPanel(false));
-      } else if (data.callType.callTypeID === 2) {
+      } else if (
+        data.callType.callTypeID === 2 ||
+        data.callType.callTypeID === 3
+      ) {
         const recipientIds =
           data.callerID !== currentUserID ? [data.callerID] : [];
 
@@ -232,6 +235,7 @@ const VideoPanelBodyRecent = () => {
         };
 
         localStorage.setItem("CallType", Data.CallTypeID);
+        localStorage.setItem("callTypeID", Data.CallTypeID);
         dispatch(InitiateVideoCall(Data, navigate, t));
         localStorage.setItem("callerID", currentUserID);
         localStorage.setItem("isCaller", true);
@@ -461,8 +465,7 @@ const VideoPanelBodyRecent = () => {
             dataLength={recentVideoCalls.length}
             next={fetchMoreData}
             hasMore={recentVideoCalls.length === totalRecords ? false : true}
-            // scrollThreshold="200px"
-            height={"80vh"}
+            height={"77vh"}
             loader={
               <span
                 style={{
@@ -484,7 +487,8 @@ const VideoPanelBodyRecent = () => {
                 <>
                   <Row className="single-chat" key={index}>
                     <Col lg={2} md={2} sm={12} className="bottom-border">
-                      {recentCallData.callerName === currentUserName ? (
+                      {recentCallData.callerName === currentUserName &&
+                      recentCallData.callType.callTypeID !== 3 ? (
                         <div
                           className="video-profile-icon"
                           style={{

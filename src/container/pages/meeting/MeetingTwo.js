@@ -177,6 +177,8 @@ const NewMeeting = () => {
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
+  //Edit proposed Meeting Flow
+  const [isProposedMeetEdit, setIsProposedMeetEdit] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
 
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
@@ -222,6 +224,7 @@ const NewMeeting = () => {
     meetingID: null,
     showButton: false,
   });
+  const [startMeetingButton, setStartMeetingButton] = useState([]);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
@@ -231,7 +234,6 @@ const NewMeeting = () => {
   const [responseByDate, setResponseByDate] = useState("");
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [radioValue, setRadioValue] = useState(1);
-
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -360,15 +362,6 @@ const NewMeeting = () => {
                 setViewAdvanceMeetingModal
               )
             );
-
-            dispatch(
-              GetAllUserChats(
-                navigate,
-                parseInt(currentUserId),
-                parseInt(currentOrganizationId),
-                t
-              )
-            );
           } else {
             setAdvanceMeetingModalID(meetingID);
             setViewAdvanceMeetingModal(true);
@@ -380,14 +373,6 @@ const NewMeeting = () => {
             dispatch(viewProposeOrganizerMeetingPageFlag(false));
             dispatch(proposeNewMeetingPageFlag(false));
             localStorage.setItem("currentMeetingID", meetingID);
-            dispatch(
-              GetAllUserChats(
-                navigate,
-                parseInt(currentUserId),
-                parseInt(currentOrganizationId),
-                t
-              )
-            );
           }
         };
         fetchData();
@@ -777,6 +762,12 @@ const NewMeeting = () => {
 
   const openSceduleMeetingPage = async () => {
     setSceduleMeeting(true);
+    setEdiorRole({
+      ...editorRole,
+      status: "11",
+      role: "Organizer",
+      isPrimaryOrganizer: true,
+    });
     dispatch(scheduleMeetingPageFlag(true));
     setCurrentMeetingID(0);
     dispatch(meetingDetailsGlobalFlag(true));
@@ -816,7 +807,14 @@ const NewMeeting = () => {
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
-
+      await dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
       await dispatch(GetGroupMessages(navigate, chatGroupData, t));
       await dispatch(
         GetAllUsers(
@@ -1064,6 +1062,7 @@ const NewMeeting = () => {
   };
 
   const downloadVideoCall = (data) => {
+    console.log("downloadVideoCalldownloadVideoCall");
     let utcDateTime = resolutionResultTable(
       data.dateOfMeeting + data.meetingStartTime
     );
@@ -1237,141 +1236,72 @@ const NewMeeting = () => {
       render: (text, record) => {
         return (
           <>
-            <Row>
-              <Col sm={3} md={3} lg={3}>
-                {record.isAttachment ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-right-10"
-                    }
-                  >
-                    <Tooltip placement="topRight" title={t("ClipIcon")}>
-                      <img
-                        src={ClipIcon}
-                        className="cursor-pointer"
-                        alt=""
-                        draggable="false"
-                      />
-                    </Tooltip>
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-
-                {record.isPrimaryOrganizer && record.isRecordingAvailable ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-right-10"
-                    }
-                  >
-                    <Tooltip placement="topLeft" title={t("Download")}>
-                      <img
-                        src={VideoIcon}
-                        alt=""
-                        className="cursor-pointer"
-                        title={t("Video")}
-                        draggable="false"
-                        onClick={() => downloadVideoCall(record)}
-                      />
-                    </Tooltip>
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-              </Col>
-              <Col lg={3} md={3} sm={3}>
-                {record.isChat ? (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "margin-left-10"
-                    }
-                    onClick={(e) => groupChatInitiation(record)}
-                  >
-                    <Tooltip placement="topLeft" title={t("Chat")}>
-                      <img
-                        src={CommentIcon}
-                        className="cursor-pointer"
-                        alt=""
-                        draggable="false"
-                      />
-                    </Tooltip>
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-              </Col>
-              <Col lg={3} md={3} sm={3}>
-                {record.status === "9" &&
-                (record.isOrganizer || record.isPrimaryOrganizer) ? (
-                  <Tooltip placement="topLeft" title={t("Attendance")}>
+            <div className={styles["icon-wrapper"]}>
+              {record.isAttachment ? (
+                <span>
+                  <Tooltip placement="topRight" title={t("ClipIcon")}>
                     <img
-                      src={member}
+                      src={ClipIcon}
                       className="cursor-pointer"
-                      width="17.1px"
-                      height="16.72px"
                       alt=""
                       draggable="false"
-                      onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
                   </Tooltip>
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-              </Col>
-              <Col lg={3} md={3} sm={3}>
-                {record.status === "9" &&
-                record.isQuickMeeting === false &&
-                record.isRecordingAvailable ? (
+                </span>
+              ) : null}
+
+              {record.isVideoCall ? (
+                <span>
+                  <img
+                    src={VideoIcon}
+                    alt=""
+                    title={t("Video")}
+                    draggable="false"
+                  />
+                </span>
+              ) : null}
+              {record.isChat ? (
+                <span onClick={(e) => groupChatInitiation(record)}>
+                  <Tooltip placement="topLeft" title={t("Chat")}>
+                    <img
+                      src={CommentIcon}
+                      className="cursor-pointer"
+                      alt=""
+                      draggable="false"
+                    />
+                  </Tooltip>
+                </span>
+              ) : null}
+              {record.status === "9" &&
+              (record.isOrganizer || record.isPrimaryOrganizer) ? (
+                <Tooltip placement="topLeft" title={t("Attendance")}>
+                  <img
+                    src={member}
+                    className="cursor-pointer"
+                    alt=""
+                    draggable="false"
+                    onClick={() => onClickDownloadIcon(record.pK_MDID)}
+                  />
+                </Tooltip>
+              ) : null}
+              {record.status === "9" &&
+              record.isQuickMeeting === false &&
+              record.isRecordingAvailable &&
+              record.isPrimaryOrganizer ? (
+                <Tooltip
+                  placement="topLeft"
+                  title={t("Download-video-recording")}
+                >
                   <img
                     src={VideoRecordIcon}
                     className="cursor-pointer"
-                    width="17.1px"
-                    height="16.72px"
                     alt=""
                     draggable="false"
-                    title={t("Download-video-recording")}
+                    onClick={() => downloadVideoCall(record)}
                   />
-                ) : (
-                  <span
-                    className={
-                      currentLanguage === "ar"
-                        ? "margin-left-20"
-                        : "margin-right-20"
-                    }
-                  ></span>
-                )}
-              </Col>
-            </Row>
+                </Tooltip>
+              ) : null}
+            </div>
           </>
         );
       },
@@ -1410,7 +1340,10 @@ const NewMeeting = () => {
 
         // Convert milliseconds to minutes
         const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-
+        const isButtonShown = startMeetingButton.find(
+          (btnData, index) =>
+            Number(btnData.meetingID) === Number(record.pK_MDID)
+        );
         if (Number(record.status) === 1) {
           if (record.isParticipant) {
           } else if (record.isAgendaContributor) {
@@ -1419,8 +1352,8 @@ const NewMeeting = () => {
               (record.isQuickMeeting === true &&
                 minutesDifference < minutesAgo) ||
               (record.isQuickMeeting === true &&
-                record.pK_MDID === startMeetingData.meetingID &&
-                startMeetingData.showButton)
+                record.pK_MDID === isButtonShown?.meetingID &&
+                isButtonShown?.showButton)
             ) {
               return (
                 <Button
@@ -1460,8 +1393,8 @@ const NewMeeting = () => {
               (record.isQuickMeeting === false &&
                 minutesDifference < minutesAgo) ||
               (record.isQuickMeeting === false &&
-                record.pK_MDID === startMeetingData.meetingID &&
-                startMeetingData.showButton)
+                record.pK_MDID === isButtonShown?.meetingID &&
+                isButtonShown?.showButton)
             ) {
               return (
                 <Button
@@ -1476,6 +1409,7 @@ const NewMeeting = () => {
                         3,
                         startMeetingRequest,
                         setEdiorRole,
+                        // setAdvanceMeetingModalID,
                         setDataroomMapFolderId,
                         setViewAdvanceMeetingModal,
                         setAdvanceMeetingModalID,
@@ -1554,6 +1488,7 @@ const NewMeeting = () => {
                     record.isQuickMeeting,
                     record.status
                   );
+                  // setIsOrganisers(isOrganiser);
                   setEdiorRole({
                     status: record.status,
                     role: "Agenda Contributor",
@@ -1586,6 +1521,7 @@ const NewMeeting = () => {
                     record.isQuickMeeting,
                     record.status
                   );
+                  // setIsOrganisers(isOrganiser);
                   setEdiorRole({
                     status: record.status,
                     role: "Organizer",
@@ -1725,6 +1661,7 @@ const NewMeeting = () => {
                             handleEditMeeting(
                               record.pK_MDID,
                               record.isQuickMeeting,
+                              // record.isAgendaContributor,
                               "Organizer",
                               record
                             );
@@ -1773,6 +1710,7 @@ const NewMeeting = () => {
                             handleEditMeeting(
                               record.pK_MDID,
                               record.isQuickMeeting,
+                              // record.isAgendaContributor,
                               "Agenda Contributor",
                               record
                             );
@@ -2198,6 +2136,11 @@ const NewMeeting = () => {
               }
             });
           });
+          setStartMeetingButton((prevStateStartBtn) => {
+            return prevStateStartBtn.filter(
+              (newBtn, index) => Number(newBtn.meetingID) !== Number(meetingID)
+            );
+          });
         } catch (error) {
           console.log(
             error,
@@ -2224,6 +2167,11 @@ const NewMeeting = () => {
                 return item; // Return the original item if the condition is not met
               }
             });
+          });
+          setStartMeetingButton((prevStateStartBtn) => {
+            return prevStateStartBtn.filter(
+              (newBtn, index) => Number(newBtn.meetingID) !== Number(meetingID)
+            );
           });
         } catch {}
       }
@@ -2269,6 +2217,12 @@ const NewMeeting = () => {
               role: null,
               isPrimaryOrganizer: false,
             });
+            setStartMeetingButton((prevStateStartBtn) => {
+              return prevStateStartBtn.filter(
+                (newBtn, index) =>
+                  Number(newBtn.meetingID) !== Number(endMeetingData.pK_MDID)
+              );
+            });
             setViewAdvanceMeetingModal(false);
             dispatch(viewAdvanceMeetingPublishPageFlag(false));
             dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -2293,7 +2247,10 @@ const NewMeeting = () => {
     } catch (eror) {
       console.log(eror);
     }
-  }, [meetingIdReducer.MeetingStatusEnded, NewMeetingreducer]);
+  }, [
+    meetingIdReducer.MeetingStatusEnded,
+    NewMeetingreducer.CurrentMeetingURL,
+  ]);
 
   useEffect(() => {
     if (
@@ -2585,24 +2542,15 @@ const NewMeeting = () => {
             };
             return updatedRowsData;
           }
-
+          setStartMeetingButton((prevStateStartBtn) => {
+            return prevStateStartBtn.filter(
+              (newBtn, index) =>
+                Number(newBtn.meetingID) !== Number(meetingDetailsMqtt.pK_MDID)
+            );
+          });
           // Return the original rowsData if no matching row is found
           return rowsData;
         });
-
-        if (meetingDetailsMqtt.statusID === 1) {
-          setStartMeetingData({
-            ...startMeetingData,
-            meetingID: meetingDetailsMqtt.pK_MDID,
-            status: true,
-          });
-        } else {
-          setStartMeetingData({
-            ...startMeetingData,
-            meetingID: null,
-            status: false,
-          });
-        }
       }
     } catch (error) {
       console.log(error);
@@ -2611,7 +2559,55 @@ const NewMeeting = () => {
     dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData]);
 
-  console.log(rows, "meetingDetailsMqttmeetingDetailsMqttmeetingDetailsMqtt");
+  useEffect(() => {
+    if (NewMeetingreducer.meetingReminderNotification !== null) {
+      try {
+        const meetingData =
+          NewMeetingreducer.meetingReminderNotification.meetingDetails;
+        console.log(meetingData, "meetingDetailsmeetingDetails");
+        setRow((rowsData) => {
+          // Find the index of the row that matches the condition
+          const rowIndex = rowsData.findIndex(
+            (rowData) => rowData.pK_MDID === meetingData.pK_MDID
+          );
+          console.log(rowIndex, "rowIndexrowIndex");
+          // If a matching row is found, create a new array with the updated row
+          if (rowIndex !== -1) {
+            const updatedRowsData = [...rowsData];
+
+            updatedRowsData[rowIndex] = {
+              ...updatedRowsData[rowIndex],
+              status: String(meetingData.statusID),
+            };
+            if (meetingData.statusID === 1) {
+              setStartMeetingButton([
+                ...startMeetingButton,
+                { meetingID: Number(meetingData.pK_MDID), showButton: true },
+              ]);
+              setStartMeetingData({
+                ...startMeetingData,
+                meetingID: Number(meetingData.pK_MDID),
+                showButton: true,
+              });
+            } else {
+              setStartMeetingData({
+                ...startMeetingData,
+                meetingID: null,
+                showButton: false,
+              });
+            }
+
+            return updatedRowsData;
+          }
+
+          // Return the original rowsData if no matching row is found
+          return rowsData;
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [NewMeetingreducer.meetingReminderNotification]);
 
   return (
     <>
@@ -2710,6 +2706,8 @@ const NewMeeting = () => {
             isEditMeeting={isEditMeeting}
             setDataroomMapFolderId={setDataroomMapFolderId}
             dataroomMapFolderId={dataroomMapFolderId}
+            setIsProposedMeetEdit={setIsProposedMeetEdit}
+            isProposedMeetEdit={isProposedMeetEdit}
           />
         ) : (
           <>
@@ -2970,6 +2968,8 @@ const NewMeeting = () => {
                       setDataroomMapFolderId={setDataroomMapFolderId}
                       videoTalk={videoTalk}
                       setVideoTalk={setVideoTalk}
+                      setProposedNewMeeting={setProposedNewMeeting}
+                      setIsProposedMeetEdit={setIsProposedMeetEdit}
                     />
                   ) : Number(currentView) === 1 ? (
                     <Row className="mt-2">

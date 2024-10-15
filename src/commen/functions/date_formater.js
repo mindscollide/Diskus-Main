@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import moment from "moment";
 
 export const removeDashesFromDate = (data) => {
@@ -322,6 +323,8 @@ export const resolutionResultTable = (dateTime) => {
     ".000Z";
 
   let convertTime = new Date(fullDateYear);
+
+  console.log(convertTime, "convertTimeconvertTime");
 
   return convertTime;
 };

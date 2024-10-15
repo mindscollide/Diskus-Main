@@ -155,6 +155,7 @@ const initialState = {
   getDashboardMeetingData: null,
   validateEncryptedStringParticipantProposed: null,
   getMeetingUsersRSVP: null,
+  meetingReminderNotification: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -725,9 +726,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_SAVED_PARTICIPATNS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
-        // LoadingParticipants: false,
-
+        Loading: action.loader,
         getAllSavedparticipants: action.response,
         ResponseMessage: action.message,
       };
@@ -736,7 +735,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_SAVED_PARTICIPATNS_ISPUBLISHED_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         getAllSavedparticipantsIsPublished: action.response,
       };
     }
@@ -744,7 +743,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_SAVED_PARTICIPATNS_ALLOWRSVP: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         getAllSavedparticipantsAllowrsvp: action.response,
       };
     }
@@ -975,14 +974,14 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getAllProposedDates: [],
+        getAllProposedDates: null,
         ResponseMessage: action.message,
       };
     }
     case actions.CLEARE_ALL_PROPOSED_MEETING_DATES: {
       return {
         ...state,
-        getAllProposedDates: [],
+        getAllProposedDates: null,
       };
     }
     case actions.SET_MEETING_RESPONSE_INIT: {
@@ -1524,7 +1523,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         meetingDataRoomMapFolderID: action.response,
         ResponseMessage: action.message,
       };
@@ -1887,7 +1886,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         getPollsMeetingID: null,
         getMeetingusers: [],
         setMeetingProposeDate: [],
-        getAllProposedDates: [],
+        getAllProposedDates: null,
         meetingResponse: [],
         meetingMaterialData: [],
         agendaRights: null,
@@ -1993,6 +1992,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         meetingStatusNotConductedMqttData: action.response,
+      };
+    }
+
+    case actions.MEETING_REMINDER_NOTIFICATION: {
+      return {
+        ...state,
+        meetingReminderNotification: action.response,
       };
     }
 
@@ -2405,6 +2411,33 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         leaveMeetingVideoResponse: null,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.NEW_MEETING_LOADER_REDUCER: {
+      return {
+        ...state,
+        Loading: action.loader,
+      };
+    }
+
+    case actions.PROPOSED_MEETING_DATES_DATA: {
+      return {
+        ...state,
+        getAllProposedDates: null,
+      };
+    }
+
+    case actions.PARTICIPANT_PROPOSED_MEETING: {
+      return {
+        ...state,
+        getAllSavedparticipants: [],
+      };
+    }
+
+    case actions.GET_ALL_MEETING_DETAILS_DATA: {
+      return {
+        ...state,
+        getAllMeetingDetails: null,
       };
     }
 

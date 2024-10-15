@@ -82,8 +82,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [editRecordFlag, seteditRecordFlag] = useState(false);
   const [editRecordIndex, seteditRecordIndex] = useState(null);
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
-  console.log(closeConfirmationModal, "closeConfirmationModal");
-  // for modal fields error
   const [modalField, setModalField] = useState(false);
 
   const [objMeetingAgenda, setObjMeetingAgenda] = useState({
@@ -2145,7 +2143,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           onHide={onHideHandleModal}
           show={editFlag}
           setShow={setEditFlag}
-          className={closeConfirmationModal ? null : "meeting_update"}
+          className={closeConfirmationModal || isCancelMeetingModal ? null : "meeting_update"}
           ButtonTitle={ModalTitle}
           modalFooterClassName={"d-block"}
           modalHeaderClassName={"d-none"}

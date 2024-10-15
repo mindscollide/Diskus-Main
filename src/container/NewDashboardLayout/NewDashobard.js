@@ -54,7 +54,7 @@ const NewDashobard = () => {
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+      dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
     }
   }, []);
 

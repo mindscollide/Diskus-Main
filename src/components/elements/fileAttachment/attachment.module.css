@@ -113,3 +113,18 @@ body[dir="rtl"] .fileNameAttachment {
 .TooltipNameClass {
   font-size: 10px !important;
 }
+.fileNameTruncateStyle_fullwidthisQuickMeetingView {
+  max-width: 190px !important;
+  display: flex !important;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+.fileNameTruncateStyleisQuickMeeting {
+  width: 115px !important;
+  justify-content: flex-start !important;
+  display: flex !important;
+  gap: 5px;
+  /* margin-left: 7px !important; */
+  margin-right: 7px;
+}

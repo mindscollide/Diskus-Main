@@ -5,6 +5,7 @@ import emptyContributorState from "../../../../../assets/images/emptyStateContri
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
+import RspvIcon from "../../../../../assets/images/rspvGreen.svg";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
 import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
@@ -50,7 +51,6 @@ const AgendaContributers = ({
   currentMeeting,
   editorRole,
   setEdiorRole,
-  setEditMeeting,
   isEditMeeting,
   setorganizers,
   setPublishState,
@@ -89,12 +89,14 @@ const AgendaContributers = ({
 
   const [notifiedMembersData, setNotificedMembersData] = useState(null);
 
-  const [viewAgendaContributors, setViewAgendaContributors] = useState(false);
-
   const shownotifyAgendaContrubutors = (id) => {
     dispatch(showAgendaContributorsModals(true));
     setSpecifiUser(id);
   };
+
+  // const openCrossIconModal = () => {
+  //   dispatch(showCrossConfirmationModal(true));
+  // };
 
   useEffect(() => {
     dispatch(showCancelModalAgendaContributor(false));
@@ -106,6 +108,10 @@ const AgendaContributers = ({
   }, []);
 
   const handleInputChange = (userID, newValue) => {
+    // setInputValues((prevInputValues) => ({
+    //   ...prevInputValues,
+    //   [userID]: newValue,
+    // }));
     setRowsData((prevRowsData) => {
       return prevRowsData.map((row) => {
         if (row.userID === userID) {
@@ -633,6 +639,8 @@ const AgendaContributers = ({
     dispatch(showCancelModalAgendaContributor(true));
   };
 
+  //Initiate the Add Flow with Empty stae
+
   const handleInitiatewithEmptyState = () => {
     if (Number(editorRole.status) === 10) {
     } else {
@@ -720,10 +728,6 @@ const AgendaContributers = ({
         ...NewMeetingreducer.getAllAgendaContributors,
       ];
 
-      setIsPublishedState(
-        NewMeetingreducer.getAllAgendaContributorsIsPublished
-      );
-
       let newArr = [];
       agendaContributorData.forEach((AgConData, index) => {
         newArr.push({
@@ -743,6 +747,7 @@ const AgendaContributers = ({
     } else {
       setRowsData([]);
     }
+    setIsPublishedState(NewMeetingreducer.getAllAgendaContributorsIsPublished);
   }, [NewMeetingreducer.getAllAgendaContributors]);
 
   useEffect(() => {

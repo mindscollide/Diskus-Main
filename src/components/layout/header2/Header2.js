@@ -83,8 +83,12 @@ const Header2 = ({ isVideo }) => {
   const { t } = useTranslation();
   useEffect(() => {
     if (Blur !== null) {
+      console.log("Blur", Blur);
+
       setActivateBlur(true);
     } else {
+      console.log("Blur", Blur);
+
       setActivateBlur(false);
     }
   }, [Blur]);
@@ -354,6 +358,7 @@ const Header2 = ({ isVideo }) => {
     <>
       {activateBlur ? (
         <Navbar className="header2-container " sticky="top">
+          {/* <Container> */}
           <section className="d-flex justify-content-between w-100  align-items-center px-5">
             <Navbar.Brand
               as={Link}
@@ -481,10 +486,12 @@ const Header2 = ({ isVideo }) => {
                         disabled={true}
                         className="SignOutOptionMenu text-black"
                       >
+                        {/* Change Password */}
                         {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item onClick={modalLogoutHandler}>
+                      {/* Sign Out */}
                       <Nav.Link className="SignOutOptionMenu text-black border-none">
                         {t("Sign-out")}
                       </Nav.Link>
@@ -532,6 +539,7 @@ const Header2 = ({ isVideo }) => {
                         className="d-flex text-black FontClass"
                         onClick={handleMeetingSidebarSettings}
                       >
+                        {/* Change Password */}
                         {t("Settings")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -560,6 +568,7 @@ const Header2 = ({ isVideo }) => {
                         onClick={handleMeetingSidebarFAQ}
                         className="d-flex text-black FontClass"
                       >
+                        {/* Change Password */}
                         {t("Help")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -579,6 +588,7 @@ const Header2 = ({ isVideo }) => {
                       className={currentLanguage}
                       onClick={modalLogoutHandler}
                     >
+                      {/* Sign Out */}
                       <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
                         {t("Sign-out")}
                       </Nav.Link>
@@ -618,9 +628,11 @@ const Header2 = ({ isVideo }) => {
               </Nav.Link>
             </Nav>
           </section>
+          {/* </Container> */}
         </Navbar>
       ) : (
         <Navbar className="header2-container " sticky="top">
+          {/* <Container> */}
           <section className="d-flex justify-content-between w-100  align-items-center px-5">
             <Navbar.Brand
               as={Link}
@@ -715,123 +727,124 @@ const Header2 = ({ isVideo }) => {
                   <Nav.Link className="me-2">
                     {checkFeatureIDAvailability(1) ||
                     checkFeatureIDAvailability(13) ? (
-                      <Tooltip placement="topRight" title={t("Shortcuts")}>
-                        <div className="dropdown-btn_dotted">
-                          {location.pathname.includes("/Admin") ||
-                          location.pathname.includes(
-                            "/Admin"
-                          ) ? null : roleRoute ||
-                            TrialExpireSelectPac ? null : (
-                            <DropdownButton
-                              id="dropdown-btn_dotted"
-                              className="dropdown-btn_dotted"
-                              title={
+                      <div className="dropdown-btn_dotted">
+                        {location.pathname.includes("/Admin") ||
+                        location.pathname.includes(
+                          "/Admin"
+                        ) ? null : roleRoute || TrialExpireSelectPac ? null : (
+                          <DropdownButton
+                            id="dropdown-btn_dotted"
+                            className="dropdown-btn_dotted"
+                            title={
+                              <Tooltip
+                                placement="topRight"
+                                title={t("Shortcuts")}
+                              >
                                 <img
                                   src={DiskusNotificationIcon}
                                   alt=""
                                   width={28}
                                   draggable="false"
                                 />
-                              }
-                              onClick={dropDownMenuFunction}
-                            >
-                              {checkFeatureIDAvailability(1) ? (
-                                <>
-                                  <Dropdown.Item
-                                    className="d-flex title-className"
-                                    onClick={openMeetingModal}
-                                  >
-                                    <span className="New_folder_shortcutkeys">
-                                      {t("Quick-meeting")}
-                                    </span>
-                                  </Dropdown.Item>
-                                </>
-                              ) : null}
-
-                              {checkFeatureIDAvailability(13) ? (
-                                <>
-                                  <Dropdown.Item className="d-flex title-className">
-                                    {(NewMeetingreducer.scheduleMeetingPageFlag ===
-                                      true ||
-                                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                        true) &&
-                                    NewMeetingreducer.viewMeetingFlag ===
-                                      false ? (
-                                      <div
-                                        className="New_folder_shortcutkeys"
-                                        onClick={() => {
-                                          dispatch(
-                                            showCancelModalmeetingDeitals(true)
-                                          );
-                                          dispatch(uploadGlobalFlag(true));
-                                        }}
-                                      >
-                                        {t("Upload-document")}
-                                      </div>
-                                    ) : (
-                                      <UploadTextField
-                                        title={t("Upload-document")}
-                                        handleFileUploadRequest={
-                                          handleUploadFile
-                                        }
-                                      />
-                                    )}
-                                  </Dropdown.Item>
-                                </>
-                              ) : null}
-
-                              {checkFeatureIDAvailability(13) ? (
-                                <>
-                                  <Dropdown.Item
-                                    className="d-flex title-className"
-                                    onClick={RecentFilesTab}
-                                  >
-                                    <span className="New_folder_shortcutkeys">
-                                      {t("Recently-added-files")}
-                                    </span>
-                                  </Dropdown.Item>
-                                </>
-                              ) : null}
-                              <Dropdown.Item className="d-flex title-className">
-                                <Nav.Link
-                                  as={Link}
-                                  to={
-                                    (NewMeetingreducer.scheduleMeetingPageFlag ===
-                                      true ||
-                                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                        true ||
-                                      NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                        true) &&
-                                    NewMeetingreducer.viewMeetingFlag === false
-                                      ? "/DisKus/Meeting"
-                                      : "/DisKus/Minutes"
-                                  }
-                                  onClick={handleMeetingPendingApprovals}
-                                  className="pendingApprovalsNav"
+                              </Tooltip>
+                            }
+                            onClick={dropDownMenuFunction}
+                          >
+                            {checkFeatureIDAvailability(1) ? (
+                              <>
+                                <Dropdown.Item
+                                  className="d-flex title-className"
+                                  onClick={openMeetingModal}
                                 >
                                   <span className="New_folder_shortcutkeys">
-                                    {t("Pending-approvals")}
+                                    {t("Quick-meeting")}
                                   </span>
-                                </Nav.Link>
-                              </Dropdown.Item>
-                            </DropdownButton>
-                          )}
-                        </div>
-                      </Tooltip>
+                                </Dropdown.Item>
+                              </>
+                            ) : null}
+
+                            {checkFeatureIDAvailability(13) ? (
+                              <>
+                                <Dropdown.Item className="d-flex title-className">
+                                  {/* {t("Upload-document")} */}
+                                  {(NewMeetingreducer.scheduleMeetingPageFlag ===
+                                    true ||
+                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                      true) &&
+                                  NewMeetingreducer.viewMeetingFlag ===
+                                    false ? (
+                                    <div
+                                      className="New_folder_shortcutkeys"
+                                      onClick={() => {
+                                        dispatch(
+                                          showCancelModalmeetingDeitals(true)
+                                        );
+                                        dispatch(uploadGlobalFlag(true));
+                                      }}
+                                    >
+                                      {t("Upload-document")}
+                                    </div>
+                                  ) : (
+                                    <UploadTextField
+                                      title={t("Upload-document")}
+                                      handleFileUploadRequest={handleUploadFile}
+                                    />
+                                  )}
+                                </Dropdown.Item>
+                              </>
+                            ) : null}
+
+                            {checkFeatureIDAvailability(13) ? (
+                              <>
+                                <Dropdown.Item
+                                  className="d-flex title-className"
+                                  onClick={RecentFilesTab}
+                                >
+                                  <span className="New_folder_shortcutkeys">
+                                    {t("Recently-added-files")}
+                                  </span>
+                                </Dropdown.Item>
+                              </>
+                            ) : null}
+                            <Dropdown.Item className="d-flex title-className">
+                              <Nav.Link
+                                as={Link}
+                                to={
+                                  (NewMeetingreducer.scheduleMeetingPageFlag ===
+                                    true ||
+                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                      true ||
+                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                      true) &&
+                                  NewMeetingreducer.viewMeetingFlag === false
+                                    ? "/DisKus/Meeting"
+                                    : "/DisKus/Minutes"
+                                }
+                                onClick={handleMeetingPendingApprovals}
+                                className="pendingApprovalsNav"
+                              >
+                                <span className="New_folder_shortcutkeys">
+                                  {t("Pending-approvals")}
+                                </span>
+                              </Nav.Link>
+                            </Dropdown.Item>
+                          </DropdownButton>
+                        )}
+                      </div>
                     ) : null}
                   </Nav.Link>
 
@@ -860,6 +873,7 @@ const Header2 = ({ isVideo }) => {
                       <Dropdown.Menu className="dropdown_menu_admin">
                         {roleRoute || TrialExpireSelectPac || cancelSub ? (
                           <Dropdown.Item onClick={modalLogoutHandler}>
+                            {/* Sign Out */}
                             <Nav.Link className="SignOutOptionMenu text-black border-none">
                               {t("Sign-out")}
                             </Nav.Link>
@@ -890,6 +904,7 @@ const Header2 = ({ isVideo }) => {
                                     to="CustomerInformation"
                                     className="text-black FontClass"
                                   >
+                                    {/* Change Password */}
                                     {t("Customer-information")}
                                   </Nav.Link>
                                 </Dropdown.Item>
@@ -923,10 +938,12 @@ const Header2 = ({ isVideo }) => {
                                 to="changePassword"
                                 className="SignOutOptionMenu text-black FontClass"
                               >
+                                {/* Change Password */}
                                 {t("Change-password")}
                               </Nav.Link>
                             </Dropdown.Item>
                             <Dropdown.Item onClick={modalLogoutHandler}>
+                              {/* Sign Out */}
                               <Nav.Link className="SignOutOptionMenu text-black border-none FontClass">
                                 {t("Sign-out")}
                               </Nav.Link>
@@ -941,6 +958,7 @@ const Header2 = ({ isVideo }) => {
                             className={currentLanguage}
                             onClick={modalLogoutHandler}
                           >
+                            {/* Sign Out */}
                             <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
                               {t("Sign-out")}
                             </Nav.Link>
@@ -991,6 +1009,7 @@ const Header2 = ({ isVideo }) => {
                                 className="d-flex text-black FontClass"
                                 onClick={handleMeetingSidebarSettings}
                               >
+                                {/* Change Password */}
                                 {t("Settings")}
                               </Nav.Link>
                             </Dropdown.Item>
@@ -1020,6 +1039,7 @@ const Header2 = ({ isVideo }) => {
                                 onClick={handleMeetingSidebarFAQ}
                                 className="d-flex text-black FontClass"
                               >
+                                {/* Change Password */}
                                 {t("Help")}
                               </Nav.Link>
                             </Dropdown.Item>
@@ -1039,6 +1059,7 @@ const Header2 = ({ isVideo }) => {
                               className={currentLanguage}
                               onClick={modalLogoutHandler}
                             >
+                              {/* Sign Out */}
                               <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
                                 {t("Sign-out")}
                               </Nav.Link>
@@ -1087,6 +1108,7 @@ const Header2 = ({ isVideo }) => {
               </>
             )}
           </section>
+          {/* </Container> */}
         </Navbar>
       )}
       {show ? (

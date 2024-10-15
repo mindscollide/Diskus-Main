@@ -18,7 +18,6 @@ import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,
-  showDeleteMeetingModal,
   showSceduleProposedMeeting,
   scheduleMeetingPageFlag,
   viewProposeDateMeetingPageFlag,
@@ -42,6 +41,8 @@ import {
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
   validateStringParticipantProposedApi,
+  GetAllProposedMeetingDateApiFunc,
+  GetAllSavedparticipantsAPI,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -77,6 +78,8 @@ const UnpublishedProposedMeeting = ({
   setDataroomMapFolderId,
   setResponseByDate,
   setVideoTalk,
+  setProposedNewMeeting,
+  setIsProposedMeetEdit,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -176,8 +179,30 @@ const UnpublishedProposedMeeting = ({
     dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
   };
 
-  const handleEditMeeting = async (id, record, role) => {
-    if (role !== "Agenda Contributor") {
+  const handleEditMeeting = async (id, agendaContributorFlag, record) => {
+    if (agendaContributorFlag === false && record.status === "12") {
+      let Data = {
+        MeetingID: Number(id),
+      };
+
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          false,
+          setCurrentMeetingID,
+          setSceduleMeeting,
+          setDataroomMapFolderId,
+          0,
+          2
+        )
+      );
+      await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
+      await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
+      setIsProposedMeetEdit(true);
+      setProposedNewMeeting(true);
+    } else if (agendaContributorFlag === false) {
       let Data = {
         MeetingID: Number(id),
       };
@@ -194,8 +219,8 @@ const UnpublishedProposedMeeting = ({
           1
         )
       );
+      dispatch(scheduleMeetingPageFlag(true));
     }
-    dispatch(scheduleMeetingPageFlag(true));
   };
 
   const changeDateStartHandler2 = (date) => {
@@ -432,6 +457,10 @@ const UnpublishedProposedMeeting = ({
       key: "Edit",
       width: "33px",
       render: (text, record) => {
+        let apiData = {
+          MeetingID: Number(record.pK_MDID),
+          StatusID: 1,
+        };
         return (
           <>
             <Row>
@@ -453,7 +482,7 @@ const UnpublishedProposedMeeting = ({
                       onClick={() => {
                         handleEditMeeting(
                           record.pK_MDID,
-                          record.isQuickMeeting,
+                          record.isAgendaContributor,
                           record
                         );
                         setVideoTalk({
@@ -498,7 +527,7 @@ const UnpublishedProposedMeeting = ({
                         onClick={() => {
                           handleEditMeeting(
                             record.pK_MDID,
-                            record.isQuickMeeting,
+                            record.isAgendaContributor,
                             record
                           );
                           setVideoTalk({
@@ -605,6 +634,7 @@ const UnpublishedProposedMeeting = ({
                     <Button
                       text={t("View-poll")}
                       className={styles["publish_meeting_btn_View_poll"]}
+                      // disableBtn={isViewPollShown ? true : false}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           false,
@@ -862,10 +892,6 @@ const UnpublishedProposedMeeting = ({
       callApi();
     }
   }, [MeetingProp]); // Add `dispatch` to the dependency array
-
-  console.log("rowsrowsrows", rows);
-
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <section>

@@ -250,7 +250,7 @@ const DocumentViewer = () => {
       });
     }
   }, [webViewer.xfdfData, webViewer.attachmentBlob]);
-
+  console.log(webViewer.ResponseMessage, "webViewerwebViewerwebViewer")
   useEffect(() => {
     if (
       webViewer.ResponseMessage !== "" &&

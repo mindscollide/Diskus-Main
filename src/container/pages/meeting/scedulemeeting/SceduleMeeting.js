@@ -127,7 +127,8 @@ const SceduleMeeting = ({
           setSceduleMeeting,
           setDataroomMapFolderId,
           0,
-          1
+          1,
+          false
         )
       );
       setmeetingDetails(true);

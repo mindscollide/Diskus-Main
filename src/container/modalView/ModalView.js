@@ -48,6 +48,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("acceptedRoomID"));
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+
   const [getMeetID, setMeetID] = useState(0);
   const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
   const [isDetails, setIsDetails] = useState(true);
@@ -250,7 +251,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           assignees.ViewMeetingDetails.meetingDetails.pK_MDID
         );
         let StatusCheck = assignees.ViewMeetingDetails.meetingStatus.pK_MSID;
-
+        let Data2 = {
+          VideoCallURL: currentMeetingVideoURL,
+        };
         if (check) {
         }
         setIsVideo(check);
@@ -322,12 +325,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           setStartMeetingStatus(false);
           setStartMeetingStatus(false);
         }
-        viewData.meetingReminders.map((rdata) => {
+        viewData.meetingReminders.map((rdata, index) => {
           let pkid = rdata.pK_MRID;
           reminder.push(pkid);
         });
         let reminderoptionvalue = "";
-        optionsWithIDs.map((opData) => {
+        optionsWithIDs.map((opData, index) => {
           if (opData.id === reminder[0]) {
             reminderoptionvalue = opData.label;
           }
@@ -335,11 +338,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setMeetingReminderValue(reminderoptionvalue);
         // for meeting attendies
         let List = [];
+        let user = meetingAttendeesList;
         let emptyList = [];
         try {
           if (viewData.meetingAttendees != undefined) {
             if (viewData.meetingAttendees.length > 0) {
-              viewData.meetingAttendees.map((meetingdata) => {
+              viewData.meetingAttendees.map((meetingdata, index) => {
                 List.push({
                   name: meetingdata.user.name,
                   designation: meetingdata.user.designation,
@@ -367,7 +371,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           if (viewData.externalMeetingAttendees != undefined) {
             if (viewData.externalMeetingAttendees.length > 0) {
               viewData.externalMeetingAttendees.map(
-                (externalMeetingAttendeesMeetingdata) => {
+                (externalMeetingAttendeesMeetingdata, index) => {
                   List.push({
                     name: externalMeetingAttendeesMeetingdata.emailAddress,
                     designation: "Default",
@@ -383,7 +387,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         } catch (error) {}
 
         try {
-          viewData.meetingAgendas.map((atchmenData) => {
+          viewData.meetingAgendas.map((atchmenData, index) => {
             let opData = {
               Title: atchmenData.objMeetingAgenda.title,
               PresenterName: atchmenData.objMeetingAgenda.presenterName,
@@ -420,7 +424,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           });
         } catch (error) {}
         try {
-          viewData.minutesOfMeeting.map((minutesOfMeetingData) => {
+          viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
             minutesOfMeeting.push({
               PK_MOMID: minutesOfMeetingData.pK_MOMID,
               Description: minutesOfMeetingData.description,
@@ -547,11 +551,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setMeetingReminderValue(reminderoptionvalue);
         // for meeting attendies
         let List = [];
+        let user = meetingAttendeesList;
         let emptyList = [];
         try {
           if (calendarMeetingData.meetingAttendees != undefined) {
             if (calendarMeetingData.meetingAttendees.length > 0) {
-              calendarMeetingData.meetingAttendees.map((meetingdata) => {
+              calendarMeetingData.meetingAttendees.map((meetingdata, index) => {
                 List.push({
                   name: meetingdata.user.name,
                   designation: meetingdata.user.designation,
@@ -595,7 +600,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         } catch (error) {}
 
         try {
-          calendarMeetingData.meetingAgendas.map((atchmenData) => {
+          calendarMeetingData.meetingAgendas.map((atchmenData, index) => {
             let opData = {
               Title: atchmenData.objMeetingAgenda.title,
               PresenterName: atchmenData.objMeetingAgenda.presenterName,
@@ -604,22 +609,26 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             };
             let file = [];
             if (atchmenData.meetingAgendaAttachments !== null) {
-              atchmenData.meetingAgendaAttachments.map((atchmenDataaa) => {
-                file.push({
-                  PK_MAAID: atchmenDataaa.pK_MAAID,
-                  DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
-                  OriginalAttachmentName: atchmenDataaa.originalAttachmentName,
-                  CreationDateTime: atchmenDataaa.creationDateTime,
-                  FK_MAID: atchmenDataaa.fK_MAID,
-                });
-                meetingAgenAtclis.push({
-                  PK_MAAID: atchmenDataaa.pK_MAAID,
-                  DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
-                  OriginalAttachmentName: atchmenDataaa.originalAttachmentName,
-                  CreationDateTime: atchmenDataaa.creationDateTime,
-                  FK_MAID: atchmenDataaa.fK_MAID,
-                });
-              });
+              atchmenData.meetingAgendaAttachments.map(
+                (atchmenDataaa, index) => {
+                  file.push({
+                    PK_MAAID: atchmenDataaa.pK_MAAID,
+                    DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
+                    OriginalAttachmentName:
+                      atchmenDataaa.originalAttachmentName,
+                    CreationDateTime: atchmenDataaa.creationDateTime,
+                    FK_MAID: atchmenDataaa.fK_MAID,
+                  });
+                  meetingAgenAtclis.push({
+                    PK_MAAID: atchmenDataaa.pK_MAAID,
+                    DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
+                    OriginalAttachmentName:
+                      atchmenDataaa.originalAttachmentName,
+                    CreationDateTime: atchmenDataaa.creationDateTime,
+                    FK_MAID: atchmenDataaa.fK_MAID,
+                  });
+                }
+              );
             }
             meetingAgenAtc.push({
               ObjMeetingAgenda: opData,
@@ -628,21 +637,23 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           });
         } catch (error) {}
         try {
-          calendarMeetingData.minutesOfMeeting.map((minutesOfMeetingData) => {
-            minutesOfMeeting.push({
-              PK_MOMID: minutesOfMeetingData.pK_MOMID,
-              Description: minutesOfMeetingData.description,
-              CreationDate: minutesOfMeetingData.creationDate,
-              CreationTime: minutesOfMeetingData.creationTime,
-              FK_MDID: minutesOfMeetingData.fK_MDID,
-            });
-          });
+          calendarMeetingData.minutesOfMeeting.map(
+            (minutesOfMeetingData, index) => {
+              minutesOfMeeting.push({
+                PK_MOMID: minutesOfMeetingData.pK_MOMID,
+                Description: minutesOfMeetingData.description,
+                CreationDate: minutesOfMeetingData.creationDate,
+                CreationTime: minutesOfMeetingData.creationTime,
+                FK_MDID: minutesOfMeetingData.fK_MDID,
+              });
+            }
+          );
         } catch (error) {
           //  Block of code to handle errors
         }
         try {
           calendarMeetingData.externalMeetingAttendees.map(
-            (externalMeetingAttendeesData) => {
+            (externalMeetingAttendeesData, index) => {
               externalMeetingAttendiesList.push({
                 PK_EMAID: externalMeetingAttendeesData.pK_EMAID,
                 EmailAddress: externalMeetingAttendeesData.emailAddress,
@@ -788,7 +799,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       if (user != undefined) {
         if (meetingAttendeesList.length > 0) {
           setOptiosnMeetingAttendeesList(
-            meetingAttendeesList.map((data) => {
+            meetingAttendeesList.map((data, index) => {
               return data.name;
             })
           );
@@ -806,6 +817,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       }
     } catch (error) {}
   }, [addedParticipantNameList]);
+
+  let meetingDateTime =
+    createMeeting.MeetingDate + createMeeting.MeetingStartTime;
 
   const startMeeting = async () => {
     await setViewFlag(false);
@@ -968,7 +982,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           });
           setMeetingReminderValue("");
           setMeetingReminderID([]);
-
           let searchData = {
             Date: "",
             Title: "",
@@ -987,6 +1000,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       console.log(error);
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
+
+  console.log("MeetingDetailsMeetingDetails", allMeetingDetails);
 
   return (
     <>
@@ -1295,7 +1310,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       {addedParticipantNameList ? (
                         <>
                           <span>
-                            {addedParticipantNameList.map((atList) => {
+                            {addedParticipantNameList.map((atList, index) => {
                               if (atList.role === 1 || atList.role === 3) {
                                 return (
                                   <EmployeeCard
@@ -1333,7 +1348,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       {addedParticipantNameList ? (
                         <>
                           <span>
-                            {addedParticipantNameList.map((atList) => {
+                            {addedParticipantNameList.map((atList, index) => {
                               if (atList.role === 2) {
                                 return (
                                   <EmployeeCard
@@ -1406,7 +1421,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 <>
                   <Row className="data-room-file-upload-section mt-4">
                     {attachmentsList.length > 0
-                      ? attachmentsList.map((data) => {
+                      ? attachmentsList.map((data, index) => {
                           return (
                             <Col sm={4} lg={4} md={4}>
                               <AttachmentViewer

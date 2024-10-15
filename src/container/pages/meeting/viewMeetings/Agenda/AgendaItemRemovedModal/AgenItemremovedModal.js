@@ -72,7 +72,7 @@ const AgenItemremovedModal = ({
                 className="d-flex justify-content-center gap-2"
               >
                 <Button
-                  text={t("Discard")}
+                  text={t("Cancel")}
                   className={styles["Discard_Btn_Agendaremovel"]}
                   onClick={() => {
                     dispatch(showAgenItemsRemovedModal(false));

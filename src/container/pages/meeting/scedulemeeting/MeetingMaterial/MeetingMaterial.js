@@ -11,7 +11,6 @@ import {
   ResultMessage,
 } from "../../../../../components/elements";
 import NoMeetingsIcon from "../../../../../assets/images/No-Meetings.png";
-
 import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useSelector } from "react-redux";
 import {
@@ -48,12 +47,9 @@ const MeetingMaterial = ({
   currentMeeting,
   setPublishState,
   setAdvanceMeetingModalID,
-  setViewFlag,
-  setEditFlag,
   setCalendarViewModal,
   editorRole,
   isEditMeeting,
-  setactionsPage,
   setDataroomMapFolderId,
   setEdiorRole,
 }) => {
@@ -146,6 +142,7 @@ const MeetingMaterial = ({
   };
   //  handle Click download a file
   const handleClickDownload = (record) => {
+    console.log("editorRoleeditorRole", editorRole, record);
     if (
       (editorRole.role.toLowerCase() === "Organizer".toLowerCase() ||
         editorRole.role.toLowerCase() === "Agenda Contributor".toLowerCase()) &&
@@ -305,6 +302,7 @@ const MeetingMaterial = ({
                   onClick={() => handleClickOpenFile(record)}
                 />
                 <Button
+                  // disableBtn={ext !== "pdf" ? false : true}
                   text={t("Download")}
                   className={styles["downloadButton"]}
                   onClick={() => handleClickDownload(record)}
@@ -446,8 +444,9 @@ const MeetingMaterial = ({
             disableBtn={Number(editorRole.status) === 10 ? false : true}
           />
 
-          {Number(editorRole.status) === 11 ||
-          Number(editorRole.status) === 12 ? (
+          {(Number(editorRole.status) === 11 ||
+            Number(editorRole.status) === 12) &&
+          editorRole.role !== "Agenda Contributor" ? (
             <Button
               disableBtn={
                 Number(currentMeeting) === 0 || isPublishedState === false

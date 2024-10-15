@@ -79,6 +79,14 @@ const ReviewMinutes = () => {
         if (minute.actorBundleStatusID === 2) {
           count++;
         }
+        // Check version history in agendaMinutes
+        // if (minute.agendaMinutesVersionHistory) {
+        //   minute.agendaMinutesVersionHistory.forEach((history) => {
+        //     if (history.actorBundleStatusID === 2) {
+        //       count++;
+        //     }
+        //   });
+        // }
       });
     }
     return count;
@@ -343,6 +351,7 @@ const ReviewMinutes = () => {
   };
 
   const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
     let Data = {
       taskId: 2,
       commingFrom: 4,
@@ -606,7 +615,8 @@ const ReviewMinutes = () => {
                         </Col>
                       </Row>
                       <>
-                        {data?.minuteData?.map((parentMinutedata) => {
+                        {data?.minuteData?.map((parentMinutedata, index) => {
+                          console.log(parentMinutedata, "parentMinutedata");
                           return (
                             <>
                               <Row>
@@ -810,7 +820,8 @@ const ReviewMinutes = () => {
                                               }
                                             >
                                               {convertToGMTMinuteTime(
-                                                parentMinutedata.lastUpdatedTime
+                                                parentMinutedata.lastUpdatedDate +
+                                                  parentMinutedata.lastUpdatedTime
                                               )}
                                               ,
                                             </p>
@@ -820,7 +831,8 @@ const ReviewMinutes = () => {
                                               }
                                             >
                                               {convertDateToGMTMinute(
-                                                parentMinutedata.lastUpdatedDate
+                                                parentMinutedata.lastUpdatedDate +
+                                                  parentMinutedata.lastUpdatedTime
                                               )}
                                             </p>
                                           </Col>
@@ -1131,6 +1143,10 @@ const ReviewMinutes = () => {
                                     parentMinutedata.agendaMinutesVersionHistory
                                       .length -
                                       1;
+                                  console.log(
+                                    historyData,
+                                    "parentMinutedataparentMinutedata"
+                                  );
                                   return (
                                     <>
                                       <Row>
@@ -1258,7 +1274,8 @@ const ReviewMinutes = () => {
                                                       }
                                                     >
                                                       {convertToGMTMinuteTime(
-                                                        historyData.lastUpdatedTime
+                                                        historyData.lastUpdatedDate +
+                                                          historyData.lastUpdatedTime
                                                       )}
                                                       ,
                                                     </p>
@@ -1268,7 +1285,8 @@ const ReviewMinutes = () => {
                                                       }
                                                     >
                                                       {convertDateToGMTMinute(
-                                                        historyData.lastUpdatedDate
+                                                        historyData.lastUpdatedDate +
+                                                          historyData.lastUpdatedTime
                                                       )}
                                                     </p>
                                                   </Col>
@@ -1899,7 +1917,8 @@ const ReviewMinutes = () => {
                                                       }
                                                     >
                                                       {convertToGMTMinuteTime(
-                                                        minuteDataSubminute.lastUpdatedTime
+                                                        minuteDataSubminute.lastUpdatedDate +
+                                                          minuteDataSubminute.lastUpdatedTime
                                                       )}
                                                       ,
                                                     </p>
@@ -1909,7 +1928,8 @@ const ReviewMinutes = () => {
                                                       }
                                                     >
                                                       {convertDateToGMTMinute(
-                                                        minuteDataSubminute.lastUpdatedDate
+                                                        minuteDataSubminute.lastUpdatedDate +
+                                                          minuteDataSubminute.lastUpdatedDate
                                                       )}
                                                     </p>
                                                   </Col>
@@ -2446,7 +2466,8 @@ const ReviewMinutes = () => {
                                                               }
                                                             >
                                                               {convertToGMTMinuteTime(
-                                                                historyData.lastUpdatedTime
+                                                                historyData.lastUpdatedDate +
+                                                                  historyData.lastUpdatedTime
                                                               )}
                                                               ,
                                                             </p>
@@ -2458,7 +2479,8 @@ const ReviewMinutes = () => {
                                                               }
                                                             >
                                                               {convertDateToGMTMinute(
-                                                                historyData.lastUpdatedDate
+                                                                historyData.lastUpdatedDate +
+                                                                  historyData.lastUpdatedTime
                                                               )}
                                                             </p>
                                                           </Col>
@@ -2773,6 +2795,7 @@ const ReviewMinutes = () => {
               : null}
 
             {minutesGeneral?.map((data, index) => {
+              console.log(data, "datadatadatadata");
               return (
                 <>
                   <Row className="mx-50">
@@ -2925,13 +2948,15 @@ const ReviewMinutes = () => {
                                 <Col lg={12} md={12} sm={12}>
                                   <p className={styles["time-uploader"]}>
                                     {convertToGMTMinuteTime(
-                                      data.lastUpdatedTime
+                                      data.lastUpdatedDate +
+                                        data.lastUpdatedTime
                                     )}
                                     ,
                                   </p>
                                   <p className={styles["date-uploader"]}>
                                     {convertDateToGMTMinute(
-                                      data.lastUpdatedDate
+                                      data.lastUpdatedDate +
+                                        data.lastUpdatedTime
                                     )}
                                   </p>
                                 </Col>
@@ -3257,7 +3282,8 @@ const ReviewMinutes = () => {
                                             className={styles["time-uploader"]}
                                           >
                                             {convertToGMTMinuteTime(
-                                              historyData.lastUpdatedTime
+                                              historyData.lastUpdatedDate +
+                                                historyData.lastUpdatedTime
                                             )}
                                             ,
                                           </p>
@@ -3265,7 +3291,8 @@ const ReviewMinutes = () => {
                                             className={styles["date-uploader"]}
                                           >
                                             {convertDateToGMTMinute(
-                                              historyData.lastUpdatedDate
+                                              historyData.lastUpdatedDate +
+                                                historyData.lastUpdatedTime
                                             )}
                                           </p>
                                         </Col>

@@ -102,7 +102,7 @@ const PollsReducer = (state = initialState, action) => {
     case actions.GETALLCOMMITESANDGROUPSFORPOLLS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         gellAllCommittesandGroups: action.response,
         ResponseMessage: action.message,
       };

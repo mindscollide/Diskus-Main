@@ -147,7 +147,8 @@ const FullScreenAgendaModal = ({
         currentUserID,
         currentOrganization,
         1,
-        meetingTitle
+        meetingTitle,
+        advanceMeetingModalID
       )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
@@ -187,7 +188,8 @@ const FullScreenAgendaModal = ({
         currentUserID,
         currentOrganization,
         1,
-        meetingTitle
+        meetingTitle,
+        advanceMeetingModalID
       )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
@@ -219,7 +221,8 @@ const FullScreenAgendaModal = ({
           currentUserID,
           currentOrganization,
           1,
-          meetingTitle
+          meetingTitle,
+          advanceMeetingModalID
         )
       );
       localStorage.setItem("meetingTitle", meetingTitle);

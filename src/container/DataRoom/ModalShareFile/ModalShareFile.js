@@ -434,10 +434,13 @@ const ModalShareFile = ({
                             value: permissionID.value,
                             label: permissionID.label,
                           }}
+                          defaultValue={{
+                            value: permissionID.value,
+                            label: permissionID.label,
+                          }}
                           options={options}
                           isSearchable={false}
                           placeholder={t("Editor")}
-                          className={styles["Editor_select"]}
                           onChange={handlechange}
                           classNamePrefix={
                             permissionID.value === 0

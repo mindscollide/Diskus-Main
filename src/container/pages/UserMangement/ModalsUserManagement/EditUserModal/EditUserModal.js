@@ -248,13 +248,23 @@ const EditUserModal = ({ editModalData }) => {
           },
         });
       }
+    } else if (name === "MobileNumber" && value === "") {
+      setEditUserModalValues({
+        ...editUserModalValues,
+        MobileNumber: {
+          value: "",
+          errorMessage: "",
+          errorStatus: true,
+        },
+      });
     }
   };
 
   const handleUpdateButton = () => {
     if (
       editUserModalValues.Name.value !== "" &&
-      editUserModalValues.Desgiantion.value !== ""
+      editUserModalValues.Desgiantion.value !== "" &&
+      editUserModalValues.MobileNumber.value !== ""
     ) {
       let data = {
         UserID: Number(editModalData.userID),
@@ -282,6 +292,11 @@ const EditUserModal = ({ editModalData }) => {
           value: editUserModalValues.Desgiantion.value,
           errorMessage: t("Please-enter-designation"),
           errorStatus: editUserModalValues.Desgiantion.errorStatus,
+        },
+        MobileNumber: {
+          value: editUserModalValues.MobileNumber.value,
+          errorMessage: t("Please-enter-mobile-number"),
+          errorStatus: editUserModalValues.Name.errorStatus,
         },
       });
     }

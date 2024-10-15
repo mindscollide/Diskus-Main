@@ -117,14 +117,10 @@ import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 import {
   checkFeatureIDAvailability,
   fileFormatforSignatureFlow,
+  openDocumentViewer,
 } from "../../commen/functions/utils";
 import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
 import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
-import {
-  validateExtensionsforHTMLPage,
-  validationExtension,
-} from "../../commen/functions/validations";
-import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
@@ -143,7 +139,9 @@ const DataRoom = () => {
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
   const [dataRoomString, setDataRoomString] = useState("");
-  const { DataRoomReducer, webViewer } = useSelector((state) => state);
+  const { DataRoomReducer, SignatureWorkFlowReducer, webViewer } = useSelector(
+    (state) => state
+  );
   const SignatureResponseMessage = useSelector(
     (state) => state.SignatureWorkFlowReducer.ResponseMessage
   );
@@ -162,6 +160,7 @@ const DataRoom = () => {
   const [actionundonenotification, setActionundonenotification] =
     useState(false);
   const [collapes, setCollapes] = useState(false);
+  const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
   // const [tasksAttachments, setTasksAttachments] = useState([]);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
@@ -222,6 +221,7 @@ const DataRoom = () => {
   const DataRoomFileAndFoldersDetailsResponseMessage = useSelector(
     (state) => state.DataRoomFileAndFoldersDetailsReducer.ResponseMessage
   );
+  console.log(DataRoomFileAndFoldersDetailsResponseMessage, "Message");
   const [fileDataforAnalyticsCount, setFileDataforAnalyticsCount] =
     useState(null);
   // this is for notification
@@ -300,10 +300,10 @@ const DataRoom = () => {
     try {
       if (DataRoomString !== undefined && DataRoomString !== null) {
         console.log("Test Dataroom");
-
-        // setRequestingAccess(true);
-        setDataRoomString(DataRoomString);
-        let Data = { Link: DataRoomString };
+        const remainingString = DataRoomString.replace("/", "");
+        console.log(remainingString, "remainingStringremainingString");
+        setDataRoomString(remainingString);
+        let Data = { Link: remainingString };
 
         dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
@@ -479,7 +479,7 @@ const DataRoom = () => {
           dispatch(dataBehaviour(false));
           let copyData = [...getAllData];
           DataRoomReducer.getAllDocumentandShareFolderResponse.data.map(
-            (data) => {
+            (data, index) => {
               copyData.push(data);
             }
           );
@@ -858,22 +858,7 @@ const DataRoom = () => {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
         let ext = record?.name?.split(".").pop();
-        if (validationExtension(ext)) {
-          window.open(
-            `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-              pdfDataJson
-            )}`,
-            "_blank",
-            "noopener noreferrer"
-          );
-        } else if (validateExtensionsforHTMLPage(ext)) {
-          let dataRoomData = {
-            FileID: record.id,
-          };
-          dispatch(
-            getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
-          );
-        }
+        openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
       }
     } else if (data.value === 2) {
       // Share File Modal
@@ -1002,6 +987,10 @@ const DataRoom = () => {
   };
 
   const handleSortMyDocuments = (pagination, filters, sorter) => {
+    console.log(
+      { filters, sorter },
+      "handleSortMyDocumentshandleSortMyDocuments"
+    );
     if (sorter.field === "name") {
       setSortValue(1);
       if (sorter.order === "ascend") {
@@ -1237,7 +1226,7 @@ const DataRoom = () => {
       width: "90px",
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "owner" && sortedInfo.order,
-      render: (text) => {
+      render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
       },
     },
@@ -1701,7 +1690,6 @@ const DataRoom = () => {
                                     </Dropdown.Item>
                                   );
                                 })}
-                            {}
                           </Dropdown.Menu>
                         </Dropdown>
                       )}
@@ -1728,20 +1716,7 @@ const DataRoom = () => {
       };
       const pdfDataJson = JSON.stringify(pdfData);
       let ext = record.name.split(".").pop();
-      if (validationExtension(ext)) {
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      } else if (validateExtensionsforHTMLPage(ext)) {
-        let dataRoomData = {
-          FileID: record.id,
-        };
-        dispatch(
-          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData, true)
-        );
-      }
+      openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
     }
   };
 
@@ -2332,6 +2307,8 @@ const DataRoom = () => {
       render: (text, record) => {
         console.log(record, "datadatadatadata");
 
+        let ext = record.name.split(".").pop();
+
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
@@ -2369,7 +2346,7 @@ const DataRoom = () => {
       dataIndex: "owner",
       key: "owner",
       width: "90px",
-      render: (text) => {
+      render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
       },
     },
@@ -2404,6 +2381,7 @@ const DataRoom = () => {
           attachmentID: record.id,
           isPermission: record.permissionID,
         };
+        let fileExtension = getFileExtension(record.name);
         const pdfDataJson = JSON.stringify(pdfData);
         const pdfDataforSignature = {
           taskId: record.id,
@@ -2413,6 +2391,7 @@ const DataRoom = () => {
           isPermission: record.permissionID,
           isNew: true,
         };
+        const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
 
         return (
           <>
@@ -2743,6 +2722,7 @@ const DataRoom = () => {
 
     // Optionally, you can also cancel the Axios request associated with this task here.
   };
+  // const isOnline = navigator.onLine;
 
   // Handle online status changes
   const handleOnlineStatusChange = (event) => {
@@ -2890,6 +2870,7 @@ const DataRoom = () => {
 
   // this function call for current files which is in the folder
   const processArraySequentially = async (folder) => {
+    let isOnline = navigator.onLine;
     if (folder.UploadCancel || folder.NetDisconnect) {
       // Skip the upload for this folder if it's canceled or there's a network disconnect
       return;
@@ -2912,6 +2893,7 @@ const DataRoom = () => {
                   folder.FolderID,
                   t,
                   folder.NetDisconnect
+                  // cancelToken
                 )
               );
               // Perform other actions with the result
