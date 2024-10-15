@@ -43,6 +43,7 @@ import {
   validateStringParticipantProposedApi,
   GetAllProposedMeetingDateApiFunc,
   GetAllSavedparticipantsAPI,
+  CleareMessegeNewMeeting,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -893,10 +894,6 @@ const UnpublishedProposedMeeting = ({
       callApi();
     }
   }, [MeetingProp]); // Add `dispatch` to the dependency array
-
-  console.log("rowsrowsrows", rows);
-
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <section>

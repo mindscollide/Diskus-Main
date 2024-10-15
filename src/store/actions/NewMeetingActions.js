@@ -1721,8 +1721,6 @@ const SaveparticipantsApi = (
                 )
               );
               if (flag === true) {
-                console.log(rows, "flagflag");
-
                 let Data = {
                   MeetingID: currentMeeting,
                   SendResponsebyDate: ResponseDate,
@@ -2350,6 +2348,20 @@ const GetAllMeetingDetailsApiFunc = (
                   );
                 } else if (flag === 2) {
                   console.log("Flag for proposed meeting Edit flow only");
+                  await dispatch(
+                    CreateUpdateMeetingDataRoomMapeedApiFunc(
+                      navigate,
+                      MappedData,
+                      t,
+                      setDataroomMapFolderId,
+                      false,
+                      false,
+                      false,
+                      false,
+                      false,
+                      true
+                    )
+                  );
                 }
               }
               console.log("hello loader check", loader);
@@ -2364,7 +2376,7 @@ const GetAllMeetingDetailsApiFunc = (
                   false,
                   false,
                   false,
-                  true
+                  false
                 )
               );
               await dispatch(
@@ -2871,7 +2883,7 @@ const setProposedMeetingDateApiFunc = (
               dispatch(
                 showPrposedMeetingDateSuccess(
                   response.data.responseResult,
-                  t("Your-vote-is-submitted-successfully")
+                  t("Your-slots-has-been-added-successfully")
                 )
               );
               if (flag === true) {
