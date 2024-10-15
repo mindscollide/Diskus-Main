@@ -57,7 +57,7 @@ const userLogOutApiFunc = (navigate, t) => {
                 .toLowerCase()
                 .includes("ERM_AuthService_AuthManager_LogOut_01".toLowerCase())
             ) {
-              await dispatch(userlogOutSuccess(t("Successful")));
+              await dispatch(userlogOutSuccess(null, t("Successful")));
               signOut(navigate, "", dispatch);
               dispatch(showUpgradeNowModal(false));
               // navigate("/");
@@ -99,7 +99,8 @@ const signOut = (navigate, message, dispatch) => {
   // if (Helper.socket != null) {
   //   Helper.socket.disconnect(true);
   // }
-  window.location.href = window.location.origin + "/";
+  // window.location.href = window.location.origin + "/";
+  navigate("/");
   let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
   let RememberPasswordLocal = JSON.parse(
     localStorage.getItem("remeberPassword")

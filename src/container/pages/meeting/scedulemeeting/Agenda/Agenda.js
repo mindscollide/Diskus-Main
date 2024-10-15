@@ -83,14 +83,22 @@ const Agenda = ({
   let folderDataRoomMeeting = Number(
     localStorage.getItem("folderDataRoomMeeting")
   );
+
   const navigate = useNavigate();
 
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
 
   const [allUsersRC, setAllUsersRC] = useState([]);
 
-  const { NewMeetingreducer, MeetingAgendaReducer, DataRoomReducer } =
-    useSelector((state) => state);
+  const {
+    NewMeetingreducer,
+    MeetingAgendaReducer,
+    DataRoomReducer,
+    settingReducer,
+  } = useSelector((state) => state);
+  const isShouldAgendaUpdatedOrNot =
+    settingReducer?.UserProfileData?.emailWhenActiveMeetingAgendaUpdated ||
+    true;
 
   let meetingTitle = localStorage.getItem("MeetingTitle");
 
@@ -166,12 +174,12 @@ const Agenda = ({
         label: (
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                 <img
-                  alt=""
+                  alt=''
                   src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-                  width="17px"
-                  height="17px"
+                  width='17px'
+                  height='17px'
                   className={styles["Image_class_Agenda"]}
                 />
                 <span className={styles["Name_Class"]}>
@@ -1499,8 +1507,7 @@ const Agenda = ({
             {editorRole.role === "Agenda Contributor" &&
             rows[0].title === "" ? null : (
               <DragDropContext
-                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
-              >
+                onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
                 {emptyStateRows === true &&
                 (editorRole.role === "Agenda Contributor" ||
                   editorRole.role === "Participant") ? null : (
@@ -1513,19 +1520,16 @@ const Agenda = ({
                         rows.length > 1
                           ? `${styles["Scroller_Agenda"]} d-flex flex-column-reverse`
                           : styles["Scroller_Agenda"]
-                      }
-                    >
+                      }>
                       <Droppable
                         //  key={`main-agenda-${rows.id}`}
                         //  droppableId={`main-agenda-${rows.id}`}
-                        droppableId="board"
-                        type="PARENT"
-                      >
+                        droppableId='board'
+                        type='PARENT'>
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.droppableProps}
-                          >
+                            {...provided.droppableProps}>
                             {rows.length > 0
                               ? rows.map((data, index) => {
                                   return (
@@ -1538,8 +1542,7 @@ const Agenda = ({
                                             "Agenda Contributor"
                                             ? "d-none"
                                             : styles["agenda-border-class"]
-                                        }
-                                      >
+                                        }>
                                         <ParentAgenda
                                           fileForSend={fileForSend}
                                           setFileForSend={setFileForSend}
@@ -1613,14 +1616,13 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center mt-3"
-                  >
+                    className='d-flex justify-content-center mt-3'>
                     <img
                       draggable={false}
                       src={emptyContributorState}
-                      width="274.05px"
-                      alt=""
-                      height="230.96px"
+                      width='274.05px'
+                      alt=''
+                      height='230.96px'
                       className={styles["Image-Add-Agenda"]}
                     />
                   </Col>
@@ -1630,8 +1632,7 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center mt-3"
-                  >
+                    className='d-flex justify-content-center mt-3'>
                     <span className={styles["Empty_state_heading"]}>
                       {t("No-agenda-availabe-to-discuss").toUpperCase()}
                     </span>
@@ -1644,7 +1645,7 @@ const Agenda = ({
             editorRole.role === "Agenda Contributor" ||
             editorRole.status === "9" ||
             editorRole.status === 9 ? null : (
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12}>
                   <Button
                     text={
@@ -1654,14 +1655,13 @@ const Agenda = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center gap-2 align-items-center"
-                          >
+                            className='d-flex justify-content-center gap-2 align-items-center'>
                             <img
                               draggable={false}
                               src={plusFaddes}
-                              height="10.77px"
-                              width="10.77px"
-                              alt=""
+                              height='10.77px'
+                              width='10.77px'
+                              alt=''
                             />
                             <span className={styles["Add_Agen_Heading"]}>
                               {t("Add-agenda")}
@@ -1671,18 +1671,22 @@ const Agenda = ({
                       </>
                     }
                     className={styles["AddMoreBtnAgenda"]}
+                    disableBtn={
+                      Number(editorRole.status) === 10 && !isShouldAgendaUpdatedOrNot
+                        ? true
+                        : false
+                    }
                     onClick={addRow}
                   />
                 </Col>
               </Row>
             )}
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 {editorRole.status === "9" ||
                 editorRole.status === 9 ||
                 editorRole.role === "Agenda Contributor" ? null : (
@@ -1722,7 +1726,8 @@ const Agenda = ({
                 )}
                 {(Number(editorRole.status) === 11 ||
                   Number(editorRole.status) === 12) &&
-                (editorRole.status !== "9" || editorRole.status !== 9) ? (
+                (editorRole.status !== "9" || editorRole.status !== 9) &&
+                editorRole.role !== "Agenda Contributor" ? (
                   <Button
                     disableBtn={
                       Number(currentMeeting) === 0 || isPublishedState === false

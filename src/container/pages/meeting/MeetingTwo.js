@@ -195,6 +195,8 @@ const NewMeeting = () => {
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
+  //Edit proposed Meeting Flow
+  const [isProposedMeetEdit, setIsProposedMeetEdit] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
 
   // const [isMeetingTypeFilter, setMeetingTypeFilter] =
@@ -2801,6 +2803,8 @@ const NewMeeting = () => {
             isEditMeeting={isEditMeeting}
             setDataroomMapFolderId={setDataroomMapFolderId}
             dataroomMapFolderId={dataroomMapFolderId}
+            setIsProposedMeetEdit={setIsProposedMeetEdit}
+            isProposedMeetEdit={isProposedMeetEdit}
           />
         ) : (
           <>
@@ -3057,6 +3061,8 @@ const NewMeeting = () => {
                       setDataroomMapFolderId={setDataroomMapFolderId}
                       videoTalk={videoTalk}
                       setVideoTalk={setVideoTalk}
+                      setProposedNewMeeting={setProposedNewMeeting}
+                      setIsProposedMeetEdit={setIsProposedMeetEdit}
                     />
                   ) : Number(currentView) === 1 ? (
                     <Row className='mt-2'>

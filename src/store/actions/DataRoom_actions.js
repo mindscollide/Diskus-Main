@@ -3606,12 +3606,16 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
             dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
             localStorage.removeItem("DataRoomEmail");
           }
+        } else {
+          dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+          localStorage.removeItem("DataRoomEmail");
         }
       } else {
         dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
         localStorage.removeItem("DataRoomEmail");
       }
     } catch (error) {
+      console.log(error)
       dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
       localStorage.removeItem("DataRoomEmail");
     }

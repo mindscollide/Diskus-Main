@@ -247,8 +247,7 @@ export const convertToGMTMinuteTime = (timeStr) => {
     // Create a Date object
     let date = new Date(fullDateyear).toString();
 
-
-    let formattedTime = moment(date).format("hh:mm a")
+    let formattedTime = moment(date).format("hh:mm a");
     return formattedTime;
   } catch {}
 };
@@ -286,4 +285,20 @@ export const convertDateToGMTMinute = (dateStr) => {
 
     return formattedDate;
   } catch {}
+};
+
+// Function to format the date and time
+export const ProposedMeetingformatDate = (dateString) => {
+  const year = dateString.slice(0, 4);
+  const month = dateString.slice(4, 6);
+  const day = dateString.slice(6, 8);
+  return `${month}/${day}/${year}`;
+};
+
+export const ProposedMeetingformatTime = (timeString) => {
+  const hours = parseInt(timeString.slice(0, 2), 10);
+  const minutes = timeString.slice(2, 4);
+  const period = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 || 12; // Convert 0 to 12 for midnight
+  return `${formattedHours}:${minutes} ${period}`;
 };

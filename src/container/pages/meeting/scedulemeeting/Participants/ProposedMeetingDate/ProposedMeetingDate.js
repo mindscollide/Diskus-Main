@@ -4,7 +4,6 @@ import { Button, Notification } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
 import DatePicker from "react-multi-date-picker";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { DateObject } from "react-multi-date-picker";

@@ -243,6 +243,7 @@ const DataRoom = () => {
   const DataRoomFileAndFoldersDetailsResponseMessage = useSelector(
     (state) => state.DataRoomFileAndFoldersDetailsReducer.ResponseMessage
   );
+  console.log(DataRoomFileAndFoldersDetailsResponseMessage, "Message")
   const [fileDataforAnalyticsCount, setFileDataforAnalyticsCount] =
     useState(null);
   // this is for notification
@@ -321,10 +322,11 @@ const DataRoom = () => {
     try {
       if (DataRoomString !== undefined && DataRoomString !== null) {
         console.log("Test Dataroom");
-
+        const remainingString = DataRoomString.replace("/", "");
+        console.log(remainingString, "remainingStringremainingString");
         // setRequestingAccess(true);
-        setDataRoomString(DataRoomString);
-        let Data = { Link: DataRoomString };
+        setDataRoomString(remainingString);
+        let Data = { Link: remainingString };
 
         dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
@@ -2438,8 +2440,7 @@ const DataRoom = () => {
               />
               <span
                 className={styles["dataroom_table_heading"]}
-                onClick={(e) => handleLinkClick(e, record)}
-              >
+                onClick={(e) => handleLinkClick(e, record)}>
                 {record.name} <img src={sharedIcon} alt='' draggable='false' />
               </span>
             </div>
