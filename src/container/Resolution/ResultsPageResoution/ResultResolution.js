@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ResultResolution.module.css";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import result from "../../../assets/images/result.svg";
 import Abstain from "../../../assets/images/Abstain.svg";

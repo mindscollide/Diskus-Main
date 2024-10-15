@@ -20,7 +20,6 @@ import {
 } from "../../../../components/elements";
 
 import styles from "./CustomerInformation.module.css";
-import { Scrollbars } from "react-custom-scrollbars";
 import ErrorBar from "../../../authentication/sign_up/errorbar/ErrorBar";
 import Title from "antd/lib/skeleton/Title";
 

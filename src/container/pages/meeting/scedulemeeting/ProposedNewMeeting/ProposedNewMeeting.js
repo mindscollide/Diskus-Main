@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import styles from "./ProposedNewMeeting.module.css";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import plusFaddes from "../../../../../assets/images/SVGBlackPlusIcon.svg";

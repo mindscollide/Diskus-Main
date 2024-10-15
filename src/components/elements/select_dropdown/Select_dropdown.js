@@ -1,7 +1,7 @@
 import React, { memo, useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { withStyles } from "@material-ui/core/styles";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import { withStyles } from "@mui/styles";
 
 const SelectBox = memo(
   ({

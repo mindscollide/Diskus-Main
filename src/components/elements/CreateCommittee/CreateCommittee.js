@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Newprofile from "../../../assets/images/newprofile.png";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import featherupload from "../../../assets/images/featherupload.svg";
 import Leftploygon from "../../../assets/images/Polygon 3.svg";
 import file_image from "../../../assets/images/file_image.svg";

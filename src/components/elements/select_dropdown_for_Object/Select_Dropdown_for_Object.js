@@ -1,6 +1,6 @@
 // import React, { useEffect, useState } from 'react'
-// import TextField from "@material-ui/core/TextField";
-// import MenuItem from "@material-ui/core/MenuItem";
+// import TextField from "@mui/material/TextField";
+// import MenuItem from "@mui/material/MenuItem";
 // import './SelectDropdownforObject.css'
 
 // const SelectDropdownforObject = ({ options, change, value, key, defaultValue, label, setTimeZoneValue }) => {
@@ -46,8 +46,8 @@
 // export default SelectDropdownforObject
 
 import React, { useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 import "./SelectDropdownforObject.css";
 export default function SelectDropdownforObject({
   options,

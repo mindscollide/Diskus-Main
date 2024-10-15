@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./ViewResolution.module.css";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import {
   AttachmentViewer,

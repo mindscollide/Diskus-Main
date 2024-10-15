@@ -4,7 +4,7 @@ import { Button, Table } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import {
   showSceduleProposedMeeting,

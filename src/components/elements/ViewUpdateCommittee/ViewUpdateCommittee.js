@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { AttachmentViewer, Button } from "./../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";

@@ -19,7 +19,7 @@ import {
   ChatSquareText,
   X,
 } from "react-bootstrap-icons";
-import { CustomDatePicker, ResultMessage } from "../../elements";
+import {  ResultMessage } from "../../elements";
 import CancelMeetingSvg from "../../../assets/images/cancel_meeting_icon.svg";
 import {
   signOut,

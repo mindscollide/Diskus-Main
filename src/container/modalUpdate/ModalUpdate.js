@@ -16,7 +16,6 @@ import {
   Button,
   Modal,
   TimePickers,
-  CustomDatePicker,
   SelectBox,
   Accordian,
   EmployeeCard,

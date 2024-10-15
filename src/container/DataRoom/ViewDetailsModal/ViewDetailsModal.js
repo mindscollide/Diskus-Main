@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./ViewDetails.module.css";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import profilepic from "../../../assets/images/newprofile.png";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import { Button, TextField } from "../../../components/elements";
 import { useTranslation } from "react-i18next";

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ViewGrouppage.module.css";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import Polls from "../../../container/Groups/GroupPolls/GroupViewPolls";
 import ViewGroupTodo from "../../../container/Groups/ViewGroupTodo/ViewGroupTodo";
 import ViewUpdateGroup from "../viewUpdateGroup/ViewUpdateGroup";

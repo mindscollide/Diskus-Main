@@ -21,7 +21,7 @@ import Recentadded_emptyIcon from "../../assets/images/Recentadded_emptyIcon.png
 import start from "../../assets/images/Icon feather-star.svg";
 import plus from "../../assets/images/Icon feather-folder.svg";
 import fileupload from "../../assets/images/Group 2891.svg";
-import { CircularProgress, Paper } from "@material-ui/core";
+import { CircularProgress, Paper } from "@mui/material";
 import styles from "./DataRoom.module.css";
 import {
   Button,

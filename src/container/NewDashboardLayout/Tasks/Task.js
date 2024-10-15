@@ -6,7 +6,7 @@ import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import noTask from "../../../assets/images/DashBoardTask.svg";
 
 import { CustomTableToDoDashboard, Button } from "../../../components/elements";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";

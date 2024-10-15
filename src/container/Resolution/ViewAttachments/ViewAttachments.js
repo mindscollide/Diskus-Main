@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./ViewAttachments.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import Button from "../../../components/elements/button/Button";
 import { Link, useNavigate } from "react-router-dom";

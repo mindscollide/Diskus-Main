@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";

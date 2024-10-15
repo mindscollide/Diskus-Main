@@ -7,7 +7,7 @@ import file_image from "../../../assets/images/file_image.svg";
 import pdfIcon from "../../../assets/images/pdf_icon.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import Rightploygon from "../../../assets/images/Polygon right.svg";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import userImage from "../../../assets/images/user.png";
 import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg";
 import {

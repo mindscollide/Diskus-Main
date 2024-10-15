@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout } from "antd";
 import styles from "./main.module.css";
-import Container from "@material-ui/core/Container";
+import Container from "@mui/material/Container";
 
 const Main = ({ routingData, role }) => {
   const { Content } = Layout;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { Button, Loader } from "../../../../components/elements";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";

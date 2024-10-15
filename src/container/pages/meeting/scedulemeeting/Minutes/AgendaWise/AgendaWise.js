@@ -10,7 +10,7 @@ import {
   Button,
   Notification,
 } from "../../../../../../components/elements";
-import { Accordion, AccordionSummary } from "@material-ui/core";
+import { Accordion, AccordionSummary } from "@mui/material";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { useRef } from "react";

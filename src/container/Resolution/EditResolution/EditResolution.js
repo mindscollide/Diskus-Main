@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import styles from "./EditResolution.module.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";

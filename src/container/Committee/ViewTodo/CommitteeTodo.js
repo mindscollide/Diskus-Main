@@ -12,7 +12,6 @@ import {
   ResultMessage,
   Paper,
   Loader,
-  CustomDatePicker,
   TextField,
   Notification,
 } from "../../../components/elements";

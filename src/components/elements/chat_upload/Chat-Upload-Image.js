@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./chat.upload.module.css";
-import Button from "@material-ui/core/Button";
-import { Box } from "@material-ui/core";
+import Button from "@mui/material/Button";
+import { Box } from "@mui/material";
 import UploadChatIcon from "../../../assets/images/Upload-Chat-Icon.png";
 
 const CustomUploadImageChat = ({

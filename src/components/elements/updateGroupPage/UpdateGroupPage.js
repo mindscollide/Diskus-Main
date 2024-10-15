@@ -6,7 +6,7 @@ import Leftploygon from "../../../assets/images/Polygon 3.svg";
 import file_image from "../../../assets/images/file_image.svg";
 import pdfIcon from "../../../assets/images/pdf_icon.svg";
 import Rightploygon from "../../../assets/images/Polygon right.svg";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import {
   TextField,
   Button,

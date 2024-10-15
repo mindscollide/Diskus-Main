@@ -4,7 +4,7 @@ import {
   Button,
   Notification,
 } from "../../../components/elements";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 
 import styles from "./ViewCommittee.module.css";
 import { Upload } from "antd";

@@ -9,7 +9,7 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,

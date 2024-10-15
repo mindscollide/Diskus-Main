@@ -6,7 +6,7 @@ import pdfIcon from "../../../assets/images/pdf_icon.svg";
 import file_image from "../../../assets/images/file_image.svg";
 import featherupload from "../../../assets/images/featherupload.svg";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { Upload } from "antd";
 
 import {

@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
 import Newprofile from "../../../assets/images/newprofile.png";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import {
   TextField,
   Button,

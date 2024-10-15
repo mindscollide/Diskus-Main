@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Newprofile from "../../../assets/images/newprofile.png";
 import userImage from "../../../assets/images/user.png";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import {
   TextField,
   Button,

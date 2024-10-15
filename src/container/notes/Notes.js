@@ -21,7 +21,7 @@ import {
   Loader,
   Notification,
 } from "../../components/elements";
-import { Accordion, AccordionSummary, Tooltip } from "@material-ui/core";
+import { Accordion, AccordionSummary, Tooltip } from "@mui/material";
 import { AccordionDetails } from "@mui/material";
 import {
   ClearNotesResponseMessage,

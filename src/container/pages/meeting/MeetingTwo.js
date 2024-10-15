@@ -42,7 +42,7 @@ import {
   ResultMessage,
   Notification,
 } from "../../../components/elements";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { Col, Dropdown, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
