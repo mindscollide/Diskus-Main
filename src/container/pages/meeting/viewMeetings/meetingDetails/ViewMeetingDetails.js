@@ -452,6 +452,8 @@ const ViewMeetingDetails = ({
         currentOrganization,
         0,
         meetingDetails.MeetingTitle
+        ,
+        advanceMeetingModalID
       )
     );
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
@@ -491,7 +493,8 @@ const ViewMeetingDetails = ({
         currentUserID,
         currentOrganization,
         0,
-        meetingDetails.MeetingTitle
+        meetingDetails.MeetingTitle,
+        advanceMeetingModalID
       )
     );
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
@@ -523,7 +526,8 @@ const ViewMeetingDetails = ({
           currentUserID,
           currentOrganization,
           0,
-          meetingDetails.MeetingTitle
+          meetingDetails.MeetingTitle,
+          advanceMeetingModalID
         )
       );
       localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);

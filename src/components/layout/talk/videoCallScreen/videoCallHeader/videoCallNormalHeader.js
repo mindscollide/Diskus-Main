@@ -3,7 +3,7 @@ import { Row, Col, Dropdown } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
-import { Button, Checkbox } from "./../../../../elements";
+import { Button, Checkbox, Notification } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { Tooltip } from "antd";
 import AddParticipant from "./../../talk-Video/video-images/Add Participant Purple.svg";
@@ -48,6 +48,10 @@ import { participantWaitingListBox } from "../../../../../store/actions/VideoFea
 import {
   removeParticipantFromVideo,
   removeParticipantMeetingMainApi,
+  transferMeetingHostMainApi,
+} from "../../../../../store/actions/Guest_Video";
+import {
+  getMeetingGuestVideoMainApi,
   transferMeetingHostMainApi,
 } from "../../../../../store/actions/Guest_Video";
 
@@ -101,6 +105,7 @@ const VideoCallNormalHeader = ({
   let currentCallType = Number(localStorage.getItem("CallType"));
   let meetingTitle = localStorage.getItem("meetingTitle");
   let isCallerFlag = JSON.parse(localStorage.getItem("isCaller"));
+  let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
   let userGUID = localStorage.getItem("userGUID");
 
   const dispatch = useDispatch();
@@ -128,6 +133,11 @@ const VideoCallNormalHeader = ({
   const [addParticipantPopup, setAddParticipantPopup] = useState(false);
 
   const [selectedParticipants, setSelectedParticipants] = useState([]);
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
 
   const leaveModalPopupRef = useRef(null);
 
@@ -342,6 +352,25 @@ const VideoCallNormalHeader = ({
     dispatch(participantPopup(false));
   };
 
+  const copyToClipboardd = () => {
+    let data = {
+      MeetingId: Number(currentMeetingID),
+    };
+    dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
+    setOpen({
+      ...open,
+      flag: true,
+      message: t("Generating-meeting-link"),
+    });
+    setTimeout(() => {
+      setOpen({
+        ...open,
+        flag: false,
+        message: "",
+      });
+    }, 3000);
+  };
+
   useEffect(() => {}, [
     VideoMainReducer.VideoRecipentData.userName,
     callerNameInitiate,
@@ -554,7 +583,11 @@ const VideoCallNormalHeader = ({
               }
             >
               <Tooltip placement="topRight" title={t("Copy-link")}>
-                <img src={CopyLink} alt="Copy Link" />
+                <img
+                  onClick={() => copyToClipboardd()}
+                  src={CopyLink}
+                  alt="Copy Link"
+                />
               </Tooltip>
             </div>
 
@@ -966,6 +999,12 @@ const VideoCallNormalHeader = ({
             </div>
           </div>
         ) : null}
+
+        <Notification
+          setOpen={setOpen}
+          open={open.flag}
+          message={open.message}
+        />
       </div>
     </>
   );

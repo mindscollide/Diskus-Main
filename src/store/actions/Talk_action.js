@@ -69,7 +69,6 @@ const refreshtokenTalkFail = (response, message) => {
 
 //Refresh Tokenm
 const RefreshTokenTalk = (props) => {
-
   let Token = JSON.parse(localStorage.getItem("token"));
   let RefreshTokenTalk = JSON.parse(localStorage.getItem("RefreshTokenTalk"));
 
@@ -2944,6 +2943,8 @@ const createShoutAllFail = (message) => {
 //CreatePrivateGroup
 const CreateShoutAll = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentUserId = localStorage.getItem("userID");
+  let currentOrganizationId = localStorage.getItem("organizationID");
   return (dispatch) => {
     dispatch(createShoutAllInit());
     let form = new FormData();
@@ -2974,6 +2975,14 @@ const CreateShoutAll = (navigate, object, t) => {
                 createShoutAllSuccess(
                   response.data.responseResult.talkResponse,
                   t("Broadcast-list-created")
+                )
+              );
+              dispatch(
+                GetAllUserChats(
+                  navigate,
+                  currentUserId,
+                  currentOrganizationId,
+                  t
                 )
               );
             } else if (
@@ -4245,7 +4254,7 @@ const getImageData = (response) => {
 };
 
 const DownloadTalkFile = (navigate, Data, ext, originalFileName, t) => {
-  console.log("DataDataData", Data)
+  console.log("DataDataData", Data);
   let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
   form.append("RequestMethod", downloadAttachmentTalk.RequestMethod);
@@ -4381,5 +4390,6 @@ export {
   OTOMessageSendSuccess,
   PrintChat,
   getAllUserChatsSuccess,
-  getImageData,DownloadTalkFile
+  getImageData,
+  DownloadTalkFile,
 };

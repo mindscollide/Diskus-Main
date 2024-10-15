@@ -129,6 +129,7 @@ import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 import {
   checkFeatureIDAvailability,
   fileFormatforSignatureFlow,
+  openDocumentViewer,
 } from "../../commen/functions/utils";
 import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
 import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
@@ -911,22 +912,7 @@ const DataRoom = () => {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
         let ext = record?.name?.split(".").pop();
-        if (validationExtension(ext)) {
-          window.open(
-            `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-              pdfDataJson
-            )}`,
-            "_blank",
-            "noopener noreferrer"
-          );
-        } else if (validateExtensionsforHTMLPage(ext)) {
-          let dataRoomData = {
-            FileID: record.id,
-          };
-          dispatch(
-            getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
-          );
-        }
+        openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
       }
     } else if (data.value === 2) {
       // Share File Modal
@@ -1779,7 +1765,6 @@ const DataRoom = () => {
                                     </Dropdown.Item>
                                   );
                                 })}
-                            {}
                           </Dropdown.Menu>
                         </Dropdown>
                       )}
@@ -1806,20 +1791,7 @@ const DataRoom = () => {
       };
       const pdfDataJson = JSON.stringify(pdfData);
       let ext = record.name.split(".").pop();
-      if (validationExtension(ext)) {
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      } else if (validateExtensionsforHTMLPage(ext)) {
-        let dataRoomData = {
-          FileID: record.id,
-        };
-        dispatch(
-          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData, true)
-        );
-      }
+      openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
     }
   };
 
@@ -2467,7 +2439,6 @@ const DataRoom = () => {
               <span
                 className={styles["dataroom_table_heading"]}
                 onClick={(e) => handleLinkClick(e, record)}
-                // onClick={() => getFolderDocuments(data.id)}
               >
                 {record.name} <img src={sharedIcon} alt='' draggable='false' />
               </span>

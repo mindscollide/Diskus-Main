@@ -68,7 +68,7 @@
 .AttendeesCount_NotAttending {
   font-size: 60px;
   font-weight: 800;
-  color: #55ce5c !important;
+  color: #f16b6b !important;
   text-align: center;
   padding: 0;
   margin: 0;
@@ -77,7 +77,7 @@
 .AttendeesCount_NotAttending_tagline {
   font-size: 16px;
   font-weight: 600;
-  color: #55ce5c !important;
+  color: #f16b6b !important;
   margin-bottom: 20px;
 }
 

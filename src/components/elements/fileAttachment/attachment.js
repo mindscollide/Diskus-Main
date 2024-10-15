@@ -18,6 +18,7 @@ const AttachmentViewer = ({
   id = 1,
   data,
   fk_UID = 1049,
+  isQuickMeeting = false,
 }) => {
   let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(
     getFileExtension(name)
@@ -30,19 +31,21 @@ const AttachmentViewer = ({
         <Col
           lg={id !== 0 ? 8 : 12}
           md={id !== 0 ? 8 : 12}
-          sm={id !== 0 ? 8 : 12}
-        >
+          sm={id !== 0 ? 8 : 12}>
           <div
             className={
-              id !== 0
+              id !== 0 && isQuickMeeting === true
+                ? styles["fileNameTruncateStyleisQuickMeeting"]
+                : isQuickMeeting === true && id === 0
+                ? styles["fileNameTruncateStyle_fullwidthisQuickMeetingView"]
+                : id !== 0 && isQuickMeeting === false
                 ? styles["fileNameTruncateStyle"]
                 : styles["fileNameTruncateStyle_fullwidth"]
-            }
-          >
+            }>
             <img
               draggable={false}
               src={getIconSource(getFileExtension(name))}
-              alt=""
+              alt=''
               width={20}
               height={20}
             />
@@ -51,9 +54,8 @@ const AttachmentViewer = ({
                 ["pdf", "doc", "docx", "xls", "xlsx"].includes(fileExtension)
                   ? styles["fileNameAttachment"]
                   : styles["fileNameAttachmentNotOpened"]
-              }
-            >
-              <Tooltip placement="topLeft" title={name}>
+              }>
+              <Tooltip placement='topLeft' title={name}>
                 {name}
               </Tooltip>
             </span>
@@ -64,23 +66,22 @@ const AttachmentViewer = ({
             lg={2}
             md={2}
             sm={12}
-            className={`${styles["borderFileName"]} p-0`}
-          >
+            className={`${styles["borderFileName"]} p-0`}>
             <img
               draggable={false}
               src={DownloadImg}
-              alt=""
+              alt=''
               onClick={handleClickDownload}
             />
           </Col>
         )}
         {id !== 0 && (
-          <Col lg={2} md={2} sm={12} className="p-0">
+          <Col lg={2} md={2} sm={12} className='p-0'>
             <img
               draggable={false}
               src={EyeIcon}
-              alt=""
-              className="mx-1"
+              alt=''
+              className='mx-1'
               onClick={handleEyeIcon}
             />
           </Col>
