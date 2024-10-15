@@ -42,13 +42,15 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../container/DataRoom/SearchFunctionality/option";
+import { showMessage } from "../snack_bar/utill";
 
 const CreateGroup = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const { assignees, GroupsReducer } = useSelector((state) => state);
 
@@ -215,15 +217,17 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
     // Check if there's a selected user and a role
     if (taskAssignedTo !== 0 && attendees.length > 0) {
-      setOpen({
-        flag: true,
-        message: t("You-can-add-data-from-only-one-form-option-at-a-time"),
-      });
+      showMessage(
+        t("You-can-add-data-from-only-one-form-option-at-a-time"),
+        "error",
+        setOpen
+      );
     } else if (!participantRoleName) {
-      setOpen({
-        flag: true,
-        message: t("Please-select-a-group-member-type-as-well"),
-      });
+      showMessage(
+        t("Please-select-a-group-member-type-as-well"),
+        "error",
+        setOpen
+      );
     } else if (taskAssignedTo !== 0) {
       const foundIndex = newMeetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
@@ -270,10 +274,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
           name: "",
         });
       } else {
-        setOpen({
-          flag: true,
-          message: t("User-already-exists"),
-        });
+        showMessage(t("User-already-exists"), "error", setOpen);
         setTaskAssignedTo(0);
         setParticipantRoleName("");
         setTaskAssignedToInput("");
@@ -294,10 +295,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       });
 
       if (check === true) {
-        setOpen({
-          flag: true,
-          message: t("User-already-exists"),
-        });
+        showMessage(t("User-already-exists"), "error", setOpen);
         setAttendees([]);
         setTaskAssignedTo(0);
         setParticipantRoleName("");
@@ -339,20 +337,18 @@ const CreateGroup = ({ setCreategrouppage }) => {
         });
         setParticipantRoleName("");
       } else {
-        setOpen({
-          flag: true,
-          message: t("Please-select-a-group-member-type-as-well"),
-        });
+        showMessage(
+          t("Please-select-a-group-member-type-as-well"),
+          "error",
+          setOpen
+        );
         setTaskAssignedTo(0);
         setParticipantRoleName("");
         setTaskAssignedToInput("");
         setAttendees([]);
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-select-at-least-one-member"),
-      });
+      showMessage(t("Please-select-at-least-one-member"), "error", setOpen);
       setTaskAssignedTo(0);
       setParticipantRoleName("");
       setTaskAssignedToInput("");
@@ -469,10 +465,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       createGroupDetails.CreatorID !== 0
     ) {
       if (!checkGroupMembers(createGroupDetails.GroupMembers)) {
-        setOpen({
-          flag: true,
-          message: t("Please-add-atleast-one-group-head"),
-        });
+        showMessage(t("Please-add-atleast-one-group-head"), "error", setOpen);
       } else {
         setErrorBar(false);
         let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -493,10 +486,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       }
     } else {
       setErrorBar(true);
-      setOpen({
-        flag: true,
-        message: t("Please-fill-all-the-fields"),
-      });
+      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
     }
   };
 
@@ -528,10 +518,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       let size = true;
 
       if (fileAttachments.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
@@ -547,26 +534,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          showMessage(
+            t("File-size-should-not-be-greater-then-zero"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1262,27 +1238,27 @@ const CreateGroup = ({ setCreategrouppage }) => {
                         </Col>
                       </Row>
                       <section className={styles["CreateGroupAttachments"]}>
-                      <Row>
-                        {fileAttachments.length > 0
-                          ? fileAttachments.map((data, index) => {
-                              return (
-                                <>
-                                  <Col
-                                    lg={4}
-                                    md={4}
-                                    sm={4}
-                                    // className="position-relative gap-2"
-                                  >
-                                    <AttachmentViewer
-                                      data={data}
-                                      name={data.DisplayAttachmentName}
-                                      fk_UID={creatorID}
-                                      id={0}
-                                      handleClickRemove={() => {
-                                        handleRemoveFile(index)
-                                      }}
-                                    />
-                                    {/* <span
+                        <Row>
+                          {fileAttachments.length > 0
+                            ? fileAttachments.map((data, index) => {
+                                return (
+                                  <>
+                                    <Col
+                                      lg={4}
+                                      md={4}
+                                      sm={4}
+                                      // className="position-relative gap-2"
+                                    >
+                                      <AttachmentViewer
+                                        data={data}
+                                        name={data.DisplayAttachmentName}
+                                        fk_UID={creatorID}
+                                        id={0}
+                                        handleClickRemove={() => {
+                                          handleRemoveFile(index);
+                                        }}
+                                      />
+                                      {/* <span
                                             className={
                                               styles["Crossicon_Class"]
                                             }
@@ -1352,12 +1328,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                               </Row>
                                             </section>
                                           </section> */}
-                                  </Col>
-                                </>
-                              );
-                            })
-                          : null}
-                      </Row>
+                                    </Col>
+                                  </>
+                                );
+                              })
+                            : null}
+                        </Row>
                       </section>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
@@ -1427,7 +1403,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
         cancelBtnClick={() => setCloseConfirmationBox(false)}
         setShowModal={setCloseConfirmationBox}
       />
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

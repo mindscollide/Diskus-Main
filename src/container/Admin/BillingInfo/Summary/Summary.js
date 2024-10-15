@@ -27,6 +27,7 @@ import {
 } from "../../../../commen/functions/date_formater";
 import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const Summary = () => {
   const navigate = useNavigate();
   let organizationID = localStorage.getItem("organizationID");
@@ -81,6 +82,7 @@ const Summary = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const { t } = useTranslation();
 
@@ -132,19 +134,11 @@ const Summary = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.VerifyOTPEmailResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
@@ -152,19 +146,7 @@ const Summary = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: false,
-        message: "",
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(Authreducer.EnterPasswordResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
@@ -172,18 +154,11 @@ const Summary = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.OrganizationCreateResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -192,18 +167,11 @@ const Summary = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.CreatePasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.CreatePasswordResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -212,18 +180,11 @@ const Summary = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.GetSelectedPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.GetSelectedPackageResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -232,18 +193,11 @@ const Summary = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.EmailValidationResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else {
@@ -563,9 +517,10 @@ const Summary = () => {
           }
         />
         <Notification
-          setOpen={setOpen}
           open={open.open}
           message={open.message}
+          setOpen={(status) => setOpen({ ...open, open: status.flag })}
+          severity={open.severity}
         />
       </Fragment>
       {OrganizationBillingReducer.Loading ||

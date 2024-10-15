@@ -17,10 +17,12 @@ import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { cleareMessage } from "../../../../store/actions/Admin_PackageUpgrade";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const DeleteOrganization = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const { adminReducer, LanguageReducer } = useSelector((state) => state);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -61,16 +63,11 @@ const DeleteOrganization = () => {
   console.log("adminReduceradminReduceradminReducer", adminReducer);
   useEffect(() => {
     if (adminReducer.DeleteOrganizationResponseMessage !== "") {
-      setOpen({
-        open: true,
-        message: adminReducer.DeleteOrganizationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 4000);
+      showMessage(
+        adminReducer.DeleteOrganizationResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     }
   }, [adminReducer.DeleteOrganizationResponseMessage]);
@@ -128,8 +125,9 @@ const DeleteOrganization = () => {
       {adminReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification
         open={open.open}
-        setOpen={open.open}
         message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
       />
     </>
   );

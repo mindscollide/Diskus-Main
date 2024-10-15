@@ -1,65 +1,52 @@
 import React from "react";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import { useStyles } from "./NotificationStyle";
+import PropTypes from "prop-types"; // For prop type validation
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
-const Message = {
-  success: "success",
-  error: "error",
-  info: "info",
-  warning: "warning",
-};
-
-function Alert(props) {
+const Alert = React.forwardRef(function Alert(props, ref) {
   return (
     <MuiAlert
-      style={{
-        fontFamily: "Montserrat",
-      }}
       elevation={6}
+      ref={ref}
       variant="filled"
       {...props}
     />
   );
-}
-const Notification = ({ setOpen, open, message }) => {
-  const classes = useStyles();
-  const vertical = "top";
-  const horizontal = "right";
+});
+
+const Notification = React.memo(({ setOpen, open, message, severity = "success" }) => {
   const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
-    // setOpen(!open);
-    setOpen({
-      flag: true,
-      message: "",
-    });
+    setOpen(false);
   };
+
   return (
-    <>
-      {message !== "" ? (
-        <div className={classes.root}>
-          <Snackbar
-            className="snackbarText"
-            autoHideDuration={3000}
-            anchorOrigin={{ vertical, horizontal }}
-            open={true}
-            onClose={handleClose}
-            message={message}
-            key={vertical + horizontal}
-          >
-            <Alert
-              onClose={handleClose}
-              severity={"error"}
-              className={classes.BackGroundSucces}
-            >
-              {message}
-            </Alert>
-          </Snackbar>
-        </div>
-      ) : null}
-    </>
+    <Snackbar 
+      open={open} 
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      autoHideDuration={6000} 
+      onClose={handleClose}
+       
+    >
+      <Alert 
+        onClose={handleClose} 
+        severity={severity} // Use dynamic severity
+        sx={{ width: '100%', backgroundColor: severity === "success" ?  "#6172d6" : "#ce0000" }} // Customize background colors
+      >
+        {message}
+      </Alert>
+    </Snackbar>
   );
+});
+
+// Prop type validation
+Notification.propTypes = {
+  setOpen: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  severity: PropTypes.oneOf(["success", "error", "info", "warning"]), // Allow specific severity types
 };
-export { Notification, Message };
+
+export default Notification;

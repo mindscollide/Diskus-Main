@@ -34,6 +34,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
+import { showMessage } from "../snack_bar/utill";
 
 const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
@@ -84,8 +85,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   });
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const closebtn = async () => {
     setUpdateComponentpage(false);
@@ -244,10 +246,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const handleAddAttendees = () => {
     let newGroupMembers = [...groupMembers];
     if (taskAssignedTo !== 0 && attendees.length > 0) {
-      setOpen({
-        flag: true,
-        message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
-      });
+      showMessage(
+        t("You-can-add-data-only-from-one-form-option-at-a-time"),
+        "error",
+        setOpen
+      );
       setAttendees([]);
       setTaskAssignedTo(0);
       setParticipantRoleName("Regular");
@@ -291,10 +294,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             name: "",
           });
         } else {
-          setOpen({
-            flag: true,
-            message: t("User-already-exist"),
-          });
+          showMessage(t("User-already-exist"), "error", setOpen);
           setTaskAssignedTo(0);
           setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
@@ -305,10 +305,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           });
         }
       } else {
-        setOpen({
-          flag: true,
-          message: t("Please-select-committee-member-type-also"),
-        });
+        showMessage(
+          t("Please-select-committee-member-type-also"),
+          "error",
+          setOpen
+        );
       }
     } else if (attendees.length > 0) {
       let check = false;
@@ -325,10 +326,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         });
       });
       if (check === true) {
-        setOpen({
-          flag: true,
-          message: t("User-already-exist"),
-        });
+        showMessage(t("User-already-exist"), "error", setOpen);
         setAttendees([]);
         setParticipantRoleName("Regular");
       } else {
@@ -359,17 +357,15 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             name: "",
           });
         } else {
-          setOpen({
-            flag: true,
-            message: t("Please-select-committee-member-type-also"),
-          });
+          showMessage(
+            t("lease-select-committee-member-type-also"),
+            "error",
+            setOpen
+          );
         }
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-select-atleast-one-members"),
-      });
+      showMessage(t("Please-select-atleast-one-members"), "error", setOpen);
       setPresenterValue({
         value: 0,
         label: "",
@@ -434,10 +430,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       committeeData.CreatorID !== 0
     ) {
       if (!checkGroupMembers(membersData)) {
-        setOpen({
-          flag: true,
-          message: t("Please-add-atleast-one-executive-member"),
-        });
+        showMessage(
+          t("Please-add-atleast-one-executive-member"),
+          "error",
+          setOpen
+        );
       } else {
         setErrorBar(false);
         let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -458,10 +455,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       }
     } else {
       setErrorBar(true);
-      setOpen({
-        flag: true,
-        message: t("Please fill all the fields"),
-      });
+      showMessage(t("Please fill all the fields"), "error", setOpen);
     }
   };
 
@@ -509,7 +503,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-        dispatch(allAssignessList(navigate, t,false));
+    dispatch(allAssignessList(navigate, t, false));
     dispatch(getCommitteeTypes(navigate, Data, t));
     dispatch(getCommitteeMembersRole(navigate, Data, t));
   }, []);
@@ -611,10 +605,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       let size = true;
 
       if (fileAttachments.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
@@ -630,26 +621,15 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          showMessage(
+            t("File-size-should-not-be-greater-then-zero"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1780,7 +1760,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                         </Col>
                       </Row>
                       <Row className="mt-1">
-                        <Col lg={12} md={12} sm={12} className={styles["UpdateCommitteeAttachment"]}>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["UpdateCommitteeAttachment"]}
+                        >
                           <Row>
                             {fileAttachments.length > 0
                               ? fileAttachments.map((data, index) => {
@@ -1801,7 +1786,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                           id={0}
                                           name={data.DisplayAttachmentName}
                                         />
-                                   
                                       </Col>
                                     </>
                                   );
@@ -1877,7 +1861,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         cancelBtnClick={() => setCloseConfirmationBox(false)}
         onHide={() => setCloseConfirmationBox(false)}
       />
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}ß
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

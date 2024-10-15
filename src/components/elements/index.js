@@ -6,7 +6,7 @@ import Table from "./table/Table";
 import TableToDo from "./tableToDo/table-to-do";
 import CustomTableToDoDashboard from "./tableTodoDashboard/table-todo-dashboard";
 import uploadButton from "./upload/uploadButton";
-import { Notification, Message } from "./snack_bar";
+import  Notification  from "./snack_bar";
 import SelectBox from "./select_dropdown/Select_dropdown";
 import Modal from "./modal/Modal";
 import ButtonGroup from "./GroupedButtons/Grouped_buttons";
@@ -70,7 +70,6 @@ export {
   Table,
   uploadButton,
   Notification,
-  Message,
   Loader,
   ResultMessage,
   NotificationBar,

@@ -7,6 +7,8 @@ import file_image from "../../../assets/images/file_image.svg";
 import pdfIcon from "../../../assets/images/pdf_icon.svg";
 import Rightploygon from "../../../assets/images/Polygon right.svg";
 import { Paper } from "@mui/material";
+import { showMessage } from "../snack_bar/utill";
+
 import {
   TextField,
   Button,
@@ -44,8 +46,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const [viewUpdateGroup, setViewUpdateGroup] = useState(true);
   const { t } = useTranslation();
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [erorbar, setErrorBar] = useState(false);
   const { assignees, GroupsReducer, DataRoomReducer } = useSelector(
@@ -100,7 +103,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-        dispatch(allAssignessList(navigate, t,false));
+    dispatch(allAssignessList(navigate, t, false));
     dispatch(getGroupMembersRoles(navigate, Data, t));
     dispatch(getOrganizationGroupTypes(navigate, Data, t));
   }, []);
@@ -121,10 +124,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     const newMeetingAttendees = [...membersData];
     const newGroupMembers = [...groupMembers];
     if (taskAssignedTo !== 0 && attendees.length > 0) {
-      setOpen({
-        flag: true,
-        message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
-      });
+      showMessage(
+        t("You-can-add-data-only-from-one-form-option-at-a-time"),
+        "error",
+        setOpen
+      );
       setAttendees([]);
       setTaskAssignedTo(0);
       setParticipantRoleName("");
@@ -135,10 +139,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       );
 
       if (participantRoleName === "") {
-        setOpen({
-          flag: true,
-          message: t("Please-select-group-member-type-also"),
-        });
+        showMessage(
+          t("Please-select-group-member-type-also"),
+          "error",
+          setOpen
+        );
       } else {
         if (foundIndex === -1) {
           let roleID;
@@ -179,10 +184,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             name: "",
           });
         } else {
-          setOpen({
-            flag: true,
-            message: t("User-already-exist"),
-          });
+          showMessage(t("User-already-exist"), "error", setOpen);
           setTaskAssignedTo(0);
           setParticipantRoleName("");
           setTaskAssignedToInput("");
@@ -203,10 +205,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         });
       });
       if (check === true) {
-        setOpen({
-          flag: true,
-          message: t("User-already-exist"),
-        });
+        showMessage(t("User-already-exist"), "error", setOpen);
         setAttendees([]);
         setParticipantRoleName("");
         setPresenterValue({
@@ -245,17 +244,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             name: "",
           });
         } else {
-          setOpen({
-            flag: true,
-            message: t("Please-select-group-member-type-also"),
-          });
+          showMessage(
+            t("Please-select-group-member-type-also"),
+            "error",
+            setOpen
+          );
         }
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-select-atleast-one-members"),
-      });
+      showMessage(t("Please-select-atleast-one-members"), "error", setOpen);
       setPresenterValue({
         value: 0,
         label: "",
@@ -423,16 +420,10 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupDetails.GroupTypeID !== 0
     ) {
       if (Object.keys(membersData).length === 0) {
-        setOpen({
-          flag: true,
-          message: t("Please-add-atleast-one-group-head"),
-        });
+        showMessage(t("Please-add-atleast-one-group-head"), "error", setOpen);
       } else {
         if (!checkGroupHead(membersData)) {
-          setOpen({
-            flag: true,
-            message: t("Please-add-atleast-one-group-head"),
-          });
+          showMessage(t("Please-add-atleast-one-group-head"), "error", setOpen);
         } else {
           setErrorBar(false);
           let OrganizationID = JSON.parse(
@@ -456,10 +447,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       }
     } else {
       setErrorBar(true);
-      setOpen({
-        flag: true,
-        message: t("Please-fill-all-the-fields"),
-      });
+      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
     }
   };
 
@@ -534,10 +522,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       let size = true;
 
       if (fileAttachments.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
@@ -553,26 +538,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          showMessage(
+            t("File-size-should-not-be-greater-then-zero"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1313,27 +1287,27 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                         </Col>
                       </Row>
                       <section className={styles["UpdateGroupAttachments"]}>
-                      <Row className="mt-1">
-                        {fileAttachments.length > 0
-                          ? fileAttachments.map((data, index) => {
-                              return (
-                                <>
-                                  <Col lg={4} md={4} sm={4}>
-                                    <AttachmentViewer
-                                      data={data}
-                                      id={0}
-                                      handleClickRemove={() =>
-                                        handleRemoveFile(data)
-                                      }
-                                      name={data.DisplayAttachmentName}
-                                      fk_UID={userID}
-                                    />
-                                  </Col>
-                                </>
-                              );
-                            })
-                          : null}
-                      </Row>
+                        <Row className="mt-1">
+                          {fileAttachments.length > 0
+                            ? fileAttachments.map((data, index) => {
+                                return (
+                                  <>
+                                    <Col lg={4} md={4} sm={4}>
+                                      <AttachmentViewer
+                                        data={data}
+                                        id={0}
+                                        handleClickRemove={() =>
+                                          handleRemoveFile(data)
+                                        }
+                                        name={data.DisplayAttachmentName}
+                                        fk_UID={userID}
+                                      />
+                                    </Col>
+                                  </>
+                                );
+                              })
+                            : null}
+                        </Row>
                       </section>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
@@ -1402,7 +1376,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         closeBtnClick={() => setUpdateComponentpage(false)}
         onHide={() => setCloseConfirmationBox(false)}
       />
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

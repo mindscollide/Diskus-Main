@@ -28,6 +28,7 @@ import Helper from "../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
@@ -47,11 +48,12 @@ const UserManagementProcess = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [storedStep, setStoredStep] = useState(
     Number(localStorage.getItem("LoginFlowPageRoute"))
   );
-
+ 
   // Retrieve currentStep value from localStorage, default to 1 if not found
   // let storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
   useEffect(() => {
@@ -102,19 +104,8 @@ const UserManagementProcess = () => {
       Authreducer.EmailValidationResponseMessage !=
         t("Users-password-is-created")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      console.log("error error");
+      showMessage(Authreducer.EmailValidationResponseMessage, "error",setOpen);
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage != "" &&
@@ -123,18 +114,7 @@ const UserManagementProcess = () => {
       Authreducer.EnterPasswordResponseMessage !=
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(Authreducer.EnterPasswordResponseMessage, "error",setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -214,6 +194,7 @@ const UserManagementProcess = () => {
         "AuthreducerAuthreducerAuthreducer"
       );
 
+      console.log("error error");
       setOpen({
         ...open,
         open: true,
@@ -238,11 +219,7 @@ const UserManagementProcess = () => {
       Authreducer?.AuthenticateAFAResponseMessage != "" &&
       Authreducer?.AuthenticateAFAResponseMessage != undefined
     ) {
-      console.log(
-        Authreducer.AuthenticateAFAResponseMessage,
-        "AuthreducerAuthreducerAuthreducer"
-      );
-
+      console.log("error error");
       setOpen({
         ...open,
         open: true,
@@ -307,7 +284,12 @@ const UserManagementProcess = () => {
   return (
     <>
       {componentToRender}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

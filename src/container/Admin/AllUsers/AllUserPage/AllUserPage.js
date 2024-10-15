@@ -25,6 +25,7 @@ import {
   GetAllUserRoles,
   GetAllUserStatus,
 } from "../../../../store/actions/RolesList";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
@@ -52,6 +53,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [userRolesListNameOptions, setUserRolesListNameOptions] = useState([]);
   const [userStatusListOptions, setUserStatusListOptions] = useState([]);
@@ -261,7 +263,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Emails",
       align: "left",
       ellipsis: true,
-      
+
       render: (text, record) => {
         if (record.UserStatus === "Closed") {
           return <p className="Disabled-Close">{text}</p>;
@@ -426,18 +428,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !== "Data available" &&
       adminReducer.ResponseMessage !== "Record found"
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(adminReducer.ResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     }
@@ -752,7 +743,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         </Col>
       </Row>
       {adminReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       <Modal
         modalParentClass={"parentClassModalAllUser"}
         show={filterBarModal}

@@ -20,6 +20,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 const ChangePassword = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -38,6 +39,7 @@ const ChangePassword = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const dispatch = useDispatch();
@@ -96,20 +98,11 @@ const ChangePassword = () => {
         "ChangeUserPasswordResponseMessage",
         Authreducer.ChangeUserPasswordResponseMessage
       );
-
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.ChangeUserPasswordResponseMessage,
-      });
-
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.ChangeUserPasswordResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -227,10 +220,7 @@ const ChangePassword = () => {
                   autoComplete="false"
                   clickIcon={showNewPassowrd}
                 />
-                <span
-                  className=" color-5a5a5a"
-                  style={{ fontSize: "0.5rem" }}
-                >
+                <span className=" color-5a5a5a" style={{ fontSize: "0.5rem" }}>
                   ({t("Maximum-password-length-is-25-characters")})
                 </span>
               </Col>
@@ -394,7 +384,12 @@ const ChangePassword = () => {
           </>
         }
       />
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );

@@ -30,6 +30,7 @@ import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotify
 import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
+import { showMessage } from "./components/elements/snack_bar/utill";
 
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
@@ -39,9 +40,10 @@ const App = () => {
     SessionExpireResponseMessage,
     "SessionExpireResponseMessageSessionExpireResponseMessage"
   );
-  const [openNotifcationBar, setOpenNotificationBar] = useState({
-    isOpen: false,
+  const [open, setOpen] = useState({
+    open: false,
     message: "",
+    severity: "error",
   });
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
@@ -114,18 +116,7 @@ const App = () => {
       SessionExpireResponseMessage !== ""
     ) {
       try {
-        setOpenNotificationBar({
-          ...openNotifcationBar,
-          isOpen: true,
-          message: SessionExpireResponseMessage,
-        });
-        setTimeout(() => {
-          setOpenNotificationBar({
-            ...openNotifcationBar,
-            isOpen: false,
-            message: "",
-          });
-        }, 4000);
+        showMessage(SessionExpireResponseMessage, "error", setOpen);
       } catch (error) {}
     }
   }, [SessionExpireResponseMessage]);
@@ -144,12 +135,12 @@ const App = () => {
           />
         )}
         <Notification
-          open={openNotifcationBar.isOpen}
-          setOpen={setOpenNotificationBar}
-          message={openNotifcationBar.message}
+          open={open.open}
+          message={open.message}
+          setOpen={(status) => setOpen({ ...open, open: status.flag })}
+          severity={open.severity}
         />
       </Suspense>
-      {/* <Notification /> */}
     </>
   );
 };

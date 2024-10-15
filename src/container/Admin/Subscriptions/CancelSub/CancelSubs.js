@@ -23,6 +23,7 @@ import DismissWarningAlert from "../../../../components/elements/DismissWarningA
 import { cleareMessageSubsPac } from "../../../../store/actions/GetSubscriptionPackages";
 import { _justShowDateformat } from "../../../../commen/functions/date_formater";
 import { isHTML } from "../../../../commen/functions/html_formater";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const CancelSubs = () => {
   const { t } = useTranslation();
@@ -37,6 +38,7 @@ const CancelSubs = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [forrevokeCancel, setForRevokeCancel] = useState(false);
   const [enableTextArea, setEnableTextArea] = useState(false);
@@ -143,18 +145,7 @@ const CancelSubs = () => {
 
   useEffect(() => {
     if (adminReducer.revokeResponseMessege !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.revokeResponseMessege,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(adminReducer.revokeResponseMessege, "success", setOpen);
       dispatch(adminClearMessege());
     } else {
       dispatch(adminClearMessege());
@@ -162,17 +153,11 @@ const CancelSubs = () => {
   }, [adminReducer.revokeResponseMessege]);
   useEffect(() => {
     if (GetSubscriptionPackage.getCancelSubscriptionResponseMessage !== "") {
-      setOpen({
-        open: true,
-        message: GetSubscriptionPackage.getCancelSubscriptionResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        GetSubscriptionPackage.getCancelSubscriptionResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessageSubsPac());
     } else {
       dispatch(cleareMessageSubsPac());
@@ -725,7 +710,12 @@ const CancelSubs = () => {
       ) : adminReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

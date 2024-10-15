@@ -31,6 +31,7 @@ import {
 } from "../../../../store/actions/Admin_Customer_Information";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
 import { useNavigate } from "react-router-dom";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -92,6 +93,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [countryCode, setCountryCode] = useState([]);
   const [countryValue, setCountryValue] = useState({
@@ -552,16 +554,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
   useEffect(() => {
     if (adminReducer.UpdateCustomerInformationResponseMessage !== "") {
-      setOpen({
-        open: true,
-        message: adminReducer.UpdateCustomerInformationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        adminReducer.UpdateCustomerInformationResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     }
   }, [adminReducer.UpdateCustomerInformationResponseMessage]);
@@ -1194,7 +1191,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={open.open}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
       />
     </>
   );

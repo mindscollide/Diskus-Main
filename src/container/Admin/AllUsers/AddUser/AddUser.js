@@ -52,6 +52,7 @@ import {
 import { GetOrganizationByID } from "../../../../store/actions/RolesList";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
 import { checkEmailExsist } from "../../../../store/actions/Admin_Organization";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const AddUser = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -93,6 +94,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [companyEmailValidateError, setCompanyEmailValidateError] =
@@ -538,11 +540,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           await setAgainCall(true);
         }
       } else {
-        setOpen({
-          ...open,
-          open: true,
-          message: t("Email-should-be-in-email-format"),
-        });
+        showMessage(t("Email-should-be-in-email-format"), "error", setOpen);
       }
     } else {
       setAddUserSection({
@@ -579,11 +577,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           errorStatus: addUserSection.Email.value != "" ? false : true,
         },
       });
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Please-fill-all-the-fields"),
-      });
+      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
     }
   };
   console.log(
@@ -593,8 +587,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
-      adminReducer.UpdateOrganizationMessageResponseMessage !==
-        "" &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -606,19 +599,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         "adminReduceradminReduceradminReducer",
         adminReducer.UpdateOrganizationMessageResponseMessage
       );
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.UpdateOrganizationMessageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        adminReducer.UpdateOrganizationMessageResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
@@ -634,26 +619,17 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         "adminReduceradminReduceradminReducer",
         adminReducer.AllOrganizationResponseMessage
       );
-
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.AllOrganizationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        adminReducer.AllOrganizationResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !== null &&
-      adminReducer.DeleteOrganizationMessageResponseMessage !==
-        "" &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -665,19 +641,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         "adminReduceradminReduceradminReducer",
         adminReducer.DeleteOrganizationMessageResponseMessage
       );
-
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.DeleteOrganizationMessageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        adminReducer.DeleteOrganizationMessageResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -700,19 +668,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         "adminReduceradminReduceradminReducer",
         adminReducer.ResponseMessage
       );
-
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(adminReducer.ResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else {
@@ -1121,18 +1077,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             });
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t("This-user-role-can-not-be-organization-admin"),
-          });
-          setTimeout(() => {
-            setOpen({
-              ...open,
-              open: false,
-              message: "",
-            });
-          }, 3000);
+          showMessage(
+            t("This-user-role-can-not-be-organization-admin"),
+            "error",
+            setOpen
+          );
           setEditOrganization([]);
           setAddUserSection({
             ...addUserSection,
@@ -1166,20 +1115,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             });
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t(
-              "This-user-role-can-not-be-other-then-organization-admin"
-            ),
-          });
-          setTimeout(() => {
-            setOpen({
-              ...open,
-              open: false,
-              message: "",
-            });
-          }, 3000);
+          showMessage(
+            t("This-user-role-can-not-be-other-then-organization-admin"),
+            "error",
+            setOpen
+          );
           setEditOrganization([]);
           setAddUserSection({
             ...addUserSection,
@@ -1255,18 +1195,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             });
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t("Selected-organaization-role-can-only-be-user"),
-          });
-          setTimeout(() => {
-            setOpen({
-              ...open,
-              open: false,
-              message: "",
-            });
-          }, 3000);
+          showMessage(
+            t("Selected-organaization-role-can-only-be-user"),
+            "error",
+            setOpen
+          );
           setEditUserRole("");
           setAddUserSection({
             ...addUserSection,
@@ -1300,18 +1233,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             });
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t("Selected-organaization-role-can-not-be-user"),
-          });
-          setTimeout(() => {
-            setOpen({
-              ...open,
-              open: false,
-              message: "",
-            });
-          }, 3000);
+          showMessage(
+            t("Selected-organaization-role-can-not-be-user"),
+            "error",
+            setOpen
+          );
           setEditUserRole([]);
           setAddUserSection({
             ...addUserSection,
@@ -2055,7 +1981,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           </Col>
         </Row>
       </Container>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {roleListReducer.Loading ||
       LanguageReducer.Loading ||
       adminReducer.Loading ? (

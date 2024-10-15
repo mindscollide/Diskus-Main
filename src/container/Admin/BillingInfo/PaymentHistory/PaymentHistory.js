@@ -28,6 +28,7 @@ import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 import { Spin } from "antd";
 import moment from "moment";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const { OrganizationBillingReducer, adminReducer, LanguageReducer } =
@@ -45,6 +46,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const { t } = useTranslation();
@@ -494,16 +496,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("No-data-available")
     ) {
-      setOpen({
-        open: true,
-        message: adminReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 4000);
+      showMessage(adminReducer.ResponseMessage, "success", setOpen);
     }
   }, [adminReducer.ResponseMessage]);
 
@@ -512,16 +505,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationBillingReducer.ResponseMessage !== "" &&
       OrganizationBillingReducer.ResponseMessage !== t("No-data-available")
     ) {
-      setOpen({
-        open: true,
-        message: OrganizationBillingReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 4000);
+      showMessage(
+        OrganizationBillingReducer.ResponseMessage,
+        "success",
+        setOpen
+      );
     }
   }, [OrganizationBillingReducer.ResponseMessage]);
 
@@ -825,7 +813,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
-      <Notification open={open.open} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}

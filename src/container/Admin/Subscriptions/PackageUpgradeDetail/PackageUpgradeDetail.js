@@ -15,6 +15,7 @@ import SilverPackage from "./../../../../assets/images/Silver-Package.png";
 import GoldPackage from "./../../../../assets/images/Gold-Package.png";
 import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
 import { getSubscriptionUpgradeAmountInfoApi } from "../../../../store/actions/Admin_PackageDetail";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
@@ -23,6 +24,7 @@ const PackageUpgradeDetail = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,19 +58,11 @@ const PackageUpgradeDetail = () => {
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
         t("Organization-subscription-update")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message:
-          GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -210,10 +204,7 @@ const PackageUpgradeDetail = () => {
             lg={12}
             className="d-flex justify-content-center text-decoration-underline"
           >
-            <Link
-              className={styles["goBackLink"]}
-              to="/Admin/UpgradePackage"
-            >
+            <Link className={styles["goBackLink"]} to="/Admin/UpgradePackage">
               {t("Go-back")}
             </Link>
           </Col>
@@ -224,7 +215,12 @@ const PackageUpgradeDetail = () => {
       LanguageReducer.Loading ? (
         <Loader />
       ) : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

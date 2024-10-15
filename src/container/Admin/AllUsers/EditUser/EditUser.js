@@ -39,6 +39,7 @@ import {
 } from "../../../../store/actions/RolesList";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
@@ -54,6 +55,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const [selected, setSelected] = useState("US");
@@ -870,23 +872,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
-   
       adminReducer.UpdateOrganizationMessageResponseMessage !==
         t("The-user-has-been-edited-successfully")
     ) {
-      console.log("checkreponce");
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.UpdateOrganizationMessageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        adminReducer.UpdateOrganizationMessageResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -895,41 +888,23 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.AllOrganizationResponseMessage !==
         t("The-user-has-been-edited-successfully")
     ) {
-      console.log("checkreponce");
-
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.AllOrganizationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        adminReducer.AllOrganizationResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
-      adminReducer.DeleteOrganizationMessageResponseMessage !==
-        "" 
+      adminReducer.DeleteOrganizationMessageResponseMessage !== ""
     ) {
       console.log("checkreponce");
-
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.DeleteOrganizationMessageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        adminReducer.DeleteOrganizationMessageResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -940,20 +915,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !==
         t("The-user-has-been-updated-but-the-status-has-not-been-updated")
     ) {
-      console.log("checkreponce");
-
-      setOpen({
-        ...open,
-        open: true,
-        message: adminReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(adminReducer.ResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else {
@@ -1080,18 +1042,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             });
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t("This-user-role-can-not-be-organization-admin"),
-          });
-          setTimeout(() => {
-            setOpen({
-              ...open,
-              open: false,
-              message: "",
-            });
-          }, 3000);
+          showMessage(
+            t("This-user-role-can-not-be-organization-admin"),
+            "error",
+            setOpen
+          );
           setEditOrganization("");
           setEditUserSection({
             ...editUserSection,
@@ -1110,20 +1065,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             });
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t(
-              "This-user-role-can-not-be-other-then-organization-admin"
-            ),
-          });
-          setTimeout(() => {
-            setOpen({
-              ...open,
-              open: false,
-              message: "",
-            });
-          }, 3000);
+          showMessage(
+            t("This-user-role-can-not-be-other-then-organization-admin"),
+            "error",
+            setOpen
+          );
           setEditOrganization("");
           setEditUserSection({
             ...editUserSection,
@@ -1159,18 +1105,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             });
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t("Selected-organaization-role-can-only-be-user"),
-          });
-          setTimeout(() => {
-            setOpen({
-              ...open,
-              open: false,
-              message: "",
-            });
-          }, 3000);
+          showMessage(
+            t("elected-organaization-role-can-only-be-user"),
+            "error",
+            setOpen
+          );
           setEditUserRole("");
           setEditUserSection({
             ...editUserSection,
@@ -1190,18 +1129,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             });
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t("Selected-organaization-role-can-not-be-user"),
-          });
-          setTimeout(() => {
-            setOpen({
-              ...open,
-              open: false,
-              message: "",
-            });
-          }, 3000);
+          showMessage(
+            t("Selected-organaization-role-can-not-be-user"),
+            "error",
+            setOpen
+          );
           setEditUserRole("");
           setEditUserSection({
             ...editUserSection,
@@ -1288,7 +1220,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           />
         </Col>
       </Row>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {adminReducer.Loading ? <Loader /> : null}
       <Modal
         show={
