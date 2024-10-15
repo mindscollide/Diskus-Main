@@ -314,7 +314,7 @@ const Actions = ({
       render: (text, record) => {
         return (
           <span className={styles["Action-Date-title"]}>
-            {_justShowDateformatBilling(record.deadlineDateTime)}
+            {/* {_justShowDateformatBilling(record.deadlineDateTime)} */}
           </span>
         );
       },

@@ -280,10 +280,11 @@ const Actions = ({
     },
     {
       title: t("Due-date"),
-      dataIndex: "deadlineDate",
-      key: "deadlineDate",
+      dataIndex: "deadlineDateTime",
+      key: "deadlineDateTime",
       width: "200px",
-      render: (record) => {
+      render: (text, record) => {
+        console.log(record, "deadlineDateTime");
         return (
           <span className={styles["Action-Date-title"]}>
             {_justShowDateformatBilling(record.deadlineDateTime)}
@@ -434,6 +435,10 @@ const Actions = ({
         actionMeetingReducer.todoListMeetingTask !== undefined &&
         actionMeetingReducer.todoListMeetingTask.toDoLists.length > 0
       ) {
+        console.log(
+          actionMeetingReducer.todoListMeetingTask.toDoLists,
+          "actionMeetingReducer"
+        );
         setTotalRecords(actionMeetingReducer.todoListMeetingTask.totalRecords);
         setActionsRows(actionMeetingReducer.todoListMeetingTask.toDoLists);
       } else {
