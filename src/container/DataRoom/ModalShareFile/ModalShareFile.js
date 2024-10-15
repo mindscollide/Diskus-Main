@@ -207,42 +207,49 @@ const ModalShareFile = ({
       (listData, index) => listData.FK_UserID === personValue.value
     );
     if (permissionID.value !== 0) {
-      if (findIndexData === -1) {
-        let Data = {
-          FK_PermissionID: JSON.parse(permissionID.value),
-          FK_UserID: personValue.value,
-          ExpiryDateTime: "",
-        };
-        if (personValue.value !== 0) {
-          if (assignees.user.length > 0) {
-            assignees.user.map((data, index) => {
-              if (data.pK_UID === personValue.value) {
-                setMembers([...isMembers, data]);
-              }
-            });
+      if (personValue.value !== 0) {
+        if (findIndexData === -1) {
+          let Data = {
+            FK_PermissionID: JSON.parse(permissionID.value),
+            FK_UserID: personValue.value,
+            ExpiryDateTime: "",
+          };
+          if (personValue.value !== 0) {
+            if (assignees.user.length > 0) {
+              assignees.user.map((data, index) => {
+                if (data.pK_UID === personValue.value) {
+                  setMembers([...isMembers, data]);
+                }
+              });
+            }
           }
+          setFileData((prev) => {
+            return { ...prev, Files: [...prev.Files, Data] };
+          });
+        } else {
+          setOpen({
+            flag: true,
+            message: t("User-is-already-exist"),
+          });
         }
-        setFileData((prev) => {
-          return { ...prev, Files: [...prev.Files, Data] };
+        setPersonValue({
+          value: 0,
+          label: "",
+        });
+        setPermissionID({
+          label: t("Editor"),
+          value: 2,
+        });
+        setGeneralAccess({
+          label: t("Restricted"),
+          value: 1,
         });
       } else {
-        setOpen({
-          flag: true,
-          message: t("User-is-already-exist"),
-        });
+        // setOpen({
+        //   flag: true,
+        //   message: t("User-select-must"),
+        // });
       }
-      setPersonValue({
-        value: 0,
-        label: "",
-      });
-      setPermissionID({
-        label: t("Editor"),
-        value: 2,
-      });
-      setGeneralAccess({
-        label: t("Restricted"),
-        value: 1,
-      });
     } else {
       setOpen({
         flag: true,

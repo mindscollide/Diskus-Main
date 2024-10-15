@@ -197,43 +197,45 @@ const ModalShareFolder = ({
       (listData) => listData.FK_UserID === personValue.value
     );
     if (permissionID.value !== 0) {
-      if (findIndexData === -1) {
-        let Data = {
-          FK_PermissionID: JSON.parse(permissionID.value),
-          FK_UserID: personValue.value,
-          ExpiryDateTime: "",
-        };
-        if (personValue.value !== 0) {
-          if (assignees.user.length > 0) {
-            assignees.user.forEach((data, index) => {
-              if (data.pK_UID === personValue.value) {
-                setMembers([...isMembers, data]);
-              }
-            });
+      if (personValue.value !== 0) {
+        if (findIndexData === -1) {
+          let Data = {
+            FK_PermissionID: JSON.parse(permissionID.value),
+            FK_UserID: personValue.value,
+            ExpiryDateTime: "",
+          };
+          if (personValue.value !== 0) {
+            if (assignees.user.length > 0) {
+              assignees.user.forEach((data, index) => {
+                if (data.pK_UID === personValue.value) {
+                  setMembers([...isMembers, data]);
+                }
+              });
+            }
           }
+          setFolderData((prev) => {
+            return { ...prev, Folders: [...prev.Folders, Data] };
+          });
+        } else {
+          setOpen({
+            flag: true,
+            message: t("User-is-already-exist"),
+          });
         }
-        setFolderData((prev) => {
-          return { ...prev, Folders: [...prev.Folders, Data] };
+        setPersonValue({
+          value: 0,
+          label: "",
         });
-      } else {
-        setOpen({
-          flag: true,
-          message: t("User-is-already-exist"),
+
+        setPermissionID({
+          label: t("Editor"),
+          value: 2,
+        });
+        setGeneralAccess({
+          label: t("Restricted"),
+          value: 1,
         });
       }
-      setPersonValue({
-        value: 0,
-        label: "",
-      });
-
-      setPermissionID({
-        label: t("Editor"),
-        value: 2,
-      });
-      setGeneralAccess({
-        label: t("Restricted"),
-        value: 1,
-      });
     } else {
       setOpen({
         flag: true,
