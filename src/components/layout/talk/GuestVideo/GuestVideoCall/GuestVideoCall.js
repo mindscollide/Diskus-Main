@@ -81,6 +81,16 @@ const GuestVideoCall = () => {
         } else {
           dispatch(guestVideoNavigationScreen(3));
         }
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "REMOVE_PARTICIPANT_FROM_MEETING".toLowerCase()
+      ) {
+        dispatch(guestVideoNavigationScreen(4));
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
+      ) {
+        console.log(data.payload.isMuted);
       }
     }
   };

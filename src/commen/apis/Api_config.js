@@ -1812,6 +1812,14 @@ const removeParticipantMeeting = {
   RequestMethod: "ServiceManager.RemoveParticipantFromMeeting",
 };
 
+const guestLeaveMeetingVideo = {
+  RequestMethod: "ServiceManager.GuestLeaveMeetingVideo",
+};
+
+const muteUnMuteSelf = {
+  RequestMethod: "ServiceManager.MuteUnMuteSelf",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2291,4 +2299,6 @@ export {
   muteUnMuteParticipant,
   transferMeetingHost,
   removeParticipantMeeting,
+  guestLeaveMeetingVideo,
+  muteUnMuteSelf,
 };

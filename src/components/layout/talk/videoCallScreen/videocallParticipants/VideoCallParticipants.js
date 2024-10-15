@@ -20,6 +20,7 @@ const VideoCallParticipants = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [participantsList, setPartcipantList] = useState([]);
+  console.log(participantsList, "participantsListData");
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const handleChangeSearchParticipant = (e) => {
@@ -54,14 +55,11 @@ const VideoCallParticipants = () => {
         };
       }),
     };
-    if (flag === 1) {
-      let getNames = participantsList.map((userData) => userData.name);
-      console.log(getNames, "getNamesgetNames");
-      dispatch(setAdmittedParticipant(getNames));
-    }
+
     dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
   };
   const handleClickAcceptAndReject = (participantInfo, flag) => {
+    console.log(participantInfo, "participantInfo");
     let Data = {
       MeetingId: participantInfo.meetingID,
       AttendeeResponseList: [

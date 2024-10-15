@@ -40,11 +40,13 @@ const videoFeatureReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.ACCEPT_AND_REMOVE_PARTICIPANTS: {
       const { payload } = action; // payload is expected to be an array of uids
+      console.log(payload, "payloadpayload");
 
       // Filter out participants whose UID is included in the payload array
       const filteredParticipants = state.participantWaitingList.filter(
         (participant) => !payload.includes(participant.uid)
       );
+      console.log(filteredParticipants, "payloadpayload");
 
       return {
         ...state,

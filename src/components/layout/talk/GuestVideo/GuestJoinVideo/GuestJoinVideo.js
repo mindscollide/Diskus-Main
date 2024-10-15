@@ -7,19 +7,11 @@ import VideoOn from "../../../../../assets/images/Recent Activity Icons/Video/Vi
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import MicOn from "../../../../../assets/images/Recent Activity Icons/Video/MicOn.png";
-import { LoadingOutlined } from "@ant-design/icons";
-
-import { Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import {
-  guestVideoNavigationScreen,
-  joinGuestVideoMainApi,
-} from "../../../../../store/actions/Guest_Video";
-import GuestVideoHeader from "../GuestVideoHeader/GuestVideoHeader";
+import { joinGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
-import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 
 const GuestJoinVideo = ({
   extractMeetingId,
@@ -30,25 +22,28 @@ const GuestJoinVideo = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const guestNavigateData = useSelector(
+  const guestVideoNavigationData = useSelector(
     (state) => state.GuestVideoReducer.guestVideoNavigationData
   );
-
+  console.log(guestVideoNavigationData, "guestVideoNavigationData");
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
+  console.log(isWebCamEnabled, "isWebCamEnabled");
   const [isMikeEnabled, setIsMikeEnabled] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [getReady, setGetReady] = useState(false);
 
   const [joinName, setJoinName] = useState("");
+
   const [errorMessage, setErrorMessage] = useState(false);
 
   console.log({ extractMeetingId, extractMeetingTitle }, "namenamenamename");
 
-  const handleToggleWebCam = () => {
-    if (!isWebCamEnabled) {
+  const handleToggleWebCam = (flag) => {
+    if (flag) {
       // Enable webcam
+      sessionStorage.setItem("isWebCamEnabled", flag);
       const mediaDevices = navigator.mediaDevices;
 
       mediaDevices
@@ -70,6 +65,7 @@ const GuestJoinVideo = ({
           alert(error.message);
         });
     } else {
+      sessionStorage.setItem("isWebCamEnabled", flag);
       // Disable webcam
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
@@ -95,6 +91,7 @@ const GuestJoinVideo = ({
       setErrorMessage(false);
       setGetReady(true);
       onJoinNameChange(joinName);
+      sessionStorage.setItem("joinName", joinName);
       let data = { MeetingId: extractMeetingId, GuestName: joinName };
       dispatch(joinGuestVideoMainApi(navigate, t, data));
     }
@@ -130,7 +127,7 @@ const GuestJoinVideo = ({
         stream.getTracks().forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, [isWebCamEnabled]);
 
   return (
     <Container fluid>
@@ -168,7 +165,6 @@ const GuestJoinVideo = ({
                       >
                         <div className="gradient-sheet">
                           <div className="avatar-class">
-                            {/* {isWebCamEnabled ? ( */}
                             <div
                               style={{
                                 position: "relative",
@@ -188,13 +184,13 @@ const GuestJoinVideo = ({
                             {isWebCamEnabled ? (
                               <img
                                 className="cursor-pointer"
-                                onClick={handleToggleWebCam}
+                                onClick={() => handleToggleWebCam(false)}
                                 src={VideoOn}
                               />
                             ) : (
                               <img
                                 className="cursor-pointer"
-                                onClick={handleToggleWebCam}
+                                onClick={() => handleToggleWebCam(true)}
                                 src={VideoOff}
                               />
                             )}
@@ -228,16 +224,6 @@ const GuestJoinVideo = ({
                                 )}
                               </p>
                             </div>
-                            {/* <Spin
-                              indicator={
-                                <LoadingOutlined
-                                  style={{
-                                    fontSize: 48,
-                                  }}
-                                />
-                              }
-                              size="large"
-                            /> */}
                           </>
                         )}
                       </div>

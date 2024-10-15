@@ -24,6 +24,8 @@ const GuestJoinRequest = () => {
   const { GuestVideoReducer, videoFeatureReducer } = useSelector(
     (state) => state
   );
+
+  let roomID = localStorage.getItem("activeRoomID");
   console.log(
     GuestVideoReducer?.admitGuestUserRequestData,
     "waitingOnParticipantwaitingOnParticipant"
@@ -31,36 +33,36 @@ const GuestJoinRequest = () => {
   const {
     name = "",
     meetingID = "",
-    uid = "",
+    guid = "",
+    UserID = 0,
+    email = "",
+    hideCamera = false,
+    raiseHand = false,
+    mute = false,
     isGuest = true,
   } = GuestVideoReducer?.admitGuestUserRequestData || {};
 
   console.log(GuestVideoReducer?.admitGuestUserRequestData, "Datatatacatcas");
 
   const handleAdmit = (flag) => {
-    // let Data = {
-    //   MeetingId: meetingID,
-    //   GuestName: name,
-    //   GuestGuid: [uid],
-    //   IsGuest: isGuest,
-    //   IsRequestAccepted: flag === 1 ? true : false,
-    // };
     let Data = {
       MeetingId: meetingID,
+      RoomId: String(roomID),
       AttendeeResponseList: [
         {
           Name: name,
-          UID: uid,
+          UID: guid,
+          Email: email,
+          raiseHand: raiseHand,
+          UserID: UserID,
+          IsMuted: mute,
+          HideVideo: hideCamera,
           IsRequestAccepted: flag === 1 ? true : false,
           IsGuest: isGuest,
         },
       ],
     };
-    if (flag === 1) {
-      let getNames = Data.AttendeeResponseList.map((userData) => userData.Name);
-      console.log(getNames, "getNamesgetNames");
-      dispatch(setAdmittedParticipant(getNames));
-    }
+
     dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
   };
 

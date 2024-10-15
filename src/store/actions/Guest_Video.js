@@ -11,6 +11,8 @@ import {
   muteUnMuteParticipant,
   transferMeetingHost,
   removeParticipantMeeting,
+  guestLeaveMeetingVideo,
+  muteUnMuteSelf,
 } from "../../commen/apis/Api_config";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
@@ -274,7 +276,14 @@ const joinGuestVideoMainApi = (navigate, t, data) => {
                 )
             ) {
               // dispatch(guestVideoNavigationScreen(true));
-              mqttConnectionGuestUser(response.data.responseResult.guestGuid);
+              mqttConnectionGuestUser(
+                response.data.responseResult.guestGuid,
+                response.data.responseResult.email
+              );
+              sessionStorage.setItem(
+                "GuestEmail",
+                response.data.responseResult.email
+              );
               sessionStorage.setItem(
                 "GuestUserID",
                 response.data.responseResult.guestGuid
@@ -384,6 +393,26 @@ const admitRejectAttendeeMainApi = (Data, navigate, t) => {
               );
               if (filterGuids.length > 1) {
                 dispatch(participantWaitingListBox(false));
+              }
+
+              let participants = Data.AttendeeResponseList.filter(
+                (partiData, index) => partiData.IsRequestAccepted === true
+              );
+              console.log(participants, "participantsparticipants");
+              if (participants.length > 0) {
+                let roomIds = localStorage.getItem("activeRoomID");
+                let getNames = participants.map((userData) => {
+                  console.log(userData, "userDatauserData");
+                  return {
+                    Name: userData.Name,
+                    UID: userData.UID,
+                    roomIds,
+                    isMute: false,
+                    hideVideo: false,
+                  };
+                });
+                console.log(getNames, "getNamesgetNames");
+                dispatch(setAdmittedParticipant(getNames));
               }
               dispatch(participantAcceptandReject(filterGuids));
               dispatch(guestJoinPopup(false));
@@ -719,13 +748,14 @@ const removeParticipantMeetingFail = (message) => {
   };
 };
 
-const removeParticipantMeetingMainApi = (navigate, t) => {
+const removeParticipantMeetingMainApi = (navigate, t, data) => {
+  console.log(data, "datadatadatadatakashan");
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(removeParticipantMeetingInit());
     let form = new FormData();
     form.append("RequestMethod", removeParticipantMeeting.RequestMethod);
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
       url: meetingApi,
@@ -737,7 +767,7 @@ const removeParticipantMeetingMainApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(removeParticipantMeetingMainApi(navigate, t));
+          dispatch(removeParticipantMeetingMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -807,6 +837,204 @@ const setAdmittedParticipant = (response) => {
   };
 };
 
+const guestLeaveMeetingVideoInit = () => {
+  return {
+    type: actions.GUEST_VIDEO_LEAVE_MEETING_INIT,
+  };
+};
+
+const guestLeaveMeetingVideoSuccess = (response, message) => {
+  return {
+    type: actions.GUEST_VIDEO_LEAVE_MEETING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const guestLeaveMeetingVideoFail = (message) => {
+  return {
+    type: actions.GUEST_VIDEO_LEAVE_MEETING_FAIL,
+    message: message,
+  };
+};
+
+const guestLeaveMeetingVideoApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(guestLeaveMeetingVideoInit());
+    let form = new FormData();
+    form.append("RequestMethod", guestLeaveMeetingVideo.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                guestLeaveMeetingVideoSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+              dispatch(guestVideoNavigationScreen(4));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                guestLeaveMeetingVideoFail(t("Invalid-request-data-2"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_03".toLowerCase()
+                )
+            ) {
+              await dispatch(guestLeaveMeetingVideoFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                guestLeaveMeetingVideoFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              guestLeaveMeetingVideoFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(guestLeaveMeetingVideoFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(guestLeaveMeetingVideoFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const removeParticipantFromVideo = (response) => {
+  console.log(response, "responseresponseresponse");
+  return {
+    type: actions.REMOVE_PARTICIPANTS_FROM_VIDEO,
+    response: response,
+  };
+};
+
+const muteUnmuteSelfInit = () => {
+  return {
+    type: actions.MUTE_UNMUTE_SELF_INIT,
+  };
+};
+
+const muteUnmuteSelfSuccess = (response, message) => {
+  return {
+    type: actions.MUTE_UNMUTE_SELF_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const muteUnmuteSelfFail = (message) => {
+  return {
+    type: actions.MUTE_UNMUTE_SELF_FAIL,
+    message: message,
+  };
+};
+
+const muteUnMuteSelfMainApi = (navigate, t, data) => {
+  return (dispatch) => {
+    dispatch(muteUnmuteSelfInit());
+    let form = new FormData();
+    form.append("RequestMethod", muteUnMuteSelf.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(muteUnMuteSelfMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                muteUnmuteSelfSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_02".toLowerCase()
+                )
+            ) {
+              await dispatch(muteUnmuteSelfFail(t("Invalid-request-data-2")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_03".toLowerCase()
+                )
+            ) {
+              await dispatch(muteUnmuteSelfFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_04".toLowerCase()
+                )
+            ) {
+              await dispatch(muteUnmuteSelfFail(t("UnSuccessful")));
+            }
+          } else {
+            await dispatch(muteUnmuteSelfFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(muteUnmuteSelfFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(muteUnmuteSelfFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getMeetingGuestVideoMainApi,
   validateEncryptGuestVideoMainApi,
@@ -821,4 +1049,7 @@ export {
   transferMeetingHostMainApi,
   removeParticipantMeetingMainApi,
   setAdmittedParticipant,
+  guestLeaveMeetingVideoApi,
+  removeParticipantFromVideo,
+  muteUnMuteSelfMainApi,
 };

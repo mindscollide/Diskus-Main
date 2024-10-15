@@ -45,7 +45,11 @@ import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 import { useTranslation } from "react-i18next";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
-import { transferMeetingHostMainApi } from "../../../../../store/actions/Guest_Video";
+import {
+  removeParticipantFromVideo,
+  removeParticipantMeetingMainApi,
+  transferMeetingHostMainApi,
+} from "../../../../../store/actions/Guest_Video";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -73,6 +77,9 @@ const VideoCallNormalHeader = ({
     participantAcceptedName,
     "participantAcceptedNameparticipantAcceptedName"
   );
+
+  const [participantData, setParticipantData] = useState([]);
+  console.log(participantData, "participantData");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
@@ -373,16 +380,40 @@ const VideoCallNormalHeader = ({
 
   console.log("Video Feature Reducer", videoFeatureReducer);
 
+  useEffect(() => {
+    if (
+      participantAcceptedName !== null &&
+      participantAcceptedName !== undefined &&
+      participantAcceptedName.length > 0
+    ) {
+      setParticipantData(participantAcceptedName);
+    } else {
+      setParticipantData([]);
+    }
+  }, [participantAcceptedName]);
+
   // makeLeave or transfer Meeting Host API
-  const makeLeaveOnClick = () => {
-    let RoomIDs = localStorage.getItem("activeRoomID");
+  const makeLeaveOnClick = (usersData) => {
+    console.log(usersData.UID, "usersDatausersData");
     let data = {
-      RoomID: String(RoomIDs),
-      UID: "3d055c71f9e6423580fefb99034def29",
+      RoomID: roomID,
+      UID: usersData.UID,
       UserID: Number(currentUserID),
     };
 
     dispatch(transferMeetingHostMainApi(navigate, t, data));
+  };
+
+  const removeParticipantMeetingOnClick = (usersData) => {
+    console.log(usersData, "usersData");
+    dispatch(removeParticipantFromVideo(usersData.UID));
+    let data = {
+      RoomID: roomID,
+      UID: usersData.UID,
+      Name: usersData.Name,
+    };
+
+    dispatch(removeParticipantMeetingMainApi(navigate, t, data));
   };
 
   return (
@@ -598,7 +629,7 @@ const VideoCallNormalHeader = ({
                                         <Dropdown.Menu>
                                           <Dropdown.Item
                                             className="participant-dropdown-item"
-                                            onClick={makeLeaveOnClick}
+                                            // onClick={() => makeLeaveOnClick()}
                                           >
                                             {t("Make-host")}
                                           </Dropdown.Item>
@@ -625,10 +656,8 @@ const VideoCallNormalHeader = ({
                               }
                             )
                           : null}
-                        {participantAcceptedName !== null &&
-                        participantAcceptedName !== undefined &&
-                        participantAcceptedName.length > 0 ? (
-                          participantAcceptedName.map((usersData, index) => {
+                        {participantData.length > 0 ? (
+                          participantData.map((usersData, index) => {
                             console.log(usersData, "usersDatausersData");
                             return (
                               <>
@@ -636,7 +665,7 @@ const VideoCallNormalHeader = ({
                                   <Col className="p-0" lg={7} md={7} sm={12}>
                                     <p className="participant-name">
                                       {/* {currentUserName} */}
-                                      {usersData}
+                                      {usersData.Name}
                                     </p>
                                   </Col>
                                   <Col
@@ -658,11 +687,20 @@ const VideoCallNormalHeader = ({
                                       <Dropdown.Menu>
                                         <Dropdown.Item
                                           className="participant-dropdown-item"
-                                          onClick={makeLeaveOnClick}
+                                          onClick={() =>
+                                            makeLeaveOnClick(usersData)
+                                          }
                                         >
                                           {t("Make-host")}
                                         </Dropdown.Item>
-                                        <Dropdown.Item className="participant-dropdown-item">
+                                        <Dropdown.Item
+                                          className="participant-dropdown-item"
+                                          onClick={() =>
+                                            removeParticipantMeetingOnClick(
+                                              usersData
+                                            )
+                                          }
+                                        >
                                           {t("Remove")}
                                         </Dropdown.Item>
                                         <Dropdown.Item className="participant-dropdown-item">
@@ -682,7 +720,7 @@ const VideoCallNormalHeader = ({
                           <>
                             <Row>
                               <Col className="d-flex justify-content-center align-item-center">
-                                <p>No Participant</p>
+                                <p>{t("No-participant")}</p>
                               </Col>
                             </Row>
                           </>

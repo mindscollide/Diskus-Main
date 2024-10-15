@@ -25,17 +25,11 @@ const GuestVideoScreen = ({ videoUrlName, roomId }) => {
   return (
     <>
       <Container fluid>
-        <GuestVideoHeader extractMeetingTitle={meetingTitle} roomId={roomId} />
-        <div className="new-div">
-          <iframe
-            src={videoUrlName}
-            ref={frameRef}
-            title="Live Video"
-            width="100%"
-            height="100%"
-            allow="camera;microphone;display-capture"
-          />
-        </div>
+        <GuestVideoHeader
+          videoUrlName={videoUrlName}
+          extractMeetingTitle={meetingTitle}
+          roomId={roomId}
+        />
       </Container>
     </>
   );

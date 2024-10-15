@@ -29,6 +29,7 @@ import {
   leaveCallModal,
   guestJoinPopup,
   participantWaitingList,
+  participantAcceptandReject,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -236,6 +237,12 @@ const Dashboard = () => {
   const [notificationID, setNotificationID] = useState(0);
   const [currentLanguage, setCurrentLanguage] = useState("en");
   const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
+  const [handsRaisedCount, setHandsRaisedCount] = useState(0);
+  const [participantsList, setParticipantsList] = useState([]);
+  console.log(
+    { handsRaisedCount, participantsList },
+    "participantsListparticipantsList"
+  );
   let Blur = localStorage.getItem("blur");
 
   const cancelModalMeetingDetails = useSelector(
@@ -692,7 +699,7 @@ const Dashboard = () => {
             data.payload.message.toLowerCase() ===
             "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
           ) {
-            dispatch(participantWaitingList(data.payload))
+            dispatch(participantWaitingList(data.payload));
             dispatch(admitGuestUserRequest(data.payload));
             dispatch(guestJoinPopup(true));
             // if (data.viewable) {
@@ -707,6 +714,16 @@ const Dashboard = () => {
             //   });
             //   setNotificationID(id);
             // }
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "GUEST_PARTICIPANT_LEFT_VIDEO".toLowerCase()
+          ) {
+            dispatch(participantAcceptandReject([data.payload.uid]));
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
+          ) {
+            console.log(data.payload, "kashanKashan");
           }
         }
       }
@@ -2351,6 +2368,19 @@ const Dashboard = () => {
             setNotificationID(id);
             dispatch(folderRemoveMQTT(data?.payload?.folderID));
           } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
+        ) {
+          setHandsRaisedCount(data.payload.handsRaisedCount || 0);
+          setParticipantsList(data.payload.particpantsList || []);
+
+          // Log roomID or raise hand status if available
+          if (data.payload.roomID) {
+            console.log("Room ID:", data.payload.roomID);
+          } else if (data.payload.raiseHand === true) {
+            console.log("Hand Raised:", data.payload.raiseHand);
+          }
         }
       }
     } catch (error) {}
@@ -2473,28 +2503,29 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {videoFeatureReducer.IncomingVideoCallFlag === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -2513,8 +2544,8 @@ const Dashboard = () => {
           ) : null}
           {videoFeatureReducer.VideoChatMessagesFlag === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -2585,25 +2616,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -2619,12 +2650,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}

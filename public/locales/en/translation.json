@@ -2220,5 +2220,6 @@
   "Ready-to-join": "Ready To Join?",
   "You-are-in-the-waiting-room": "You are in the waiting room",
   "The-organizer-will-allow-you-to-join-shortly": "The organizer will allow you to join shortly.",
-  "Invalid-request-data-2": "Invalid Request Data"
+  "Invalid-request-data-2": "Invalid Request Data",
+  "No-participant": "No Participant"
 }

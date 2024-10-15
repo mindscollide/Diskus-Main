@@ -15,6 +15,9 @@ const initialState = {
   transferMeetingData: null,
   removeParticipantMeetingData: null,
   participantNameDataAccept: [],
+  guestLeaveVideoMeetingData: null,
+  removeGuestParticipantUser: null,
+  muteUnMuteSelfData: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -230,6 +233,69 @@ const GuestVideoReducer = (state = initialState, action) => {
           ...state.participantNameDataAccept,
           ...action.response,
         ],
+      };
+    }
+
+    case actions.GUEST_VIDEO_LEAVE_MEETING_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.GUEST_VIDEO_LEAVE_MEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        guestLeaveVideoMeetingData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GUEST_VIDEO_LEAVE_MEETING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        guestLeaveVideoMeetingData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_SELF_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_SELF_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        muteUnMuteSelfData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_SELF_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        muteUnMuteSelfData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.REMOVE_PARTICIPANTS_FROM_VIDEO: {
+      // Filter out participants whose UID is included in the payload array
+      console.log(action, "responseresponseresponse");
+      const participantsFilterization = state.participantNameDataAccept.filter(
+        (participant) => participant.UID !== action.response
+      );
+      console.log(participantsFilterization, "participantsFilterization");
+      return {
+        ...state,
+        participantNameDataAccept: participantsFilterization,
       };
     }
 
