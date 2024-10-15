@@ -2275,7 +2275,10 @@ const Dashboard = () => {
           let getToken =
             localStorage.getItem("token") !== null &&
             localStorage.getItem("token");
-          if (getToken !== data?.payload?.authToken?.token) {
+          if (
+            getToken !== data?.payload?.authToken?.token &&
+            Number(data?.payload?.deviceID) === 1
+          ) {
             dispatch(userLogOutApiFunc(navigate, t));
           }
         }
