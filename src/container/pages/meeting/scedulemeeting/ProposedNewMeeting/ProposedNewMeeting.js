@@ -593,15 +593,17 @@ const ProposedNewMeeting = ({
 
   //Removing the Date Time Rows
   const HandleCancelFunction = (index) => {
-    if (index === 0) {
+    if (rows.length === 1) {
+      // If there's only one record, show the setOpen message
       setOpen({
         flag: true,
         message: t("At-least-one-date-time-slot-is-mandatory"),
       });
     } else {
-      let optionscross = [...rows];
-      optionscross.splice(index, 1);
-      setRows(optionscross);
+      // Otherwise, remove the record at the given index
+      const updatedRows = [...rows];
+      updatedRows.splice(index, 1);
+      setRows(updatedRows);
     }
   };
 
@@ -834,8 +836,10 @@ const ProposedNewMeeting = ({
                     let newUser = {
                       userName: gUser.userName,
                       userID: gUser.userID,
-                      displayPicture:
-                        gUser.profilePicture.displayProfilePictureName,
+                      userProfilePicture: {
+                        displayProfilePictureName:
+                          gUser.profilePicture.displayProfilePictureName,
+                      },
                       email: gUser.emailAddress,
                       IsPrimaryOrganizer: false,
                       IsOrganizerNotified: false,
@@ -873,8 +877,10 @@ const ProposedNewMeeting = ({
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
-                      displayPicture:
-                        cUser.profilePicture.displayProfilePictureName,
+                      userProfilePicture: {
+                        displayProfilePictureName:
+                          cUser.profilePicture.displayProfilePictureName,
+                      },
                       email: cUser.emailAddress,
                       IsPrimaryOrganizer: false,
                       IsOrganizerNotified: false,
@@ -904,7 +910,10 @@ const ProposedNewMeeting = ({
               let newUser = {
                 userName: check2.userName,
                 userID: check2.userID,
-                displayPicture: check2.profilePicture.displayProfilePictureName,
+                userProfilePicture: {
+                  displayProfilePictureName:
+                    check2.profilePicture.displayProfilePictureName,
+                },
                 email: check2.emailAddress,
                 IsPrimaryOrganizer: false,
                 IsOrganizerNotified: false,
@@ -1079,7 +1088,7 @@ const ProposedNewMeeting = ({
                                           >
                                             <img
                                               draggable={false}
-                                              src={`data:image/jpeg;base64,${participant.displayPicture}`}
+                                              src={`data:image/jpeg;base64,${participant.userProfilePicture.displayProfilePictureName}`}
                                               width="50px"
                                               alt=""
                                               height="50px"
