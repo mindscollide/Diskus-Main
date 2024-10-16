@@ -2812,11 +2812,11 @@ input#Participant::placeholder {
   color: #e1e1e1 !important;
 }
 
-.MuiSnackbar-root.MuiSnackbar-anchorOriginTopRight {
+/* .MuiSnackbar-root.MuiSnackbar-anchorOriginTopRight {
   z-index: 99999999999 !important;
   position: fixed;
   top: 10px;
-}
+} */
 
 .updateVersion .modal-dialog.modal-dialog-centered {
   height: auto !important;
@@ -4112,7 +4112,7 @@ body[dir="rtl"] .MuiSnackbar-root.MuiSnackbar-anchorOriginTopRight {
 
 body[dir="rtl"] .MuiAlert-action {
   margin-right: auto !important;
-  margin-left: -8px !important;
+  margin-left: -15px !important;
 }
 
 body[dir="rtl"] .MuiAlert-icon {
@@ -4208,7 +4208,12 @@ select {
   height: 35px !important;
   background-color: #6172d6;
 }
-
+body[dir="rtl"] .MuiAlert-message {
+  padding: 3px 0 !important;
+  font-size: 13px;
+  font-family: "IBM Plex Sans Arabic" !important;
+  margin-left: 10px;
+}
 .MuiAlert-message {
   padding: 3px 0 !important;
   font-size: 13px;

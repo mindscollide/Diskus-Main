@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types"; // For prop type validation
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { ExclamationDiamond, Airplane } from "react-bootstrap-icons";
+import "./Snack_bar.css";
+import { ExclamationDiamond, CheckCircle, XLg } from "react-bootstrap-icons";
 
 const Notification = React.memo(
   ({ setOpen, open, message, severity = "success" }) => {
@@ -15,14 +16,20 @@ const Notification = React.memo(
 
     return (
       <Snackbar
-        open={true}
-        // className={severity === "success"? "success_snackbar": "error_snackbar"}
+        open={open}
+        className={
+          severity === "success" ? "success_snackbar" : "error_snackbar"
+        }
+        // classNamse={severity === "success"? "success_snackbar": "error_snackbar"}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         autoHideDuration={6000}
         onClose={handleClose}>
         <MuiAlert
           elevation={6}
-          icon={severity === "success" ? <Airplane /> : <ExclamationDiamond />}
+          action={<XLg fontSize={18}/>}
+          icon={
+            severity === "success" ? <CheckCircle /> : <ExclamationDiamond />
+          }
           style={{ alignItems: "center" }}
           sx={{
             width: "100%",

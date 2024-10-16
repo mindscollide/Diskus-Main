@@ -2,7 +2,7 @@
 export const showMessage = (message, severity, setOpen) => {
     console.log("Showing message:", message);
     console.log("Showing severity:", severity);
-  
+  if(message!==""&&message!==null&&message!==undefined){
     setOpen({
       open: true,
       message: message,
@@ -13,4 +13,7 @@ export const showMessage = (message, severity, setOpen) => {
     setTimeout(() => {
       setOpen((prev) => ({ ...prev, open: false }));
     }, 3000);
+
+  }
+  
   };
