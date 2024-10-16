@@ -573,7 +573,8 @@ const SaveMeetingDetialsNewApiFunction = (
                     MeetID,
                     rows,
                     ResponseDate,
-                    setProposedNewMeeting
+                    setProposedNewMeeting,
+                    flag
                   )
                 );
                 // setSceduleMeeting(false);
