@@ -4,7 +4,7 @@ const initialState = {
   UserProfileData: null,
   ResponseMessage: "",
   ResponseCode: "",
-  Loading: true,
+  Loading: false,
   Spinner: false,
   NotificationData: [],
   RecentActivityData: [],

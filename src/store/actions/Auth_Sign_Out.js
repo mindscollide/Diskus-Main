@@ -100,6 +100,7 @@ const signOut = (navigate, message, dispatch) => {
   //   Helper.socket.disconnect(true);
   // }
   // window.location.href = window.location.origin + "/";
+  dispatch(initaialStateFun())
   navigate("/");
   let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
   let RememberPasswordLocal = JSON.parse(
@@ -174,4 +175,10 @@ const logoutAllTabs = () => {
   };
 };
 
-export { signOut, logoutAllTabs, userLogOutApiFunc };
+const initaialStateFun = () => {
+  return {
+    type: actions.SET_INITIAL_ALLSTATE,
+  };
+};
+
+export { signOut, logoutAllTabs, userLogOutApiFunc, initaialStateFun };
