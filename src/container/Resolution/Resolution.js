@@ -562,7 +562,7 @@ const Resolution = () => {
       key: "Edit",
       align: "center",
       width: "78px",
-      render: (data) => {
+      render: (table, data) => {
         if (data.resolutionStatus === "Closed") {
         } else if (data.resolutionStatus === "Circulated") {
           return (

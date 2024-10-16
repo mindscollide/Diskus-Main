@@ -276,7 +276,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "115px",
-      render: (record) => {
+      render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
             <span className={styles["meeting-start"]}>
