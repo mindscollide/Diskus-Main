@@ -437,7 +437,7 @@ const Polling = () => {
       key: "vote",
       width: "69px",
       align: "center",
-      render: (record) => {
+      render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (record.voteStatus === "Not Voted") {
