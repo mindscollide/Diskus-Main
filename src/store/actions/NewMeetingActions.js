@@ -500,7 +500,8 @@ const SaveMeetingDetialsNewApiFunction = (
   members,
   rows,
   ResponseDate,
-  setProposedNewMeeting
+  setProposedNewMeeting,
+  flag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -560,7 +561,7 @@ const SaveMeetingDetialsNewApiFunction = (
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
                   MeetingTitle: meetingDetails.MeetingTitle,
-                  IsUpdateFlow: false,
+                  IsUpdateFlow: flag ? true : false,
                 };
                 dispatch(
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
@@ -6102,6 +6103,29 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                 response.data.responseResult.folderID
               );
               setDataroomMapFolderId(response.data.responseResult.folderID);
+              let newarry = [];
+              members.map((data, index) => {
+                newarry.push(data.userID);
+              });
+              let Data = {
+                MeetingID: MeetID,
+                MeetingAttendeRoleID: 2,
+                UpdatedUsers: newarry,
+              };
+              dispatch(
+                UpdateMeetingUserApiFunc(
+                  navigate,
+                  Data,
+                  t,
+                  members,
+                  3,
+                  MeetID,
+                  rows,
+                  ResponseDate,
+                  true,
+                  setProposedNewMeeting
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -198,6 +198,7 @@ const ProposedNewMeeting = ({
       dispatch(proposedMeetingData());
       dispatch(ParticipantsData());
       dispatch(GetAllMeetingDetialsData());
+      setIsProposedMeetEdit(false);
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",
@@ -636,99 +637,210 @@ const ProposedNewMeeting = ({
 
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
-    let Dates = [];
+    if (isProposedMeetEdit) {
+      let Dates = [];
 
-    rows.forEach((data, index) => {
-      Dates.push({
-        MeetingDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
-          0,
-          8
-        ),
-        StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(8, 14),
-        EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+      rows.forEach((data, index) => {
+        Dates.push({
+          MeetingDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
+            0,
+            8
+          ),
+          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
+            8,
+            14
+          ),
+          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+        });
       });
-    });
 
-    let ProposedDates = [];
-    rows.forEach((data, index) => {
-      ProposedDates.push({
-        ProposedDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
-          0,
-          8
-        ),
-        StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(8, 14),
-        EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+      let ProposedDates = [];
+      rows.forEach((data, index) => {
+        ProposedDates.push({
+          ProposedDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
+            0,
+            8
+          ),
+          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
+            8,
+            14
+          ),
+          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+        });
       });
-    });
 
-    // Sorting the Dates array
-    let sortedDates = ProposedDates.sort((a, b) => {
-      if (a.ProposedDate !== b.ProposedDate) {
-        return a.ProposedDate.localeCompare(b.ProposedDate);
-      } else if (a.StartTime !== b.StartTime) {
-        return a.StartTime.localeCompare(b.StartTime);
+      // Sorting the Dates array
+      let sortedDates = ProposedDates.sort((a, b) => {
+        if (a.ProposedDate !== b.ProposedDate) {
+          return a.ProposedDate.localeCompare(b.ProposedDate);
+        } else if (a.StartTime !== b.StartTime) {
+          return a.StartTime.localeCompare(b.StartTime);
+        } else {
+          return a.EndTime.localeCompare(b.EndTime);
+        }
+      });
+
+      if (
+        proposedMeetingDetails.MeetingTitle !== "" &&
+        membersParticipants.length !== 0 &&
+        sendResponseBy.date !== "" &&
+        rows.length !== 1
+      ) {
+        let data = {
+          MeetingDetails: {
+            MeetingID: isProposedMeetEdit ? Number(editProposedMeetingID) : 0,
+            MeetingTitle: proposedMeetingDetails.MeetingTitle,
+            MeetingType: meetingTypeDetails.MeetingType,
+            Location: "",
+            Description: proposedMeetingDetails.Description,
+            IsVideoChat: true,
+            IsTalkGroup: false,
+            OrganizationId: Number(OrganizationID),
+            MeetingDates: Dates[0] ? [Dates[0]] : [],
+            MeetingReminders: [4],
+            Notes: "",
+            AllowRSVP: true,
+            NotifyOrganizerOnRSVP: true,
+            ReucurringMeetingID: 1,
+            VideoURL: "",
+            MeetingStatusID: 11,
+          },
+        };
+        console.log(data, "datadatadata");
+        console.log(sortedDates, "datadatadata");
+
+        dispatch(
+          SaveMeetingDetialsNewApiFunction(
+            navigate,
+            t,
+            data,
+            setSceduleMeeting,
+            setorganizers,
+            setmeetingDetails,
+            1,
+            setCurrentMeetingID,
+            currentMeeting,
+            proposedMeetingDetails,
+            setDataroomMapFolderId,
+            membersParticipants,
+            sortedDates,
+            multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
+            setProposedNewMeeting,
+            true
+          )
+        );
+
+        seterror(false);
+      } else if (
+        proposedMeetingDetails.MeetingTitle === "" &&
+        membersParticipants.length !== 0
+      ) {
+        seterror(true);
       } else {
-        return a.EndTime.localeCompare(b.EndTime);
+        seterror(true);
       }
-    });
-
-    if (
-      proposedMeetingDetails.MeetingTitle !== "" &&
-      membersParticipants.length !== 0 &&
-      sendResponseBy.date !== "" &&
-      rows.length !== 1
-    ) {
-      let data = {
-        MeetingDetails: {
-          MeetingID: isProposedMeetEdit ? Number(editProposedMeetingID) : 0,
-          MeetingTitle: proposedMeetingDetails.MeetingTitle,
-          MeetingType: meetingTypeDetails.MeetingType,
-          Location: "",
-          Description: proposedMeetingDetails.Description,
-          IsVideoChat: true,
-          IsTalkGroup: false,
-          OrganizationId: Number(OrganizationID),
-          MeetingDates: Dates[0] ? [Dates[0]] : [],
-          MeetingReminders: [4],
-          Notes: "",
-          AllowRSVP: true,
-          NotifyOrganizerOnRSVP: true,
-          ReucurringMeetingID: 1,
-          VideoURL: "",
-          MeetingStatusID: 11,
-        },
-      };
-      console.log(data, "datadatadata");
-      console.log(sortedDates, "datadatadata");
-
-      dispatch(
-        SaveMeetingDetialsNewApiFunction(
-          navigate,
-          t,
-          data,
-          setSceduleMeeting,
-          setorganizers,
-          setmeetingDetails,
-          1,
-          setCurrentMeetingID,
-          currentMeeting,
-          proposedMeetingDetails,
-          setDataroomMapFolderId,
-          membersParticipants,
-          sortedDates,
-          multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
-          setProposedNewMeeting
-        )
-      );
-
-      seterror(false);
-    } else if (
-      proposedMeetingDetails.MeetingTitle === "" &&
-      membersParticipants.length !== 0
-    ) {
-      seterror(true);
     } else {
-      seterror(true);
+      let Dates = [];
+
+      rows.forEach((data, index) => {
+        Dates.push({
+          MeetingDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
+            0,
+            8
+          ),
+          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
+            8,
+            14
+          ),
+          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+        });
+      });
+
+      let ProposedDates = [];
+      rows.forEach((data, index) => {
+        ProposedDates.push({
+          ProposedDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
+            0,
+            8
+          ),
+          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
+            8,
+            14
+          ),
+          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+        });
+      });
+
+      // Sorting the Dates array
+      let sortedDates = ProposedDates.sort((a, b) => {
+        if (a.ProposedDate !== b.ProposedDate) {
+          return a.ProposedDate.localeCompare(b.ProposedDate);
+        } else if (a.StartTime !== b.StartTime) {
+          return a.StartTime.localeCompare(b.StartTime);
+        } else {
+          return a.EndTime.localeCompare(b.EndTime);
+        }
+      });
+
+      if (
+        proposedMeetingDetails.MeetingTitle !== "" &&
+        membersParticipants.length !== 0 &&
+        sendResponseBy.date !== "" &&
+        rows.length !== 1
+      ) {
+        let data = {
+          MeetingDetails: {
+            MeetingID: isProposedMeetEdit ? Number(editProposedMeetingID) : 0,
+            MeetingTitle: proposedMeetingDetails.MeetingTitle,
+            MeetingType: meetingTypeDetails.MeetingType,
+            Location: "",
+            Description: proposedMeetingDetails.Description,
+            IsVideoChat: true,
+            IsTalkGroup: false,
+            OrganizationId: Number(OrganizationID),
+            MeetingDates: Dates[0] ? [Dates[0]] : [],
+            MeetingReminders: [4],
+            Notes: "",
+            AllowRSVP: true,
+            NotifyOrganizerOnRSVP: true,
+            ReucurringMeetingID: 1,
+            VideoURL: "",
+            MeetingStatusID: 11,
+          },
+        };
+        console.log(data, "datadatadata");
+        console.log(sortedDates, "datadatadata");
+
+        dispatch(
+          SaveMeetingDetialsNewApiFunction(
+            navigate,
+            t,
+            data,
+            setSceduleMeeting,
+            setorganizers,
+            setmeetingDetails,
+            1,
+            setCurrentMeetingID,
+            currentMeeting,
+            proposedMeetingDetails,
+            setDataroomMapFolderId,
+            membersParticipants,
+            sortedDates,
+            multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
+            setProposedNewMeeting,
+            false
+          )
+        );
+
+        seterror(false);
+      } else if (
+        proposedMeetingDetails.MeetingTitle === "" &&
+        membersParticipants.length !== 0
+      ) {
+        seterror(true);
+      } else {
+        seterror(true);
+      }
     }
   };
 
