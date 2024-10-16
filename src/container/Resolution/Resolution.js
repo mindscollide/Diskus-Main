@@ -528,7 +528,7 @@ const Resolution = () => {
       align: "center",
       key: "Result",
       width: "78px",
-      render: (data) => {
+      render: (table, data) => {
         if (data.resolutionStatus === "Circulated") {
           return (
             <Tooltip placement="bottomLeft" title={t("Result")}>
@@ -785,7 +785,7 @@ const Resolution = () => {
       width: "104px",
       text: "center",
       sortDirections: ["descend", "ascend"],
-      render: (data) => {
+      render: (text, data) => {
         if (data.isAttachmentAvailable) {
           return (
             <span className="d-flex justify-content-center">

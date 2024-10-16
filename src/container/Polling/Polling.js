@@ -495,7 +495,7 @@ const Polling = () => {
       dataIndex: "Edit",
       key: "Edit",
       width: "53px",
-      render: (record) => {
+      render: (text, record) => {
         return (
           <>
             {Number(record.pollCreatorID) === Number(userID) ? (
