@@ -35,6 +35,8 @@ import {
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../../commen/functions/time_formatter";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+
 const ProposedMeetingDate = ({
   setProposedMeetingDates,
   setParticipants,
@@ -82,8 +84,9 @@ const ProposedMeetingDate = ({
   });
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const [endDateError, setEndDateError] = useState(false);
@@ -286,10 +289,11 @@ const ProposedMeetingDate = ({
         index > 0 &&
         Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
       ) {
-        setOpen({
-          flag: true,
-          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
-        });
+        showMessage(
+          t("Selected-date-should-not-be-less-than-the-previous-one"),
+          "error",
+          setOpen
+        );
         return;
       } else {
         updatedRows[index].selectedOption = DateDate;
@@ -317,12 +321,13 @@ const ProposedMeetingDate = ({
           updatedRows[index].selectedOption
       ) {
         if (formattedTime <= updatedRows[index - 1].endDate) {
-          setOpen({
-            flag: true,
-            message: t(
+          showMessage(
+            t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
-          });
+            "error",
+            setOpen
+          );
           updatedRows[index].startDate = getStartTime?.formattedTime;
           updatedRows[index].startTime = getStartTime?.newFormatTime;
           setRows(updatedRows);
@@ -332,12 +337,11 @@ const ProposedMeetingDate = ({
             updatedRows[index].endDate !== "" &&
             formattedTime >= updatedRows[index].endDate
           ) {
-            setOpen({
-              flag: true,
-              message: t(
-                "Selected-start-time-should-not-be-greater-than-the-endTime"
-              ),
-            });
+            showMessage(
+              t("Selected-start-time-should-not-be-greater-than-the-endTime"),
+              "error",
+              setOpen
+            );
             updatedRows[index].startDate = formattedTime;
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
@@ -353,12 +357,11 @@ const ProposedMeetingDate = ({
           updatedRows[index].endDate !== "" &&
           formattedTime >= updatedRows[index].endDate
         ) {
-          setOpen({
-            flag: true,
-            message: t(
-              "Selected-start-time-should-not-be-greater-than-the-endTime"
-            ),
-          });
+          showMessage(
+            t("Selected-start-time-should-not-be-greater-than-the-endTime"),
+            "error",
+            setOpen
+          );
           updatedRows[index].startDate = formattedTime;
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
@@ -391,12 +394,11 @@ const ProposedMeetingDate = ({
           updatedRows[index].selectedOption
       ) {
         if (formattedTime <= updatedRows[index].startDate) {
-          setOpen({
-            flag: true,
-            message: t(
-              "Selected-end-time-should-not-be-less-than-the-previous-one"
-            ),
-          });
+          showMessage(
+            t("Selected-end-time-should-not-be-less-than-the-previous-one"),
+            "error",
+            setOpen
+          );
           updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           return;
@@ -407,10 +409,11 @@ const ProposedMeetingDate = ({
         }
       } else {
         if (formattedTime <= updatedRows[index].startDate) {
-          setOpen({
-            flag: true,
-            message: t("Selected-end-time-should-not-be-less-than-start-time"),
-          });
+          showMessage(
+            t("Selected-end-time-should-not-be-less-than-start-time"),
+            "error",
+            setOpen
+          );
           updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           return;
@@ -447,10 +450,7 @@ const ProposedMeetingDate = ({
         },
       ]);
     } else {
-      setOpen({
-        flag: true,
-        message: t("You-cant-enter-more-then-five-dates"),
-      });
+      showMessage(t("You-cant-enter-more-then-five-dates"), "error", setOpen);
     }
   };
 
@@ -517,10 +517,7 @@ const ProposedMeetingDate = ({
 
       dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
     } else {
-      setOpen({
-        flag: true,
-        message: t("Select-send-response-by-date"),
-      });
+      showMessage(t("Select-send-response-by-date"), "error", setOpen);
     }
   };
 
@@ -989,7 +986,12 @@ const ProposedMeetingDate = ({
           </Row>
         </Col>
       </Row>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {prposedMeetingUnsavedModal && (
         <UnsavedModal
           setProposedMeetingDates={setProposedMeetingDates}

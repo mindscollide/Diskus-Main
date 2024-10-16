@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import {
   Button,
   Checkbox,
@@ -26,6 +27,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,10 +55,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       dispatch(castVoteApi(navigate, data, t, 1, setvotePolls));
     } else {
       // open sncak bar for atleast select one option
-      setOpen({
-        open: true,
-        message: t("Required-atleast-one-vote"),
-      });
+      showMessage(t("Required-atleast-one-vote"), "error", setOpen);
     }
   };
   const handleForCheck = (value) => {
@@ -345,7 +344,12 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           </Col>
         </Row>
       </section>
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

@@ -23,6 +23,7 @@ import { validateInput } from "../../../commen/functions/regex";
 import { Checkbox } from "antd";
 import { BoardDeckSendEmailApi } from "../../../store/actions/UserManagementActions";
 import { GetAllCommitteesUsersandGroups } from "../../../store/actions/MeetingOrganizers_action";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 const BoardDeckSendEmail = ({
   boardDeckMeetingID,
   boarddeckOptions,
@@ -53,6 +54,7 @@ const BoardDeckSendEmail = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [notificationMessage, setNotificationMessage] = useState("");
   const [notifyPeople, setNotifyPeople] = useState({
@@ -146,13 +148,7 @@ const BoardDeckSendEmail = ({
       console.log(data, "datadatadatadatadata");
       dispatch(BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions));
     } else {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Atleast-add-one-user"),
-        }),
-        3000
-      );
+      showMessage(t("Atleast-add-one-user"), "error", setOpen);
     }
   };
 
@@ -165,12 +161,7 @@ const BoardDeckSendEmail = ({
 
     if (value.endsWith(".com")) {
       if (!emailRegex.test(value)) {
-        setTimeout(() => {
-          setOpen({
-            open: true,
-            message: t("Invalid-email-format"),
-          });
-        }, 3000);
+        showMessage(t("Invalid-email-format"), "error", setOpen);
         return;
       }
       setTags([...tags, value]);
@@ -410,7 +401,12 @@ const BoardDeckSendEmail = ({
           </>
         }
       />
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </Container>
   );
 };

@@ -52,6 +52,7 @@ import CustomPagination from "../../../../../commen/functions/customPagination/P
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import EditDeletePollConfirm from "./EditDeletePollConfirm/EditDeletePollConfirm";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const Polls = ({
   setSceduleMeeting,
   setPolls,
@@ -83,8 +84,9 @@ const Polls = ({
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
@@ -584,18 +586,7 @@ const Polls = ({
       NewMeetingreducer.ResponseMessage !== t("Record-not-found") &&
       NewMeetingreducer.ResponseMessage !== ""
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(NewMeetingreducer.ResponseMessage, "error", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -808,9 +799,10 @@ const Polls = ({
               />
             )}
             <Notification
-              setOpen={setOpen}
-              open={open.flag}
+              open={open.open}
               message={open.message}
+              setOpen={(status) => setOpen({ ...open, open: status.flag })}
+              severity={open.severity}
             />
           </section>
         </>

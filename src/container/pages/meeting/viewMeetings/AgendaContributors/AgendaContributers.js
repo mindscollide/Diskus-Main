@@ -29,6 +29,7 @@ import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
@@ -45,8 +46,9 @@ const AgendaContributers = ({
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
@@ -292,7 +294,6 @@ const AgendaContributers = ({
         align: "left",
         ellipsis: true,
         // width: "300px",
-        
       },
 
       {
@@ -370,18 +371,7 @@ const AgendaContributers = ({
       NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
       NewMeetingreducer.ResponseMessage !== undefined
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -399,7 +389,7 @@ const AgendaContributers = ({
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={AgendaContributorViewColoumns}
-                  scroll={{ y: rowsData.length === 0? "52vh": "36vh" }}
+                  scroll={{ y: rowsData.length === 0 ? "52vh" : "36vh" }}
                   pagination={false}
                   locale={{
                     emptyText: (
@@ -493,7 +483,12 @@ const AgendaContributers = ({
         />
       )}
 
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {/* {NewMeetingreducer.Loader2 && <Loader />} */}
     </>
   );

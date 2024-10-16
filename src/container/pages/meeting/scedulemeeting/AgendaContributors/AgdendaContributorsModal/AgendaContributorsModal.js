@@ -21,6 +21,8 @@ import GroupIcon from "../../../../../../assets/images/GroupSetting.svg";
 import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+
 const AgendaContributorsModal = ({
   SelectedRSVP,
   rowsData,
@@ -38,8 +40,9 @@ const AgendaContributorsModal = ({
   const [membersOrganizers, setMembersOrganizers] = useState([]);
   const [agendaContributorUsers, setAgendaContributorUsers] = useState("");
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
@@ -302,10 +305,11 @@ const AgendaContributorsModal = ({
     );
 
     if (membersOrganizers.length === 0) {
-      setOpen({
-        flag: true,
-        message: t("Atleast-one-agenda-contributor-should-be-selected"),
-      });
+      showMessage(
+        t("Atleast-one-agenda-contributor-should-be-selected"),
+        "error",
+        setOpen
+      );
     } else {
       setRowsData(newData);
       dispatch(showAddAgendaContributor(false));
@@ -467,7 +471,12 @@ const AgendaContributorsModal = ({
           </>
         }
       />
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </section>
   );
 };

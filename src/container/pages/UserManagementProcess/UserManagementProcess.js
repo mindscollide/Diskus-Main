@@ -53,7 +53,7 @@ const UserManagementProcess = () => {
   const [storedStep, setStoredStep] = useState(
     Number(localStorage.getItem("LoginFlowPageRoute"))
   );
- 
+
   // Retrieve currentStep value from localStorage, default to 1 if not found
   // let storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
   useEffect(() => {
@@ -105,7 +105,11 @@ const UserManagementProcess = () => {
         t("Users-password-is-created")
     ) {
       console.log("error error");
-      showMessage(Authreducer.EmailValidationResponseMessage, "error",setOpen);
+      showMessage(
+        Authreducer.EmailValidationResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage != "" &&
@@ -114,7 +118,7 @@ const UserManagementProcess = () => {
       Authreducer.EnterPasswordResponseMessage !=
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(Authreducer.EnterPasswordResponseMessage, "error",setOpen);
+      showMessage(Authreducer.EnterPasswordResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -189,25 +193,11 @@ const UserManagementProcess = () => {
       Authreducer?.VerifyOTPEmailResponseMessage !== "" &&
       Authreducer?.VerifyOTPEmailResponseMessage !== undefined
     ) {
-      console.log(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "AuthreducerAuthreducerAuthreducer"
+      showMessage(
+        Authreducer?.VerifyOTPEmailResponseMessage,
+        "success",
+        setOpen
       );
-
-      console.log("error error");
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer?.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -219,19 +209,11 @@ const UserManagementProcess = () => {
       Authreducer?.AuthenticateAFAResponseMessage != "" &&
       Authreducer?.AuthenticateAFAResponseMessage != undefined
     ) {
-      console.log("error error");
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer?.AuthenticateAFAResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer?.AuthenticateAFAResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else {

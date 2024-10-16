@@ -25,6 +25,7 @@ import {
   getMeetingStatusfromSocket,
   mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 const NewCalendar = () => {
   const calendarReducer = useSelector((state) => state.calendarReducer);
   const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
@@ -55,6 +56,7 @@ const NewCalendar = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   let CalenderMonthsSpan =
     localStorage.getItem("calenderMonthsSpan") !== undefined &&
@@ -233,11 +235,7 @@ const NewCalendar = () => {
           }
         });
       } else {
-        setOpen({
-          ...open,
-          open: true,
-          message: t("No-events-available-on-this-date"),
-        });
+        showMessage("No-events-available-on-this-date", "error", setOpen);
       }
     }
   };
@@ -491,7 +489,7 @@ const NewCalendar = () => {
   return (
     <>
       {calendarReducer.Spinner === true ? (
-        <section className='bg-white'>
+        <section className="bg-white">
           <Spin />
         </section>
       ) : (
@@ -509,14 +507,19 @@ const NewCalendar = () => {
             }}
             multiple={false}
             onChange={calendarClickFunction}
-            className='custom-multi-date-picker'
+            className="custom-multi-date-picker"
             onMonthChange={handleMonthChange}
             currentDate={currentDateObject}
             // format="YYYY-MM-DD"
           />
         </>
       )}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {eventModal && (
         <EventsModal
           events={events}

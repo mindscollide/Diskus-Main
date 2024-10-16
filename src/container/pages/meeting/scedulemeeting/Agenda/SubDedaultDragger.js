@@ -7,6 +7,7 @@ import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 import { useTranslation } from "react-i18next";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const SubDedaultDragger = ({
   setRows,
@@ -21,8 +22,9 @@ const SubDedaultDragger = ({
   //Uploader Props For SubAgendas
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const isShouldAgendaUpdatedOrNot = useSelector(
     (state) =>
@@ -52,10 +54,7 @@ const SubDedaultDragger = ({
       let getRowData = newRows[index].subAgenda[subIndex];
 
       if (getRowData.subfiles.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
       if (getRowData.subfiles.length > 0) {
@@ -69,26 +68,15 @@ const SubDedaultDragger = ({
             (oldFileData) => oldFileData.displayAttachmentName === fileData.name
           );
           if (!size) {
-            setTimeout(() => {
-              setOpen({
-                flag: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
-              });
-            }, 3000);
+            showMessage(
+              t("File-size-should-not-be-greater-then-zero"),
+              "error",
+              setOpen
+            );
           } else if (!sizezero) {
-            setTimeout(() => {
-              setOpen({
-                flag: true,
-                message: t("File-size-should-not-be-zero"),
-              });
-            }, 3000);
+            showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
           } else if (fileExists) {
-            setTimeout(() => {
-              setOpen({
-                flag: true,
-                message: t("File-already-exists"),
-              });
-            }, 3000);
+            showMessage(t("File-already-exists"), "error", setOpen);
           } else {
             let file = {
               displayAttachmentName: fileData.originFileObj.name,
@@ -114,19 +102,13 @@ const SubDedaultDragger = ({
           }
 
           if (!size) {
-            setTimeout(() => {
-              setOpen({
-                flag: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
-              });
-            }, 3000);
+            showMessage(
+              t("File-size-should-not-be-greater-then-zero"),
+              "error",
+              setOpen
+            );
           } else if (!sizezero) {
-            setTimeout(() => {
-              setOpen({
-                flag: true,
-                message: t("File-size-should-not-be-zero"),
-              });
-            }, 3000);
+            showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
           } else {
             let file = {
               displayAttachmentName: fileData.originFileObj.name,
@@ -151,7 +133,7 @@ const SubDedaultDragger = ({
 
   return (
     <>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         <Col lg={12} md={12} sm={12}>
           <Dragger
             fileList={[]}
@@ -168,28 +150,31 @@ const SubDedaultDragger = ({
                   !isShouldAgendaUpdatedOrNot
                 ? true
                 : false
-            }>
+            }
+          >
             <Row>
               <Col
                 lg={5}
                 md={5}
                 sm={12}
-                className='d-flex justify-content-end align-items-center'>
+                className="d-flex justify-content-end align-items-center"
+              >
                 <img
                   draggable={false}
                   src={DrapDropIcon}
                   width={100}
                   className={styles["ClassImage"]}
-                  alt=''
+                  alt=""
                 />
               </Col>
               <Col lg={7} md={7} sm={12}>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["ant-upload-text-Meetings"]}>
                       {t("Drag-file-here")}
                     </span>
@@ -200,7 +185,8 @@ const SubDedaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("The-following-file-formats-are")}
                     </span>
@@ -211,7 +197,8 @@ const SubDedaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
                     </span>
@@ -222,7 +209,12 @@ const SubDedaultDragger = ({
           </Dragger>
         </Col>
       </Row>
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

@@ -19,6 +19,7 @@ import {
   setVotePollModal,
 } from "../../../store/actions/Polls_actions";
 import CustomRadio from "../../../components/elements/radio/Radio";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 const Votepoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,8 +28,9 @@ const Votepoll = () => {
   const { t } = useTranslation();
   const [pollsOption, setPollsOption] = useState([]);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
@@ -114,10 +116,7 @@ const Votepoll = () => {
       dispatch(castVoteApi(navigate, data, t));
     } else {
       // open sncak bar for atleast select one option
-      setOpen({
-        flag: true,
-        message: t("Required-atleast-one-vote"),
-      });
+      showMessage(t("Required-atleast-one-vote"), "error", setOpen);
     }
   };
 
@@ -412,7 +411,12 @@ const Votepoll = () => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

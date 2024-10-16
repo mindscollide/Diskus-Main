@@ -44,6 +44,7 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -83,6 +84,7 @@ const SubAgendaMappingDragging = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   //Function For Dragging the SubAgendaItems
@@ -321,12 +323,10 @@ const SubAgendaMappingDragging = ({
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Thank-you-for-participanting-in-voting"),
-        }),
-        3000
+      showMessage(
+        t("Thank-you-for-participanting-in-voting"),
+        "error",
+        setOpen
       );
       dispatch(clearResponseMessage(""));
     }
@@ -820,7 +820,6 @@ const SubAgendaMappingDragging = ({
                                                                     filesData
                                                                   )
                                                                 }
-
                                                                 name={
                                                                   filesData.displayAttachmentName
                                                                 }
@@ -940,7 +939,12 @@ const SubAgendaMappingDragging = ({
             </>
           );
         })}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

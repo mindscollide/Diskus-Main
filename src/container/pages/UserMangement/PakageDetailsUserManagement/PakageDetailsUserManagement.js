@@ -48,13 +48,6 @@ const PakageDetailsUserManagement = () => {
     TotalLisence: "",
   });
   const [packageDetail, setPackageDetail] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
-
-  console.log(tableData, "tableDatatableDatatableData");
-
   //get All user pakages Api call
   useEffect(() => {
     try {
@@ -662,8 +655,6 @@ const PakageDetailsUserManagement = () => {
           </>
         ) : null}
       </>
-
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}

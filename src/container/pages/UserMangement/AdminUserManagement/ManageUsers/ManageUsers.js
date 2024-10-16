@@ -34,6 +34,7 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -91,6 +92,7 @@ const ManageUsers = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   //AllOrganizationsUsers Api
@@ -583,16 +585,7 @@ const ManageUsers = () => {
       UserMangementReducer.ResponseMessage !== "" &&
       UserMangementReducer.ResponseMessage !== t("No-data-found")
     ) {
-      setOpen({
-        open: true,
-        message: UserMangementReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 4000);
+      showMessage(UserMangementReducer.ResponseMessage, "success", setOpen);
       dispatch(clearMessegesUserManagement());
     }
   }, [UserMangementReducer.ResponseMessage]);
@@ -884,7 +877,12 @@ const ManageUsers = () => {
         <SuccessfullyUpdateModal editModalData={editModalData} />
       )}
       {UserMangementReducer.Loading ? <Loader /> : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </Container>
   );
 };

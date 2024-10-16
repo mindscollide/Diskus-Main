@@ -55,6 +55,7 @@ import {
   previousTabAgenda,
   nextTabAgenda,
 } from "../../../../../store/actions/MeetingAgenda_action";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Agenda = ({
   setSceduleMeeting,
@@ -114,8 +115,9 @@ const Agenda = ({
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
@@ -174,12 +176,12 @@ const Agenda = ({
         label: (
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <img
-                  alt=''
+                  alt=""
                   src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-                  width='17px'
-                  height='17px'
+                  width="17px"
+                  height="17px"
                   className={styles["Image_class_Agenda"]}
                 />
                 <span className={styles["Name_Class"]}>
@@ -535,53 +537,73 @@ const Agenda = ({
 
       // Check conditions for the parent objects
       if (row.title === "") {
-        setTimeout(
-          setOpen({
-            ...open,
-            flag: true,
-            message: `Title is missing in Agenda  ${rowIndex + 1} `,
-          }),
-          3000
+        showMessage(
+          t("Title-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
+          "error",
+          setOpen
         );
+        // setTimeout(
+        //   setOpen({
+        //     ...open,
+        //     flag: true,
+        //     message: `Title is missing in Agenda  ${rowIndex + 1} `,
+        //   }),
+        //   3000
+        // );
         isValid = false;
         break;
       }
 
       if (row.startDate === "") {
-        setTimeout(
-          setOpen({
-            ...open,
-            flag: true,
-            message: `Start Time is missing in Agenda  ${rowIndex + 1} `,
-          }),
-          3000
+        showMessage(
+          t("tart-time-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
+          "error",
+          setOpen
         );
+        // setTimeout(
+        //   setOpen({
+        //     ...open,
+        //     flag: true,
+        //     message: `Start Time is missing in Agenda  ${rowIndex + 1} `,
+        //   }),
+        //   3000
+        // );
         isValid = false;
         break;
       }
 
       if (row.endDate === "") {
-        setTimeout(
-          setOpen({
-            ...open,
-            flag: true,
-            message: `End Time is missing in Agenda  ${rowIndex + 1} `,
-          }),
-          3000
+        showMessage(
+          t("End-time-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
+          "error",
+          setOpen
         );
+        // setTimeout(
+        //   setOpen({
+        //     ...open,
+        //     flag: true,
+        //     message: `End Time is missing in Agenda  ${rowIndex + 1} `,
+        //   }),
+        //   3000
+        // );
         isValid = false;
         break;
       }
 
       if (row.presenterID === 0) {
-        setTimeout(
-          setOpen({
-            ...open,
-            flag: true,
-            message: `Presenter is missing in Agenda  ${rowIndex + 1} `,
-          }),
-          3000
+        showMessage(
+          t("Presenter-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
+          "error",
+          setOpen
         );
+        // setTimeout(
+        //   setOpen({
+        //     ...open,
+        //     flag: true,
+        //     message: `Presenter is missing in Agenda  ${rowIndex + 1} `,
+        //   }),
+        //   3000
+        // );
         isValid = false;
         break;
       }
@@ -591,17 +613,19 @@ const Agenda = ({
       }
 
       if (row.selectedRadio === 2 && row.urlFieldMain === "") {
-        console.log(
-          `Parent object urlMain should not be empty at index ${rowIndex}`
+        showMessage(
+          t("URL-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
+          "error",
+          setOpen
         );
-        setTimeout(
-          setOpen({
-            ...open,
-            flag: true,
-            message: `URL is missing in Agenda  ${rowIndex + 1} `,
-          }),
-          3000
-        );
+        // setTimeout(
+        //   setOpen({
+        //     ...open,
+        //     flag: true,
+        //     message: `URL is missing in Agenda  ${rowIndex + 1} `,
+        //   }),
+        //   3000
+        // );
         isValid = false;
         break;
       }
@@ -610,17 +634,19 @@ const Agenda = ({
         row.selectedRadio === 3 &&
         (row.userID === 0 || row.mainNote === "")
       ) {
-        // console.log(
-        //   `Parent object userID should not be 0 and mainNote should not be empty at index ${rowIndex}`
-        // );
-        setTimeout(
-          setOpen({
-            ...open,
-            flag: true,
-            message: `UserID/Note missing in Agenda  ${rowIndex + 1} `,
-          }),
-          3000
+        showMessage(
+          t("UserID/Note-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
+          "error",
+          setOpen
         );
+        // setTimeout(
+        //   setOpen({
+        //     ...open,
+        //     flag: true,
+        //     message: `UserID/Note missing in Agenda  ${rowIndex + 1} `,
+        //   }),
+        //   3000
+        // );
         isValid = false;
         break;
       }
@@ -631,64 +657,93 @@ const Agenda = ({
           const subAgendaItem = row.subAgenda[subIndex];
 
           if (subAgendaItem.subTitle === "") {
-            setTimeout(
-              setOpen({
-                ...open,
-                flag: true,
-                message: `Title is missing in Agenda  ${rowIndex + 1}.${
-                  subIndex + 1
-                }`,
+            showMessage(
+              t("Title-is-missing-in-agenda ", {
+                rowIndex: rowIndex + 1,
+                subIndex: subIndex + 1,
               }),
-              3000
+              "error",
+              setOpen
             );
+            // setTimeout(
+            //   setOpen({
+            //     ...open,
+            //     flag: true,
+            //     message: `Title is missing in Agenda  ${rowIndex + 1}.${
+            //       subIndex + 1
+            //     }`,
+            //   }),
+            //   3000
+            // );
             isValid = false;
             break;
           }
 
           if (subAgendaItem.startDate === "") {
-            setTimeout(
-              setOpen({
-                ...open,
-                flag: true,
-                message: `Start Date is missing in Agenda  ${rowIndex + 1}.${
-                  subIndex + 1
-                }`,
+            showMessage(
+              t("Start-date-is-missing-in-agenda ", {
+                rowIndex: rowIndex + 1,
+                subIndex: subIndex + 1,
               }),
-              3000
+              "error",
+              setOpen
             );
+            // setTimeout(
+            //   setOpen({
+            //     ...open,
+            //     flag: true,
+            //     message: `Start Date is missing in Agenda  ${rowIndex + 1}.${
+            //       subIndex + 1
+            //     }`,
+            //   }),
+            //   3000
+            // );
             isValid = false;
             break; // Stop processing if subAgenda startDate is missing
           }
 
           if (subAgendaItem.endDate === "") {
-            setTimeout(
-              setOpen({
-                ...open,
-                flag: true,
-                message: `End Date is missing in Agenda  ${rowIndex + 1}.${
-                  subIndex + 1
-                }`,
+            showMessage(
+              t("End-date-is-missing-in-agenda ", {
+                rowIndex: rowIndex + 1,
+                subIndex: subIndex + 1,
               }),
-              3000
+              "error",
+              setOpen
             );
+            // setTimeout(
+            //   setOpen({
+            //     ...open,
+            //     flag: true,
+            //     message: `End Date is missing in Agenda  ${rowIndex + 1}.${
+            //       subIndex + 1
+            //     }`,
+            //   }),
+            //   3000
+            // );
             isValid = false;
             break; // Stop processing if subAgenda endDate is missing
           }
 
           if (subAgendaItem.presenterID === 0) {
-            console.log(
-              `SubAgenda presenterID is missing at index ${rowIndex}, subAgenda index ${subIndex}`
-            );
-            setTimeout(
-              setOpen({
-                ...open,
-                flag: true,
-                message: `Presenter is missing in Agenda  ${rowIndex + 1}.${
-                  subIndex + 1
-                }`,
+            showMessage(
+              t("Presenter-is-missing-in-agenda ", {
+                rowIndex: rowIndex + 1,
+                subIndex: subIndex + 1,
               }),
-              3000
+              "error",
+              setOpen
             );
+            // setTimeout(
+            //   setOpen({
+            //     ...open,
+            //     flag: true,
+            //     message: `Presenter is missing in Agenda  ${rowIndex + 1}.${
+            //       subIndex + 1
+            //     }`,
+            //   }),
+            //   3000
+            // );
             isValid = false;
             break; // Stop processing if subAgenda presenterID is missing
           }
@@ -699,16 +754,24 @@ const Agenda = ({
             subAgendaItem.subSelectRadio === 2 &&
             subAgendaItem.subAgendaUrlFieldRadio === ""
           ) {
-            setTimeout(
-              setOpen({
-                ...open,
-                flag: true,
-                message: `URL is missing in Agenda  ${rowIndex + 1}.${
-                  subIndex + 1
-                }`,
+            showMessage(
+              t("URL-is-missing-in-agenda ", {
+                rowIndex: rowIndex + 1,
+                subIndex: subIndex + 1,
               }),
-              3000
+              "error",
+              setOpen
             );
+            // setTimeout(
+            //   setOpen({
+            //     ...open,
+            //     flag: true,
+            //     message: `URL is missing in Agenda  ${rowIndex + 1}.${
+            //       subIndex + 1
+            //     }`,
+            //   }),
+            //   3000
+            // );
             isValid = false;
             break;
           }
@@ -718,16 +781,24 @@ const Agenda = ({
             (subAgendaItem.userID === 0 ||
               subAgendaItem.subAgendarequestContributorEnterNotes === "")
           ) {
-            setTimeout(
-              setOpen({
-                ...open,
-                flag: true,
-                message: `UserID/Note missing in Agenda  ${rowIndex + 1}.${
-                  subIndex + 1
-                }`,
+            showMessage(
+              t("UserID/Note-is-missing-in-agenda ", {
+                rowIndex: rowIndex + 1,
+                subIndex: subIndex + 1,
               }),
-              3000
+              "error",
+              setOpen
             );
+            // setTimeout(
+            //   setOpen({
+            //     ...open,
+            //     flag: true,
+            //     message: `UserID/Note missing in Agenda  ${rowIndex + 1}.${
+            //       subIndex + 1
+            //     }`,
+            //   }),
+            //   3000
+            // );
             isValid = false;
             break;
           }
@@ -1387,59 +1458,27 @@ const Agenda = ({
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      setTimeout(
-        setOpen({
-          ...open,
-          flag: true,
-          message: "Record Saved",
-        }),
-        3000
-      );
+      showMessage(t("Record-saved"), "error", setOpen);
     } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      setTimeout(
-        setOpen({
-          ...open,
-          flag: true,
-          message: "Record Updated",
-        }),
-        3000
-      );
+      showMessage(t("Record-updated"), "error", setOpen);
     } else if (
       MeetingAgendaReducer.ResponseMessage ===
       t("Agendas-imported-successfully")
     ) {
-      setTimeout(
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Agendas-imported-successfully"),
-        }),
-        3000
-      );
+      showMessage(t("Agendas-imported-successfully"), "error", setOpen);
     } else if (MeetingAgendaReducer.ResponseMessage === t("No-agendas-exist")) {
-      setTimeout(
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("No-agendas-exist"),
-        }),
-        3000
-      );
+      showMessage(t("No-agendas-exist"), "error", setOpen);
     } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-saved")) {
-      setTimeout(
-        setOpen({
-          flag: true,
-          message: t("Agenda-voting-details-saved-successfully"),
-        }),
-        3000
+      showMessage(
+        t("Agenda-voting-details-saved-successfully"),
+        "error",
+        setOpen
       );
     } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-updated")) {
-      setTimeout(
-        setOpen({
-          flag: true,
-          message: t("Agenda-voting-details-updated-successfully"),
-        }),
-        3000
+      showMessage(
+        t("Agenda-voting-details-updated-successfully"),
+        "error",
+        setOpen
       );
     }
     dispatch(clearResponseMessage(""));
@@ -1507,7 +1546,8 @@ const Agenda = ({
             {editorRole.role === "Agenda Contributor" &&
             rows[0].title === "" ? null : (
               <DragDropContext
-                onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
+                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+              >
                 {emptyStateRows === true &&
                 (editorRole.role === "Agenda Contributor" ||
                   editorRole.role === "Participant") ? null : (
@@ -1520,16 +1560,19 @@ const Agenda = ({
                         rows.length > 1
                           ? `${styles["Scroller_Agenda"]} d-flex flex-column-reverse`
                           : styles["Scroller_Agenda"]
-                      }>
+                      }
+                    >
                       <Droppable
                         //  key={`main-agenda-${rows.id}`}
                         //  droppableId={`main-agenda-${rows.id}`}
-                        droppableId='board'
-                        type='PARENT'>
+                        droppableId="board"
+                        type="PARENT"
+                      >
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.droppableProps}>
+                            {...provided.droppableProps}
+                          >
                             {rows.length > 0
                               ? rows.map((data, index) => {
                                   return (
@@ -1542,7 +1585,8 @@ const Agenda = ({
                                             "Agenda Contributor"
                                             ? "d-none"
                                             : styles["agenda-border-class"]
-                                        }>
+                                        }
+                                      >
                                         <ParentAgenda
                                           fileForSend={fileForSend}
                                           setFileForSend={setFileForSend}
@@ -1616,13 +1660,14 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center mt-3'>
+                    className="d-flex justify-content-center mt-3"
+                  >
                     <img
                       draggable={false}
                       src={emptyContributorState}
-                      width='274.05px'
-                      alt=''
-                      height='230.96px'
+                      width="274.05px"
+                      alt=""
+                      height="230.96px"
                       className={styles["Image-Add-Agenda"]}
                     />
                   </Col>
@@ -1632,7 +1677,8 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center mt-3'>
+                    className="d-flex justify-content-center mt-3"
+                  >
                     <span className={styles["Empty_state_heading"]}>
                       {t("No-agenda-availabe-to-discuss").toUpperCase()}
                     </span>
@@ -1645,7 +1691,7 @@ const Agenda = ({
             editorRole.role === "Agenda Contributor" ||
             editorRole.status === "9" ||
             editorRole.status === 9 ? null : (
-              <Row className='mt-3'>
+              <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <Button
                     text={
@@ -1655,13 +1701,14 @@ const Agenda = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex justify-content-center gap-2 align-items-center'>
+                            className="d-flex justify-content-center gap-2 align-items-center"
+                          >
                             <img
                               draggable={false}
                               src={plusFaddes}
-                              height='10.77px'
-                              width='10.77px'
-                              alt=''
+                              height="10.77px"
+                              width="10.77px"
+                              alt=""
                             />
                             <span className={styles["Add_Agen_Heading"]}>
                               {t("Add-agenda")}
@@ -1672,7 +1719,8 @@ const Agenda = ({
                     }
                     className={styles["AddMoreBtnAgenda"]}
                     disableBtn={
-                      Number(editorRole.status) === 10 && !isShouldAgendaUpdatedOrNot
+                      Number(editorRole.status) === 10 &&
+                      !isShouldAgendaUpdatedOrNot
                         ? true
                         : false
                     }
@@ -1681,12 +1729,13 @@ const Agenda = ({
                 </Col>
               </Row>
             )}
-            <Row className='mt-4'>
+            <Row className="mt-4">
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end gap-2'>
+                className="d-flex justify-content-end gap-2"
+              >
                 {editorRole.status === "9" ||
                 editorRole.status === 9 ||
                 editorRole.role === "Agenda Contributor" ? null : (
@@ -1813,7 +1862,12 @@ const Agenda = ({
         />
       )}
 
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

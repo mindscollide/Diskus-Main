@@ -71,6 +71,7 @@ import {
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Organizers = ({
   setAgendaContributors,
@@ -156,6 +157,7 @@ const Organizers = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   useEffect(() => {
@@ -164,10 +166,6 @@ const Organizers = ({
     return () => {
       setInputValues({});
       setRowsData([currentOrganizerData]);
-      setOpen({
-        open: false,
-        message: "",
-      });
     };
   }, []);
 
@@ -763,10 +761,7 @@ const Organizers = ({
     );
     if (recordToDelete.isPrimaryOrganizer) {
       if (findisPrimary.length === 1) {
-        setOpen({
-          message: t("Primary-organizer-doesn't-deleted"),
-          open: true,
-        });
+        showMessage(t("Primary-organizer-doesn't-deleted"), "error", setOpen);
       } else {
       }
     } else {
@@ -974,10 +969,11 @@ const Organizers = ({
       );
       setIsEdit(false);
     } else {
-      setOpen({
-        message: t("At-least-one-primary-organizer-is-required"),
-        open: true,
-      });
+      showMessage(
+        t("At-least-one-primary-organizer-is-required"),
+        "error",
+        setOpen
+      );
     }
   };
 
@@ -1011,10 +1007,11 @@ const Organizers = ({
         )
       );
     } else {
-      setOpen({
-        message: t("At-least-one-primary-organizer-is-required"),
-        open: true,
-      });
+      showMessage(
+        t("At-least-one-primary-organizer-is-required"),
+        "error",
+        setOpen
+      );
     }
     // let Data = {
     //   MeetingOrganizers: rowsData.map((item) => ({
@@ -1174,35 +1171,17 @@ const Organizers = ({
       MeetingOrganizersReducer.ResponseMessage ===
       "Organizers-saved-successfully"
     ) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Organizers-saved-successfully"),
-        }),
-        3000
-      );
+      showMessage(t("Organizers-saved-successfully"), "error", setOpen);
     } else if (
       MeetingOrganizersReducer.ResponseMessage ===
       "Notification-sent-successfully"
     ) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Notification-sent-successfully"),
-        }),
-        3000
-      );
+      showMessage(t("Notification-sent-successfully"), "error", setOpen);
     } else if (
       MeetingOrganizersReducer.ResponseMessage ===
       "Notification-not-sent-successfully"
     ) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Notification-not-sent-successfully"),
-        }),
-        3000
-      );
+      showMessage(t("Notification-not-sent-successfully"), "error", setOpen);
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
@@ -1379,7 +1358,12 @@ const Organizers = ({
           </section>
         </>
       )}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {NewMeetingreducer.adduserModal && (
         <ModalOrganizor currentMeeting={currentMeeting} />
       )}

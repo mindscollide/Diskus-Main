@@ -29,6 +29,8 @@ import {
   showAttendanceConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+
 const Attendence = ({
   currentMeeting,
   setSceduleMeeting,
@@ -61,6 +63,7 @@ const Attendence = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   console.log(open, "setOpensetOpen");
 
@@ -306,8 +309,7 @@ const Attendence = ({
 
   const handleSaveNotification = () => {
     if (ResponseMessage) {
-      setOpen({ open: true, message: ResponseMessage });
-
+      showMessage(ResponseMessage, "success", setOpen);
       // Dispatch an action to reset/clear ResponseMessage
       dispatch(clearAttendanceResponse());
     }
@@ -456,7 +458,12 @@ const Attendence = ({
         />
       )}
 
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

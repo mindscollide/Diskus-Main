@@ -22,6 +22,7 @@ import {
 } from "../../../store/actions/Auth_Forgot_Password";
 import { useDispatch, useSelector } from "react-redux";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const ForgotPassword = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const submitForm = async (e) => {
     e.preventDefault();
@@ -53,18 +55,7 @@ const ForgotPassword = () => {
         setMessege(t("Please-enter-a-valid-email"));
       }
     } else {
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Please-enter-email"),
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(t("Please-enter-email"), "error", setOpen);
       setMessege("");
     }
   };
@@ -93,18 +84,7 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (auth.ResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: auth.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(auth.ResponseMessage, "success", setOpen);
 
       dispatch(cleareChangePasswordMessage());
     } else {
@@ -140,7 +120,12 @@ const ForgotPassword = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img draggable="false" src={DiskusLogo} width={220} alt="diskus_logo" />
+                    <img
+                      draggable="false"
+                      src={DiskusLogo}
+                      width={220}
+                      alt="diskus_logo"
+                    />
                   </Col>
                 </Row>
                 <Row className="text-center mt-5">
@@ -249,7 +234,8 @@ const ForgotPassword = () => {
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
-              <img draggable="false"
+              <img
+                draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"
@@ -260,7 +246,12 @@ const ForgotPassword = () => {
         </Row>
       </Container>
       {auth.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

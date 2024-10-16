@@ -50,6 +50,7 @@ import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { Tooltip } from "antd";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Participants = ({
   setParticipants,
@@ -86,6 +87,7 @@ const Participants = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [rspvRows, setrspvRows] = useState([]);
 
@@ -217,11 +219,11 @@ const Participants = ({
   const handleCancelingRow = (record) => {
     if (isEditMeeting) {
       if (rspvRows.length === 1) {
-        setOpen({
-          ...open,
-          open: true,
-          message: t("Please-at-least-one-partcipant-required"),
-        });
+        showMessage(
+          t("Please-at-least-one-partcipant-required"),
+          "error",
+          setOpen
+        );
       } else {
         let removingfromrow = rspvRows.filter(
           (data, index) => data.userID !== record.userID
@@ -771,10 +773,7 @@ const Participants = ({
         )
       );
     } else {
-      setOpen({
-        message: t("Role-is-required"),
-        open: true,
-      });
+      showMessage(t("Role-is-required"), "error", setOpen);
     }
     setIsEditClicked(false);
   };
@@ -1104,9 +1103,10 @@ const Participants = ({
             />
           )}
           <Notification
-            message={open.message}
-            setOpen={setOpen}
             open={open.open}
+            message={open.message}
+            setOpen={(status) => setOpen({ ...open, open: status.flag })}
+            severity={open.severity}
           />
         </>
       )}

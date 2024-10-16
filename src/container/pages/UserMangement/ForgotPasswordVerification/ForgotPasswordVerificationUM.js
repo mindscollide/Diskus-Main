@@ -38,6 +38,7 @@ const ForgotPasswordVerificationUM = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   // Constants for timer
@@ -203,7 +204,7 @@ const ForgotPasswordVerificationUM = () => {
 
   const handleBacktoSignIn = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
-   dispatch(LoginFlowRoutes(1));
+    dispatch(LoginFlowRoutes(1));
   };
 
   return (
@@ -381,7 +382,12 @@ const ForgotPasswordVerificationUM = () => {
       ) : UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

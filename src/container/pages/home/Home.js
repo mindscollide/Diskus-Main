@@ -86,6 +86,7 @@ import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import Stats from "../../NewDashboardLayout/Stats/Stats";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const Home = () => {
   const dCheck = useLoaderData();
@@ -121,6 +122,7 @@ const Home = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   // for sub menus Icons
   const [subIcons, setSubIcons] = useState(false);
@@ -914,7 +916,7 @@ const Home = () => {
       className: "titleDashboard",
       ellipsis: true,
       render: (text, record) => (
-        <span className='w-100 cursor-pointer'>{text}</span>
+        <span className="w-100 cursor-pointer">{text}</span>
       ),
       // render: (text) => <span className="fw-bold">{text}</span>,
     },
@@ -927,7 +929,7 @@ const Home = () => {
 
       render: (text, record) => {
         return (
-          <span className='cursor-pointer'>{_justShowDateformat(text)}</span>
+          <span className="cursor-pointer">{_justShowDateformat(text)}</span>
         );
       },
     },
@@ -940,35 +942,35 @@ const Home = () => {
       render: (text, record) => {
         if (record.status.pK_TSID === 1) {
           return (
-            <span className=' InProgress status_value cursor-pointer'>
+            <span className=" InProgress status_value cursor-pointer">
               {text.status}
             </span>
           );
         } else if (record.status.pK_TSID === 2) {
           return (
-            <span className=' Pending  status_value cursor-pointer'>
+            <span className=" Pending  status_value cursor-pointer">
               {text.status}
             </span>
           );
         } else if (record.status.pK_TSID === 3) {
           return (
-            <span className=' Upcoming cursor-pointer'>{text.status}</span>
+            <span className=" Upcoming cursor-pointer">{text.status}</span>
           );
         } else if (record.status.pK_TSID === 4) {
           return (
-            <span className=' Cancelled status_value cursor-pointer'>
+            <span className=" Cancelled status_value cursor-pointer">
               {text.status}
             </span>
           );
         } else if (record.status.pK_TSID === 5) {
           return (
-            <span className=' Completed status_value cursor-pointer'>
+            <span className=" Completed status_value cursor-pointer">
               {text.status}
             </span>
           );
         } else if (record.status.pK_TSID === 6) {
           return (
-            <span className=' color-F68732 status_value cursor-pointer'>
+            <span className=" color-F68732 status_value cursor-pointer">
               {text.status}
             </span>
           );
@@ -1020,18 +1022,11 @@ const Home = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.VerifyOTPEmailResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -1039,37 +1034,17 @@ const Home = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: false,
-        message: "",
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.OrganizationCreateResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -1077,18 +1052,11 @@ const Home = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.CreatePasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.CreatePasswordResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -1096,45 +1064,24 @@ const Home = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.GetSelectedPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.GetSelectedPackageResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.EmailValidationResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
-    } else {
-      setOpen({
-        ...open,
-        open: false,
-        message: "",
-      });
     }
   }, [
     Authreducer.EnterPasswordResponseMessage,
@@ -1677,31 +1624,27 @@ const Home = () => {
           }
         });
       } else {
-        setOpen({
-          ...open,
-          open: true,
-          message: t("No-events-available-on-this-date"),
-        });
+        showMessage(t("No-events-available-on-this-date"), "error", setOpen);
       }
     }
   };
 
   return (
     <>
-      <Container fluid className='Dashboard-Main-Container'>
+      <Container fluid className="Dashboard-Main-Container">
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <section className='StatsBox'>
+            <section className="StatsBox">
               <Stats />
             </section>
           </Col>
         </Row>
         <Row>
-          <Col lg={4} md={4} sm={12} className='dashboard-container'>
-            <section className='dashboard-col-1'>
+          <Col lg={4} md={4} sm={12} className="dashboard-container">
+            <section className="dashboard-col-1">
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <div className='whiteBackground Spinner home-calendar-spinner calendar_home   '>
+                  <div className="whiteBackground Spinner home-calendar-spinner calendar_home   ">
                     {calendarReducer.Spinner === true ? (
                       <Spin />
                     ) : (
@@ -1724,7 +1667,7 @@ const Home = () => {
                               }}
                               multiple={false}
                               onChange={calendarClickFunction}
-                              className='custom-multi-date-picker'
+                              className="custom-multi-date-picker"
                               onMonthChange={handleMonthChange}
                               currentDate={currentDateObject}
                               // format="YYYY-MM-DD"
@@ -1738,35 +1681,35 @@ const Home = () => {
               </Row>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <div className='whiteBackground Spinner home-meeting_event-spinner event_home '>
+                  <div className="whiteBackground Spinner home-meeting_event-spinner event_home ">
                     {meetingIdReducer.Spinner === true ? (
                       <Spin />
                     ) : (
                       <>
                         <Row>
                           <Col lg={12} md={12} sm={12}>
-                            <h1 className='upcoming-events'>
+                            <h1 className="upcoming-events">
                               {t("Up-coming-event")}
                             </h1>
 
-                            <div className='Upcoming-Events-Box'>
+                            <div className="Upcoming-Events-Box">
                               {
                                 upComingEvents.length === 0 ? (
                                   <ResultMessage
                                     icon={
                                       <img
                                         src={noTask}
-                                        alt=''
+                                        alt=""
                                         width={"100%"}
-                                        draggable='false'
+                                        draggable="false"
                                       />
                                     }
                                     subTitle={
-                                      <span className='UpcomingEvent'>
+                                      <span className="UpcomingEvent">
                                         {t("No-upcoming-events")}
                                       </span>
                                     }
-                                    className='notification-text'
+                                    className="notification-text"
                                   />
                                 ) : null
                                 // upcomingEventsHandler(upComingEvents)
@@ -1781,10 +1724,15 @@ const Home = () => {
               </Row>
             </section>
           </Col>
-          <Col lg={4} md={4} sm={12} className='m-0 '></Col>
+          <Col lg={4} md={4} sm={12} className="m-0 "></Col>
         </Row>
       </Container>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {show ? (
         <ModalMeeting
           show={show}
@@ -1803,25 +1751,25 @@ const Home = () => {
           ButtonTitle={"Block"}
           centered
           size={"md"}
-          modalHeaderClassName='d-none'
+          modalHeaderClassName="d-none"
           ModalBody={
             <>
               <>
-                <Row className='mb-1'>
+                <Row className="mb-1">
                   <Col lg={12} md={12} xs={12} sm={12}>
                     <Row>
-                      <Col className='d-flex justify-content-center'>
+                      <Col className="d-flex justify-content-center">
                         <img
                           src={VerificationFailedIcon}
                           width={60}
                           className={"allowModalIcon"}
-                          alt=''
-                          draggable='false'
+                          alt=""
+                          draggable="false"
                         />
                       </Col>
                     </Row>
                     <Row>
-                      <Col className='text-center mt-4'>
+                      <Col className="text-center mt-4">
                         <label className={"allow-limit-modal-p"}>
                           {t(
                             "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -1837,12 +1785,13 @@ const Home = () => {
           ModalFooter={
             <>
               <Col sm={12} md={12} lg={12}>
-                <Row className='mb-3'>
+                <Row className="mb-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}

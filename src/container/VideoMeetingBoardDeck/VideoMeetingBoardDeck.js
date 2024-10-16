@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Notification } from "../../components/elements";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const VideoMeetingBoardDeck = () => {
   const dispatch = useDispatch();
@@ -35,8 +36,9 @@ const VideoMeetingBoardDeck = () => {
   const [videoLink, setVideoLink] = useState(null);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   console.log(videoLink, "videoLinkvideoLinkvideoLink");
@@ -110,18 +112,7 @@ const VideoMeetingBoardDeck = () => {
       UserMangementReducer.ResponseMessage !== t("No-data-available") &&
       UserMangementReducer.ResponseMessage !== t("Record-available")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: UserMangementReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(UserMangementReducer.ResponseMessage, "success", setOpen);
       dispatch(clearMessegesUserManagement());
     } else {
       dispatch(clearMessegesUserManagement());
@@ -153,7 +144,12 @@ const VideoMeetingBoardDeck = () => {
           </Col>
         </Row>
       )}
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

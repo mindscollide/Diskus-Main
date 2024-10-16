@@ -29,6 +29,7 @@ import { useEffect } from "react";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import { Tooltip } from "antd";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Participants = ({
   setParticipants,
@@ -50,8 +51,9 @@ const Participants = ({
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   // For cancel with no modal Open
@@ -305,18 +307,7 @@ const Participants = ({
       NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("No-record-found")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -426,9 +417,10 @@ const Participants = ({
           />
         )}
         <Notification
-          setOpen={setOpen}
-          open={open.flag}
+          open={open.open}
           message={open.message}
+          setOpen={(status) => setOpen({ ...open, open: status.flag })}
+          severity={open.severity}
         />
       </section>
       {NewMeetingreducer.LoadingParticipants && <Loader />}

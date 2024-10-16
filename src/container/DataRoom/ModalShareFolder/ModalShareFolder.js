@@ -9,6 +9,8 @@ import pdf from "../../../assets/images/222.svg";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
+
 import {
   Button,
   Checkbox,
@@ -49,8 +51,9 @@ const ModalShareFolder = ({
     Folders: [],
   });
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -232,10 +235,7 @@ const ModalShareFolder = ({
             return { ...prev, Folders: [...prev.Folders, Data] };
           });
         } else {
-          setOpen({
-            flag: true,
-            message: t("User-is-already-exist"),
-          });
+          showMessage(t("User-is-already-exist"), "error", setOpen);
         }
         setPersonValue({
           value: 0,
@@ -252,10 +252,7 @@ const ModalShareFolder = ({
         });
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("All-options-must-be-selected"),
-      });
+      showMessage(t("All-options-must-be-selected"), "error", setOpen);
     }
   };
 
@@ -293,7 +290,7 @@ const ModalShareFolder = ({
           }}
           setShow={setSharefolder}
           ButtonTitle={ModalTitle}
-          modalFooterClassName='d-block'
+          modalFooterClassName="d-block"
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
@@ -380,21 +377,22 @@ const ModalShareFolder = ({
                     </Col>
                   </Row>
 
-                  <Row className='mt-3'>
-                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+                  <Row className="mt-3">
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                       <img
-                        draggable='false'
+                        draggable="false"
                         src={newprofile}
-                        height='40px'
-                        width='41px'
-                        alt=''
+                        height="40px"
+                        width="41px"
+                        alt=""
                       />
-                      <Row className='mt-1'>
+                      <Row className="mt-1">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Line-height"]}>
+                          className={styles["Line-height"]}
+                        >
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["InvitetoEdit_Heading"]}>
@@ -418,26 +416,28 @@ const ModalShareFolder = ({
                       </Row>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Box_for_attachments"]}>
-                      <Row className='mt-2'>
+                      className={styles["Box_for_attachments"]}
+                    >
+                      <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <Row>
                             <Col
                               lg={10}
                               md={10}
                               sm={10}
-                              className='d-flex justify-content-start gap-2 '>
+                              className="d-flex justify-content-start gap-2 "
+                            >
                               <img
-                                draggable='false'
+                                draggable="false"
                                 src={pdf}
-                                height='16px'
-                                alt=''
-                                width='14.23px'
+                                height="16px"
+                                alt=""
+                                width="14.23px"
                               />
                               <span className={styles["File_name"]}>
                                 Merger proposal for ABC Industries.pdf
@@ -447,20 +447,21 @@ const ModalShareFolder = ({
                               lg={2}
                               md={2}
                               sm={2}
-                              className='d-flex justify-content-end gap-2 mt-1'>
+                              className="d-flex justify-content-end gap-2 mt-1"
+                            >
                               <img
-                                alt=''
-                                draggable='false'
+                                alt=""
+                                draggable="false"
                                 src={download}
-                                height='11px'
-                                width='12.15px'
+                                height="11px"
+                                width="12.15px"
                               />
                               <img
-                                draggable='false'
+                                draggable="false"
                                 src={star}
-                                height='10.22px'
-                                alt=''
-                                width='12.07px'
+                                height="10.22px"
+                                alt=""
+                                width="12.07px"
                               />
                             </Col>
                           </Row>
@@ -478,7 +479,7 @@ const ModalShareFolder = ({
                       </span>
                     </Col>
                   </Row>
-                  <Row className='mt-2'>
+                  <Row className="mt-2">
                     <Col lg={7} md={7} sm={12}>
                       <Select
                         isSearchable={true}
@@ -539,18 +540,19 @@ const ModalShareFolder = ({
                     </Col> */}
                     <Col lg={2} md={2} sm={2}>
                       <Button
-                        text='Add'
+                        text="Add"
                         className={styles["shareFolderAddMemberBtn"]}
                         onClick={handleAddMember}
                       />
                     </Col>
                   </Row>
-                  <Row className='mt-2'>
+                  <Row className="mt-2">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Scroller_particiapnt_shared_folder"]}>
+                      className={styles["Scroller_particiapnt_shared_folder"]}
+                    >
                       <Row>
                         {ownerInfo !== null && (
                           <Col sm={4} md={4} lg={4}>
@@ -570,19 +572,20 @@ const ModalShareFolder = ({
                                   md={4}
                                   sm={4}
                                   key={data.pK_UID}
-                                  className='position-relative'>
+                                  className="position-relative"
+                                >
                                   <ParticipantInfoShareFolder
                                     participantname={data.name}
                                     particiapantdesignation={data.designation}
                                     userPic={data.displayProfilePictureName}
                                     icon={
                                       <img
-                                        draggable='false'
+                                        draggable="false"
                                         src={crossIcon}
-                                        height='14px'
-                                        width='14px'
+                                        height="14px"
+                                        width="14px"
                                         className={styles["cross_icon_modal"]}
-                                        alt=''
+                                        alt=""
                                         onClick={() => handleRemoveMember(data)}
                                       />
                                     }
@@ -608,17 +611,18 @@ const ModalShareFolder = ({
                       </Row>
                     </Col>
                   </Row>
-                  <Row className='mt-2'>
+                  <Row className="mt-2">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='CreateMeetingInput '>
+                      className="CreateMeetingInput "
+                    >
                       <TextField
-                        applyClass='text-area-sharefolder'
-                        type='text'
+                        applyClass="text-area-sharefolder"
+                        type="text"
                         as={"textarea"}
-                        rows='4'
+                        rows="4"
                         value={message}
                         change={(e) => setMessage(e.target.value)}
                         placeholder={t("Messege")}
@@ -626,12 +630,13 @@ const ModalShareFolder = ({
                       />
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-3 align-items-center'>
+                      className="d-flex gap-3 align-items-center"
+                    >
                       <Checkbox
                         checked={notifyPeople}
                         onChange={() => setNotifyPeople(!notifyPeople)}
@@ -656,7 +661,8 @@ const ModalShareFolder = ({
                                     sm={12}
                                     md={12}
                                     lg={12}
-                                    className={styles["generalAccess-value"]}>
+                                    className={styles["generalAccess-value"]}
+                                  >
                                     ({" "}
                                     {t(
                                       "Only-people-with-access-can-open-with-the-link"
@@ -677,7 +683,8 @@ const ModalShareFolder = ({
                                     sm={12}
                                     md={12}
                                     lg={12}
-                                    className={styles["generalAccess-value"]}>
+                                    className={styles["generalAccess-value"]}
+                                  >
                                     (
                                     {`${t(
                                       "Anyone-on-the-internet-with-the-link-can-view"
@@ -717,7 +724,8 @@ const ModalShareFolder = ({
                       lg={11}
                       md={11}
                       sm={11}
-                      className='d-flex justify-content-end'>
+                      className="d-flex justify-content-end"
+                    >
                       <Button
                         text={t("Open")}
                         className={styles["Open_button"]}
@@ -732,7 +740,8 @@ const ModalShareFolder = ({
                       lg={6}
                       md={6}
                       sm={6}
-                      className='d-flex justify-content-start'>
+                      className="d-flex justify-content-start"
+                    >
                       <Button
                         text={t("Copy-link")}
                         className={styles["Copy_Link_btn"]}
@@ -743,7 +752,8 @@ const ModalShareFolder = ({
                       lg={6}
                       md={6}
                       sm={6}
-                      className='d-flex justify-content-end'>
+                      className="d-flex justify-content-end"
+                    >
                       <Button
                         text={t("Send")}
                         className={styles["send_btn"]}
@@ -758,13 +768,15 @@ const ModalShareFolder = ({
                           lg={12}
                           sm={12}
                           md={12}
-                          className={styles["Background_notification"]}>
-                          <Row className='mt-2'>
+                          className={styles["Background_notification"]}
+                        >
+                          <Row className="mt-2">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-center'>
+                              className="d-flex justify-content-center"
+                            >
                               <span className={styles["Link_copied"]}>
                                 {t("Link-copied")}
                               </span>
@@ -781,13 +793,15 @@ const ModalShareFolder = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Back_ground_editNotification"]}>
+                          className={styles["Back_ground_editNotification"]}
+                        >
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-center mt-2'>
+                              className="d-flex justify-content-center mt-2"
+                            >
                               <span className={styles["Edit_notification"]}>
                                 {t("You-dont-have-permission-to-edit")} "Folder
                                 1"
@@ -805,13 +819,15 @@ const ModalShareFolder = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Back_ground_accessupdate"]}>
+                          className={styles["Back_ground_accessupdate"]}
+                        >
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-center mt-2'>
+                              className="d-flex justify-content-center mt-2"
+                            >
                               <span className={styles["Access_updated"]}>
                                 {t("Access-updated")}
                               </span>
@@ -827,7 +843,12 @@ const ModalShareFolder = ({
           }
         />
       </Container>
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

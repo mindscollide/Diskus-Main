@@ -41,6 +41,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../container/DataRoom/SearchFunctionality/option";
+import { showMessage } from "../snack_bar/utill";
 const CreateCommittee = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
   const navigate = useNavigate();
@@ -82,8 +83,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const dispatch = useDispatch();
   let creatorID = JSON.parse(localStorage.getItem("userID"));
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   // for initial State
@@ -242,10 +244,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     let newMeetingAttendees = [...meetingAttendees];
     let newGroupMembers = [...groupMembers];
     if (taskAssignedTo !== 0 && attendees.length > 0) {
-      setOpen({
-        flag: true,
-        message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
-      });
+      showMessage(
+        t("You-can-add-data-only-from-one-form-option-at-a-time"),
+        "error",
+        setOpen
+      );
       setAttendees([]);
       setTaskAssignedTo(0);
       setParticipantRoleName("Regular");
@@ -298,11 +301,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             name: "",
           });
         } else {
-          setOpen({
-            flag: true,
-            message: t("User-already-exist"),
-          });
-
+          showMessage(t("User-already-exist"), "error", setOpen);
           setAttendees([]);
           setTaskAssignedTo(0);
           setParticipantRoleName("Regular");
@@ -314,10 +313,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           });
         }
       } else {
-        setOpen({
-          flag: true,
-          message: t("Please-select-committee-member-type-also"),
-        });
+        showMessage(
+          t("Please-select-committee-member-type-also"),
+          "error",
+          setOpen
+        );
       }
     } else if (attendees.length > 0) {
       let check = false;
@@ -334,10 +334,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         });
       });
       if (check === true) {
-        setOpen({
-          flag: true,
-          message: t("User-already-exist"),
-        });
+        showMessage(t("User-already-exist"), "error", setOpen);
         setAttendees([]);
         setParticipantRoleName("Regular");
         setPresenterValue({
@@ -378,17 +375,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             });
           });
         } else {
-          setOpen({
-            flag: true,
-            message: t("Please-select-committee-member-type-also"),
-          });
+          showMessage(
+            t("Please-select-committee-member-type-also"),
+            "error",
+            setOpen
+          );
         }
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-select-atleast-one-members"),
-      });
+      showMessage(t("Please-select-atleast-one-members"), "error", setOpen);
       setAttendees([]);
       setTaskAssignedTo(0);
       setParticipantRoleName("Regular");
@@ -496,10 +491,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       createCommitteeDetails.CreatorID !== 0
     ) {
       if (!checkGroupMembers(createCommitteeDetails.CommitteeMembers)) {
-        setOpen({
-          flag: true,
-          message: t("Please-add-atleast-one-executive-member"),
-        });
+        showMessage(
+          t("Please-add-atleast-one-executive-member"),
+          "error",
+          setOpen
+        );
       } else {
         setErrorBar(false);
         let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -520,10 +516,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       }
     } else {
       setErrorBar(true);
-      setOpen({
-        flag: true,
-        message: t("Please-fill-all-the-fields"),
-      });
+      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
     }
   };
   const documentsUploadCall = async (folderID) => {
@@ -602,10 +595,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       let size = true;
 
       if (fileAttachments.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
@@ -621,26 +611,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          showMessage(
+            t("File-size-should-not-be-greater-then-zero"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1773,7 +1752,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         cancelBtnClick={() => setCloseConfirmationBox(false)}
         setShowModal={setCloseConfirmationBox}
       />
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

@@ -26,6 +26,7 @@ import {
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
 import moment from "moment";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const ViewParticipantsDates = ({
   setViewProposeDatePoll,
@@ -44,8 +45,9 @@ const ViewParticipantsDates = ({
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const getAllMeetingDetails = useSelector(
@@ -330,10 +332,7 @@ const ViewParticipantsDates = ({
         SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
       );
     } else if (!selectAll) {
-      setOpen({
-        flag: true,
-        message: t("Please-select-any-of-the-given-options"),
-      });
+      showMessage("Please-select-any-of-the-given-options", "error", setOpen);
     }
   };
 
@@ -545,7 +544,12 @@ const ViewParticipantsDates = ({
           </Paper>
         </Col>
       </Row>
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </section>
   );
 };

@@ -22,6 +22,7 @@ import {
 import committeeicon from "./../../../../../../assets/images/committeedropdown.svg";
 import GroupIcon from "./../../../../../../assets/images/groupdropdown.svg";
 import CrossEmail from "./../AV-Images/Cross-Email.png";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const ShareEmailModal = ({ setShareEmailView }) => {
   const { t } = useTranslation();
@@ -40,6 +41,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const [notificationMessage, setNotificationMessage] = useState("");
@@ -201,13 +203,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(value)) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Invalid-email-format"),
-        }),
-        3000
-      );
+      showMessage(t("Invalid-email-format"), "error", setOpen);
       return;
     }
 
@@ -248,26 +244,13 @@ const ShareEmailModal = ({ setShareEmailView }) => {
 
       dispatch(SendAgendaPDFAsEmail(Data, navigate, t, setShareEmailView));
     } else {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Atleast-add-one-user"),
-        }),
-        3000
-      );
+      showMessage(t("Atleast-add-one-user"), "error", setOpen);
     }
-
   };
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === t("Invalid-data")) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Invalid-data"),
-        }),
-        3000
-      );
+      showMessage(t("Invalid-data"), "error", setOpen);
       dispatch(clearResponseMessage(""));
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
@@ -415,7 +398,12 @@ const ShareEmailModal = ({ setShareEmailView }) => {
         }
       />
 
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </section>
   );
 };

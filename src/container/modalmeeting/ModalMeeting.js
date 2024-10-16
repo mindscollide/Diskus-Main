@@ -51,6 +51,7 @@ import {
 import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
 import Select from "react-select";
 import { Tooltip } from "antd";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
@@ -75,6 +76,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   // for modal fields error
@@ -439,10 +441,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         const currentDateTime = convertDateTimeObject(getformattedDateTIme);
 
         if (dateTimeFormat < currentDateTime) {
-          setOpen({
-            flag: true,
-            message: t("Time-should-be-greater-then-system-time"),
-          });
+          showMessage(
+            t("Time-should-be-greater-then-system-time"),
+            "error",
+            setOpen
+          );
           setTimeout(() => {
             setCreateMeeting({
               ...createMeeting,
@@ -528,12 +531,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
-        setOpen({
-          flag: true,
-          message: t(
-            "Date-and-time-should-be-greater-than-current-system-time"
-          ),
-        });
+        showMessage(
+          t("Date-and-time-should-be-greater-than-current-system-time"),
+          "error",
+          setOpen
+        );
         setTimeout(() => {
           setMeetingDate(getCurrentDateforMeeting.DateGMT);
           setCreateMeeting({
@@ -595,12 +597,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     let sizezero = true;
 
     if (updatedFilesForSend.length + filesArray.length > 10) {
-      setTimeout(() => {
-        setOpen({
-          flag: true,
-          message: t("You-can-not-upload-more-then-10-files"),
-        });
-      }, 3000);
+      showMessage(t("You-can-not-upload-more-then-10-files"), "error", setOpen);
       return;
     }
 
@@ -609,12 +606,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
 
       if (mergeFileSizes + fileSizeinMB > 100) {
-        setTimeout(() => {
-          setOpen({
-            flag: true,
-            message: t("You-can-not-upload-more-then-100MB-files"),
-          });
-        }, 3000);
+        showMessage(
+          t("You-can-not-upload-more-then-100MB-files"),
+          "error",
+          setOpen
+        );
         return;
       }
 
@@ -646,24 +642,15 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
 
         if (fileExists) {
-          setOpen({
-            ...open,
-            message: t("This-file-already-exist"),
-            flag: true,
-          });
+          showMessage(t("This-file-already-exist"), "error", setOpen);
         } else if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("You-can-not-upload-more-then-10MB-file"),
-            });
-          }, 3000);
+          showMessage(
+            t("You-can-not-upload-more-then-10MB-file"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setOpen({
-            ...open,
-            flag: true,
-            message: t("File-size-is-0mb"),
-          });
+          showMessage(t("File-size-is-0mb"), "error", setOpen);
         } else {
           let fileData = {
             PK_MAAID: 0,
@@ -821,11 +808,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             }
           } else {
             setModalField(false);
-            setOpen({
-              ...open,
-              flag: true,
-              message: t("Enter-valid-url"),
-            });
+            showMessage(t("Enter-valid-url"), "error", setOpen);
           }
         } else {
           if (fileForSend.length > 0) {
@@ -1431,11 +1414,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("User-already-exists"),
-        });
+        showMessage(t("User-already-exists"), "error", setOpen);
         setTaskAssignedTo(0);
         setParticipantRoleName("Participant");
         let newData = {
@@ -1522,17 +1501,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
     } else {
       if (found === undefined) {
-        setOpen({
-          message: t("Please-add-valid-user"),
-          flag: true,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            message: "",
-            flag: false,
-          });
-        }, 4000);
+        showMessage(t("Please-add-valid-user"), "error", setOpen);
         setTaskAssignedTo(0);
         setParticipantRoleName("Participant");
         let newData = {
@@ -2536,7 +2505,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

@@ -31,6 +31,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import { validateInput } from "../../../commen/functions/regex";
 import DatePicker from "react-multi-date-picker";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UpdatePolls = () => {
   const dispatch = useDispatch();
@@ -48,8 +49,9 @@ const UpdatePolls = () => {
   const [pollmembers, setPollmembers] = useState([]);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   //For Custom language datepicker
@@ -96,13 +98,14 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={GroupIcon}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.groupName}
@@ -128,13 +131,14 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={committeeicon}
-                        width='21.71px'
-                        height='18.61px'
-                        draggable='false'
-                        alt=''
+                        width="21.71px"
+                        height="18.61px"
+                        draggable="false"
+                        alt=""
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.committeeName}
@@ -160,14 +164,15 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
                         className={styles["UserProfilepic"]}
-                        width='18px'
-                        height='18px'
-                        alt=''
-                        draggable='false'
+                        width="18px"
+                        height="18px"
+                        alt=""
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.userName}
@@ -201,7 +206,7 @@ const UpdatePolls = () => {
           });
         });
         setPollmembers(members);
-    
+
         let DateDate = utcConvertintoGMT(
           pollsDetails.poll.pollDetails.dueDate,
           1
@@ -349,16 +354,10 @@ const UpdatePolls = () => {
           setOptions([...options, newOptions]);
         }
       } else {
-        setOpen({
-          flag: true,
-          message: t("Please-fill-options"),
-        });
+        showMessage(t("Please-fill-options"), "error", setOpen);
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-fill-options"),
-      });
+      showMessage(t("Please-fill-options"), "error", setOpen);
     }
   };
 
@@ -438,15 +437,15 @@ const UpdatePolls = () => {
     }
   };
   const CustomIcon = () => (
-    <div className='custom-icon-wrapper'>
+    <div className="custom-icon-wrapper">
       <img
         src={EditIcon}
-        alt='Edit Icon'
-        height='11.11px'
-        width='11.54px'
-        className='custom-icon cursor-pointer'
+        alt="Edit Icon"
+        height="11.11px"
+        width="11.54px"
+        className="custom-icon cursor-pointer"
         onClick={handleIconClick}
-        draggable='false'
+        draggable="false"
       />
     </div>
   );
@@ -494,41 +493,17 @@ const UpdatePolls = () => {
       setError(true);
 
       if (UpdatePolls.TypingTitle === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Title-is-required"),
-        });
+        showMessage(t("Title-is-required"), "error", setOpen);
       } else if (UpdatePolls.datepoll === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Select-date"),
-        });
+        showMessage(t("Select-date"), "error", setOpen);
       } else if (Object.keys(pollmembers).length === 0) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Atleat-one-member-required"),
-        });
+        showMessage(t("Atleat-one-member-required"), "error", setOpen);
       } else if (Object.keys(options).length <= 2) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Required-atleast-two-options"),
-        });
+        showMessage(t("Required-atleast-two-options"), "error", setOpen);
       } else if (!allValuesNotEmpty) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-open-option-fields"),
-        });
+        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
       } else {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-reqired-fields"),
-        });
+        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
       }
     }
   };
@@ -564,25 +539,28 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Back_Ground_strip_Create_Poll_modal"]}>
+                      className={styles["Back_Ground_strip_Create_Poll_modal"]}
+                    >
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-center gap-2 align-items-center'>
-                          <span className='cursor-pointer d-flex gap-2 align-items-center'>
+                          className="d-flex justify-content-center gap-2 align-items-center"
+                        >
+                          <span className="cursor-pointer d-flex gap-2 align-items-center">
                             <img
                               src={AlarmClock}
-                              width='14.97px'
-                              height='14.66px'
-                              alt=''
-                              draggable='false'
+                              width="14.97px"
+                              height="14.66px"
+                              alt=""
+                              draggable="false"
                               onClick={handleIconClick}
                             />
                             <span
                               className={styles["Due_Date_heading"]}
-                              onClick={handleIconClick}>
+                              onClick={handleIconClick}
+                            >
                               {t("Due-date-on")}
                               {"* "}
                               <span className={styles["Date_update_poll"]}>
@@ -601,9 +579,9 @@ const UpdatePolls = () => {
                               }
                               format={dateFormat}
                               value={UpdatePolls.date}
-                              calendarPosition='bottom-center'
+                              calendarPosition="bottom-center"
                               minDate={moment().toDate()}
-                              className='datePickerTodoCreate2'
+                              className="datePickerTodoCreate2"
                               calendar={calendarValue}
                               onClick={handleIconClick}
                               locale={localValue}
@@ -635,7 +613,8 @@ const UpdatePolls = () => {
                           error && UpdatePolls.date === ""
                             ? ` ${styles["errorMessage-inLogin_1"]} `
                             : `${styles["errorMessage-inLogin_1_hidden"]}`
-                        }>
+                        }
+                      >
                         {t("Please-select-due-date")}
                       </p>
                     </Col>
@@ -653,7 +632,8 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-center'>
+                      className="d-flex justify-content-center"
+                    >
                       <span className={styles["Unsaved_heading"]}>
                         {t("Any-unsaved-changes-will-be")}
                         <br />
@@ -671,25 +651,26 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-end'>
+                      className="d-flex justify-content-end"
+                    >
                       <img
                         src={BlackCrossIcon}
                         className={
                           styles["Cross_Icon_Styling_Update_Poll_Modal"]
                         }
-                        width='16px'
-                        height='16px'
-                        alt=''
+                        width="16px"
+                        height="16px"
+                        alt=""
                         onClick={() => {
                           setDefineUnsaveModal(true);
                         }}
-                        draggable='false'
+                        draggable="false"
                       />
                     </Col>
                   </Row>
                   <Row className={styles["Overall_padding"]}>
                     <Col lg={12} md={12} sm={12}>
-                      <Row className='d-flex'>
+                      <Row className="d-flex">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Update_Poll_Heading"]}>
                             {t("Update-poll")}
@@ -697,23 +678,26 @@ const UpdatePolls = () => {
                         </Col>
                       </Row>
                       {PollsReducer.editPollModalFlag ? (
-                        <Row className='mt-2'>
+                        <Row className="mt-2">
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className={`${styles["BOx_for_yes"]} d-flex`}>
-                            <Row className='mt-2'>
+                            className={`${styles["BOx_for_yes"]} d-flex`}
+                          >
+                            <Row className="mt-2">
                               <Col lg={12} md={12} sm={12}>
                                 {UpdatePolls.TypingTitle.length > 100 ? (
                                   // Add d-flex class and justify-content-center to center the text
                                   <div
-                                    className={`${styles["scrollable-title"]} d-flex justify-content-center`}>
+                                    className={`${styles["scrollable-title"]} d-flex justify-content-center`}
+                                  >
                                     <p>{UpdatePolls.TypingTitle}</p>
                                   </div>
                                 ) : (
                                   <div
-                                    className={`${styles["scrollable-title2"]} d-flex align-items-center`}>
+                                    className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                                  >
                                     <p>{UpdatePolls.TypingTitle}</p>
                                   </div>
                                 )}
@@ -722,12 +706,12 @@ const UpdatePolls = () => {
                           </Col>
                         </Row>
                       ) : (
-                        <Row className='mt-2'>
+                        <Row className="mt-2">
                           <Col lg={12} md={12} sm={12}>
                             <TextField
                               placeholder={t("Title") + "*"}
                               applyClass={"PollingCreateModal"}
-                              labelclass='d-none'
+                              labelclass="d-none"
                               name={"TypingTitle"}
                               maxLength={140}
                               value={UpdatePolls.TypingTitle}
@@ -744,19 +728,21 @@ const UpdatePolls = () => {
                               error && UpdatePolls.TypingTitle === ""
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
-                            }>
+                            }
+                          >
                             {t("Please-enter-title")}
                           </p>
                         </Col>
                       </Row>
 
                       {PollsReducer.editPollModalFlag ? (
-                        <Row className='mt-2'>
+                        <Row className="mt-2">
                           <Col
                             className={styles["scroll-height"]}
                             sm={12}
                             md={12}
-                            lg={12}>
+                            lg={12}
+                          >
                             {options.length > 0 &&
                               options.map((list, index) => {
                                 return (
@@ -764,15 +750,18 @@ const UpdatePolls = () => {
                                     {list.value != "" ? (
                                       <span
                                         key={index}
-                                        className={`${styles["BOx_for_yes"]} d-flex`}>
+                                        className={`${styles["BOx_for_yes"]} d-flex`}
+                                      >
                                         {list.value.length > 100 ? (
                                           <div
-                                            className={`${styles["scrollable-title"]} d-flex justify-content-center `}>
+                                            className={`${styles["scrollable-title"]} d-flex justify-content-center `}
+                                          >
                                             {list.value}
                                           </div>
                                         ) : (
                                           <div
-                                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}>
+                                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                                          >
                                             {list.value}
                                           </div>
                                         )}
@@ -789,16 +778,17 @@ const UpdatePolls = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className={styles["Scroller_For_UpdatePollModal"]}>
+                            className={styles["Scroller_For_UpdatePollModal"]}
+                          >
                             {options.length > 0
                               ? options.map((data, index) => {
                                   return (
                                     <>
                                       {index <= 1 ? (
                                         <>
-                                          <Row key={index} className='mt-2'>
+                                          <Row key={index} className="mt-2">
                                             <Col lg={12} md={12} sm={12}>
-                                              <span className='position-relative'>
+                                              <span className="position-relative">
                                                 <TextField
                                                   placeholder={
                                                     "Option" +
@@ -809,7 +799,7 @@ const UpdatePolls = () => {
                                                   applyClass={
                                                     "PollingCreateModal"
                                                   }
-                                                  labelclass='d-none'
+                                                  labelclass="d-none"
                                                   maxLength={100}
                                                   name={data.name}
                                                   value={data.value}
@@ -823,12 +813,13 @@ const UpdatePolls = () => {
                                         </>
                                       ) : (
                                         <>
-                                          <Row key={index} className='mt-2'>
+                                          <Row key={index} className="mt-2">
                                             <Col
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className='position-relative'>
+                                              className="position-relative"
+                                            >
                                               <TextField
                                                 placeholder={
                                                   "Option" +
@@ -839,7 +830,7 @@ const UpdatePolls = () => {
                                                 applyClass={
                                                   "PollingCreateModal"
                                                 }
-                                                labelclass='d-none'
+                                                labelclass="d-none"
                                                 maxLength={100}
                                                 name={data.name}
                                                 value={data.value}
@@ -848,11 +839,11 @@ const UpdatePolls = () => {
                                                 }
                                                 inputicon={
                                                   <img
-                                                    draggable='false'
+                                                    draggable="false"
                                                     src={WhiteCrossIcon}
-                                                    width='31.76px'
-                                                    height='31.76px'
-                                                    alt=''
+                                                    width="31.76px"
+                                                    height="31.76px"
+                                                    alt=""
                                                     onClick={() =>
                                                       HandleCancelFunction(
                                                         index
@@ -880,7 +871,7 @@ const UpdatePolls = () => {
                                 })
                               : null}
                             {PollsReducer.editPollModalFlag === false ? (
-                              <Row className='mt-2'>
+                              <Row className="mt-2">
                                 <Col lg={12} md={12} sm={12}>
                                   <Button
                                     text={
@@ -890,15 +881,14 @@ const UpdatePolls = () => {
                                             lg={12}
                                             md={12}
                                             sm={12}
-                                            className={
-                                              styles["ClassAddButton"]
-                                            }>
+                                            className={styles["ClassAddButton"]}
+                                          >
                                             <img
                                               src={plusFaddes}
-                                              width='15.87px'
-                                              height='15.87px'
-                                              alt=''
-                                              draggable='false'
+                                              width="15.87px"
+                                              height="15.87px"
+                                              alt=""
+                                              draggable="false"
                                             />
                                             <span>
                                               {t("Add-another-field")}
@@ -922,7 +912,8 @@ const UpdatePolls = () => {
                                     error && allValuesNotEmpty === false
                                       ? ` ${styles["errorMessage-inLogin"]} `
                                       : `${styles["errorMessage-inLogin_hidden"]}`
-                                  }>
+                                  }
+                                >
                                   {t("Options-must-be-more-than-2")}
                                 </p>
                               </Col>
@@ -930,12 +921,13 @@ const UpdatePolls = () => {
                           </Col>
                         </Row>
                       )}
-                      <Row className='mt-2'>
+                      <Row className="mt-2">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex align-items-center gap-2'>
+                          className="d-flex align-items-center gap-2"
+                        >
                           <Checkbox
                             checked={UpdatePolls.AllowMultipleUser}
                             onChange={HandleCheckBox}
@@ -957,7 +949,8 @@ const UpdatePolls = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className='group-fields d-flex align-items-center gap-2 '>
+                              className="group-fields d-flex align-items-center gap-2 "
+                            >
                               <Select
                                 onChange={handleSelectValue}
                                 value={selectedsearch}
@@ -982,7 +975,8 @@ const UpdatePolls = () => {
                                   error && pollmembers.length === 0
                                     ? ` ${styles["errorMessage-inLogin"]} `
                                     : `${styles["errorMessage-inLogin_hidden"]}`
-                                }>
+                                }
+                              >
                                 {t("Select-atleast-one-participants")}
                               </p>
                             </Col>
@@ -995,7 +989,8 @@ const UpdatePolls = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className={styles["Participant_heading"]}>
+                        className={styles["Participant_heading"]}
+                      >
                         {t("Participants")}
                       </Col>
                       <Row>
@@ -1005,20 +1000,19 @@ const UpdatePolls = () => {
                           sm={12}
                           className={
                             styles["Scroller_For_CreatePollModal2_Update_poll"]
-                          }>
+                          }
+                        >
                           <Row>
                             {pollmembers.map((data, index) => {
-                              console.log(
-                                data,
-                                "pollmemberspollmembers"
-                              );
+                              console.log(data, "pollmemberspollmembers");
                               return (
                                 <Col
                                   key={index}
                                   lg={6}
                                   md={6}
                                   sm={12}
-                                  className='mt-2'>
+                                  className="mt-2"
+                                >
                                   <Row>
                                     <Col lg={11} md={11} sm={12}>
                                       <Row className={styles["Card_border2"]}>
@@ -1026,17 +1020,19 @@ const UpdatePolls = () => {
                                           sm={12}
                                           md={10}
                                           lg={10}
-                                          className='d-flex align-items-center'>
+                                          className="d-flex align-items-center"
+                                        >
                                           <img
                                             src={`data:image/jpeg;base64,${data?.displayPicture}`}
-                                            width='33px'
-                                            height='33px'
-                                            className='rounded-circle'
-                                            alt=''
-                                            draggable='false'
+                                            width="33px"
+                                            height="33px"
+                                            className="rounded-circle"
+                                            alt=""
+                                            draggable="false"
                                           />
                                           <span
-                                            className={styles["Name_cards"]}>
+                                            className={styles["Name_cards"]}
+                                          >
                                             {data.userName}
                                           </span>
                                         </Col>
@@ -1045,10 +1041,10 @@ const UpdatePolls = () => {
                                           <Col sm={12} md={2} lg={2}>
                                             <img
                                               src={CrossIcon}
-                                              width='14px'
-                                              height='14px'
+                                              width="14px"
+                                              height="14px"
                                               onClick={cancellAnyUser}
-                                              draggable='false'
+                                              draggable="false"
                                               style={{ cursor: "pointer" }}
                                             />
                                           </Col>
@@ -1079,7 +1075,8 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-center gap-3'>
+                      className="d-flex justify-content-center gap-3"
+                    >
                       <Button
                         text={t("No")}
                         className={styles["No_Btn_polls_delModal"]}
@@ -1105,13 +1102,15 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Overall_padding"]}>
-                      <Row className='mt-5'>
+                      className={styles["Overall_padding"]}
+                    >
+                      <Row className="mt-5">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-end gap-2 m-0 p-0'>
+                          className="d-flex justify-content-end gap-2 m-0 p-0"
+                        >
                           <Button
                             text={t("Cancel")}
                             className={styles["Cancell_btn_class_Update_polls"]}
@@ -1148,7 +1147,12 @@ const UpdatePolls = () => {
           size={defineUnsaveModal ? null : "md"}
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

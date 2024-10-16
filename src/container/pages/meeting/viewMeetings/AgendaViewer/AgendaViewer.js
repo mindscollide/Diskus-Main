@@ -78,6 +78,7 @@ import {
   headerShowHideStatus,
   recentChatFlag,
 } from "../../../../../store/actions/Talk_Feature_actions";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const AgendaViewer = ({
   setViewAdvanceMeetingModal,
@@ -138,8 +139,9 @@ const AgendaViewer = ({
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   // For cancel with no modal Open
@@ -306,8 +308,6 @@ const AgendaViewer = ({
         1,
         meetingTitle,
         advanceMeetingModalID
-
-
       )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
@@ -459,23 +459,11 @@ const AgendaViewer = ({
 
   useEffect(() => {
     if (agendaResponseMessage === t("Success")) {
-      setTimeout(
-        setOpen({
-          flag: true,
-          message: t("Email-sent-successfully"),
-        }),
-        3000
-      );
+      showMessage(t("Email-sent-successfully"), "error", setOpen);
       dispatch(clearResponseMessage(""));
     }
     if (agendaResponseMessage === t("Invalid-data")) {
-      setTimeout(
-        setOpen({
-          flag: true,
-          message: t("Invalid-data"),
-        }),
-        3000
-      );
+      showMessage(t("Invalid-data"), "error", setOpen);
       dispatch(clearResponseMessage(""));
     }
   }, [agendaResponseMessage]);
@@ -929,7 +917,12 @@ const AgendaViewer = ({
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
 
       {fullScreenView ? (
         <FullScreenAgendaModal

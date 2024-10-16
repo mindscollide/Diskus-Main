@@ -9,14 +9,13 @@ import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./ModalViewNote.module.css";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   newTimeFormaterAsPerUTC,
   _justShowDateformat,
 } from "../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
-
 
 const ModalViewNote = ({
   ModalTitle,
@@ -83,10 +82,7 @@ const ModalViewNote = ({
       });
     }
   }, [NotesReducer.GetNotesByNotesId]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
+
   const handleCloseViewModal = () => {
     if (flag) {
       setGetNoteID(0);
@@ -200,35 +196,35 @@ const ModalViewNote = ({
                 </Col>
               </Row>
               <section className={styles["NotesViewAttachment"]}>
-              <Row>
-                {notesData.notesAttachments.length > 0
-                  ? notesData.notesAttachments.map((data, index) => {
-                      console.log("tasksAttachments", data);
-                      let ext = data.displayAttachmentName.split(".").pop();
+                <Row>
+                  {notesData.notesAttachments.length > 0
+                    ? notesData.notesAttachments.map((data, index) => {
+                        console.log("tasksAttachments", data);
+                        let ext = data.displayAttachmentName.split(".").pop();
 
-                      const first = data.displayAttachmentName.split(" ")[0];
-                      const pdfData = {
-                        taskId: data.fK_NotesID,
-                        attachmentID: data.pK_NAID,
-                        fileName: data.displayAttachmentName,
-                        commingFrom: 2,
-                      };
-                      const pdfDataJson = JSON.stringify(pdfData);
-                      return (
-                        <Col sm={4} lg={4} md={4}>
-                          <AttachmentViewer
-                            data={data}
-                            // handleEyeIcon={() =>
-                            //   handleViewIcon(pdfDataJson, ext)
-                            // }
-                            id={0}
-                            name={data.displayAttachmentName}
-                          />
-                        </Col>
-                      );
-                    })
-                  : null}
-              </Row>
+                        const first = data.displayAttachmentName.split(" ")[0];
+                        const pdfData = {
+                          taskId: data.fK_NotesID,
+                          attachmentID: data.pK_NAID,
+                          fileName: data.displayAttachmentName,
+                          commingFrom: 2,
+                        };
+                        const pdfDataJson = JSON.stringify(pdfData);
+                        return (
+                          <Col sm={4} lg={4} md={4}>
+                            <AttachmentViewer
+                              data={data}
+                              // handleEyeIcon={() =>
+                              //   handleViewIcon(pdfDataJson, ext)
+                              // }
+                              id={0}
+                              name={data.displayAttachmentName}
+                            />
+                          </Col>
+                        );
+                      })
+                    : null}
+                </Row>
               </section>
             </>
           }
@@ -252,7 +248,6 @@ const ModalViewNote = ({
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

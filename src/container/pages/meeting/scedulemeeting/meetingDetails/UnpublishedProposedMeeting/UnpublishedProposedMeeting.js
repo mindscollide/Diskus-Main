@@ -90,10 +90,6 @@ const UnpublishedProposedMeeting = ({
   let MeetingProp = localStorage.getItem("meetingprop");
 
   let currentView = localStorage.getItem("MeetingCurrentView");
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -936,7 +932,6 @@ const UnpublishedProposedMeeting = ({
         />
       )}
       {deleteMeetingModal && <DeleteMeetingModal />}
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

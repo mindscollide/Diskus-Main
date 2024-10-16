@@ -184,7 +184,13 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
           ) : null}
         </Paper>
       </section>
-      {/* <Notification open={open.flag} message={open.message} setOpen={setOpen} /> */}
+      {/* <Notification
+open={open.open}
+message={open.message}
+setOpen={(status) => setOpen({ ...open, open: status.flag })}
+severity={open.severity}
+/>
+ */}
     </>
   );
 };

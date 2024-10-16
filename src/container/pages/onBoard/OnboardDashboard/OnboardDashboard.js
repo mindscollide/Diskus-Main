@@ -77,6 +77,7 @@ import {
   cleareMessage,
   setLoader,
 } from "../../../../store/actions/Auth2_actions";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const OnboardDashboard = () => {
   const dCheck = useLoaderData();
@@ -100,6 +101,7 @@ const OnboardDashboard = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   // for sub menus Icons
   const [subIcons, setSubIcons] = useState(false);
@@ -423,18 +425,11 @@ const OnboardDashboard = () => {
   };
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.VerifyOTPEmailResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -442,33 +437,13 @@ const OnboardDashboard = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: false,
-        message: "",
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
       dispatch(cleareMessage());
     } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.OrganizationCreateResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -476,49 +451,26 @@ const OnboardDashboard = () => {
       Authreducer.CreatePasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.CreatePasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.CreatePasswordResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.GetSelectedPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.GetSelectedPackageResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (Authreducer.EmailValidationResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.EmailValidationResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else {
     }
@@ -1165,7 +1117,12 @@ const OnboardDashboard = () => {
           </Col>
         </Row>
       </Container>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       <ModalMeeting
         show={show}
         setShow={setShow}

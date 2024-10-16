@@ -70,6 +70,7 @@ import {
 } from "../../../../../commen/functions/utils";
 import ApprovalIncompleteModal from "./approvalIncompleteModal/ApprovalIncompleteModal";
 import PublishAnywayModal from "./publishAnywayModal/PublishAnywayModal";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Minutes = ({
   setMinutes,
@@ -137,8 +138,9 @@ const Minutes = ({
   const [showMore, setShowMore] = useState(false);
   const [generalShowMore, setGeneralShowMore] = useState(null);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
@@ -339,17 +341,11 @@ const Minutes = ({
       let size = true;
       console.log("testtesttest", fileAttachments, fileList);
       if (fileList.length > 10) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       } else {
         if (fileAttachments.length > 9) {
-          setOpen({
-            flag: true,
-            message: t("Not-allowed-more-than-10-files"),
-          });
+          showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
           return;
         } else {
           fileList.forEach((fileData, index) => {
@@ -365,26 +361,15 @@ const Minutes = ({
             );
 
             if (!size) {
-              setTimeout(() => {
-                setOpen({
-                  flag: true,
-                  message: t("File-size-should-not-be-greater-then-zero"),
-                });
-              }, 3000);
+              showMessage(
+                t("File-size-should-not-be-greater-then-zero"),
+                "error",
+                setOpen
+              );
             } else if (!sizezero) {
-              setTimeout(() => {
-                setOpen({
-                  flag: true,
-                  message: t("File-size-should-not-be-zero"),
-                });
-              }, 3000);
+              showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
             } else if (fileExists) {
-              setTimeout(() => {
-                setOpen({
-                  flag: true,
-                  message: t("File-already-exists"),
-                });
-              }, 3000);
+              showMessage(t("File-already-exists"), "error", setOpen);
             } else {
               let file = {
                 DisplayAttachmentName: fileData.name,
@@ -780,19 +765,8 @@ const Minutes = ({
       ResponseMessage !== t("Something-went-wrong") &&
       ResponseMessage !== t("Record-available")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-        dispatch(CleareMessegeNewMeeting());
-      }, 3000);
+      showMessage(ResponseMessage, "success", setOpen);
+      dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
@@ -808,19 +782,8 @@ const Minutes = ({
       ResponseMessageMinute !== t("Something-went-wrong") &&
       ResponseMessageMinute !== t("Record-available")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: ResponseMessageMinute,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-        dispatch(CleareMessegeMinutes());
-      }, 3000);
+      showMessage(ResponseMessageMinute, "success", setOpen);
+      dispatch(CleareMessegeMinutes());
     } else {
       dispatch(CleareMessegeMinutes());
     }
@@ -2647,9 +2610,10 @@ const Minutes = ({
         ) : null}
 
         <Notification
-          setOpen={setOpen}
-          open={open.flag}
+          open={open.open}
           message={open.message}
+          setOpen={(status) => setOpen({ ...open, open: status.flag })}
+          severity={open.severity}
         />
       </section>
     </>

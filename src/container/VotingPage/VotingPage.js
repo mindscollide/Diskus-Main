@@ -42,10 +42,6 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const userID = JSON.parse(localStorage.getItem("userID"));
   const [decision, setDecision] = useState("");
   const [decisionId, setDecisionId] = useState(0);
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -529,7 +525,6 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
           </Col>
         </Row>
       </section>
-      <Notification message={open.message} open={open.flag} setOpen={setOpen} />
     </>
   );
 };

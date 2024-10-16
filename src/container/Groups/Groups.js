@@ -45,6 +45,7 @@ import {
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const Groups = () => {
   const { t } = useTranslation();
@@ -69,6 +70,7 @@ const Groups = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [totalLength, setTotalLength] = useState(0);
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
@@ -312,32 +314,10 @@ const Groups = () => {
           )
         );
       } else {
-        setOpen({
-          ...open,
-          flag: true,
-          message: "Talk Group Doesnt Exist",
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            flag: false,
-            message: "",
-          });
-        }, 3000);
+        showMessage(t("Talk-group-doesn't-exist"), "error", setOpen);
       }
     } else {
-      setOpen({
-        ...open,
-        flag: true,
-        message: "No Talk Group Created",
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(t("No-talk-group-created"), "error", setOpen);
     }
   };
 
@@ -382,18 +362,7 @@ const Groups = () => {
       GroupsReducer.ResponseMessage !== "" &&
       GroupsReducer.ResponseMessage !== t("No-data-available")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: GroupsReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(GroupsReducer.ResponseMessage, "success", setOpen);
       dispatch(clearMessagesGroup());
     } else {
       dispatch(clearMessagesGroup());
@@ -414,18 +383,7 @@ const Groups = () => {
   };
 
   const openNotification = () => {
-    setOpen({
-      ...open,
-      flag: true,
-      message: t("Not-a-member-of-talk-group"),
-    });
-    setTimeout(() => {
-      setOpen({
-        ...open,
-        flag: false,
-        message: "",
-      });
-    }, 3000);
+    showMessage(t("Not-a-member-of-talk-group"), "error", setOpen);
   };
 
   return (
@@ -750,8 +708,12 @@ const Groups = () => {
         />
       ) : null}
 
- 
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

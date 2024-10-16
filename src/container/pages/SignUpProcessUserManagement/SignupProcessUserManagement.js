@@ -17,6 +17,7 @@ import { Notification } from "../../../components/elements";
 import Helper from "../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useNavigate } from "react-router-dom";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const SignupProcessUserManagement = () => {
   const { UserMangementReducer, Authreducer } = useSelector((state) => state);
@@ -26,6 +27,7 @@ const SignupProcessUserManagement = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
@@ -61,18 +63,11 @@ const SignupProcessUserManagement = () => {
       Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-verification") &&
       Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.VerifyOTPEmailResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -81,18 +76,7 @@ const SignupProcessUserManagement = () => {
       Authreducer.EnterPasswordResponseMessage !== t("2fa-verification") &&
       Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(Authreducer.EnterPasswordResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
@@ -101,18 +85,11 @@ const SignupProcessUserManagement = () => {
       Authreducer.OrganizationCreateResponseMessage !== t("2fa-verification") &&
       Authreducer.OrganizationCreateResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.OrganizationCreateResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -121,19 +98,11 @@ const SignupProcessUserManagement = () => {
       Authreducer.CreatePasswordResponseMessage !== t("2fa-verification") &&
       Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.CreatePasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.CreatePasswordResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
@@ -141,19 +110,11 @@ const SignupProcessUserManagement = () => {
       Authreducer.GetSelectedPackageResponseMessage !== t("2fa-verification") &&
       Authreducer.GetSelectedPackageResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.GetSelectedPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.GetSelectedPackageResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
@@ -161,19 +122,11 @@ const SignupProcessUserManagement = () => {
       Authreducer.EmailValidationResponseMessage !== t("2fa-verification") &&
       Authreducer.EmailValidationResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.EmailValidationResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
       Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
@@ -182,18 +135,11 @@ const SignupProcessUserManagement = () => {
         t("2fa-verification") &&
       Authreducer.passwordUpdateOnForgotPasswordMessege !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.passwordUpdateOnForgotPasswordMessege,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.passwordUpdateOnForgotPasswordMessege,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else {
@@ -211,93 +157,43 @@ const SignupProcessUserManagement = () => {
   //Password SignUp Process Response Messeges Controller
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.VerifyOTPEmailResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (Authreducer.EnterPasswordResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(Authreducer.EnterPasswordResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.OrganizationCreateResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (Authreducer.CreatePasswordResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.CreatePasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        Authreducer.CreatePasswordResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.GetSelectedPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.GetSelectedPackageResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (Authreducer.EmailValidationResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.EmailValidationResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else {
@@ -314,35 +210,18 @@ const SignupProcessUserManagement = () => {
   //Organization SignUp //SignUp Process Response Messeges Controller
   useEffect(() => {
     if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-    } else {
-      setOpen({
-        ...open,
-        open: false,
-        message: "",
-      });
+      showMessage(
+        Authreducer.OrganizationCreateResponseMessage,
+        "success",
+        setOpen
+      );
     }
   }, [Authreducer.OrganizationCreateResponseMessage]);
 
   //User Management PakageDetails Messeges SignUp Process Response Messeges Controller
   useEffect(() => {
-    if (
-      UserMangementReducer.ResponseMessage !== "" 
-    ) {
-      setOpen({
-        open: true,
-        message: UserMangementReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 4000);
+    if (UserMangementReducer.ResponseMessage !== "") {
+      showMessage(UserMangementReducer.ResponseMessage, "success", setOpen);
       dispatch(clearMessegesUserManagement());
     }
   }, [UserMangementReducer.ResponseMessage]);
@@ -428,7 +307,12 @@ const SignupProcessUserManagement = () => {
   return (
     <>
       {SignupComponent}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

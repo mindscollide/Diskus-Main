@@ -41,11 +41,6 @@ const PakageDetailsUMUpgrade = () => {
     TotalLisence: "",
   });
   const [packageDetail, setPackageDetail] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
-
   const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
   console.log(
     organizationPackagePrice,
@@ -671,7 +666,6 @@ const PakageDetailsUMUpgrade = () => {
           </span>
         </Col>
       </Row>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}

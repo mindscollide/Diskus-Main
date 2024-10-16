@@ -41,6 +41,7 @@ import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import CastVoteAgendaModal from "./VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import ViewVoteModal from "./VotingPage/ViewVoteModal/ViewVoteModal";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Agenda = ({
   setParticipants,
@@ -100,8 +101,9 @@ const Agenda = ({
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   // For cancel with no modal Open
@@ -178,23 +180,9 @@ const Agenda = ({
   useEffect(() => {
     console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
     if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      setTimeout(
-        setOpen({
-          ...open,
-          flag: true,
-          message: "Record Saved",
-        }),
-        3000
-      );
+      showMessage(t("Record-saved"), "error", setOpen);
     } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      setTimeout(
-        setOpen({
-          ...open,
-          flag: true,
-          message: "Record Updated",
-        }),
-        3000
-      );
+      showMessage(t("Record-updated"), "error", setOpen);
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
@@ -617,7 +605,12 @@ const Agenda = ({
           setMinutes={setMinutes}
         />
       )}
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

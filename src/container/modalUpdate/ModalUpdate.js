@@ -66,6 +66,7 @@ import {
   getStartTimeWithCeilFunction,
 } from "../../commen/functions/time_formatter";
 import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   //For Localization
@@ -113,8 +114,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     FK_MDID: 0,
   });
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   // for upload documents
@@ -371,11 +373,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setCurrentStep(2);
 
       setIsAttendees(false);
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Please-atleast-add-one-agenda"),
-      });
+      showMessage(t("Please-atleast-add-one-agenda"), "error", setOpen);
     }
   };
 
@@ -573,11 +571,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         FK_MDID: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else {
-      setOpen({
-        ...open,
-        open: true,
-        message: "",
-      });
+      showMessage(t("Please-fill-description"), "error", setOpen);
     }
   };
 
@@ -631,12 +625,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
     // Check if adding the new files exceeds the limit
     if (currentFiles.length + filesArray.length > 10) {
-      setTimeout(() => {
-        setOpen({
-          flag: true,
-          message: t("You-can-not-upload-more-then-10-files"),
-        });
-      }, 3000);
+      showMessage(t("You-can-not-upload-more-then-10-files"), "error", setOpen);
       return;
     }
 
@@ -647,12 +636,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
       // Check total size after adding each file
       if (mergeFileSizes + fileSizeinMB > 100) {
-        setTimeout(() => {
-          setOpen({
-            flag: true,
-            message: t("You-can-not-upload-more-then-100MB-files"),
-          });
-        }, 3000);
+        showMessage(
+          t("You-can-not-upload-more-then-100MB-files"),
+          "error",
+          setOpen
+        );
         return;
       }
 
@@ -676,24 +664,15 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         );
 
         if (fileExists) {
-          setOpen({
-            ...open,
-            flag: true,
-            message: t("This-file-already-exist"),
-          });
+          showMessage(t("This-file-already-exist"), "error", setOpen);
         } else if (fileSizeinMB > 10) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("You-can-not-upload-more-then-10MB-file"),
-            });
-          }, 3000);
+          showMessage(
+            t("You-can-not-upload-more-then-10MB-file"),
+            "error",
+            setOpen
+          );
         } else if (fileSizeinMB === 0) {
-          setOpen({
-            ...open,
-            flag: true,
-            message: t("File-size-is-0mb"),
-          });
+          showMessage(t("File-size-is-0mb"), "error", setOpen);
         } else {
           dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
           fileSizeArr += uploadedFile.size;
@@ -779,11 +758,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             });
           } else {
             setModalField(false);
-            setOpen({
-              ...open,
-              flag: true,
-              message: t("Enter-valid-url"),
-            });
+            showMessage(t("Enter-valid-url"), "error", setOpen);
           }
         } else {
           let newData = {
@@ -837,11 +812,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             setFileSize(0);
           } else {
             setModalField(false);
-            setOpen({
-              ...open,
-              flag: true,
-              message: t("Enter-valid-url"),
-            });
+            showMessage(t("Enter-valid-url"), "error", setOpen);
           }
         } else {
           setModalField(false);
@@ -1161,12 +1132,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
-        setOpen({
-          flag: true,
-          message: t(
-            "Date-and-time-should-be-greater-than-current-system-time"
-          ),
-        });
+        showMessage(
+          t("Date-and-time-should-be-greater-than-current-system-time"),
+          "error",
+          setOpen
+        );
         setTimeout(() => {
           setMeetingDate(getCurrentDateforMeeting.DateGMT);
           setCreateMeeting({
@@ -1658,11 +1628,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("User-already-exists"),
-        });
+        showMessage(t("User-already-exists"), "error", setOpen);
         setTaskAssignedTo(0);
         setTaskAssignedName("");
         setParticipantRoleName("Participant");
@@ -1726,17 +1692,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       }
     } else {
       if (found === undefined) {
-        setOpen({
-          message: t("Please-add-valid-user"),
-          flag: true,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            message: "",
-            flag: false,
-          });
-        }, 4000);
+        showMessage(t("Please-add-valid-user"), "error", setOpen);
         setTaskAssignedTo(0);
         setTaskAssignedName("");
         setParticipantRoleName("Participant");
@@ -1858,11 +1814,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setReminderValue("");
       setTaskAssignedToInput("");
     } else {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Please-atleast-add-one-organizer"),
-      });
+      showMessage(t("Please-atleast-add-one-organizer"), "error", setOpen);
     }
   };
 
@@ -2320,7 +2272,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           onHide={onHideHandleModal}
           show={editFlag}
           setShow={setEditFlag}
-          className={closeConfirmationModal || isCancelMeetingModal ? null : "meeting_update"}
+          className={
+            closeConfirmationModal || isCancelMeetingModal
+              ? null
+              : "meeting_update"
+          }
           ButtonTitle={ModalTitle}
           modalFooterClassName={"d-block"}
           modalHeaderClassName={"d-none"}
@@ -3378,7 +3334,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

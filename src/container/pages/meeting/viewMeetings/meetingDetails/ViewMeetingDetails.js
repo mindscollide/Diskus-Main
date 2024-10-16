@@ -71,6 +71,7 @@ import {
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -132,8 +133,9 @@ const ViewMeetingDetails = ({
 
   //For Custom language datepicker
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const [meetingDetails, setMeetingDetailsData] = useState({
@@ -430,8 +432,7 @@ const ViewMeetingDetails = ({
         currentUserID,
         currentOrganization,
         0,
-        meetingDetails.MeetingTitle
-        ,
+        meetingDetails.MeetingTitle,
         advanceMeetingModalID
       )
     );
@@ -536,22 +537,10 @@ const ViewMeetingDetails = ({
         )
       );
     }
-    setOpen({
-      ...open,
-      flag: true,
-      message: t("Generating-meeting-link"),
-    });
-    setTimeout(() => {
-      setOpen({
-        ...open,
-        flag: false,
-        message: "",
-      });
-    }, 3000);
+    showMessage(t("Generating-meeting-link"), "error", setOpen);
   };
 
   const groupChatInitiation = (data) => {
-    console.log("groupChatInitiationgroupChatInitiation", data);
     if (
       data.TalkGroupID !== 0 &&
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
@@ -598,18 +587,7 @@ const ViewMeetingDetails = ({
       NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
       NewMeetingreducer.ResponseMessage !== undefined
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -942,9 +920,10 @@ const ViewMeetingDetails = ({
           />
         )}
         <Notification
-          setOpen={setOpen}
-          open={open.flag}
+          open={open.open}
           message={open.message}
+          setOpen={(status) => setOpen({ ...open, open: status.flag })}
+          severity={open.severity}
         />
       </section>
 

@@ -46,6 +46,7 @@ import CustomPagination from "../../../../../commen/functions/customPagination/P
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import DeletePollConfirmModal from "./DeletePollsConfirmationModal/DeletePollConfirmModal";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Polls = ({
   setViewAdvanceMeetingModal,
@@ -73,8 +74,9 @@ const Polls = ({
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
@@ -604,18 +606,7 @@ const Polls = ({
       PollsReducer.ResponseMessage !== t("No-records-found") &&
       PollsReducer.ResponseMessage !== t("No-record-found")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: PollsReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(PollsReducer.ResponseMessage, "success", setOpen);
       dispatch(clearPollsMesseges());
     } else {
       dispatch(clearPollsMesseges());
@@ -629,18 +620,7 @@ const Polls = ({
       NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
       NewMeetingreducer.ResponseMessage !== t("No-record-found")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
       dispatch(clearResponseNewMeetingReducerMessage());
     } else {
       dispatch(clearResponseNewMeetingReducerMessage());
@@ -842,9 +822,10 @@ const Polls = ({
               />
             )}
             <Notification
-              setOpen={setOpen}
-              open={open.flag}
+              open={open.open}
               message={open.message}
+              setOpen={(status) => setOpen({ ...open, open: status.flag })}
+              severity={open.severity}
             />
           </section>
         </>

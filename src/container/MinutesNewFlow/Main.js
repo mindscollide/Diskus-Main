@@ -8,6 +8,7 @@ import PendingApproval from "./pendingApprovals/PendingApprovals";
 import ReviewMinutes from "./reviewMinutes/ReviewMinutes";
 import { Notification } from "../../components/elements";
 import { CleareMessegeMinutes } from "../../store/actions/Minutes_action";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 
 // Functional component for Minutes Flow section
 const MinutesFlow = () => {
@@ -18,8 +19,9 @@ const MinutesFlow = () => {
   const { MinutesReducer } = useSelector((state) => state);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   //Getting current Language
@@ -34,21 +36,10 @@ const MinutesFlow = () => {
       MinutesReducer.ResponseMessage !== "" &&
       MinutesReducer.ResponseMessage !== t("No-record-found") &&
       MinutesReducer.ResponseMessage !== t("List-updated-successfully") &&
-      MinutesReducer.ResponseMessage !== t("No-data-available") 
+      MinutesReducer.ResponseMessage !== t("No-data-available")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: MinutesReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-        dispatch(CleareMessegeMinutes());
-      }, 3000);
+      showMessage(MinutesReducer.ResponseMessage, "sucess", setOpen);
+      dispatch(CleareMessegeMinutes());
     } else {
       dispatch(CleareMessegeMinutes());
     }
@@ -62,7 +53,12 @@ const MinutesFlow = () => {
         <ReviewMinutes />
       ) : null}
 
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

@@ -35,6 +35,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import CustomAccordion from "../../components/elements/accordian/CustomAccordion";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 const Notes = () => {
   //Test Accordian states start
   const [updateNotesModal, setUpdateNotesModal] = useState(false);
@@ -55,6 +56,7 @@ const Notes = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [showStarIcon, setStarIcon] = useState(false);
   // for modal Update notes
@@ -239,19 +241,8 @@ const Notes = () => {
       NotesReducer.ResponseMessage !== "" &&
       NotesReducer.ResponseMessage !== t("No-data-available")
     ) {
-      setOpen({
-        open: true,
-        message: NotesReducer.ResponseMessage,
-      });
-
-      setTimeout(() => {
-        dispatch(ClearNotesResponseMessage());
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 4000);
+      showMessage(NotesReducer.ResponseMessage, "success", setOpen);
+      dispatch(ClearNotesResponseMessage());
     }
   }, [NotesReducer.ResponseMessage]);
 
@@ -493,7 +484,12 @@ const Notes = () => {
           setViewNotes={setViewModalShow}
         />
       ) : null}
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

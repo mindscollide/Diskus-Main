@@ -35,6 +35,8 @@ import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
 import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
 import Plus from "../../../../../../assets/images/Meeting plus.png";
 import { validateInput } from "../../../../../../commen/functions/regex";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+
 const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -53,6 +55,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const [agendaDetails, setAgendaDetails] = useState({
@@ -136,13 +139,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       ]);
       setAddOptions(false);
     } else {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Cannot add option with same name"),
-        }),
-        3000
-      );
+      showMessage(t("Cannot-add-option-with-same-name"), "error", setOpen);
     }
   };
 
@@ -704,12 +701,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       dispatch(GetCurrentAgendaDetails([]));
       dispatch(showVoteAgendaModal(false));
     } else {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Voting options should be 2 or more than 2"),
-        }),
-        3000
+      showMessage(
+        t("Voting-options-should-be-2-or-more-than-2"),
+        "error",
+        setOpen
       );
     }
   };
@@ -1147,7 +1142,12 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           </>
         }
       />
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </section>
   );
 };

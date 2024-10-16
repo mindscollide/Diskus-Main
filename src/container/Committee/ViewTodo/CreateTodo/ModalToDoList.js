@@ -34,6 +34,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
@@ -56,8 +57,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Notification State
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const [toDoDate, setToDoDate] = useState(current_value);
@@ -183,15 +185,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     var valueCheck = value.replace(/^\s/g, "");
     if (name === "Title") {
       if (valueCheck.length > 199) {
-        setOpen({
-          flag: true,
-          message: t("Title-limit-is-200"),
-        });
+        showMessage(t("Title-limit-is-200"), "error", setOpen);
       } else {
-        setOpen({
-          flag: false,
-          message: "",
-        });
         setTask({
           ...task,
           [name]: valueCheck.trimStart(),
@@ -204,15 +199,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       });
     } else if (name === "Description") {
       if (valueCheck.length > 2000) {
-        setOpen({
-          flag: true,
-          message: t("Description-limit-is-2000"),
-        });
+        showMessage(t("Description-limit-is-2000"), "error", setOpen);
       } else {
-        setOpen({
-          flag: false,
-          message: "",
-        });
         setTask({
           ...task,
           [name]: valueCheck.trimStart(),
@@ -231,10 +219,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let size = true;
 
     if (tasksAttachments.TasksAttachments.length > 9) {
-      setOpen({
-        flag: true,
-        message: t("Not-allowed-more-than-10-files"),
-      });
+      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -249,26 +234,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       );
 
       if (!size) {
-        setTimeout(() => {
-          setOpen({
-            flag: true,
-            message: t("File-size-should-not-be-greater-then-zero"),
-          });
-        }, 3000);
+        showMessage(
+          t("File-size-should-not-be-greater-then-zero"),
+          "error",
+          setOpen
+        );
       } else if (!sizezero) {
-        setTimeout(() => {
-          setOpen({
-            flag: true,
-            message: t("File-size-should-not-be-zero"),
-          });
-        }, 3000);
+        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
       } else if (fileExists) {
-        setTimeout(() => {
-          setOpen({
-            flag: true,
-            message: t("File-already-exists"),
-          });
-        }, 3000);
+        showMessage(t("File-already-exists"), "error", setOpen);
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
@@ -318,10 +292,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //On Click Of Dropdown Value
   const onSearch = (name, id, users) => {
     if (taskAssignedName.length === 1) {
-      setOpen({
-        flag: true,
-        message: t("Only-one-assignee-allow"),
-      });
+      showMessage(t("Only-one-assignee-allow"), "error", setOpen);
       setTaskAssignedToInput("");
     } else {
       setTaskAssignedToInput(name);
@@ -338,10 +309,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   useEffect(() => {
     if (taskAssignedName.length > 1) {
-      setOpen({
-        flag: true,
-        message: t("Only-one-assignee-allow"),
-      });
+      showMessage(t("Only-one-assignee-allow"), "error", setOpen);
     } else {
       setTaskAssigneeLength(false);
     }
@@ -388,24 +356,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     };
     if (finalDateTime === undefined) {
       if (Task.DeadLineTime === "" || Task.DeadLineTime === undefined) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Time-missing"),
-        });
+        showMessage(t("Time-missing"), "error", setOpen);
       } else if (Task.DeadLineDate === "" || Task.DeadLineDate === undefined) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Enter-date-must"),
-        });
+        showMessage(t("Enter-date-must"), "error", setOpen);
       }
     } else if (Task.Title === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Please-select-title-for-the-task"),
-      });
+      showMessage(t("Please-select-title-for-the-task"), "error", setOpen);
     } else {
       let Data;
       if (TaskAssignedTo.length > 0) {
@@ -946,7 +902,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

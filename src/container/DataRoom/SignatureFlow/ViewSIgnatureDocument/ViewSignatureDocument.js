@@ -17,6 +17,7 @@ import {
   processXmlForReadOnly,
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const ViewSignatureDocument = () => {
   const location = useLocation();
@@ -48,6 +49,7 @@ const ViewSignatureDocument = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
@@ -444,7 +446,7 @@ const ViewSignatureDocument = () => {
           "leftPanelButton",
           "zoomOverlayButton",
           "toolbarGroup-Forms",
-          "header"
+          "header",
         ]);
       });
     }
@@ -455,19 +457,8 @@ const ViewSignatureDocument = () => {
   // === this is for Response Message===//
   useEffect(() => {
     if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-      setOpen({
-        ...open,
-        message: ResponseMessage,
-        open: true,
-      });
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-        setOpen({
-          ...open,
-          message: "",
-          open: false,
-        });
-      }, 4000);
+      showMessage(ResponseMessage, "success", setOpen);
+      dispatch(ClearMessageAnnotations());
     }
   }, [ResponseMessage]);
   // === End ===//
@@ -524,7 +515,12 @@ const ViewSignatureDocument = () => {
           show={declineConfirmationModal}
         />
       )}
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {/* {Loading && <Loader />} */}
     </>
   );

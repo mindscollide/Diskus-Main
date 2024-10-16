@@ -45,6 +45,7 @@ import {
 } from "../../../../../DataRoom/SearchFunctionality/option";
 import FilesMappingAgendaWiseMinutes from "./FilesMappingAgendaWiseMinutes";
 import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const AgendaWise = ({
   currentMeeting,
@@ -62,8 +63,9 @@ const AgendaWise = ({
   const Delta = Quill.import("delta");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [isEdit, setisEdit] = useState(false);
   const [accordianExpand, setAccordianExpand] = useState(false);
@@ -302,10 +304,7 @@ const AgendaWise = ({
       let size = true;
 
       if (fileAttachments.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
@@ -321,26 +320,15 @@ const AgendaWise = ({
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          showMessage(
+            t("File-size-should-not-be-greater-then-zero"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -482,10 +470,7 @@ const AgendaWise = ({
       }
 
       if (!isAgendaSelected) {
-        setOpen({
-          flag: true,
-          message: t("Select-agenda"),
-        });
+        showMessage(t("Select-agenda"), "error", setOpen);
       }
     }
   };
@@ -787,18 +772,7 @@ const AgendaWise = ({
       NewMeetingreducer.ResponseMessage !== t("List-updated-successfully") &&
       NewMeetingreducer.ResponseMessage !== t("No-data-available")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -1326,7 +1300,12 @@ const AgendaWise = ({
         </Col>
       </Row>
 
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </section>
   );
 };

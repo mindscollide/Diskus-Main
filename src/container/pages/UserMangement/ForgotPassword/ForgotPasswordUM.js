@@ -20,6 +20,7 @@ import { validateEmail } from "../../../../commen/functions/validations";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const ForgotPasswordUM = () => {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const ForgotPasswordUM = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   //Form Submission of Forgot Password
@@ -50,18 +52,7 @@ const ForgotPasswordUM = () => {
         setMessege(t("Please-enter-a-valid-email"));
       }
     } else {
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Please-enter-email"),
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(t("Please-enter-email"), "error", setOpen);
       setMessege("");
     }
   };
@@ -70,7 +61,7 @@ const ForgotPasswordUM = () => {
 
   const handleGoBackFunction = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
-   dispatch(LoginFlowRoutes(1));
+    dispatch(LoginFlowRoutes(1));
   };
 
   //onChange for the Field
@@ -246,7 +237,12 @@ const ForgotPasswordUM = () => {
         </Row>
       </Container>
       {auth.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

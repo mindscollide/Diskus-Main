@@ -32,6 +32,7 @@ import {
   regexOnlyForNumberNCharacters,
   validateInput,
 } from "../../../commen/functions/regex";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
   const { uploadReducer } = useSelector((state) => state);
@@ -56,8 +57,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     TasksAttachments: [],
   });
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const date = new Date();
@@ -203,10 +205,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     let size = true;
 
     if (tasksAttachments.TasksAttachments.length > 9) {
-      setOpen({
-        flag: true,
-        message: t("Not-allowed-more-than-10-files"),
-      });
+      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -223,28 +222,15 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       console.log(fileExists, "fileExistsfileExistsfileExists");
 
       if (!size) {
-        setTimeout(() => {
-          setOpen({
-            flag: true,
-            message: t("File-size-should-not-be-greater-then-zero"),
-          });
-        }, 3000);
+        showMessage(
+          t("File-size-should-not-be-greater-then-zero"),
+          "error",
+          setOpen
+        );
       } else if (!sizezero) {
-        setTimeout(() => {
-          setOpen({
-            flag: true,
-            message: t("File-size-should-not-be-zero"),
-          });
-        }, 3000);
+        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
       } else if (fileExists) {
-        console.log("iam in here");
-        setTimeout(() => {
-          console.log("iam in here");
-          setOpen({
-            flag: true,
-            message: t("File-already-exists"),
-          });
-        }, 3000);
+        showMessage(t("File-already-exists"), "error", setOpen);
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
@@ -677,7 +663,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

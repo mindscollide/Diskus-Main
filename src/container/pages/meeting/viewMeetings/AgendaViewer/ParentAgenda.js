@@ -43,6 +43,7 @@ import CollapseIcon from "./AV-Images/Collapse-Icon.png";
 import DownloadIcon from "./AV-Images/Download-Icon.png";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const ParentAgenda = ({
   data,
@@ -79,6 +80,7 @@ const ParentAgenda = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const dispatch = useDispatch();
@@ -228,12 +230,10 @@ const ParentAgenda = ({
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Thank-you-for-participanting-in-voting"),
-        }),
-        3000
+      showMessage(
+        t("Thank-you-for-participanting-in-voting"),
+        "error",
+        setOpen
       );
       dispatch(clearResponseMessage(""));
     }
@@ -248,9 +248,7 @@ const ParentAgenda = ({
       attachmentID: Number(record.originalAttachmentName),
     };
     let pdfDataJson = JSON.stringify(Data);
-    if (
-      fileFormatforSignatureFlow.includes(ext)
-    ) {
+    if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
@@ -731,7 +729,12 @@ const ParentAgenda = ({
           )} */}
         {/* </Draggable> */}
       </div>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

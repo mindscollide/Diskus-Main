@@ -46,6 +46,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 const CreateTask = ({
   setCreateaTask,
   currentMeeting,
@@ -84,8 +85,9 @@ const CreateTask = ({
 
   //Notification State
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   // Select for select Agenda
@@ -420,10 +422,7 @@ const CreateTask = ({
       let size = true;
 
       if (taskAttachments.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
@@ -439,26 +438,15 @@ const CreateTask = ({
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          showMessage(
+            t("File-size-should-not-be-greater-then-zero"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1092,7 +1080,12 @@ const CreateTask = ({
           </section>
         </>
       )}
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

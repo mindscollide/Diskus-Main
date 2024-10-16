@@ -10,6 +10,7 @@ import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import del from "../../../assets/images/del.png";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 import {
   ViewToDoList,
@@ -77,6 +78,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [statusOptions, setStatusOptions] = useState([]);
   const [tableFilterOptions, setTableFilterOptions] = useState([]);
@@ -86,7 +88,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
   // GET TODOS STATUS
   useEffect(() => {
-    if(!todoStatus.Response?.length > 0){
+    if (!todoStatus.Response?.length > 0) {
       dispatch(getTodoStatus(navigate, t));
     }
     if (ViewGroupID !== null) {
@@ -174,7 +176,11 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     let newOptionsFilter = [];
     let newArrStatus = [""];
 
-    if (todoStatus.Response !== null && todoStatus.Response !== "" && todoStatus.Response.length > 0) {
+    if (
+      todoStatus.Response !== null &&
+      todoStatus.Response !== "" &&
+      todoStatus.Response.length > 0
+    ) {
       todoStatus.Response.map((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
@@ -490,18 +496,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       toDoListReducer.ResponseMessage !== "" &&
       toDoListReducer.ResponseMessage !== t("No-records-found")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: toDoListReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(toDoListReducer.ResponseMessage, "success", setOpen);
 
       dispatch(clearResponce());
     } else if (
@@ -509,18 +504,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       assignees.ResponseMessage !== "" &&
       assignees.ResponseMessage !== t("No-records-found")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: assignees.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(assignees.ResponseMessage, "success", setOpen);
 
       dispatch(clearResponseMessage());
     } else {
@@ -552,18 +536,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       getTodosStatus.ResponseMessage !== "" &&
       getTodosStatus.ResponseMessage !== t("No-records-found")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: getTodosStatus.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(assignees.getTodosStatus.ResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
@@ -572,18 +545,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       getTodosStatus.UpdateTodoStatusMessage !== "" &&
       getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: getTodosStatus.UpdateTodoStatusMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(getTodosStatus.UpdateTodoStatusMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
@@ -592,18 +554,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       getTodosStatus.UpdateTodoStatus !== "" &&
       getTodosStatus.UpdateTodoStatus !== t("No-records-found")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: getTodosStatus.UpdateTodoStatus,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(getTodosStatus.UpdateTodoStatus, "success", setOpen);
 
       dispatch(cleareMessage());
     } else {
@@ -690,7 +641,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setViewFlagToDo={setViewFlagToDo}
         />
       ) : null}
-      {/* <Notification setOpen={setOpen} open={open.open} message={open.message} /> */}
+      {/* <Notification
+open={open.open}
+message={open.message}
+setOpen={(status) => setOpen({ ...open, open: status.flag })}
+severity={open.severity}
+/> */}
     </>
   );
 };

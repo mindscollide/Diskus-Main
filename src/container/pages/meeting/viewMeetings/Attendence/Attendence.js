@@ -34,6 +34,7 @@ import {
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const Attendence = ({
   setPolls,
   setMinutes,
@@ -72,6 +73,7 @@ const Attendence = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const [cancelModalView, setCancelModalView] = useState(false);
@@ -305,7 +307,7 @@ const Attendence = ({
   // Function to handle notification logic
   const handleSaveNotification = () => {
     if (ResponseMessage) {
-      setOpen({ open: true, message: ResponseMessage });
+      showMessage(ResponseMessage, "success", setOpen);
 
       // Dispatch an action to reset/clear ResponseMessage
       dispatch(clearAttendanceResponse());
@@ -475,7 +477,12 @@ const Attendence = ({
         />
       )}
 
-      <Notification message={open.message} setOpen={setOpen} open={open.open} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

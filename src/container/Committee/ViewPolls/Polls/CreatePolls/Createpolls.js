@@ -40,6 +40,7 @@ import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../commen/functions/date_formater";
 import { SavePollsApi } from "../../../../../store/actions/Polls_actions";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Createpolls = ({ setCreatepoll }) => {
   const { t } = useTranslation();
@@ -81,8 +82,9 @@ const Createpolls = ({ setCreatepoll }) => {
   ]);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const [members, setMembers] = useState([]);
@@ -116,16 +118,10 @@ const Createpolls = ({ setCreatepoll }) => {
           setOptions([...options, newOptions]);
         }
       } else {
-        setOpen({
-          flag: true,
-          message: t("Please-fill-options"),
-        });
+        showMessage(t("Please-fill-options"), "error", setOpen);
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-fill-options"),
-      });
+      showMessage(t("Please-fill-options"), "error", setOpen);
     }
   };
 
@@ -324,41 +320,17 @@ const Createpolls = ({ setCreatepoll }) => {
       // setError(true);
 
       if (pollsData.Title === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Title-is-required"),
-        });
+        showMessage(t("Title-is-required"), "error", setOpen);
       } else if (pollsData.date === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Select-date"),
-        });
+        showMessage(t("Select-date"), "error", setOpen);
       } else if (Object.keys(members).length === 0) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Atleat-one-member-required"),
-        });
+        showMessage(t("Atleat-one-member-required"), "error", setOpen);
       } else if (Object.keys(options).length <= 1) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Required-atleast-two-options"),
-        });
+        showMessage(t("Required-atleast-two-options"), "error", setOpen);
       } else if (!allValuesNotEmpty) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-open-option-fields"),
-        });
+        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
       } else {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-reqired-fields"),
-        });
+        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
       }
     }
   };
@@ -710,9 +682,10 @@ const Createpolls = ({ setCreatepoll }) => {
               </Col>
             </Row>
             <Notification
-              setOpen={setOpen}
-              open={open.flag}
+              open={open.open}
               message={open.message}
+              setOpen={(status) => setOpen({ ...open, open: status.flag })}
+              severity={open.severity}
             />
 
             {NewMeetingreducer.unsavedPollsMeeting && (

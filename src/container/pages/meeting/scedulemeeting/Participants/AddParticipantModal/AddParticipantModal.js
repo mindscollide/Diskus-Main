@@ -23,6 +23,7 @@ import { Col, Row } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   const animatedComponents = makeAnimated();
@@ -36,8 +37,9 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [membersParticipants, setMembersParticipants] = useState([]);
   const RemovedParticipant = (index) => {
@@ -418,10 +420,11 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
       rspvRowsCopy.find((obj) => obj.userID === userID)
     );
     if (membersParticipants.length === 0) {
-      setOpen({
-        flag: true,
-        message: t("Atleast-one-participant-should-be-selected"),
-      });
+      showMessage(
+        t("Atleast-one-participant-should-be-selected"),
+        "error",
+        setOpen
+      );
     } else {
       setrspvRows(rspvRowsCopy);
       dispatch(showAddParticipantsModal(false));
@@ -585,7 +588,12 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
           </>
         }
       />
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </section>
   );
 };

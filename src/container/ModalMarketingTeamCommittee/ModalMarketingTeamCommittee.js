@@ -16,6 +16,7 @@ import Group_Icon from "../../assets/images/Path 636.png";
 import { useDispatch, useSelector } from "react-redux";
 import { assignGroups } from "../../store/actions/Committee_actions";
 import { useNavigate } from "react-router-dom";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 const ModalMarketingTeamCommittee = ({
   ModalTitle,
   MarketingTeam,
@@ -34,8 +35,9 @@ const ModalMarketingTeamCommittee = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const { t } = useTranslation();
   console.log(groupData, data, "dasdasdasdasdasd");
@@ -105,10 +107,7 @@ const ModalMarketingTeamCommittee = ({
     );
     if (groupID !== 0 && committeeID !== 0) {
       if (findIndexGroupID !== -1) {
-        setOpen({
-          flag: true,
-          message: "This group already Exist is lit",
-        });
+        showMessage(t("This-group-already-exist-is-list"), "error", setOpen);
         setGroupName("");
         setGroupID(0);
       } else {
@@ -337,7 +336,12 @@ const ModalMarketingTeamCommittee = ({
           }
         />
       </Container>
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

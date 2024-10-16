@@ -89,12 +89,6 @@ const SubAgendaMappingDragging = ({
   const { Dragger } = Upload;
 
   const navigate = useNavigate();
-
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
-
   function getCurrentUTCDate() {
     const currentDate = new Date();
     const year = currentDate.getUTCFullYear();
@@ -407,12 +401,12 @@ const SubAgendaMappingDragging = ({
     label: (
       <>
         <Row>
-          <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
             <img
-              alt=''
+              alt=""
               src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-              width='17px'
-              height='17px'
+              width="17px"
+              height="17px"
               className={styles["Image_class_Agenda"]}
             />
             <span className={styles["Name_Class"]}>{presenter.userName}</span>
@@ -444,11 +438,13 @@ const SubAgendaMappingDragging = ({
                   editorRole.role === "Agenda Contributor"
                     ? "d-none"
                     : ""
-                }>
+                }
+              >
                 <Droppable
                   key={`sub-agenda-${index}-${subIndex}`}
                   droppableId={`sub-agenda-${index}-${subIndex}`}
-                  type='SUB_AGENDA'>
+                  type="SUB_AGENDA"
+                >
                   {(provided) => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
                       <Draggable
@@ -465,22 +461,27 @@ const SubAgendaMappingDragging = ({
                               !isShouldAgendaUpdatedOrNot
                             ? true
                             : false
-                        }>
+                        }
+                      >
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.draggableProps}>
+                            {...provided.draggableProps}
+                          >
                             <Row>
                               <Col
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className={styles["Subagenda_Scroller"]}>
+                                className={styles["Subagenda_Scroller"]}
+                              >
                                 <section
-                                  className={styles["Padding_SubAgenda"]}>
+                                  className={styles["Padding_SubAgenda"]}
+                                >
                                   <Row
                                     key={subAgendaData.subAgendaID}
-                                    className='mt-3'>
+                                    className="mt-3"
+                                  >
                                     <Col lg={1} md={1} sm={1}></Col>
                                     <Col
                                       lg={11}
@@ -493,20 +494,23 @@ const SubAgendaMappingDragging = ({
                                         editorRole.status === 9
                                           ? styles["SubajendaBox_Inactive"]
                                           : styles["SubajendaBox"]
-                                      }>
+                                      }
+                                    >
                                       <Row isDragging={snapshot.isDragging}>
                                         <Col
                                           lg={1}
                                           md={1}
                                           sm={1}
                                           isDragging={snapshot.isDragging}
-                                          {...provided.dragHandleProps}>
+                                          {...provided.dragHandleProps}
+                                        >
                                           <section
-                                            className={styles["backGorund"]}>
+                                            className={styles["backGorund"]}
+                                          >
                                             <img
-                                              alt=''
-                                              width='18.71px'
-                                              height='9.36px'
+                                              alt=""
+                                              width="18.71px"
+                                              height="9.36px"
                                               src={
                                                 subexpandIndex === index &&
                                                 expandSubIndex === subIndex &&
@@ -537,10 +541,9 @@ const SubAgendaMappingDragging = ({
                                           lg={11}
                                           md={11}
                                           sm={11}
-                                          className={
-                                            styles["SubAgendaSection"]
-                                          }>
-                                          <Row className='mt-2 mb-2'>
+                                          className={styles["SubAgendaSection"]}
+                                        >
+                                          <Row className="mt-2 mb-2">
                                             <Col lg={5} md={5} sm={12}>
                                               <Row>
                                                 <Col lg={12} md={12} sm={12}>
@@ -549,7 +552,8 @@ const SubAgendaMappingDragging = ({
                                                       styles[
                                                         "Meeting_subAgenda"
                                                       ]
-                                                    }>
+                                                    }
+                                                  >
                                                     <span>{index + 1}.</span>
                                                     <span>
                                                       {subIndex + 1}
@@ -606,7 +610,8 @@ const SubAgendaMappingDragging = ({
                                                       styles[
                                                         "Meeting_subAgenda"
                                                       ]
-                                                    }>
+                                                    }
+                                                  >
                                                     {t("Presenter")}
                                                   </span>
                                                 </Col>
@@ -660,32 +665,35 @@ const SubAgendaMappingDragging = ({
                                               sm={12}
                                               md={4}
                                               lg={4}
-                                              className='d-flex gap-4 justify-content-start align-items-center'>
+                                              className="d-flex gap-4 justify-content-start align-items-center"
+                                            >
                                               <Row>
                                                 <Col lg={5} md={5} sm={5}>
                                                   <Row>
                                                     <Col
                                                       lg={12}
                                                       md={12}
-                                                      sm={12}>
+                                                      sm={12}
+                                                    >
                                                       <span
                                                         className={
                                                           styles[
                                                             "Meeting_subAgenda"
                                                           ]
-                                                        }>
+                                                        }
+                                                      >
                                                         {t("Start-date")}
                                                       </span>
                                                     </Col>
                                                   </Row>
                                                   <DatePicker
-                                                    arrowClassName='arrowClass'
-                                                    containerClassName='containerClassTimePicker'
-                                                    className='timePicker'
+                                                    arrowClassName="arrowClass"
+                                                    containerClassName="containerClassTimePicker"
+                                                    className="timePicker"
                                                     calendar={calendarValue}
                                                     locale={localValue}
                                                     disableDayPicker
-                                                    inputClass='inputTImeMeeting'
+                                                    inputClass="inputTImeMeeting"
                                                     disabled={
                                                       parentIslockedCheck ||
                                                       subAgendaData.isLocked ||
@@ -709,7 +717,7 @@ const SubAgendaMappingDragging = ({
                                                         ? true
                                                         : false
                                                     }
-                                                    format='hh:mm A'
+                                                    format="hh:mm A"
                                                     selected={
                                                       subAgendaData.startDate
                                                     }
@@ -735,12 +743,13 @@ const SubAgendaMappingDragging = ({
                                                   lg={2}
                                                   md={2}
                                                   sm={2}
-                                                  className='d-flex justify-content-center align-items-center marginTop20'>
+                                                  className="d-flex justify-content-center align-items-center marginTop20"
+                                                >
                                                   <img
-                                                    alt=''
+                                                    alt=""
                                                     draggable={false}
                                                     src={desh}
-                                                    width='19.02px'
+                                                    width="19.02px"
                                                   />
                                                 </Col>
                                                 <Col lg={5} md={5} sm={5}>
@@ -748,25 +757,27 @@ const SubAgendaMappingDragging = ({
                                                     <Col
                                                       lg={12}
                                                       md={12}
-                                                      sm={12}>
+                                                      sm={12}
+                                                    >
                                                       <span
                                                         className={
                                                           styles[
                                                             "Meeting_subAgenda"
                                                           ]
-                                                        }>
+                                                        }
+                                                      >
                                                         {t("End-date")}
                                                       </span>
                                                     </Col>
                                                   </Row>
                                                   <DatePicker
-                                                    arrowClassName='arrowClass'
-                                                    containerClassName='containerClassTimePicker'
-                                                    className='timePicker'
+                                                    arrowClassName="arrowClass"
+                                                    containerClassName="containerClassTimePicker"
+                                                    className="timePicker"
                                                     calendar={calendarValue}
                                                     locale={localValue}
                                                     disableDayPicker
-                                                    inputClass='inputTImeMeeting'
+                                                    inputClass="inputTImeMeeting"
                                                     disabled={
                                                       parentIslockedCheck ||
                                                       subAgendaData.isLocked ||
@@ -790,7 +801,7 @@ const SubAgendaMappingDragging = ({
                                                         ? true
                                                         : false
                                                     }
-                                                    format='hh:mm A'
+                                                    format="hh:mm A"
                                                     selected={
                                                       subAgendaData.endDate
                                                     }
@@ -820,11 +831,11 @@ const SubAgendaMappingDragging = ({
                                               editorRole.status === "9" ||
                                               editorRole.status === 9 ? null : (
                                                 <img
-                                                  alt=''
+                                                  alt=""
                                                   draggable={false}
                                                   src={redcrossIcon}
-                                                  height='25px'
-                                                  width='25px'
+                                                  height="25px"
+                                                  width="25px"
                                                   className={
                                                     styles[
                                                       "RedCross_Icon_class_SubAgenda"
@@ -914,7 +925,7 @@ const SubAgendaMappingDragging = ({
                                                     ]
                                                   }
                                                   src={AttachmentIcon}
-                                                  alt=''
+                                                  alt=""
                                                 />
                                               ) : null}
                                             </Col>
@@ -924,11 +935,11 @@ const SubAgendaMappingDragging = ({
                                             expandSubIndex === subIndex &&
                                             subExpand && (
                                               <>
-                                                <Row className='mb-2'>
+                                                <Row className="mb-2">
                                                   <Col lg={12} md={12} sm={12}>
                                                     <TextField
-                                                      applyClass='text-area-create-resolution'
-                                                      type='text'
+                                                      applyClass="text-area-create-resolution"
+                                                      type="text"
                                                       as={"textarea"}
                                                       name={"Description"}
                                                       value={
@@ -964,7 +975,7 @@ const SubAgendaMappingDragging = ({
                                                           e
                                                         )
                                                       }
-                                                      rows='4'
+                                                      rows="4"
                                                       placeholder={t(
                                                         "Agenda-description"
                                                       )}
@@ -989,17 +1000,18 @@ const SubAgendaMappingDragging = ({
                                                     />
                                                   </Col>
                                                 </Row> */}
-                                                <Row className='mt-3'>
+                                                <Row className="mt-3">
                                                   <Col lg={12} md={12} sm={12}>
                                                     <span
                                                       className={
                                                         styles["Agenda_Heading"]
-                                                      }>
+                                                      }
+                                                    >
                                                       {t("Attachments")}
                                                     </span>
                                                   </Col>
                                                 </Row>
-                                                <Row className='mt-3'>
+                                                <Row className="mt-3">
                                                   <Col lg={6} md={6} sm={6}>
                                                     <Radio.Group
                                                       value={
@@ -1030,14 +1042,16 @@ const SubAgendaMappingDragging = ({
                                                             !isShouldAgendaUpdatedOrNot
                                                           ? true
                                                           : false
-                                                      }>
+                                                      }
+                                                    >
                                                       <Radio value={1}>
                                                         <span
                                                           className={
                                                             styles[
                                                               "Radio_Button_options"
                                                             ]
-                                                          }>
+                                                          }
+                                                        >
                                                           {t("Document")}
                                                         </span>
                                                       </Radio>
@@ -1047,7 +1061,8 @@ const SubAgendaMappingDragging = ({
                                                             styles[
                                                               "Radio_Button_options"
                                                             ]
-                                                          }>
+                                                          }
+                                                        >
                                                           {t("URL")}
                                                         </span>
                                                       </Radio>
@@ -1070,7 +1085,8 @@ const SubAgendaMappingDragging = ({
                                                     lg={6}
                                                     md={6}
                                                     sm={6}
-                                                    className='d-flex justify-content-end gap-4 align-items-center'>
+                                                    className="d-flex justify-content-end gap-4 align-items-center"
+                                                  >
                                                     {editorRole.role ===
                                                       "Participant" ||
                                                     editorRole.role ===
@@ -1086,9 +1102,9 @@ const SubAgendaMappingDragging = ({
                                                             <img
                                                               draggable={false}
                                                               src={Key}
-                                                              alt=''
-                                                              width='24.07px'
-                                                              height='24.09px'
+                                                              alt=""
+                                                              width="24.07px"
+                                                              height="24.09px"
                                                               className={`cursor-pointer ${
                                                                 parentIslockedCheck ||
                                                                 subAgendaData.isLocked ||
@@ -1122,11 +1138,11 @@ const SubAgendaMappingDragging = ({
                                                               }}
                                                             />
                                                             <img
-                                                              alt=''
+                                                              alt=""
                                                               draggable={false}
                                                               src={Cast}
-                                                              width='25.85px'
-                                                              height='25.89px'
+                                                              width="25.85px"
+                                                              height="25.89px"
                                                               className={
                                                                 Number(
                                                                   editorRole.status
@@ -1164,9 +1180,9 @@ const SubAgendaMappingDragging = ({
                                                                   ? DarkLock
                                                                   : Lock
                                                               }
-                                                              alt=''
-                                                              width='18.87px'
-                                                              height='26.72px'
+                                                              alt=""
+                                                              width="18.87px"
+                                                              height="26.72px"
                                                               className={
                                                                 parentIslockedCheck ||
                                                                 editorRole.status ===
@@ -1218,11 +1234,13 @@ const SubAgendaMappingDragging = ({
                                                 </Row>
                                                 <Droppable
                                                   droppableId={`subAgendaID-${subAgendaData.subAgendaID}-parent-${data.iD}-attachments`}
-                                                  type='attachment'>
+                                                  type="attachment"
+                                                >
                                                   {(provided) => (
                                                     <div
                                                       {...provided.droppableProps}
-                                                      ref={provided.innerRef}>
+                                                      ref={provided.innerRef}
+                                                    >
                                                       {subAgendaData.subSelectRadio ===
                                                       1 ? (
                                                         <>
@@ -1369,7 +1387,8 @@ const SubAgendaMappingDragging = ({
         <Droppable
           key={`sub-agenda-${index}-${0}`}
           droppableId={`sub-agenda-${index}-${0}`}
-          type='SUB_AGENDA'>
+          type="SUB_AGENDA"
+        >
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <Row style={{ height: "12px" }}></Row>
@@ -1378,7 +1397,6 @@ const SubAgendaMappingDragging = ({
           )}
         </Droppable>
       )}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

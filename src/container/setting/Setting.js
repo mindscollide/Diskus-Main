@@ -35,6 +35,7 @@ import {
   useGoogleLogout,
 } from "@react-oauth/google";
 import { async } from "q";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 const Organization = () => {
   //for translation
   const { settingReducer, LanguageReducer } = useSelector((state) => state);
@@ -43,8 +44,9 @@ const Organization = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const [organizationStates, setOrganizationStates] = useState({
@@ -533,17 +535,11 @@ const Organization = () => {
       settingReducer.UpdateUserSettingResponseMessage !== "" &&
       settingReducer.UpdateUserSettingResponseMessage !== ""
     ) {
-      setOpen({
-        flag: true,
-        message: settingReducer.UpdateUserSettingResponseMessage,
-      });
-      setTimeout(() => {
-        settingReducer.UpdateUserSettingResponseMessage = "";
-        setOpen({
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        settingReducer.UpdateUserSettingResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(updateUserMessageCleare());
     } else {
       dispatch(updateUserMessageCleare());
@@ -1621,9 +1617,10 @@ const Organization = () => {
         </Col>
       </Container>
       <Notification
-        open={open.flag}
+        open={open.open}
         message={open.message}
-        setOpen={open.flag}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
       />
     </>
   );

@@ -28,6 +28,7 @@ import {
 } from "../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const { Dragger } = Upload;
   const dispatch = useDispatch();
@@ -42,8 +43,9 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const [fileForSend, setFileForSend] = useState([]);
   let currentUserID = localStorage.getItem("userID");
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [committeeData, setCommitteeData] = useState({
     committeeTitle: "",
@@ -213,10 +215,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
       let size = true;
 
       if (fileAttachments.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
@@ -232,26 +231,15 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          showMessage(
+            t("File-size-should-not-be-greater-then-zero"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -902,7 +890,12 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
         </Row>
         {/* </Paper> */}
       </section>
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

@@ -48,6 +48,7 @@ import {
   SaveMeetingDetialsNewApiFunction,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
   editorRole,
@@ -172,8 +173,9 @@ const ProposedNewMeeting = ({
   }, [getAllParticipants]);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   //Send Response By Date
@@ -486,12 +488,13 @@ const ProposedNewMeeting = ({
           //Checks that if the start time of lower row is less then end time of upper row (same date scenario)
           updatedRows[index - 1].startTime <= updatedRows[index - 1].endTime
         ) {
-          setOpen({
-            flag: true,
-            message: t(
+          showMessage(
+            t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
-          });
+            "error",
+            setOpen
+          );
           //if the scnario gets exist paste the current value that is assigned to it already
           updatedRows[index].startTime = updatedRows[index - 1].endTime;
           setRows(updatedRows);
@@ -502,12 +505,11 @@ const ProposedNewMeeting = ({
             updatedRows[index].endTime !== "" &&
             newDate >= updatedRows[index].endTime
           ) {
-            setOpen({
-              flag: true,
-              message: t(
-                "Selected-start-time-should-not-be-greater-than-the-endTime"
-              ),
-            });
+            showMessage(
+              t("Selected-start-time-should-not-be-greater-than-the-endTime"),
+              "error",
+              setOpen
+            );
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
             return;
@@ -521,12 +523,11 @@ const ProposedNewMeeting = ({
           updatedRows[index].endTime !== "" &&
           newDate >= updatedRows[index].endTime
         ) {
-          setOpen({
-            flag: true,
-            message: t(
-              "Selected-start-time-should-not-be-greater-than-the-endTime"
-            ),
-          });
+          showMessage(
+            t("Selected-start-time-should-not-be-greater-than-the-endTime"),
+            "error",
+            setOpen
+          );
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
           return;
@@ -551,12 +552,11 @@ const ProposedNewMeeting = ({
           updatedRows[index].dateSelect?.toDateString()
       ) {
         if (updatedRows[index - 1].endTime <= updatedRows[index].startTime) {
-          setOpen({
-            flag: true,
-            message: t(
-              "Selected-end-time-should-not-be-less-than-the-previous-one"
-            ),
-          });
+          showMessage(
+            t("Selected-end-time-should-not-be-less-than-the-previous-one"),
+            "error",
+            setOpen
+          );
           updatedRows[index].endTime = newDate;
           return;
         } else {
@@ -565,10 +565,11 @@ const ProposedNewMeeting = ({
         }
       } else {
         if (newDate <= updatedRows[index].startTime) {
-          setOpen({
-            flag: true,
-            message: t("Selected-end-time-should-not-be-less-than-start-time"),
-          });
+          showMessage(
+            t("Selected-end-time-should-not-be-less-than-start-time"),
+            "error",
+            setOpen
+          );
           updatedRows[index].endTime = newDate;
           return;
         } else {
@@ -594,10 +595,11 @@ const ProposedNewMeeting = ({
   //Removing the Date Time Rows
   const HandleCancelFunction = (index) => {
     if (index === 0) {
-      setOpen({
-        flag: true,
-        message: t("At-least-one-date-time-slot-is-mandatory"),
-      });
+      showMessage(
+        t("At-least-one-date-time-slot-is-mandatory"),
+        "error",
+        setOpen
+      );
     } else {
       let optionscross = [...rows];
       optionscross.splice(index, 1);
@@ -1534,7 +1536,12 @@ const ProposedNewMeeting = ({
           </Paper>
         </Col>
       </Row>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </section>
   );
 };

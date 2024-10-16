@@ -40,6 +40,7 @@ import {
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../../../store/actions/Polls_actions";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const { t } = useTranslation();
@@ -89,8 +90,9 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   ]);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const HandleCancelFunction = (index) => {
@@ -123,16 +125,10 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
           setOptions([...options, newOptions]);
         }
       } else {
-        setOpen({
-          flag: true,
-          message: t("Please-fill-options"),
-        });
+        showMessage(t("Please-fill-options"), "error", setOpen);
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-fill-options"),
-      });
+      showMessage(t("Please-fill-options"), "error", setOpen);
     }
   };
 
@@ -278,41 +274,17 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       setError(true);
 
       if (updatePolls.Title === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Title-is-required"),
-        });
+        showMessage(t("Title-is-required"), "error", setOpen);
       } else if (updatePolls.date === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Select-date"),
-        });
+        showMessage(t("Select-date"), "error", setOpen);
       } else if (Object.keys(members).length === 0) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Atleat-one-member-required"),
-        });
+        showMessage(t("Atleat-one-member-required"), "error", setOpen);
       } else if (Object.keys(options).length <= 2) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Required-atleast-two-options"),
-        });
+        showMessage(t("Required-atleast-two-options"), "error", setOpen);
       } else if (!allValuesNotEmpty) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-open-option-fields"),
-        });
+        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
       } else {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-reqired-fields"),
-        });
+        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
       }
     }
   };
@@ -420,18 +392,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
 
   useEffect(() => {
     if (NewMeetingreducer.ResponseMessage !== "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -739,7 +700,12 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       {NewMeetingreducer.unsavedEditPollsMeeting && (
         <UnsavedEditPollsMeeting setEditPolls={setEditPolls} />
       )}
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </section>
   );
 };

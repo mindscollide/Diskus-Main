@@ -33,6 +33,7 @@ import {
   getAllMeetingOrganizers_fail,
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Organizers = ({
   editorRole,
@@ -89,6 +90,7 @@ const Organizers = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const handleCancelOrganizer = () => {
@@ -558,18 +560,7 @@ const Organizers = ({
       MeetingOrganizersReducer.ResponseMessage !== t("No-records-found") ||
       MeetingOrganizersReducer.ResponseMessage !== ""
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: MeetingOrganizersReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(MeetingOrganizersReducer.ResponseMessage, "success", setOpen);
       dispatch(clearResponseMessage(""));
     } else {
       dispatch(clearResponseMessage(""));
@@ -623,7 +614,12 @@ const Organizers = ({
         </Row>
       </section>
 
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
 
       {cancelModalView && (
         <CancelButtonModal

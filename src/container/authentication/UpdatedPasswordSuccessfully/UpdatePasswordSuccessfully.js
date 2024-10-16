@@ -19,6 +19,7 @@ import Cookies from "js-cookie";
 import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
 import { useDispatch, useSelector } from "react-redux";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UpdatePasswordSuccessfully = () => {
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
@@ -43,6 +44,7 @@ const UpdatePasswordSuccessfully = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const handlechange = (e) => {
     e.preventDefault();
@@ -59,18 +61,11 @@ const UpdatePasswordSuccessfully = () => {
       Authreducer.passwordUpdateOnForgotPasswordMessege !==
         t("Password-updated-successfully")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.passwordUpdateOnForgotPasswordMessege,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.passwordUpdateOnForgotPasswordMessege,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     }
@@ -106,7 +101,12 @@ const UpdatePasswordSuccessfully = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img draggable="false" src={DiskusLogo} width={220} alt="diskus_logo" />
+                    <img
+                      draggable="false"
+                      src={DiskusLogo}
+                      width={220}
+                      alt="diskus_logo"
+                    />
                   </Col>
                 </Row>
                 <Form>
@@ -172,7 +172,8 @@ const UpdatePasswordSuccessfully = () => {
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
-              <img draggable="false"
+              <img
+                draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"
@@ -182,7 +183,12 @@ const UpdatePasswordSuccessfully = () => {
           </Col>
         </Row>
       </Container>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );

@@ -2,14 +2,17 @@ import React from "react";
 import PropTypes from "prop-types"; // For prop type validation
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { Safe } from 'react-bootstrap-icons'
 
-const Alert = React.forwardRef(function Alert(props, ref) {
+const Alert = React.forwardRef(function Alert(props, ref, alertClass) {
   return (
     <MuiAlert
       elevation={6}
       ref={ref}
+      className={alertClass}
       variant="filled"
       {...props}
+      icon={<Safe />}
     />
   );
 });
@@ -24,10 +27,12 @@ const Notification = React.memo(({ setOpen, open, message, severity = "success" 
 
   return (
     <Snackbar 
-      open={open} 
+      open={true} 
+      // className={severity === "success"? "success_snackbar": "error_snackbar"}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       autoHideDuration={6000} 
       onClose={handleClose}
+      
        
     >
       <Alert 

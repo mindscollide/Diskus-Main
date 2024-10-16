@@ -24,6 +24,7 @@ import {
 import { set } from "lodash";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProgressStats from "../../../../components/elements/progressStats/ProgressStats";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -46,9 +47,10 @@ const ReviewSignature = () => {
   const [reviewSignature, setReviewSignature] = useState([]);
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const [isOpen, setIsOpen] = useState({
-    open: true,
+  const [open, setOpen] = useState({
+    open: false,
     message: "",
+    severity: "error",
   });
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
@@ -118,8 +120,9 @@ const ReviewSignature = () => {
       ellipsis: true,
       render: (text, record) => (
         <p
-          className='cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center'
-          onClick={() => handleClickOpenSigatureDoc(record)}>
+          className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center"
+          onClick={() => handleClickOpenSigatureDoc(record)}
+        >
           <img src={getIconSource(getFileExtension(text))} />
           <span>{text}</span>
         </p>
@@ -130,9 +133,9 @@ const ReviewSignature = () => {
         <>
           {t("Requested-by")}{" "}
           {sortOrderRequestBy === "descend" ? (
-            <img src={DescendIcon} alt='' />
+            <img src={DescendIcon} alt="" />
           ) : (
-            <img src={AscendIcon} alt='' />
+            <img src={AscendIcon} alt="" />
           )}
         </>
       ),
@@ -156,12 +159,13 @@ const ReviewSignature = () => {
         <p
           className={
             "m-0 d-flex align-items-center gap-2 justify-content-start"
-          }>
+          }
+        >
           <img
             src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
             height={22}
-            className='rounded-circle '
+            className="rounded-circle "
           />
           <span>{text}</span>
         </p>
@@ -172,9 +176,9 @@ const ReviewSignature = () => {
         <>
           {t("Date-and-time")}{" "}
           {sortOrderDateTime === "descend" ? (
-            <img src={DescendIcon} alt='' />
+            <img src={DescendIcon} alt="" />
           ) : (
-            <img src={AscendIcon} alt='' />
+            <img src={AscendIcon} alt="" />
           )}
         </>
       ),
@@ -209,7 +213,7 @@ const ReviewSignature = () => {
       defaultFilteredValue: defaultreviewAndSignatureStatus,
       onFilter: (value, record) => record.actorStatusID === value,
       filterIcon: () => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       render: (text, record) => {
         const { actorStatusID, status } = record;
@@ -223,7 +227,8 @@ const ReviewSignature = () => {
                 : actorStatusID === 4
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
-            }>
+            }
+          >
             {status}
           </p>
         );
@@ -310,16 +315,7 @@ const ReviewSignature = () => {
       ResponseMessage !== null &&
       ResponseMessage !== undefined
     ) {
-      setIsOpen({
-        message: ResponseMessage,
-        open: true,
-      });
-      setTimeout(() => {
-        setIsOpen({
-          message: "",
-          open: false,
-        });
-      }, 4000);
+      showMessage(ResponseMessage, "error", setOpen);
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
@@ -332,14 +328,14 @@ const ReviewSignature = () => {
           <div className={styles["progressWrapper"]}>
             <Row>
               <Col lg={6} md={6} sm={12}>
-                <div className='d-flex  position-relative'>
+                <div className="d-flex  position-relative">
                   {/* Progress bars with different colors and percentages */}
                   <ProgressStats
-                    FirstColor='#55ce5c'
+                    FirstColor="#55ce5c"
                     firstValue={approvalStats.signedPercentage}
                     thirdValue={approvalStats.declinedPercentage}
-                    thirdColor='#F16B6B'
-                    secondColor='#ffc300'
+                    thirdColor="#F16B6B"
+                    secondColor="#ffc300"
                     secondValue={approvalStats.pendingPercentage}
                   />
 
@@ -369,7 +365,7 @@ const ReviewSignature = () => {
                   )} */}
                 </div>
               </Col>
-              <Col lg={6} md={6} sm={12} className='d-flex'>
+              <Col lg={6} md={6} sm={12} className="d-flex">
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-signed"]}>
                   <span className={styles["numeric-value"]}>
@@ -406,7 +402,8 @@ const ReviewSignature = () => {
             style={{
               overflowX: "hidden",
             }}
-            height={"50vh"}>
+            height={"50vh"}
+          >
             <TableToDo
               sortDirections={["descend", "ascend"]}
               column={pendingApprovalColumns}
@@ -423,9 +420,10 @@ const ReviewSignature = () => {
         </Col>
       </Row>{" "}
       <Notification
-        open={isOpen.open}
-        message={isOpen.message}
-        setOpen={setIsOpen}
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
       />
     </>
   );

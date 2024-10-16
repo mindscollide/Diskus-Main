@@ -28,6 +28,7 @@ import {
   revertReadOnlyFreetextElements,
 } from "./pendingSIgnatureFunctions";
 import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const SignatureViewer = () => {
   const location = useLocation();
@@ -61,6 +62,7 @@ const SignatureViewer = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
@@ -842,19 +844,7 @@ const SignatureViewer = () => {
   // === this is for Response Message===//
   useEffect(() => {
     if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-      setOpen({
-        ...open,
-        message: ResponseMessage,
-        open: true,
-      });
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-        setOpen({
-          ...open,
-          message: "",
-          open: false,
-        });
-      }, 4000);
+      showMessage(ResponseMessage, "error", setOpen);
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
@@ -891,8 +881,8 @@ const SignatureViewer = () => {
   };
   return (
     <>
-      <div className='documnetviewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div className="documnetviewer">
+        <div className="webviewer" ref={viewer}></div>
       </div>
 
       {reasonModal && (
@@ -912,7 +902,12 @@ const SignatureViewer = () => {
           show={declineConfirmationModal}
         />
       )}
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
       {/* {Loading && <Loader />} */}
     </>
   );

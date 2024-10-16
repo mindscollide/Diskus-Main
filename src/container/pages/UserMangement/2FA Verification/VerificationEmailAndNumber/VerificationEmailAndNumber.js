@@ -26,6 +26,7 @@ import {
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const VerificationEmailAndNumber = () => {
   const { t, i18n } = useTranslation();
 
@@ -45,6 +46,7 @@ const VerificationEmailAndNumber = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   let GobackSelection = localStorage.getItem("GobackSelection");
   const [minutes, setMinutes] = useState(
@@ -141,16 +143,7 @@ const VerificationEmailAndNumber = () => {
     if (
       Authreducer.SendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")
     ) {
-      setOpen({
-        open: true,
-        message: Authreducer.SendTwoFacOTPResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(Authreducer.SendTwoFacOTPResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -228,9 +221,8 @@ const VerificationEmailAndNumber = () => {
     if (newClient != null && newClient != "" && newClient != undefined) {
     } else {
       let userID = localStorage.getItem("userID");
-      if(userID !== null) {
+      if (userID !== null) {
         mqttConnection(userID);
-
       }
     }
   }, [Helper.socket]);
@@ -409,7 +401,12 @@ const VerificationEmailAndNumber = () => {
         </Row>
       </Container>
       {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      <Notification open={open.open} setOpen={setOpen} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </div>
   );
 };

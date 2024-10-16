@@ -33,6 +33,7 @@ import settingReducer from "../../../store/reducers/Setting_reducer";
 import { updateUserProfilePicture } from "../../../store/actions/UpdateUserProfile";
 import AvatarEditorComponent from "../../../components/elements/imageUploader/ImageUploader";
 import { base64UrlToFile } from "../../../commen/functions/getBase64";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UserProfileModal = ({
   ModalTitle,
@@ -97,8 +98,9 @@ const UserProfileModal = ({
 
   //For Localization
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   // for edit User Input Fields
   const Name = useRef(null);
@@ -316,10 +318,7 @@ const UserProfileModal = ({
       }
     } else {
       setErrorBar(true);
-      setOpen({
-        flag: true,
-        message: t("Please-fill-all-the-fields"),
-      });
+      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
     }
   };
 
@@ -615,7 +614,12 @@ const UserProfileModal = ({
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

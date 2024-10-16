@@ -43,6 +43,7 @@ import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const CalendarPage = () => {
   //For Localization
@@ -68,14 +69,15 @@ const CalendarPage = () => {
 
   const [calendarView, setCalendarView] = useState(false);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
   const [defaultValue, setDefaultValue] = useState("");
   const [editFlag, setEditFlag] = useState(false);
   const [defaultState, setDefaultState] = useState(false);
 
-  const [openNotification, setOpenNotification] = useState({
-    flag: false,
+  const [open, setOpen] = useState({
+    open: false,
     message: "",
+    severity: "error",
   });
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
@@ -189,7 +191,7 @@ const CalendarPage = () => {
       } else {
         //
 
-        if (open) {
+        if (open2) {
         } else {
           if (clsname === "") {
           } else {
@@ -240,7 +242,7 @@ const CalendarPage = () => {
       dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     }
     setDefaultValue(newDAte);
-    setOpen(false);
+    setOpen2(false);
     setCalendarView(false);
   }
 
@@ -585,7 +587,7 @@ const CalendarPage = () => {
   const eventClickHandler = () => {};
 
   function handleAddEvent() {
-    setOpen(true);
+    setOpen2(true);
     setCalendarView(!calendarView);
   }
 
@@ -596,18 +598,11 @@ const CalendarPage = () => {
         t("No-records-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage != ""
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: adminReducer.UpdateOrganizationMessageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        adminReducer.UpdateOrganizationMessageResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
@@ -615,18 +610,11 @@ const CalendarPage = () => {
         t("No-records-found") &&
       adminReducer.DeleteOrganizationMessageResponseMessage != ""
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: adminReducer.DeleteOrganizationMessageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        adminReducer.DeleteOrganizationMessageResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
@@ -634,37 +622,19 @@ const CalendarPage = () => {
       adminReducer.AllOrganizationResponseMessage != t("No-records-found") &&
       adminReducer.AllOrganizationResponseMessage != ""
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: adminReducer.AllOrganizationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        adminReducer.AllOrganizationResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
-      adminReducer.ResponseMessage != "" &&
-      adminReducer.ResponseMessage != t("No-records-found") &&
-      adminReducer.ResponseMessage != ""
+      adminReducer.ResponseMessage !== "" &&
+      adminReducer.ResponseMessage !== t("No-records-found") &&
+      adminReducer.ResponseMessage !== ""
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: adminReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(adminReducer.ResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else {
@@ -683,18 +653,7 @@ const CalendarPage = () => {
       meetingIdReducer.ResponseMessage != "" &&
       meetingIdReducer.ResponseMessage != t("No-records-found")
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: meetingIdReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(meetingIdReducer.ResponseMessage, "success", setOpen);
 
       dispatch(HideNotificationMeetings());
     } else if (
@@ -702,18 +661,7 @@ const CalendarPage = () => {
       assignees.ResponseMessage != "" &&
       assignees.ResponseMessage != t("No-records-found")
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: assignees.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(assignees.ResponseMessage, "success", setOpen);
 
       dispatch(clearResponseMessage());
     } else {
@@ -729,18 +677,7 @@ const CalendarPage = () => {
       toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage != t("No-records-found")
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: toDoListReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(toDoListReducer.ResponseMessage, "success", setOpen);
 
       dispatch(clearResponce());
     } else if (
@@ -748,18 +685,7 @@ const CalendarPage = () => {
       assignees.ResponseMessage != "" &&
       assignees.ResponseMessage != t("No-records-found")
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: assignees.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(assignees.ResponseMessage, "success", setOpen);
 
       dispatch(clearResponseMessage());
     } else {
@@ -775,18 +701,7 @@ const CalendarPage = () => {
       getTodosStatus.ResponseMessage != "" &&
       getTodosStatus.ResponseMessage != t("No-records-found")
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: getTodosStatus.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(getTodosStatus.ResponseMessage, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else if (
@@ -795,18 +710,7 @@ const CalendarPage = () => {
       getTodosStatus.UpdateTodoStatusMessage != "" &&
       getTodosStatus.UpdateTodoStatusMessage != t("No-records-found")
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: getTodosStatus.UpdateTodoStatusMessage,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(getTodosStatus.UpdateTodoStatusMessage, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else if (
@@ -815,18 +719,7 @@ const CalendarPage = () => {
       getTodosStatus.UpdateTodoStatus != "" &&
       getTodosStatus.UpdateTodoStatus != t("No-records-found")
     ) {
-      setOpenNotification({
-        ...openNotification,
-        flag: true,
-        message: getTodosStatus.UpdateTodoStatus,
-      });
-      setTimeout(() => {
-        setOpenNotification({
-          ...openNotification,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(getTodosStatus.UpdateTodoStatus, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else {
@@ -862,10 +755,10 @@ const CalendarPage = () => {
   );
   return (
     <>
-      <div className='calendar_container'>
-        <Row className='d-flex justify-content-start align-items-center margin-bottom-15 mt-2'>
+      <div className="calendar_container">
+        <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
           <Col lg={2} md={2} sm={2} xs={12}>
-            <span className='Calender-heading'>{t("Calendar")}</span>
+            <span className="Calender-heading">{t("Calendar")}</span>
           </Col>
           <Col
             lg={2}
@@ -876,12 +769,13 @@ const CalendarPage = () => {
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Dropdown
-                  className='Calendar_CreateBtn'
+                  className="Calendar_CreateBtn"
                   onClick={eventClickHandler}
-                  align={"start"}>
+                  align={"start"}
+                >
                   <Dropdown.Toggle title={t("Create")}>
                     <Row>
-                      <Col lg={12} md={12} sm={12} className='heading_button'>
+                      <Col lg={12} md={12} sm={12} className="heading_button">
                         <Plus width={20} height={20} fontWeight={800} />
                         <span>{t("Create")}</span>
                       </Col>
@@ -892,8 +786,9 @@ const CalendarPage = () => {
                     {checkFeatureIDAvailability(1) ? (
                       <>
                         <Dropdown.Item
-                          className='dropdown-item'
-                          onClick={handleCreateMeeting}>
+                          className="dropdown-item"
+                          onClick={handleCreateMeeting}
+                        >
                           {t("Schedule-a-meeting")}
                         </Dropdown.Item>
                       </>
@@ -901,8 +796,9 @@ const CalendarPage = () => {
                     {checkFeatureIDAvailability(14) ? (
                       <>
                         <Dropdown.Item
-                          className='dropdown-item'
-                          onClick={handleCreateTodo}>
+                          className="dropdown-item"
+                          onClick={handleCreateTodo}
+                        >
                           {t("Create-a-to-do-list")}
                         </Dropdown.Item>
                       </>
@@ -913,7 +809,7 @@ const CalendarPage = () => {
             </Row>
           </Col>
         </Row>
-        <Row className='align-items-center'>
+        <Row className="align-items-center">
           <Calendar
             events={calenderData}
             startDataUpdate={startDataUpdate}
@@ -921,14 +817,14 @@ const CalendarPage = () => {
             endDataUpdate={endDataUpdate}
             setEndDataUpdate={setEndDataUpdate}
             handleEventSelect={viewModalHandler}
-            className='calendar'
+            className="calendar"
             onChange={onChange}
             handleAddEvent={handleAddEvent}
             setCalendarView={setCalendarView}
             calendarView={calendarView}
             defaultValue={defaultValue}
             setDefaultValue={setDefaultValue}
-            setOpen={setOpen}
+            setOpen2={setOpen2}
             selectable={true}
           />
         </Row>
@@ -950,9 +846,10 @@ const CalendarPage = () => {
 
       <TodoListModal show={todolistModalShow} setShow={setTodolistModalShow} />
       <Notification
-        setOpen={setOpenNotification}
-        open={openNotification.flag}
-        message={openNotification.message}
+        open2={open2.open2}
+        message={open2.message}
+        setOpen2={(status) => setOpen2({ ...open2, open2: status.flag })}
+        severity={open2.severity}
       />
     </>
   );

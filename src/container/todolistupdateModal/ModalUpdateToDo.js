@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { DownloadFile } from "../../store/actions/Download_action";
 import "./ModalUpdateToDo.css";
 import { useNavigate } from "react-router-dom";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   const { t } = useTranslation();
   const state = useSelector((state) => state);
@@ -33,8 +34,9 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
 
   //Notification State
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   //task Object
@@ -248,29 +250,13 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
     };
 
     if (Task.DeadLineDate === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: "Date Missing",
-      });
+      showMessage(t("Date-missing"), "error", setOpen);
     } else if (Task.DeadLineTime === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: "Time missing",
-      });
+      showMessage(t("Time-missing"), "error", setOpen);
     } else if (Task.Title === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: "Title missing",
-      });
+      showMessage(t("Title-missing"), "error", setOpen);
     } else if (Task.Description === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: "Description missing",
-      });
+      showMessage(t("Description-missing"), "error", setOpen);
     } else {
       // let Data = {
       //   Task,
@@ -304,11 +290,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
     if (
       toDoListReducer.Message === "The Record has been Updated successfully"
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: toDoListReducer.Message,
-      });
+      showMessage(toDoListReducer.Message, "success", setOpen);
       //
     }
   }, [toDoListReducer.Message]);
@@ -528,7 +510,12 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

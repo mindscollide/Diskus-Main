@@ -28,6 +28,7 @@ import {
 } from "../../../../store/actions/UserManagementActions";
 import { localStorageManage } from "../../../../commen/functions/locallStorageManage";
 import MobileAppPopUpModal from "../ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -60,6 +61,7 @@ const SignInUserManagement = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   //OnChange For Email
@@ -86,11 +88,7 @@ const SignInUserManagement = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     if (email === "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Please-enter-email"),
-      });
+      showMessage(t("Please-enter-email"), "error", setOpen);
     } else if (validationEmail(email) === false) {
       setErrorBar(true);
       setErrorMessage(t("Error-should-be-in-email-format"));
@@ -160,16 +158,11 @@ const SignInUserManagement = () => {
 
   useEffect(() => {
     if (adminReducer.DeleteOrganizationResponseMessage !== "") {
-      setOpen({
-        open: true,
-        message: adminReducer.DeleteOrganizationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 4000);
+      showMessage(
+        adminReducer.DeleteOrganizationResponseMessage,
+        "error",
+        setOpen
+      );
       dispatch(cleareMessage());
     }
   }, [adminReducer.DeleteOrganizationResponseMessage]);
@@ -338,9 +331,10 @@ const SignInUserManagement = () => {
               </Col>
             </Row>
             <Notification
-              setOpen={setOpen}
               open={open.open}
               message={open.message}
+              setOpen={(status) => setOpen({ ...open, open: status.flag })}
+              severity={open.severity}
             />
             {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
           </>
