@@ -30,6 +30,10 @@ import {
   guestJoinPopup,
   participantWaitingList,
   participantAcceptandReject,
+  guestLeaveVideoMeeting,
+  participanMuteUnMuteMeeting,
+  participanRaisedUnRaisedHand,
+  participantHideUnhideVideo,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -657,6 +661,46 @@ const Dashboard = () => {
                 );
               }
             } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
+            ) {
+              dispatch(participantWaitingList(data.payload));
+              dispatch(admitGuestUserRequest(data.payload));
+              dispatch(guestJoinPopup(true));
+              // if (data.viewable) {
+              //   setNotification({
+              //     ...notification,
+              //     notificationShow: true,
+              //     message: changeMQTTJSONOne(
+              //       t("MeetingReminderNotification"),
+              //       "[Meeting Title]",
+              //       data.payload.title.substring(0, 100)
+              //     ),
+              //   });
+              //   setNotificationID(id);
+              // }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "GUEST_PARTICIPANT_LEFT_VIDEO".toLowerCase()
+            ) {
+              console.log(data.payload, "kashanKashankashanKashan");
+              dispatch(guestLeaveVideoMeeting([data.payload.uid]));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MUTE_UNMUTE_BY_PARTICIPANT".toLowerCase()
+            ) {
+              dispatch(participanMuteUnMuteMeeting([data.payload]));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
+            ) {
+              dispatch(participanRaisedUnRaisedHand([data.payload]));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
+            ) {
+              dispatch(participantHideUnhideVideo([data.payload]));
+            } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
             ) {
@@ -723,35 +767,6 @@ const Dashboard = () => {
                 }
               }
             }
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
-          ) {
-            dispatch(participantWaitingList(data.payload));
-            dispatch(admitGuestUserRequest(data.payload));
-            dispatch(guestJoinPopup(true));
-            // if (data.viewable) {
-            //   setNotification({
-            //     ...notification,
-            //     notificationShow: true,
-            //     message: changeMQTTJSONOne(
-            //       t("MeetingReminderNotification"),
-            //       "[Meeting Title]",
-            //       data.payload.title.substring(0, 100)
-            //     ),
-            //   });
-            //   setNotificationID(id);
-            // }
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "GUEST_PARTICIPANT_LEFT_VIDEO".toLowerCase()
-          ) {
-            dispatch(participantAcceptandReject([data.payload.uid]));
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
-          ) {
-            console.log(data.payload, "kashanKashan");
           } catch (error) {
             console.log(error);
           }

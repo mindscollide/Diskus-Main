@@ -1,3 +1,4 @@
+import { Sa } from "react-flags-select";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -11,13 +12,16 @@ const initialState = {
   admitGuestUserRequestData: null,
   guestVideoNavigationData: 1,
   raiseUnRaiseData: null,
-  muteUnMuteData: null,
   transferMeetingData: null,
   removeParticipantMeetingData: null,
   participantNameDataAccept: [],
+  guestLeaveMeetingList: [],
   guestLeaveVideoMeetingData: null,
   removeGuestParticipantUser: null,
   muteUnMuteSelfData: null,
+  hideUnhideSelfVideo: null,
+  muteUmMuteByHost: null,
+  hideunHideByHost: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -175,31 +179,6 @@ const GuestVideoReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.MUTE_UNMUTE_PARTICIPANT_INIT: {
-      return {
-        ...state,
-        Loading: false,
-      };
-    }
-
-    case actions.MUTE_UNMUTE_PARTICIPANT_SUCCESS: {
-      return {
-        ...state,
-        Loading: false,
-        muteUnMuteData: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-
-    case actions.MUTE_UNMUTE_PARTICIPANT_FAIL: {
-      return {
-        ...state,
-        Loading: false,
-        muteUnMuteData: null,
-        ResponseMessage: action.message,
-      };
-    }
-
     case actions.REMOVE_PARTICIPANT_FROM_MEETING_INIT: {
       return {
         ...state,
@@ -222,17 +201,6 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         removeParticipantMeetingData: null,
         ResponseMessage: action.message,
-      };
-    }
-
-    case actions.SET_PARTICIPANT_NAME: {
-      console.log(action, "datdtatdatdtatddatdtatdatdtatd");
-      return {
-        ...state,
-        participantNameDataAccept: [
-          ...state.participantNameDataAccept,
-          ...action.response,
-        ],
       };
     }
 
@@ -296,6 +264,45 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         participantNameDataAccept: participantsFilterization,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_PARTICIPANT_OR_GUEST: {
+      return {
+        ...state,
+        muteUmMuteByHost: action.response,
+      };
+    }
+
+    case actions.HIDE_UNHIDE_VIDEO_BY_HOST: {
+      return {
+        ...state,
+        hideunHideByHost: action.response,
+      };
+    }
+
+    case actions.HIDE_UNHIDE_SELF_VIDEO_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.HIDE_UNHIDE_SELF_VIDEO_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        hideUnhideSelfVideo: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.HIDE_UNHIDE_SELF_VIDEO_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        hideUnhideSelfVideo: null,
+        ResponseMessage: action.message,
       };
     }
 

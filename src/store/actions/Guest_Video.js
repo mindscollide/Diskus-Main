@@ -13,11 +13,13 @@ import {
   removeParticipantMeeting,
   guestLeaveMeetingVideo,
   muteUnMuteSelf,
+  hideUnHideVideoSelf,
 } from "../../commen/apis/Api_config";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import {
   guestJoinPopup,
+  guestLeaveVideoMeeting,
   participantAcceptandReject,
   participantWaitingListBox,
 } from "./VideoFeature_actions";
@@ -409,6 +411,7 @@ const admitRejectAttendeeMainApi = (Data, navigate, t) => {
                     roomIds,
                     isMute: false,
                     hideVideo: false,
+                    isHandRaise: false,
                   };
                 });
                 console.log(getNames, "getNamesgetNames");
@@ -547,85 +550,6 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
       })
       .catch((response) => {
         dispatch(raiseUnRaisedFail(t("Something-went-wrong")));
-      });
-  };
-};
-
-const muteUnmuteInit = () => {
-  return {
-    type: actions.MUTE_UNMUTE_PARTICIPANT_INIT,
-  };
-};
-
-const muteUnmuteSuccess = (response, message) => {
-  return {
-    type: actions.MUTE_UNMUTE_PARTICIPANT_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-const muteUnmuteFail = (message) => {
-  return {
-    type: actions.MUTE_UNMUTE_PARTICIPANT_FAIL,
-    message: message,
-  };
-};
-
-const muteUnMuteParticipantMainApi = (navigate, t, requestData) => {
-  return (dispatch) => {
-    dispatch(muteUnmuteInit());
-    let form = new FormData();
-    form.append("RequestMethod", muteUnMuteParticipant.RequestMethod);
-    form.append("RequestData", JSON.stringify(requestData));
-
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(muteUnMuteParticipantMainApi(navigate, t, requestData));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                muteUnmuteSuccess(response.data.responseResult, t("Successful"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_02".toLowerCase()
-                )
-            ) {
-              await dispatch(muteUnmuteFail(t("Invalid-request-data-2")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_03".toLowerCase()
-                )
-            ) {
-              await dispatch(muteUnmuteFail(t("Something-went-wrong")));
-            }
-          } else {
-            await dispatch(muteUnmuteFail(t("Something-went-wrong")));
-          }
-        } else {
-          await dispatch(muteUnmuteFail(t("Something-went-wrong")));
-        }
-      })
-      .catch((response) => {
-        dispatch(muteUnmuteFail(t("Something-went-wrong")));
       });
   };
 };
@@ -774,7 +698,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_TransferMeetingHost_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_01".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -783,11 +707,12 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
+              dispatch(guestLeaveVideoMeeting([data.UID]));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_TransferMeetingHost_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_02".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -797,7 +722,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_TransferMeetingHost_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_03".toLowerCase()
                 )
             ) {
               await dispatch(removeParticipantMeetingFail(t("UnSuccessful")));
@@ -805,7 +730,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_TransferMeetingHost_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_04".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -1035,6 +960,113 @@ const muteUnMuteSelfMainApi = (navigate, t, data) => {
   };
 };
 
+const hideUnhideSelfInit = () => {
+  return {
+    type: actions.HIDE_UNHIDE_SELF_VIDEO_INIT,
+  };
+};
+
+const hideUnhideSelfSuccess = (response, message) => {
+  return {
+    type: actions.HIDE_UNHIDE_SELF_VIDEO_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const hideUnhideSelfFail = (message) => {
+  return {
+    type: actions.HIDE_UNHIDE_SELF_VIDEO_FAIL,
+    message: message,
+  };
+};
+
+const hideUnhideSelfMainApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(hideUnhideSelfInit());
+    let form = new FormData();
+    form.append("RequestMethod", hideUnHideVideoSelf.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(hideUnhideSelfMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_HideUnHideVideo_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                hideUnhideSelfSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_HideUnHideVideo_02".toLowerCase()
+                )
+            ) {
+              await dispatch(hideUnhideSelfFail(t("Invalid-request-data-2")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_HideUnHideVideo_03".toLowerCase()
+                )
+            ) {
+              await dispatch(hideUnhideSelfFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_HideUnHideVideo_04".toLowerCase()
+                )
+            ) {
+              await dispatch(hideUnhideSelfFail(t("UnSuccessful")));
+            }
+          } else {
+            await dispatch(hideUnhideSelfFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(hideUnhideSelfFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(hideUnhideSelfFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const muteUnMuteByHost = (response) => {
+  return {
+    type: actions.MUTE_UNMUTE_PARTICIPANT_OR_GUEST,
+    response: response,
+  };
+};
+
+const hideUnHideVideoByHost = (response) => {
+  return {
+    type: actions.HIDE_UNHIDE_VIDEO_BY_HOST,
+    response: response,
+  };
+};
+
 export {
   getMeetingGuestVideoMainApi,
   validateEncryptGuestVideoMainApi,
@@ -1045,11 +1077,13 @@ export {
   admitRejectAttendeeMainApi,
   guestVideoNavigationScreen,
   raiseUnRaisedHandMainApi,
-  muteUnMuteParticipantMainApi,
   transferMeetingHostMainApi,
   removeParticipantMeetingMainApi,
   setAdmittedParticipant,
   guestLeaveMeetingVideoApi,
   removeParticipantFromVideo,
   muteUnMuteSelfMainApi,
+  hideUnhideSelfMainApi,
+  muteUnMuteByHost,
+  hideUnHideVideoByHost,
 };

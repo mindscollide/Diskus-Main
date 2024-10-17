@@ -21,6 +21,7 @@ const VideoCallParticipants = () => {
   const { t } = useTranslation();
   const [participantsList, setPartcipantList] = useState([]);
   console.log(participantsList, "participantsListData");
+  let roomID = localStorage.getItem("activeRoomID");
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const handleChangeSearchParticipant = (e) => {
@@ -46,12 +47,18 @@ const VideoCallParticipants = () => {
   const handleClickAllAcceptAndReject = (flag) => {
     let Data = {
       MeetingId: participantsList[0].meetingID,
+      RoomId: String(roomID),
       AttendeeResponseList: participantsList.map((participantData, index) => {
         return {
           Name: participantData.name,
-          UID: participantData.uid,
+          UID: participantData.guid,
+          Email: participantData.email,
+          raiseHand: participantData.raiseHand,
+          UserID: participantData.userID,
+          IsMuted: participantData.mute,
+          HideVideo: participantData.hideCamera,
           IsRequestAccepted: flag === 1 ? true : false,
-          IsGuest: true,
+          IsGuest: participantData.isGuest,
         };
       }),
     };
@@ -62,12 +69,18 @@ const VideoCallParticipants = () => {
     console.log(participantInfo, "participantInfo");
     let Data = {
       MeetingId: participantInfo.meetingID,
+      RoomId: String(roomID),
       AttendeeResponseList: [
         {
           Name: participantInfo.name,
-          UID: participantInfo.uid,
+          UID: participantInfo.guid,
+          Email: participantInfo.email,
+          raiseHand: participantInfo.raiseHand,
+          UserID: participantInfo.userID,
+          IsMuted: participantInfo.mute,
+          HideVideo: participantInfo.hideCamera,
           IsRequestAccepted: flag === 1 ? true : false,
-          IsGuest: true,
+          IsGuest: participantInfo.isGuest,
         },
       ],
     };

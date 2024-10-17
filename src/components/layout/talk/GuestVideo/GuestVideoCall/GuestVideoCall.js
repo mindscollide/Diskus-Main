@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import {
   guestVideoNavigationScreen,
+  hideUnHideVideoByHost,
+  muteUnMuteByHost,
   validateEncryptGuestVideoMainApi,
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
@@ -90,7 +92,14 @@ const GuestVideoCall = () => {
         data.payload.message.toLowerCase() ===
         "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
       ) {
-        console.log(data.payload.isMuted);
+        dispatch(muteUnMuteByHost(data.payload));
+        console.log(data.payload, "guestDataGuestData");
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
+      ) {
+        dispatch(hideUnHideVideoByHost(data.payload));
+        console.log(data.payload, "guestDataGuestData");
       }
     }
   };

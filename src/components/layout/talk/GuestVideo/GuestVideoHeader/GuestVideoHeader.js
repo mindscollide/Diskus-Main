@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
   guestLeaveMeetingVideoApi,
+  hideUnhideSelfMainApi,
   muteUnMuteParticipantMainApi,
   muteUnMuteSelfMainApi,
   raiseUnRaisedHandMainApi,
@@ -37,9 +38,20 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.joinGuestData
   );
 
+  const guestMuteUnMuteData = useSelector(
+    (state) => state.GuestVideoReducer.muteUmMuteByHost
+  );
+
+  const guesthideunHideByHostData = useSelector(
+    (state) => state.GuestVideoReducer.hideunHideByHost
+  );
+
   let guestName = sessionStorage.getItem("joinName");
 
-  console.log(joinGuestData, "joinGuestDataguestGuidjoinGuestDataguestGuid");
+  console.log(
+    { guestMuteUnMuteData, guesthideunHideByHostData },
+    "joinGuestDataguestGuidjoinGuestDataguestGuid"
+  );
 
   const [micOn, setMicOn] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
@@ -48,71 +60,108 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const [isSpeakerView, setIsSpeakerView] = useState(false);
   const [isParticipant, setIsParticipant] = useState(false);
   const [isIframeLoaded, setIsIframeLoaded] = useState(false);
+  const [showTile, setShowTile] = useState(false);
+
   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
 
-  console.log(isVideoOn, "isVideoOnisVideoOn");
+  console.log(micOn, "isVideoOnisVideoOn");
+
+  useEffect(() => {
+    if (guestMuteUnMuteData !== null) {
+      console.log(
+        guestMuteUnMuteData.isMuted,
+        "guestMuteUnMuteDataguestMuteUnMuteData"
+      );
+      const iframe = frameRef.current;
+      if (iframe.contentWindow !== null) {
+        if (guestMuteUnMuteData.isMuted === true) {
+          iframe.contentWindow.postMessage("MicOff", "*");
+          setMicOn(true);
+        } else {
+          iframe.contentWindow.postMessage("MicOn", "*");
+          setMicOn(false);
+        }
+      }
+    }
+  }, [guestMuteUnMuteData]);
+
+  useEffect(() => {
+    if (guesthideunHideByHostData !== null) {
+      const iframe = frameRef.current;
+      if (iframe.contentWindow !== null) {
+        if (guesthideunHideByHostData.isVideoHidden === true) {
+          iframe.contentWindow.postMessage("VidOff", "*");
+          setIsVideoOn(true);
+        } else {
+          iframe.contentWindow.postMessage("VidOn", "*");
+          setIsVideoOn(false);
+        }
+      }
+    }
+  }, [guesthideunHideByHostData]);
 
   // Fetch the webcam status from sessionStorage
   // const webcamStatus = sessionStorage.getItem("isWebCamEnabled") === "true";
   // console.log(webcamStatus, "webcamStatuswebcamStatus");
 
-  // useEffect(() => {
-  //   if (webcamStatus === false || webcamStatus === "false") {
-  //     const iframe = frameRef.current;
-  //     iframe.contentWindow.postMessage("VidOff", "*");
-  //     setIsVideoOn(false);
-  //   } else {
-  //     setIsVideoOn(true);
-  //   }
-  //   console.log("Webcam status read from sessionStorage:", webcamStatus);
-  // }, []);
-
   useEffect(() => {
     const iframe = frameRef.current;
+    if (iframe.contentWindow !== null) {
+      console.log("Sending message...");
+      if (webcamStatus === false || webcamStatus === "false") {
+        console.log("Sending message...");
+        // setTimeout(() => {
+        iframe.contentWindow.postMessage("VidOff", "*");
+        // }, 2000);
+        console.log("Turning webcam off");
+        setIsVideoOn(true);
+      } else {
+        // setTimeout(() => {
+        iframe.contentWindow.postMessage("VidOn", "*");
+        // }, 2000);
 
-    const handleIframeLoad = () => {
-      setIsIframeLoaded(true); // Set the state when iframe is loaded
-    };
-
-    if (iframe) {
-      // Listen for the iframe's load event
-      iframe.addEventListener("load", handleIframeLoad);
+        console.log("Turning webcam on");
+        setIsVideoOn(false);
+      }
     }
 
-    // Clean up event listener on unmount
-    return () => {
-      if (iframe) {
-        iframe.removeEventListener("load", handleIframeLoad);
-      }
-    };
+    console.log("Webcam status read from sessionStorage:", webcamStatus);
   }, []);
 
-  useEffect(() => {
-    const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
+  // useEffect(() => {
+  //   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
+  //   const iframe = frameRef.current;
+
+  //   // Only send messages when the iframe is loaded
+  //   if (isIframeLoaded && iframe && iframe.contentWindow) {
+  //     console.log("Sending message...");
+
+  //     if (webcamStatus === "false") {
+  //       console.log("Turning webcam off");
+  //       setTimeout(() => {
+  //         iframe.contentWindow.postMessage("VidOff", "*");
+  //       }, 2000);
+  //     } else {
+  //       console.log("Turning webcam on");
+  //       setTimeout(() => {
+  //         iframe.contentWindow.postMessage("VidOn", "*");
+  //       }, 5000);
+  //     }
+  //   }
+  // }, [isIframeLoaded]);
+
+  const openMicStatus = (flag) => {
     const iframe = frameRef.current;
-
-    // Only send messages when the iframe is loaded
-    if (isIframeLoaded && iframe && iframe.contentWindow) {
-      console.log("Sending message...");
-
-      if (webcamStatus === "false") {
-        console.log("Turning webcam off");
-        iframe.contentWindow.postMessage("VidOff", "*");
-      } else {
-        console.log("Turning webcam on");
-        iframe.contentWindow.postMessage("VidOn", "*");
-      }
+    if (flag) {
+      iframe.contentWindow.postMessage("MicOn", "*");
+    } else {
+      iframe.contentWindow.postMessage("MicOff", "*");
     }
-  }, [isIframeLoaded]);
-
-  const openMicStatus = () => {
-    const iframe = frameRef.current;
-    iframe.contentWindow.postMessage("MicOff", "*");
-    setMicOn(!micOn);
-    sessionStorage.setItem("MicOff", !micOn);
+    setMicOn(flag);
+    sessionStorage.setItem("MicOff", flag);
     let data = {
       RoomID: String(roomId),
-      IsMuted: micOn ? true : false,
+      IsMuted: flag,
       UID: String(joinGuestData.guestGuid),
     };
     // Dispatch the API call with the structured request data
@@ -136,6 +185,13 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       iframe.contentWindow.postMessage("VidOn", "*"); // Send "VidOn" message to turn video on
     }
 
+    let data = {
+      RoomID: String(roomId),
+      HideVideo: flag,
+      UID: String(joinGuestData.guestGuid),
+    };
+    dispatch(hideUnhideSelfMainApi(navigate, t, data));
+
     // Toggle the state
     setIsVideoOn(flag);
 
@@ -147,19 +203,30 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     setIsScreenShare(!isScreenShare);
   };
 
-  const openRaiseHand = () => {
-    setIsRaiseHand(!isRaiseHand);
+  const openRaiseHand = (flag) => {
+    setIsRaiseHand(flag);
     let data = {
       RoomID: String(roomId),
       UID: String(joinGuestData.guestGuid),
-      IsHandRaised: isRaiseHand ? true : false,
+      IsHandRaised: flag,
     };
 
     dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
   };
 
   const openSpeaker = () => {
-    setIsSpeakerView(!isSpeakerView);
+    const iframe = frameRef.current;
+    if (showTile) {
+      iframe.contentWindow.postMessage("TileView", "*");
+      setIsSpeakerView(!isSpeakerView);
+      sessionStorage.setItem("TileView", !isSpeakerView);
+      setShowTile(false);
+    } else {
+      iframe.contentWindow.postMessage("SidebarView", "*");
+      setIsSpeakerView(!isSpeakerView);
+      sessionStorage.setItem("SidebarView", !isSpeakerView);
+      setShowTile(true);
+    }
   };
 
   const openParticipant = () => {
@@ -187,13 +254,13 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
             {micOn ? (
               <img
                 src={MicOff}
-                onClick={openMicStatus}
+                onClick={() => openMicStatus(false)}
                 className="cursor-pointer"
               />
             ) : (
               <img
                 src={MicOn2}
-                onClick={openMicStatus}
+                onClick={() => openMicStatus(true)}
                 className="cursor-pointer"
               />
             )}
@@ -214,9 +281,12 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
           </div>
           <div className="Guest-Icons-state">
             {isRaiseHand ? (
-              <img src={Raisehandselected} onClick={openRaiseHand} />
+              <img
+                src={Raisehandselected}
+                onClick={() => openRaiseHand(false)}
+              />
             ) : (
-              <img src={RaiseHand} onClick={openRaiseHand} />
+              <img src={RaiseHand} onClick={() => openRaiseHand(true)} />
             )}
           </div>
 

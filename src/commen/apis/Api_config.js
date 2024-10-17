@@ -1820,6 +1820,14 @@ const muteUnMuteSelf = {
   RequestMethod: "ServiceManager.MuteUnMuteSelf",
 };
 
+const hideUnHideVideoSelf = {
+  RequestMethod: "ServiceManager.HideUnHideVideo",
+};
+
+const hideUnHidePaticipantVideo = {
+  RequestMethod: "ServiceManager.HideUnHideParticpantVideo",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2301,4 +2309,6 @@ export {
   removeParticipantMeeting,
   guestLeaveMeetingVideo,
   muteUnMuteSelf,
+  hideUnHideVideoSelf,
+  hideUnHidePaticipantVideo,
 };

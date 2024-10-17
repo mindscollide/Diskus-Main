@@ -521,6 +521,26 @@ p.SelectAll {
 }
 
 img.shade-style {
-    position: absolute;
-    top: -11px;
+  position: absolute;
+  top: -11px;
+}
+.MicOffClass {
+  width: 35px;
+  height: 35px;
+  background-color: #6172d6;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.handraised-participant {
+  margin-left: 10px;
+  margin-top: -10px;
+}
+
+.videoHide-participant {
+  margin-left: 10px;
+  margin-top: -10px;
+  background-color: #6172d6;
+  border-radius: 50%;
+  border: none;
 }

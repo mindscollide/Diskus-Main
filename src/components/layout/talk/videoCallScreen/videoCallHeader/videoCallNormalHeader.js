@@ -19,6 +19,7 @@ import MicOn from "./../../talk-Video/video-images/Mic Enabled Purple.svg";
 import VideoOn from "./../../talk-Video/video-images/Video Enabled Purple.svg";
 import MicOff from "./../../talk-Video/video-images/Mic Disabled White.svg";
 import VideoOff from "./../../talk-Video/video-images/Video Disabled White.svg";
+import VideoDisable from "./../../talk-Video/video-images/Video Disabled Purple.svg";
 import ChatIcon from "./../../talk-Video/video-images/Chat Purple.svg";
 import CallEndRedIcon from "./../../talk-Video/video-images/Call End Red.svg";
 import NormalizeIcon from "./../../talk-Video/video-images/Collapse.svg";
@@ -29,6 +30,10 @@ import CloseNotification from "../../../../../assets/images/Close-Notification.p
 import ActiveParticipantIcon from "./../../talk-Video/video-images/Users White.svg";
 import ParticipantsIcon from "./../../talk-Video/video-images/Users Purple.svg";
 import MenuRaiseHand from "./../../talk-Video/video-images/Menu-RaiseHand.png";
+import GoldenHandRaised from "./../../talk-Video/video-images/GoldenHandRaised.png";
+import MicDisabled from "../../talk-Video/video-images/MicOffDisabled.png";
+import MicOnEnabled from "../../talk-Video/video-images/MicOnEnabled.png";
+
 import Menu from "./../../talk-Video/video-images/Menu.png";
 import { activeChat } from "../../../../../store/actions/Talk_action";
 import {
@@ -39,6 +44,8 @@ import {
   leaveCallModal,
   participantPopup,
   videoChatMessagesFlag,
+  muteUnMuteParticipantMainApi,
+  hideUnHideParticipantGuestMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -49,10 +56,7 @@ import {
   removeParticipantFromVideo,
   removeParticipantMeetingMainApi,
   transferMeetingHostMainApi,
-} from "../../../../../store/actions/Guest_Video";
-import {
   getMeetingGuestVideoMainApi,
-  transferMeetingHostMainApi,
 } from "../../../../../store/actions/Guest_Video";
 
 const VideoCallNormalHeader = ({
@@ -74,7 +78,7 @@ const VideoCallNormalHeader = ({
   );
 
   const participantAcceptedName = useSelector(
-    (state) => state.GuestVideoReducer.participantNameDataAccept
+    (state) => state.videoFeatureReducer.participantNameDataAccept
   );
 
   console.log(
@@ -133,6 +137,9 @@ const VideoCallNormalHeader = ({
   const [addParticipantPopup, setAddParticipantPopup] = useState(false);
 
   const [selectedParticipants, setSelectedParticipants] = useState([]);
+
+  // state for mute and UnMute from Host side
+  const [muteGuest, setMuteGuest] = useState(false);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -433,6 +440,40 @@ const VideoCallNormalHeader = ({
     dispatch(transferMeetingHostMainApi(navigate, t, data));
   };
 
+  // make Host mute for guest or participant
+  const muteUnmuteByHost = (usersData, flag) => {
+    setMuteGuest(flag);
+    let data = {
+      RoomID: roomID,
+      IsMuted: flag,
+      MuteUnMuteList: [
+        {
+          UID: usersData.UID, // The participant's UID
+        },
+      ],
+    };
+    dispatch(
+      muteUnMuteParticipantMainApi(navigate, t, data, setParticipantData, flag)
+    );
+  };
+
+  const hideUnHideVideoParticipantByHost = (usersData, flag) => {
+    let data = {
+      RoomID: roomID,
+      HideVideo: flag,
+      UIDList: [usersData.UID],
+    };
+    dispatch(
+      hideUnHideParticipantGuestMainApi(
+        navigate,
+        t,
+        data,
+        setParticipantData,
+        flag
+      )
+    );
+  };
+
   const removeParticipantMeetingOnClick = (usersData) => {
     console.log(usersData, "usersData");
     dispatch(removeParticipantFromVideo(usersData.UID));
@@ -648,7 +689,7 @@ const VideoCallNormalHeader = ({
                                       </p>
                                     </Col>
                                     <Col
-                                      className="d-flex justify-content-end align-items-baseline gap-3 p-0"
+                                      className="d-flex justify-content-end align-items-canter gap-3 p-0"
                                       lg={5}
                                       md={5}
                                       sm={12}
@@ -695,24 +736,72 @@ const VideoCallNormalHeader = ({
                             return (
                               <>
                                 <Row className="hostBorder m-0">
-                                  <Col className="p-0" lg={7} md={7} sm={12}>
+                                  <Col
+                                    className="p-0 d-flex align-items-center"
+                                    lg={7}
+                                    md={7}
+                                    sm={12}
+                                  >
                                     <p className="participant-name">
                                       {/* {currentUserName} */}
                                       {usersData.Name}
                                     </p>
+                                    {usersData.isHandRaise === true ? (
+                                      <>
+                                        <img
+                                          src={GoldenHandRaised}
+                                          alt=""
+                                          width={"22px"}
+                                          height={"22px"}
+                                          className="handraised-participant"
+                                        />
+                                      </>
+                                    ) : (
+                                      <img
+                                        src={MenuRaiseHand}
+                                        alt=""
+                                        className="handraised-participant"
+                                      />
+                                    )}
+                                    {usersData.hideVideo === true ? (
+                                      <img
+                                        src={VideoDisable}
+                                        width="18px"
+                                        height="18px"
+                                        alt=""
+                                        className="handraised-participant"
+                                      />
+                                    ) : (
+                                      <img
+                                        src={VideoOn}
+                                        width="18px"
+                                        height="18px"
+                                        alt=""
+                                        className="handraised-participant"
+                                      />
+                                    )}
                                   </Col>
+
                                   <Col
                                     className="
                         d-flex
                         justify-content-end
                         align-items-baseline
-                        gap-3
+                        gap-2
                         p-0"
                                     lg={5}
                                     md={5}
                                     sm={12}
                                   >
-                                    <img src={MenuRaiseHand} alt="" />
+                                    {usersData.isMute === true ? (
+                                      <img
+                                        src={MicDisabled}
+                                        width={"22px"}
+                                        height={"22px"}
+                                      />
+                                    ) : (
+                                      <img src={MicOnEnabled} />
+                                    )}
                                     <Dropdown>
                                       <Dropdown.Toggle className="participant-toggle">
                                         <img src={Menu} alt="" />
@@ -736,12 +825,64 @@ const VideoCallNormalHeader = ({
                                         >
                                           {t("Remove")}
                                         </Dropdown.Item>
-                                        <Dropdown.Item className="participant-dropdown-item">
-                                          {t("Mute")}
-                                        </Dropdown.Item>
-                                        <Dropdown.Item className="participant-dropdown-item">
-                                          {t("Hide-video")}
-                                        </Dropdown.Item>
+                                        {usersData.isMute === false ? (
+                                          <>
+                                            <Dropdown.Item
+                                              className="participant-dropdown-item"
+                                              onClick={() =>
+                                                muteUnmuteByHost(
+                                                  usersData,
+                                                  true
+                                                )
+                                              }
+                                            >
+                                              {t("Mute")}
+                                            </Dropdown.Item>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Dropdown.Item
+                                              className="participant-dropdown-item"
+                                              onClick={() =>
+                                                muteUnmuteByHost(
+                                                  usersData,
+                                                  false
+                                                )
+                                              }
+                                            >
+                                              {t("UnMute")}
+                                            </Dropdown.Item>
+                                          </>
+                                        )}
+                                        {usersData.hideVideo === false ? (
+                                          <>
+                                            <Dropdown.Item
+                                              className="participant-dropdown-item"
+                                              onClick={() => {
+                                                hideUnHideVideoParticipantByHost(
+                                                  usersData,
+                                                  true
+                                                );
+                                              }}
+                                            >
+                                              {t("Hide-video")}
+                                            </Dropdown.Item>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Dropdown.Item
+                                              className="participant-dropdown-item"
+                                              onClick={() => {
+                                                hideUnHideVideoParticipantByHost(
+                                                  usersData,
+                                                  false
+                                                );
+                                              }}
+                                            >
+                                              {t("UnHide-video")}
+                                            </Dropdown.Item>
+                                          </>
+                                        )}
                                       </Dropdown.Menu>
                                     </Dropdown>
                                   </Col>
