@@ -32,6 +32,7 @@ import {
   regexOnlyForNumberNCharacters,
   validateInput,
 } from "../../../commen/functions/regex";
+import { removeHTMLTagsAndTruncate } from "../../../commen/functions/utils";
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
   const { uploadReducer } = useSelector((state) => state);
@@ -149,12 +150,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         },
       });
     } else {
-      if (source === "user" && String(content).length >= 2499) {
+      if (source === "user" && String(content).length >= 2500) {
         // Update state only if no image is detected in the content
         setAddNoteFields({
           ...addNoteFields,
           Description: {
-            value: content,
+            value: removeHTMLTagsAndTruncate(String(content), 2500),
             errorMessage: "",
             errorStatus: false,
           },

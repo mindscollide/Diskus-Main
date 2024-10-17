@@ -28,6 +28,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
 import { Tooltip } from "antd";
+import { removeHTMLTagsAndTruncate } from "../../../commen/functions/utils";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
@@ -181,55 +182,45 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     }
   };
 
-  //State management of the Quill Editor
   const onTextChange = (content, delta, source) => {
-    const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText) {
+    const deltaOps = delta.ops || [];
+
+    // Check if any image is being pasted
+    const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
+    if (containsImage) {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
-          value: content,
+          value: "",
           errorMessage: "",
           errorStatus: false,
         },
       });
+    } else {
+      if (source === "user" && String(content).length >= 2500) {
+        // Update state only if no image is detected in the content
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: removeHTMLTagsAndTruncate(String(content), 2500),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else {
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: content,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     }
   };
 
-  useEffect(() => {
-    const editor = editorRef.current.getEditor();
 
-    const limitCharacters = (event) => {
-      const text = editor.getText();
-      if (text.length >= maxCharacters && event.key !== "Backspace") {
-        event.preventDefault();
-
-        const truncatedText = text.substring(0, maxCharacters - 1); // Remove the last character
-        editor.setText(truncatedText);
-      }
-    };
-
-    const handlePaste = (event) => {
-      const clipboardData = event.clipboardData || window.clipboardData;
-      const pastedText = clipboardData.getData("Text");
-      const text = editor.getText();
-      const remainingSpace = maxCharacters - text.length;
-
-      if (pastedText.length > remainingSpace) {
-        const truncatedText = pastedText.substring(0, remainingSpace);
-        document.execCommand("insertText", false, truncatedText);
-        event.preventDefault();
-      }
-    };
-
-    editor.root.addEventListener("keydown", limitCharacters);
-    editor.root.addEventListener("paste", handlePaste);
-
-    return () => {
-      editor.root.removeEventListener("keydown", limitCharacters);
-      editor.root.removeEventListener("paste", handlePaste);
-    };
-  }, [maxCharacters]);
 
   useEffect(() => {
     try {
