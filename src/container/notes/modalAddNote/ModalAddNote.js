@@ -134,62 +134,43 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       });
     }
   };
-
   const onTextChange = (content, delta, source) => {
-    //it will remove the &nbsp tag which comes in description in
-    // request data and add space also it take only 3000 character
-    const plainText = content
-      .replace(/&nbsp;/g, " ")
-      .replace(/(<([^>]+)>)/gi, "")
-      .trim();
+    const deltaOps = delta.ops || [];
 
-    const plainTextLength = plainText.length;
-    if (source === "user" && plainText && plainTextLength <= 2500) {
+    // Check if any image is being pasted
+    const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
+    if (containsImage) {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
-          value: content,
+          value: "",
           errorMessage: "",
           errorStatus: false,
         },
       });
+    } else {
+      if (source === "user" && String(content).length >= 2499) {
+        // Update state only if no image is detected in the content
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: content,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else {
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: content,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     }
   };
-
-  useEffect(() => {
-    const editor = editorRef.current.getEditor();
-
-    const limitCharacters = (event) => {
-      const text = editor.getText();
-      if (text.length >= maxCharacters && event.key !== "Backspace") {
-        event.preventDefault();
-
-        const truncatedText = text.substring(0, maxCharacters - 1); // Remove the last character
-        editor.setText(truncatedText);
-      }
-    };
-
-    const handlePaste = (event) => {
-      const clipboardData = event.clipboardData || window.clipboardData;
-      const pastedText = clipboardData.getData("Text");
-      const text = editor.getText();
-      const remainingSpace = maxCharacters - text.length;
-
-      if (pastedText.length > remainingSpace) {
-        const truncatedText = pastedText.substring(0, remainingSpace);
-        document.execCommand("insertText", false, truncatedText);
-        event.preventDefault();
-      }
-    };
-
-    editor.root.addEventListener("keydown", limitCharacters);
-    editor.root.addEventListener("paste", handlePaste);
-
-    return () => {
-      editor.root.removeEventListener("keydown", limitCharacters);
-      editor.root.removeEventListener("paste", handlePaste);
-    };
-  }, [maxCharacters]);
 
   // for save button hit
 
@@ -367,25 +348,25 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     }
   };
 
-  useEffect(() => {
-    if (editorRef.current) {
-      const editor = editorRef.current.getEditor();
+  // useEffect(() => {
+  //   if (editorRef.current) {
+  //     const editor = editorRef.current.getEditor();
 
-      if (editor) {
-        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-          const plaintext = node.innerText || node.textContent || "";
-          const isImage = node.nodeName === "IMG";
+  //     if (editor) {
+  //       editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+  //         const plaintext = node.innerText || node.textContent || "";
+  //         const isImage = node.nodeName === "IMG";
 
-          if (isImage) {
-            // Block image paste by returning an empty delta
-            return new Delta();
-          }
+  //         if (isImage) {
+  //           // Block image paste by returning an empty delta
+  //           return new Delta();
+  //         }
 
-          return delta.compose(new Delta().insert(plaintext));
-        });
-      }
-    }
-  }, []);
+  //         return delta.compose(new Delta().insert(plaintext));
+  //       });
+  //     }
+  //   }
+  // }, []);
 
   return (
     <>
@@ -425,33 +406,32 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             <>
               {isAddNote ? (
                 <Container>
-                  <Row className="d-flex  align-items-center">
+                  <Row className='d-flex  align-items-center'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
                       xs={12}
-                      className="d-flex align-items-center justify-content-start  gap-3"
-                    >
+                      className='d-flex align-items-center justify-content-start  gap-3'>
                       <h2 className={styles["Addnote-heading"]}>
                         {t("Add-note")}
                       </h2>
                       {isStarrted ? (
-                        <Tooltip placement="topLeft" title={t("Starred")}>
+                        <Tooltip placement='topLeft' title={t("Starred")}>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={hollowstar}
-                            alt=""
+                            alt=''
                             className={styles["star-addnote-modal"]}
                             onClick={() => setIsStarrted(!isStarrted)}
                           />
                         </Tooltip>
                       ) : (
-                        <Tooltip placement="topLeft" title={t("Unstarred")}>
+                        <Tooltip placement='topLeft' title={t("Unstarred")}>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={StarIcon}
-                            alt=""
+                            alt=''
                             className={styles["star-addnote-modal"]}
                             onClick={() => setIsStarrted(!isStarrted)}
                           />
@@ -460,18 +440,17 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
                       xs={12}
-                      className="modalAddNote-fields"
-                    >
+                      className='modalAddNote-fields'>
                       <Form.Control
                         placeholder={t("Note-title")}
                         className={styles["modal-Note-Title-Input"]}
-                        name="Title"
+                        name='Title'
                         ref={NoteTitle}
                         onKeyDown={(event) => enterKeyHandler(event, editorRef)}
                         maxLength={290}
@@ -487,8 +466,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                               addNoteFields.Title.value === ""
                                 ? ` ${styles["errorNotesMessage"]} `
                                 : `${styles["errorNotesMessage_hidden"]}`
-                            }
-                          >
+                            }>
                             {addNoteFields.Title.errorMessage}
                           </p>
                         </Col>
@@ -502,11 +480,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className={styles["Arabic_font_Applied"]}
-                    >
+                      className={styles["Arabic_font_Applied"]}>
                       <ReactQuill
                         ref={editorRef}
-                        theme="snow"
+                        theme='snow'
                         value={addNoteFields.Description.value}
                         placeholder={t("Note-details")}
                         onChange={onTextChange}
@@ -517,7 +494,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         }}
                       />
 
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col>
                           <p
                             className={
@@ -525,8 +502,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                               addNoteFields.Description.value === ""
                                 ? ` ${styles["errorNotesMessage_description"]} `
                                 : `${styles["errorNotesMessage_hidden_description"]}`
-                            }
-                          >
+                            }>
                             {addNoteFields.Description.errorMessage}
                           </p>
                         </Col>
@@ -534,7 +510,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <Row>
                         <Col
@@ -542,8 +518,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           md={12}
                           sm={12}
                           xs={12}
-                          className="mb-3 mt-2"
-                        >
+                          className='mb-3 mt-2'>
                           <label className={styles["Add-Notes-Attachment"]}>
                             {t("Attachments")}
                           </label>
@@ -552,15 +527,14 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       <Row>
                         <Col lg={12} md={12} sm={12} xs={12}>
                           <span
-                            className={styles["Notes-upload-input-AddModal"]}
-                          >
+                            className={styles["Notes-upload-input-AddModal"]}>
                             <CustomUpload
                               change={uploadFilesToDo}
                               multiple={true}
                               onClick={(event) => {
                                 event.target.value = null;
                               }}
-                              className="UploadFileButton"
+                              className='UploadFileButton'
                             />
 
                             <Row>
@@ -568,8 +542,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                 sm={12}
                                 lg={12}
                                 md={12}
-                                className={styles["notes-create-attachment"]}
-                              >
+                                className={styles["notes-create-attachment"]}>
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
                                       (data, index) => {
@@ -618,8 +591,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className={styles["Confirmationmodal_body_text"]}
-                    >
+                      className={styles["Confirmationmodal_body_text"]}>
                       {t("Are-you-sure-note-reset-closed")}
                     </Col>
                   </Row>
@@ -635,8 +607,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     lg={12}
                     md={12}
                     xs={12}
-                    className=" d-flex justify-content-end mt-2 gap-3"
-                  >
+                    className=' d-flex justify-content-end mt-2 gap-3'>
                     <Button
                       text={t("Cancel")}
                       className={styles["cancel-Add-notes-Modal"]}
@@ -645,7 +616,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     <Button
                       text={t("Save")}
                       onClick={handleClick}
-                      type="submit"
+                      type='submit'
                       className={styles["save-Add-notes-Modal"]}
                     />
                   </Col>
@@ -657,8 +628,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center gap-3"
-                    >
+                      className='d-flex justify-content-center gap-3'>
                       <Button
                         onClick={() => setIsAddNote(true)}
                         className={styles["cancel-Add-notes-Modal"]}
