@@ -87,7 +87,9 @@ const VideoCallNormalHeader = ({
   );
 
   const [participantData, setParticipantData] = useState([]);
-  console.log(participantData, "participantData");
+
+  const participantCounter = participantData.length;
+  console.log(participantData.length, "participantData");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
@@ -918,7 +920,9 @@ const VideoCallNormalHeader = ({
                       </div>
                     </Tooltip>
                   )}
-                  <span className="participants-counter">3</span>
+                  <span className="participants-counter">
+                    {participantCounter}
+                  </span>
                 </div>
               ) : null
             }

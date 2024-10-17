@@ -110,16 +110,15 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       console.log("Sending message...");
       if (webcamStatus === false || webcamStatus === "false") {
         console.log("Sending message...");
-        // setTimeout(() => {
-        iframe.contentWindow.postMessage("VidOff", "*");
-        // }, 2000);
+        setTimeout(() => {
+          iframe.contentWindow.postMessage("VidOff", "*");
+        }, 2000);
         console.log("Turning webcam off");
         setIsVideoOn(true);
       } else {
-        // setTimeout(() => {
-        iframe.contentWindow.postMessage("VidOn", "*");
-        // }, 2000);
-
+        setTimeout(() => {
+          iframe.contentWindow.postMessage("VidOn", "*");
+        }, 2000);
         console.log("Turning webcam on");
         setIsVideoOn(false);
       }
