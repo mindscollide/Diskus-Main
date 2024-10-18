@@ -2473,7 +2473,7 @@ const GetAllMeetingDetailsApiFunc = (
                   );
                   // Recurring Drop Down API
                   await dispatch(
-                    GetAllMeetingRecurringApiNew(navigate, t, true)
+                    GetAllMeetingRecurringApiNew(navigate, t, false)
                   );
                 } else if (flag === 2) {
                   console.log("Flag for proposed meeting Edit flow only");

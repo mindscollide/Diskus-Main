@@ -494,7 +494,7 @@ const ProposedNewMeeting = ({
             ),
           });
           //if the scnario gets exist paste the current value that is assigned to it already
-          updatedRows[index].startTime = updatedRows[index - 1].endTime;
+          updatedRows[index].startTime = newDate;
           setRows(updatedRows);
           return;
         } else {
@@ -811,26 +811,26 @@ const ProposedNewMeeting = ({
         console.log(data, "datadatadata");
         console.log(sortedDates, "datadatadata");
 
-        dispatch(
-          SaveMeetingDetialsNewApiFunction(
-            navigate,
-            t,
-            data,
-            setSceduleMeeting,
-            setorganizers,
-            setmeetingDetails,
-            1,
-            setCurrentMeetingID,
-            currentMeeting,
-            proposedMeetingDetails,
-            setDataroomMapFolderId,
-            membersParticipants,
-            sortedDates,
-            multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
-            setProposedNewMeeting,
-            false
-          )
-        );
+        // dispatch(
+        //   SaveMeetingDetialsNewApiFunction(
+        //     navigate,
+        //     t,
+        //     data,
+        //     setSceduleMeeting,
+        //     setorganizers,
+        //     setmeetingDetails,
+        //     1,
+        //     setCurrentMeetingID,
+        //     currentMeeting,
+        //     proposedMeetingDetails,
+        //     setDataroomMapFolderId,
+        //     membersParticipants,
+        //     sortedDates,
+        //     multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
+        //     setProposedNewMeeting,
+        //     false
+        //   )
+        // );
 
         seterror(false);
       } else if (
