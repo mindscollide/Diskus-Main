@@ -59,7 +59,6 @@ import {
 } from "../../../elements";
 // import Highlighter from 'react-highlight-words'
 import CustomUploadChat from "../../../elements/chat_upload/Chat-Upload";
-import CustomUploadImageChat from "../../../elements/chat_upload/Chat-Upload-Image";
 import Keywords from "react-keywords";
 import { Spin } from "antd";
 import SearchIcon from "../../../../assets/images/Search-Icon.png";
