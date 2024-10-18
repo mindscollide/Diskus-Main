@@ -44,7 +44,6 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
   getCurrentDate,
   getCurrentDateTime,
-  getCurrentTimmeGMTHHMMss,
   getHoursMinutesSec,
   getStartTimeWithCeilFunction,
 } from "../../commen/functions/time_formatter";
@@ -187,7 +186,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     MeetingStartTime: getStartTime.formattedTime,
     MeetingEndTime: getStartTime.formattedTime,
     MeetingLocation: "",
-    IsVideoCall: true,
+    IsVideoCall: false,
     IsChat: false,
     MeetingReminderID: [4],
     MeetingAgendas: [],
@@ -397,20 +396,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setCurrentStep(3);
       setIsAttendees(true);
       setIsPublishMeeting(false);
-      // setOpen({
-      //   ...open,
-      //   flag: true,
-      //   message: t("Please-atleast-add-one-agenda"),
-      // });
     }
-  };
-
-  const navigateToPublish = async () => {
-    setModalField(false);
-    setIsDetails(false);
-    setIsAgenda(false);
-    setIsAttendees(false);
-    setIsPublishMeeting(true);
   };
 
   // for Participant id's
@@ -459,7 +445,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           });
           setCreateMeetingTime(newTime);
         }
-        // if (getCurrentTimmeGMTHHMMss())
       }
     } else {
       let newDate = new Date(newTime);
@@ -1499,21 +1484,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         setMeetingAttendees(newData);
         setTaskAssignedTo(0);
         setParticipantRoleName("Participant");
-        // setParticipantRoleID(2);
-        // if (meetingAttendeesList.length > 0) {
-        //   meetingAttendeesList.forEach((data, index) => {
-        //     if (data.pK_UID === taskAssignedTo) {
-        //                   membersData.push({
-
-        //                   });
-        //       setTaskAssignedToInput({
-        //         name: "",
-        //         value: 0,
-        //         lable: "",
-        //       });
-        //     }
-        //   });
-        // }
         setTaskAssignedToInput({
           name: "",
           value: 0,
@@ -1557,8 +1527,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     }
   };
 
+  console.log(createMeeting.IsVideoCall, "IsVideoCallIsVideoCall");
+  console.log(addedParticipantNameList, "IsVideoCallIsVideoCall");
+
   // for attendies handler
   const handleSubmit = async () => {
+    if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
+      setOpen({
+        message: t("Please-add-atleast-one-participant"),
+        flag: true,
+      });
+      return;
+    }
     let finalDateTime = createConvert(
       createMeeting.MeetingDate + createMeeting.MeetingStartTime
     );

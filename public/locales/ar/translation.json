@@ -2141,5 +2141,6 @@
   "Your-slots-has-been-added-successfully": "Your Slots has been Added successfully",
   "Start-time": "Start time",
   "End-time": "End time",
-  "At-least-one-date-time-slot-is-mandatory": "At least one Date & Time slot is mandatory"
+  "At-least-one-date-time-slot-is-mandatory": "At least one Date & Time slot is mandatory",
+  "Please-add-atleast-one-participant": "Please add atleast one participant"
 }
