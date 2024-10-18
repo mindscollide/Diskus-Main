@@ -34,6 +34,7 @@ import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
+import { maxFileSize } from "../../../commen/functions/utils";
 
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
@@ -532,17 +533,18 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       let flag = false;
       let sizezero = true;
       let size = true;
+      let totalFiles = fileList.length + fileAttachments.length;
 
-      if (fileAttachments.length > 9) {
+      if (totalFiles > 15) {
         setOpen({
           flag: true,
-          message: t("Not-allowed-more-than-10-files"),
+          message: t("Not-allowed-more-than-15-files"),
         });
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -553,12 +555,10 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-greater-then-1-5GB"),
+          });
         } else if (!sizezero) {
           setTimeout(() => {
             setOpen({

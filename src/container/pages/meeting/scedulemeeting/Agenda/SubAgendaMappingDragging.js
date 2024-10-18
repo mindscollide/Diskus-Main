@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +42,7 @@ import SubDedaultDragger from "./SubDedaultDragger";
 import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import { useEffect } from "react";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -72,11 +73,10 @@ const SubAgendaMappingDragging = ({
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const { NewMeetingreducer, MeetingAgendaReducer, settingReducer } =
+  const { NewMeetingreducer } =
     useSelector((state) => state);
-  const isShouldAgendaUpdatedOrNot =
-    settingReducer?.UserProfileData?.emailWhenActiveMeetingAgendaUpdated ||
-    false;
+    const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
+
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
@@ -462,7 +462,7 @@ const SubAgendaMappingDragging = ({
                           editorRole.status === 9
                             ? true
                             : Number(editorRole.status) === 10 &&
-                              !isShouldAgendaUpdatedOrNot
+                              !isAgendaUpdateWhenMeetingActive
                             ? true
                             : false
                         }>
@@ -581,7 +581,7 @@ const SubAgendaMappingDragging = ({
                                                     : Number(
                                                         editorRole.status
                                                       ) === 10 &&
-                                                      !isShouldAgendaUpdatedOrNot
+                                                      !isAgendaUpdateWhenMeetingActive
                                                     ? true
                                                     : false
                                                 }
@@ -643,7 +643,7 @@ const SubAgendaMappingDragging = ({
                                                     : Number(
                                                         editorRole.status
                                                       ) === 10 &&
-                                                      !isShouldAgendaUpdatedOrNot
+                                                      !isAgendaUpdateWhenMeetingActive
                                                     ? true
                                                     : false
                                                 }
@@ -705,7 +705,7 @@ const SubAgendaMappingDragging = ({
                                                         : Number(
                                                             editorRole.status
                                                           ) === 10 &&
-                                                          !isShouldAgendaUpdatedOrNot
+                                                          !isAgendaUpdateWhenMeetingActive
                                                         ? true
                                                         : false
                                                     }
@@ -786,7 +786,7 @@ const SubAgendaMappingDragging = ({
                                                         : Number(
                                                             editorRole.status
                                                           ) === 10 &&
-                                                          !isShouldAgendaUpdatedOrNot
+                                                          !isAgendaUpdateWhenMeetingActive
                                                         ? true
                                                         : false
                                                     }
@@ -818,7 +818,7 @@ const SubAgendaMappingDragging = ({
                                               editorRole.role ===
                                                 "Agenda Contributor" ||
                                               editorRole.status === "9" ||
-                                              editorRole.status === 9 ? null : (
+                                              editorRole.status === 9 || (!isAgendaUpdateWhenMeetingActive && Number(editorRole.status) === 10) ? null : (
                                                 <img
                                                   alt=''
                                                   draggable={false}
@@ -886,7 +886,7 @@ const SubAgendaMappingDragging = ({
                                                     Number(
                                                       editorRole.status
                                                     ) === 10 &&
-                                                    !isShouldAgendaUpdatedOrNot
+                                                    !isAgendaUpdateWhenMeetingActive
                                                       ? true
                                                       : false
                                                   }
@@ -953,7 +953,7 @@ const SubAgendaMappingDragging = ({
                                                           : Number(
                                                               editorRole.status
                                                             ) === 10 &&
-                                                            !isShouldAgendaUpdatedOrNot
+                                                            !isAgendaUpdateWhenMeetingActive
                                                           ? true
                                                           : false
                                                       }
@@ -1027,7 +1027,7 @@ const SubAgendaMappingDragging = ({
                                                           : Number(
                                                               editorRole.status
                                                             ) === 10 &&
-                                                            !isShouldAgendaUpdatedOrNot
+                                                            !isAgendaUpdateWhenMeetingActive
                                                           ? true
                                                           : false
                                                       }>
@@ -1100,7 +1100,7 @@ const SubAgendaMappingDragging = ({
                                                                   : Number(
                                                                       editorRole.status
                                                                     ) === 10 &&
-                                                                    !isShouldAgendaUpdatedOrNot
+                                                                    !isAgendaUpdateWhenMeetingActive
                                                                   ? "pe-none"
                                                                   : ""
                                                               }`}
@@ -1131,7 +1131,7 @@ const SubAgendaMappingDragging = ({
                                                                 Number(
                                                                   editorRole.status
                                                                 ) === 10 &&
-                                                                !isShouldAgendaUpdatedOrNot
+                                                                !isAgendaUpdateWhenMeetingActive
                                                                   ? "pe-none"
                                                                   : "cursor-pointer"
                                                               }
@@ -1146,7 +1146,7 @@ const SubAgendaMappingDragging = ({
                                                                   : Number(
                                                                       editorRole.status
                                                                     ) === 10 &&
-                                                                    !isShouldAgendaUpdatedOrNot
+                                                                    !isAgendaUpdateWhenMeetingActive
                                                                   ? null
                                                                   : openVoteMOdal(
                                                                       subAgendaData.subAgendaID,
@@ -1187,7 +1187,7 @@ const SubAgendaMappingDragging = ({
                                                                   : Number(
                                                                       editorRole.status
                                                                     ) === 10 &&
-                                                                    !isShouldAgendaUpdatedOrNot
+                                                                    !isAgendaUpdateWhenMeetingActive
                                                                   ? "pe-none"
                                                                   : styles[
                                                                       "lockBtn"

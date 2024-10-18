@@ -33,6 +33,7 @@ import {
   getIconSource,
 } from "../../../container/DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
+import { maxFileSize } from "../../../commen/functions/utils";
 const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   let userID = localStorage.getItem("userID");
 
@@ -101,8 +102,8 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       let flag = false;
       let sizezero = true;
       let size = true;
-
-      if (fileAttachments.length > 9) {
+      let totalFiles = fileList.length + fileAttachments.length;
+      if (totalFiles > 15) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
@@ -111,7 +112,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        if (fileData.size > maxFileSize)  {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -122,12 +123,10 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-greater-then-1-5GB"),
+          });
         } else if (!sizezero) {
           setTimeout(() => {
             setOpen({
