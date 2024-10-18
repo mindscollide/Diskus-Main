@@ -811,26 +811,26 @@ const ProposedNewMeeting = ({
         console.log(data, "datadatadata");
         console.log(sortedDates, "datadatadata");
 
-        // dispatch(
-        //   SaveMeetingDetialsNewApiFunction(
-        //     navigate,
-        //     t,
-        //     data,
-        //     setSceduleMeeting,
-        //     setorganizers,
-        //     setmeetingDetails,
-        //     1,
-        //     setCurrentMeetingID,
-        //     currentMeeting,
-        //     proposedMeetingDetails,
-        //     setDataroomMapFolderId,
-        //     membersParticipants,
-        //     sortedDates,
-        //     multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
-        //     setProposedNewMeeting,
-        //     false
-        //   )
-        // );
+        dispatch(
+          SaveMeetingDetialsNewApiFunction(
+            navigate,
+            t,
+            data,
+            setSceduleMeeting,
+            setorganizers,
+            setmeetingDetails,
+            1,
+            setCurrentMeetingID,
+            currentMeeting,
+            proposedMeetingDetails,
+            setDataroomMapFolderId,
+            membersParticipants,
+            sortedDates,
+            multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
+            setProposedNewMeeting,
+            false
+          )
+        );
 
         seterror(false);
       } else if (
