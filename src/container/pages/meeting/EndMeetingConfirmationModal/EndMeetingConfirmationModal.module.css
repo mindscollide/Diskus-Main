@@ -1,0 +1,30 @@
+.modalBodyheading {
+  font-size: 18px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  text-align: left;
+}
+.modalBodyText {
+  font-size: 13px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+.EndMeetingBtn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #f16b6b !important;
+  border-radius: 4px !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+.CancelBtn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-weight: 600 !important;
+}

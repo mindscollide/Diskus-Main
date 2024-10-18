@@ -93,7 +93,8 @@ const ViewMeetingModal = ({
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-
+  let isMinutePublished = localStorage.getItem("isMinutePublished");
+  console.log(typeof isMinutePublished, "isMinutePublishedisMinutePublished");
   let meetingTitle = localStorage.getItem("meetingTitle");
 
   const dispatch = useDispatch();
@@ -402,8 +403,8 @@ const ViewMeetingModal = ({
   console.log(editorRole.role, "editorRoleeditorRole");
   return (
     <>
-      <section className="position-relative">
-        <Row className="mt-2">
+      <section className='position-relative'>
+        <Row className='mt-2'>
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
@@ -411,10 +412,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <Paper className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -482,8 +483,24 @@ const ViewMeetingModal = ({
                     onClick={showMeetingMaterial}
                   />
                   <>
-                    {editorRole.role === "Participant" ||
-                    editorRole.role === "Agenda Contributor" ? null : (
+                    {Number(editorRole.status) === 9 && isMinutePublished === "true" ? (
+                      <Button
+                        text={t("Minutes")}
+                        className={
+                          minutes === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showMinutes}
+                        // disableBtn={
+                        //   Number(editorRole.status) === 10 ||
+                        //   Number(editorRole.status) === 9
+                        //     ? false
+                        //     : true
+                        // }
+                      />
+                    ) : editorRole.role === "Participant" ||
+                      editorRole.role === "Agenda Contributor" ? null : (
                       <Button
                         text={t("Minutes")}
                         className={
@@ -500,6 +517,7 @@ const ViewMeetingModal = ({
                         }
                       />
                     )}
+
                     {checkFeatureIDAvailability(14) ? (
                       <>
                         {/* {editorRole.role === "Participant" ? null : ( */}

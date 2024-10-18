@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -57,6 +57,7 @@ import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const ParentAgenda = ({
   data,
@@ -80,16 +81,11 @@ const ParentAgenda = ({
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { NewMeetingreducer, MeetingAgendaReducer, settingReducer } =
-    useSelector((state) => state);
-  const isShouldAgendaUpdatedOrNot =
-    settingReducer?.UserProfileData?.emailWhenActiveMeetingAgendaUpdated ||
-    false;
-  console.log(
-    isShouldAgendaUpdatedOrNot,
-    editorRole,
-    "settingReducersettingReducer"
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
   );
+  const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
+
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
@@ -597,7 +593,7 @@ const ParentAgenda = ({
                                       editorRole.status === "9"
                                     ? true
                                     : Number(editorRole.status) === 10 &&
-                                      !isShouldAgendaUpdatedOrNot
+                                      !isAgendaUpdateWhenMeetingActive
                                     ? true
                                     : false
                                 }
@@ -631,7 +627,7 @@ const ParentAgenda = ({
                                       editorRole.status === "9"
                                     ? true
                                     : Number(editorRole.status) === 10 &&
-                                      !isShouldAgendaUpdatedOrNot
+                                      !isAgendaUpdateWhenMeetingActive
                                     ? true
                                     : false
                                 }
@@ -685,7 +681,7 @@ const ParentAgenda = ({
                                           editorRole.status === "9"
                                         ? true
                                         : Number(editorRole.status) === 10 &&
-                                          !isShouldAgendaUpdatedOrNot
+                                          !isAgendaUpdateWhenMeetingActive
                                         ? true
                                         : false
                                     }
@@ -741,7 +737,7 @@ const ParentAgenda = ({
                                           editorRole.status === "9"
                                         ? true
                                         : Number(editorRole.status) === 10 &&
-                                          !isShouldAgendaUpdatedOrNot
+                                          !isAgendaUpdateWhenMeetingActive
                                         ? true
                                         : false
                                     }
@@ -753,7 +749,9 @@ const ParentAgenda = ({
                                 (editorRole.role === "Participant" ||
                                 editorRole.role === "Agenda Contributor" ||
                                 editorRole.status === "9" ||
-                                editorRole.status === 9 ? null : (
+                                editorRole.status === 9 ||
+                                (!isAgendaUpdateWhenMeetingActive &&
+                                  Number(editorRole.status) === 10) ? null : (
                                   <img
                                     alt=''
                                     draggable={false}
@@ -786,7 +784,7 @@ const ParentAgenda = ({
                                   }
                                   disableBtn={
                                     Number(editorRole.status) === 10 &&
-                                    !isShouldAgendaUpdatedOrNot
+                                    !isAgendaUpdateWhenMeetingActive
                                       ? true
                                       : false
                                   }
@@ -804,7 +802,7 @@ const ParentAgenda = ({
                                   }
                                   disableBtn={
                                     Number(editorRole.status) === 10 &&
-                                    !isShouldAgendaUpdatedOrNot
+                                    !isAgendaUpdateWhenMeetingActive
                                       ? true
                                       : false
                                   }
@@ -850,7 +848,7 @@ const ParentAgenda = ({
                                           editorRole.status === "9"
                                         ? true
                                         : Number(editorRole.status) === 10 &&
-                                          !isShouldAgendaUpdatedOrNot
+                                          !isAgendaUpdateWhenMeetingActive
                                         ? true
                                         : false
                                     }
@@ -886,7 +884,7 @@ const ParentAgenda = ({
                                             "Agenda Contributor"
                                         ? true
                                         : Number(editorRole.status) === 10 &&
-                                          !isShouldAgendaUpdatedOrNot
+                                          !isAgendaUpdateWhenMeetingActive
                                         ? true
                                         : false
                                     }>
@@ -944,7 +942,7 @@ const ParentAgenda = ({
                                                   : Number(
                                                       editorRole.status
                                                     ) === 10 &&
-                                                    !isShouldAgendaUpdatedOrNot
+                                                    !isAgendaUpdateWhenMeetingActive
                                                   ? "pe-none"
                                                   : ""
                                               }`}
@@ -975,7 +973,7 @@ const ParentAgenda = ({
                                                   : Number(
                                                       editorRole.status
                                                     ) === 10 &&
-                                                    !isShouldAgendaUpdatedOrNot
+                                                    !isAgendaUpdateWhenMeetingActive
                                                   ? "pe-none"
                                                   : "cursor-pointer"
                                               }
@@ -1018,7 +1016,7 @@ const ParentAgenda = ({
                                                   : Number(
                                                       editorRole.status
                                                     ) === 10 &&
-                                                    !isShouldAgendaUpdatedOrNot
+                                                    !isAgendaUpdateWhenMeetingActive
                                                   ? `${
                                                       styles["lockBtn_inActive"]
                                                     } ${"pe-none"}`
@@ -1045,7 +1043,7 @@ const ParentAgenda = ({
                               <Droppable
                                 isDropDisabled={
                                   Number(editorRole.status) === 10 &&
-                                  !isShouldAgendaUpdatedOrNot
+                                  !isAgendaUpdateWhenMeetingActive
                                     ? true
                                     : false
                                 }
@@ -1078,7 +1076,6 @@ const ParentAgenda = ({
                                                 fileForSend={fileForSend}
                                                 setFileForSend={setFileForSend}
                                                 editorRole={editorRole}
-                                              
                                               />
                                             )}
                                           </>
@@ -1091,7 +1088,6 @@ const ParentAgenda = ({
                                             fileForSend={fileForSend}
                                             setFileForSend={setFileForSend}
                                             editorRole={editorRole}
-                                        
                                           />
                                         )}
                                       </>
@@ -1192,7 +1188,7 @@ const ParentAgenda = ({
                       }}
                       disableBtn={
                         Number(editorRole.status) === 10 &&
-                        !isShouldAgendaUpdatedOrNot
+                        !isAgendaUpdateWhenMeetingActive
                           ? true
                           : false
                       }
