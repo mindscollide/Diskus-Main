@@ -5,11 +5,9 @@ import {
   Button,
   Checkbox,
   CustomRadio2,
-  TextField,
 } from "../../../../components/elements";
 import AlarmClock from "../../../../assets/images/AlarmOptions.svg";
 import styles from "./ViewPollProgress.module.css";
-import profile from "../../../../assets/images/profile_polls.svg";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import { Progress } from "antd";
 import { useTranslation } from "react-i18next";
@@ -32,9 +30,7 @@ const ViewPollProgress = () => {
     Date: "",
     AllowMultipleAnswers: false,
   });
-  const [checkboxesState, setCheckboxesState] = useState({
-    checkedYes: true,
-  });
+
   const [viewpollMembers, setViewPollmembers] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
 
@@ -45,8 +41,6 @@ const ViewPollProgress = () => {
       let pollParticipants = pollData.pollParticipants;
       let pollOptions = pollData.pollOptions;
       let pollSelectedAnswers = pollData.selectedAnswers;
-
-      console.log(pollDetails, "pollDetailspollDetails");
 
       let memberpollsprogressView = [];
       let newOption = [];
@@ -106,8 +100,6 @@ const ViewPollProgress = () => {
       });
     }
   }, [PollsReducer.Allpolls]);
-
-  console.log(viewProgressPollsDetails.Date, "viewProgressPollsDetails");
 
   const changeDateStartHandler2 = (date) => {
     console.log(date, "viewProgressPollsDetails");
@@ -183,6 +175,7 @@ const ViewPollProgress = () => {
                 <img
                   draggable="false"
                   src={BlackCrossIcon}
+                  alt=""
                   width="16px"
                   height="16px"
                   className={styles["View_cross_icon"]}
@@ -302,7 +295,7 @@ const ViewPollProgress = () => {
                   <Row className={styles["Scroller_View_Poll_Published"]}>
                     <Col lg={12} ms={12} sm={12}>
                       {pollsOption.length > 0
-                        ? pollsOption.map((data, index) => {
+                        ? pollsOption.map((data) => {
                             return (
                               <>
                                 <Row>

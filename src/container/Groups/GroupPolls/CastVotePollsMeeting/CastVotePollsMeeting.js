@@ -8,7 +8,6 @@ import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Checkbox,
-  CustomRadio2,
   Notification,
 } from "../../../../components/elements";
 import { Progress, Radio } from "antd";
@@ -62,14 +61,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       return false;
     }
   };
-  const handleCheckBoxForOneOnly = (e) => {
-    let value = e.target.value;
 
-    setViewProgressPollsDetails({
-      ...viewProgressPollsDetails,
-      answer: [value],
-    });
-  };
   const handleCheckBoxYes = (e) => {
     let checked = e.target.checked;
     let name = e.target.name;
@@ -166,11 +158,6 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                       <span>({data.totalVotes})</span>
                                     </span>
                                   </Col>
-                                  {/* <Col lg={2} md={2} sm={2}>
-                                  <span className={styles["Percentage_Class"]}>
-                                    59%
-                                  </span>
-                                </Col> */}
                                 </Row>
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
@@ -269,7 +256,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           <Col lg={6} md={6} sm={12}>
             <Row>
               {pollParticipants.length > 0 &&
-                pollParticipants.map((data, index) => {
+                pollParticipants.map((data) => {
                   return (
                     <Col lg={6} md={6} sm={6} className="mt-3">
                       <Row>

@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
@@ -16,7 +15,6 @@ const CancelButtonModal = ({
   setCancelModalView,
   cancelModalView,
   setViewAdvanceMeetingModal,
-  setMeetingDetails,
   setAgenda,
   setPolls,
   setMinutes,
@@ -52,7 +50,6 @@ const CancelButtonModal = ({
     localStorage.removeItem("folderDataRoomMeeting");
     setAdvanceMeetingModalID(null);
     dispatch(searchNewUserMeeting(navigate, searchData, t));
-    // setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));

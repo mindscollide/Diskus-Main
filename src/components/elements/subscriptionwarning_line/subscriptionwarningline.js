@@ -11,6 +11,7 @@ const subscriptionwarningline = ({ text, color }) => {
       <Col className="MontserratMedium-500 d-flex justify-content-center my-2">
         <img
           src={LimitExceedIcon}
+          alt=""
           className={styles["warningIcon"]}
           draggable="false"
         />

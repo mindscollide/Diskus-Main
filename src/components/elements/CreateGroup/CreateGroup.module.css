@@ -290,7 +290,6 @@ body[dir="rtl"] .errorMessage_hidden {
 }
 
 body[dir="rtl"] .CheckBoxalign {
-  /* margin-left: 10px !important; */
   margin-right: -20px !important;
 }
 

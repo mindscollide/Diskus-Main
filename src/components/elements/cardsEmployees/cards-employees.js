@@ -1,6 +1,4 @@
 import { Col, Row, Container } from "react-bootstrap";
-import userImage from "./../../../assets/images/user.png";
-import currentUserImage from "./../../../assets/images/avatar.png";
 import { Check2 } from "react-bootstrap-icons";
 import "./cards-employees.css";
 import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg";
@@ -32,13 +30,7 @@ const EmployeeCard = ({
             />
           </Col>
           <Col lg={8} md={8} xs={12}>
-            <label
-              className={
-                " card-employee-name" +
-                " " +
-                currentLanguage
-              }
-            >
+            <label className={" card-employee-name" + " " + currentLanguage}>
               {employeeName}
             </label>
             <br />
@@ -57,6 +49,7 @@ const EmployeeCard = ({
                 <img
                   width={20}
                   height={20}
+                  alt=""
                   src={deleteButtonCreateMeeting}
                   onClick={IconOnClick}
                   draggable="false"

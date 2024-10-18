@@ -3,20 +3,15 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
   Paper,
-  TextField,
-  Checkbox,
   Notification,
   Loader,
-  VerificationInputField,
 } from "./../../../components/elements";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
 import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import styles from "./UpdatePasswordSuccessfully.module.css";
 import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
-import Cookies from "js-cookie";
-import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
 import { useDispatch, useSelector } from "react-redux";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
@@ -25,21 +20,7 @@ const UpdatePasswordSuccessfully = () => {
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t, i18n } = useTranslation();
-  // const languages = [
-  //   { name: "English", code: "en" },
-  //   { name: "Français", code: "fr" },
-  //   { name: "العربية", code: "ar", dir: "rtl" },
-  // ];
-  // const currentLocale = Cookies.get("i18next") || "en";
-  // const [language, setLanguage] = useSta/te(currentLocale);
-  // const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-  // const handleChangeLocale = (e) => {
-  //   const lang = e.target.value;
-  //   setLanguage(lang);
-  //   localStorage.setItem("i18nextLng", lang);
-  //   i18n.changeLanguage(lang);
-  // };
+  const { t } = useTranslation();
 
   const [open, setOpen] = useState({
     open: false,
@@ -50,10 +31,6 @@ const UpdatePasswordSuccessfully = () => {
     e.preventDefault();
     navigate("/");
   };
-
-  // useEffect(() => {
-  //   document.body.dir = currentLangObj.dir || "ltr";
-  // }, [currentLangObj, t]);
 
   useEffect(() => {
     if (

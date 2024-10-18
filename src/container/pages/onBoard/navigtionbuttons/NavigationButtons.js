@@ -1,20 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTour } from "@reactour/tour";
-import {
-  ChevronLeft,
-  ChevronRight,
-  CurrencyBitcoin,
-} from "react-bootstrap-icons";
-import ScheduleUpArrow from "../../../../../src/assets/images/newElements/Schedule_Up_arrow.png";
+import { ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import "./NavigationButtons.css";
 import { Button } from "../../../../components/elements";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
   showModalOnboard,
   showIsDetailOnboard,
-  showIsAgendaOnboard,
   showIsAttendeesOnboard,
   showModalStepsOnboard,
 } from "../../../../store/actions/OnBoardStates";
@@ -22,7 +16,6 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const NavigationButtons = () => {
-  //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const navigate = useNavigate();
@@ -101,11 +94,11 @@ const NavigationButtons = () => {
                 <Button
                   text={t("Prev")}
                   icon={
-                      <ChevronLeft
-                        size={16}
-                        width={22}
-                        className="for-icon-prev-btn"
-                      />
+                    <ChevronLeft
+                      size={16}
+                      width={22}
+                      className="for-icon-prev-btn"
+                    />
                   }
                   className="skipButtons-onboard_forscreen1"
                   onClick={goPrevStep}
@@ -115,7 +108,6 @@ const NavigationButtons = () => {
               <Col className=""> </Col>
             )}
 
-            {/* {currentStep.length < -1 } */}
             <Col>
               {currentLanguage === "ar" ? (
                 <Button

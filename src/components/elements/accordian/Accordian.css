@@ -41,7 +41,7 @@
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap;
-font-weight: 600;
+  font-weight: 600;
   font-size: 16px !important;
   color: #2197d7;
   cursor: pointer !important;
@@ -64,5 +64,4 @@ font-weight: 600;
   width: 100%;
   height: auto;
   padding: 12px 10px;
-  /* transition: all 0.5s; */
 }

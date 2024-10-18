@@ -1,19 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./ConfirmationCancelPackage.module.css";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CheckBox,
-  Form,
-  FormCheck,
-  ProgressBar,
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Form, ProgressBar } from "react-bootstrap";
 import "./../../../i18n";
 import { useTranslation } from "react-i18next";
 import Button from "../../elements/button/Button";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import WarningMessageBox from "../warning_message/WarningMessageBox";
 const ConfirmationCancelPackage = ({
   onClickCancelNowBtn,

@@ -1,12 +1,6 @@
-/* .headtag{
-    margin-left: 90px  !important;
-    padding: auto !important;
-} */
-
 .tablecolumnrow {
   margin-top: 20px !important;
   position: relative !important;
-  /* transition: opacity 0.3s; */
   overflow: auto !important;
   padding: 20px !important;
   background: #fff !important;
@@ -28,7 +22,6 @@
 }
 
 .Edit-label-heading {
-  /* margin-top: -15px; */
   font-weight: 600;
   font-size: 35px !important;
 }
@@ -204,7 +197,6 @@ body[dir="rtl"] .icon-modal-SearchBtn:hover {
   height: 39px !important;
   border-radius: 2px !important;
   border-color: #e1e1e1 !important;
-  /* margin-bottom: -8px; */
 }
 
 .formcontrol-fieldfor-filtermodal:focus {
@@ -224,7 +216,6 @@ body[dir="rtl"] .formcontrol-fieldselectfor-filtermodal {
 }
 .formcontrol-Phone-field {
   margin-top: 20px;
-  /* margin-left: 20px !important; */
 }
 
 .filterModal {
@@ -294,12 +285,6 @@ body[dir="rtl"] .AddUser-btn:hover {
   margin-left: -12px;
 }
 
-/* .filter-icon-EditUser {
-    position: "absolute" !important;
-    top: "18px" !important;
-    right: "30px" !important;
-    font-size: "21px" !important;
-  } */
 .userName {
   width: 120px !important;
   text-overflow: ellipsis !important;
@@ -343,7 +328,6 @@ body[dir="rtl"] .userDesgination {
   color: #f16b6b;
   visibility: visible;
   font-weight: 600 !important;
-
 }
 
 .errorMessage-AllUser_hidden {

@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import styles from "./DissmissWarningAlert.module.css";
 import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
-
 import img1 from "./../../../assets/images/limit-exceed.png";
 import img2 from "./../../../assets/images/newElements/Line.png";
 import { useTranslation } from "react-i18next";
@@ -23,6 +21,7 @@ const DismissWarningAlert = () => {
           <img
             src={img1}
             width={"18px"}
+            alt=""
             className={styles["image1"]}
             draggable="false"
           ></img>
@@ -30,7 +29,12 @@ const DismissWarningAlert = () => {
             {t("Your-subscription-will-expire-soon")}
           </strong>
           <a className={styles["revoke"]}>Revoke Cancellation</a>
-          <img className={styles["image2"]} src={img2} draggable="false"></img>
+          <img
+            className={styles["image2"]}
+            alt=""
+            src={img2}
+            draggable="false"
+          ></img>
         </Alert.Heading>
       </Alert>
     );

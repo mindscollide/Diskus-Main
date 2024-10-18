@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./Participants.module.css";
-import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
@@ -21,12 +20,10 @@ import {
   GetAllSavedparticipantsAPI,
   cleareAllState,
   searchNewUserMeeting,
-  showAllMeetingParticipantsFailed,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
-import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import { Tooltip } from "antd";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
@@ -44,10 +41,7 @@ const Participants = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(
-    NewMeetingreducer,
-    "NewMeetingreducerNewMeetingreducerNewMeetingreducer"
-  );
+
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [open, setOpen] = useState({
@@ -105,15 +99,8 @@ const Participants = ({
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
-  const handleCancelBtn = () => {
-    setCancelModalView(true);
-  };
   const handleNextBtn = () => {
     setAgenda(true);
-    setParticipants(false);
-  };
-  const handlePreviousBtn = () => {
-    setAgendaContributors(true);
     setParticipants(false);
   };
 
@@ -148,7 +135,6 @@ const Participants = ({
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        // width: "260px",
         ellipsis: true,
       },
 
@@ -157,7 +143,6 @@ const Participants = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        // width: "280px",
         ellipsis: true,
       },
       {
@@ -165,7 +150,6 @@ const Participants = ({
         dataIndex: "Title",
         key: "Title",
         align: "center",
-        // width: "300px",
         ellipsis: true,
       },
 
@@ -234,29 +218,6 @@ const Participants = ({
             );
           }
         },
-        // render: (text, record) => {
-        //   if (record.isRSVP === true) {
-        //     return (
-        //       <img
-        //         draggable={false}
-        //         src={thumbsup}
-        //         height="30px"
-        //         width="30px"
-        //         alt=""
-        //       />
-        //     );
-        //   } else {
-        //     return (
-        //       <img
-        //         draggable={false}
-        //         src={thumbsdown}
-        //         height="30px"
-        //         width="30px"
-        //         alt=""
-        //       />
-        //     );
-        //   }
-        // },
       },
     ];
   } else {
@@ -266,7 +227,6 @@ const Participants = ({
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        // width: "260px",
         ellipsis: true,
       },
 
@@ -275,7 +235,6 @@ const Participants = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        // width: "280px",
         ellipsis: true,
       },
       {
@@ -283,7 +242,6 @@ const Participants = ({
         dataIndex: "Title",
         key: "Title",
         align: "center",
-        // width: "300px",
         ellipsis: true,
       },
 
@@ -386,21 +344,12 @@ const Participants = ({
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
-            {/* <Button
-              text={t("Cancel")}
-              className={styles["Cancel_Button_Organizers_view"]}
-              onClick={handleCancelBtn}
-            /> */}
             <Button
               text={t("Cancel")}
               className={styles["Cancel_Meeting_Details"]}
               onClick={handleCancelMeetingNoPopup}
             />
-            {/* <Button
-              text={t("Previous")}
-              className={styles["Next_Button_Organizers_view"]}
-              onClick={handlePreviousBtn}
-            /> */}
+
             <Button
               text={t("Next")}
               className={styles["Next_Button_Organizers_view"]}

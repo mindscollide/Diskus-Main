@@ -97,11 +97,9 @@ export const localStorageManage = (
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
     localStorage.clear();
     try {
-      // if (Number(LoginFlowPageRoute) !== 1) {
       localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
       console.log("LoginFlowRoutes", LoginFlowPageRoute);
       dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-      // }
     } catch {}
     if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
@@ -154,11 +152,9 @@ export const localStorageManage = (
     );
     localStorage.clear();
     try {
-      // if (Number(LoginFlowPageRoute) !== 1) {
       localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
       console.log("LoginFlowRoutes", LoginFlowPageRoute);
       dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-      // }
     } catch {}
 
     if (reLang != undefined && reLang != null) {
@@ -207,11 +203,9 @@ export const localStorageManage = (
   } else {
     localStorage.clear();
     try {
-      // if (Number(LoginFlowPageRoute) !== 1) {
       localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
       console.log("LoginFlowRoutes", LoginFlowPageRoute);
       dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-      // }
     } catch {}
     if (reLang != undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);

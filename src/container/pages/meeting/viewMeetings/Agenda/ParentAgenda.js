@@ -3,7 +3,6 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -14,7 +13,6 @@ import {
   Button,
   Notification,
 } from "../../../../../components/elements";
-import { convertToGMTTime } from "../../../../../commen/functions/time_formatter";
 import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
 import {
   showAdvancePermissionModal,
@@ -29,9 +27,6 @@ import {
   clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import styles from "./Agenda.module.css";
-import profile from "../../../../../assets/images/newprofile.png";
-import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
-import { Radio } from "antd";
 import Urls from "./Urls";
 import RequestContributor from "./RequestContributor";
 import SubAgendaMappingDragging from "./SubAgendaMappingDragging";
@@ -39,10 +34,7 @@ import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import ViewVoteModal from "../../scedulemeeting/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
 import CastVoteAgendaModal from "../../scedulemeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../DataRoom/SearchFunctionality/option";
+import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
@@ -53,15 +45,12 @@ const ParentAgenda = ({
   index,
   rows,
   setRows,
-  setMainAgendaRemovalIndex,
   agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
   editorRole,
   advanceMeetingModalID,
 }) => {
-  console.log(data, "datadatadatadata");
-  console.log("EditorRoleEditorRole", editorRole);
   const { t } = useTranslation();
   const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -112,13 +101,6 @@ const ParentAgenda = ({
     });
 
     return exists;
-  };
-
-  // Function to update the selected radio option for a specific row
-  const handleRadioChange = (index, value) => {
-    const updatedRows = [...rows];
-    updatedRows[index].selectedRadio = value;
-    setRows(updatedRows);
   };
 
   useEffect(() => {
@@ -186,8 +168,6 @@ const ParentAgenda = ({
   };
 
   const downloadDocument = (record) => {
-    console.log("filesDatafilesData", record);
-
     let data = {
       FileID: Number(record.originalAttachmentName),
     };
@@ -201,7 +181,6 @@ const ParentAgenda = ({
     );
   };
   const pdfData = (record, ext) => {
-    console.log("PDFDATAPDFDATA", record);
     let Data = {
       taskId: Number(record.originalAttachmentName),
       commingFrom: 4,
@@ -228,8 +207,6 @@ const ParentAgenda = ({
       dispatch(clearResponseMessage(""));
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
-
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <>
@@ -371,14 +348,6 @@ const ParentAgenda = ({
                                   onClick={() => EnableCastVoteModal(data)}
                                 />
                               ) : null}
-                              {/* {Number(data.agendaVotingID) === 0 ? null : Number(
-                              editorRole.status
-                            ) === 10 &&
-                            Number(data.voteOwner.userid) !==
-                              Number(currentUserID) &&
-                            data.voteOwner?.currentVotingClosed ? (
-
-                          ) : null} */}
                             </Col>
                           </Row>
                           <Row className="mt-2">
@@ -427,11 +396,6 @@ const ParentAgenda = ({
                                         ).format("hh:mm a") +
                                         ")"}
                                     </p>
-                                    {/* <span
-                                    className={styles["agendaCreationTime"]}
-                                  >
-                                    {data?.presenterName}
-                                  </span> */}
                                   </div>
                                 </Col>
                               </Row>
@@ -444,43 +408,8 @@ const ParentAgenda = ({
                                   </span>
                                 </Col>
                               </Row>
-                              {/* <Row key={index + 3} className="mt-3">
-                              <Col lg={12} md={12} sm={12}>
-                                <span className={styles["Agenda_Heading"]}>
-                                  {t("Attachments")}
-                                </span>
-                              </Col>
-                            </Row> */}
                               <Row key={index + 4} className="mt-3">
                                 <Col lg={6} md={6} sm={6}>
-                                  {/* <Radio.Group
-                                  onChange={(e) =>
-                                    handleRadioChange(index, e.target.value)
-                                  }
-                                  value={data.selectedRadio}
-                                >
-                                  <Radio value={1}>
-                                    <span
-                                      className={styles["Radio_Button_options"]}
-                                    >
-                                      {t("Document")}
-                                    </span>
-                                  </Radio>
-                                  <Radio value={2}>
-                                    <span
-                                      className={styles["Radio_Button_options"]}
-                                    >
-                                      {t("URL")}
-                                    </span>
-                                  </Radio>
-                                  <Radio value={3}>
-                                    <span
-                                      className={styles["Radio_Button_options"]}
-                                    >
-                                      {t("Request from contributor")}
-                                    </span>
-                                  </Radio>
-                                </Radio.Group> */}
                                   {data.selectedRadio === 1 ? (
                                     <span className={styles["Agenda_Heading"]}>
                                       {t("Documents")}
@@ -532,47 +461,6 @@ const ParentAgenda = ({
                                               }
                                               key={fileIndex}
                                             />
-                                            // <Col
-                                            //   key={fileIndex}
-                                            //   lg={3}
-                                            //   md={3}
-                                            //   sm={12}
-                                            // >
-                                            //   <div
-                                            //     className={
-                                            //       styles[
-                                            //         "agendaFileAttachedView"
-                                            //       ]
-                                            //     }
-                                            //   >
-                                            //     <span
-                                            //       className={
-                                            //         styles["agendaFileSpan"]
-                                            //       }
-                                            //     >
-                                            //       <img
-                                            //         draggable={false}
-                                            //         src={getIconSource(
-                                            //           getFileExtension(
-                                            //             filesData?.displayAttachmentName
-                                            //           )
-                                            //         )}
-                                            //         alt=""
-                                            //       />{" "}
-                                            //       <span
-                                            //         onClick={() =>
-                                            //           downloadDocument(
-                                            //             filesData
-                                            //           )
-                                            //         }
-                                            //       >
-                                            //         {
-                                            //           filesData?.displayAttachmentName
-                                            //         }
-                                            //       </span>
-                                            //     </span>
-                                            //   </div>
-                                            // </Col>
                                           )
                                         )}
                                       </>
@@ -640,39 +528,6 @@ const ParentAgenda = ({
               }
               {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
               {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
-              {/* sub Ajenda Button */}
-              {/* <Row className="mt-3">
-            <Col lg={12} md={12} sm={12}>
-              <Button
-                text={
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center gap-2 align-items-center"
-                      >
-                        <img
-                          draggable={false}
-                          src={plusFaddes}
-                          height="10.77px"
-                          width="10.77px"
-                        />
-                        <span className={styles["Add_Agen_Heading"]}>
-                          {t("Add-sub-agenda")}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                }
-                className={styles["AddMoreBtnAgenda"]}
-                onClick={() => {
-                  addSubAjendaRows(index);
-                }}
-              />
-            </Col>
-          </Row> */}
             </div>
           )}
         </Draggable>

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Resolution.module.css";
 import {
   Button,
@@ -55,12 +55,10 @@ import CrossResolution from "../../assets/images/resolutions/cross_icon_resoluti
 import { updateResolutionModal } from "../../store/actions/Resolution_actions";
 import { viewResolutionModal } from "../../store/actions/Resolution_actions";
 import { validateInput } from "../../commen/functions/regex";
-
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
@@ -81,7 +79,6 @@ const Resolution = () => {
   const calendRef = useRef();
   const [resultresolution, setResultresolution] = useState(false);
   const [voteresolution, setVoteresolution] = useState(false);
-  const [voterID, setVoterID] = useState(0);
   const [searchIcon, setSearchIcon] = useState(false);
   const [rows, setRows] = useState([]);
   const [isSearchVoter, setSearchVoter] = useState([]);
@@ -143,7 +140,6 @@ const Resolution = () => {
           .catch((error) => {
             console.log(error);
           });
-        // viewResolution(data.resolutionID)
       } catch (error) {
         console.log(error);
       }
@@ -169,8 +165,6 @@ const Resolution = () => {
         localStorage.setItem("resolutionView", 2);
         localStorage.setItem("ButtonTab", 1);
         dispatch(getVoterResolution(navigate, 1, t));
-
-        // dispatch(getResolutions(navigate, 1, t));
       }
     } catch {}
 
@@ -303,13 +297,9 @@ const Resolution = () => {
     });
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
-      // if (moderatorPage !== null && moderatorRows !== null) {
       dispatch(getResolutions(navigate, 1, t));
-      // }
     } else if (resolutionView !== null && resolutionView === 2) {
-      // if (voterPage !== null && voterRows !== null) {
       dispatch(getVoterResolution(navigate, 1, t));
-      // }
     }
   };
 
@@ -389,7 +379,6 @@ const Resolution = () => {
             VotingDeadlineDate: "",
           };
           dispatch(getResolutions(navigate, buttonTab, t, Data.Title));
-          // setAllSearchInput("");
         } else {
           dispatch(getResolutions(navigate, buttonTab, t));
         }
@@ -405,7 +394,6 @@ const Resolution = () => {
             VotingDeadlineDate: "",
           };
           dispatch(getVoterResolution(navigate, buttonTab, t, Data.Title));
-          // setAllSearchInput("");
         } else {
           dispatch(getVoterResolution(navigate, buttonTab, t));
         }
@@ -466,7 +454,7 @@ const Resolution = () => {
       key: "circulationDate",
       align: "center",
       width: "128px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {_justShowDateformat(table)}
@@ -480,7 +468,7 @@ const Resolution = () => {
       key: "votingDeadline",
       align: "center",
       width: "134px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -494,7 +482,7 @@ const Resolution = () => {
       key: "decisionDate",
       align: "center",
       width: "134px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -508,7 +496,7 @@ const Resolution = () => {
       key: "decision",
       align: "center",
       width: "76px",
-      render: (text, data) => {
+      render: (text) => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
@@ -532,7 +520,7 @@ const Resolution = () => {
       align: "center",
       key: "voteCount",
       width: "110px",
-      render: (text, data) => (
+      render: (text) => (
         <span className={styles["voterCountStyle"]}>{text}</span>
       ),
     },
@@ -543,10 +531,7 @@ const Resolution = () => {
       key: "Result",
       width: "78px",
       render: (table, data) => {
-        let newDate = new Date();
-        let votingDeadline = resolutionResultTable(data?.votingDeadline);
         if (data.resolutionStatus === "Circulated") {
-          // if (votingDeadline < newDate) {
           return (
             <Tooltip placement="bottomLeft" title={t("Result")}>
               <img
@@ -558,11 +543,7 @@ const Resolution = () => {
               />
             </Tooltip>
           );
-          // } else {
-          //   return "";
-          // }
         } else if (data.resolutionStatus === "Closed") {
-          // if (votingDeadline < newDate) {
           return (
             <Tooltip placement="bottomLeft" title={t("Result")}>
               <img
@@ -574,7 +555,6 @@ const Resolution = () => {
               />
             </Tooltip>
           );
-          // }
         }
       },
     },
@@ -643,7 +623,7 @@ const Resolution = () => {
       key: "circulationDate",
       align: "center",
       width: "140px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {_justShowDateformat(table)}
@@ -657,7 +637,7 @@ const Resolution = () => {
       key: "votingDeadline",
       align: "center",
       width: "140px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -671,7 +651,7 @@ const Resolution = () => {
       key: "decisionDate",
       align: "center",
       width: "140px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -685,7 +665,7 @@ const Resolution = () => {
       key: "decision",
       align: "center",
       width: "76px",
-      render: (text, data) => {
+      render: (text) => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
@@ -709,7 +689,7 @@ const Resolution = () => {
       align: "center",
       key: "voteCount",
       width: "110px",
-      render: (text, data) => {
+      render: (text) => {
         return (
           <span className="d-flex justify-content-center Saved_money_Tagline ">
             {text}
@@ -723,7 +703,7 @@ const Resolution = () => {
       align: "center",
       key: "Result",
       width: "78px",
-      render: (table, data) => {
+      render: (data) => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
         if (votingDeadline < newDate) {
@@ -768,7 +748,7 @@ const Resolution = () => {
       key: "votingDeadline",
       align: "left",
       width: "153px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -782,7 +762,7 @@ const Resolution = () => {
       key: "decisionDate",
       align: "left",
       width: "153px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date_Decision_date"]}>
             {_justShowDateformat(table)}
@@ -796,7 +776,7 @@ const Resolution = () => {
       key: "votingMethod",
       width: "131px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (text) => {
         return <span className={styles["voterCountStyle"]}>{text}</span>;
       },
     },
@@ -830,7 +810,7 @@ const Resolution = () => {
       key: "isVoter",
       width: "120px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (data) => {
         if (data.resolutionStatusID === 2) {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
@@ -872,7 +852,7 @@ const Resolution = () => {
       key: "decision",
       width: "90px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (text) => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
@@ -911,7 +891,7 @@ const Resolution = () => {
       key: "votingDeadline",
       align: "left",
       width: "155px",
-      render: (text, data) => {
+      render: (text) => {
         return (
           <span className={styles["voterCountStyle"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(text)}
@@ -925,7 +905,7 @@ const Resolution = () => {
       key: "decisionDate",
       align: "left",
       width: "153px",
-      render: (text, data) => {
+      render: (text) => {
         return (
           <span className={styles["voterCountStyle"]}>
             {_justShowDateformat(text)}
@@ -940,7 +920,7 @@ const Resolution = () => {
       width: "120px",
       align: "center",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (text) => {
         return <span className={styles["voterCountStyle"]}>{text}</span>;
       },
     },
@@ -951,7 +931,7 @@ const Resolution = () => {
       width: "90px",
       align: "center",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (data) => {
         if (data.isAttachmentAvailable) {
           return (
             <img
@@ -972,7 +952,7 @@ const Resolution = () => {
       key: "isVoter",
       width: "120px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (data) => {
         if (data.resolutionStatusID === 3) {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
@@ -1008,7 +988,7 @@ const Resolution = () => {
       key: "decision",
       width: "73px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (text) => {
         if (text === "Approved" || text === "Not Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else {
@@ -1239,12 +1219,7 @@ const Resolution = () => {
       } catch {}
     }
   }, [ResolutionReducer.mqttResolutionClosed]);
-  console.log(
-    voteresolution,
-    ResolutionReducer.voteResolutionFlag,
-    "ResolutionReducerResolutionReducer"
-  );
-  console.log(isSearchVoter, "isSearchVoterisSearchVoter");
+
   return (
     <>
       <section className={styles["resolution_container"]}>
@@ -1360,7 +1335,6 @@ const Resolution = () => {
                         labelclass="textFieldSearch d-none"
                         value={allSearchInput}
                         change={(e) => filterResolution(e)}
-                        // onClick={handleClickSearch}
                         onKeyDown={handleClickSearch}
                         applyClass={"resolution-search-input"}
                         iconclassname={styles["Search_Icon"]}
@@ -1376,7 +1350,6 @@ const Resolution = () => {
                         }
                         clickIcon={openSearchBox}
                       />
-                      {/* <SearchInputSuggestion /> */}
                       {searchIcon ? (
                         <>
                           <Row>
@@ -1423,9 +1396,7 @@ const Resolution = () => {
                                     onFocusedDateChange={
                                       changeCirculateDateHandler
                                     }
-                                    // inputClass="datepicker_input"
                                     format={"DD/MM/YYYY"}
-                                    // value={toDoDate}
                                     minDate={moment().toDate()}
                                     placeholder="DD/MM/YYYY"
                                     render={
@@ -1436,26 +1407,12 @@ const Resolution = () => {
                                     }
                                     editable={false}
                                     className="datePickerTodoCreate2"
-                                    // disabled={disabled}
-                                    // name={name}
                                     onOpenPickNewDate={false}
                                     inputMode=""
-                                    // value={value}
                                     calendar={calendarValue}
                                     locale={localValue}
                                     ref={calendRef}
                                   />
-
-                                  {/* <TextField
-                                    label={
-                                      resolutionView === 2
-                                        ? t("Decision-date")
-                                        : t("Circulation-date")
-                                    }
-                                    type="date"
-                                    name="circulationDate"
-                                    change={changeSearchDateHandler}
-                                  /> */}
                                 </Col>
                                 <Col
                                   lg={6}
@@ -1485,12 +1442,6 @@ const Resolution = () => {
                                     locale={localValue}
                                     ref={calendRef}
                                   />
-                                  {/* <TextField
-                                    label={t("Voting-deadline")}
-                                    type="date"
-                                    name="votingDate"
-                                    change={changeSearchDateHandler}
-                                  /> */}
                                 </Col>
                               </Row>
                               <Row className="mt-3">
@@ -1635,24 +1586,6 @@ const Resolution = () => {
                             className={styles["PaginationStyle-Resolution"]}
                             total={totalResolution}
                           />
-                          {/* <Pagination
-                            defaultCurrent={
-                              moderatorPage !== null ? moderatorPage : 1
-                            }
-                            // totalBoundaryShowSizeChanger={}
-                            total={totalResolution}
-                            showSizeChanger
-                            locale={{
-                              items_per_page: t("items_per_page"),
-                              page: t("page"),
-                            }}
-                            pageSizeOptions={["30", "50", "100", "200"]}
-                            className={styles["PaginationStyle-Resolution"]}
-                            onChange={handleChangeResolutionPagination}
-                            defaultPageSize={
-                              moderatorRows !== null ? moderatorRows : 50
-                            }
-                          /> */}
                         </Col>
                       </Row>
                     </>

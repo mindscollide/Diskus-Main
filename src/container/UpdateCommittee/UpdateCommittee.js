@@ -87,7 +87,6 @@ const UpdateCommittee = () => {
                                 rows="4"
                                 placeholder={t("Description")}
                                 required={true}
-                                // className={styles["Height-of-textarea"]
                               />
                             </Col>
                           </Row>
@@ -103,8 +102,6 @@ const UpdateCommittee = () => {
                                 className="SearchCheckbox "
                                 name="IsChat"
                                 label={t("Create-Talk-Group")}
-                                // checked={createMeeting.IsChat}
-                                // onChange={onChange}
                                 classNameDiv="checkboxParentClass"
                               ></Checkbox>
                             </Col>
@@ -118,9 +115,6 @@ const UpdateCommittee = () => {
                               <SelectBox
                                 name="Participant"
                                 placeholder={t("Committee Type")}
-                                // option={participantOptions}
-                                // value={participantRoleName}
-                                // change={assigntRoleAttendies}
                               />
                             </Col>
                           </Row>
@@ -151,6 +145,7 @@ const UpdateCommittee = () => {
                                     <Col lg={3} md={3} sm={12}>
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={Newprofile}
                                         width={50}
                                       />
@@ -220,6 +215,7 @@ const UpdateCommittee = () => {
                                     >
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={CrossIcon}
                                         width={18}
                                       />
@@ -231,6 +227,7 @@ const UpdateCommittee = () => {
                                     <Col lg={3} md={3} sm={12}>
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={Newprofile}
                                         width={50}
                                       />
@@ -300,6 +297,7 @@ const UpdateCommittee = () => {
                                     >
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={CrossIcon}
                                         width={18}
                                       />
@@ -311,6 +309,7 @@ const UpdateCommittee = () => {
                                     <Col lg={3} md={3} sm={12}>
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={Newprofile}
                                         width={50}
                                       />
@@ -380,6 +379,7 @@ const UpdateCommittee = () => {
                                     >
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={CrossIcon}
                                         width={18}
                                       />
@@ -405,6 +405,7 @@ const UpdateCommittee = () => {
                                     <Col lg={3} md={3} sm={12}>
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={Newprofile}
                                         width={50}
                                       />
@@ -474,6 +475,7 @@ const UpdateCommittee = () => {
                                     >
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={CrossIcon}
                                         width={18}
                                       />
@@ -485,6 +487,7 @@ const UpdateCommittee = () => {
                                     <Col lg={3} md={3} sm={12}>
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={Newprofile}
                                         width={50}
                                       />
@@ -554,6 +557,7 @@ const UpdateCommittee = () => {
                                     >
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={CrossIcon}
                                         width={18}
                                       />
@@ -565,6 +569,7 @@ const UpdateCommittee = () => {
                                     <Col lg={3} md={3} sm={12}>
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={Newprofile}
                                         width={50}
                                       />
@@ -634,6 +639,7 @@ const UpdateCommittee = () => {
                                     >
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={CrossIcon}
                                         width={18}
                                       />
@@ -647,6 +653,7 @@ const UpdateCommittee = () => {
                                     <Col lg={3} md={3} sm={12}>
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={Newprofile}
                                         width={50}
                                       />
@@ -716,6 +723,7 @@ const UpdateCommittee = () => {
                                     >
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={CrossIcon}
                                         width={18}
                                       />
@@ -727,6 +735,7 @@ const UpdateCommittee = () => {
                                     <Col lg={3} md={3} sm={12}>
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={Newprofile}
                                         width={50}
                                       />
@@ -796,6 +805,7 @@ const UpdateCommittee = () => {
                                     >
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={CrossIcon}
                                         width={18}
                                       />
@@ -807,6 +817,7 @@ const UpdateCommittee = () => {
                                     <Col lg={3} md={3} sm={12}>
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={Newprofile}
                                         width={50}
                                       />
@@ -876,6 +887,7 @@ const UpdateCommittee = () => {
                                     >
                                       <img
                                         draggable="false"
+                                        alt=""
                                         src={CrossIcon}
                                         width={18}
                                       />
@@ -960,6 +972,7 @@ const UpdateCommittee = () => {
                                         <Col lg={2} md={2} sm={12}>
                                           <img
                                             draggable="false"
+                                            alt=""
                                             src={Newprofile}
                                             width={50}
                                           />
@@ -1022,9 +1035,7 @@ const UpdateCommittee = () => {
                                           className="mt-2 "
                                         >
                                           <Checkbox
-                                            // checked={rememberEmail}
                                             classNameDiv=""
-                                            // onChange={rememberChangeEmail}
                                             className={styles["RememberEmail"]}
                                           />
                                         </Col>
@@ -1037,6 +1048,7 @@ const UpdateCommittee = () => {
                                         <Col lg={2} md={2} sm={12}>
                                           <img
                                             draggable="false"
+                                            alt=""
                                             src={Newprofile}
                                             width={50}
                                           />
@@ -1099,9 +1111,7 @@ const UpdateCommittee = () => {
                                           className="mt-2 "
                                         >
                                           <Checkbox
-                                            // checked={rememberEmail}
                                             classNameDiv=""
-                                            // onChange={rememberChangeEmail}
                                             className={styles["RememberEmail"]}
                                           />
                                         </Col>
@@ -1114,6 +1124,7 @@ const UpdateCommittee = () => {
                                         <Col lg={2} md={2} sm={12}>
                                           <img
                                             draggable="false"
+                                            alt=""
                                             src={Newprofile}
                                             width={50}
                                           />
@@ -1176,9 +1187,7 @@ const UpdateCommittee = () => {
                                           className="mt-2 "
                                         >
                                           <Checkbox
-                                            // checked={rememberEmail}
                                             classNameDiv=""
-                                            // onChange={rememberChangeEmail}
                                             className={styles["RememberEmail"]}
                                           />
                                         </Col>
@@ -1191,6 +1200,7 @@ const UpdateCommittee = () => {
                                         <Col lg={2} md={2} sm={12}>
                                           <img
                                             draggable="false"
+                                            alt=""
                                             src={Newprofile}
                                             width={50}
                                           />
@@ -1253,9 +1263,7 @@ const UpdateCommittee = () => {
                                           className="mt-2 "
                                         >
                                           <Checkbox
-                                            // checked={rememberEmail}
                                             classNameDiv=""
-                                            // onChange={rememberChangeEmail}
                                             className={styles["RememberEmail"]}
                                           />
                                         </Col>
@@ -1268,6 +1276,7 @@ const UpdateCommittee = () => {
                                         <Col lg={2} md={2} sm={12}>
                                           <img
                                             draggable="false"
+                                            alt=""
                                             src={Newprofile}
                                             width={50}
                                           />
@@ -1330,9 +1339,7 @@ const UpdateCommittee = () => {
                                           className="mt-2 "
                                         >
                                           <Checkbox
-                                            // checked={rememberEmail}
                                             classNameDiv=""
-                                            // onChange={rememberChangeEmail}
                                             className={styles["RememberEmail"]}
                                           />
                                         </Col>

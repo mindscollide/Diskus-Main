@@ -1,10 +1,3 @@
-/* @media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 600px !important;
-    min-height: auto !important;
-  }
-} */
-
 .headertodoCreateModal {
   border-bottom: none;
   height: 20px;
@@ -111,8 +104,6 @@
 
 .footertodoCreateModal {
   margin: 10px 10px;
-  /* height : 5%; */
-  /* height : 80px !important; */
   min-height: 20% !important;
   max-height: 20% !important;
   display: block;
@@ -157,12 +148,6 @@ body[dir="rtl"] .footertodoCreateModal {
   border: none !important;
 }
 
-/* .todomodalcreatemodal {
-  width: 700px !important;
-} */
-/* .modal-content {
-  width: 700px !important;
-}  */
 .modaldialogTodoCreate {
   --bs-modal-margin: 0px !important;
 }

@@ -69,5 +69,3 @@ export { default as AddUserMain } from "../container/pages/UserMangement/AdminUs
 export { default as UserManagementProcess } from "../container/pages/UserManagementProcess/UserManagementProcess";
 export { default as SignupProcessUserManagement } from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement";
 export { default as PakageDetailsUMUpgrade } from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade";
-export { default as PaymentProcess } from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
-export { default as PaymentTest } from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";

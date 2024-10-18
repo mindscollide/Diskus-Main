@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./SignUpOrganizationUM.module.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { Spinner, Container, Row, Col, Form } from "react-bootstrap";
-import SignInComponent from "../../UserMangement/SignInUserManagement/SignInUserManagement";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/DiskusWhiteGroupIcon.svg";
 import { Button, TextField, Loader } from "../../../../components/elements";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
@@ -45,10 +44,7 @@ const SignUpOrganizationUM = () => {
   let packageSubscriptionDetail = JSON.parse(
     localStorage.getItem("packageSubscriptionDetail")
   );
-  console.log(
-    packageSubscriptionDetail,
-    "packageSubscriptionDetailpackageSubscriptionDetailpackageSubscriptionDetail"
-  );
+
   const [signUpDetails, setSignUpDetails] = useState({
     CompanyName: {
       value: "",
@@ -141,12 +137,10 @@ const SignUpOrganizationUM = () => {
   }, [location.state]);
 
   const countryOnSelect = (code) => {
-    console.log(code, "countryOnSelect");
     setSelect(code);
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
     });
-    console.log(a, "countryOnSelect");
     setSignUpDetails({
       ...signUpDetails,
       CountryName: {
@@ -886,7 +880,6 @@ const SignUpOrganizationUM = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.CompanyName.value || ""}
                         name="CompanyName"
-                        // applyClass=""
                         maxLength={150}
                       />
                       <Row>
@@ -967,19 +960,7 @@ const SignUpOrganizationUM = () => {
                       />
                     </Col>
                   </Row>
-                  {/* <Row className="mb-3">
-                    <Col sm={12} md={12} lg={12}>
-                      <TextField
-                        labelclass="d-none"
-                        placeholder={t("Address-2")}
-                        maxLength={100}
-                        change={signupValuesChangeHandler}
-                        name="Address2"
-                        value={signUpDetails.Address2.value || ""}
-                        applyClass="form-control2 MontserratMedium"
-                      />
-                    </Col>
-                  </Row> */}
+
                   <Row className="mb-3">
                     <Col sm={12} md={4} lg={4}>
                       <Row>
@@ -998,9 +979,7 @@ const SignUpOrganizationUM = () => {
                       />
                       <Row>
                         <Col>
-                          <p className={styles["errorMessage_hidden"]}>
-                            {/* {signUpDetails.State.errorMessage} */}
-                          </p>
+                          <p className={styles["errorMessage_hidden"]}></p>
                         </Col>
                       </Row>
                     </Col>
@@ -1019,9 +998,7 @@ const SignUpOrganizationUM = () => {
                       />
                       <Row>
                         <Col>
-                          <p className={styles["errorMessage_hidden"]}>
-                            {/* {signUpDetails.City.errorMessage} */}
-                          </p>
+                          <p className={styles["errorMessage_hidden"]}></p>
                         </Col>
                       </Row>
                     </Col>
@@ -1042,9 +1019,7 @@ const SignUpOrganizationUM = () => {
                       />
                       <Row>
                         <Col>
-                          <p className={styles["errorMessage_hidden"]}>
-                            {/* {signUpDetails.PostalCode.errorMessage} */}
-                          </p>
+                          <p className={styles["errorMessage_hidden"]}></p>
                         </Col>
                       </Row>
                     </Col>
@@ -1067,7 +1042,6 @@ const SignUpOrganizationUM = () => {
                         name="FullName"
                         change={signupValuesChangeHandler}
                         value={signUpDetails.FullName.value || ""}
-                        // applyClass="form-control2"
                         applyClass={
                           styles["SignUp_inputField MontserratMedium"]
                         }
@@ -1118,10 +1092,7 @@ const SignUpOrganizationUM = () => {
                                 (signUpDetails.Email.errorStatus &&
                                   signUpDetails.Email.value === "") ||
                                 signUpDetails.Email.errorMessage !== ""
-                                  ? // &&
-                                    //   signUpDetails.Email.errorMessage !==
-                                    //     t("User-email-doesnt-exists"))
-                                    ` ${styles["errorMessage"]} `
+                                  ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
                             >
@@ -1130,7 +1101,6 @@ const SignUpOrganizationUM = () => {
                           )}
                         </Col>
                       </Row>
-                      {/* <Spinner className={styles["checkEmailSpinner"]} /> */}
                     </Col>
                     <Col sm={12} md={1} lg={1} className="position-relative">
                       {adminReducer.EmailCheckSpinner ? (

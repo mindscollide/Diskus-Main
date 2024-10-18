@@ -11,12 +11,9 @@ const DefaultDragger = ({ index, setRows, rows }) => {
   //Uploader For Main Agendas File
   const props = {
     name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      const { status } = data.file;
-      console.log("Dropped files", data.file);
       let newRows = [...rows];
       let fileData = {
         name: data.file.originFileObj.name,
@@ -28,7 +25,7 @@ const DefaultDragger = ({ index, setRows, rows }) => {
     onDrop(e) {
       let list = e.dataTransfer.files;
       let newRows = [...rows];
-      list.map((fileDatas, fileindex) => {
+      list.map((fileDatas) => {
         let fileData = {
           name: fileDatas.file.originFileObj.name,
           FileID: getRandomUniqueNumber().toString(),
@@ -36,7 +33,6 @@ const DefaultDragger = ({ index, setRows, rows }) => {
         newRows[index].files.push(fileData);
       });
       setRows(newRows);
-      console.log("Dropped files", e.dataTransfer.files);
     },
     customRequest() {},
   };
@@ -56,6 +52,7 @@ const DefaultDragger = ({ index, setRows, rows }) => {
             >
               <img
                 draggable={false}
+                alt=""
                 src={DrapDropIcon}
                 width={100}
                 className={styles["ClassImage"]}

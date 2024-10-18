@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ModalViewToDo.css";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import { LoadingOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
@@ -15,16 +14,13 @@ import {
   Button,
   AttachmentViewer,
 } from "./../../components/elements";
-import userImage from "../../assets/images/user.png";
 import {
   newTimeFormaterAsPerUTCFullDate,
   RemoveTimeDashes,
 } from "./../../commen/functions/date_formater";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
-  clearState,
-  ViewToDoList,
   deleteCommentApi,
 } from "./../../store/actions/ToDoList_action";
 import { getRandomUniqueNumber } from "../pages/meeting/scedulemeeting/Agenda/drageFunction";
@@ -37,13 +33,10 @@ import {
 } from "../../store/actions/Post_AssigneeComments";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
-import {
-  fileFormatforSignatureFlow,
-  truncateText,
-} from "../../commen/functions/utils";
+import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
@@ -55,7 +48,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   let createrID = localStorage.getItem("userID");
   const state = useSelector((state) => state);
   const { toDoListReducer, postAssigneeComments } = state;
-  const [commentID, setCommentID] = useState(0);
   const { Comments } = postAssigneeComments;
 
   //To Display Modal
@@ -86,27 +78,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   let changeDateFormat = moment(currentDateTime).utc();
   let convertFormation = moment(changeDateFormat).format("YYYYMMDDHHmmss");
 
-  const year = currentDateTime.getFullYear();
-  const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0");
-  const day = currentDateTime.getDate().toString().padStart(2, "0");
-  const hour = currentDateTime.getHours().toString().padStart(2, "0");
-  const minute = currentDateTime.getMinutes().toString().padStart(2, "0");
-  const second = currentDateTime.getSeconds().toString().padStart(2, "0");
-
-  let getFullDateFormat = `${year}${month}${day}${hour}${minute}${second}`;
-  //Current Time
-  let currentTime =
-    date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-  currentTime = RemoveTimeDashes(currentTime);
-
-  const antIcon = (
-    <LoadingOutlined
-      style={{
-        fontSize: 20,
-      }}
-      spin
-    />
-  );
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
   const todoComments = useRef();
@@ -327,7 +298,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       dispatch(GetAllAssigneesToDoList(navigate, 1, t));
     } else {
       setViewFlagToDo(false);
-      // dispatch(clearState());
       setTask({
         ...task,
         PK_TID: 1,
@@ -338,7 +308,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         DeadLineTime: "",
         CreationDateTime: "",
       });
-      // setToDoTime("");
       setTaskAssignedTo([]);
       setTasksAttachments({ ["TasksAttachments"]: [] });
       setTaskAssignedName([]);
@@ -347,16 +316,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       setDeleteCommentsId([]);
     }
   }, [viewFlagToDo]);
-
-  // download file
-  const downloadClick = (e, record) => {
-    let data = {
-      OriginalFileName: record.OriginalAttachmentName,
-      DisplayFileName: record.DisplayAttachmentName,
-    };
-
-    dispatch(DownloadFile(navigate, data));
-  };
 
   const handleClickCommentSubmit = async (e, id) => {
     e.preventDefault();
@@ -405,7 +364,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       );
     }
   };
-  // useEffect(() => { }, [toDoListReducer.ToDoDetails]);
 
   useEffect(() => {
     if (
@@ -645,10 +603,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                           modalviewAttachmentFiles.DisplayAttachmentName.split(
                             "."
                           ).pop();
-                        const first =
-                          modalviewAttachmentFiles.DisplayAttachmentName.split(
-                            " "
-                          )[0];
 
                         const pdfData = {
                           taskId: modalviewAttachmentFiles.FK_TID,

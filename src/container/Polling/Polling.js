@@ -8,11 +8,11 @@ import {
   Notification,
   Paper,
 } from "../../components/elements";
-import { Pagination, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
-import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { ChevronDown } from "react-bootstrap-icons";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIcon from "../../assets/images/Edit-Icon.png";
 import BinIcon from "../../assets/images/bin.svg";
@@ -30,7 +30,6 @@ import { useDispatch, useSelector } from "react-redux";
 import PollsEmpty from "../../assets/images/Poll_emptyState.svg";
 import {
   LoaderState,
-  castVoteApi,
   deletePollsMQTT,
   getPollsByPollIdApi,
   globalFlag,
@@ -47,16 +46,10 @@ import {
 } from "../../store/actions/Polls_actions";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import {
-  _justShowDateformatBilling,
-  resolutionResultTable,
-} from "../../commen/functions/date_formater";
+import { _justShowDateformatBilling } from "../../commen/functions/date_formater";
 import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
-import {
-  regexOnlyCharacters,
-  regexOnlyForNumberNCharacters,
-} from "../../commen/functions/regex";
+import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 
@@ -95,7 +88,6 @@ const Polling = () => {
 
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
   const currentPageSize = localStorage.getItem("pollingPageSize");
-  console.log(pollPub, "pollPubpollPubpollPub");
   useEffect(() => {
     if (currentPage !== null && currentPageSize !== null) {
       let data = {
@@ -244,7 +236,6 @@ const Polling = () => {
     }
   }, [PollsReducer.pollingSocket]);
 
-  console.log({ rows }, "rowsrowsrowsrowsrows");
   useEffect(() => {
     try {
       if (PollsReducer.newPollDelete !== null) {
@@ -252,8 +243,7 @@ const Polling = () => {
 
         setRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
-            (newData2, index) =>
-              Number(newData2.pollID) !== Number(polls?.pollID)
+            (newData2) => Number(newData2.pollID) !== Number(polls?.pollID)
           );
         });
         dispatch(deletePollsMQTT(null));
@@ -318,8 +308,6 @@ const Polling = () => {
   const deletePollingModal = (record) => {
     setIdForDelete(record.pollID);
     dispatch(setDeltePollModal(true));
-
-    // setIdForDelete
   };
 
   const handleSearchEvent = () => {
@@ -328,12 +316,7 @@ const Polling = () => {
       ...pollsState,
       searchValue: searchBoxState.searchByTitle,
     });
-    // setSearchpoll(false);
-    // setsearchBoxState({
-    //   ...searchBoxState,
-    //   searchByName: "",
-    //   searchByTitle: "",
-    // });
+
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -395,7 +378,7 @@ const Polling = () => {
       ],
       defaultFilteredValue: ["Published", "UnPublished", "Expired"],
       filterResetToDefaultFilteredValue: true, // Use the actual status values here
-      filterIcon: (filtered) => (
+      filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
 
@@ -428,7 +411,7 @@ const Polling = () => {
           b.dueDate.slice(6, 8)
         ),
       sortDirections: ["ascend", "descend"],
-      render: (text, record) => {
+      render: (text) => {
         return _justShowDateformatBilling(text);
       },
     },
@@ -471,12 +454,7 @@ const Polling = () => {
               );
             } else if (record.voteStatus === "Voted") {
               return (
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  // className={styles["Background-nonvoted-Button"]}
-                >
+                <Col lg={12} md={12} sm={12}>
                   <span className={styles["votedBtn"]}>{t("Voted")}</span>
                 </Col>
               );
@@ -491,12 +469,7 @@ const Polling = () => {
             if (record.wasPollPublished) {
               if (record.voteStatus === "Not Voted") {
                 return (
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    // className={styles["Background-nonvoted-Button"]}
-                  >
+                  <Col lg={12} md={12} sm={12}>
                     <span className={styles["Not-voted"]}>
                       {t("Not-voted")}
                     </span>
@@ -504,12 +477,7 @@ const Polling = () => {
                 );
               } else {
                 return (
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    // className={styles["Background-nonvoted-Button"]}
-                  >
+                  <Col lg={12} md={12} sm={12}>
                     <span className={styles["votedBtn"]}>{t("Voted")}</span>
                   </Col>
                 );
@@ -624,7 +592,6 @@ const Polling = () => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "SearchVal") {
-      // let UpdateValue = regexOnlyForNumberNCharacters(value);
       if (value !== "") {
         setPollsState({
           ...pollsState,
@@ -641,42 +608,12 @@ const Polling = () => {
 
   const handleKeyDownSearch = (e) => {
     if (e.key === "Enter") {
-      // setPollsState({
-      //   ...pollsState,
-      //   searchValue: "",
-      // });
       setEnterpressed(true);
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
         CreatorName: "",
         PollTitle: pollsState.searchValue,
-        PageNumber: 1,
-        Length: 50,
-      };
-      dispatch(searchPollsApi(navigate, t, data));
-    }
-  };
-
-  const handleKeyDownSearchModal = (e) => {
-    if (e.key === "Enter" && searchBoxState.searchByTitle !== "") {
-      setSearchpoll(true);
-      setPollsState({
-        ...pollsState,
-        searchValue: searchBoxState.searchByTitle,
-      });
-      setSearchpoll(false);
-      setsearchBoxState({
-        ...searchBoxState,
-        searchByName: "",
-        searchByTitle: "",
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        PollTitle: searchBoxState.searchByTitle,
-        CreatorName: searchBoxState.searchByName,
-        Title: searchBoxState.searchByTitle,
         PageNumber: 1,
         Length: 50,
       };
@@ -798,12 +735,6 @@ const Polling = () => {
       Length: 50,
     };
     dispatch(searchPollsApi(navigate, t, data));
-    // setSearchpoll(false);
-    // setsearchBoxState({
-    //   ...searchBoxState,
-    //   searchByName: "",
-    //   searchByTitle: "",
-    // });
   };
 
   const handleResettingPage = () => {
@@ -937,7 +868,6 @@ const Polling = () => {
                             placeholder={t("Search-by-title")}
                             applyClass={"Search_Modal_Fields"}
                             labelclass="d-none"
-                            // onKeyDown={handleKeyDownSearchModal}
                             name={"searchbytitle"}
                             value={searchBoxState.searchByTitle}
                             change={HandleSearchboxNameTitle}
@@ -948,7 +878,6 @@ const Polling = () => {
                             placeholder={t("Search-by-name")}
                             applyClass={"Search_Modal_Fields"}
                             labelclass="d-none"
-                            // onKeyDown={handleKeyDownSearchModal}
                             name={"seachbyname"}
                             value={searchBoxState.searchByName}
                             change={HandleSearchboxNameTitle}

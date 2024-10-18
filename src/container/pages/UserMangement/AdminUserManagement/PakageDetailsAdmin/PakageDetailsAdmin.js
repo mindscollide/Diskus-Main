@@ -15,10 +15,7 @@ const PakageDetailsAdmin = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { UserMangementReducer } = useSelector((state) => state);
-  console.log(
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
-    "organizationSelectedPakagesByOrganizationIDData"
-  );
+
   // organizationSubscriptions
   const [packageDetails, setPackageDetails] = useState({
     PackageSubscriptionDate: "",
@@ -27,7 +24,6 @@ const PakageDetailsAdmin = () => {
   });
 
   // get organizationID from localStorage
-  const organizationID = localStorage.getItem("organizationID");
 
   const ColumnsPakageSelection = [
     {
@@ -106,7 +102,6 @@ const PakageDetailsAdmin = () => {
   const organizationPackages =
     UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
       ?.organizationSubscriptions;
-  console.log(organizationPackages, "organizationSelectedPackages");
 
   let Data = [];
 
@@ -168,7 +163,6 @@ const PakageDetailsAdmin = () => {
 
   const upgradeOnclickHandler = () => {
     if (UserMangementReducer.organizationSelectedPakagesByOrganizationIDData) {
-      console.log(UserMangementReducer.organizationSelectedPakagesByOrganizationIDData, "UserMangementReducerUserMangementReducer")
       const organizationSelectedVariable =
         UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
           (subscription) => subscription.organizationSelectedPackages
@@ -205,25 +199,7 @@ const PakageDetailsAdmin = () => {
         <Col xl={4} lg={4} md={4} sm={12} xs={12}>
           <Card className={styles["packagecard"]}>
             <Row className="mt-3">
-              <Col sm={12}>
-                {/* <span class="icon-star package-icon-style">
-                  <span
-                    class="path1"
-                    style={{ color: packageColorPath1 }}
-                  ></span>
-                  <span
-                    class="path2"
-                    style={{ color: packageColorPath2 }}
-                  ></span>
-                  <span
-                    class="path3"
-                    style={{ color: packageColorPath2 }}
-                  ></span>
-                </span>
-                <h3 className={styles["packageCard_title"]}>
-                  {isPackageDetail.PackageTitle}
-                </h3>{" "} */}
-              </Col>
+              <Col sm={12}></Col>
             </Row>
             <div className={styles["side-card-packagedetail"]}>
               <Row className="mt-5">

@@ -7,12 +7,10 @@ import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Table,
-  Loader,
   Notification,
 } from "../../../../../components/elements";
 import {
   clearAttendanceResponse,
-  clearAttendanceState,
   getAllAttendanceMeetingApi,
   saveMeetingAttendanceApi,
 } from "../../../../../store/actions/Attendance_Meeting";
@@ -57,18 +55,14 @@ const Attendence = ({
   const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
     (state) => state
   );
-  console.log(attendanceMeetingReducer, "attendanceMeetingReducer");
 
   let meetingID = Number(localStorage.getItem("meetingID"));
 
   const [attendenceRows, setAttendenceRows] = useState([]);
-  console.log(attendenceRows, "attendenceRowsattendenceRows");
 
   const ResponseMessage = useSelector(
     (state) => state.attendanceMeetingReducer.ResponseMessage
   );
-
-  console.log(ResponseMessage, "ResponseMessageResponseMessage");
 
   const [open, setOpen] = useState({
     open: false,
@@ -77,8 +71,6 @@ const Attendence = ({
   });
 
   const [cancelModalView, setCancelModalView] = useState(false);
-
-  console.log(meetingID, "meetingIDmeetingID");
 
   const enablePresent = (record, status) => {
     const updatedRows = attendenceRows.map((row) => {
@@ -279,20 +271,11 @@ const Attendence = ({
       attendanceMeetingReducer.attendanceMeetings !== undefined &&
       attendanceMeetingReducer.attendanceMeetings.length > 0
     ) {
-      console.log(
-        attendanceMeetingReducer.attendanceMeetings,
-        "setAttendenceRowssetAttendenceRows"
-      );
       setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
     } else {
       setAttendenceRows([]);
     }
   }, [attendanceMeetingReducer.attendanceMeetings]);
-
-  console.log(
-    attendanceMeetingReducer.attendanceMeetings,
-    "attendanceMeetingReducerattendanceMeetings"
-  );
 
   // dispatch Api in useEffect
   useEffect(() => {
@@ -363,20 +346,6 @@ const Attendence = ({
     }
   };
 
-  const navigatePrevHandler = () => {
-    let ReducerAttendeceData = deepEqual(
-      attendanceMeetingReducer.attendanceMeetings,
-      attendenceRows
-    );
-    if (ReducerAttendeceData) {
-      setPolls(true);
-      setAttendance(false);
-    } else {
-      dispatch(showAttendanceConfirmationModal(true));
-      setUseCase(1);
-    }
-  };
-
   const handleCancelBtn = () => {
     let ReducerAttendeceData = deepEqual(
       attendanceMeetingReducer.attendanceMeetings,
@@ -437,11 +406,7 @@ const Attendence = ({
             className={styles["Cancel_Meeting_Details"]}
             onClick={handleCancelBtn}
           />
-          {/* <Button
-            text={t("Previous")}
-            onClick={navigatePrevHandler}
-            className={styles["CloneMeetingStyles"]}
-          /> */}
+
           <Button
             text={t("Revert")}
             onClick={() => revertHandler()}

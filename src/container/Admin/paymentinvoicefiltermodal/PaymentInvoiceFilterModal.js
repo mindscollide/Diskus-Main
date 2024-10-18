@@ -1,11 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "./PaymentInvoiceFilterModal.css";
-import {
-  Modal,
-  TextField,
-  Button,
-  Checkbox,
-} from "./../../../components/elements";
+import { Modal, Button, Checkbox } from "./../../../components/elements";
 import "./../../../i18n";
 import { useTranslation } from "react-i18next";
 import { Row, Col, Container, Form } from "react-bootstrap";
@@ -13,7 +8,6 @@ import { Select } from "antd";
 
 const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
   const { t } = useTranslation();
-  let currentLanguage = localStorage.getItem("i18nextLng");
 
   //state for modals
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
@@ -64,14 +58,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
     }
   };
 
-  //close modal on update button it's created temperary to check modal
-  const closeOnUpdateBtn = () => {
-    setShow(false);
-    setDeleteConfirmModal(false);
-  };
-
   // open delete modal on search button
-
   const openDeleteModal = async () => {
     setDeleteConfirmModal(true);
     setShow(false);
@@ -158,14 +145,6 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                           placeholder="End Date"
                           value={paymentInvoiceSection.InvoiceEnd}
                         />
-
-                        {/* <TextField
-                      maxLength={200}
-                      applyClass="form-control2"
-                      name="Name"
-                      change={EditUserHandler}
-                      value={editUserSection.Name}
-                    /> */}
                       </Col>
                     </Row>
 

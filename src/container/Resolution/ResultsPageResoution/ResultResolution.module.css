@@ -70,39 +70,38 @@ body[dir="rtl"] .No_of_Votes {
   width: 282px !important;
   height: 125px !important;
   background-color: #fff !important;
-  border: 1px solid #DDB227;
-  color: #DDB227 !important;
+  border: 1px solid #ddb227;
+  color: #ddb227 !important;
   border-radius: 4px !important;
 }
 .approved_state {
   width: 282px !important;
   height: 125px !important;
   background-color: #fff !important;
-  border: 1px solid #6DE595;
+  border: 1px solid #6de595;
   border-radius: 4px !important;
-  color: #6DE595 !important;
+  color: #6de595 !important;
 }
 .notApproved_state {
   width: 282px !important;
   height: 125px !important;
   background-color: #fff !important;
-  border: 1px solid #F16B6B !important;
-  color: #F16B6B !important;
+  border: 1px solid #f16b6b !important;
+  color: #f16b6b !important;
   border-radius: 4px !important;
 }
 .Tie_state {
   width: 282px !important;
   height: 125px !important;
   background-color: #fff !important;
-  border: 1px solid #5A5A5A;
+  border: 1px solid #5a5a5a;
   border-radius: 4px !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
 }
 
 .status_vote_resolution {
   font-size: 30px !important;
   font-weight: 600;
-  /* color: #ddb227 !important; */
 }
 
 body[dir="rtl"] .status_vote_resolution {
@@ -123,7 +122,6 @@ body[dir="rtl"] .voters_heading_result {
   font-size: 12pt !important;
   font-weight: 600;
   color: #5a5a5a !important;
-  /* margin-top: 15px !important; */
 }
 
 .email_participant {

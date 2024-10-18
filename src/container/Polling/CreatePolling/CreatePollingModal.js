@@ -28,15 +28,9 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { registerLocale } from "react-datepicker";
 import moment from "moment";
-import {
-  DateFormatForPolls,
-  multiDatePickerDateChangIntoUTC,
-} from "../../../commen/functions/date_formater";
+import { multiDatePickerDateChangIntoUTC } from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import {
-  regexOnlyForNumberNCharacters,
-  validateInput,
-} from "../../../commen/functions/regex";
+import { validateInput } from "../../../commen/functions/regex";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const CreatePolling = () => {
@@ -52,7 +46,6 @@ const CreatePolling = () => {
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const [isCalendarOpen, setCalendarOpen] = useState(false);
   const { t } = useTranslation();
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -109,13 +102,6 @@ const CreatePolling = () => {
   };
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
-  const allValuesNotEmptyAcceptLastOne = options.every((item, index) => {
-    if (index === options.length - 1) {
-      return true; // Allow the last object's value to be empty
-    }
-    return item.value !== "";
-  });
-
   useEffect(() => {
     if (currentLanguage === "ar") {
       moment.locale(currentLanguage);
@@ -148,7 +134,7 @@ const CreatePolling = () => {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
         if (Object.keys(pollsData.groups).length > 0) {
-          pollsData.groups.map((a, index) => {
+          pollsData.groups.map((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -181,7 +167,7 @@ const CreatePolling = () => {
           });
         }
         if (Object.keys(pollsData.committees).length > 0) {
-          pollsData.committees.map((a, index) => {
+          pollsData.committees.map((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -215,11 +201,7 @@ const CreatePolling = () => {
           });
         }
         if (Object.keys(pollsData.organizationUsers).length > 0) {
-          console.log(
-            pollsData.organizationUsers,
-            "organizationUsersorganizationUsersorganizationUsers"
-          );
-          pollsData.organizationUsers.map((a, index) => {
+          pollsData.organizationUsers.map((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -234,7 +216,6 @@ const CreatePolling = () => {
                     >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        // src={}
                         alt=""
                         className={styles["UserProfilepic"]}
                         width="18px"
@@ -271,21 +252,17 @@ const CreatePolling = () => {
     let tem = [...members];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData, index) => {
-          console.log(
-            seledtedData,
-            "seledtedDataseledtedDataseledtedDataseledtedData"
-          );
+        selectedsearch.map((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
-              (data, index) => data.groupID === seledtedData.value
+              (data) => data.groupID === seledtedData.value
             );
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser, index) => {
+                groupUsers.map((gUser) => {
                   let check2 = members.find(
-                    (data, index) => data.UserID === gUser.userID
+                    (data) => data.UserID === gUser.userID
                   );
                   if (check2 !== undefined) {
                   } else {
@@ -301,14 +278,14 @@ const CreatePolling = () => {
             }
           } else if (seledtedData.type === 2) {
             let check1 = pollsData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value
+              (data) => data.committeeID === seledtedData.value
             );
             if (check1 != undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser, index) => {
+                committeesUsers.map((cUser) => {
                   let check2 = members.find(
-                    (data, index) => data.UserID === cUser.userID
+                    (data) => data.UserID === cUser.userID
                   );
                   if (check2 != undefined) {
                   } else {
@@ -324,12 +301,12 @@ const CreatePolling = () => {
             }
           } else if (seledtedData.type === 3) {
             let check1 = members.find(
-              (data, index) => data.UserID === seledtedData.value
+              (data) => data.UserID === seledtedData.value
             );
             if (check1 != undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value
               );
 
               if (check2 !== undefined) {
@@ -369,7 +346,7 @@ const CreatePolling = () => {
       date: DateDate,
     });
   };
-  console.log(createPollData, "createPollDatacreatePollData");
+
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
     return newDate;
@@ -430,7 +407,7 @@ const CreatePolling = () => {
     }
   };
 
-  const HandleChange = (e, index) => {
+  const HandleChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "TypingTitle") {
@@ -452,7 +429,6 @@ const CreatePolling = () => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-    // let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
         return item.name === name ? { ...item, value: newValue } : item;
@@ -519,7 +495,6 @@ const CreatePolling = () => {
           modalFooterClassName={"d-block"}
           onHide={() => {
             setDefineUnsaveModal(true);
-            // dispatch(setCreatePollModal(false));
           }}
           ModalTitle={
             <>
@@ -892,7 +867,7 @@ const CreatePolling = () => {
                           className={styles["Scroller_For_CreatePollModal2"]}
                         >
                           <Row>
-                            {members.map((data, index) => {
+                            {members.map((data) => {
                               return (
                                 <Col lg={6} md={6} sm={12} className="mt-2">
                                   <Row>

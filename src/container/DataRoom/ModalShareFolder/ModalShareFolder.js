@@ -99,13 +99,6 @@ const ModalShareFolder = ({
       label: SelectedOptions.label,
       value: SelectedOptions.value,
     });
-    // if (SelectedOptions.value === 1) {
-    //   setEditNotification(false);
-    //   setAccessupdate(true);
-    // } else if (SelectedOptions.value === 2) {
-    //   setEditNotification(true);
-    //   setAccessupdate(false);
-    // }
   };
 
   const NotificationForlinkCopied = () => {
@@ -116,7 +109,6 @@ const ModalShareFolder = ({
     };
 
     dispatch(createFolderLinkApi(navigate, t, Data, setLinkedcopied));
-    // setLinkedcopied(true);
   };
 
   const options = [
@@ -194,7 +186,6 @@ const ModalShareFolder = ({
   };
 
   const openAccessRequestModalClick = () => {
-    // if (folderData.Folders.length > 0) {
     let ShareFolderData = {
       FolderID: Number(folderId),
       Message: message,
@@ -202,17 +193,11 @@ const ModalShareFolder = ({
     };
 
     dispatch(shareFoldersApi(navigate, ShareFolderData, t, setSharefolder));
-    // } else {
-    //   setOpen({
-    //     flag: true,
-    //     message: t("Atleast-one-user-should-be-selected-to-share-the-folder"),
-    //   });
-    // }
   };
 
   const handleAddMember = () => {
     let findIndexData = folderData.Folders.findIndex(
-      (listData, index) => listData.FK_UserID === personValue.value
+      (listData) => listData.FK_UserID === personValue.value
     );
     if (permissionID.value !== 0) {
       if (personValue.value !== 0) {
@@ -267,10 +252,10 @@ const ModalShareFolder = ({
 
   const handleRemoveMember = (memberData) => {
     let findIndexfromsendData = folderData.Folders.findIndex(
-      (data, index) => data.FK_UserID === memberData.pK_UID
+      (data) => data.FK_UserID === memberData.pK_UID
     );
     let findIndexfromViewData = isMembers.findIndex(
-      (data, index) => data.pK_UID === memberData.pK_UID
+      (data) => data.pK_UID === memberData.pK_UID
     );
     folderData.Folders.splice(findIndexfromsendData, 1);
     isMembers.splice(findIndexfromViewData, 1);
@@ -295,76 +280,6 @@ const ModalShareFolder = ({
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
           size={showaccessrequest ? "md" : inviteedit === true ? "md" : "lg"}
-          // ModalTitle={
-          //   <>
-          //     {/* <MultiDatePicker
-          //               // onChange={meetingDateHandler}
-          //               name="MeetingDate"
-          //               value={meetingDate}
-          //               calendar={calendarValue}
-          //               locale={localValue}
-          //               // newValue={createMeeting.MeetingDate}
-          //             /> */}
-          //     <Row>
-          //       <Col
-          //         lg={12}
-          //         md={12}
-          //         sm={12}
-          //         className={styles["Expiration_header_background"]}
-          //       >
-          //         <Row>
-          //           <Col
-          //             lg={12}
-          //             md={12}
-          //             sm={12}
-          //             className="d-flex justify-content-center align-items-center gap-3"
-          //           >
-          //             <img
-          //               draggable="false"
-          //               src={clock}
-          //               height="14.66px"
-          //               width="14.97px"
-          //               alt=""
-          //               onClick={handleIconClick}
-          //             />
-          //             <span className={styles["Text_for_header_expiration"]}>
-          //               {`${t("Access-expires-on")} ${AccessExpireDate}`}
-          //               {/* {t("Access-expires-on")} */}
-          //               {/* {} */}
-          //             </span>
-          //             <DatePicker
-          //               format={"DD/MM/YYYY"}
-          //               minDate={moment().toDate()}
-          //               placeholder="DD/MM/YYYY"
-          //               render={<CustomIcon />}
-          //               calendarPosition="bottom-right"
-          //               editable={true}
-          //               className="datePickerTodoCreate2"
-          //               onOpenPickNewDate={false}
-          //               highlightToday={false}
-          //               inputMode=""
-          //               showOtherDays
-          //               calendar={calendarValue}
-          //               locale={localValue}
-          //               ref={datePickerRef}
-          //               onClick={handleIconClick}
-          //               onChange={(value) =>
-          //                 AccessExpireDateChangeHandler(value)
-          //               }
-          //             />
-          //             <img
-          //               draggable="false"
-          //               src={DeleteiCon}
-          //               width="9.47px"
-          //               alt=""
-          //               height="11.75px"
-          //             />
-          //           </Col>
-          //         </Row>
-          //       </Col>
-          //     </Row>
-          //   </>
-          // }
           ModalBody={
             <>
               {inviteedit ? (
@@ -488,18 +403,6 @@ const ModalShareFolder = ({
                         options={getAllAssignees}
                         onChange={onChangeSearch}
                       />
-                      {/* <InputSearchFilter
-                        labelclass='d-none'
-                        flag={flag}
-                        applyClass='sharefoldersearchInput'
-                        placeholder={t("Search-member-here")}
-                        value={taskAssignedToInput}
-                        filteredDataHandler={searchFilterHandler(
-                          taskAssignedToInput
-                        )}
-                        change={onChangeSearch}
-                        onclickFlag={onclickFlag}
-                      /> */}
                     </Col>
                     <Col lg={3} md={3} sm={3}>
                       <Select
@@ -518,26 +421,8 @@ const ModalShareFolder = ({
                             : "shareFolderEditor_Selector"
                         }
                       />
-                      {/* )} */}
                     </Col>
-                    {/* <Col lg={3} md={3} sm={3}>
-                      <Select
-                        value={{
-                          label: generalAccess.label,
-                          value: generalAccess.value,
-                        }}
-                        isSearchable={false}
-                        options={optionsgeneralAccess}
-                        placeholder={t("General-access")}
-                        className={styles["Editor_select"]}
-                        classNamePrefix={
-                          generalAccess.value === 0
-                            ? "shareFolderEditor_Selector_empty"
-                            : "shareFolderEditor_Selector"
-                        }
-                        onChange={handleChangeGeneralAccess}
-                      />
-                    </Col> */}
+
                     <Col lg={2} md={2} sm={2}>
                       <Button
                         text="Add"
@@ -594,20 +479,6 @@ const ModalShareFolder = ({
                               );
                             })
                           : null}
-
-                        {/* <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img draggable="false"
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col> */}
                       </Row>
                     </Col>
                   </Row>

@@ -62,7 +62,6 @@ import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 import VerificationFailedIcon from "../../assets/images/failed.png";
 import { GetPendingApprovalsCount } from "../../store/actions/Minutes_action";
-// import io from "socket.io-client";
 import {
   createTaskCommitteeMQTT,
   createTaskGroupMQTT,
@@ -271,8 +270,6 @@ const Dashboard = () => {
     console.log(data, " MQTT onMessageArrived");
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
-        // if (data.action && data.payload ) {
-
         if (data.action && data.payload) {
           try {
             if (
@@ -374,10 +371,7 @@ const Dashboard = () => {
                 };
                 dispatch(LeaveMeetingVideo(Data, navigate, t));
               }
-              // let Data2 = {
-              //   UserID: Number(createrID),
-              // };
-              // dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
+
               dispatch(mqttCurrentMeetingEnded(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
@@ -545,20 +539,6 @@ const Dashboard = () => {
               data.payload.message?.toLowerCase() ===
               "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
             ) {
-              // if (data.viewable) {
-              //   setNotification({
-              //     ...notification,
-              //     notificationShow: true,
-              //     message: changeMQTTJSONOne(
-              //       t("NEW_MEETING_CREATION"),
-              //       "[Place holder]",
-              //       data.payload.meetingTitle.substring(0, 100)
-              //     ),
-              //   });
-              // setNotificationID(id);
-
-              // }
-
               dispatch(meetingAgendaContributorAdded(data.payload));
             } else if (
               data.payload.message
@@ -673,15 +653,6 @@ const Dashboard = () => {
               dispatch(meetingParticipantRemoved(data.payload));
 
               if (data.viewable) {
-                // setNotification({
-                //   ...notification,
-                //   notificationShow: true,
-                //   message: changeMQTTJSONOne(
-                //     t("MeetingReminderNotification"),
-                //     "[Meeting Title]",
-                //     data.payload.meetingTitle.substring(0, 100)
-                //   ),
-                // });
                 setNotificationID(id);
               }
             } else if (
@@ -1491,7 +1462,6 @@ const Dashboard = () => {
           "UNREAD_MESSAGES_COUNT".toLowerCase()
         ) {
           dispatch(mqttUnreadMessageCount(data.payload));
-          // setNotificationID(id)
         } else if (
           data.payload.message.toLowerCase() ===
           "NEW_BROADCAST_MESSAGE".toLowerCase()
@@ -1679,25 +1649,6 @@ const Dashboard = () => {
             });
           }
         }
-        // else if (
-        //   data.payload.message.toLowerCase() ===
-        //   "PUBLISHED_POLL_DELETED".toLowerCase()
-        // ) {
-        //   dispatch(deletePollsMQTT(data.payload));
-        //   setNotificationID(id);
-
-        //   if (data.viewable) {
-        //     setNotification({
-        //       ...notification,
-        //       notificationShow: true,
-        //       message: changeMQTTJSONOne(
-        //         t("PUBLISHED_POLL_DELETED"),
-        //         "[Poll Title]",
-        //         data.payload.pollTitle
-        //       ),
-        //     });
-        //   }
-        // }
       }
       if (data.action.toLowerCase() === "Resolution".toLowerCase()) {
         if (
@@ -1907,8 +1858,6 @@ const Dashboard = () => {
           let callTypeID = Number(localStorage.getItem("callTypeID"));
           if (Number(data.senderID) !== Number(createrID)) {
             if (callTypeID === 1) {
-              // dispatch(videoOutgoingCallFlag(false))
-              // dispatch(normalizeVideoPanelFlag(false))
             }
             if (Number(createrID) !== data.payload.recepientID) {
               localStorage.setItem("unansweredFlag", true);
@@ -2095,14 +2044,6 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
               localStorage.setItem("activeCall", false);
             }
-            // localStorage.setItem('newCallerID', callerID)
-            // localStorage.setItem('initiateVideoCall', false)
-            // setNotification({
-            //   ...notification,
-            //   notificationShow: true,
-            //   message: `Call has been disconnected by ${data.payload.callerName}`,
-            // })
-            // setNotificationID(id)
           }
           dispatch(leaveCallModal(false));
         } else if (
@@ -2110,9 +2051,7 @@ const Dashboard = () => {
           "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()
         ) {
           let callerID = Number(localStorage.getItem("callerID"));
-          // if (callerID === newCallerID) {
-          //   localStorage.setItem('activeCall', false)
-          // }
+
           localStorage.setItem("newCallerID", callerID);
           localStorage.setItem("initiateVideoCall", false);
 

@@ -1,12 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./ModalMeeting.css";
 import {
   TextField,
   Button,
   Checkbox,
-  Paper,
   CustomOnboardModal,
-  uploadButton,
   TimePickers,
   EmployeeCard,
   InputSearchFilter,
@@ -14,15 +12,12 @@ import {
   SelectBox,
 } from "../../../../components/elements";
 
-import {
-  RemoveTimeDashes,
-  TimeHHMMFormat,
-} from "../../../../commen/functions/date_formater";
+import { TimeHHMMFormat } from "../../../../commen/functions/date_formater";
 import moment from "moment";
 import CustomUpload from "../../../../components/elements/upload/Upload";
 import FileIcon, { defaultStyles } from "react-file-icon";
-import { Row, Col, Container, CardImg } from "react-bootstrap";
-import { CameraVideo, FilePdf } from "react-bootstrap-icons";
+import { Row, Col, Container } from "react-bootstrap";
+import { CameraVideo } from "react-bootstrap-icons";
 import { useTour } from "@reactour/tour";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -39,14 +34,6 @@ const ModalMeeting = ({ ModalTitle }) => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { OnBoardModal } = state;
-  const [detailValue, setDetailValue] = useState({
-    locationValue: "",
-    meetingTitle: "",
-    descriptionValue: "",
-  });
-  console.log("show in modal meeting", OnBoardModal.show);
-  const [agendaValue, setAgendaValue] = useState({});
-  const [attendees, setAttendeesValue] = useState({});
   const { setCurrentStep } = useTour();
   const [checked, setChecked] = useState(true);
 
@@ -74,13 +61,6 @@ const ModalMeeting = ({ ModalTitle }) => {
     console.log("3 Buton");
   };
 
-  const navigateToAgenda = () => {
-    dispatch(showIsDetailOnboard(false));
-    dispatch(showIsAttendeesOnboard(false));
-    dispatch(showIsAgendaOnboard(true));
-    console.log("agayaagenda");
-  };
-
   const navigateToAttendees = () => {
     dispatch(showIsDetailOnboard(false));
     dispatch(showIsAgendaOnboard(false));
@@ -100,11 +80,8 @@ const ModalMeeting = ({ ModalTitle }) => {
         <CustomOnboardModal
           show={OnBoardModal.show}
           datatut={"meeting-modal"}
-          // setShow={setShow}
           size="md"
-          // className="modaldialog"
           ButtonTitle={ModalTitle}
-          // ModalTitle={"Modal Header"}
           ModalBody={
             <>
               <Row className="onboard-details-btn">
@@ -115,10 +92,8 @@ const ModalMeeting = ({ ModalTitle }) => {
                         ? "btn btn-primary modal-isDetail-upperBtn"
                         : "btn btn-outline-primary modal-isDetail-upperBtn"
                     }
-                    // variant={"Primary"}
                     text={t("Details")}
                     onClick={changeSelectDetails}
-                    // disableBtn={true}
                   />
                 </Col>
                 <Col lg={2} md={2} xs={6}>
@@ -178,7 +153,6 @@ const ModalMeeting = ({ ModalTitle }) => {
                         disable
                       />
                     </Col>
-                    {/* <Col lg={3} md={3} xs={12}></Col> */}
                   </Row>
 
                   <Row>
@@ -186,7 +160,6 @@ const ModalMeeting = ({ ModalTitle }) => {
                       <Button
                         text={<CameraVideo />}
                         name="IsVideoCall"
-                        // disableBtn={true}
                         className="onboard_detail_camera"
                       />
                     </Col>
@@ -197,15 +170,9 @@ const ModalMeeting = ({ ModalTitle }) => {
                         type="text"
                         value={t("Islamabad")}
                         disable
-                        // placeholder={"Location *"}
                       />
                     </Col>
-                    {/* <Col
-                      lg={1}
-                      md={1}
-                      xs={12}
-                      className="CreateMeetingInput"
-                    ></Col> */}
+
                     <Col lg={4} md={4} xs={12} className="UpdateCheckbox mt-2">
                       <Checkbox
                         className="SearchCheckbox"
@@ -213,7 +180,6 @@ const ModalMeeting = ({ ModalTitle }) => {
                         label={t("Group-chat")}
                         checked={checked}
                         classNameDiv="checkboxParentClass"
-                        // disabled={true}
                       ></Checkbox>
                     </Col>
                   </Row>
@@ -225,7 +191,6 @@ const ModalMeeting = ({ ModalTitle }) => {
                         applyClass={"form-control2"}
                         type="text"
                         size="small"
-                        // placeholder={"Meeting Title *"}
                         value={t("On-board-discussion")}
                         disable
                       />
@@ -245,7 +210,6 @@ const ModalMeeting = ({ ModalTitle }) => {
                         type="text"
                         as={"textarea"}
                         rows="5"
-                        // placeholder={"Description *"}
                         value={t(
                           "This-meeting-is-create-for-important-discussion-regarding-diskus"
                         )}
@@ -261,13 +225,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       xs={12}
                       className="d-flex justify-content-end"
                     >
-                      <Button
-                        // onClick={navigateToAgenda}
-                        className={"next-btn"}
-                        // variant={"Primary"}
-                        text={t("Next")}
-                        // disableBtn={true}
-                      />
+                      <Button className={"next-btn"} text={t("Next")} />
                     </Col>
                   </Row>
                 </>
@@ -329,10 +287,6 @@ const ModalMeeting = ({ ModalTitle }) => {
                         <label>Attachment</label>
                         <span className="custom-upload-input">
                           <CustomUpload
-                            // change={uploadFilesAgenda}
-                            // onClick={(event) => {
-                            //   event.target.value = null;
-                            // }}
                             className="UploadFileButton"
                             disable={true}
                           />
@@ -354,7 +308,6 @@ const ModalMeeting = ({ ModalTitle }) => {
                   <Row className="mt-5">
                     <Col lg={6} md={6} xs={6} className="onboard_addAgenda">
                       <Button
-                        // onClick={addAnOtherAgenda}
                         className={"btn btn-primary addAgenda"}
                         text=" + Add Agenda"
                         disableBtn={true}
@@ -369,7 +322,6 @@ const ModalMeeting = ({ ModalTitle }) => {
                       <Button
                         onClick={navigateToAttendees}
                         className={"btn btn-primary meeting next"}
-                        // variant={"Primary"}
                         text="Next"
                         disableBtn={true}
                       />
@@ -471,10 +423,6 @@ const ModalMeeting = ({ ModalTitle }) => {
                         text={t("Finir")}
                         onClick={finishTOurButton}
                         disableBtn={true}
-                        // onClick={() => {
-                        //   setShow(false);
-                        //   dispatch(ScheduleNewMeeting(createMeeting));
-                        // }}
                       />
                     </Col>
                   </Row>

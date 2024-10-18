@@ -1,55 +1,52 @@
 import React, { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import './SelectDropdownforObjectCC.css'
+import "./SelectDropdownforObjectCC.css";
 function SelectOptionForCC({ options, setstatevalues, statevalues, name }) {
-    console.log("optionsoptionsoptionsCC", options)
+  console.log("optionsoptionsoptionsCC", options);
 
-    const [selectState, setSelectState] = React.useState();
+  const [selectState, setSelectState] = React.useState();
 
-    useEffect(() => {
-        console.log(selectState);
-    }, [selectState]);
+  useEffect(() => {
+    console.log(selectState);
+  }, [selectState]);
 
-    const handleChange = (event) => {
-        setSelectState(event.target.value);
-        let newdata = event.target.value
+  const handleChange = (event) => {
+    setSelectState(event.target.value);
+    let newdata = event.target.value;
 
-        var obj = JSON.parse(newdata)
-        console.log("getUserGeneralSettingData in", obj.id)
-        setstatevalues({ ...statevalues, [name]: obj.id })
-    };
+    var obj = JSON.parse(newdata);
+    console.log("getUserGeneralSettingData in", obj.id);
+    setstatevalues({ ...statevalues, [name]: obj.id });
+  };
 
-    return (
-        <div>
-            <TextField
-                id="outlined-select"
-                select
-                required
-                // label="Select"
-                variant="outlined"
-                onChange={handleChange}
-
-                InputLabelProps={{
-                    shrink: true
-                }}
-                value={selectState || ""}
-                defaultValue={""}
-            >
-                {options?.map((d, index) => (
-                    <MenuItem
-                        key={d.id}
-                        value={JSON.stringify({
-                            id: d.pK_CCID,
-                            // percentage: d.percentage,
-                            name: d.code
-                        })}
-                    >
-                        {d.code}
-                    </MenuItem>
-                ))}
-            </TextField>
-        </div>
-    );
+  return (
+    <div>
+      <TextField
+        id="outlined-select"
+        select
+        required
+        variant="outlined"
+        onChange={handleChange}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        value={selectState || ""}
+        defaultValue={""}
+      >
+        {options?.map((d, index) => (
+          <MenuItem
+            key={d.id}
+            value={JSON.stringify({
+              id: d.pK_CCID,
+              name: d.code,
+            })}
+          >
+            {d.code}
+          </MenuItem>
+        ))}
+      </TextField>
+    </div>
+  );
 }
-export default SelectOptionForCC
+export default SelectOptionForCC;

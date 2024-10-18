@@ -20,11 +20,6 @@ const Accordian = ({
           <Accordion.Header>{AccordioonHeader}</Accordion.Header>
           <Accordion.Body>{AccordioonBody}</Accordion.Body>
         </Accordion.Item>
-
-        {/* <Accordion.Item eventKey="1">
-          <Accordion.Header>{AccordioonHeader}</Accordion.Header>
-          <Accordion.Body>{AccordioonBody}</Accordion.Body>
-        </Accordion.Item> */}
       </Accordion>
     </>
   );

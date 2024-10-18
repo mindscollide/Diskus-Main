@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Form, ProgressBar } from "react-bootstrap";
 import styles from "./CancelSub.module.css";
-import SilverPackage from "./../../../../assets/images/Silver-Package.png";
-import GoldPackage from "./../../../../assets/images/Gold-Package.png";
-import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
-import PackageCard from "../../../../components/elements/packageselection/PackageCards";
 import "./../../../../i18n";
 import { Loader, Modal, Notification } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Button, WarningMessageBox } from "../../../../components/elements";
-import UpgradePackageDetail from "../../../../components/elements/upgradePackageDetail/UpgradePackageDetail";
-import { json, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getSubscribeOrganizationPackage } from "../../../../store/actions/Admin_PackageDetail";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,7 +13,6 @@ import {
   CancelSubscriptionPackage,
   revokeprocess,
 } from "../../../../store/actions/Admin_CancelSub";
-import moment from "moment";
 import DismissWarningAlert from "../../../../components/elements/DismissWarningAlert/DismissWarningAlert";
 import { cleareMessageSubsPac } from "../../../../store/actions/GetSubscriptionPackages";
 import { _justShowDateformat } from "../../../../commen/functions/date_formater";
@@ -374,7 +368,6 @@ const CancelSubs = () => {
                 <Col sm={12} md={12} lg={12}>
                   <Button
                     text={t("Revoke-cancellation")}
-                    // onClick={handleClickCancelNowBtn}
                     className={styles["CancelNowBtn"]}
                     onClick={handleChangeForRevoke}
                   />
@@ -535,9 +528,7 @@ const CancelSubs = () => {
                       {maxOtherUsers} {t("Other-users")}
                     </Col>
                   </Row>
-                  <Col sm={12} md={12} lg={12}>
-                    {/* <span className={styles["lineBar_cancelSub"]}></span> */}
-                  </Col>
+                  <Col sm={12} md={12} lg={12}></Col>
                   <span className={styles["lineBar"]}></span>
                 </Col>
 

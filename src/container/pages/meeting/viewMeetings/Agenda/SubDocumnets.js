@@ -1,7 +1,6 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
-import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 
 import {
@@ -67,6 +66,7 @@ const SubDocumnets = ({
                                     >
                                       <img
                                         draggable={false}
+                                        alt=""
                                         src={getIconSource(
                                           getFileExtension(subAgendaFiles.name)
                                         )}
@@ -82,6 +82,7 @@ const SubDocumnets = ({
                                     <Col lg={2} md={2} sm={2}>
                                       <img
                                         src={redcrossIcon}
+                                        alt=""
                                         height="19px"
                                         width="19px"
                                         className="cursor-pointer"

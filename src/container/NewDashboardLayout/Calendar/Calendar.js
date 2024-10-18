@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./Calendar.module.css";
 import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -71,7 +70,7 @@ const NewCalendar = () => {
   useEffect(() => {
     if (Object.keys(calenderData).length > 0) {
       let temp = [];
-      calenderData.map((cal, index) => {
+      calenderData.map((cal) => {
         let formattedDate = forHomeCalendar(cal.meetingDate);
         let d = new DateObject(formattedDate);
 
@@ -170,11 +169,6 @@ const NewCalendar = () => {
         Data.map((cData, index) => {
           if (flag) {
             if (cData.pK_MDID === meetingID) {
-              console.log(
-                "Delete MeetingMeetingMeetingMeeting",
-                cData,
-                meetingID
-              );
               return;
             } else {
               let date = moment(
@@ -210,7 +204,7 @@ const NewCalendar = () => {
     }
   }, [lang]);
 
-  const handleClickonDate = (dateObject, dateSelect) => {
+  const handleClickonDate = (dateSelect) => {
     let selectDate = dateSelect.toString().split("/").join("");
     if (calendarEvents.length > 0) {
       const findData = calendarEvents.filter(
@@ -350,7 +344,7 @@ const NewCalendar = () => {
             )
           );
         let findPartcipantRoleID = meetingData.meetingAttendees.find(
-          (attendeeData, index) => {
+          (attendeeData) => {
             if (attendeeData.user.pK_UID === parseInt(userID)) {
               return attendeeData.meetingAttendeeRole.pK_MARID;
             }
@@ -406,7 +400,7 @@ const NewCalendar = () => {
         );
         // Its Check if the event calendar modal is open and also a for a  same date  modal
         if (eventModal) {
-          events.find((newData, index) => {
+          events.find((newData) => {
             if (newData.eventDate === dashboardData.eventDate) {
               setEvents([...events, dashboardData]);
             }
@@ -416,8 +410,6 @@ const NewCalendar = () => {
         if (isExistAlready === -1) {
           setCalendarEvents([...calendarEvents, dashboardData]);
           setDates((prev) => [...prev, formattedDate]);
-
-          // setUpComingEvents((prev) => [...prev, meetingData]);
         } else {
           setCalendarEvents((calendarEventData) => {
             return calendarEventData.map((data) => {
@@ -480,9 +472,6 @@ const NewCalendar = () => {
       }
 
       dispatch(getMeetingStatusfromSocket(null));
-      // if (meetingStatusID === 4) {
-      //   updateCalendarData(true, meetingID);
-      // }
     }
   }, [meetingIdReducer.MeetingStatusSocket]);
 
@@ -510,7 +499,6 @@ const NewCalendar = () => {
             className="custom-multi-date-picker"
             onMonthChange={handleMonthChange}
             currentDate={currentDateObject}
-            // format="YYYY-MM-DD"
           />
         </>
       )}

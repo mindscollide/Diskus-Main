@@ -3,7 +3,6 @@ import styles from "./UpgradePackageDetail.module.css";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "./../../../i18n";
 import { useTranslation } from "react-i18next";
-
 import Button from "../../elements/button/Button";
 import { useLocation } from "react-router-dom";
 const UpgradePackageDetail = () => {

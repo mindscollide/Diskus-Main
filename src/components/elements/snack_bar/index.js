@@ -23,10 +23,11 @@ const Notification = React.memo(
         // classNamse={severity === "success"? "success_snackbar": "error_snackbar"}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         autoHideDuration={6000}
-        onClose={handleClose}>
+        onClose={handleClose}
+      >
         <MuiAlert
           elevation={6}
-          action={<XLg fontSize={18}/>}
+          action={<XLg fontSize={18} />}
           icon={
             severity === "success" ? <CheckCircle /> : <ExclamationDiamond />
           }
@@ -35,18 +36,10 @@ const Notification = React.memo(
             width: "100%",
             backgroundColor: severity === "success" ? "#6172d6" : "#ce0000",
           }} // Customize background colors
-          variant='filled'>
+          variant="filled"
+        >
           {message}
         </MuiAlert>
-
-        {/* <Alert 
-        onClose={handleClose} 
-        c
-        severity={severity} // Use dynamic severity
-        
-      >
-        {message}
-      </Alert> */}
       </Snackbar>
     );
   }

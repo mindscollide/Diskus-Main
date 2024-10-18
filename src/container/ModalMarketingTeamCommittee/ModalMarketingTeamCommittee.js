@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalMarketingTeamCommittee.module.css";
-import userImage from "../../assets/images/user.png";
 import {
   Button,
   InputSearchFilter,
   Modal,
   Notification,
 } from "../../components/elements";
-import { style } from "@mui/system";
 import Crossicon from "../../assets/images/CrossIcon.svg";
 import { useTranslation } from "react-i18next";
 import { getAllGroups } from "../../store/actions/Groups_actions";
@@ -24,8 +22,8 @@ const ModalMarketingTeamCommittee = ({
   committeeID,
   mapgroupsData,
 }) => {
+  const { t } = useTranslation();
   const { GroupsReducer } = useSelector((state) => state);
-  console.log("GroupsReducerGroupsReducer", GroupsReducer);
   const [Groups, setGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
   const [committeeData, setCommitteeData] = useState(null);
@@ -39,8 +37,6 @@ const ModalMarketingTeamCommittee = ({
     message: "",
     severity: "error",
   });
-  const { t } = useTranslation();
-  console.log(groupData, data, "dasdasdasdasdasd");
 
   useEffect(() => {
     if (mapgroupsData !== null && mapgroupsData !== undefined) {
@@ -102,9 +98,7 @@ const ModalMarketingTeamCommittee = ({
   };
 
   const handleAdd = () => {
-    let findIndexGroupID = data.findIndex(
-      (data, index) => data.GroupID === groupID
-    );
+    let findIndexGroupID = data.findIndex((data) => data.GroupID === groupID);
     if (groupID !== 0 && committeeID !== 0) {
       if (findIndexGroupID !== -1) {
         showMessage(t("This-group-already-exist-is-list"), "error", setOpen);
@@ -131,9 +125,8 @@ const ModalMarketingTeamCommittee = ({
 
   const removeHandler = (id) => {
     let newDatafindDex = committeeData[0].listOfGroups.find(
-      (data, index) => data.groupID === id
+      (data) => data.groupID === id
     );
-    console.log(newDatafindDex, "newDatafindDexnewDatafindDex");
     let newGroupData = groupData.filter((data, index) => data.GroupID !== id);
     if (newDatafindDex !== undefined) {
       let newData2 = data.map((items, index) => {
@@ -155,10 +148,8 @@ const ModalMarketingTeamCommittee = ({
     }
     setGroupData(newGroupData);
   };
-  console.log(data, "newGroupDatanewGroupData");
-  console.log(groupData, "newGroupDatanewGroupData");
+
   useEffect(() => {
-    console.log(committeeData, "committeeDatacommitteeData");
     if (committeeData !== null && committeeData !== undefined) {
       if (committeeData[0].listOfGroups.length > 0) {
         console.log("Test");
@@ -189,7 +180,6 @@ const ModalMarketingTeamCommittee = ({
         committeeGroupMapping: data,
       };
       dispatch(assignGroups(navigate, Data, t, setMarketingTeam));
-      console.log("DataData", Data);
     } else {
     }
   };
@@ -201,7 +191,7 @@ const ModalMarketingTeamCommittee = ({
   useEffect(() => {
     if (GroupsReducer.getAllGroups !== null) {
       let newArr = [];
-      GroupsReducer.getAllGroups.map((data, index) => {
+      GroupsReducer.getAllGroups.map((data) => {
         newArr.push({
           GroupID: data.pK_GRID,
           GroupTitle: data.title,
@@ -261,7 +251,7 @@ const ModalMarketingTeamCommittee = ({
                   </Row>
                   <section className={styles["mapping_groups_scroll"]}>
                     {groupData.length > 0
-                      ? groupData.map((data, index) => {
+                      ? groupData.map((data) => {
                           return (
                             <Row>
                               <Col
@@ -276,6 +266,7 @@ const ModalMarketingTeamCommittee = ({
                                       <img
                                         draggable="false"
                                         src={Group_Icon}
+                                        alt=""
                                         width={30}
                                         height={30}
                                       />
@@ -295,6 +286,7 @@ const ModalMarketingTeamCommittee = ({
                                     <img
                                       draggable="false"
                                       src={Crossicon}
+                                      alt=""
                                       onClick={() =>
                                         removeHandler(data.GroupID)
                                       }

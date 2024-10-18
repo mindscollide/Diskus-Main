@@ -36,8 +36,6 @@ body[dir="rtl"] .Next_button_EmailVerifyVerificationIphone {
   border-radius: 4px;
   height: 469px !important;
   width: 330px !important;
-  /* height: 686px !important; */
-  /* width: 480px !important; */
 }
 
 .forogt_email_link {
@@ -112,7 +110,6 @@ body[dir="rtl"] .verificationIphoneLabels_active {
   right: 150px;
   padding: 8px 40px !important;
   z-index: 9999;
-  /* background-color: #fff !important; */
   border-color: rgb(64, 64, 64) !important;
   box-shadow: none !important;
 }

@@ -84,7 +84,6 @@ const ModalShareFile = ({
   const options = [
     { value: 1, label: t("Viewer") },
     { value: 2, label: t("Editor") },
-    // { value: 3, label: t("Add-expiration") },
   ];
 
   const optionsgeneralAccess = [

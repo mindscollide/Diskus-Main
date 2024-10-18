@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import Newprofile from "../../../assets/images/newprofile.png";
-import userImage from "../../../assets/images/user.png";
 import { Paper } from "@mui/material";
 import {
   TextField,
   Button,
   Checkbox,
   SelectBox,
-  InputSearchFilter,
   Notification,
   AttachmentViewer,
 } from "./../../../components/elements";
@@ -17,10 +14,6 @@ import styles from "./UpdateCommittee.module.css";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import featherupload from "../../../assets/images/featherupload.svg";
-import Leftploygon from "../../../assets/images/Polygon 3.svg";
-import file_image from "../../../assets/images/file_image.svg";
-import pdfIcon from "../../../assets/images/pdf_icon.svg";
-import Rightploygon from "../../../assets/images/Polygon right.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import Select from "react-select";
 import {
@@ -116,78 +109,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       isTalkGroup: e.target.checked,
     });
   };
-  //Drop Down Values
-  // const searchFilterHandler = (value) => {
-  //   let allAssignees = assignees.user;
-  //   if (
-  //     allAssignees != undefined &&
-  //     allAssignees != null &&
-  //     allAssignees != NaN &&
-  //     allAssignees != []
-  //   ) {
-  //     return allAssignees
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.name.toLowerCase();
-  //         return (
-  //           searchTerm &&
-  //           assigneesName.startsWith(searchTerm) &&
-  //           assigneesName !== searchTerm
-  //         );
-  //       })
-  //       .slice(0, 3)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.name, item.pK_UID)}
-  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
-  //           key={item.pK_UID}
-  //         >
-  //           <img src={userImage} />
-  //           <p className="p-0 m-0">{item.name}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
-
-  const searchFilterHandler = (value) => {
-    if (meetingAttendeesList.length > 0) {
-      return meetingAttendeesList
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            {}
-            <img
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-              draggable="false"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
-  };
-  const onSearch = (name, id) => {
-    setOnclickFlag(true);
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
-  };
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
@@ -198,14 +119,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const onChangeSearch = (item) => {
     setPresenterValue(item);
     setTaskAssignedTo(item.value);
-    // setOnclickFlag(false);
-    // if (e.target.value.trimStart() !== "") {
-    //   setTaskAssignedToInput(e.target.value.trimStart());
-    // } else {
-    //   setTaskAssignedToInput("");
-    //   setTaskAssignedTo(0);
-    //   setTaskAssignedName("");
-    // }
   };
 
   const checkAttendeeBox = (data, id, index) => {
@@ -600,7 +513,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -651,17 +563,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-  //Sliders For Attachments
-
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
@@ -717,8 +618,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       saveCommitteeDocumentsApi(navigate, t, newData, setUpdateComponentpage)
     );
   };
-
-  const handleDoubleCLickFile = () => {};
 
   useEffect(() => {
     if (CommitteeReducer.createUpdateCommitteeDataroom !== 0) {
@@ -817,7 +716,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             required={true}
                             change={InputFielsChangeHandler}
                             value={committeeData.committeeDescription}
-                            // className={styles["Height-of-textarea"]
                           />
                         </Col>
                       </Row>
@@ -876,7 +774,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           className="committee-update-type-select-fields CreateMeetingReminder ml-0 "
                         >
                           <SelectBox
-                            // name="Participant"
                             placeholder={t("Committee-type")}
                             value={committeeData.committeeTypeValue || ""}
                             option={committeeTypesValues}
@@ -1140,6 +1037,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             <img
                                               src={CrossIcon}
                                               width={18}
+                                              alt=""
                                               className="cursor-pointer"
                                               onClick={() =>
                                                 removeMemberHandler(
@@ -1274,6 +1172,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                               src={CrossIcon}
                                               className="cursor-pointer"
                                               width={18}
+                                              alt=""
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
@@ -1407,6 +1306,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                               src={CrossIcon}
                                               className="cursor-pointer"
                                               width={18}
+                                              alt=""
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
@@ -1811,6 +1711,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                   src={featherupload}
                                   width="18.87px"
                                   height="18.87px"
+                                  alt=""
                                   draggable="false"
                                 />
                               </span>
@@ -1863,7 +1764,8 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       />
       <Notification
         open={open.open}
-        message={open.message}ß
+        message={open.message}
+        ß
         setOpen={(status) => setOpen({ ...open, open: status.flag })}
         severity={open.severity}
       />

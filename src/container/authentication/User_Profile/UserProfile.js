@@ -1,49 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
-import UserProfileSetting from "../../../../src/assets/images/Userprofile-1.png";
-import ImageUpload from "react-image-easy-upload";
-import {
-  TextField,
-  Button,
-  Modal,
-  Notification,
-  EmployeeCard,
-  Loader,
-} from "./../../../components/elements";
+
+import { Button, Modal, Notification } from "./../../../components/elements";
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./UserProfile.module.css";
 import Form from "react-bootstrap/Form";
-// import { countryName } from "../../AllUsers/AddUser/CountryJson";
 import {
   countryName,
   countryNameforPhoneNumber,
 } from "../../Admin/AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
 import { useTranslation } from "react-i18next";
-import { style } from "@mui/system";
-import arabic_ar from "react-date-object/locales/arabic_ar";
-import gregorian_en from "react-date-object/locales/gregorian_en";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  getUserDetails,
-  settingClearMessege,
-  updateuserprofile,
-} from "../../../store/actions/GetUserSetting";
-import settingReducer from "../../../store/reducers/Setting_reducer";
-import { updateUserProfilePicture } from "../../../store/actions/UpdateUserProfile";
+import { updateuserprofile } from "../../../store/actions/GetUserSetting";
 import AvatarEditorComponent from "../../../components/elements/imageUploader/ImageUploader";
-import { base64UrlToFile } from "../../../commen/functions/getBase64";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 
-const UserProfileModal = ({
-  ModalTitle,
-  user,
-  setUser,
-  userProfileModal,
-  setUserProfileModal,
-  calenderFlag,
-}) => {
+const UserProfileModal = ({ ModalTitle, user, setUser }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   // states for UserProfile
   const [userProfileEdit, setUserProfileEdit] = useState({
@@ -57,29 +32,15 @@ const UserProfileModal = ({
       OrignalProfilePictureName: "",
     },
   });
-
-  //For Localization
-  const { t } = useTranslation();
-
-  // for enable states
   const [nameEnable, setNameEanble] = useState(true);
   const [erorbar, setErrorBar] = useState(false);
-  const [userProfile, setUserProfile] = useState("");
-  const [Base64Url, setBase64Url] = useState(null);
-
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [designationEnable, setDesignationEnable] = useState(true);
   const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
   const [mobileEnable, setMobileEnable] = useState(true);
-  // const [isFlagEnable, setIsFlagEnable] = useState(false);
-  // const [localValue, setLocalValue] = useState(gregorian_en);
   const [message, setMessege] = useState("");
-  // const [errorMessage, setErrorMessage] = useState(false);
   const state = useSelector((state) => state);
-  const { settingReducer, LanguageReducer } = state;
-
-  const [userPicture, setUserPicture] = useState([]);
-
+  const { settingReducer } = state;
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
 
@@ -106,7 +67,6 @@ const UserProfileModal = ({
   const Name = useRef(null);
   const Designation = useRef(null);
   const Mobile = useRef(null);
-  const SelectFlag = useRef(null);
 
   // for UserProfile edit handler
   const userProfileEditHandler = (e) => {
@@ -131,7 +91,6 @@ const UserProfileModal = ({
     if (name === "Designation" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
-        // setErrorMessage(false);
         setUserProfileEdit({
           ...userProfileEdit,
           Designation: valueCheck.trimStart(),
@@ -139,7 +98,6 @@ const UserProfileModal = ({
         setMessege(t("(Maximum-character-100.-alpha-numeric-field)"));
       }
     } else if (name === "Designation" && value === "") {
-      // setErrorMessage(true);
       setUserProfileEdit({
         ...userProfileEdit,
         Designation: "",
@@ -269,9 +227,7 @@ const UserProfileModal = ({
   useEffect(() => {
     if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
-        // setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        // setLocalValue(gregorian_ar);
       }
     }
   }, [currentLanguage]);
@@ -350,13 +306,6 @@ const UserProfileModal = ({
                     <AvatarEditorComponent
                       pictureObj={userProfileEdit.ProfilePicture}
                     />
-
-                    {/* <img
-                      src={UserProfileSetting}
-                      value={userProfileEdit.ProfilePicture}
-                      width={100}
-                      alt=""
-                    /> */}
                   </Col>
                 </Row>
 
@@ -422,14 +371,7 @@ const UserProfileModal = ({
                     </p>
                   </Col>
 
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="user-Profile"
-                    // className="d-flex justify-content-center"
-                  >
+                  <Col lg={6} md={6} sm={6} xs={12} className="user-Profile">
                     <Form.Control
                       ref={Designation}
                       onKeyDown={(event) => enterKeyHandler(event, Mobile)}
@@ -498,7 +440,6 @@ const UserProfileModal = ({
                       className={styles["react-User-Profile"]}
                     >
                       <ReactFlagsSelect
-                        // disabled={!isFlagEnable}
                         fullWidth={false}
                         selected={selected}
                         onSelect={handleSelect}
@@ -527,7 +468,6 @@ const UserProfileModal = ({
                         ref={Mobile}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
                         name="Mobile"
-                        // disabled={mobileEnable ? true : false}
                         value={userProfileEdit.Mobile || ""}
                         autocomplete="off"
                         onChange={userProfileEditHandler}
@@ -558,21 +498,6 @@ const UserProfileModal = ({
                       {t("Edit")}
                     </p>
                   </Col>
-
-                  {/* <Col
-                    lg={2}
-                    md={2}
-                    sm={2}
-                    xs={12}
-                    className="d-flex justify-content-start mt-2"
-                  >
-                    <p
-                      className={styles["label-Edit-user-mobile"]}
-                      onClick={mobileHandler}
-                    >
-                      {t("Edit")}
-                    </p>
-                  </Col> */}
 
                   <Row>
                     <Col className="d-flex justify-content-center">

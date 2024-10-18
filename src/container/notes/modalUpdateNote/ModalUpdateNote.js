@@ -17,7 +17,6 @@ import {
   deleteNotesApi,
   UpdateNotesAPI,
 } from "../../../store/actions/Notes_actions";
-// import { countryName } from "../../AllUsers/AddUser/CountryJson";
 import { useTranslation } from "react-i18next";
 import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
@@ -32,9 +31,8 @@ import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
-  const { NotesReducer, uploadReducer } = useSelector((state) => state);
+  const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
-  const Delta = Quill.import("delta");
   const editorRef = useRef(null);
   const maxCharacters = 2500;
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
@@ -239,10 +237,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         NotesReducer.GetNotesByNotesId !== null &&
         NotesReducer.GetNotesByNotesId !== undefined
       ) {
-        console.log(
-          NotesReducer.GetNotesByNotesId,
-          "NotesReducerNotesReducerNotesReducer"
-        );
         setAddNoteFields({
           ...addNoteFields,
           Title: {
@@ -310,9 +304,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //Upload File Handler
   const uploadFilesToDo = (data) => {
     let filesArray = Object.values(data.target.files);
-    console.log(filesArray, "uploadFilesToDouploadFilesToDo");
     let fileSizeArr = fileSize;
-    let flag = false;
     let sizezero = true;
     let size = true;
 
@@ -347,10 +339,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           OriginalAttachmentName: fileData.name,
           fileSize: fileData.size,
         };
-        // setTasksAttachments((prevAttachments) => ({
-        //   ...prevAttachments,
-        //   TasksAttachments: [...prevAttachments.TasksAttachments, file],
-        // }));
+
         console.log(file, "filefilefilefile");
         setAttachments((prevAttachments) => [...prevAttachments, file]);
         fileSizeArr += fileData.size;
@@ -362,9 +351,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     });
   };
   let previousFileList = [];
-  console.log(attachments, "newfilesnewfiles");
-  console.log(tasksAttachments.TasksAttachments, "newfilesnewfiles");
-  console.log(fileForSend, "newfilesnewfiles");
 
   const notesSaveHandler = async () => {
     try {
@@ -387,8 +373,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
-          newfiles.map((data, index) => {
-            console.log(data, "newfilesnewfiles");
+          newfiles.map((data) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
@@ -426,7 +411,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
           let copData = [...tasksAttachments.TasksAttachments];
-          copData.map((data, index) => {
+          copData.map((data) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
@@ -499,7 +484,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           modalFooterClassName={styles["modalUpdateNotes"]}
           ButtonTitle={ModalTitle}
           centered
-          //   modalFooterClassName={styles["modal-userprofile-footer"]}
           size={
             isUpdateNote === true
               ? "md"
@@ -626,7 +610,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         ref={editorRef}
                         theme="snow"
                         value={addNoteFields.Description.value || ""}
-                        // defaultValue={addNoteFields.Description.value}
                         onChange={onTextChange}
                         modules={modules}
                         className={styles["quill-update-height"]}
@@ -651,13 +634,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                   </Row>
 
                   <Row className="mt-5">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      // className="d-flex justify-content-start"
-                    >
+                    <Col lg={12} md={12} sm={12} xs={12}>
                       <Row className="mt-4">
                         <Col
                           lg={12}
@@ -700,11 +677,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         >
                           {attachments.length > 0
                             ? attachments.map((data, index) => {
-                                var ext =
-                                  data.DisplayAttachmentName.split(".").pop();
-
-                                const first =
-                                  data.DisplayAttachmentName.split(" ")[0];
                                 return (
                                   <AttachmentViewer
                                     handleClickRemove={() =>
@@ -717,112 +689,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                       localStorage.getItem("userID")
                                     )}
                                   />
-                                  // <Col
-                                  //   sm={12}
-                                  //   lg={2}
-                                  //   md={2}
-                                  //   className={
-                                  //     styles["modaltodolist-attachment-icon"]
-                                  //   }
-                                  // >
-                                  //   {ext === "doc" ? (
-                                  //     <FileIcon
-                                  //       extension={"docx"}
-                                  //       size={78}
-                                  //       type={"document"}
-                                  //       labelColor={"rgba(44, 88, 152)"}
-                                  //     />
-                                  //   ) : ext === "docx" ? (
-                                  //     <FileIcon
-                                  //       extension={"docx"}
-                                  //       size={78}
-                                  //       type={"font"}
-                                  //       labelColor={"rgba(44, 88, 152)"}
-                                  //     />
-                                  //   ) : ext === "xls" ? (
-                                  //     <FileIcon
-                                  //       extension={"xls"}
-                                  //       type={"spreadsheet"}
-                                  //       size={78}
-                                  //       labelColor={"rgba(16, 121, 63)"}
-                                  //     />
-                                  //   ) : ext === "xlsx" ? (
-                                  //     <FileIcon
-                                  //       extension={"xls"}
-                                  //       type={"spreadsheet"}
-                                  //       size={78}
-                                  //       labelColor={"rgba(16, 121, 63)"}
-                                  //     />
-                                  //   ) : ext === "pdf" ? (
-                                  //     <FileIcon
-                                  //       extension={"pdf"}
-                                  //       size={78}
-                                  //       {...defaultStyles.pdf}
-                                  //     />
-                                  //   ) : ext === "png" ? (
-                                  //     <FileIcon
-                                  //       extension={"png"}
-                                  //       size={78}
-                                  //       type={"image"}
-                                  //       labelColor={"rgba(102, 102, 224)"}
-                                  //     />
-                                  //   ) : ext === "txt" ? (
-                                  //     <FileIcon
-                                  //       extension={"txt"}
-                                  //       size={78}
-                                  //       type={"document"}
-                                  //       labelColor={"rgba(52, 120, 199)"}
-                                  //     />
-                                  //   ) : ext === "jpg" ? (
-                                  //     <FileIcon
-                                  //       extension={"jpg"}
-                                  //       size={78}
-                                  //       type={"image"}
-                                  //       labelColor={"rgba(102, 102, 224)"}
-                                  //     />
-                                  //   ) : ext === "jpeg" ? (
-                                  //     <FileIcon
-                                  //       extension={"jpeg"}
-                                  //       size={78}
-                                  //       type={"image"}
-                                  //       labelColor={"rgba(102, 102, 224)"}
-                                  //     />
-                                  //   ) : ext === "gif" ? (
-                                  //     <FileIcon
-                                  //       extension={"gif"}
-                                  //       size={78}
-                                  //       {...defaultStyles.gif}
-                                  //     />
-                                  //   ) : (
-                                  //     <FileIcon
-                                  //       extension={ext}
-                                  //       size={78}
-                                  //       {...defaultStyles.ext}
-                                  //     />
-                                  //   )}
-                                  //   <span
-                                  //     className={
-                                  //       styles["deleteUpdateNoteAttachment"]
-                                  //     }
-                                  //   >
-                                  //     <img
-                                  //       draggable="false"
-                                  //       src={deleteButtonCreateMeeting}
-                                  //       width={15}
-                                  //       height={15}
-                                  //       alt=""
-                                  //       onClick={() =>
-                                  //         deleteFilefromAttachments(data, index)
-                                  //       }
-                                  //     />
-                                  //   </span>
-                                  //   <p
-                                  //     className="modaltodolist-attachment-text"
-                                  //     title={data.displayAttachmentName}
-                                  //   >
-                                  //     {first}
-                                  //   </p>
-                                  // </Col>
                                 );
                               })
                             : null}
@@ -908,7 +774,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         setIsUpdateNote(false);
                         setUpdateConfirmation(true);
                       }}
-                      // onClick={notesSaveHandler}
                       className={styles["Update-notes-Button"]}
                     />
                   </Col>
@@ -986,7 +851,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         setIsUpdateNote(true);
                         setUpdateConfirmation(false);
                       }}
-                      // onClick={handleClickCancelDeleteModal}
                     />
                   </Col>
                   <Col

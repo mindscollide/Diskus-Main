@@ -3,7 +3,6 @@ import styles from "./Participants.module.css";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import addmore from "../../../../../assets/images/addmore.png";
-
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
 import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
@@ -61,12 +60,9 @@ const Participants = ({
   currentMeeting,
   setAgendaContributors,
   editorRole,
-  setEditMeeting,
   isEditMeeting,
   setPublishState,
   setAdvanceMeetingModalID,
-  setViewFlag,
-  setEditFlag,
   setCalendarViewModal,
   setDataroomMapFolderId,
   setCurrentMeetingID,
@@ -422,29 +418,6 @@ const Participants = ({
             );
           }
         },
-        // render: (text, record) => {
-        //   if (record.isRSVP === true) {
-        //     return (
-        //       <img
-        //         draggable={false}
-        //         src={thumbsup}
-        //         height="30px"
-        //         width="30px"
-        //         alt=""
-        //       />
-        //     );
-        //   } else {
-        //     return (
-        //       <img
-        //         draggable={false}
-        //         src={thumbsdown}
-        //         height="30px"
-        //         width="30px"
-        //         alt=""
-        //       />
-        //     );
-        //   }
-        // },
       },
 
       {
@@ -662,19 +635,12 @@ const Participants = ({
     ];
   }
 
-  // Filter columns based on the RSVP Condition
-  // const finalColumns =
-  //   Number(editorRole.status) === 1
-  //     ? ParticipantsColoumn.filter((column) => column.key !== "rsvp")
-  //     : ParticipantsColoumn;
-
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
     setProposedMeetingDates(true);
   };
 
   const nextTabOrganizer = () => {
-    // dispatch(ShowNextConfirmationModal(true));
     setAgenda(true);
     setParticipants(false);
     dispatch(meetingDetailsGlobalFlag(false));
@@ -689,12 +655,6 @@ const Participants = ({
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
     dispatch(uploadGlobalFlag(false));
-  };
-
-  const previousTabOrganizer = () => {
-    // dispatch(showPreviousConfirmationModal(true));
-    setAgendaContributors(true);
-    setParticipants(false);
   };
 
   //canceling the participants page
@@ -789,17 +749,6 @@ const Participants = ({
     }
   }, [rspvRows]);
 
-  // useEffect(() => {
-  //   dispatch(getAgendaAndVotingInfo_success([], ""));
-  //   dispatch(GetCurrentAgendaDetails([]));
-  //   dispatch(getAgendaVotingDetails_success([], ""));
-  //   dispatch(saveFiles_success(null, ""));
-  //   dispatch(saveAgendaVoting_success([], ""));
-  //   dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
-  //   dispatch(uploadDocument_success(null, ""));
-  //   dispatch(getAllVotingResultDisplay_success([], ""));
-  // }, []);
-
   return (
     <>
       {proposedMeetingDates ? (
@@ -844,7 +793,6 @@ const Participants = ({
                   </Row>
                 </>
               ) : (
-                // ) : Number(editorRole.status) === 1 ? null : (
                 <>
                   <Button
                     text={t("Edit")}
@@ -969,12 +917,6 @@ const Participants = ({
                           onClick={handleCancelParticipants}
                         />
 
-                        {/* <Button
-                        text={t("Previous")}
-                        className={styles["publish_button_participant"]}
-                        onClick={previousTabOrganizer}
-                      /> */}
-
                         <Button
                           text={t("Next")}
                           className={styles["publish_button_participant"]}
@@ -989,11 +931,6 @@ const Participants = ({
                           className={styles["Cancel_Organization"]}
                           onClick={handleCancelParticipants}
                         />
-                        {/* <Button
-                  text={t("Previous")}
-                  className={styles["publish_button_participant"]}
-                  onClick={previousTabOrganizer}
-                /> */}
                         <Button
                           text={t("Next")}
                           className={styles["publish_button_participant"]}
@@ -1014,12 +951,6 @@ const Participants = ({
                           onClick={handleCancelParticipants}
                         />
 
-                        {/* <Button
-                        text={t("Previous")}
-                        className={styles["publish_button_participant"]}
-                        onClick={previousTabOrganizer}
-                      /> */}
-
                         <Button
                           text={t("Next")}
                           className={styles["publish_button_participant"]}
@@ -1028,19 +959,6 @@ const Participants = ({
                       </>
                     )}
 
-                    {/* {((Number(editorRole.status) === 9 ||
-                    Number(editorRole.status) === 8 ||
-                    Number(editorRole.status) === 10) &&
-                    editorRole.role === "Organizer" &&
-                    isEditMeeting === true) ||
-                  (editorRole.role === "Agenda Contributor" &&
-                    isEditMeeting === true) ? null : (
-                    <Button
-                      text={t("Publish")}
-                      className={styles["Next_Organization"]}
-                      onClick={handleNextButton}
-                    />
-                  )} */}
                     {Number(editorRole.status) === 11 ||
                     Number(editorRole.status) === 12 ? (
                       <Button

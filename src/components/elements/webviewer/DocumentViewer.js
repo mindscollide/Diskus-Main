@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ClearMessageAnnotations,
-  GetAnnotationsOfToDoAttachementMessageCleare,
   addAnnotationsOnDataroomAttachement,
   addAnnotationsOnNotesAttachement,
   addAnnotationsOnResolutionAttachement,
@@ -16,7 +15,7 @@ import {
   getAnnotationsOfToDoAttachement,
 } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
-import { Notification, Loader } from "../index";
+import { Notification } from "../index";
 import { showMessage } from "../snack_bar/utill";
 const DocumentViewer = () => {
   const location = useLocation();
@@ -253,7 +252,7 @@ const DocumentViewer = () => {
       });
     }
   }, [webViewer.xfdfData, webViewer.attachmentBlob]);
-  console.log(webViewer.ResponseMessage, "webViewerwebViewerwebViewer")
+  console.log(webViewer.ResponseMessage, "webViewerwebViewerwebViewer");
   useEffect(() => {
     if (
       webViewer.ResponseMessage !== "" &&

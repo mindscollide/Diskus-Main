@@ -1,10 +1,8 @@
-import Form from "react-bootstrap/Form"
-import { useRef } from "react"
-import InputGroup from "react-bootstrap/InputGroup"
-import "bootstrap/dist/css/bootstrap.min.css"
-import styles from "./Input_field.module.css"
-import { ArrowRight } from "react-bootstrap-icons"
-import { FormControl, FormGroup } from "react-bootstrap"
+import Form from "react-bootstrap/Form";
+import { useRef } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "./Input_field.module.css";
+import { FormControl, FormGroup } from "react-bootstrap";
 
 const TextFieldDateTime = ({
   ref,
@@ -29,14 +27,13 @@ const TextFieldDateTime = ({
   min,
   onkeyDown,
 }) => {
-  const dateInputRef = useRef(null)
+  const dateInputRef = useRef(null);
   const openDatePicker = () => {
-    console.log("dateInputRefdateInputRefdateInputRef", dateInputRef.current)
     if (dateInputRef.current) {
-      dateInputRef.current.click() // Simulate a click event to open the date picker
+      dateInputRef.current.click(); // Simulate a click event to open the date picker
     }
-  }
-  console.log("applyClassapplyClass", applyClass)
+  };
+  console.log("applyClassapplyClass", applyClass);
   return (
     <>
       <FormGroup className={styles[formParentClass]}>
@@ -72,7 +69,7 @@ const TextFieldDateTime = ({
         </FormControl.Feedback>
       </FormGroup>
     </>
-  )
-}
+  );
+};
 
-export default TextFieldDateTime
+export default TextFieldDateTime;

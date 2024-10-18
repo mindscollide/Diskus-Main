@@ -54,7 +54,6 @@
 .Dropdown-container-Archived-Group-threedots {
   background: #fff !important;
   height: 34.8vh !important;
-  /* border: 1px solid #707070 !important; */
   width: 15% !important;
   z-index: 99999 !important;
   position: absolute;
@@ -81,7 +80,6 @@ body[dir="rtl"] .Dropdown-container-editIcon-Archived-groups {
 .Dropdown-container-editIcon-Archived-groups {
   background: #fff !important;
   height: 15.8vh !important;
-  /* border: 1px solid #707070 !important; */
   width: 8% !important;
   z-index: 99999 !important;
   position: absolute;
@@ -154,7 +152,6 @@ body[dir="rtl"] .group-icon {
 }
 
 body[dir="rtl"] .Two-Icons-style-Archived-group {
-  /* display: block; */
   padding-left: 22px !important;
 }
 

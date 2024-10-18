@@ -9,7 +9,7 @@ import img5 from "../../../../assets/images/5.png";
 import img10 from "../../../../assets/images/10.png";
 import img2 from "../../../../assets/images/2.png";
 import img3 from "../../../../assets/images/3.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -103,7 +103,7 @@ const TwoFactorVerifyUM = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
-        <Row className='position-relative'>
+        <Row className="position-relative">
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -113,30 +113,33 @@ const TwoFactorVerifyUM = () => {
             lg={5}
             md={5}
             sm={12}
-            className='d-flex justify-content-center align-items-center min-vh-100'>
+            className="d-flex justify-content-center align-items-center min-vh-100"
+          >
             <Paper className={styles["Two_fac_auth_paper"]}>
               <Row>
                 <Col
                   sm={12}
                   md={12}
                   lg={12}
-                  className='d-flex justify-content-center '>
+                  className="d-flex justify-content-center "
+                >
                   <img
-                    draggable='false'
+                    draggable="false"
                     src={DiskusLogo}
-                    alt='diskus_logo'
+                    alt="diskus_logo"
                     width={220}
                   />
                 </Col>
               </Row>
 
               <Form>
-                <Row className='my-0'>
+                <Row className="my-0">
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className='d-flex justify-content-center flex-column '>
+                    className="d-flex justify-content-center flex-column "
+                  >
                     <h3 className={styles["VerifyHeadingtwofac"]}>
                       {t("2fa-verification")}
                     </h3>
@@ -147,12 +150,12 @@ const TwoFactorVerifyUM = () => {
                 </Row>
 
                 <Row className={styles["EmailBoxtwofac"]}>
-                  <Col sm={12} md={12} lg={12} className='mx-1'>
+                  <Col sm={12} md={12} lg={12} className="mx-1">
                     <Row>
                       <Col sm={12} md={1} lg={1}>
                         {" "}
                         <img
-                          draggable='false'
+                          draggable="false"
                           width={"15px"}
                           className={
                             !sendCodeEmailPhone
@@ -160,7 +163,7 @@ const TwoFactorVerifyUM = () => {
                               : styles["two_fac_image_active"]
                           }
                           src={img10}
-                          alt=''
+                          alt=""
                         />
                       </Col>
                       <Col sm={12} md={9} lg={9}>
@@ -170,7 +173,8 @@ const TwoFactorVerifyUM = () => {
                             !sendCodeEmailPhone
                               ? styles["EmailLabeltwofacboth_active"]
                               : styles["EmailLabeltwofacboth"]
-                          }>
+                          }
+                        >
                           {t("Send-code-on-sms")}
                         </span>
                       </Col>
@@ -178,19 +182,20 @@ const TwoFactorVerifyUM = () => {
                         sm={12}
                         md={2}
                         lg={2}
-                        className='d-flex justify-content-end'>
+                        className="d-flex justify-content-end"
+                      >
                         <Form.Check
-                          type='radio'
-                          name='TwoFactor'
-                          className='cursor-pointer'
+                          type="radio"
+                          name="TwoFactor"
+                          className="cursor-pointer"
                           onChange={onChangeHandlerTwoFactor}
                         />
                       </Col>
                     </Row>
-                    <Row className='mt-1'>
+                    <Row className="mt-1">
                       <Col sm={12} md={1} lg={1}>
                         <img
-                          draggable='false'
+                          draggable="false"
                           width={"17px"}
                           src={img5}
                           className={
@@ -198,7 +203,7 @@ const TwoFactorVerifyUM = () => {
                               ? styles["two_fac_image"]
                               : styles["two_fac_image_active"]
                           }
-                          alt=''
+                          alt=""
                         />
                       </Col>
                       <Col sm={12} md={9} lg={9}>
@@ -207,7 +212,8 @@ const TwoFactorVerifyUM = () => {
                             !sendCodeEmail
                               ? styles["sendCodeEmail_active"]
                               : styles["sendCodeEmail"]
-                          }>
+                          }
+                        >
                           {t("Send-code-on-email")}
                         </span>
                       </Col>
@@ -215,67 +221,68 @@ const TwoFactorVerifyUM = () => {
                         sm={12}
                         md={2}
                         lg={2}
-                        className='d-flex justify-content-end'>
+                        className="d-flex justify-content-end"
+                      >
                         <Form.Check
-                          type='radio'
-                          name='TwoFactor'
-                          className='cursor-pointer'
+                          type="radio"
+                          name="TwoFactor"
+                          className="cursor-pointer"
                           onChange={onChangeHandlerSendEmail}
                         />
                       </Col>
                     </Row>
                   </Col>
                 </Row>
-                <Row className='mt-5 d-flex justify-content-center'>
+                <Row className="mt-5 d-flex justify-content-center">
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Button
                       text={t("Verify").toUpperCase()}
                       onClick={onClickHnadler}
                       disableBtn={
                         sendCodeEmail || sendCodeEmailPhone ? false : true
                       }
-                      iconClass='d-none'
-                      pdfIconClass='d-none'
+                      iconClass="d-none"
+                      pdfIconClass="d-none"
                       className={styles["Next_button_EmailVerifyForTwoFac"]}
-                      align='center'
+                      align="center"
                     />
                   </Col>
                 </Row>
               </Form>
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col
                   sm={12}
                   md={12}
                   lg={12}
-                  className={styles["forogt_email_link"]}>
-                  <span className='cursor-pointer' onClick={handleGoBackButton}>
+                  className={styles["forogt_email_link"]}
+                >
+                  <span className="cursor-pointer" onClick={handleGoBackButton}>
                     {t("Go-back")}
                   </span>
                 </Col>
               </Row>
             </Paper>
           </Col>
-          <Col md={7} lg={7} sm={12} className='p-0'>
+          <Col md={7} lg={7} sm={12} className="p-0">
             <Row>
-              <Col sm={12} md={6} lg={6} className='position-relative'>
+              <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
-                  draggable='false'
+                  draggable="false"
                   src={img2}
-                  alt='auth_icon'
-                  // width="380px"
+                  alt="auth_icon"
                   className={styles["phone-image"]}
                 />
               </Col>
-              <Col sm={12} md={6} lg={6} className='position-relative vh-100'>
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
-                  draggable='false'
+                  draggable="false"
                   src={img3}
-                  alt='auth_icon'
-                  // width="600px"
+                  alt="auth_icon"
                   className={styles["Auth_Icon"]}
                 />
               </Col>

@@ -4,7 +4,7 @@ import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import Helper from "../../../../../commen/functions/history_logout";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img2 from "../../../../../assets/images/2.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
@@ -107,7 +107,6 @@ const TwoFactorMultipleDevices = () => {
         localStorage.setItem("currentDevice", JSON.stringify(currentDevice));
         localStorage.setItem("LoginFlowPageRoute", 15);
         dispatch(LoginFlowRoutes(15));
-        // navigate("/selectfrommultidevices", { state: { currentDevice } });
       } else {
         showMessage(t("0-device-not-found"), "error", setOpen);
       }
@@ -135,7 +134,7 @@ const TwoFactorMultipleDevices = () => {
       if (Authreducer.AuthenticateAFAResponse.userDevices.length > 0) {
         let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices;
         let Devices = [];
-        DeviceDetail.map((data, index) => {
+        DeviceDetail.map((data) => {
           Devices.push({
             DeviceName: data.deviceName,
             UserDeviceID: data.pK_UDID,

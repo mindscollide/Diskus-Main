@@ -238,7 +238,6 @@ body[dir="rtl"] .mobile_image {
 }
 .Un_Ordered_List {
   padding-left: 1rem !important;
-  /* margin: 0 !important; */
 }
 
 .List_Components {
@@ -259,7 +258,6 @@ body[dir="rtl"] .Un_Ordered_List {
   background-image: url("../../../../../assets/images/3.png");
   background-repeat: no-repeat;
   background-position: right -632px top 330px !important;
-  /* position: relative; */
 }
 
 body[dir="rtl"] .roundspinner-image-SigninDenied {

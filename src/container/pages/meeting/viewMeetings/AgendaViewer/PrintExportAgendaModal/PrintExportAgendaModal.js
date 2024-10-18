@@ -1,31 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./PrintExportAgendaModal.module.css";
 import { useNavigate } from "react-router-dom";
-import { Container, Col, Row } from "react-bootstrap";
-import {
-  Button,
-  Notification,
-  Modal,
-} from "./../../../../../../components/elements";
-import {
-  callRequestReceivedMQTT,
-  LeaveCall,
-} from "../../../../../../store/actions/VideoMain_actions";
-import { FetchMeetingURLApi } from "../../../../../../store/actions/NewMeetingActions";
+import { Col, Row } from "react-bootstrap";
+import { Button, Modal } from "./../../../../../../components/elements";
 import {
   printAgenda,
   exportAgenda,
   ExportAgendaPDF,
   PrintMeetingAgenda,
 } from "../../../../../../store/actions/MeetingAgenda_action";
-import {
-  normalizeVideoPanelFlag,
-  videoChatPanel,
-  maximizeVideoPanelFlag,
-  minimizeVideoPanelFlag,
-  leaveCallModal,
-  participantPopup,
-} from "../../../../../../store/actions/VideoFeature_actions";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import emptyContributorState from "./../../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
@@ -33,34 +16,18 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ParentAgenda from "./../ParentAgenda";
 import AllFilesModal from "./../AllFilesModal/AllFilesModal";
 import { onDragEnd } from "./../drageFunction";
-import CollapseAgendaIcon from "./../AV-Images/Collapse-Agenda-Icon.png";
-import VideocameraIcon from "./../AV-Images/Videocamera-Icon.png";
 import CrossIcon from "./../AV-Images/Cross_Icon.png";
 
 const PrintExportAgendaModal = ({
   setPrintAgendaView,
-  setViewAdvanceMeetingModal,
   advanceMeetingModalID,
-  setAdvanceMeetingModalID,
-  setMeetingMaterial,
-  setMinutes,
   editorRole,
-  setEdiorRole,
-  setactionsPage,
   rows,
   setRows,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
-  );
-
-  const cancelMeetingMaterial = useSelector(
-    (state) => state.NewMeetingreducer.cancelMeetingMaterial
-  );
 
   const printFlag = useSelector(
     (state) => state.MeetingAgendaReducer.PrintAgendaFlag
@@ -72,10 +39,6 @@ const PrintExportAgendaModal = ({
 
   const agendaValueFlag = useSelector(
     (state) => state.MeetingAgendaReducer.AgendaViewFlag
-  );
-
-  const agendaTemplatePrint = useSelector(
-    (state) => state.MeetingAgendaReducer.PrintCurrentAgenda
   );
 
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
@@ -96,8 +59,6 @@ const PrintExportAgendaModal = ({
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
-  const [printTemplate, setPrintTemplate] = useState("");
-
   useEffect(() => {
     if (rows.length !== 0) {
       // Check if any of the canView values is true
@@ -109,8 +70,6 @@ const PrintExportAgendaModal = ({
       setEmptyStateRows(false);
     }
   }, [rows]);
-
-  console.log("Agenda Rows", rows);
 
   const [initialRows, setInitialRows] = useState([]);
 
@@ -157,35 +116,12 @@ const PrintExportAgendaModal = ({
     }
   };
 
-  // const printHtmlContent = (htmlContent) => {
-  //   const printWindow = window.open("", "_blank");
-  //   printWindow.document.write(htmlContent);
-  //   printWindow.document.close();
-  //   printWindow.print();
-  // };
-
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       agendaTemplatePrint !== null &&
-  //       agendaTemplatePrint !== undefined &&
-  //       agendaTemplatePrint !== ""
-  //     ) {
-  //       setPrintTemplate(agendaTemplatePrint.printTemplate);
-  //       printHtmlContent(printTemplate);
-  //     }
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //   }
-  // }, [agendaTemplatePrint]);
-
   return (
     <Modal
       show={true}
       modalFooterClassName={"d-block"}
       modalHeaderClassName={"d-block"}
       onHide={closePrintExportModal}
-      // size={"xl"}
       fullscreen={true}
       className={
         showMoreFilesView ? "PrintExportScreen blurEffect" : "PrintExportScreen"

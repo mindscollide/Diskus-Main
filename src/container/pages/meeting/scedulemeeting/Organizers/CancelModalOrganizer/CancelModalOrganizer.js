@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import {
-  GetAllMeetingOrganizers,
   editMeetingFlag,
   saveMeetingFlag,
 } from "../../../../../../store/actions/MeetingOrganizers_action";

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../../../assets/images/bin.svg";
-import { Pagination, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -19,7 +19,6 @@ import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg"
 import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import {
-  CleareMessegeNewMeeting,
   GetAllPollsByMeetingIdApiFunc,
   clearResponseNewMeetingReducerMessage,
   cleareAllState,
@@ -37,7 +36,6 @@ import { _justShowDateformatBilling } from "../../../../../commen/functions/date
 import {
   clearPollsMesseges,
   createPollMeetingMQTT,
-  deleteMeetingPollApi,
   deletePollsMQTT,
   getPollByPollIdforMeeting,
   getPollsByPollIdApi,
@@ -54,8 +52,6 @@ const Polls = ({
   setAttendance,
   currentMeeting,
   editorRole,
-  setEditMeeting,
-  isEditMeeting,
   setEdiorRole,
   setAdvanceMeetingModalID,
   setactionsPage,
@@ -63,9 +59,7 @@ const Polls = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, CommitteeReducer, PollsReducer } = useSelector(
-    (state) => state
-  );
+  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -84,25 +78,12 @@ const Polls = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
-  let currentUserID = Number(localStorage.getItem("userID"));
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   const [pollID, setPollID] = useState(0);
 
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
 
-  const enableAfterSavedViewPolls = () => {
-    setafterViewPolls(true);
-  };
-
-  const handleCacnelbutton = () => {
-    dispatch(showCancelPolls(true));
-  };
-
-  const handleSaveAndnext = () => {
-    setPolls(false);
-    setAttendance(true);
-  };
   const handleEditMeetingPoll = (record) => {
     let data = {
       PollID: record.pollID,
@@ -210,10 +191,7 @@ const Polls = ({
     };
     dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
   };
-  console.log(
-    NewMeetingreducer,
-    "NewMeetingreducerNewMeetingreducerNewMeetingreducer"
-  );
+
   useEffect(() => {
     try {
       if (
@@ -228,7 +206,6 @@ const Polls = ({
             console.log(data, "datadatadatadata");
             newPollsArray.push(data);
           });
-          console.log(newPollsArray, "newPollsArraynewPollsArray");
           setPollsRows(newPollsArray);
         } else {
           setPollsRows([]);
@@ -293,8 +270,7 @@ const Polls = ({
 
         setPollsRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
-            (newData2, index) =>
-              Number(newData2.pollID) !== Number(polls?.pollID)
+            (newData2) => Number(newData2.pollID) !== Number(polls?.pollID)
           );
         });
         dispatch(deletePollsMQTT(null));
@@ -332,10 +308,7 @@ const Polls = ({
         return (
           <span
             className={styles["DateClass"]}
-            onClick={
-              () => handleClickTitle(record)
-              // navigate("/DisKus/polling", { state: { record, isVote: false } })
-            }
+            onClick={() => handleClickTitle(record)}
           >
             {text}
           </span>
@@ -401,12 +374,6 @@ const Polls = ({
       },
     },
 
-    // {
-    //   title: t("Poll-type"),
-    //   dataIndex: "PollType",
-    //   key: "PollType",
-    //   width: "90px",
-    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
@@ -431,12 +398,7 @@ const Polls = ({
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={
-                    () => voteCastModal(record)
-                    // navigate("/DisKus/polling", {
-                    //   state: { record, isVote: true },
-                    // })
-                  }
+                  onClick={() => voteCastModal(record)}
                 />
               );
             } else if (record.voteStatus === "Voted") {
@@ -577,7 +539,6 @@ const Polls = ({
     localStorage.removeItem("folderDataRoomMeeting");
     setEdiorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
-    // dispatch(showCancelPolls(true));
   };
 
   const navigatetoAttendance = () => {
@@ -585,18 +546,6 @@ const Polls = ({
     setPolls(false);
   };
   console.log(editorRole, "editorRoleeditorRole");
-  const handleClickPrev = () => {
-    if (
-      (Number(editorRole.status) === 10 || Number(editorRole.status) === 9) &&
-      (editorRole.role === "Agenda Contributor" ||
-        editorRole.role === "Participant" ||
-        editorRole.role === "Organizer")
-    ) {
-      setPolls(false);
-      setactionsPage(true);
-      // setac
-    }
-  };
 
   useEffect(() => {
     if (
@@ -626,15 +575,6 @@ const Polls = ({
       dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [NewMeetingreducer.ResponseMessage]);
-
-  console.log(
-    NewMeetingreducer,
-    "ResponseMessageResponseMessageResponseMessageResponseMessage NewMeetingreducer"
-  );
-  console.log(
-    PollsReducer.ResponseMessage,
-    "ResponseMessageResponseMessageResponseMessageResponseMessage PollsReducer"
-  );
 
   return (
     <>
@@ -788,21 +728,14 @@ const Polls = ({
                       text={t("Cancel")}
                       className={styles["Cancel_Button_Polls_meeting"]}
                       onClick={handleCancelPolls}
-                      // onClick={handleCancelActionNoPopup}
                     />
-                    {/* <Button
-                      text={t("Previous")}
-                      className={styles["Save_Button_Polls_meeting"]}
-                      onClick={handleClickPrev}
-                      // onClick={prevTabToMinutes}
-                    /> */}
+
                     {Number(editorRole.status) === 10 &&
                     editorRole.role === "Organizer" ? (
                       <Button
                         text={t("Next")}
                         className={styles["Save_Button_Polls_meeting"]}
                         onClick={navigatetoAttendance}
-                        // onClick={nextTabToPolls}
                       />
                     ) : null}
                   </Col>

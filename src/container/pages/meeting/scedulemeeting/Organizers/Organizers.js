@@ -13,12 +13,9 @@ import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
 import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
-import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
-import AbstainvoterIcon from "../../../../../assets/images/resolutions/Abstainvoter_icon.svg";
 import CrossResolution from "../../../../../assets/images/resolutions/cross_icon_resolution.svg";
-import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -86,15 +83,11 @@ const Organizers = ({
   setMeetingMaterial,
   setSceduleMeeting,
   currentMeeting,
-  setCurrentMeetingID,
   editorRole,
-  setEditMeeting,
   isEditMeeting,
   setPublishState,
   setAdvanceMeetingModalID,
-  setViewFlag,
   setCalendarViewModal,
-  setEditFlag,
   setDataroomMapFolderId,
   setEdiorRole,
 }) => {
@@ -114,20 +107,11 @@ const Organizers = ({
   const [prevFlag, setprevFlag] = useState(2);
   const [editState, setEditState] = useState(false);
   const [isPublishedState, setIsPublishedState] = useState(false);
-  // const [editFlag, setEditFlag] = useState(0);
   const [notificationMessage, setNotificationMessage] = useState("");
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
-
-  const openCrossIconModal = () => {
-    dispatch(showCrossConfirmationModal(true));
-  };
-
-  const openNotifyOrganizorModal = () => {
-    dispatch(showNotifyOrganizors(true));
-  };
 
   const handleCancelOrganizer = () => {
     dispatch(showCancelModalOrganizers(true));
@@ -149,10 +133,6 @@ const Organizers = ({
   };
 
   const [rowsData, setRowsData] = useState([currentOrganizerData]);
-
-  const [transformedData, setTransformedData] = useState({
-    MeetingOrganizers: [],
-  });
 
   const [open, setOpen] = useState({
     open: false,
@@ -222,9 +202,6 @@ const Organizers = ({
         key: "userName",
         ellipsis: true,
         align: "left",
-        // render: (text) => (
-        //   <label className={styles["Title_desc"]}>{text}</label>
-        // ),
       },
 
       {
@@ -233,7 +210,6 @@ const Organizers = ({
         key: "email",
         align: "left",
         ellipsis: true,
-        // render: (text) => <label className="column-boldness">{text}</label>,
       },
       {
         title: t("Organizer-title"),
@@ -388,9 +364,7 @@ const Organizers = ({
                       src={greenMailIcon}
                       height="30px"
                       width="30px"
-                      // onClick={() => sendRecentNotification(record)}
                       alt=""
-                      // className="cursor-pointer"
                     />
                   ) : (
                     <img
@@ -421,7 +395,6 @@ const Organizers = ({
                       src={redMailIcon}
                       height="30px"
                       width="30px"
-                      // className="cursor-pointer"
                       alt=""
                     />
                   ) : (
@@ -442,7 +415,6 @@ const Organizers = ({
         },
       },
       {
-        // title: t('RSVP'),
         dataIndex: "isDeletable",
         key: "isDeletable",
         ellipsis: true,
@@ -483,9 +455,6 @@ const Organizers = ({
         key: "userName",
         ellipsis: true,
         align: "left",
-        // render: (text) => (
-        //   <label className={styles["Title_desc"]}>{text}</label>
-        // ),
       },
 
       {
@@ -494,7 +463,6 @@ const Organizers = ({
         key: "email",
         align: "left",
         ellipsis: true,
-        // render: (text) => <label className="column-boldness">{text}</label>,
       },
       {
         title: t("Organizer-title"),
@@ -575,58 +543,6 @@ const Organizers = ({
         ),
       },
 
-      // {
-      //   title: "RSVP",
-      //   dataIndex: "attendeeAvailability",
-      //   key: "attendeeAvailability",
-      //   width: "120px",
-      //   align: "left",
-
-      //   render: (text, record) => {
-      //     if (record.attendeeAvailability === 1) {
-      //       return (
-      //         <img
-      //           draggable={false}
-      //           src={AwaitingResponse}
-      //           height="30px"
-      //           width="30px"
-      //           alt=""
-      //         />
-      //       );
-      //     } else if (record.attendeeAvailability === 2) {
-      //       return (
-      //         <img
-      //           draggable={false}
-      //           src={thumbsup}
-      //           height="30px"
-      //           width="30px"
-      //           alt=""
-      //         />
-      //       );
-      //     } else if (record.attendeeAvailability === 3) {
-      //       return (
-      //         <img
-      //           draggable={false}
-      //           src={thumbsdown}
-      //           height="30px"
-      //           width="30px"
-      //           alt=""
-      //         />
-      //       );
-      //     } else if (record.attendeeAvailability === 4) {
-      //       return (
-      //         <img
-      //           draggable={false}
-      //           src={TentativelyAccepted}
-      //           height="30px"
-      //           width="30px"
-      //           alt=""
-      //         />
-      //       );
-      //     }
-      //   },
-      // },
-
       {
         title: t("Notification"),
         dataIndex: "isOrganizerNotified",
@@ -649,9 +565,7 @@ const Organizers = ({
                       src={greenMailIcon}
                       height="30px"
                       width="30px"
-                      // onClick={() => sendRecentNotification(record)}
                       alt=""
-                      // className="cursor-pointer"
                     />
                   ) : (
                     <img
@@ -682,7 +596,6 @@ const Organizers = ({
                       src={redMailIcon}
                       height="30px"
                       width="30px"
-                      // className="cursor-pointer"
                       alt=""
                     />
                   ) : (
@@ -729,12 +642,6 @@ const Organizers = ({
     ];
   }
 
-  // Filter columns based on the RSVP Condition
-  // const finalColumns =
-  //   Number(editorRole.status) === 1
-  //     ? MeetingColoumns.filter((column) => column.key !== "rsvp")
-  //     : MeetingColoumns;
-
   const sendRecentNotification = (record) => {
     if (
       (Number(editorRole.status) === 9 ||
@@ -752,8 +659,6 @@ const Organizers = ({
       dispatch(notificationSendData([record]));
     }
   };
-
-  // const deleteRow = (record) => {}
 
   const deleteRow = (recordToDelete) => {
     let findisPrimary = rowsData.filter(
@@ -778,7 +683,6 @@ const Organizers = ({
   };
 
   const previousTabOrganizer = () => {
-    // dispatch(showPreviousConfirmationModal(true));
     setmeetingDetails(true);
     setAgendaContributors(false);
     setorganizers(false);
@@ -795,7 +699,6 @@ const Organizers = ({
   };
 
   const handlePublishButton = () => {
-    // dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
@@ -814,55 +717,13 @@ const Organizers = ({
         setCalendarViewModal
       )
     );
-    // setorganizers(false)
-    // setAgendaContributors(true)
+
     setRowsData([]);
   };
 
   const nextTabOrganizer = () => {
-    // const allMeetingOrganizers =
-    //   MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers;
-    // let newrowsData = rowsData.map((newData, index) => {
-    //   return {
-    //     userID: newData.userID,
-    //     userName: newData.userName,
-    //     email: newData.email,
-    //     organizerTitle: newData.organizerTitle,
-    //     isPrimaryOrganizer: newData.isPrimaryOrganizer,
-    //     rsvp: newData.rsvp,
-    //     meetingID: Number(currentMeeting),
-    //     isOrganizerNotified: newData.isOrganizerNotified,
-    //     userProfilePicture: newData.userProfilePicture,
-    //   };
-    // });
-
-    // let checkValidation =
-    //   allMeetingOrganizers.length === newrowsData.length &&
-    //   allMeetingOrganizers.every((item, index) =>
-    //     deepEqual(item, newrowsData[index])
-    //   );
-    // if (checkValidation) {
-    //   setAgendaContributors(true);
-    //   setmeetingDetails(false);
-    //   setorganizers(false);
-    //   setParticipants(false);
-    //   setAgenda(false);
-    //   setMinutes(false);
-    //   setactionsPage(false);
-    //   setAttendance(false);
-    //   setPolls(false);
-    //   setMeetingMaterial(false);
-    //   setRowsData([]);
-    //   dispatch(saveMeetingFlag(false));
-    //   dispatch(editMeetingFlag(false));
-    // } else {
-    //   dispatch(ShowNextConfirmationModal(true));
-    // }
     setviewOrganizers(!viewOrganizers);
-    // let Data = { meetingID: currentMeeting, StatusID: 1 };
-    // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
     setRowsData([]);
-    // dispatch(ShowNextConfirmationModal(true));
     setAgendaContributors(true);
     setmeetingDetails(false);
     setorganizers(false);
@@ -911,7 +772,6 @@ const Organizers = ({
   };
 
   const handleCancelEdit = () => {
-    // setCurrentMeetingID(0);
     setIsEdit(false);
     setEditState(false);
     dispatch(meetingOrganizers([]));
@@ -934,11 +794,7 @@ const Organizers = ({
 
     setRowsData(updatedMeetingOrganizers);
   };
-  console.log(
-    notificationMessage,
-    rowsData,
-    "notificationMessagenotificationMessagenotificationMessage"
-  );
+
   const saveMeetingOrganizers = () => {
     let newarry = [];
     rowsData.forEach((organizerData, organizerIndex) => {
@@ -977,65 +833,6 @@ const Organizers = ({
     }
   };
 
-  const editMeetingOrganizers = () => {
-    let newarry = [];
-    rowsData.forEach((organizerData, organizerIndex) => {
-      newarry.push(organizerData.userID);
-    });
-    let findisOrganizerisExist = rowsData.some(
-      (data, index) => data.isPrimaryOrganizer === true
-    );
-
-    let Data = {
-      MeetingID: currentMeeting,
-      MeetingAttendeRoleID: 1,
-      UpdatedUsers: newarry,
-    };
-
-    if (findisOrganizerisExist) {
-      dispatch(
-        UpdateMeetingUserForOrganizers(
-          navigate,
-          Data,
-          t,
-          saveMeetingFlag,
-          editMeetingFlag,
-          rowsData,
-          currentMeeting,
-          2,
-          notificationMessage
-        )
-      );
-    } else {
-      showMessage(
-        t("At-least-one-primary-organizer-is-required"),
-        "error",
-        setOpen
-      );
-    }
-    // let Data = {
-    //   MeetingOrganizers: rowsData.map((item) => ({
-    //     IsPrimaryOrganizer: item.isPrimaryOrganizer,
-    //     IsOrganizerNotified: item.isOrganizerNotified,
-    //     Title: item.organizerTitle,
-    //     UserID: item.userID,
-    //   })),
-    //   MeetingID: currentMeeting,
-    //   IsOrganizerAddFlow: false,
-    //   NotificationMessage: rowsData[0].NotificationMessage,
-    // };
-    // if (findisOrganizerisExist) {
-    //   dispatch(SaveMeetingOrganizers(navigate, Data, t, currentMeeting));
-    //   dispatch(saveMeetingFlag(false));
-    //   dispatch(editMeetingFlag(false));
-    // } else {
-    //   setOpen({
-    //     message: t("At-least-one-primary-organizer-is-required"),
-    //     open: true,
-    //   });
-    // }
-  };
-
   useEffect(() => {
     if (
       MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
@@ -1064,13 +861,6 @@ const Organizers = ({
       MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished
     );
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
-
-  console.log(
-    "MeetingOrganizersReducer.AllMeetingOrganizersData",
-    MeetingOrganizersReducer.AllMeetingOrganizersData
-  );
-
-  console.log("isPublishedStateisPublishedState", isPublishedState);
 
   useEffect(() => {
     if (
@@ -1155,16 +945,6 @@ const Organizers = ({
     // Update the rowsData state with the modified data
     setRowsData(updatedRowsData);
   }, [MeetingOrganizersReducer.NotificationUpdateData]);
-
-  // useEffect(() => {
-  //   if (rowsData.length > 0) {
-  //     const getIfFalse = rowsData.some((data) => data.isEdit === false);
-  //     setIsEdit(getIfFalse);
-  //   } else {
-  //     setIsEdit(false);
-  //   }
-  //
-  // }, [rowsData]);
 
   useEffect(() => {
     if (
@@ -1293,29 +1073,12 @@ const Organizers = ({
                         onClick={handleCancelOrganizer}
                       />
 
-                      {/* <Button
-                    text={t("Previous")}
-                    className={styles["publish_button_Organization"]}
-                    onClick={previousTabOrganizer}
-                  /> */}
-
                       <Button
                         text={t("Next")}
                         className={styles["publish_button_Organization"]}
                         onClick={nextTabOrganizer}
                       />
-                      {/* {(Number(editorRole.status) === 9 ||
-                    Number(editorRole.status) === 8 ||
-                    Number(editorRole.status) === 10) &&
-                  editorRole.role === "Organizer" &&
-                  isEditMeeting === true ? null : editorRole.role ===
-                      "Agenda Contributor" && isEditMeeting === true ? null : (
-                    <Button
-                      text={t("Publish")}
-                      className={styles["Next_Organization"]}
-                      onClick={handlePublishButton}
-                    />
-                  )} */}
+
                       {Number(editorRole.status) === 11 ||
                       Number(editorRole.status) === 12 ? (
                         <Button
@@ -1342,14 +1105,6 @@ const Organizers = ({
                           onClick={handlePublishButton}
                         />
                       )}
-                      {/* {Number(editorRole.status) === 11 ||
-                  Number(editorRole.status) === 12 ? (
-                    <Button
-                      text={t("Publish")}
-                      className={styles["Next_Organization"]}
-                      onClick={handlePublishButton}
-                    />
-                  ) : null} */}
                     </section>
                   </Col>
                 </Row>

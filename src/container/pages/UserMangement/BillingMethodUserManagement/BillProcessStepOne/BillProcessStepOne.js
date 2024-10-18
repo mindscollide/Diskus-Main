@@ -227,7 +227,6 @@ const BillProcessStepOne = ({
                       <>
                         <span className={styles["nameStyles"]}>
                           {t("Contact")}{" "}
-                          {/* <span className={styles["stericClass"]}>*</span> */}
                         </span>
                       </>
                     }

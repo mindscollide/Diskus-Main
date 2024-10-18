@@ -3,7 +3,6 @@
   justify-content: center;
   flex-direction: column;
   width: 270px !important;
-  /* padding: 0 20px; */
 }
 
 .Next_button_EmailVerifySendEmailRealme {
@@ -65,7 +64,6 @@ body[dir="rtl"] .forogt_email_link a {
 }
 
 .SelectLine {
-  /* margin-top: -0.9rem; */
   color: #5a5a5a;
   font-weight: 600 !important;
   margin-bottom: 28px;

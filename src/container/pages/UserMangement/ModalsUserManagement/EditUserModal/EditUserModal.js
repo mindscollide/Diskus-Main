@@ -151,8 +151,7 @@ const EditUserModal = ({ editModalData }) => {
     ) {
       let temp = [];
       UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.map(
-        (data, index) => {
-          console.log(data, "packageDatapackageData");
+        (data) => {
           temp.push({
             value: data.pK_PackageID,
             label: data.name,
@@ -175,10 +174,8 @@ const EditUserModal = ({ editModalData }) => {
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
-    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-      return obj.primary == country;
-    });
   };
+
   const handleUpdateModal = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -313,7 +310,6 @@ const EditUserModal = ({ editModalData }) => {
   };
 
   const handlePackageAssigned = async (selectedOption) => {
-    console.log(selectedOption, "selectedOptionselectedOption");
     setPackageAssignedValue(selectedOption);
     setEditPakageID(selectedOption.value);
   };

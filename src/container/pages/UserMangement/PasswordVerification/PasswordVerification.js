@@ -186,7 +186,6 @@ const PasswordVerification = () => {
   //Handle Goback functionality
 
   const handelForgotPassword = () => {
-    //localStorage.setItem("LoginFlowPageRoute", 10);
     dispatch(LoginFlowRoutes(10));
   };
 
@@ -213,9 +212,6 @@ const PasswordVerification = () => {
   const handleGoback = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
-
-    // Reload the page
-    // window.location.reload();
   };
 
   return (

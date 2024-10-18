@@ -1,29 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Newprofile from "../../../assets/images/newprofile.png";
 import { Paper } from "@mui/material";
 import featherupload from "../../../assets/images/featherupload.svg";
-import Leftploygon from "../../../assets/images/Polygon 3.svg";
-import file_image from "../../../assets/images/file_image.svg";
-import pdfIcon from "../../../assets/images/pdf_icon.svg";
-import Rightploygon from "../../../assets/images/Polygon right.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { Upload } from "antd";
 import Select from "react-select";
-import userImage from "../../../assets/images/user.png";
 import {
   TextField,
   Button,
   Checkbox,
   SelectBox,
-  InputSearchFilter,
   Notification,
   AttachmentViewer,
 } from "./../../../components/elements";
 import styles from "./CreateCommittee.module.css";
-import Committee from "../../../container/Committee/Committee";
-
 import { useSelector, useDispatch } from "react-redux";
 import {
   createcommittee,
@@ -42,10 +34,10 @@ import {
   getIconSource,
 } from "../../../container/DataRoom/SearchFunctionality/option";
 import { showMessage } from "../snack_bar/utill";
+
 const CreateCommittee = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
   const navigate = useNavigate();
-  const [viewCreateCommittee, setViewCreateCommittee] = useState(true);
   const { assignees, CommitteeReducer } = useSelector((state) => state);
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
@@ -154,10 +146,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
+          return searchTerm && assigneesName.startsWith(searchTerm);
         })
         .slice(0, 10)
         .map((item) => (
@@ -400,14 +389,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const onChangeSearch = (item) => {
     setPresenterValue(item);
     setTaskAssignedTo(item.value);
-    // setOnclickFlag(false);
-    // if (e.target.value.trimStart() !== "") {
-    //   setTaskAssignedToInput(e.target.value.trimStart());
-    // } else {
-    //   setTaskAssignedToInput("");
-    //   setTaskAssignedTo(0);
-    //   setTaskAssignedName("");
-    // }
   };
 
   // onChange function for group chat
@@ -525,14 +506,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          uploadDocumentsCommitteesApi(
-            navigate,
-            t,
-            newData,
-            folderID,
-            // newFolder,
-            newfile
-          )
+          uploadDocumentsCommitteesApi(navigate, t, newData, folderID, newfile)
         );
       });
 
@@ -559,10 +533,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   useEffect(() => {
     if (CommitteeReducer.createUpdateCommitteeDataroom !== 0) {
-      console.log(
-        CommitteeReducer.createUpdateCommitteeDataroom,
-        "CommitteeReducerCommitteeReducerCommitteeReducer"
-      );
       let folderIdCreated = CommitteeReducer.createUpdateCommitteeDataroom;
       documentsUploadCall(folderIdCreated);
     }
@@ -590,7 +560,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -643,18 +612,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-
-  //Sliders For Attachments
-
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
@@ -1508,7 +1465,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 option={committeeMemberRolesValues}
                                 value={participantRoleName}
                                 change={changeHandlerCommitteeMemberRole}
-                                // change={assigntRoleAttendies}
                               />
                             </Col>
                             <Col
@@ -1701,6 +1657,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 <img
                                   src={featherupload}
                                   width="18.87px"
+                                  alt=""
                                   height="18.87px"
                                   draggable="false"
                                 />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import featherupload from "../../../assets/images/featherupload.svg";
 import Leftploygon from "../../../assets/images/Polygon 3.svg";
@@ -15,9 +15,7 @@ import {
   Button,
   Checkbox,
   SelectBox,
-  InputSearchFilter,
   Notification,
-  Loader,
   AttachmentViewer,
 } from "./../../../components/elements";
 import styles from "./CreateGroup.module.css";
@@ -32,16 +30,11 @@ import {
   saveFilesGroupsApi,
   uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
-import { render } from "@testing-library/react";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../container/DataRoom/SearchFunctionality/option";
 import { showMessage } from "../snack_bar/utill";
 
 const CreateGroup = ({ setCreategrouppage }) => {
@@ -163,17 +156,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
     ) {
       let newArr = [];
       GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
-        // if (data.groupRoleID != 3) {
         newArr.push({
           label: data.role,
           id: data.groupRoleID,
         });
-        // }
       });
-      console.log(
-        "GroupsReducer.getOrganizationGroupRoles",
-        GroupsReducer.getOrganizationGroupRoles
-      );
+
       setParticipantRoles([...newArr]);
     }
   }, [GroupsReducer.getOrganizationGroupRoles]);
@@ -207,7 +195,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
         CreatorID: creatorID,
       });
     }
-    // setAllPresenters(meetingAttendeesList);
   }, [meetingAttendeesList]);
 
   const handleAddAttendees = () => {
@@ -378,14 +365,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const onChangeSearch = (item) => {
     setPresenterValue(item);
     setTaskAssignedTo(item.value);
-    // setOnclickFlag(false);
-    // if (e.target.value.trimStart() != "") {
-    //   setTaskAssignedToInput(e.target.value.trimStart());
-    // } else {
-    //   setTaskAssignedToInput("");
-    //   setTaskAssignedTo(0);
-    //   setTaskAssignedName("");
-    // }
   };
 
   // onChange Function for set input values in state
@@ -428,14 +407,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     );
     setMeetingAttendees(meeetingAttendeesdata);
 
-    console.log(
-      updatedCreateGroupDetails,
-      "updatedCreateGroupDetailsupdatedCreateGroupDetails"
-    );
-    console.log(
-      updatedCreateGroupDetails.GroupMembers,
-      "updatedCreateGroupDetailsupdatedCreateGroupDetails"
-    );
     setCreateGroupDetails(updatedCreateGroupDetails);
     const updatedGroupMembers = groupMembers.filter(
       (item) => item.data.pK_UID !== id
@@ -513,7 +484,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -564,18 +534,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-
-  //Sliders For Attachments
-
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   const handleRemoveFile = (index) => {
     const updatedFies = [...fileAttachments];
@@ -674,7 +632,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <Form.Control
                             applyClass="form-control2"
                             ref={GroupeTitle}
-                            // className="Focuson"
                             type="text"
                             maxLength={300}
                             placeholder={t("Group-title")}
@@ -771,7 +728,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             option={groupTypeOptions}
                             change={groupTypeChangeHandler}
                             value={groupTypeValue}
-                            // change={assigntRoleAttendies}
                           />
                         </Col>
                         <Row>
@@ -824,6 +780,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                               <img
                                                 src={`data:image/jpeg;base64,${renderdata.data.displayProfilePictureName}`}
                                                 width={50}
+                                                alt=""
                                                 height={50}
                                                 draggable="false"
                                               />
@@ -896,6 +853,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 className="cursor-pointer"
                                                 width={20}
                                                 height={20}
+                                                alt=""
                                                 onClick={() =>
                                                   removeMemberHandler(
                                                     renderdata.data.pK_UID
@@ -936,10 +894,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
-                                console.log(
-                                  data,
-                                  "datadatadatadatagroupMembers"
-                                );
                                 if (data.role === 1) {
                                   return (
                                     <Col lg={6} md={6} sm={6}>
@@ -1128,7 +1082,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             <Row className="d-flex gap-2">
                                               <Col lg={2} md={2} sm={12}>
                                                 <img
-                                                  // src={Newprofile}
                                                   src={`data:image/jpeg;base64,${attendeelist.displayProfilePictureName}`}
                                                   width={50}
                                                   height={50}
@@ -1243,12 +1196,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             ? fileAttachments.map((data, index) => {
                                 return (
                                   <>
-                                    <Col
-                                      lg={4}
-                                      md={4}
-                                      sm={4}
-                                      // className="position-relative gap-2"
-                                    >
+                                    <Col lg={4} md={4} sm={4}>
                                       <AttachmentViewer
                                         data={data}
                                         name={data.DisplayAttachmentName}
@@ -1258,76 +1206,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                           handleRemoveFile(index);
                                         }}
                                       />
-                                      {/* <span
-                                            className={
-                                              styles["Crossicon_Class"]
-                                            }
-                                          >
-                                            <img
-                                              src={CrossIcon}
-                                              height="12.68px"
-                                              alt=""
-                                              width="12.68px"
-                                              onClick={() =>
-                                                handleRemoveFile(index)
-                                              }
-                                            />
-                                          </span>
-                                          <section
-                                            className={styles["Outer_Box"]}
-                                          >
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <img
-                                                  src={file_image}
-                                                  width={"100%"}
-                                                  alt=""
-                                                  draggable="false"
-                                                />
-                                              </Col>
-                                            </Row>
-
-                                            <section
-                                              className={
-                                                styles["backGround_name_Icon"]
-                                              }
-                                            >
-                                              <Row className="mb-2">
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className={
-                                                    styles["IconTextClass"]
-                                                  }
-                                                >
-                                                  <img
-                                                    src={getIconSource(
-                                                      getFileExtension(
-                                                        data.DisplayAttachmentName
-                                                      )
-                                                    )}
-                                                    height="10px"
-                                                    width="10px"
-                                                    alt=""
-                                                    className={
-                                                      styles["IconPDF"]
-                                                    }
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["FileName"]
-                                                    }
-                                                    title={
-                                                      data.DisplayAttachmentName
-                                                    }
-                                                  >
-                                                    {data.DisplayAttachmentName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </section>
-                                          </section> */}
                                     </Col>
                                   </>
                                 );
@@ -1351,6 +1229,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 <img
                                   src={featherupload}
                                   width="18.87px"
+                                  alt=""
                                   height="18.87px"
                                   draggable="false"
                                 />

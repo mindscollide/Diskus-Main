@@ -26,11 +26,6 @@
   font-weight: 600 !important;
 }
 
-/* .Send_Email_Realme {
-  padding: 40px 45px;
-  border: 1px solid #e1e1e1;
-} */
-
 .forogt_email_link {
   display: flex;
   justify-content: center;
@@ -104,7 +99,6 @@ body[dir="rtl"] .SendEmailOnDeiveColor_active {
   right: 150px;
   padding: 8px 40px !important;
   z-index: 9999;
-  /* background-color: #fff !important; */
   border-color: rgb(64, 64, 64) !important;
   box-shadow: none !important;
 }

@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import { ResultMessage } from "../../../components/elements";
 import TodoMessageIcon1 from "../../../assets/images/DashboardNewTodo.svg";
-import { Col, Row } from "react-bootstrap";
 import TimeAgo from "timeago-react";
 import { forRecentActivity } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +49,7 @@ const RecentActivity = () => {
         {" "}
         {settingReducer.Spinner === true ? (
           <>
-            <section className='d-flex justify-content-center align-items-center'>
+            <section className="d-flex justify-content-center align-items-center">
               <Spin />
             </section>
           </>
@@ -59,119 +58,51 @@ const RecentActivity = () => {
             icon={
               <img
                 src={TodoMessageIcon1}
-                // className="recent-activity-icon"
                 width={200}
-                alt=''
-                draggable='false'
+                alt=""
+                draggable="false"
               />
             }
-            className='recent-activity-text'
+            className="recent-activity-text"
           />
         ) : recentActivityData !== null && recentActivityData !== undefined ? (
-          recentActivityData.map((recentActivityData, index) => {
+          recentActivityData.map((recentActivityData) => {
             return (
               <>
-                <div className='d-flex justify-content-start align-items-start gap-3'>
+                <div className="d-flex justify-content-start align-items-start gap-3">
                   {recentActivityData.notificationTypes.pK_NTID === 1 ? (
-                    <img src={DemoIcon} width={45} height={45} />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
-                    <img src={DemoIcon} width={45} height={45} />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 3 ? (
-                    <img src={DemoIcon} width={45} height={45} />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 4 ? (
-                    <img src={DemoIcon} wi />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 5 ? (
-                    <img src={DemoIcon} width={45} height={45} />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 6 ? (
-                    <img src={DemoIcon} width={45} height={45} />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 7 ? (
-                    <img src={DemoIcon} width={45} height={45} />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 8 ? (
-                    <img src={DemoIcon} width={45} height={45} />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 9 ? (
-                    <img src={DemoIcon} width={45} height={45} />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   ) : (
-                    <img src={DemoIcon} width={45} height={45} />
+                    <img src={DemoIcon} width={45} height={45} alt="" />
                   )}
                   {recentActivityData.notificationTypes.description}
                 </div>
-                <p className='d-flex justify-content-end  me-1'>
+                <p className="d-flex justify-content-end  me-1">
                   {
                     <TimeAgo
                       datetime={forRecentActivity(
                         recentActivityData.creationDateTime
                       )}
-                      locale='en'
+                      locale="en"
                     />
                   }
                 </p>
-                {/* <Row className='mb-3'>
-                  <Col sm={2}>
-                    {recentActivityData.notificationTypes.pK_NTID === 1 ? (
-                      <div >
-                        <img src={DemoIcon} width={45} height={45} />
-                      </div>
-                    ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
-                      <div >
-                        <img src={DemoIcon} width={45} height={45} />
-                      </div>
-                    ) : recentActivityData.notificationTypes.pK_NTID === 3 ? (
-                      <div >
-                        <img src={DemoIcon} width={45} height={45} />
-                      </div>
-                    ) : recentActivityData.notificationTypes.pK_NTID === 4 ? (
-                      <div className='desc-notification-user'>
-                        <img src={DemoIcon} wi />
-                      </div>
-                    ) : recentActivityData.notificationTypes.pK_NTID === 5 ? (
-                      <div >
-                        <img src={DemoIcon} width={45} height={45} />
-                      </div>
-                    ) : recentActivityData.notificationTypes.pK_NTID === 6 ? (
-                      <div >
-                        <img src={DemoIcon} width={45} height={45} />
-                      </div>
-                    ) : recentActivityData.notificationTypes.pK_NTID === 7 ? (
-                      <div >
-                        <img src={DemoIcon} width={45} height={45} />
-                      </div>
-                    ) : recentActivityData.notificationTypes.pK_NTID === 8 ? (
-                      <div >
-                        <img src={DemoIcon} width={45} height={45} />
-                      </div>
-                    ) : recentActivityData.notificationTypes.pK_NTID === 9 ? (
-                      <div >
-                        <img src={DemoIcon} width={45} height={45} />
-                      </div>
-                    ) : (
-                      <div >
-                        <img src={DemoIcon} width={45} height={45} />
-                      </div>
-                    )}
-                    {recentActivityData.notificationTypes.description}
-                  </Col>
-                  <Col sm={10}>
-                    <Row>
-                      <Col sm={12} md={12} lg={12}>
-                        {recentActivityData.notificationTypes.description}
-                      </Col>
-                      <Col
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        className='d-flex justify-content-end me-1'>
-                        {
-                          <TimeAgo
-                            datetime={forRecentActivity(
-                              recentActivityData.creationDateTime
-                            )}
-                            locale='en'
-                          />
-                        }
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row> */}
               </>
             );
           })

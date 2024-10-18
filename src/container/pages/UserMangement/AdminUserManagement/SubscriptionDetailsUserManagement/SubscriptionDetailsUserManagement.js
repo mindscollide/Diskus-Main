@@ -11,7 +11,6 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { render } from "@testing-library/react";
 import {
   formatDateDownGradeSubscription,
   formatDateToDDMMYYYYDownGradeSubscription,
@@ -144,7 +143,7 @@ const SubscriptionDetailsUserManagement = () => {
       key: "SubscriptionNumber",
       ellipsis: true,
       align: "center",
-      render: (text, record) => {
+      render: (record) => {
         if (record.IsDefaultRow) {
           return (
             <>
@@ -210,7 +209,7 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "ExpiryDate",
       key: "ExpiryDate",
       align: "center",
-      render: (text, record) => {
+      render: (record) => {
         if (record.IsDefaultRow) {
           return <></>;
         } else {
@@ -235,7 +234,7 @@ const SubscriptionDetailsUserManagement = () => {
       ellipsis: true,
       align: "center",
       width: 100,
-      render: (text, record) => {
+      render: (record) => {
         if (record.IsDefaultRow) {
           return <></>;
         } else {
@@ -263,7 +262,7 @@ const SubscriptionDetailsUserManagement = () => {
       ellipsis: true,
       align: "center",
       width: 100,
-      render: (text, record) => {
+      render: (record) => {
         console.log(record, "recordrecordrecord");
         if (record.IsDefaultRow) {
           return (
@@ -381,7 +380,6 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
         if (record.IsDefaultRow) {
           const totalCharges = calculateTotalCharges(subscriptionDetails);
 

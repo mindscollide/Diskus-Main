@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./ViewPollsCancelModal.module.css";
 import {
   searchNewUserMeeting,
-  showCancelPolls,
   showUnsavedViewPollsModal,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";

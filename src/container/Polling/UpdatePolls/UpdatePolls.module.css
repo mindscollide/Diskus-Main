@@ -439,7 +439,6 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
   overflow-y: auto;
   margin: 0;
   padding: 0;
-  /* padding-right: 10px !important; */
 }
 
 .scroll-height::-webkit-scrollbar {

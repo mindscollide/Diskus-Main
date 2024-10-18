@@ -36,7 +36,6 @@ const Notes = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   const [modalNote, setModalNote] = useState(false);
 
-  console.log(notes, "notesnotesnotes");
   const calApi = async () => {
     // Notes Feature
     if (checkFeatureIDAvailability(6)) {
@@ -117,16 +116,15 @@ const Notes = () => {
 
   return (
     <>
-      <div className='d-flex justify-content-start mb-2 gap-3'>
-        <h1 className='noteheading color-5a5a5a '>{t("Notes")}</h1>
+      <div className="d-flex justify-content-start mb-2 gap-3">
+        <h1 className="noteheading color-5a5a5a ">{t("Notes")}</h1>
         {checkFeatureIDAvailability(6) && (
           <img
             src={PlusButton}
-            // onClick={handleClickNoteModal}
             onClick={() => setModalNote(true)}
-            className='cursor-pointer'
-            alt=''
-            draggable='false'
+            className="cursor-pointer"
+            alt=""
+            draggable="false"
           />
         )}
       </div>
@@ -137,34 +135,36 @@ const Notes = () => {
               return (
                 <>
                   <div
-                    className='notesdescription cursor-pointer'
+                    className="notesdescription cursor-pointer"
                     key={data.pK_NotesID}
-                    onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}>
+                    onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}
+                  >
                     <Row>
                       <Col lg={12} md={12} sm={12}>
-                        {/* <p className="notescontent" > */}
-                        <p className='notescontent'>
+                        <p className="notescontent">
                           {data.title.slice(0, 100)}
                         </p>
                       </Col>
                     </Row>
-                    <Row className='mt-2'>
+                    <Row className="mt-2">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex gap-2 align-items-center justify-content-between'>
-                        <span className='d-flex gap-2'>
+                        className="d-flex gap-2 align-items-center justify-content-between"
+                      >
+                        <span className="d-flex gap-2">
                           {data.isStarred ? (
                             <Tooltip
-                              placement='bottomLeft'
-                              title={t("Starred")}>
+                              placement="bottomLeft"
+                              title={t("Starred")}
+                            >
                               <img
                                 src={hollowstar}
-                                width='17.26px'
-                                height='16.62px'
-                                alt=''
-                                draggable='false'
+                                width="17.26px"
+                                height="16.62px"
+                                alt=""
+                                draggable="false"
                                 className={
                                   styles["starIcon-In-Collapse-material"]
                                 }
@@ -172,51 +172,50 @@ const Notes = () => {
                             </Tooltip>
                           ) : (
                             <Tooltip
-                              placement='bottomLeft'
-                              title={t("Unstarred")}>
+                              placement="bottomLeft"
+                              title={t("Unstarred")}
+                            >
                               <img
                                 src={StarIcon}
-                                width='17.34px'
-                                height='16.62px'
-                                alt=''
-                                draggable='false'
+                                width="17.34px"
+                                height="16.62px"
+                                alt=""
+                                draggable="false"
                                 className={
                                   styles["starIcon-In-Collapse-material"]
                                 }
                               />
                             </Tooltip>
                           )}
-                          {/* <Star /> */}
                           {data.isAttachment && (
                             <span>
                               <img
                                 src={IconAttachment}
-                                width='17.46px'
-                                height='16.05px'
-                                alt=''
-                                draggable='false'
+                                width="17.46px"
+                                height="16.05px"
+                                alt=""
+                                draggable="false"
                               />
                             </span>
                           )}
                         </span>
-                        {/* <img src={IconAttachment} alt="" /> */}
-                        <span className='DataTimeDay'>
+                        <span className="DataTimeDay">
                           {_justShowDateformat(data.date + data.time)} |
                           {_justShowDay(data.date + data.time)}
                         </span>
                       </Col>
                     </Row>
                   </div>
-                  {/* <span>See More</span> */}
                 </>
               );
             } else if (index === 12) {
               // Display a different message when index is 12
               return (
-                <div key={index} className='d-flex justify-content-center'>
+                <div key={index} className="d-flex justify-content-center">
                   <p
-                    className='ViewMoreLink_notes'
-                    onClick={() => navigate("/DisKus/Notes")}>
+                    className="ViewMoreLink_notes"
+                    onClick={() => navigate("/DisKus/Notes")}
+                  >
                     {t("View-more")}
                   </p>
                 </div>
@@ -230,8 +229,9 @@ const Notes = () => {
                 sm={12}
                 lg={12}
                 md={12}
-                className='d-flex justify-content-center align-items-center flex-column'>
-                <img src={Notes_Empty} width={"40%"} alt='' draggable='false' />
+                className="d-flex justify-content-center align-items-center flex-column"
+              >
+                <img src={Notes_Empty} width={"40%"} alt="" draggable="false" />
                 <p className={styles["emptystateNotesDashboard"]}>
                   {t("You-dont-have-any-notes")}
                 </p>

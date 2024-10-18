@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  CircularProgressbar,
-  CircularProgressbarWithChildren,
-} from "react-circular-progressbar";
+import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./CircularProgressbar.css";
 const CustomTextProgressbar = (props) => {
@@ -13,7 +10,6 @@ const CustomTextProgressbar = (props) => {
       <CircularProgressbarWithChildren
         value={value}
         className="circular_progress_counter"
-        // text={text}
         maxValue={maxValue}
         styles={{
           // Customize the root svg element

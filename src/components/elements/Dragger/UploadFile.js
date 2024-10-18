@@ -1,7 +1,5 @@
 import React from "react";
-
 import { Upload } from "antd";
-
 import styles from "./Dragger.module.css";
 
 const UploadFile = ({

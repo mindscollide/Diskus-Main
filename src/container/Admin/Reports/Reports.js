@@ -19,17 +19,14 @@ import XLSIcon from "../../../assets/images/AttachmentIcons/xls-file.svg";
 import searchicon from "../../../assets/images/searchicon.svg";
 import Crossicon from "../../../assets/images/WhiteCrossIcon.svg";
 import CrossIcon from "../../../assets/images/Cross-Chat-Icon.png";
-import DatePicker, { DateObject } from "react-multi-date-picker";
+import DatePicker from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import { validateEmailEnglishAndArabicFormat } from "../../../commen/functions/validations";
-import {
-  LoginHistoryReport,
-  newTimeFormaterForImportMeetingAgenda,
-} from "../../../commen/functions/date_formater";
+import { LoginHistoryReport } from "../../../commen/functions/date_formater";
 import { getTimeDifference } from "../../../commen/functions/time_formatter";
 import moment from "moment";
 import { downlooadUserloginHistoryApi } from "../../../store/actions/Download_action";
@@ -58,8 +55,6 @@ const Reports = () => {
     message: "",
     severity: "error",
   });
-
-  const [isEmailValid, SetIsEmailValid] = useState(false);
   const [isIpAddressValid, setIsIpAddressValid] = useState(false);
   const [userLoginHistorySearch, setUserLoginHistorySearch] = useState({
     userName: "",
@@ -472,21 +467,6 @@ const Reports = () => {
   };
 
   const handleCloseSearcbBox = () => {
-    // setUserLoginHistorySearch({
-    //   ...userLoginHistorySearch,
-    //   userName: "",
-    //   userEmail: "",
-    //   DateFrom: "",
-    //   DateForView: "",
-    //   DateTo: "",
-    //   DateToView: "",
-    //   IpAddress: "",
-    //   InterFaceType: {
-    //     value: 0,
-    //     label: "",
-    //   },
-    //   Title: "",
-    // });
     setSearchBoxExpand(false);
   };
 
@@ -789,8 +769,6 @@ const Reports = () => {
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
                             inputMode=""
-                            // name="decision"
-                            // value={decisionDateTime.dateValue}
                             calendar={calendarValue}
                             locale={localValue}
                             onFocusedDateChange={handleChangeFromDate}
@@ -815,8 +793,6 @@ const Reports = () => {
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
                             inputMode=""
-                            // name="decision"
-                            // value={decisionDateTime.dateValue}
                             calendar={calendarValue}
                             locale={localValue}
                             onFocusedDateChange={handleChangeToDate}
@@ -862,8 +838,6 @@ const Reports = () => {
                       </Row>
                     </section>
                   )}
-                  {/* {userLoginHistorySearch.userName !== "" &&
-                    userLoginHistorySearch.userName} */}
                 </section>
               </Col>
             </Row>

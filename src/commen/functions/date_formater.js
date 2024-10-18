@@ -1,6 +1,5 @@
 import { DateTime } from "luxon";
 import moment from "moment";
-import { DateObject } from "react-multi-date-picker";
 
 export const removeDashesFromDate = (data) => {
   let value = data.split("-");
@@ -21,29 +20,11 @@ export const TimeDisplayFormat = (data) =>
 export const TimeHHMMFormat = (data) =>
   data.slice(0, 2) + ":" + data.slice(2, 4);
 
-// Time Format
-export const TimeAndDisplayFormat = (data) =>
-  data.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, "$4:$5:$6");
-
 export const DateSendingFormat = (data) => {
   if (data.length > 0) {
     let value = data.split("-");
     return `${value[2]}${value[1]}${value[0]}`;
   }
-};
-
-export const currentToOneYearBackDate = (format) => {
-  let _moment = moment();
-  let toDate = _moment.format(format);
-  let fromDate = _moment.subtract(1, "years").format(format);
-  return { toThisDate: toDate, fromThisDate: fromDate };
-};
-
-export const NumberFormater = (value) => {
-  return parseFloat(parseFloat(value).toFixed(2));
-};
-export const CommaFormter = (num) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 export const dateforCalendar = (date) => {
@@ -66,17 +47,9 @@ export const dateTime = (data) => {
   return newtime;
 };
 
-export const CardNumberFormatter = (num) => {
-  return num.match(/.{1,4}/g).join(" ");
-};
-
 export const newDateFormaterAsPerUTC = (date) => {
   let dateConvert = moment(date, "YYYYMMDD").format();
-  const englishFormat = moment(dateConvert).format(
-    "MMMM Do, YYYY [at] HH:mm:ss"
-  );
   let newDate = moment(dateConvert).toDate().toISOString();
-  let formattedDate = newDate.slice(0, 10).replace(/-/g, "");
 
   return newDate.slice(0, 10).replace(/-/g, "");
 };
@@ -143,33 +116,6 @@ export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
     ".000Z";
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
   return moment(_dateTime).format("h:mm A, D MMM, YYYY");
-};
-
-//Included  New One
-
-export const newTimeFormaterForMeetingAsPerUTCFullDate = (dateTime) => {
-  const fullDateyear =
-    dateTime?.slice(0, 4) +
-    "-" +
-    dateTime?.slice(4, 6) +
-    "-" +
-    dateTime?.slice(6, 8) +
-    "T" +
-    dateTime?.slice(8, 10) +
-    ":" +
-    dateTime?.slice(10, 12) +
-    ":" +
-    dateTime?.slice(12, 14) +
-    ".000Z";
-
-  const _dateTime = new Date(fullDateyear);
-
-  // Get the start time, end time, and date
-  const startTime = moment(_dateTime).format("h:mm A");
-  const endTime = moment(_dateTime).add(1, "hour").format("h:mm A"); // Assuming end time is 1 hour after start time
-  const date = moment(_dateTime).format("D MMM, YYYY");
-
-  return `${startTime}, ${endTime}, ${date}`;
 };
 
 export const _justShowDateformat = (dateTime) => {
@@ -267,26 +213,6 @@ export const startDateTimeMeetingCalendar = (dateTime) => {
   return _dateTime;
 };
 
-export const forSetstartDateTimeMeetingCalendar = (dateTime) => {
-  let fullDateYear =
-    dateTime.slice(0, 4) +
-    "-" +
-    dateTime.slice(4, 6) +
-    "-" +
-    dateTime.slice(6, 8) +
-    "T" +
-    dateTime.slice(8, 10) +
-    ":" +
-    dateTime.slice(10, 12) +
-    ":" +
-    dateTime.slice(12, 14) +
-    ".000Z";
-  let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
-  // let _dateTime = moment(fullDateYear, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('YYYYMMDD');
-
-  return _dateTime;
-};
-
 export const forHomeCalendar = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -322,50 +248,6 @@ export const forMainCalendar = (dateTime) => {
     ".000Z";
 
   let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
-  let _dateTime2 = new Date(fullDateYear);
-
-  // let _dateTime = moment(fullDateYear, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
-  //   "YYYYMMDD"
-  // );
-
-  return _dateTime;
-};
-
-export const endDateTimeMeetingCalender = (dateTime) => {
-  let fullDateYear =
-    dateTime.slice(0, 4) +
-    "-" +
-    dateTime.slice(4, 6) +
-    "-" +
-    dateTime.slice(6, 8) +
-    "T" +
-    dateTime.slice(8, 10) +
-    ":" +
-    dateTime.slice(10, 12) +
-    ":" +
-    dateTime.slice(12, 14) +
-    ".000Z";
-  let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
-  return _dateTime;
-};
-
-export const createResolutionDateTime = (dateTime) => {
-  // let convertUTC = new Date(dateTime,"YYYYMMDDHHmmss").toISOString()
-  let fullDateYear =
-    dateTime.slice(0, 4) +
-    "-" +
-    dateTime.slice(4, 6) +
-    "-" +
-    dateTime.slice(6, 8) +
-    "T" +
-    dateTime.slice(8, 10) +
-    ":" +
-    dateTime.slice(10, 12) +
-    ":" +
-    dateTime.slice(12, 14) +
-    ".000Z";
-  let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
-  let convertGMT = new Date(_dateTime).toString();
 
   return _dateTime;
 };
@@ -422,7 +304,6 @@ export const editResolutionTimeView = (dateTime) => {
     dateTime.slice(12, 14) +
     ".000Z";
   let convertGMT = new Date(fullDateYear);
-  // let convertTime = moment(convertGMT).format("HH:mm");
   return convertGMT;
 };
 
@@ -1103,19 +984,6 @@ export const newTimeFormaterViewPoll = (dateTime) => {
 
 export const DateFormatForPolls = (date) => {
   let dateFormatted = `${date}235900`;
-  let fullDateyear =
-    dateFormatted?.slice(0, 4) +
-    "-" +
-    dateFormatted?.slice(4, 6) +
-    "-" +
-    dateFormatted?.slice(6, 8) +
-    "T" +
-    dateFormatted?.slice(8, 10) +
-    ":" +
-    dateFormatted?.slice(10, 12) +
-    ":" +
-    dateFormatted?.slice(12, 14) +
-    ".000Z";
   const now = new Date(dateFormatted);
   const year = now.getUTCFullYear();
   const month = String(now.getUTCMonth() + 1).padStart(2, "0");

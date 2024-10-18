@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Modal, Button } from "../../../../../../components/elements";
-
 import { deleteMeetingPollApi } from "../../../../../../store/actions/Polls_actions";
 import { editFlowDeleteSavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
 

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./ViewAttachments.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@mui/material";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import Button from "../../../components/elements/button/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import AttachmentViewer from "../../../components/elements/fileAttachment/attachment";
@@ -14,7 +14,6 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  let createrID = localStorage.getItem("userID");
   const handleClickDownloadFile = (fileID, fileName) => {
     let data = {
       FileID: Number(fileID),
@@ -22,7 +21,6 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
     dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
   };
   const handleLinkClick = (data, ext) => {
-    // let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
     if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
@@ -54,7 +52,6 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                   {resolutionAttachments &&
                     resolutionAttachments.map((data, index) => {
                       let ext = data.displayAttachmentName.split(".").pop();
-                      const first = data.displayAttachmentName.split(" ")[0];
                       const pdfData = {
                         taskId: data.fK_ResolutionID,
                         attachmentID: Number(data.originalAttachmentName),
@@ -63,12 +60,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                       };
                       const pdfDataJson = JSON.stringify(pdfData);
                       return (
-                        <Col
-                          sm={2}
-                          lg={2}
-                          md={2}
-                          // className={styles["notes-attachment-icon"]}
-                        >
+                        <Col sm={2} lg={2} md={2}>
                           <AttachmentViewer
                             data={data}
                             name={data.displayAttachmentName}

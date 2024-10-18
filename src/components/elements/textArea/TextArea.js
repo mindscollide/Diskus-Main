@@ -15,7 +15,6 @@ const TextArea = ({
   placeholder,
   onChange,
 }) => {
-
   return (
     <Form className={formClassPosition}>
       <Form.Label className={timeClass}>{timeValue}</Form.Label>

@@ -15,14 +15,19 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(events, "setEventsModalsetEventsModalsetEventsModal");
-  let diskusEventColor = localStorage.getItem("diskusEventColor") !== null ? localStorage.getItem("diskusEventColor"): "#000";
-  let googleEventColor = localStorage.getItem("googleEventColor") !== null ? localStorage.getItem("googleEventColor"): "#000";
-  let officeEventColor = localStorage.getItem("officeEventColor") !== null ? localStorage.getItem("officeEventColor"): "#000";
-  console.log(diskusEventColor, "diskusEventColor");
-  console.log(googleEventColor, "diskusEventColor");
-  console.log(officeEventColor, "diskusEventColor");
-  let defaultColor = "#00000";
+  let diskusEventColor =
+    localStorage.getItem("diskusEventColor") !== null
+      ? localStorage.getItem("diskusEventColor")
+      : "#000";
+  let googleEventColor =
+    localStorage.getItem("googleEventColor") !== null
+      ? localStorage.getItem("googleEventColor")
+      : "#000";
+  let officeEventColor =
+    localStorage.getItem("officeEventColor") !== null
+      ? localStorage.getItem("officeEventColor")
+      : "#000";
+
   let now = new Date();
   let year = now.getUTCFullYear();
   let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -31,7 +36,6 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  let lang = localStorage.getItem("i18nextLng");
 
   const meetingDashboardCalendarEvent = (data) => {
     dispatch(dashboardCalendarEvent(data));
@@ -117,12 +121,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                             )}
                           </span>
                         </Col>
-                        <Col
-                          sm={12}
-                          md={2}
-                          lg={2}
-                          //   className="d-flex justify-content-end align-items-center"
-                        ></Col>
+                        <Col sm={12} md={2} lg={2}></Col>
                       </Row>
                       <Row>
                         <Col sm={12} md={6} lg={6}>
@@ -130,8 +129,6 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                           eventData.participantRoleID === 1 ? (
                             eventData.isQuickMeeting === true &&
                             minutesDifference <= 15 ? (
-                              // &&
-                              // minutesDifference > 0
                               <Button
                                 text={t("Start-meeting")}
                                 className={styles["Start-Meeting"]}
@@ -141,11 +138,6 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                               />
                             ) : eventData.isQuickMeeting === false &&
                               minutesDifference <= 15 ? (
-                              // &&
-                              // minutesDifference > 0
-                              //   &&
-                              //     minutesDifference <= 99999999 &&
-                              //     minutesDifference > 0
                               <Button
                                 text={t("Start-meeting")}
                                 className={styles["Start-Meeting"]}

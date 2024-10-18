@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import ReasonForCancelSubs from "../../ModalsUserManagement/ResonsForCancelSubscriptionModal/ReasonForCancelSubs";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
 import {
-  _justShowDateformat,
   formatDateDownGradeSubscription,
   formatDateToDDMMYYYYDownGradeSubscription,
 } from "../../../../../commen/functions/date_formater";
@@ -27,8 +26,6 @@ const CancelSubscriptionAdmin = () => {
   const { CancellationDetials } = location.state;
 
   console.log(CancellationDetials, "CancellationDetialsCancellationDetials");
-
-  const organizationID = localStorage.getItem("organizationID");
 
   const { UserManagementModals, UserMangementReducer } = useSelector(
     (state) => state
@@ -288,25 +285,7 @@ const CancelSubscriptionAdmin = () => {
         <Col lg={8} md={8} sm={12} xs={12}>
           <Card className={styles["CardCancelSubscription"]}>
             <Row className="mt-3">
-              <Col sm={12}>
-                {/* <span class="icon-star package-icon-style">
-                  <span
-                    class="path1"
-                    style={{ color: packageColorPath1 }}
-                  ></span>
-                  <span
-                    class="path2"
-                    style={{ color: packageColorPath2 }}
-                  ></span>
-                  <span
-                    class="path3"
-                    style={{ color: packageColorPath2 }}
-                  ></span>
-                </span>
-                <h3 className={styles["packageCard_title"]}>
-                  {isPackageDetail.PackageTitle}
-                </h3>{" "} */}
-              </Col>
+              <Col sm={12}></Col>
             </Row>
             <Row>
               <Col

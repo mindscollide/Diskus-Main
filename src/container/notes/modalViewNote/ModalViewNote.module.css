@@ -36,7 +36,6 @@ body[dir="rtl"] .close-note-modal-btn {
 
 .modal-row {
   display: contents !important;
-  /* margin-top: -20px !important; */
 }
 
 .modal-update-attachment-heading {

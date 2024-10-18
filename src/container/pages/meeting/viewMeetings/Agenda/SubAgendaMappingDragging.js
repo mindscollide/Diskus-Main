@@ -7,16 +7,12 @@ import {
   Notification,
 } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
-import profile from "../../../../../assets/images/newprofile.png";
-import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
 import {
-  showAdvancePermissionModal,
-  showVoteAgendaModal,
   showCastVoteAgendaModal,
   showviewVotesAgenda,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -27,21 +23,14 @@ import {
   clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import { useDispatch } from "react-redux";
-import { Radio } from "antd";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { Upload } from "antd";
 import SubUrls from "./SubUrls";
 import SubRequestContributor from "./SubRequestContributor";
 import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import { useEffect } from "react";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
@@ -56,15 +45,9 @@ const SubAgendaMappingDragging = ({
   subExpand,
   apllyLockOnParentAgenda,
   subLockArry,
-  setSubLockArray,
-  agendaItemRemovedIndex,
-  setAgendaItemRemovedIndex,
-  setSubajendaRemoval,
   setsubexpandIndex,
   setExpandSubIndex,
   setSubExpand,
-  openAdvancePermissionModal,
-  openVoteMOdal,
   editorRole,
   advanceMeetingModalID,
 }) => {
@@ -78,7 +61,6 @@ const SubAgendaMappingDragging = ({
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const dispatch = useDispatch();
-  const { Dragger } = Upload;
   let currentUserID = localStorage.getItem("userID");
 
   const [open, setOpen] = useState({
@@ -86,32 +68,6 @@ const SubAgendaMappingDragging = ({
     message: "",
     severity: "error",
   });
-
-  //Function For Dragging the SubAgendaItems
-  const onSubAgendaDragEnd = (result, index) => {
-    console.log(result, index, "resultresultresult");
-    if (!result.destination) return; // Dropped outside the list
-
-    const { source, destination } = result;
-
-    // Clone the entire rows array
-    const updatedRows = [...rows];
-
-    // Find the source and destination indices
-    const sourceIndex = source.index;
-    const destinationIndex = destination.index;
-
-    // Get the dragged item
-    const draggedItem = updatedRows[index].subAgenda[sourceIndex];
-    // Remove the item from the source index
-    updatedRows[index].subAgenda.splice(sourceIndex, 1);
-
-    // Insert the item at the correct destination index
-    updatedRows[index].subAgenda.splice(destinationIndex, 0, draggedItem);
-
-    // Update state with the reordered data
-    setRows(updatedRows);
-  };
 
   const apllyLockOnSubAgenda = (parentIndex, subIndex) => {
     const exists = subLockArry.some((item) => {
@@ -124,49 +80,6 @@ const SubAgendaMappingDragging = ({
     });
 
     return exists;
-  };
-
-  // Function to handle changes in sub-agenda title
-  const handleSubAgendaTitleChange = (index, subIndex, e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    const updatedRows = [...rows];
-    if (name === "SubTitle") {
-      updatedRows[index].subAgenda[subIndex].SubTitle = value;
-    }
-    setRows(updatedRows);
-  };
-
-  // Function to handle changes in sub-agenda select
-  const handleSubAgendaSelectChange = (index, subIndex, value) => {
-    const updatedRows = [...rows];
-    let SelectValue = {
-      value: value.value,
-      label: value.label,
-    };
-    updatedRows[index].subAgenda[subIndex].selectedOption = SelectValue;
-    setRows(updatedRows);
-  };
-
-  // Function to handle changes in sub-agenda start date
-  const handleSubAgendaStartDateChange = (index, subIndex, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].subAgenda[subIndex].startDate = date;
-    setRows(updatedRows);
-  };
-
-  // Function to handle changes in sub-agenda end date
-  const handleSubAgendaEndDateChange = (index, subIndex, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].subAgenda[subIndex].endDate = date;
-    setRows(updatedRows);
-  };
-
-  //Function For removing Subagendas
-  const handleCrossSubAjenda = (index, subIndex) => {
-    // dispatch(showAgenItemsRemovedModal(true));
-    setAgendaItemRemovedIndex(index);
-    setSubajendaRemoval(subIndex);
   };
 
   // Initialize the subExpand state based on the number of rows and subAgendas
@@ -210,49 +123,6 @@ const SubAgendaMappingDragging = ({
       setsubexpandIndex(index);
       setExpandSubIndex(subIndex);
     }
-  };
-
-  // Function to handle changes in sub-agenda radio group
-  const handleSubAgendaRadioChange = (index, subIndex, e) => {
-    let value = e.target.value;
-    const updatedRows = [...rows];
-    updatedRows[index].subAgenda[subIndex].subSelectRadio = value;
-    setRows(updatedRows);
-  };
-
-  const lockFunctionActiveSubMenus = (index, subindex) => {
-    let cloneSubLockArry = [...subLockArry];
-
-    const parentIndexExists = cloneSubLockArry.findIndex(
-      (item) => item.parentIndex === index
-    );
-
-    if (parentIndexExists >= 0) {
-      const existingParentIndexObj = cloneSubLockArry[parentIndexExists];
-
-      const subIndexExists = existingParentIndexObj.SubIndexArray.findIndex(
-        (item) => item.subIndex === subindex
-      );
-
-      if (subIndexExists >= 0) {
-        existingParentIndexObj.SubIndexArray.splice(subIndexExists, 1);
-
-        // If SubIndexArray is empty, remove the entire parent index object
-        if (existingParentIndexObj.SubIndexArray.length === 0) {
-          cloneSubLockArry.splice(parentIndexExists, 1);
-        }
-      } else {
-        existingParentIndexObj.SubIndexArray.push({ subIndex: subindex });
-      }
-    } else {
-      let newData = {
-        parentIndex: index,
-        SubIndexArray: [{ subIndex: subindex }],
-      };
-      cloneSubLockArry.push(newData);
-    }
-
-    setSubLockArray(cloneSubLockArry);
   };
 
   useEffect(() => {
@@ -635,45 +505,21 @@ const SubAgendaMappingDragging = ({
                                                           ]
                                                         }
                                                       >
-                                                        {/* {
-                                                          subAgendaData?.presenterName
-                                                        } */}
-                                                        {
-                                                          subAgendaData?.presenterName +
-                                                            " - (" +
-                                                            moment(
-                                                              timeFormatFunction(
-                                                                data.startDate
-                                                              )
-                                                            ).format(
-                                                              "hh:mm a"
-                                                            ) +
-                                                            " - " +
-                                                            moment(
-                                                              timeFormatFunction(
-                                                                data.endDate
-                                                              )
-                                                            ).format(
-                                                              "hh:mm a"
-                                                            ) +
-                                                            ")"
-                                                          // moment(
-                                                          //   subAgendaData?.endDate,
-                                                          //   "HHmmss"
-                                                          // ).format("hh:mm a") +
-                                                        }
+                                                        {subAgendaData?.presenterName +
+                                                          " - (" +
+                                                          moment(
+                                                            timeFormatFunction(
+                                                              data.startDate
+                                                            )
+                                                          ).format("hh:mm a") +
+                                                          " - " +
+                                                          moment(
+                                                            timeFormatFunction(
+                                                              data.endDate
+                                                            )
+                                                          ).format("hh:mm a") +
+                                                          ")"}
                                                       </p>
-                                                      {/* <span
-                                                      className={
-                                                        styles[
-                                                          "agendaCreationTime"
-                                                        ]
-                                                      }
-                                                    >
-                                                      {
-                                                        subAgendaData?.presenterName
-                                                      }
-                                                    </span> */}
                                                     </div>
                                                   </Col>
                                                 </Row>
@@ -692,67 +538,9 @@ const SubAgendaMappingDragging = ({
                                                     </span>
                                                   </Col>
                                                 </Row>
-                                                {/* <Row className="mt-3">
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles["Agenda_Heading"]
-                                                    }
-                                                  >
-                                                    {t("Attachments")}
-                                                  </span>
-                                                </Col>
-                                              </Row> */}
+
                                                 <Row className="mt-3">
                                                   <Col lg={6} md={6} sm={6}>
-                                                    {/* <Radio.Group
-                                                    value={
-                                                      subAgendaData.subSelectRadio
-                                                    }
-                                                    onChange={(e) =>
-                                                      handleSubAgendaRadioChange(
-                                                        index,
-                                                        subIndex,
-                                                        e
-                                                      )
-                                                    }
-                                                  >
-                                                    <Radio value={1}>
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("Document")}
-                                                      </span>
-                                                    </Radio>
-                                                    <Radio value={2}>
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("URL")}
-                                                      </span>
-                                                    </Radio>
-                                                    <Radio value={3}>
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t(
-                                                          "Request from contributor"
-                                                        )}
-                                                      </span>
-                                                    </Radio>
-                                                  </Radio.Group> */}
                                                     {subAgendaData.subSelectRadio ===
                                                     1 ? (
                                                       <span
@@ -807,7 +595,6 @@ const SubAgendaMappingDragging = ({
                                                         subAgendaData.subfiles
                                                       ).length > 0 ? (
                                                         <>
-                                                          {/* <Row> */}
                                                           {subAgendaData.subfiles.map(
                                                             (
                                                               filesData,
@@ -825,56 +612,8 @@ const SubAgendaMappingDragging = ({
                                                                 }
                                                                 key={fileIndex}
                                                               />
-                                                              // <Col
-                                                              //   key={
-                                                              //     fileIndex
-                                                              //   }
-                                                              //   lg={3}
-                                                              //   md={3}
-                                                              //   sm={12}
-                                                              // >
-                                                              //   <div
-                                                              //     className={
-                                                              //       styles[
-                                                              //         "agendaFileAttachedView"
-                                                              //       ]
-                                                              //     }
-                                                              //   >
-                                                              //     <span
-                                                              //       className={
-                                                              //         styles[
-                                                              //           "agendaFileSpan"
-                                                              //         ]
-                                                              //       }
-                                                              //     >
-                                                              //       <img
-                                                              //         draggable={
-                                                              //           false
-                                                              //         }
-                                                              //         src={getIconSource(
-                                                              //           getFileExtension(
-                                                              //             filesData.displayAttachmentName
-                                                              //           )
-                                                              //         )}
-                                                              //         alt=""
-                                                              //       />{" "}
-                                                              //       <span
-                                                              //         onClick={() =>
-                                                              //           downloadDocument(
-                                                              //             filesData
-                                                              //           )
-                                                              //         }
-                                                              //       >
-                                                              //         {
-                                                              //           filesData?.displayAttachmentName
-                                                              //         }
-                                                              //       </span>
-                                                              //     </span>
-                                                              //   </div>
-                                                              // </Col>
                                                             )
                                                           )}
-                                                          {/* </Row> */}
                                                         </>
                                                       ) : subAgendaData.subSelectRadio ===
                                                           1 &&

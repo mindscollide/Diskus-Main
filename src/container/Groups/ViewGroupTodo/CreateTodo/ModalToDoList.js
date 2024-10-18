@@ -1,13 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import "./ModalToDoList.css";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import Select from "react-select";
 import deleteButtonCreateMeeting from "../../../../assets/images/cancel_meeting_icon.svg";
 import InputIcon from "react-multi-date-picker/components/input_icon";
@@ -16,7 +14,6 @@ import {
   Button,
   Modal,
   Notification,
-  InputSearchFilter,
   AttachmentViewer,
 } from "../../../../components/elements";
 import {
@@ -40,23 +37,17 @@ import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
-  const timePickerRef = useRef();
   const { currentTime, current_Date, dateObject, current_value } =
     get_CurrentDateTime();
   const [fileSize, setFileSize] = useState(0);
-  const [visible, setVisible] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
-  const [createTodoTime, setCreateTodoTime] = useState("");
   const [createTodoDate, setCreateTodoDate] = useState(current_Date);
-
   const state = useSelector((state) => state);
-
   const { toDoListReducer, GroupsReducer } = state;
 
   //To Display Modal
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -104,25 +95,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   });
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
-
   //task Asignees
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
-
   const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
   const [taskAssigneeApiData, setTaskAssigneeApiData] = useState([]);
-
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
-
   const [allPresenters, setAllPresenters] = useState([]);
-
   const [presenterValue, setPresenterValue] = useState({
     value: 0,
     label: "",
@@ -235,7 +219,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     console.log(data, "uploadFilesToDouploadFilesToDo");
     let filesArray = Object.values(data.target.files);
     let fileSizeArr = fileSize;
-    let flag = false;
     let sizezero = true;
     let size = true;
 
@@ -461,14 +444,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           Task,
           TaskCreatorID,
           TaskAssignedTo,
-          // TasksAttachments,
         };
       } else {
         Data = {
           Task,
           TaskCreatorID,
           TaskAssignedTo: taskAssignedTO,
-          // TasksAttachments,
         };
       }
       dispatch(CreateToDoList(navigate, Data, t, setCreateTaskID, 2));
@@ -482,14 +463,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       if (fileForSend.length > 0) {
         const uploadPromises = fileForSend.map(async (newData) => {
           await dispatch(
-            uploadDocumentsTaskApi(
-              navigate,
-              t,
-              newData,
-              folderID,
-              // newFolder,
-              newfile
-            )
+            uploadDocumentsTaskApi(navigate, t, newData, folderID, newfile)
           );
         });
         // Wait for all promises to resolve
@@ -578,7 +552,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   //Selecter Assignee onChange
-
   const onChangeSearch = (item) => {
     console.log(item, "itemitemitem");
     setPresenterValue(item);
@@ -609,8 +582,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           modalFooterClassName="footertodoCreateModal"
           modalHeaderClassName="headertodoCreateModal"
           ButtonTitle={ModalTitle}
-          // size={closeConfirmationBox ? null : "md"}
-          // ModalTitle={"Modal Header"}
           ModalBody={
             isCreateTodo ? (
               <>
@@ -642,7 +613,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
                       <DatePicker
                         onFocusedDateChange={toDoDateHandler}
-                        // inputClass="datepicker_input"
                         format={"DD/MM/YYYY"}
                         value={toDoDate}
                         minDate={moment().toDate()}
@@ -655,33 +625,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         }
                         editable={false}
                         className="datePickerTodoCreate2"
-                        // disabled={disabled}
-                        // name={name}
                         onOpenPickNewDate={true}
                         inputMode=""
-                        // value={value}
                         calendar={calendarValue}
                         locale={localValue}
                         ref={calendRef}
                       />
-                      {/* <MultiDatePicker
-                        onChange={toDoDateHandler}
-                        name="DeadLineDate"
-                        // value={toDoDate}
-                        refProp={calendRef}
-                        calendar={calendarValue}
-                        locale={localValue}
-                      /> */}
                     </Col>
-                    {/* <Col
-                      lg={3}
-                      md={3}
-                      sm={2}
-                      xs={12}
-                      className="CreateMeetingDate text-center"
-                    >
-                      
-                    </Col> */}
+
                     <Col
                       lg={6}
                       md={6}
@@ -689,17 +640,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       xs={12}
                       className="todolist-modal-fields margin-top-0 d-flex  flex-column"
                     >
-                      {/* <InputSearchFilter
-                        placeholder={t("Add-assignee")}
-                        value={taskAssignedToInput}
-                        filteredDataHandler={searchFilterHandler(
-                          taskAssignedToInput
-                        )}
-                        applyClass="assigneeFindInCreateToDo"
-                        disable={taskAssigneeLength}
-                        change={onChangeSearch}
-                      /> */}
-
                       <Select
                         options={allPresenters}
                         maxMenuHeight={140}

@@ -31,10 +31,7 @@ import RedCross from "../../../../assets/images/CrossIcon.svg";
 import UnsavedEditPollsMeeting from "./UnsavedEditPollsMeeting/UnsavedEditPollsMeeting";
 import { showunsavedEditPollsMeetings } from "../../../../store/actions/NewMeetingActions";
 import {
-  convertGMTDateintoUTC,
-  convertintoGMTCalender,
   multiDatePickerDateChangIntoUTC,
-  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../store/actions/Polls_actions";
@@ -42,7 +39,6 @@ import { updatePollsApi } from "../../../../store/actions/Polls_actions";
 const EditPollsMeeting = ({ setEditPolls }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
   const { NewMeetingreducer, PollsReducer, GroupsReducer } = useSelector(
@@ -50,7 +46,6 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   );
   const [meetingDate, setMeetingDate] = useState("");
   const [error, setError] = useState(false);
-
   const [updatePolls, setupdatePolls] = useState({
     Title: "",
     AllowMultipleAnswers: false,
@@ -63,37 +58,19 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const calendRef = useRef();
   const [memberSelect, setmemberSelect] = useState([]);
   const [checkForPollStatus, setCheckForPollStatus] = useState(false);
-
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [members, setMembers] = useState([]);
-
-  const [options, setOptions] = useState([
-    // {
-    //   name: 1,
-    //   value: "",
-    // },
-    // {
-    //   name: 2,
-    //   value: "",
-    // },
-    // {
-    //   name: 3,
-    //   value: "",
-    // },
-  ]);
-
+  const [options, setOptions] = useState([]);
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
-
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
     optionscross.splice(index, 1);
     setOptions(optionscross);
   };
-
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
@@ -104,9 +81,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       })
     );
   };
-
   const allValuesNotEmpty = options.every((item) => item.value !== "");
-  console.log(allValuesNotEmpty, "allValuesNotEmpty");
   const addNewRow = () => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
@@ -186,7 +161,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         try {
           selectedsearch.forEach((seledtedData, index) => {
             let check1 = getUserDetails.find(
-              (data, index) => data.pK_UID === seledtedData.value
+              (data) => data.pK_UID === seledtedData.value
             );
 
             if (check1 !== undefined) {
@@ -195,7 +170,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
               if (newarr.length > 0) {
                 newarr.forEach((morganizer, index) => {
                   let check2 = newarr.find(
-                    (data, index) => data.UserID === morganizer.pK_UID
+                    (data) => data.UserID === morganizer.pK_UID
                   );
                   if (check2 !== undefined) {
                   } else {
@@ -296,7 +271,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     ) {
       let newArr = [];
       let getUserDetails = GroupsReducer.getGroupByGroupIdResponse.groupMembers;
-      getUserDetails.forEach((data, index) => {
+      getUserDetails.forEach((data) => {
         newArr.push({
           value: data.pK_UID,
           name: data.userName,
@@ -370,22 +345,12 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           setMembers(pollMembers);
         }
         try {
-          // if (Object.keys(pollsDetailsData.pollOptions).length > 2) {
           let Option = [];
           pollsDetailsData.pollOptions.map((data, index) => {
             let dataAdd = { name: index + 1, value: data.answer };
             Option.push(dataAdd);
           });
           setOptions(Option);
-          // } else if (Object.keys(pollsDetailsData.pollOptions).length <= 2) {
-          //   const updatedOptions = options.map((option) => {
-          //     const apiData = pollsDetailsData.pollOptions.find(
-          //       (apiOption, index) => index + 1 === option.name
-          //     );
-          //     return apiData ? { ...option, value: apiData.answer } : option;
-          //   });
-          //   setOptions(updatedOptions);
-          // }
         } catch {}
       }
     } catch {}
@@ -508,6 +473,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                         <img
                           draggable={false}
                           src={plusFaddes}
+                          alt=""
                           width="15.87px"
                           height="15.87px"
                         />

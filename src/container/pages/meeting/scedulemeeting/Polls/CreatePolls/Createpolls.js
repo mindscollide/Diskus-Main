@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import {
   Button,
@@ -42,7 +40,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -91,7 +89,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-    // let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
         return item.name === name ? { ...item, value: newValue } : item;
@@ -126,14 +123,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
 
   const handleCancelButton = () => {
     dispatch(showUnsavedPollsMeeting(true));
-  };
-
-  const handleViewPollsUnPublished = () => {
-    setSavedPolls(true);
-  };
-
-  const handleViewPollsPublished = () => {
-    setSavePollsPublished(true);
   };
 
   const HandleChange = (e, index) => {
@@ -320,10 +309,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
       if (Object.keys(selectedsearch).length > 0) {
         try {
           selectedsearch.map((seledtedData, index) => {
-            console.log(
-              seledtedData,
-              "seledtedDataseledtedDataseledtedDataseledtedData"
-            );
             if (seledtedData.type === 1) {
               let check1 = pollsData.meetingOrganizers.find(
                 (data, index) => data.userID === seledtedData.value
@@ -766,6 +751,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                             <img
                                               src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                               draggable={false}
+                                              alt=""
                                               height="33px"
                                               width="33px"
                                               className={
@@ -787,6 +773,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                             <img
                                               draggable={false}
                                               src={RedCross}
+                                              alt=""
                                               height="14px"
                                               width="14px"
                                               className="cursor-pointer"
@@ -825,14 +812,11 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                   text={t("Save")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(1)}
-                  // onClick={handleViewPollsUnPublished}
                 />
                 <Button
                   text={t("Publish")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(2)}
-
-                  // onClick={handleViewPollsPublished}
                 />
               </Col>
             </Row>

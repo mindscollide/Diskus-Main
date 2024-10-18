@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import "react-dropzone-uploader/dist/styles.css";
-import { Progress, Space, Spin, Tooltip } from "antd";
+import { Spin, Tooltip } from "antd";
 import "react-circular-progressbar/dist/styles.css";
 import Cancellicon from "../../assets/images/cross_dataroom.svg";
 import hoverdelete from "../../assets/images/hover_delete.svg";
@@ -12,22 +12,19 @@ import del from "../../assets/images/delete_dataroom.png";
 import dot from "../../assets/images/Group 2898.svg";
 import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
 import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg";
-import { Dash, Plus, XCircleFill } from "react-bootstrap-icons";
+import { Dash, Plus } from "react-bootstrap-icons";
 import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected.svg";
 import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
 import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
 import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
 import Recentadded_emptyIcon from "../../assets/images/Recentadded_emptyIcon.png";
-import start from "../../assets/images/Icon feather-star.svg";
 import plus from "../../assets/images/Icon feather-folder.svg";
 import fileupload from "../../assets/images/Group 2891.svg";
-import { CircularProgress, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import styles from "./DataRoom.module.css";
 import {
   Button,
-  TextField,
   TableToDo,
-  Loader,
   Notification,
   UploadTextField,
 } from "../../components/elements";
@@ -40,7 +37,6 @@ import ModalShareFolder from "./ModalShareFolder/ModalShareFolder";
 import ModalrequestingAccess from "./ModalrequestingAccess/ModalrequestingAccess";
 import ModalShareFile from "./ModalShareFile/ModalShareFile";
 import Dragger from "../../components/elements/Dragger/Dragger";
-import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
 import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
 import ModalOptionsFolder from "./ModalUploadOptions_Folder/ModalOptions_Folder";
 import {
@@ -62,15 +58,13 @@ import {
   getSharedFileUsersApi,
   getSharedFolderUsersApi,
   isFolder,
-  showFileDetailsModal,
-  uploadDocumentsApi,
   validateUserAvailibilityEncryptedStringDataRoomApi,
 } from "../../store/actions/DataRoom_actions";
 import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
 import { _justShowDateformat } from "../../commen/functions/date_formater";
 import GridViewDataRoom from "./GridViewDataRoom/GridViewDataRoom";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import DeleteNotificationBox from "./DeleteNotification/deleteNotification";
 import FileRemoveBox from "./FileRemoved/FileRemoveBox";
 import ShowRenameNotification from "./ShowRenameNotification/ShowRenameNotification";
@@ -78,10 +72,8 @@ import ActionUndoNotification from "./ActionUndoNotification/ActionUndoNotificat
 import ModalShareDocument from "./ModalSharedocument/ModalShareDocument";
 import {
   CheckFolderisExist,
-  CreateFolder_success,
   CreateFolderEmpty,
   createFolder,
-  folderUploadData,
   uploadFile,
 } from "../../store/actions/FolderUploadDataroom";
 import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
@@ -105,10 +97,7 @@ import {
   optionsforFolderEditor,
   optionsforFolder,
   optionsforPDFandSignatureFlow,
-  optionShareTabForViewerRole,
-  optionShareTabForEditorRole,
 } from "./SearchFunctionality/option";
-import { allAssignessList } from "../../store/actions/Get_List_Of_Assignees";
 import axios from "axios";
 import ModalFileRequest from "./ModalFileRequesting/ModalFileRequesting";
 import ViewDetailsModal from "./ViewDetailsModal/ViewDetailsModal";
@@ -123,7 +112,6 @@ import {
   clearWorkFlowResponseMessage,
   createWorkflowApi,
   getAllPendingApprovalStatusApi,
-  getAllSignaturesDocumentsforCreatorApi,
 } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 import {
@@ -133,11 +121,6 @@ import {
 } from "../../commen/functions/utils";
 import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
 import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
-import {
-  validateExtensionsforHTMLPage,
-  validationExtension,
-} from "../../commen/functions/validations";
-import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const DataRoom = () => {
@@ -157,13 +140,9 @@ const DataRoom = () => {
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
   const [dataRoomString, setDataRoomString] = useState("");
-  const {
-    uploadReducer,
-    DataRoomReducer,
-    LanguageReducer,
-    SignatureWorkFlowReducer,
-    webViewer,
-  } = useSelector((state) => state);
+  const { DataRoomReducer, SignatureWorkFlowReducer, webViewer } = useSelector(
+    (state) => state
+  );
   const SignatureResponseMessage = useSelector(
     (state) => state.SignatureWorkFlowReducer.ResponseMessage
   );
@@ -173,7 +152,6 @@ const DataRoom = () => {
   const [shareFileModal, setShareFileModal] = useState(false);
   const [foldermodal, setFolderModal] = useState(false);
   const [uploadOptionsmodal, setUploadOptionsmodal] = useState(false);
-  const [canceluploadmodal, setCanceluploadmodal] = useState(false);
   const [searchbarshow, setSearchbarshow] = useState(false);
   const [searchoptions, setSearchoptions] = useState(false);
   const [sRowsData, setSRowsData] = useState(0);
@@ -326,7 +304,6 @@ const DataRoom = () => {
         console.log("Test Dataroom");
         const remainingString = DataRoomString.replace("/", "");
         console.log(remainingString, "remainingStringremainingString");
-        // setRequestingAccess(true);
         setDataRoomString(remainingString);
         let Data = { Link: remainingString };
 
@@ -360,8 +337,6 @@ const DataRoom = () => {
     } else if (currentView === 5) {
       let newData = { IsCreator: true };
       await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
-      // let Data = { pageNo: 1, pageSize: 10 };
-      // await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
 
       setGetAllData([]);
       setSharedwithmebtn(true);
@@ -377,7 +352,6 @@ const DataRoom = () => {
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {
-        //     dispatch(allAssignessList(navigate, t,false));
       }
       window.addEventListener("click", async function (e) {
         let clsname = e.target.className;
@@ -402,27 +376,6 @@ const DataRoom = () => {
     } catch {}
     if (currentView !== null) {
       apiCalling();
-      // if (currentView === 4) {
-      //   let Data = {
-      //     UserID: Number(userID),
-      //     OrganizationID: Number(organizationID),
-      //   };
-      //   dispatch(getRecentDocumentsApi(navigate, t, Data));
-      // } else if (currentView === 5) {
-      //   let newData = { IsCreator: true };
-      //   dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
-      //   let Data = { pageNo: 1, pageSize: 10 };
-      //   dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
-      //   setGetAllData([]);
-      //   setSharedwithmebtn(true);
-      //   localStorage.removeItem("folderID");
-      //   if (searchoptions) {
-      //     setSearchoptions(false);
-      //   }
-      // } else {
-      //   dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
-      //   localStorage.removeItem("folderID");
-      // }
     } else {
       localStorage.setItem("setTableView", 3);
       dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
@@ -799,9 +752,6 @@ const DataRoom = () => {
     dispatch(getSharedFolderUsersApi(navigate, Data, t, setSharefoldermodal));
     setFolderId(id);
     setFolderName(name);
-    // setSharefoldermodal(true);
-    // setSharehoverstyle(true);
-    // setDeltehoverstyle(false);
   };
 
   const showShareFileModal = (id, name) => {
@@ -811,9 +761,6 @@ const DataRoom = () => {
     dispatch(getSharedFileUsersApi(navigate, Data, t, setShareFileModal));
     setFolderId(id);
     setFileName(name);
-    // setShareFileModal(true);
-    // setSharehoverstyle(true);
-    // setDeltehoverstyle(false);
   };
 
   const handleGridView = () => {
@@ -832,8 +779,6 @@ const DataRoom = () => {
     // getAllPendingApprovalStatusApi
     let newData = { IsCreator: true };
     await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
-    // let Data = { sRow: 0, Length: 10 };
-    // await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
 
     //  localStorage.set
     setGetAllData([]);
@@ -908,7 +853,6 @@ const DataRoom = () => {
     localStorage.setItem("folderID", folderid);
     await dispatch(getFolderDocumentsApi(navigate, folderid, t));
     setSearchTabOpen(false);
-    // localStorage.setItem("setTableView", 3);
   };
 
   const fileOptionsSelect = (data, record, pdfDataJson) => {
@@ -967,12 +911,9 @@ const DataRoom = () => {
       if (record.isFolder) {
         setIsFolderDeleteId(record.id);
         setIsFolderDelete(true);
-        // dispatch(deleteFolder(navigate, record.id, t));
       } else {
         setIsFileDeleteId(record.id);
         setIsFileDelete(true);
-
-        // dispatch(deleteFileDataroom(navigate, record.id, t));
       }
       // Delete File
     } else if (data.value === 7) {
@@ -1440,45 +1381,6 @@ const DataRoom = () => {
                         />
                       </span>
                     </Tooltip>
-                    {/* {record.permissionID === 1 ||
-                    record.permissionID === 3 ? null : (
-                      <Tooltip placement="topRight" title={t("Delete")}>
-                        <span className={styles["delete__Icon"]}>
-                          <img
-                            src={hoverdelete}
-                            height="10.71px"
-                            alt=""
-                            width="15.02px"
-                            className={styles["delete__Icon_img_hover"]}
-                            onClick={() => {
-                              if (record.isFolder) {
-                                dispatch(deleteFolder(navigate, record.id, t));
-                              } else {
-                                dispatch(
-                                  deleteFileDataroom(navigate, record.id, t)
-                                );
-                              }
-                            }}
-                          />
-                          <img
-                            src={del}
-                            height="12.17px"
-                            alt=""
-                            width="9.47px"
-                            className={styles["delete__Icon_img"]}
-                            onClick={() => {
-                              if (record.isFolder) {
-                                dispatch(deleteFolder(navigate, record.id, t));
-                              } else {
-                                dispatch(
-                                  deleteFileDataroom(navigate, record.id, t)
-                                );
-                              }
-                            }}
-                          />
-                        </span>
-                      </Tooltip>
-                    )} */}
                   </div>
 
                   <Tooltip placement="topRight" title={t("More")}>
@@ -2072,45 +1974,6 @@ const DataRoom = () => {
                         />
                       </span>
                     </Tooltip>
-                    {/* {record.permissionID === 1 ||
-                    record.permissionID === 3 ? null : (
-                      <Tooltip placement="topRight" title={t("Delete")}>
-                        <span className={styles["delete__Icon"]}>
-                          <img
-                            src={hoverdelete}
-                            height="10.71px"
-                            alt=""
-                            width="15.02px"
-                            className={styles["delete__Icon_img_hover"]}
-                            onClick={() => {
-                              if (record.isFolder) {
-                                dispatch(deleteFolder(navigate, record.id, t));
-                              } else {
-                                dispatch(
-                                  deleteFileDataroom(navigate, record.id, t)
-                                );
-                              }
-                            }}
-                          />
-                          <img
-                            src={del}
-                            height="12.17px"
-                            alt=""
-                            width="9.47px"
-                            className={styles["delete__Icon_img"]}
-                            onClick={() => {
-                              if (record.isFolder) {
-                                dispatch(deleteFolder(navigate, record.id, t));
-                              } else {
-                                dispatch(
-                                  deleteFileDataroom(navigate, record.id, t)
-                                );
-                              }
-                            }}
-                          />
-                        </span>
-                      </Tooltip>
-                    )} */}
                   </div>
 
                   <Tooltip placement="topRight" title={t("More")}>
@@ -2315,13 +2178,9 @@ const DataRoom = () => {
                             if (record.isFolder) {
                               setIsFolderDeleteId(record.id);
                               setIsFolderDelete(true);
-
-                              // dispatch(deleteFolder(navigate, record.id, t));
                             } else {
                               setIsFileDeleteId(record.id);
                               setIsFileDelete(true);
-
-                              // dispatch(deleteFileDataroom(navigate, record.id, t));
                             }
                           }}
                         />
@@ -2335,20 +2194,10 @@ const DataRoom = () => {
                             if (record.isFolder) {
                               setIsFolderDeleteId(record.id);
                               setIsFolderDelete(true);
-                              // dispatch(deleteFolder(navigate, record.id, t));
                             } else {
                               setIsFileDeleteId(record.id);
                               setIsFileDelete(true);
-
-                              // dispatch(deleteFileDataroom(navigate, record.id, t));
                             }
-                            // if (record.isFolder) {
-                            //   dispatch(deleteFolder(navigate, record.id, t));
-                            // } else {
-                            //   dispatch(
-                            //     deleteFileDataroom(navigate, record.id, t)
-                            //   );
-                            // }
                           }}
                         />
                       </span>
@@ -2499,9 +2348,6 @@ const DataRoom = () => {
       dataIndex: "owner",
       key: "owner",
       width: "90px",
-      // sorter: true,
-      // sortOrder: currentSort,
-      // sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
       },
@@ -2604,45 +2450,6 @@ const DataRoom = () => {
                       />
                     </span>
                   </Tooltip>
-                  {/* {record.permissionID === 1 ||
-                    record.permissionID === 3 ? null : (
-                      <Tooltip placement="topRight" title={t("Delete")}>
-                        <span className={styles["delete__Icon"]}>
-                          <img
-                            src={hoverdelete}
-                            height="10.71px"
-                            alt=""
-                            width="15.02px"
-                            className={styles["delete__Icon_img_hover"]}
-                            onClick={() => {
-                              if (record.isFolder) {
-                                dispatch(deleteFolder(navigate, record.id, t));
-                              } else {
-                                dispatch(
-                                  deleteFileDataroom(navigate, record.id, t)
-                                );
-                              }
-                            }}
-                          />
-                          <img
-                            src={del}
-                            height="12.17px"
-                            alt=""
-                            width="9.47px"
-                            className={styles["delete__Icon_img"]}
-                            onClick={() => {
-                              if (record.isFolder) {
-                                dispatch(deleteFolder(navigate, record.id, t));
-                              } else {
-                                dispatch(
-                                  deleteFileDataroom(navigate, record.id, t)
-                                );
-                              }
-                            }}
-                          />
-                        </span>
-                      </Tooltip>
-                    )} */}
                 </div>
 
                 <Tooltip placement="topRight" title={t("More")}>
@@ -3119,7 +2926,6 @@ const DataRoom = () => {
       folder.Uploaded = true;
       folder.Uploading = false;
       setDetaUplodingForFOlder((prevFolders) => [...prevFolders]);
-      // dispatch(CreateFolder_success(0));
       // All API calls are complete, you can perform other actions here
     } catch {}
   };
@@ -3222,16 +3028,10 @@ const DataRoom = () => {
     });
     dispatch(CreateFolderEmpty());
 
-    // setDetaUplodingForFOlder(newFolderData);
-    // cancelToken.cancel("API call canceled by user");
     setDetaUplodingForFOlder([]);
     setTasksAttachments([]);
     setShowbarupload(false);
     setCanselingDetaUplodingForFOlder(false);
-    // if (data.axiosCancelToken) {
-    //   data.axiosCancelToken.cancel("Upload canceled");
-    //
-    // }
   };
 
   const handleOutsideClick = (event) => {
@@ -3436,11 +3236,7 @@ const DataRoom = () => {
                 <span className={styles["Data_room_heading"]}>
                   {t("Data-room")}
                 </span>
-                <Dropdown
-                  className={styles["DataRoom_DropDown"]}
-
-                  // onClick={eventClickHandler}
-                >
+                <Dropdown className={styles["DataRoom_DropDown"]}>
                   <Dropdown.Toggle title={t("New")}>
                     <Row>
                       <Col
@@ -3521,7 +3317,6 @@ const DataRoom = () => {
                           <UploadDataFolder
                             title={t("Folder-upload")}
                             setProgress={setProgress}
-                            // customRequestFolderUpload={handleUploadFolder}
                             onChange={handleChangeFolderUpload}
                           />
                         </Col>
@@ -3650,7 +3445,6 @@ const DataRoom = () => {
                                 ? `${styles["Shared_with_me_btn_active"]}`
                                 : `${styles["Shared_with_me_btn"]}`
                             }
-                            // onClick={showCancellUploadModal}
                             onClick={SharewithmeButonShow}
                           />
                           {checkFeatureIDAvailability(19) ||
@@ -3662,7 +3456,6 @@ const DataRoom = () => {
                                   ? `${styles["Send_for_approval_btn_active"]}`
                                   : `${styles["Send_for_approval_btn"]}`
                               }
-                              // onClick={showCancellUploadModal}
                               onClick={SendForApprovalButton}
                             />
                           ) : null}
@@ -3863,7 +3656,6 @@ const DataRoom = () => {
                                         ),
                                       }}
                                       onChange={handleSortMyRecentTab}
-                                      // rowSelection={rowSelection}
                                       size={"middle"}
                                     />
                                   ) : (
@@ -3891,7 +3683,7 @@ const DataRoom = () => {
                                 <>
                                   <Row className="text-center mt-4">
                                     <Col lg={12} sm={12} md={12}>
-                                      <img src={Recentadded_emptyIcon} />
+                                      <img src={Recentadded_emptyIcon} alt="" />
                                     </Col>
                                     <Col lg={12} sm={12} md={12}>
                                       <p className={styles["Recently_Added"]}>
@@ -4006,9 +3798,7 @@ const DataRoom = () => {
                                     className={"DataRoom_Table"}
                                     rows={getAllData}
                                     pagination={false}
-                                    // scroll={{x: "max-content"}}
                                     onChange={handleSortMyDocuments}
-                                    // rowSelection={rowSelection}
                                     size={"middle"}
                                   />
                                 </InfiniteScroll>
@@ -4149,12 +3939,7 @@ const DataRoom = () => {
           setRequestingAccess={setRequestingAccess}
         />
       ) : null}
-      {/* {canselingDetaUplodingForFOlder ? (
-        <ModalCancelDownload
-          cancelDownload={canselingDetaUplodingForFOlder}
-          setCancelDownload={canselingDetaUplodingForFOlder}
-        />
-      ) : null} */}
+
       {showrenamemodal ? (
         <>
           <ModalRenameFolder

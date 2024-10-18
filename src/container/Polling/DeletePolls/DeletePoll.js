@@ -3,7 +3,7 @@ import styles from "./DeletePoll.module.css";
 import { Modal, Button } from "../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSSR, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Col, Container, Row } from "react-bootstrap";
 import {
   UpdatePollStatusByPollIdApi,

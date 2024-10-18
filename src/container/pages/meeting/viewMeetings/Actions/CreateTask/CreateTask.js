@@ -14,13 +14,11 @@ import {
 import Select from "react-select";
 import { Upload } from "antd";
 import DrapDropIcon from "../../../../../../assets/images/DrapDropIcon.svg";
-import RedCrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import UnsavedActions from "../UnsavedActionModal/UnsavedActions";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-
 import {
   showUnsavedActionsModal,
   GetAllMeetingUserApiFunc,
@@ -31,19 +29,13 @@ import {
 } from "../../../../../../store/actions/Action_Meeting";
 
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
-import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import ViewActions from "../ViewActions/ViewActions";
 import { convertGMTDateintoUTC } from "../../../../../../commen/functions/date_formater";
 import {
   CreateToDoList,
   saveFilesTaskApi,
 } from "../../../../../../store/actions/ToDoList_action";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../../DataRoom/SearchFunctionality/option";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
@@ -635,11 +627,6 @@ const CreateTask = ({
     setSelectAgenda(e);
   };
 
-  const saveButtonFunc = () => {
-    seterror(true);
-    setonSaveView(true);
-  };
-
   // for selecting Data
   const handleSelectMemberValue = (e) => {
     console.log(e, "valuevaluevaluevaluevalue");
@@ -668,21 +655,6 @@ const CreateTask = ({
                 sm={12}
                 className={styles["Create_Task_main_Scroller"]}
               >
-                {/* <Row className="mt-4">
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["MainHeading_Create_Action"]}>
-                      ext ever since the 1500s, when an unknown printer took a
-                      galley of type and scrambled it to make a type specimen
-                      book. It has survived not only five centuries, but also
-                      the leap into electronic typesetting, remaining
-                      essentially unchanged. It was popularised in the 1960s
-                      with the release of Letraset sheets containing Lorem Ipsum
-                      passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
-                    </span>
-                  </Col>
-                </Row> */}
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
@@ -732,9 +704,6 @@ const CreateTask = ({
                           classNamePrefix={"Polls_Meeting"}
                           value={selectedTask.value === 0 ? null : selectedTask}
                           options={taskMemberSelect}
-                          // closeMenuOnSelect={false}
-                          // components={animatedComponents}
-                          // isMulti
                           onChange={handleSelectMemberValue}
                           isSearchable={false}
                         />
@@ -833,7 +802,6 @@ const CreateTask = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
                       {t("Description")}{" "}
-                      {/* <span className={styles["Steric"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
@@ -849,21 +817,7 @@ const CreateTask = ({
                       maxLength={2000}
                       rows="4"
                       placeholder={t("Description")}
-                      // required={true}
                     />
-                    {/* <Row>
-                      <Col>
-                        <p
-                          className={
-                            error && createTaskDetails.Description === ""
-                              ? ` ${styles["errorMessage-inLogin"]} `
-                              : `${styles["errorMessage-inLogin_hidden"]}`
-                          }
-                        >
-                          {t("Description-is-required-action")}
-                        </p>
-                      </Col>
-                    </Row> */}
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -894,61 +848,6 @@ const CreateTask = ({
                                             removeFileFunction(data)
                                           }
                                         />
-                                        {/* <Row>
-                                            <Col lg={10} md={10} sm={10}>
-                                              <Row className="mt-2">
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className="d-flex gap-2 align-items-center"
-                                                >
-                                                  <img
-                                                    alt="File Format"
-                                                    draggable={false}
-                                                    src={getIconSource(
-                                                      getFileExtension(
-                                                        data.DisplayAttachmentName
-                                                      )
-                                                    )}
-                                                    height="31.57px"
-                                                    width="31.57px"
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["FileName"]
-                                                    }
-                                                    title={
-                                                      data.DisplayAttachmentName
-                                                    }
-                                                  >
-                                                    {data.DisplayAttachmentName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                            <Col
-                                              lg={2}
-                                              md={2}
-                                              sm={2}
-                                              className="d-flex align-items-center justify-content-start mt-1"
-                                            >
-                                              <img
-                                                alt="dragger"
-                                                draggable={false}
-                                                src={RedCrossIcon}
-                                                height="20.76px"
-                                                width="20.76px"
-                                                className={
-                                                  styles["CrossIconClass"]
-                                                }
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  removeFileFunction(index);
-                                                }}
-                                              />
-                                            </Col>
-                                          </Row> */}
                                       </Col>
                                     </>
                                   );
@@ -1042,21 +941,6 @@ const CreateTask = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {/* <Button
-                  text={t("Clone-meeting")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                />
-
-                <Button
-                  text={t("Delete-meeting")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                />
-
-                <Button
-                  text={t("Publish-the-meeting")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                /> */}
-
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Button_Polls_meeting"]}
@@ -1066,7 +950,6 @@ const CreateTask = ({
                 <Button
                   text={t("Save")}
                   className={styles["Save_Button_Polls_meeting"]}
-                  // onClick={saveButtonFunc}
                   onClick={actionSaveHandler}
                 />
               </Col>

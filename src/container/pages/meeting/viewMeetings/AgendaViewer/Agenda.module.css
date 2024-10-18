@@ -79,7 +79,6 @@ body[dir="rtl"] .SubajendaBox {
   margin-left: 10px !important;
   filter: opacity(0.5);
   position: relative;
-  /* pointer-events: none !important; */
 }
 
 .Agenda_Heading {
@@ -328,15 +327,6 @@ body[dir="rtl"] .RedCross_Icon_class_Main_agenda {
   width: 100% !important;
 }
 
-/* .SectionInnerClass { */
-/* width: 100% !important; */
-/* margin-left: 50px !important; */
-/* } */
-
-/* body[dir="rtl"] .SectionInnerClass {
-  margin-right: 50px !important;
-} */
-
 .BackGroundNewImplemented {
   background: #5f78d6;
   height: 100%;
@@ -486,7 +476,6 @@ body[dir="rtl"] .backGorund {
 
 .SubAgendaSection {
   width: 100% !important;
-  /* margin-left: 36px !important; */
   z-index: 1;
 }
 
@@ -500,10 +489,6 @@ body[dir="rtl"] .SubAgendaSection {
   font-weight: 600 !important;
   cursor: pointer !important;
 }
-
-/* .Padding_SubAgenda {
-  padding: 0px 20px !important;
-} */
 
 .AgendaTitle_Heading {
   font-weight: 600 !important;
@@ -1066,7 +1051,6 @@ span.SubAgenda_Description {
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  /* position: absolute; */
   cursor: pointer;
   right: 80px;
   top: 0;
@@ -1082,7 +1066,6 @@ body[dir="rtl"] .box-agendas-camera {
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  /* position: absolute; */
   cursor: pointer;
   right: auto;
   left: 90px;

@@ -1,12 +1,11 @@
 .Committee-heading-size {
   font-size: 30px !important;
   color: #6172d6 !important;
-font-weight: 600;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Committee-heading-size {
   font-weight: 600;
-
 }
 
 .create-Committee-btn {
@@ -57,12 +56,6 @@ body[dir="rtl"] .PLusICon {
   margin-left: 5px !important;
 }
 
-/* .create-Committee-btn::before {
-  content: "\002B";
-  margin-right: 10px !important;
-  font-size: 17px !important;
-} */
-
 .Archived-Group-btn-Committee-section {
   width: 219px !important;
   height: 31px !important;
@@ -111,14 +104,6 @@ body[dir="rtl"] .Archived-Group-btn-Committee-section {
   border-radius: 2px !important;
 }
 
-/* .In-Active-status-Committee-Group {
-  background-color: #ebf8ef !important;
-  color: #5a5a5a !important;
-  width: 100% !important;
-  padding: 4px !important;
-  font-size: 15px !important;
-  /* margin-left: 10px !important; */
-
 .CommitteeContainer {
   height: 91vh;
   width: 98% !important;
@@ -153,7 +138,6 @@ body[dir="rtl"] .Archived-Group-btn-Committee-section {
 }
 
 body[dir="rtl"] .Two-Icons-style-Committee-Group {
-  /* display: block; */
   padding-left: 22px !important;
 }
 
@@ -191,14 +175,9 @@ body[dir="rtl"] .PaginationStyle-Committee {
   padding: 12px 10px !important;
 }
 
-/* .Component-Of-Cards {
-  z-index: 9999 !important;
-} */
-
 .Dropdown-container-Committee {
   background: #fff !important;
   height: 34.8vh !important;
-  /* border: 1px solid #707070 !important; */
   width: 80% !important;
   z-index: 99999 !important;
   position: absolute;
@@ -207,7 +186,6 @@ body[dir="rtl"] .PaginationStyle-Committee {
   padding: 10px !important;
   border-radius: 4px !important;
   box-shadow: 0px 0px 5px #ccc;
-  /* z-index: 999999 !important; */
 }
 
 .HR-line-Committee-group {
@@ -282,7 +260,6 @@ body[dir="rtl"] .group-icon-Committee-Group {
 }
 
 body[dir="rtl"] .Two-Icons-style-Committee-Group {
-  /* display: block; */
   padding-left: 22px !important;
 }
 

@@ -18,7 +18,7 @@ import { resolutionResultTable } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import SeceretBallotingIcon from "../../../assets/images/resolutions/Secret_Balloting_icon.svg";
 
-const ResultResolution = ({ setResultresolution, resultresolution }) => {
+const ResultResolution = ({ setResultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,8 +32,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const [abstain, setAbstain] = useState(0);
   const [votingMethod, setVotingMethod] = useState("");
   const [isVotingMethodId, setVotingMethodId] = useState(0);
-
-  console.log(votingMethod, "votingMethodvotingMethod");
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
   const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
@@ -44,7 +42,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
-    // strokeWidth: "10px",
     hAxis: {
       viewWindow: {
         min: 0, // for space horizontally between bar
@@ -108,16 +105,11 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
     );
   };
   useEffect(() => {
-    console.log(
-      ResolutionReducer.getResolutionResult,
-      "ResolutionReducerResolutionReducerResolutionReducer"
-    );
     try {
       if (ResolutionReducer.getResolutionResult !== null) {
         let resolutionresult = ResolutionReducer.getResolutionResult;
         setApproved(resolutionresult.approvedVotes);
         setAbstain();
-
         setVotingMethod(resolutionresult.votingMethod);
         setPending(resolutionresult.pendingVoters);
         setNonApproved(resolutionresult.nonApprovedVotes);
@@ -149,7 +141,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
           </span>
         </Col>
       </Row>
-
       <Row>
         <Col lg={12} md={12} sm={12}>
           <Paper className={styles["Result_page_paper"]}>
@@ -281,7 +272,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     className="d-flex justify-content-center"
                   >
                     <Chart
-                      // controls={false}
                       chartType="ColumnChart"
                       width="450px"
                       height="250px"
@@ -289,7 +279,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       data={data}
                       options={options}
                       className={styles["Addchart"]}
-                      
                     />
                   </Col>
                 </Row>
@@ -334,7 +323,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                   >
                     <Row>
                       {voter.length > 0
-                        ? voter.map((data, index) => {
+                        ? voter.map((data) => {
                             console.log(data, "datadatadata");
                             return (
                               <>

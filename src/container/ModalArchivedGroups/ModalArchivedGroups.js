@@ -1,29 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal } from "../../components/elements";
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container } from "react-bootstrap";
-import { Pagination } from "antd";
 import { useTranslation } from "react-i18next";
 import styles from "./ModalArchivedGroups.module.css";
 import GroupIcon from "../../assets/images/Path 636.png";
 import right from "../../assets/images/rightchev.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Carousel from "react-bootstrap/Carousel";
 import {
   getArcheivedGroups,
-  getbyGroupID,
-  getGroups,
   updateGroupStatus,
 } from "../../store/actions/Groups_actions";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const ModalArchivedCommittee = ({
-  ModalTitle,
   archivedCommittee,
   setArchivedCommittee,
-  setViewGroupPage,
   setUpdateComponentpage,
 }) => {
   const { t } = useTranslation();
@@ -42,10 +36,7 @@ const ModalArchivedCommittee = ({
       dispatch(getArcheivedGroups(navigate, t, 1));
     }
   }, []);
-  console.log(
-    GroupsReducer.getAllGroupsResponse,
-    "GroupsReducerGroupsReducerGroupsReducer"
-  );
+
   useEffect(() => {
     // try{}catch{}
     if (GroupsReducer.realtimeGroupStatus !== null) {
@@ -95,8 +86,6 @@ const ModalArchivedCommittee = ({
             groupMembers: [...groups.groupMembers],
           }));
 
-          //  setgroupsData(updateGroups);
-
           setGroupsArheivedData(updateGroups);
         } else {
           setGroupsArheivedData([]);
@@ -109,20 +98,7 @@ const ModalArchivedCommittee = ({
     setUpdateComponentpage(true);
   };
 
-  const ViewGroupmodal = (groupID, statusID) => {
-    // dispatch(
-    //   getbyGroupID(
-    //     navigate,
-    //     groupID,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     1,
-    //     setArchivedGroups
-    //   )
-    // );
-    // setArchivedCommittee(false);
-  };
+  const ViewGroupmodal = () => {};
 
   const handlechange = (value) => {
     localStorage.setItem("groupsArCurrent", value);
@@ -158,7 +134,6 @@ const ModalArchivedCommittee = ({
               setArchivedCommittee(false);
             }}
             setShow={setArchivedCommittee}
-            // ButtonTitle={ModalTitle}
             closeButton={false}
             modalFooterClassName="d-block"
             modalHeaderClassName="d-block"
@@ -214,7 +189,6 @@ const ModalArchivedCommittee = ({
                     {groupsArheivedData.length > 0 &&
                     Object.values(groupsArheivedData).length > 0 ? (
                       groupsArheivedData.map((data, index) => {
-                        // if(index+1===Lastpostindex||index+1>=)
                         return (
                           <Col sm={12} md={4} lg={4} className="mb-3">
                             <Card
@@ -285,7 +259,6 @@ const ModalArchivedCommittee = ({
                                 className={"pagination-groups-table"}
                               >
                                 <CustomPagination
-                                  // defaultCurrent={currentposts}
                                   total={totalRecords}
                                   pageSize={8}
                                   current={currentGroupPage}

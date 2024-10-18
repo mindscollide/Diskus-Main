@@ -8,10 +8,7 @@ import { Button, Modal } from "../../../../../../../components/elements";
 import { showCastVoteAgendaModal } from "../../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { Radio } from "antd";
-import {
-  CasteVoteForAgenda,
-  GetAgendaAndVotingInfo,
-} from "../../../../../../../store/actions/MeetingAgenda_action";
+import { CasteVoteForAgenda } from "../../../../../../../store/actions/MeetingAgenda_action";
 
 const CastVoteAgendaModal = () => {
   const { t } = useTranslation();
@@ -70,8 +67,6 @@ const CastVoteAgendaModal = () => {
       (votingAnswer) => votingAnswer.votingAnswerID === selectedAnswerID
     );
     setSelectedAnswer(selectedObject);
-
-    console.log("selectedAnswer", selectedAnswer);
   };
 
   const castVoteHandler = () => {
@@ -90,16 +85,9 @@ const CastVoteAgendaModal = () => {
         },
       ],
     };
-    console.log("castVoteHandler", Data);
     dispatch(CasteVoteForAgenda(Data, navigate, t));
     dispatch(showCastVoteAgendaModal(false));
   };
-
-  console.log("Cast Vote Screen Reducer", MeetingAgendaReducer);
-
-  console.log("Cast Vote Data", castVoteData);
-
-  console.log("selectedAnswer", selectedAnswer);
 
   return (
     <section>

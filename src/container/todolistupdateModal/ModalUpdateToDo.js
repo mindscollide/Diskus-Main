@@ -26,7 +26,7 @@ import { showMessage } from "../../components/elements/snack_bar/utill";
 const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   const { t } = useTranslation();
   const state = useSelector((state) => state);
-  const { toDoListReducer, LanguageReducer } = state;
+  const { toDoListReducer } = state;
   //To Display Modal
 
   const dispatch = useDispatch();
@@ -164,18 +164,6 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       dispatch(GetAllAssigneesToDoList(navigate, 1, t));
     } else {
       setUpdateFlagToDo(false);
-      // setTask({
-      //   ...task,
-      //   PK_TID: 1,
-      //   Title: "",
-      //   Description: "",
-      //   IsMainTask: true,
-      //   DeadLine: "",
-      //   CreationDateTime: "",
-      // });
-      // setTaskAssignedTo([]);
-      // setTasksAttachments({ ["TasksAttachments"]: [] });
-      // setTaskAssignedName([]);
     }
   }, [updateFlagToDo]);
 
@@ -238,8 +226,6 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
 
   //Save To-Do List Function
   const updateToDoList = () => {
-    let TasksAttachments = tasksAttachments.TasksAttachments;
-
     let Task = {
       PK_TID: task.PK_TID,
       Title: task.Title,
@@ -258,9 +244,6 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
     } else if (Task.Description === "") {
       showMessage(t("Description-missing"), "error", setOpen);
     } else {
-      // let Data = {
-      //   Task,
-      // };
       dispatch(UpdateToDoList(navigate, Task, t));
       setUpdateFlagToDo(false);
       setTask({
@@ -302,8 +285,6 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           show={updateFlagToDo}
           setShow={setUpdateFlagToDo}
           className="modaldialog"
-          // ButtonTitle={ModalTitle}
-          // ModalTitle={"Modal Header"}
           ModalBody={
             <>
               <Row>

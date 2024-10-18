@@ -2,11 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./FullScreenAgendaModal.module.css";
 import { useNavigate } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
-import {
-  Button,
-  Notification,
-  Modal,
-} from "./../../../../../../components/elements";
+import { Button, Modal } from "./../../../../../../components/elements";
 import {
   callRequestReceivedMQTT,
   LeaveCall,
@@ -86,15 +82,6 @@ const FullScreenAgendaModal = ({
   const navigate = useNavigate();
 
   const { talkStateData } = useSelector((state) => state);
-
-  const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
-    (state) =>
-      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
-  );
-
-  const cancelMeetingMaterial = useSelector(
-    (state) => state.NewMeetingreducer.cancelMeetingMaterial
-  );
 
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
@@ -239,11 +226,9 @@ const FullScreenAgendaModal = ({
         )
       );
       localStorage.setItem("meetingTitle", meetingTitle);
-      // setFullScreenView(false);
     } else if (activeCall === true && isMeeting === false) {
       setInitiateVideoModalOto(true);
       dispatch(callRequestReceivedMQTT({}, ""));
-      // setFullScreenView(false);
     }
   };
 
@@ -316,7 +301,7 @@ const FullScreenAgendaModal = ({
       }
       localStorage.setItem("activeOtoChatID", talkGroupID);
     }
-    setFullScreenView(false)
+    setFullScreenView(false);
   };
 
   const leaveMeeting = () => {
@@ -355,15 +340,12 @@ const FullScreenAgendaModal = ({
     };
   }, [menuAgendaFull]);
 
-  console.log("videoTalkvideoTalk", videoTalk);
-
   return (
     <Modal
       show={true}
       modalFooterClassName={"d-block"}
       modalHeaderClassName={"d-block"}
       onHide={() => setFullScreenView(false)}
-      // size={"xl"}
       fullscreen={true}
       className={
         showMoreFilesView ? "FullScreenModal blurEffect" : "FullScreenModal"
@@ -480,8 +462,6 @@ const FullScreenAgendaModal = ({
                       {t("Share-email")}
                     </span>
                   </div>
-
-                  {/* ) : null} */}
                 </div>
               </div>
             </Col>

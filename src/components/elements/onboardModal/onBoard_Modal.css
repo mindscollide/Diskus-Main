@@ -8,7 +8,6 @@
   font-size: 13px;
   font-weight: 700;
   border: 1px solid #e1e1e1 !important;
-  /* width: 170px; */
 }
 
 body[dir="rtl"] .newMeetingBtn {
@@ -18,7 +17,6 @@ body[dir="rtl"] .newMeetingBtn {
   font-size: 13px;
   font-weight: 700;
   border: 1px solid #e1e1e1 !important;
-  /* width: 170px; */
 }
 
 body[dir="rtl"] .newMeetingBtn {
@@ -28,6 +26,4 @@ body[dir="rtl"] .newMeetingBtn {
 .onboard-modal .modal-dialog .modal-content {
   width: 600px !important;
   padding: 0px 15px !important;
-  /* top: 40px; */
-  /* max-height: 500px !important; */
 }

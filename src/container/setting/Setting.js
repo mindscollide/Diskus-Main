@@ -1,44 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Button,
-  Switch,
-  Paper,
-  Accordian,
-  Notification,
-  Loader,
-  TextField,
-} from "../../components/elements";
+import React, { useState, useEffect } from "react";
+import { Button, Switch, Notification } from "../../components/elements";
 import { Row, Col, Container } from "react-bootstrap";
 import "./../../i18n";
 import { useTranslation } from "react-i18next";
 import styles from "./Setting.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
-import getTimeZone from "../../store/actions/GetTimeZone";
-import getCountryCodeFunc from "../../store/actions/GetCountryCode";
-import {
-  getOrganizationLevelSetting,
-  updateOrganizationLevelSetting,
-} from "../../store/actions/OrganizationSettings";
 import {
   getGoogleValidToken,
   revokeToken,
   updateUserMessageCleare,
-  updateUserSettingFunc,
 } from "../../store/actions/UpdateUserGeneralSetting";
 import { getUserSetting } from "../../store/actions/GetUserSetting";
 import { useNavigate } from "react-router-dom";
-import dropIcon from "../../assets/images/dropdown-icon.png";
-import {
-  GoogleOAuthProvider,
-  useGoogleLogin,
-  useGoogleLogout,
-} from "@react-oauth/google";
-import { async } from "q";
+import { useGoogleLogin } from "@react-oauth/google";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 const Organization = () => {
   //for translation
-  const { settingReducer, LanguageReducer } = useSelector((state) => state);
+  const { settingReducer } = useSelector((state) => state);
   const { UserProfileData } = settingReducer;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -48,7 +26,6 @@ const Organization = () => {
     message: "",
     severity: "error",
   });
-
   const [organizationStates, setOrganizationStates] = useState({
     EmailOnNewMeeting: false,
     EmailOnEditMeeting: false,
@@ -90,7 +67,6 @@ const Organization = () => {
   });
 
   const roleID = localStorage.getItem("roleID");
-
   const { loaded, clientId } = useGoogleLogin({
     clientId:
       "509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com",

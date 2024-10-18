@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { cleareChangePasswordMessage } from "../../../../store/actions/Auth_Forgot_Password";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import {
@@ -16,11 +15,7 @@ import {
 } from "../../../../components/elements";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
-import {
-  cleareMessage,
-  verificationEmailOTP,
-} from "../../../../store/actions/Auth2_actions";
+import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
 import {
   LoginFlowRoutes,
   ResendForgotPasswordCodeApi,
@@ -72,7 +67,6 @@ const ForgotPasswordVerificationUM = () => {
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
     setVerifyOTP("");
-    // dispatch(ResendOTP(t, data, setSeconds, setMinutes));
     dispatch(ResendForgotPasswordCodeApi(t, data, setSeconds, setMinutes));
   };
 
@@ -118,49 +112,6 @@ const ForgotPasswordVerificationUM = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (auth.ResponseMessage !== "") {
-  //     setOpen({
-  //       ...open,
-  //       open: true,
-  //       message: auth.ResponseMessage,
-  //     });
-  //     setTimeout(() => {
-  //       setOpen({
-  //         ...open,
-  //         open: false,
-  //         message: "",
-  //       });
-  //     }, 3000);
-
-  //     dispatch(cleareChangePasswordMessage());
-  //   } else {
-  //     dispatch(cleareChangePasswordMessage());
-  //   }
-  // }, [auth.ResponseMessage]);
-
-  //for showing the responses in the snackbar
-  // useEffect(() => {
-  //   if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-  //     setOpen({
-  //       ...open,
-  //       open: true,
-  //       message: Authreducer.VerifyOTPEmailResponseMessage,
-  //     });
-  //     setTimeout(() => {
-  //       setOpen({
-  //         ...open,
-  //         open: false,
-  //         message: "",
-  //       });
-  //     }, 3000);
-
-  //     dispatch(cleareMessage());
-  //   } else {
-  //     dispatch(cleareMessage());
-  //   }
-  // }, [Authreducer.VerifyOTPEmailResponseMessage]);
-
   useEffect(() => {
     // if value was cleared, set key to re-render the element
     if (verifyOTP.length === 0) {
@@ -179,7 +130,6 @@ const ForgotPasswordVerificationUM = () => {
   //Submission Of OTP
   const SubmitOTP = (e) => {
     e.preventDefault();
-    console.log("changeHandler", verifyOTP);
 
     if (verifyOTP.length !== 6) {
       setErrorBar(true);
@@ -330,7 +280,6 @@ const ForgotPasswordVerificationUM = () => {
                             "Forgot_Password_Verification_Next_button_EmailVerify"
                           ]
                         }
-                        // disableBtn={disablebtnverify}
                       />
                     </Col>
                   </Row>

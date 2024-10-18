@@ -197,7 +197,7 @@ const TodoList = () => {
       todoStatus.Response !== "" &&
       todoStatus.Response.length > 0
     ) {
-      todoStatus.Response.map((data, index) => {
+      todoStatus.Response.map((data) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
@@ -240,22 +240,6 @@ const TodoList = () => {
       UpdateFileList: [],
     };
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 2, setShow, 6));
-    // await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
-    // if (todoListPageSize !== null && todoListCurrentPage !== null) {
-    //   dispatch(
-    //     SearchTodoListApi(
-    //       navigate,
-    //       searchData,
-    //       todoListCurrentPage,
-    //       todoListPageSize,
-    //       t
-    //     )
-    //   );
-    // } else {
-    //   localStorage.setItem("todoListPage", 1);
-    //   localStorage.setItem("todoListRow", 50);
-    //   dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
-    // }
   };
 
   const columnsToDo = [
@@ -283,7 +267,6 @@ const TodoList = () => {
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
-      // align: "left",
       render: (record, index) => {
         return (
           <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
@@ -379,7 +362,6 @@ const TodoList = () => {
         {
           text: t("In-progress"),
           value: "In Progress",
-          // className: currentLanguage,
         },
         {
           text: t("Pending"),
@@ -503,7 +485,6 @@ const TodoList = () => {
         setUpdateFlagToDo(true);
         setModalsflag(false);
       } else {
-        // setViewFlagToDo(true);
       }
     }
   }, [toDoListReducer.ToDoDetails]);
@@ -739,7 +720,6 @@ const TodoList = () => {
                         width="250px"
                         name="Title"
                         value={searchData.Title}
-                        // className="mx-4"
                         placeholder={t("Task")}
                         labelclass="textFieldSearch"
                         change={searchHandler}
@@ -840,11 +820,7 @@ const TodoList = () => {
               />
             </Col>
           </Row>
-          {/* <Row> */}
 
-          {/* </Row> */}
-          {/* </Col> */}
-          {/* </Row> */}
           <Row>
             <Col>
               {rowsToDo.length > 0 && (

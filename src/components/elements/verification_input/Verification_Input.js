@@ -15,7 +15,6 @@ const props = {
     padding: "0.375rem 0.75rem",
     transition: "border-color .15s ease-in-out, box-shadow .15s ease-in-out",
     lineHeight: "1.5",
-    // color: '#564', display: "flex", justifyContent: "center"
   },
   inputStyleFocused: {
     color: "#212529",
@@ -24,30 +23,9 @@ const props = {
     outline: "0",
     boxShadow: "0 0 0 0.25rem rgb(13 110 253 / 25%)",
   },
-  // inputStyleInvalid: {
-  //     margin: '4px',
-  //     MozAppearance: 'textfield',
-  //     width: '40px',
-  //     borderRadius: '3px',
-  //     fontSize: '14px',
-  //     height: '26px',
-  //     paddingLeft: '7px',
-  //     backgroundColor: 'black',
-  //     color: 'red',
-  //     border: '1px solid red'
-  // }
 };
 
-const VerificationInputField = ({
-  applyClass,
-  label,
-  change,
-  value,
-  ref,
-  name,
-  fields,
-  key
-}) => {
+const VerificationInputField = ({ label, change, value, ref, fields, key }) => {
   return (
     <>
       <Form.Label className="MontserratMedium-500 d-inline-block">

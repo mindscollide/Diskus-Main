@@ -136,16 +136,12 @@ const AddUsers = () => {
         UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
       ).length > 0
     ) {
-      console.log(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
-        "UserMangementReducerUserMangementReducer"
-      );
       setWorldCountryID(
         UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
           .organization.fK_NumberWorldCountryID
       );
       UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
-        (data, index) => {
+        (data) => {
           data.organizationSelectedPackages?.map((packageData) => {
             console.log(
               packageData.pK_OrganizationsSelectedPackageID,
@@ -491,10 +487,7 @@ const AddUsers = () => {
                         (addUserFreeTrial.Email.errorStatus &&
                           addUserFreeTrial.Email.value === "") ||
                         addUserFreeTrial.Email.errorMessage !== ""
-                          ? // &&
-                            //   signUpDetails.Email.errorMessage !==
-                            //     t("User-email-doesnt-exists"))
-                            ` ${styles["errorMessage"]} `
+                          ? ` ${styles["errorMessage"]} `
                           : `${styles["errorMessage_hidden"]}`
                       }
                     >

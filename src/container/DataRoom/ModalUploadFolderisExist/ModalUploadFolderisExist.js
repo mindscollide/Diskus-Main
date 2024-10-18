@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import styles from "../ModalUploadOptions_Folder/ModalOptions_Folder.module.css";
 import { useTranslation } from "react-i18next";
@@ -29,14 +29,15 @@ const ModalOptionsisExistFolder = ({
     updatedArray.pop(); // Remove the last object
     setDetaUplodingForFOlder(updatedArray);
     await dispatch(FolderisExist_success(null));
-
   };
   return (
     <>
       <Container>
         <Modal
           show={isFolderExist}
-          onHide={() => {onHideModal()}}
+          onHide={() => {
+            onHideModal();
+          }}
           setShow={setIsFolderExist}
           modalFooterClassName="d-block"
           centered

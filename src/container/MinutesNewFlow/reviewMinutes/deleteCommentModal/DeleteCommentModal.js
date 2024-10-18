@@ -1,31 +1,19 @@
-import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  TextArea,
-  SelectComment,
-} from "../../../../components/elements"; // Importing necessary components
+import React from "react";
+import { Modal, Button } from "../../../../components/elements"; // Importing necessary components
 import styles from "./DeleteCommentModal.module.css"; // Importing CSS styles
 import { deleteCommentModal } from "../../../../store/actions/Minutes_action"; // Importing action creator
 import { useTranslation } from "react-i18next"; // Importing translation hook
-import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
+import { useDispatch } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
-import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing image
 
 // Functional component for deleting a comment
 const DeleteCommentModal = ({
   deleteCommentLocal,
-  setDeleteCommentLocal,
   minutesAgenda,
   setMinutesAgenda,
   minutesGeneral,
   setMinutesGeneral,
-  editCommentLocal,
-  setEditCommentLocal,
   parentMinuteID,
-  setParentMinuteID,
-  currentUserID,
-  currentUserName,
   isAgenda,
   minutesToReview,
   setMinutesToReview,
@@ -139,7 +127,6 @@ const DeleteCommentModal = ({
         deleteCommentLocal,
         parentMinuteID
       );
-      console.log("Updated minutes data:", updatedMinutesData);
       setMinutesGeneral(updatedMinutesData);
       setMinutesToReview(minutesToReview + 1);
       dispatch(deleteCommentModal(false));
@@ -149,16 +136,11 @@ const DeleteCommentModal = ({
         deleteCommentLocal,
         parentMinuteID
       );
-      console.log("Updated minutes data:", updatedMinutesData);
       setMinutesAgenda(updatedMinutesData);
       setMinutesToReview(minutesToReview + 1);
       dispatch(deleteCommentModal(false));
     }
   };
-
-  console.log("Minute Data Agenda", minutesAgenda);
-  console.log("Minute Data General", minutesGeneral);
-  console.log("Delete Local Comment", deleteCommentLocal);
 
   return (
     <section>

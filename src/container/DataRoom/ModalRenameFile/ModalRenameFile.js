@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Form, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalRenameFile.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal, TextField } from "../../../components/elements";
-import {
-  FileisExist2,
-  FolderisExistRename,
-} from "../../../store/actions/DataRoom_actions";
+import { FileisExist2 } from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +19,6 @@ const ModalRenameFile = ({
     FileName: "",
     FileId: 0,
   });
-  console.log(isRenameFileData, "folderDatafolderDatafolderData");
   useEffect(() => {
     try {
       if (isRenameFileData !== null && isRenameFileData !== undefined) {
@@ -52,24 +48,19 @@ const ModalRenameFile = ({
             setShowRenameFile(false);
           }}
           setShow={setShowRenameFile}
-          // ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
-          // size={setRenamefolder === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
                 <Row>
-                  {/* <Col lg={2} md={2} sm={2}></Col> */}
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Rename_Heading"]}>
                       {t("Rename")}
                     </span>
                   </Col>
-                  {/* <Col lg={2} md={2} sm={2}></Col> */}
                 </Row>
                 <Row className="mt-3">
-                  {/* <Col lg={2} md={2} sm={2}></Col> */}
                   <Col lg={12} md={12} sm={12} className="rename-modal-field">
                     <TextField
                       value={fileData.FileName}
@@ -84,7 +75,6 @@ const ModalRenameFile = ({
                       }
                     />
                   </Col>
-                  {/* <Col lg={2} md={2} sm={2}></Col> */}
                 </Row>
               </Container>
             </>
@@ -92,7 +82,6 @@ const ModalRenameFile = ({
           ModalFooter={
             <>
               <Row className="mt-3 mb-4">
-                {/* <Col lg={2} md={2} sm={2}></Col> */}
                 <Col
                   lg={12}
                   sm={12}
@@ -111,7 +100,6 @@ const ModalRenameFile = ({
                     onClick={saveButton}
                   />
                 </Col>
-                {/* <Col lg={2} md={2} sm={2}></Col> */}
               </Row>
             </>
           }

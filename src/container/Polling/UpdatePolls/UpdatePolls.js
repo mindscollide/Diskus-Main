@@ -43,7 +43,6 @@ const UpdatePolls = () => {
   const { PollsReducer } = useSelector((state) => state);
   const datePickerRef = useRef();
   let dateFormat = "DD/MM/YYYY";
-  const [polloptions, setPolloptions] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [pollmembers, setPollmembers] = useState([]);
@@ -87,7 +86,7 @@ const UpdatePolls = () => {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
         if (Object.keys(pollsData.groups).length > 0) {
-          pollsData.groups.map((a, index) => {
+          pollsData.groups.map((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -120,7 +119,7 @@ const UpdatePolls = () => {
           });
         }
         if (Object.keys(pollsData.committees).length > 0) {
-          pollsData.committees.map((a, index) => {
+          pollsData.committees.map((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -153,7 +152,7 @@ const UpdatePolls = () => {
           });
         }
         if (Object.keys(pollsData.organizationUsers).length > 0) {
-          pollsData.organizationUsers.map((a, index) => {
+          pollsData.organizationUsers.map((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -192,13 +191,12 @@ const UpdatePolls = () => {
       }
     }
   }, [PollsReducer.gellAllCommittesandGroups]);
-  console.log(pollmembers, "pollmemberspollmembersData");
   useEffect(() => {
     if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
       let pollsDetails = PollsReducer.Allpolls;
       if (Object.keys(PollsReducer.Allpolls).length > 0) {
         let members = [];
-        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+        PollsReducer.Allpolls.poll.pollParticipants.map((data) => {
           members.push({
             userName: data.userName,
             userID: data.userID,
@@ -211,7 +209,6 @@ const UpdatePolls = () => {
           pollsDetails.poll.pollDetails.dueDate,
           1
         );
-        // let DateDate = new Date(newDateGmt);
         if (pollsDetails.poll.pollDetails.pollStatus.pollStatusId === 2) {
           setCheckForPollStatus(true);
         } else {
@@ -225,24 +222,12 @@ const UpdatePolls = () => {
           pollID: pollsDetails.poll.pollDetails.pollID,
         });
         try {
-          // if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 2) {
           let Option = [];
           PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
             let dataAdd = { name: index + 1, value: data.answer };
             Option.push(dataAdd);
           });
           setOptions(Option);
-          // } else if (
-          //   Object.keys(PollsReducer.Allpolls.poll.pollOptions).length <= 2
-          // ) {
-          //   const updatedOptions = options.map((option) => {
-          //     const apiData = PollsReducer.Allpolls.poll.pollOptions.find(
-          //       (apiOption, index) => index + 1 === option.name
-          //     );
-          //     return apiData ? { ...option, value: apiData.answer } : option;
-          //   });
-          //   setOptions(updatedOptions);
-          // }
         } catch {}
       }
     }
@@ -250,30 +235,23 @@ const UpdatePolls = () => {
 
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
-  const allValuesNotEmptyAcceptLastOne = options.every((item, index) => {
-    if (index === options.length - 1) {
-      return true; // Allow the last object's value to be empty
-    }
-    return item.value !== "";
-  });
-
   // for add user for assignes
   const handleAddUsers = () => {
     let pollsData = PollsReducer.gellAllCommittesandGroups;
     let tem = [...pollmembers];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData, index) => {
+        selectedsearch.map((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
-              (data, index) => data.groupID === seledtedData.value
+              (data) => data.groupID === seledtedData.value
             );
             if (check1 != undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser, index) => {
+                groupUsers.map((gUser) => {
                   let check2 = pollmembers.find(
-                    (data, index) => data.UserID === gUser.userID
+                    (data) => data.UserID === gUser.userID
                   );
                   if (check2 != undefined) {
                   } else {
@@ -289,14 +267,14 @@ const UpdatePolls = () => {
             }
           } else if (seledtedData.type === 2) {
             let check1 = pollsData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value
+              (data) => data.committeeID === seledtedData.value
             );
             if (check1 != undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser, index) => {
+                committeesUsers.map((cUser) => {
                   let check2 = pollmembers.find(
-                    (data, index) => data.UserID === cUser.userID
+                    (data) => data.UserID === cUser.userID
                   );
                   if (check2 != undefined) {
                   } else {
@@ -312,12 +290,12 @@ const UpdatePolls = () => {
             }
           } else if (seledtedData.type === 3) {
             let check1 = pollmembers.find(
-              (data, index) => data.UserID === seledtedData.value
+              (data) => data.UserID === seledtedData.value
             );
             if (check1 != undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value
               );
               if (check2 != undefined) {
                 let newUser = {
@@ -463,12 +441,12 @@ const UpdatePolls = () => {
       (checkForPollStatus || allValuesNotEmpty)
     ) {
       if (Object.keys(pollmembers).length > 0) {
-        pollmembers.forEach((data, index) => {
+        pollmembers.forEach((data) => {
           users.push(data.userID);
         });
       }
       if (Object.keys(options).length > 0) {
-        options.forEach((optionData, index) => {
+        options.forEach((optionData) => {
           if (optionData.value !== "") {
             optionsListData.push(optionData.value);
           }
@@ -587,21 +565,6 @@ const UpdatePolls = () => {
                               locale={localValue}
                             />
                           </span>
-
-                          {/* <MultiDatePickers
-                            value={UpdatePolls.date}
-                            name="MeetingDate"
-                            highlightToday={false}
-                            onOpenPickNewDate={false}
-                            multiple={false}
-                            calendar={calendarValue}
-                            locale={localValue}
-                            onChange={(value) =>
-                              changeDateStartHandler(
-                                value?.toDate?.().toString()
-                              )
-                            }
-                          /> */}
                         </Col>
                       </Row>
                     </Col>
@@ -1041,6 +1004,7 @@ const UpdatePolls = () => {
                                           <Col sm={12} md={2} lg={2}>
                                             <img
                                               src={CrossIcon}
+                                              alt=""
                                               width="14px"
                                               height="14px"
                                               onClick={cancellAnyUser}

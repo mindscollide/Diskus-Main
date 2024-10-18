@@ -1,11 +1,4 @@
-import {
-  Button,
-  Paper,
-  TextField,
-  Checkbox,
-  Notification,
-  Loader,
-} from "../../../../../components/elements";
+import { Button, Paper, Loader } from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import "./VerificationIphone.css";
@@ -15,11 +8,9 @@ import img10 from "../../../../../assets/images/10.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { useDispatch, useSelector } from "react-redux";
-
-import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import Helper from "../../../../../commen/functions/history_logout";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
@@ -27,25 +18,17 @@ import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActi
 
 const VerificationIphone = () => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
-  const location = useLocation();
   const [devices, setDevices] = useState([]);
   const [selectDevice, setSelectDevice] = useState(null);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
-  const onChangeHandlerVerificationIphone = (e) => {
-    console.log(e.target.value);
-  };
 
   // translate Languages start
   const languages = [
@@ -56,20 +39,11 @@ const VerificationIphone = () => {
 
   const currentLocale = Cookies.get("i18next") || "en";
 
-  const [language, setLanguage] = useState(currentLocale);
-
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
-  };
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
   console.log("currentLocale", currentLocale);
-  let currentLanguage = localStorage.getItem("i18nextLng");
 
   // translate Languages end
   const onChangeHandlerVerificationIphone1 = (e) => {
@@ -116,7 +90,6 @@ const VerificationIphone = () => {
   };
 
   let devicesi = localStorage.getItem("currentDevice");
-  console.log(devicesi, "devicesidevicesidevicesi");
 
   useEffect(() => {
     try {
@@ -128,8 +101,6 @@ const VerificationIphone = () => {
       console.error("Failed to parse devices from localStorage", e);
     }
   }, []);
-
-  console.log(devices, "consoleconsole");
 
   let newClient = Helper.socket;
   useEffect(() => {
@@ -150,25 +121,6 @@ const VerificationIphone = () => {
 
   return (
     <>
-      {/* <Row>
-        <Col className="languageselect-box">
-          <select
-            className="select-language-signin_selectfrommultidevices"
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option key={code} value={code} className="language_options">
-                {name}
-              </option>
-            ))}
-          </select>
-          <img draggable="false"
-            src={LanguageChangeIcon}
-            className="languageIcon_selectfrommultidevices"
-          />
-        </Col>
-      </Row> */}
       <Container fluid className="auth_container">
         <Row className="position-relative">
           <Col className="languageSelector">

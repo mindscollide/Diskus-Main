@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalUpdateresolution.module.css";
 import { useTranslation } from "react-i18next";
-
-import { Button, InputSearchFilter, Modal } from "../../../components/elements";
-import { style } from "@mui/system";
+import { Button, Modal } from "../../../components/elements";
 const ModalUpdateresolution = ({
   ModalTitle,
   updateresolution,

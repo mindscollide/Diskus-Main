@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Paper } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import styles from "./EditResolution.module.css";
@@ -17,7 +17,6 @@ import {
   Button,
   Checkbox,
   Notification,
-  InputSearchFilter,
   AttachmentViewer,
 } from "./../../../components/elements";
 import { useState } from "react";
@@ -53,7 +52,6 @@ import {
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { validateInput } from "../../../commen/functions/regex";
@@ -66,7 +64,7 @@ const EditResolution = ({ setCancelresolution }) => {
   const navigate = useNavigate();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { ResolutionReducer, assignees } = useSelector((state) => state);
+  const { ResolutionReducer } = useSelector((state) => state);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [usersList, setUsersList] = useState([]);
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -101,12 +99,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const [nonVoter, setNonVoters] = useState([]);
   const [votersForView, setVotersForView] = useState([]);
   const [nonVoterForView, setNonVotersForView] = useState([]);
-  console.log(
-    nonVoterForView,
-    votersForView,
-    meetingAttendeesList,
-    "votersForViewvotersForViewvotersForView"
-  );
   const [error, setError] = useState(false);
   const [VoterName, setVoterName] = useState("");
   const [VoterID, setVoterID] = useState(0);
@@ -254,7 +246,6 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const removeUserForVoter = (id, name) => {
-    console.log(id, name, "removeUserForVoterremoveUserForVoter");
     setVoterModalRemove(true);
     setVoterID(id);
     setVoterName(name);
@@ -268,10 +259,10 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const RemoveVoterInfo = () => {
     setVotersForView((prevVoterState) =>
-      prevVoterState.filter((data, index) => data.userID !== VoterID)
+      prevVoterState.filter((data) => data.userID !== VoterID)
     );
     setVoters((prevVoter) =>
-      prevVoter.filter((data, index) => data.FK_UID !== VoterID)
+      prevVoter.filter((data) => data.FK_UID !== VoterID)
     );
     setVoterID(0);
     setVoterName("");
@@ -280,10 +271,10 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const removeNonVoterInfo = () => {
     setNonVotersForView((prevNonVoterState) =>
-      prevNonVoterState.filter((data, index) => data.userID !== VoterID)
+      prevNonVoterState.filter((data) => data.userID !== VoterID)
     );
     setNonVoters((prevNonVoter) =>
-      prevNonVoter.filter((data, index) => data.FK_UID !== VoterID)
+      prevNonVoter.filter((data) => data.FK_UID !== VoterID)
     );
     setNonVoterModalRemove(false);
     setVoterID(0);
@@ -301,7 +292,7 @@ const EditResolution = ({ setCancelresolution }) => {
     });
   };
 
-  const deleteFilefromAttachments = (data, index) => {
+  const deleteFilefromAttachments = (data) => {
     let fileSizefound = fileSize - data.fileSize;
 
     setAttachments((prevState) => {
@@ -322,13 +313,9 @@ const EditResolution = ({ setCancelresolution }) => {
 
     setFileSize(fileSizefound);
   };
-  console.log(
-    { voterInfo, nonVoterInfo, voters, nonVoter },
-    "nonVoterInfononVoterInfo"
-  );
+
   const addVoters = () => {
     let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
-
     let voters_Data = [...voters];
     let voters_DataView = [...votersForView];
     if (newOrganizersData !== null) {
@@ -353,11 +340,6 @@ const EditResolution = ({ setCancelresolution }) => {
               }
             );
 
-            console.log(
-              checkIfExistInNonVoters,
-              "checkIfExistInNonVoterscheckIfExistInNonVoters"
-            );
-
             if (checkIfExistInNonVoters.length > 0) {
               // Filter out voters who do not exist in the findGroupData.groupUsers
               let checkIfExistInVoters = checkIfExistInNonVoters.filter(
@@ -371,14 +353,8 @@ const EditResolution = ({ setCancelresolution }) => {
                 }
               );
 
-              console.log(
-                checkIfExistInVoters,
-                "checkIfExistInNonVoterscheckIfExistInNonVoters"
-              );
-
               if (checkIfExistInVoters.length > 0) {
-                checkIfExistInVoters.forEach((userData, index) => {
-                  console.log(userData, "userDatauserDatauserData");
+                checkIfExistInVoters.forEach((userData) => {
                   voters_Data.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -432,7 +408,7 @@ const EditResolution = ({ setCancelresolution }) => {
                 }
               );
               if (checkIfExistInVoters.length > 0) {
-                checkIfExistInVoters.forEach((userData, index) => {
+                checkIfExistInVoters.forEach((userData) => {
                   voters_Data.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -460,10 +436,10 @@ const EditResolution = ({ setCancelresolution }) => {
           let { organizationUsers } = newOrganizersData;
 
           let isAlreadyExistInNonVoters = nonVoter.findIndex(
-            (data, index) => data.FK_UID === voterInfo.value
+            (data) => data.FK_UID === voterInfo.value
           );
           let isAlreadyExistInVoters = voters.findIndex(
-            (data, index) => data.FK_UID === voterInfo.value
+            (data) => data.FK_UID === voterInfo.value
           );
 
           if (isAlreadyExistInNonVoters === -1) {
@@ -537,10 +513,7 @@ const EditResolution = ({ setCancelresolution }) => {
                 return !userExists;
               }
             );
-            console.log(
-              checkIfExistInVoters,
-              "checkIfExistInVoterscheckIfExistInVoters"
-            );
+
             if (checkIfExistInVoters.length > 0) {
               // Filter out voters who do not exist in the findGroupData.groupUsers
               let checkIfExistInNonVoters = checkIfExistInVoters.filter(
@@ -553,13 +526,9 @@ const EditResolution = ({ setCancelresolution }) => {
                   return !userExists;
                 }
               );
-              console.log(
-                checkIfExistInNonVoters,
-                "checkIfExistInVoterscheckIfExistInVoters"
-              );
+
               if (checkIfExistInNonVoters.length > 0) {
-                checkIfExistInNonVoters.forEach((userData, index) => {
-                  console.log(userData, "userDatauserDatauserData");
+                checkIfExistInNonVoters.forEach((userData) => {
                   nonVotersData.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -612,10 +581,8 @@ const EditResolution = ({ setCancelresolution }) => {
                   return !userExists;
                 }
               );
-              console.log(checkIfExistInVoters, "Users not in voters list");
               if (checkIfExistInNonVoters.length > 0) {
-                checkIfExistInNonVoters.forEach((userData, index) => {
-                  console.log(userData, "userDatauserDatauserData");
+                checkIfExistInNonVoters.forEach((userData) => {
                   nonVotersData.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -639,10 +606,10 @@ const EditResolution = ({ setCancelresolution }) => {
           let { organizationUsers } = newOrganizersData;
 
           let findVoter = nonVoter.findIndex(
-            (data, index) => data.FK_UID === nonVoterInfo.value
+            (data) => data.FK_UID === nonVoterInfo.value
           );
           let findisAlreadyExist = voters.findIndex(
-            (data, index) => data.FK_UID === nonVoterInfo.value
+            (data) => data.FK_UID === nonVoterInfo.value
           );
           if (findisAlreadyExist === -1) {
             if (findVoter === -1) {
@@ -683,17 +650,15 @@ const EditResolution = ({ setCancelresolution }) => {
       type: 0,
     });
     setEmailValue("");
-    console.log(nonVotersData, nonVotersDataView, "addNonVoteraddNonVoter");
   };
   const handleChangeVoter = (event) => {
-    console.log(event, "handleChangeVoterhandleChangeVoterhandleChangeVoter");
     let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
         if (organizationUsers?.length > 0) {
           let findUserData = organizationUsers.find(
-            (userData, index) => userData.userID === event.value
+            (userData) => userData.userID === event.value
           );
           setEmailValue(findUserData.emailAddress);
           setVoterInfo({
@@ -716,14 +681,13 @@ const EditResolution = ({ setCancelresolution }) => {
     }
   };
   const handleChangeNonVoter = (event) => {
-    console.log(event, "eventeventeventevent");
     let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
         if (organizationUsers?.length > 0) {
           let findUserData = organizationUsers.find(
-            (userData, index) => userData.userID === event.value
+            (userData) => userData.userID === event.value
           );
           setEmailValue(findUserData.emailAddress);
           setNonVoterInfo({
@@ -746,16 +710,10 @@ const EditResolution = ({ setCancelresolution }) => {
     }
   };
 
-  console.log(
-    { votersForView, nonVoterForView },
-    "nonVoterForViewnonVoterForView"
-  );
-
   let previousFileList = [];
 
   const props = {
     name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
@@ -767,7 +725,6 @@ const EditResolution = ({ setCancelresolution }) => {
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -951,7 +908,6 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const createResolutionHandleClick = async (id) => {
-    console.log(id, "ididididid");
     if (
       editResolutionData.Title !== "" &&
       circulationDateTime.date !== "" &&
@@ -963,8 +919,6 @@ const EditResolution = ({ setCancelresolution }) => {
       editResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       editResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
-      console.log(typeof id, "ididididid");
-
       if (id === 1) {
         setResolutionupdate(true);
         setResolutionCirculate(false);
@@ -1060,7 +1014,6 @@ const EditResolution = ({ setCancelresolution }) => {
       }
     }
     if (name === "ResolutionDescription") {
-      // let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*() ]/g, "");
       if (value !== "") {
         setEditResolutionData({
           ...editResolutionData,
@@ -1113,10 +1066,10 @@ const EditResolution = ({ setCancelresolution }) => {
     });
     reminderData
       .filter(
-        (data, index) =>
+        (data) =>
           data.value === resolutionData.fK_ResolutionReminderFrequency_ID
       )
-      .map((reminderData, index) => {
+      .map((reminderData) => {
         setReminderFrequencyValue({
           label: reminderData.label,
           value: reminderData.value,
@@ -1124,10 +1077,9 @@ const EditResolution = ({ setCancelresolution }) => {
       });
     votingMethods
       .filter(
-        (data, index) =>
-          data.value === resolutionData.fK_ResolutionVotingMethodID
+        (data) => data.value === resolutionData.fK_ResolutionVotingMethodID
       )
-      .map((methodData, index) => {
+      .map((methodData) => {
         setVotingMethodValue({
           label: methodData.label,
           value: methodData.value,
@@ -1157,7 +1109,7 @@ const EditResolution = ({ setCancelresolution }) => {
     if (attachmentsResolution.length > 0) {
       let atCH = [];
       let newData = [];
-      attachmentsResolution.map((data, index) => {
+      attachmentsResolution.map((data) => {
         atCH.push({
           DisplayAttachmentName: data.DisplayAttachmentName,
           OriginalAttachmentName: data.OriginalAttachmentName,
@@ -1176,12 +1128,10 @@ const EditResolution = ({ setCancelresolution }) => {
     if (votersResolutionMembers.length > 0) {
       let viewVoter = [];
       let sendVoter = [];
-      votersResolutionMembers.map((voterMember, index) => {
+      votersResolutionMembers.map((voterMember) => {
         meetingAttendeesList
-          .filter(
-            (assigneeData, index) => assigneeData.pK_UID === voterMember.fK_UID
-          )
-          .map((data, index) => {
+          .filter((assigneeData) => assigneeData.pK_UID === voterMember.fK_UID)
+          .map((data) => {
             sendVoter.push({
               FK_UID: data.pK_UID,
               FK_VotingStatus_ID: 3,
@@ -1197,12 +1147,10 @@ const EditResolution = ({ setCancelresolution }) => {
     if (nonVotersResolutionMembers.length > 0) {
       let viewVoter = [];
       let sendVoter = [];
-      nonVotersResolutionMembers.map((voterMember, index) => {
+      nonVotersResolutionMembers.map((voterMember) => {
         meetingAttendeesList
-          .filter(
-            (assigneeData, index) => assigneeData.pK_UID === voterMember.fK_UID
-          )
-          .map((data, index) => {
+          .filter((assigneeData) => assigneeData.pK_UID === voterMember.fK_UID)
+          .map((data) => {
             sendVoter.push({
               FK_UID: data.pK_UID,
               FK_VotingStatus_ID: 3,
@@ -1220,12 +1168,11 @@ const EditResolution = ({ setCancelresolution }) => {
   useEffect(() => {
     let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
     if (newOrganizersData !== null && newOrganizersData !== undefined) {
-      console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
       let temp = [];
       let usersData = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.map((a, index) => {
+          newOrganizersData.groups.map((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -1240,6 +1187,7 @@ const EditResolution = ({ setCancelresolution }) => {
                     >
                       <img
                         src={GroupIcon}
+                        alt=""
                         height="16.45px"
                         width="18.32px"
                         draggable="false"
@@ -1257,7 +1205,7 @@ const EditResolution = ({ setCancelresolution }) => {
           });
         }
         if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.map((a, index) => {
+          newOrganizersData.committees.map((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -1272,6 +1220,7 @@ const EditResolution = ({ setCancelresolution }) => {
                     >
                       <img
                         src={committeeicon}
+                        alt=""
                         width="21.71px"
                         height="18.61px"
                         draggable="false"
@@ -1289,7 +1238,7 @@ const EditResolution = ({ setCancelresolution }) => {
           });
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.map((a, index) => {
+          newOrganizersData.organizationUsers.map((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -1304,7 +1253,6 @@ const EditResolution = ({ setCancelresolution }) => {
                     >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        // src={}
                         alt=""
                         className={styles["UserProfilepic"]}
                         width="18px"
@@ -1336,7 +1284,7 @@ const EditResolution = ({ setCancelresolution }) => {
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
       let newArr = [];
-      ResolutionReducer.GetAllVotingMethods.map((data, index) => {
+      ResolutionReducer.GetAllVotingMethods.map((data) => {
         newArr.push({
           value: data.pK_ResolutionVotingMethodID,
           label: data.votingMethod,
@@ -1382,10 +1330,10 @@ const EditResolution = ({ setCancelresolution }) => {
         });
         reminderData
           .filter(
-            (data, index) =>
+            (data) =>
               data.value === resolutionData.fK_ResolutionReminderFrequency_ID
           )
-          .map((reminderData, index) => {
+          .map((reminderData) => {
             setReminderFrequencyValue({
               label: reminderData.label,
               value: reminderData.value,
@@ -1393,10 +1341,9 @@ const EditResolution = ({ setCancelresolution }) => {
           });
         votingMethods
           .filter(
-            (data, index) =>
-              data.value === resolutionData.fK_ResolutionVotingMethodID
+            (data) => data.value === resolutionData.fK_ResolutionVotingMethodID
           )
-          .map((methodData, index) => {
+          .map((methodData) => {
             setVotingMethodValue({
               label: methodData.label,
               value: methodData.value,
@@ -1436,7 +1383,7 @@ const EditResolution = ({ setCancelresolution }) => {
           let atCH = [];
 
           let newData = [];
-          attachmentsResolution.forEach((data, index) => {
+          attachmentsResolution.forEach((data) => {
             atCH.push({
               DisplayFileName: data.displayAttachmentName,
               DiskusFileName: data.originalAttachmentName,
@@ -1450,7 +1397,6 @@ const EditResolution = ({ setCancelresolution }) => {
           });
           setAttachments(newData);
           setTasksAttachments(atCH);
-          // }
         }
         if (
           votersResolutionMembers.length > 0 &&
@@ -1461,10 +1407,9 @@ const EditResolution = ({ setCancelresolution }) => {
           votersResolutionMembers.forEach((voterMember, index) => {
             usersList
               .filter(
-                (assigneeData, index) =>
-                  assigneeData.userID === voterMember.fK_UID
+                (assigneeData) => assigneeData.userID === voterMember.fK_UID
               )
-              .forEach((data, index) => {
+              .forEach((data) => {
                 vTrs.push({
                   FK_UID: data.userID,
                   FK_VotingStatus_ID: 3,
@@ -1482,7 +1427,6 @@ const EditResolution = ({ setCancelresolution }) => {
           let nVtr = [];
           let nVtrVie = [];
 
-          // if (nonVoterForView.length === 0 && nonVoter.length === 0) {
           nonVotersResolutionMembers.map((voterMember, index) => {
             usersList
               .filter(
@@ -1536,27 +1480,6 @@ const EditResolution = ({ setCancelresolution }) => {
       date: meetingDateSaveFormat,
       dateValue: meetingDateValueFormat,
     });
-  };
-
-  const handleChangeTimeSelection = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "circulation") {
-      setCirculationDateTime({
-        ...circulationDateTime,
-        time: value,
-      });
-    } else if (name === "voting") {
-      setVotingDateTime({
-        ...votingDateTime,
-        time: value,
-      });
-    } else if (name === "decision") {
-      setDecisionDateTime({
-        ...decisionDateTime,
-        time: value,
-      });
-    }
   };
 
   //Circulation Time
@@ -1855,17 +1778,6 @@ const EditResolution = ({ setCancelresolution }) => {
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular"
                             >
-                              {/* <TextFieldTime
-                                type="time"
-                                name="circulation"
-                                labelclass="d-none"
-                                onKeyDown={(e) => e.preventDefault()}
-                                applyClass={"search_voterInput"}
-                                value={circulationDateTime.time}
-                                change={(e) => {
-                                  handleChangeTimeSelection(e);
-                                }}
-                              /> */}
                               <DatePicker
                                 arrowClassName="arrowClass"
                                 containerClassName="containerClassTimePicker"
@@ -1974,17 +1886,6 @@ const EditResolution = ({ setCancelresolution }) => {
                               md={6}
                               className="CreateMeetingReminder  resolution-search-input FontArabicRegular"
                             >
-                              {/* <TextField
-                                type="time"
-                                labelclass="d-none"
-                                name="voting"
-                                onKeyDown={(e) => e.preventDefault()}
-                                applyClass={"search_voterInput"}
-                                value={votingDateTime.time}
-                                change={(e) => {
-                                  handleChangeTimeSelection(e);
-                                }}
-                              /> */}
                               <DatePicker
                                 arrowClassName="arrowClass"
                                 containerClassName="containerClassTimePicker"
@@ -2092,17 +1993,6 @@ const EditResolution = ({ setCancelresolution }) => {
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
-                              {/* <TextField
-                                type="time"
-                                labelclass="d-none"
-                                name="decision"
-                                onKeyDown={(e) => e.preventDefault()}
-                                applyClass={"search_voterInput"}
-                                value={decisionDateTime.time}
-                                change={(e) => {
-                                  handleChangeTimeSelection(e);
-                                }}
-                              /> */}
                               <DatePicker
                                 arrowClassName="arrowClass"
                                 containerClassName="containerClassTimePicker"
@@ -2556,129 +2446,6 @@ const EditResolution = ({ setCancelresolution }) => {
                                                     )}
                                                   />
                                                 </Col>
-
-                                                // <Col
-                                                //   sm={4}
-                                                //   lg={4}
-                                                //   md={4}
-                                                // >
-                                                //   {ext === "doc" ? (
-                                                //     <FileIcon
-                                                //       extension={"docx"}
-                                                //       size={78}
-                                                //       type={"document"}
-                                                //       labelColor={
-                                                //         "rgba(44, 88, 152)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "docx" ? (
-                                                //     <FileIcon
-                                                //       extension={"docx"}
-                                                //       size={78}
-                                                //       type={"font"}
-                                                //       labelColor={
-                                                //         "rgba(44, 88, 152)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "xls" ? (
-                                                //     <FileIcon
-                                                //       extension={"xls"}
-                                                //       type={"spreadsheet"}
-                                                //       size={78}
-                                                //       labelColor={
-                                                //         "rgba(16, 121, 63)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "xlsx" ? (
-                                                //     <FileIcon
-                                                //       extension={"xls"}
-                                                //       type={"spreadsheet"}
-                                                //       size={78}
-                                                //       labelColor={
-                                                //         "rgba(16, 121, 63)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "pdf" ? (
-                                                //     <FileIcon
-                                                //       extension={"pdf"}
-                                                //       size={78}
-                                                //       {...defaultStyles.pdf}
-                                                //     />
-                                                //   ) : ext === "png" ? (
-                                                //     <FileIcon
-                                                //       extension={"png"}
-                                                //       size={78}
-                                                //       type={"image"}
-                                                //       labelColor={
-                                                //         "rgba(102, 102, 224)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "txt" ? (
-                                                //     <FileIcon
-                                                //       extension={"txt"}
-                                                //       size={78}
-                                                //       type={"document"}
-                                                //       labelColor={
-                                                //         "rgba(52, 120, 199)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "jpg" ? (
-                                                //     <FileIcon
-                                                //       extension={"jpg"}
-                                                //       size={78}
-                                                //       type={"image"}
-                                                //       labelColor={
-                                                //         "rgba(102, 102, 224)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "jpeg" ? (
-                                                //     <FileIcon
-                                                //       extension={"jpeg"}
-                                                //       size={78}
-                                                //       type={"image"}
-                                                //       labelColor={
-                                                //         "rgba(102, 102, 224)"
-                                                //       }
-                                                //     />
-                                                //   ) : ext === "gif" ? (
-                                                //     <FileIcon
-                                                //       extension={"gif"}
-                                                //       size={78}
-                                                //       {...defaultStyles.gif}
-                                                //     />
-                                                //   ) : (
-                                                //     <FileIcon
-                                                //       extension={ext}
-                                                //       size={78}
-                                                //       {...defaultStyles.ext}
-                                                //     />
-                                                //   )}
-                                                //   <span className="deleteBtn">
-                                                //     <img
-                                                //       src={
-                                                //         deleteButtonCreateMeeting
-                                                //       }
-                                                //       width={15}
-                                                //       alt=""
-                                                //       height={15}
-                                                //       onClick={() =>
-                                                //         deleteFilefromAttachments(
-                                                //           data,
-                                                //           index
-                                                //         )
-                                                //       }
-                                                //       draggable="false"
-                                                //     />
-                                                //   </span>
-                                                //   <p
-                                                //     className="modaltodolist-attachment-text  FontArabicRegular"
-                                                //     title={
-                                                //       data.displayAttachmentName
-                                                //     }
-                                                //   >
-                                                //     {first}
-                                                //   </p>
-                                                // </Col>
                                               );
                                             })
                                           : null}
@@ -2727,11 +2494,6 @@ const EditResolution = ({ setCancelresolution }) => {
                                     </Dragger>
                                   </Col>
                                 </Row>
-                                {/* <Row className="mt-3">
-                               
-                              </Row> */}
-                                {/* {isVoter ?
-                          <> */}
                                 <Row className="mt-3">
                                   <Col
                                     lg={12}

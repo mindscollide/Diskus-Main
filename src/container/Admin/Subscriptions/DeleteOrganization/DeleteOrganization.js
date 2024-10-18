@@ -2,17 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./DeleteOrganization.module.css";
 import { Row, Col, Container } from "react-bootstrap";
 
-import {
-  Button,
-  Loader,
-  Modal,
-  Notification,
-} from "../../../../components/elements";
+import { Button, Loader, Notification } from "../../../../components/elements";
 import deleteOrganizationAction from "../../../../store/actions/Delete_Organization";
 import { useDispatch, useSelector } from "react-redux";
 import FailedIcon from "../../../../assets/images/failed.png";
-import DeletedIcon from "../../../../assets/images/Deleted-Icon.png";
-import { FaLaptopHouse } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
@@ -33,16 +26,7 @@ const DeleteOrganization = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleDeleteOrganization = () => {
-    setDeleteConfirmModal(true);
-    setDeleteModal(false);
-    setDeleteSuccesModal(false);
-  };
-  const cancelModalDelete = () => {
-    setDeleteModal(false);
-    setDeleteConfirmModal(false);
-    setDeleteSuccesModal(false);
-  };
+
   const openDeleteSuccess = () => {
     let Data = {
       OrganizationID: JSON.parse(OrganizationID),
@@ -93,7 +77,7 @@ const DeleteOrganization = () => {
                 md={12}
                 className={styles["DeleteOrganization_content"]}
               >
-                <img draggable="false" src={FailedIcon} />
+                <img draggable="false" src={FailedIcon} alt="" />
                 <p>
                   {t("Opting-to")}
                   <span className={styles["title"]}>

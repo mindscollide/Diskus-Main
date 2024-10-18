@@ -538,11 +538,6 @@ const ProposedMeetingDate = ({
 
   const CancelModal = () => {
     setProposedMeetingDates(false);
-
-    // setParticipants(true);
-    // setParticipants(true);
-
-    // dispatch(showPrposedMeetingUnsavedModal(true));
   };
 
   useEffect(() => {
@@ -960,11 +955,7 @@ const ProposedMeetingDate = ({
                 className={styles["Cancel_Button_ProposedMeeting"]}
                 onClick={CancelModal}
               />
-              {/* <Button
-                text={t("View")}
-                className={styles["Save_Button_ProposedMeeting"]}
-                onClick={EnabletheViewProposedmeetingDates}
-              /> */}
+
               {!isEdit ? (
                 <>
                   <Button

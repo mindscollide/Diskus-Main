@@ -11,9 +11,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import { Col, Row, Spinner } from "react-bootstrap";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-
+import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Switch,
@@ -57,6 +55,7 @@ import {
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const MeetingDetails = ({
   setorganizers,
@@ -65,10 +64,8 @@ const MeetingDetails = ({
   setCurrentMeetingID,
   currentMeeting,
   editorRole,
-  setEditMeeting,
   isEditMeeting,
   setDataroomMapFolderId,
-  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -85,10 +82,6 @@ const MeetingDetails = ({
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
-
-  // let getALlMeetingTypes = JSON.parse(
-  //   localStorage.getItem("meetingTypesResult")
-  // );
 
   const getAllReminderFrequency = useSelector(
     (state) => state.NewMeetingreducer.getAllReminderFrequency
@@ -441,7 +434,6 @@ const MeetingDetails = ({
 
   const handlePublish = () => {
     //Enable the Error Handling From here
-    // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
     if (meetingDetails.ReminderFrequency.value !== 0) {
@@ -465,18 +457,14 @@ const MeetingDetails = ({
           14
         ),
         EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
-        // EndTime: data.endDate,
       });
     });
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
-      // meetingDetails.Description !== "" &&
       newArr.length > 0 &&
       newReminderData.length > 0
-      // &&
-      // meetingDetails.Notes !== ""
     ) {
       let recurringMeetingID =
         meetingDetails.RecurringOptions.value !== 0
@@ -526,7 +514,6 @@ const MeetingDetails = ({
 
   //Save Meeting
   const SaveMeeting = () => {
-    // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
     if (meetingDetails.ReminderFrequency.value !== 0) {
@@ -568,11 +555,8 @@ const MeetingDetails = ({
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
-      // meetingDetails.Description !== "" &&
       areAllValuesNotEmpty(newArr) &&
       newReminderData.length > 0
-      //  &&
-      // meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       // Check if RecurringOptions.value is defined and use it
@@ -968,14 +952,7 @@ const MeetingDetails = ({
       ResponseMessage !== undefined &&
       ResponseMessage !== null
     ) {
-      // setOpen({
-      //   ...open,
-      //   flag: true,
-      //   message: ResponseMessage,
-      // });
-      // setTimeout(() => {
       showMessage(ResponseMessage, "success", setOpen);
-      // }, 3000);
       dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [ResponseMessage]);
@@ -988,7 +965,6 @@ const MeetingDetails = ({
         getAllMeetingDetails !== null &&
         getAllMeetingDetails !== undefined
       ) {
-        // setEditMeeting(true);
         let PublishedMeetingStatus = getAllMeetingDetails.isPublished;
         let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
         console.log(MeetingData, "MeetingDataMeetingData");
@@ -997,7 +973,6 @@ const MeetingDetails = ({
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
         let getmeetingType = MeetingData.meetingType;
-        let wasPublishedFlag = MeetingData.wasMeetingPublished;
         setMeetingDetails({
           MeetingTitle: MeetingData.meetingTitle,
           MeetingType: {
@@ -1081,46 +1056,6 @@ const MeetingDetails = ({
       }
     } catch {}
   }, [getAllMeetingDetails, currentMeeting]);
-
-  function compareMeetings(meetingsArray1, meetingsArray2) {
-    if (meetingsArray1.length !== meetingsArray2.length) {
-      return false; // If the arrays have different lengths, they can't be equal
-    }
-
-    for (let i = 0; i < meetingsArray1.length; i++) {
-      const meeting1 = meetingsArray1[i];
-      const meeting2 = meetingsArray2[i];
-      console.log({ meeting1, meeting2 }, "meetingDataMeetingData");
-      if (
-        meeting1.MeetingDate !== meeting2.meetingDate ||
-        meeting1.StartTime !== meeting2.startTime ||
-        meeting1.EndTime !== meeting2.endTime
-      ) {
-        return false; // If any property is different, the meetings are not equal
-      }
-    }
-
-    return true; // If no differences were found, the arrays are equal
-  }
-  function comparePKMRID(meetingArray, idArray) {
-    // Check if the arrays have the same length
-    if (meetingArray.length !== idArray.length) {
-      return false;
-    }
-
-    // Iterate through the meetings in the first array
-    for (let i = 0; i < meetingArray.length; i++) {
-      const meeting = meetingArray[i];
-      const id = idArray[i];
-
-      // Compare the pK_MRID property with the corresponding value in the second array
-      if (meeting.pK_MRID !== id) {
-        return false;
-      }
-    }
-
-    return true; // If no differences were found, the arrays are considered equal
-  }
 
   useEffect(() => {
     dispatch(getAgendaAndVotingInfo_success([], ""));
@@ -1248,7 +1183,6 @@ const MeetingDetails = ({
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Meeting_type_heading"]}>
                         {t("Location-Videourl")}
-                        {/* <span className={styles["steric"]}>*</span> */}
                       </span>
                     </Col>
                   </Row>
@@ -1275,19 +1209,6 @@ const MeetingDetails = ({
                         }
                         maxLength={245}
                       />
-                      {/* <Row>
-                        <Col>
-                          <p
-                            className={
-                              error && meetingDetails.Location === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {t("Please-select-location")}
-                          </p>
-                        </Col>
-                      </Row> */}
                     </Col>
                   </Row>
                 </Col>
@@ -1330,19 +1251,6 @@ const MeetingDetails = ({
                           : false
                       }
                     />
-                    {/* <Row>
-                    <Col>
-                      <p
-                        className={
-                          error && meetingDetails.Description === ""
-                            ? ` ${styles["errorMessage-inLogin"]} `
-                            : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
-                        {t("Please-enter-meeting-description")}
-                      </p>
-                    </Col>
-                  </Row> */}
                   </Col>
                 </Row>
               </Row>
@@ -1454,7 +1362,6 @@ const MeetingDetails = ({
                                       locale={localValue}
                                       format="hh:mm A"
                                       selected={data.startDate}
-                                      // onOpen={() => handleOpenStartTime(index)}
                                       value={data.startTime}
                                       editable={false}
                                       plugins={[<TimePicker hideSeconds />]}
@@ -1505,12 +1412,7 @@ const MeetingDetails = ({
                                       alt=""
                                     />
                                   </Col>
-                                  <Col
-                                    lg={3}
-                                    md={3}
-                                    sm={12}
-                                    // className="d-flex justify-content-end"
-                                  >
+                                  <Col lg={3} md={3} sm={12}>
                                     <DatePicker
                                       arrowClassName="arrowClass"
                                       containerClassName="containerClassTimePicker"
@@ -1521,8 +1423,6 @@ const MeetingDetails = ({
                                       locale={localValue}
                                       value={data.endTime}
                                       format="hh:mm A"
-                                      // onOpen={() => handleOpenEndTime(index)}
-                                      // onOpen={() => handleOpenStartTime()}
                                       selected={data.endDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       editable={false}
@@ -1784,20 +1684,6 @@ const MeetingDetails = ({
                         : false
                     }
                   />
-
-                  {/* <Row>
-                    <Col>
-                      <p
-                        className={
-                          error && meetingDetails.Notes === ""
-                            ? ` ${styles["errorMessage-inLogin"]} `
-                            : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
-                        {t("Please-enter-meeting-notes")}
-                      </p>
-                    </Col>
-                  </Row> */}
                 </Col>
               </Row>
 

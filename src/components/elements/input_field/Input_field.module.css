@@ -1,6 +1,5 @@
 .form-control2 {
   border-radius: 4px !important;
-  /* border-color: #ccc !important; */
   border: 1px solid #e1e1e1 !important;
   font-size: 13px !important;
   height: 30px !important;
@@ -217,9 +216,6 @@ body[dir="rtl"] .updateNotes_titleInput {
   margin: 0 !important;
 }
 
-/* .input_searchAttendees_createMeeting {
-  margin: 0 !important;
-} */
 .text-area-create-resolution {
   height: 110px !important;
   resize: none;

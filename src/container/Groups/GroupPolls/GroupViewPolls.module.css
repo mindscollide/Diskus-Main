@@ -76,12 +76,6 @@
   font-weight: 600 !important;
   font-size: 14px !important;
   cursor: pointer;
-  /* display: inline-block !important; */
-  /* width: 80% !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  text-overflow: ellipsis !important;
-  cursor: pointer !important; */
 }
 
 .EmptyState_heading {

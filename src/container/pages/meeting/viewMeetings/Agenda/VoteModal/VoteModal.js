@@ -11,7 +11,6 @@ import styles from "./VoteModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { useNavigate } from "react-router-dom";
 import Cast from "../../../../../../assets/images/CAST.svg";
 import {
   showVoteAgendaModal,
@@ -27,7 +26,6 @@ import { validateInput } from "../../../../../../commen/functions/regex";
 const VoteModal = ({ setenableVotingPage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [addOptions, setAddOptions] = useState(false);
   const [saveOptions, setSaveOptions] = useState([{ text: "" }]);
@@ -65,6 +63,7 @@ const VoteModal = ({ setenableVotingPage }) => {
             >
               <img
                 src={redcrossIcon}
+                alt=""
                 height="21.79px"
                 width="21.79px"
                 className="cursor-pointer"
@@ -162,10 +161,6 @@ const VoteModal = ({ setenableVotingPage }) => {
     setSaveOptions([...saveOptions, saveOptions.text]);
   };
 
-  const handleSaveOption = (index) => {
-    console.log("Saved option:", saveOptions[index].text);
-  };
-
   const optionsIndividualOpenCloseVoting = [
     {
       value: "memebers",
@@ -178,6 +173,7 @@ const VoteModal = ({ setenableVotingPage }) => {
             <Col lg={11} md={11} sm={11} className="d-flex gap-2">
               <img
                 src={profile}
+                alt=""
                 width="17px"
                 height="17px"
                 className={styles["Image_profile"]}
@@ -199,6 +195,7 @@ const VoteModal = ({ setenableVotingPage }) => {
             <Col lg={11} md={11} sm={11} className="d-flex gap-2">
               <img
                 src={profile}
+                alt=""
                 width="17px"
                 height="17px"
                 className={styles["Image_profile"]}
@@ -220,6 +217,7 @@ const VoteModal = ({ setenableVotingPage }) => {
             <Col lg={11} md={11} sm={11} className="d-flex gap-2">
               <img
                 src={profile}
+                alt=""
                 width="17px"
                 height="17px"
                 className={styles["Image_profile"]}
@@ -241,6 +239,7 @@ const VoteModal = ({ setenableVotingPage }) => {
             <Col lg={11} md={11} sm={11} className="d-flex gap-2">
               <img
                 src={profile}
+                alt=""
                 width="17px"
                 height="17px"
                 className={styles["Image_profile"]}
@@ -262,6 +261,7 @@ const VoteModal = ({ setenableVotingPage }) => {
             <Col lg={11} md={11} sm={11} className="d-flex gap-2">
               <img
                 src={profile}
+                alt=""
                 width="17px"
                 height="17px"
                 className={styles["Image_profile"]}
@@ -283,6 +283,7 @@ const VoteModal = ({ setenableVotingPage }) => {
             <Col lg={11} md={11} sm={11} className="d-flex gap-2">
               <img
                 src={profile}
+                alt=""
                 width="17px"
                 height="17px"
                 className={styles["Image_profile"]}
@@ -304,6 +305,7 @@ const VoteModal = ({ setenableVotingPage }) => {
             <Col lg={11} md={11} sm={11} className="d-flex gap-2">
               <img
                 src={profile}
+                alt=""
                 width="17px"
                 height="17px"
                 className={styles["Image_profile"]}
@@ -325,6 +327,7 @@ const VoteModal = ({ setenableVotingPage }) => {
             <Col lg={11} md={11} sm={11} className="d-flex gap-2">
               <img
                 src={profile}
+                alt=""
                 width="17px"
                 height="17px"
                 className={styles["Image_profile"]}
@@ -377,8 +380,6 @@ const VoteModal = ({ setenableVotingPage }) => {
   const handleVoteSaveModal = () => {
     dispatch(showVoteAgendaModal(false));
     setenableVotingPage(true);
-    // Enable Error state by Here
-    // setError(true);
   };
 
   const dropDownSelectOrganizers = (e) => {
@@ -470,25 +471,6 @@ const VoteModal = ({ setenableVotingPage }) => {
     }
   };
 
-  const HandleChangeOptions = (e, index) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "OptionsAdded") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
-        setSaveOptions({
-          ...saveOptions,
-          Options: valueCheck,
-        });
-      } else {
-        setSaveOptions({
-          ...saveOptions,
-          Options: "",
-        });
-      }
-    }
-  };
-
   // Function for the Saved Add TExt filed
   const handleOptionTextChange = (e) => {
     let value = e.target.value;
@@ -516,7 +498,7 @@ const VoteModal = ({ setenableVotingPage }) => {
               <Col lg={12} md={12} sm={12} className={styles["OVer_padding"]}>
                 <Row>
                   <Col lg={7} md={7} sm={7} className="d-flex gap-2">
-                    <img src={Cast} height="25.85px" width="25.85px" />
+                    <img src={Cast} height="25.85px" width="25.85px" alt="" />
                     <span className={styles["Voter_modal_heading"]}>
                       {t("Add-vote-item")}
                     </span>
@@ -643,6 +625,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                       >
                         <img
                           src={Leftploygon}
+                          alt=""
                           width="20px"
                           height="15px"
                           onClick={SlideLeft}
@@ -671,6 +654,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                                     >
                                       <img
                                         src={Plus}
+                                        alt=""
                                         height="20.68px"
                                         width="20.68px"
                                         className={styles["IconClass"]}
@@ -739,6 +723,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                                                   inputicon={
                                                     <img
                                                       src={redcrossIcon}
+                                                      alt=""
                                                       height="21.79px"
                                                       width="21.79px"
                                                       className="cursor-pointer"
@@ -768,6 +753,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                       >
                         <img
                           src={Rightploygon}
+                          alt=""
                           width="20px"
                           height="15px"
                           onClick={Slideright}

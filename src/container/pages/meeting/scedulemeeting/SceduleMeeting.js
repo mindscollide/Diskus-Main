@@ -35,11 +35,6 @@ import {
   uploadGlobalFlag,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
-  viewMeetingFlag,
-  meetingAgendaContributorAdded,
-  meetingAgendaContributorRemoved,
-  meetingOrganizerAdded,
-  meetingOrganizerRemoved,
   searchNewUserMeeting,
   scheduleMeetingPageFlag,
 } from "../../../../store/actions/NewMeetingActions";
@@ -468,8 +463,7 @@ const SceduleMeeting = ({
       }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
-  console.log(typeof editorRole.role, "editorRoleeditorRole");
-  console.log(currentMeeting, "editorRoleeditorRole");
+
   return (
     <section>
       <Row className="mt-2">
@@ -516,11 +510,9 @@ const SceduleMeeting = ({
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
-                        // onClick={handleClickOrganizers}
                         onClick={showOrganizers}
                       />
                     )}
-                    {/* {checkFeatureIDAvailability(11) ? ( */}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
                         disableBtn={Number(currentMeeting) === 0 ? true : false}
@@ -533,7 +525,6 @@ const SceduleMeeting = ({
                         onClick={showAgendaContributers}
                       />
                     )}
-                    {/* ) : null} */}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
                         disableBtn={Number(currentMeeting) === 0 ? true : false}
@@ -546,7 +537,6 @@ const SceduleMeeting = ({
                         onClick={showParticipants}
                       />
                     )}
-                    {/* {checkFeatureIDAvailability(10) ? ( */}
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Agenda-builder")}
@@ -557,7 +547,6 @@ const SceduleMeeting = ({
                       }
                       onClick={showAgenda}
                     />
-                    {/* ) : null} */}
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Agenda-viewer")}
@@ -570,7 +559,6 @@ const SceduleMeeting = ({
                     />
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
-                        // disableBtn={Number(currentMeeting) === 0 ? true : false}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
                           Number(editorRole.status) === 9

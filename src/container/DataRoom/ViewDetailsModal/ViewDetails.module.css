@@ -73,7 +73,7 @@ body[dir="rtl"] .ViewDetials_Buttons_active {
   border-radius: 4px !important;
   font-weight: 600;
 }
-.Activity_Buttons_active:is(:active,:hover,:focus,:focus-visible,:target) {
+.Activity_Buttons_active:is(:active, :hover, :focus, :focus-visible, :target) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
@@ -123,10 +123,6 @@ body[dir="rtl"] .Activity_Buttons_active {
   border-radius: 4px !important;
   font-weight: 600;
 }
-
-/* body[dir="rtl"] .Activity_Buttons {
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-} */
 
 .owned_heading {
   font-size: 12px !important;

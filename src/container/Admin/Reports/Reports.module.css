@@ -77,7 +77,6 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
   width: 100% !important;
   border: 1px solid #e1e1e1 !important;
   height: 39px !important;
-  /* padding: 12px 30px; */
   padding: 0 10px;
   cursor: pointer !important;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -15,7 +15,6 @@ import {
   _justShowDateformat,
 } from "../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
-import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 
 const ModalViewNote = ({
   ModalTitle,
@@ -45,12 +44,8 @@ const ModalViewNote = ({
   //For Localization
   const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
-  const [isDeleteNote, setIsDeleteNote] = useState(false);
   const { t } = useTranslation();
-  const deleteNoteModalHandler = async () => {
-    setIsUpdateNote(false);
-    setIsDeleteNote(true);
-  };
+
   useEffect(() => {
     if (
       NotesReducer.GetNotesByNotesId !== null &&
@@ -89,16 +84,7 @@ const ModalViewNote = ({
     }
     setViewNotes(false);
   };
-  const handleViewIcon = (data, ext) => {
-    // let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
-    if (fileFormatforSignatureFlow.includes(ext)) {
-      window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
-    }
-  };
+
   return (
     <>
       <Container>
@@ -112,7 +98,6 @@ const ModalViewNote = ({
           ButtonTitle={ModalTitle}
           centered
           modalFooterClassName={styles["modalViewNoteClass"]}
-          //   modalFooterClassName={styles["modal-userprofile-footer"]}
           size={isUpdateNote === true ? "md" : "md"}
           ModalBody={
             <>
@@ -129,6 +114,7 @@ const ModalViewNote = ({
                     <img
                       draggable="false"
                       src={hollowstar}
+                      alt=""
                       width={17}
                       height={17}
                       className={styles["star-addnote"]}
@@ -137,6 +123,7 @@ const ModalViewNote = ({
                     <img
                       draggable="false"
                       className={styles["star-addnote"]}
+                      alt=""
                       width={17}
                       height={17}
                       src={StarIcon}
@@ -176,9 +163,7 @@ const ModalViewNote = ({
                     dangerouslySetInnerHTML={{
                       __html: notesData.description,
                     }}
-                  >
-                    {/* {notesData.description} */}
-                  </p>
+                  ></p>
                 </Col>
               </Row>
 
@@ -198,25 +183,11 @@ const ModalViewNote = ({
               <section className={styles["NotesViewAttachment"]}>
                 <Row>
                   {notesData.notesAttachments.length > 0
-                    ? notesData.notesAttachments.map((data, index) => {
-                        console.log("tasksAttachments", data);
-                        let ext = data.displayAttachmentName.split(".").pop();
-
-                        const first = data.displayAttachmentName.split(" ")[0];
-                        const pdfData = {
-                          taskId: data.fK_NotesID,
-                          attachmentID: data.pK_NAID,
-                          fileName: data.displayAttachmentName,
-                          commingFrom: 2,
-                        };
-                        const pdfDataJson = JSON.stringify(pdfData);
+                    ? notesData.notesAttachments.map((data) => {
                         return (
                           <Col sm={4} lg={4} md={4}>
                             <AttachmentViewer
                               data={data}
-                              // handleEyeIcon={() =>
-                              //   handleViewIcon(pdfDataJson, ext)
-                              // }
                               id={0}
                               name={data.displayAttachmentName}
                             />

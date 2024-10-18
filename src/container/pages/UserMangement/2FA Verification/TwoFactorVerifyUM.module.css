@@ -123,7 +123,6 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .EmailLabeltwofacboth {
-  /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
   color: #5a5a5a;
@@ -135,7 +134,6 @@ body[dir="rtl"] .EmailLabeltwofacboth {
 }
 
 .EmailLabeltwofacboth_active {
-  /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
   color: #e1e1e1 !important;
@@ -147,7 +145,6 @@ body[dir="rtl"] .EmailLabeltwofacboth_active {
 }
 
 .sendCodeEmail {
-  /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
   color: #5a5a5a;
@@ -159,7 +156,6 @@ body[dir="rtl"] .sendCodeEmail {
 }
 
 .sendCodeEmail_active {
-  /* margin-left: 10px; */
   font-size: 12px;
   color: #e1e1e1 !important;
   font-weight: 600 !important;

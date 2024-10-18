@@ -1,41 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import styles from "./ViewUpdateGroup.module.css";
-import Newprofile from "../../../assets/images/newprofile.png";
-import pdfIcon from "../../../assets/images/pdf_icon.svg";
-import file_image from "../../../assets/images/file_image.svg";
 import featherupload from "../../../assets/images/featherupload.svg";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@mui/material";
 import { Upload } from "antd";
-
-import {
-  TextField,
-  Button,
-  Checkbox,
-  SelectBox,
-  InputSearchFilter,
-  Loader,
-  AttachmentViewer,
-} from "./../../../components/elements";
-import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
+import { Button, AttachmentViewer } from "./../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import {
-  RetriveDocumentsGroupsApiFunc,
   SaveGroupsDocumentsApiFunc,
   saveFilesGroupsApi,
   uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../container/DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
-  let userID = localStorage.getItem("userID");
-
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -61,16 +39,16 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
     GroupID: 0,
   });
 
-  const { GroupsReducer, DataRoomReducer } = useSelector((state) => state);
+  const { GroupsReducer } = useSelector((state) => state);
 
   useEffect(() => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
       let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
       let groupHeadsData = groupDetails.groupMembers.filter(
-        (data, index) => data.groupRole.groupRoleID === 2
+        (data) => data.groupRole.groupRoleID === 2
       );
       let groupMembersData = groupDetails.groupMembers.filter(
-        (data, index) => data.groupRole.groupRoleID === 1
+        (data) => data.groupRole.groupRoleID === 1
       );
       setViewGroupDetails({
         Title: groupDetails.title,
@@ -98,7 +76,6 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -267,8 +244,6 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       });
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
-      console.log(newfile, "fileObjfileObjfileObjfileObj");
-      console.log(fileObj, "fileObjfileObjfileObjfileObj");
       await dispatch(
         saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile)
       );
@@ -484,17 +459,11 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
             </Row>
             <section className={styles["Scroller_files"]}>
               <Row className="mt-2">
-                {/* <Col lg={12} md={12} sm={12} className={styles["Scroller_files"]}> */}
                 {fileAttachments.length > 0
                   ? fileAttachments.map((data, index) => {
                       return (
                         <>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={4}
-                            // className="position-relative gap-2 mt-2 "
-                          >
+                          <Col lg={4} md={4} sm={4}>
                             <AttachmentViewer
                               data={data}
                               fk_UID={data.fk_UserID}
@@ -511,7 +480,6 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                       );
                     })
                   : null}
-                {/* </Col> */}
               </Row>
             </section>
           </Col>
@@ -535,7 +503,6 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
             />
           </Col>
         </Row>
-        {/* </Paper> */}
       </section>
     </>
   );

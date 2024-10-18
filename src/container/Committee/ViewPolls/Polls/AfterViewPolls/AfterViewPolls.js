@@ -6,12 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { Button, Table } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { ChevronDown } from "react-bootstrap-icons";
-import ta from "date-fns/locale/ta";
 
 const AfterViewPolls = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const PollsData = [
     {
       key: "1",
@@ -23,7 +21,6 @@ const AfterViewPolls = () => {
       ),
       Status: <label className={styles["ActionsClass"]}>Published</label>,
       Duedate: <label className="column-boldness">15 July 2023</label>,
-      Status: <label className="column-boldness">Published</label>,
       PollType: <label className={styles["Meeting_Title"]}>Meeting</label>,
       CreatedBy: <label className="column-boldness">Salman Memon</label>,
     },

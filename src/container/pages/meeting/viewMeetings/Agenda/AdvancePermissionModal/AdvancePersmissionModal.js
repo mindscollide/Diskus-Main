@@ -4,25 +4,19 @@ import { Modal, Button, Switch } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { useNavigate } from "react-router-dom";
 import {
   showAdvancePermissionConfirmation,
   showAdvancePermissionModal,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
 import PlusIcon from "../../../../../../assets/images/SVGPLUS.svg";
 import PDF from "../../../../../../assets/images/pdf_icon.svg";
 import Minus from "../../../../../../assets/images/SVGMINUS.svg";
 import profile from "../../../../../../assets/images/newprofile.png";
 import Key from "../../../../../../assets/images/KEY.svg";
-import { style } from "@mui/system";
 const AdvancePersmissionModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { SubMenu } = Menu;
-  const { Sider } = Layout;
   const { NewMeetingreducer } = useSelector((state) => state);
   const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
   const [sidebarindex, setSidebarindex] = useState(0);
@@ -143,7 +137,7 @@ const AdvancePersmissionModal = () => {
                   sm={12}
                   className="d-flex gap-2 align-items-center"
                 >
-                  <img src={Key} height="23.51px" width="23.49px" />
+                  <img src={Key} height="23.51px" width="23.49px" alt="" />
                   <span className={styles["Advance_setting_heading"]}>
                     {t("Advanced-permission-settings")}
                   </span>
@@ -234,6 +228,7 @@ const AdvancePersmissionModal = () => {
                                             ? Minus
                                             : PlusIcon
                                         }
+                                        alt=""
                                         height="14px"
                                         width="14px"
                                         className={styles["Plus_icon-Class"]}
@@ -264,6 +259,7 @@ const AdvancePersmissionModal = () => {
                                                 >
                                                   <img
                                                     src={profile}
+                                                    alt=""
                                                     height="19px"
                                                     width="19px"
                                                     className={
@@ -322,6 +318,7 @@ const AdvancePersmissionModal = () => {
                                                     >
                                                       <img
                                                         src={PDF}
+                                                        alt=""
                                                         height="38.57px"
                                                         width="38.57px"
                                                       />
@@ -407,6 +404,7 @@ const AdvancePersmissionModal = () => {
                                                             ? Minus
                                                             : PlusIcon
                                                         }
+                                                        alt=""
                                                         height="14px"
                                                         width="14px"
                                                         className={
@@ -449,6 +447,7 @@ const AdvancePersmissionModal = () => {
                                                                     src={
                                                                       profile
                                                                     }
+                                                                    alt=""
                                                                     height="19px"
                                                                     width="19px"
                                                                     className={

@@ -17,15 +17,9 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ExclamationTriangleFill } from "react-bootstrap-icons";
 import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { getBillingInformationapi } from "../../../../store/actions/OrganizationBillings_actions";
-import {
-  newTimeFormaterAsPerUTCFullDate,
-  _justShowDateformat,
-  _justShowDateformatBilling,
-} from "../../../../commen/functions/date_formater";
-import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
+import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const Summary = () => {
@@ -39,35 +33,19 @@ const Summary = () => {
     NextPaymentDueDate: "",
     AmountAfterDiscount: 0,
   });
-  const [invoice, setInvoice] = useState([
-    {
-      balanceDue: 0,
-      invoiceAmount: 0,
-      invoiceCustomerNumber: "",
-      invoiceDueDate: "",
-      lateFeeCharged: 0,
-    },
-  ]);
+
   const [lastPayment, setLastPayment] = useState({
     Invoice: 0,
     PaymentReceivedDate: "",
     PaidAmount: 0,
   });
-  const [accountActivity, setAccountActivity] = useState({
-    LastPaymentInvoice: 0,
-    LasyPaymentReceivedDate: "",
-    LastPaidAmount: 0,
-  });
+
   let Blur = localStorage.getItem("blur");
 
   useEffect(() => {
     if (Blur != undefined) {
-      console.log("Blur", Blur);
-
       setActivateBlur(true);
     } else {
-      console.log("Blur", Blur);
-
       setActivateBlur(false);
     }
   }, [Blur]);
@@ -116,10 +94,6 @@ const Summary = () => {
         adminReducer.searchPaymentHistory !== null &&
         adminReducer.searchPaymentHistory !== undefined
       ) {
-        console.log(
-          adminReducer.searchPaymentHistory,
-          "adminReduceradminReducer"
-        );
         setOpenInvoiceRecords(adminReducer.searchPaymentHistory.paymentHistory);
       }
     } catch (error) {
@@ -217,9 +191,6 @@ const Summary = () => {
     navigate("/");
   };
 
-  //handle PayInvoice button
-  const handlePayInvoiceButton = () => {};
-
   const columns = [
     {
       title: t("Subscription#"),
@@ -272,56 +243,6 @@ const Summary = () => {
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      Subscription: (
-        <>
-          <span className={styles["SummarayOpenInvoiceRecords"]}>
-            2024-08-24-991-150
-          </span>
-        </>
-      ),
-      invoice: (
-        <>
-          <span className={styles["SummarayOpenInvoiceRecords"]}>
-            "John Brown"
-          </span>
-        </>
-      ),
-      duedate: (
-        <>
-          <span className={styles["SummarayOpenInvoiceRecords"]}>32</span>
-        </>
-      ),
-      invoiceamount: (
-        <>
-          <span className={styles["SummarayOpenInvoiceRecords"]}>
-            New York No. 1 Lake Park
-          </span>
-        </>
-      ),
-      balancedue: (
-        <>
-          <span className={styles["SummarayOpenInvoiceRecords"]}>York No.</span>
-        </>
-      ),
-      latecharges: (
-        <>
-          <span className={styles["SummarayOpenInvoiceRecords"]}>Testttt</span>
-        </>
-      ),
-      Pay: (
-        <>
-          <Button
-            text={t("Pay-Invoice")}
-            className={styles["Pay_invoice_button"]}
-            onClick={handlePayInvoiceButton}
-          />
-        </>
-      ),
-    },
-  ];
   useEffect(() => {
     try {
       if (OrganizationBillingReducer.getBillInformation !== null) {
@@ -329,17 +250,7 @@ const Summary = () => {
           OrganizationBillingReducer.getBillInformation.accountDetails;
         let lastpaymentDetail =
           OrganizationBillingReducer.getBillInformation.lastPayment;
-        // let AccountActivityLastPayment = OrganizationBillingReducer.getBillInformation.
-        console.log("SummarySummarySummary", Summary);
-        console.log("SummarySummarySummary", lastpaymentDetail);
-        console.log(
-          "SummarySummarySummary",
-          OrganizationBillingReducer.getBillInformation.invoice
-        );
-        console.log(
-          "SummarySummarySummary",
-          OrganizationBillingReducer.getBillInformation
-        );
+
         setSummary({
           BalanceDue: Summary.balanceDue != 0 ? Summary.balanceDue : 0,
           NextInvoiceEstimate:
@@ -349,17 +260,15 @@ const Summary = () => {
         });
 
         let newInvoice = [];
-        OrganizationBillingReducer.getBillInformation.invoice.map(
-          (data, index) => {
-            newInvoice.push({
-              invoice: data.invoiceCustomerNumber,
-              duedate: _justShowDateformatBilling(data.invoiceDueDate),
-              invoiceamount: data.invoiceAmount,
-              balancedue: data.balanceDue,
-              latecharges: data.lateFeeCharged,
-            });
-          }
-        );
+        OrganizationBillingReducer.getBillInformation.invoice.map((data) => {
+          newInvoice.push({
+            invoice: data.invoiceCustomerNumber,
+            duedate: _justShowDateformatBilling(data.invoiceDueDate),
+            invoiceamount: data.invoiceAmount,
+            balancedue: data.balanceDue,
+            latecharges: data.lateFeeCharged,
+          });
+        });
         console.log("SummarySummarySummary", newInvoice);
 
         setRows([...newInvoice]);
@@ -475,6 +384,7 @@ const Summary = () => {
                       <Col className="d-flex justify-content-center">
                         <img
                           draggable="false"
+                          alt=""
                           src={VerificationFailedIcon}
                           className={styles["allowModalIcon"]}
                           width={60}

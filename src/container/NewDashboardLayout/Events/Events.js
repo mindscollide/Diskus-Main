@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Events.module.css";
 import { useSelector } from "react-redux";
 import { Spin } from "antd";
-import { Button, ResultMessage } from "../../../components/elements";
-import { Col, Row } from "react-bootstrap";
+import { Button } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import {
@@ -57,7 +56,6 @@ const Events = () => {
           }
         );
 
-        console.log("upComingEvents", updatedUpcomingEvents);
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
         console.log("upComingEvents", upComingEvents);
@@ -70,16 +68,12 @@ const Events = () => {
 
   useEffect(() => {
     if (meetingIdReducer.MeetingStatusSocket !== null) {
-      let meetingStatusID =
-        meetingIdReducer.MeetingStatusSocket.meetingStatusID;
       if (
         meetingIdReducer.MeetingStatusSocket.message
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
       ) {
         let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
-        // updateCalendarData(true, meetingID);
-        console.log("upComingEvents");
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
             (meetingData) =>
@@ -87,7 +81,6 @@ const Events = () => {
           )
         );
 
-        console.log("upComingEvents");
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             return (
@@ -116,9 +109,6 @@ const Events = () => {
       }
 
       dispatch(getMeetingStatusfromSocket(null));
-      // if (meetingStatusID === 4) {
-      //   updateCalendarData(true, meetingID);
-      // }
     }
   }, [meetingIdReducer.MeetingStatusSocket]);
 
@@ -165,10 +155,8 @@ const Events = () => {
           getCurrentDate
         ) {
           if (indexforUndeline === null && flag === false) {
-            // if (index - 1 >= 0) {
             flag = true;
             indexforUndeline = index;
-            // }
           }
         }
       });
@@ -239,11 +227,6 @@ const Events = () => {
               upcomingEventsData.participantRoleID === 1 ? (
                 upcomingEventsData.meetingDetails.isQuickMeeting === true &&
                 minutesDifference < 15 ? (
-                  // &&
-                  // minutesDifference > 0
-                  //   &&
-                  //   minutesDifference <= 99999999 &&
-                  //   minutesDifference > 0
                   <Button
                     text={t("Start-meeting")}
                     className="Start-Meeting-Upcoming"
@@ -259,11 +242,6 @@ const Events = () => {
                     false &&
                   upcomingEventsData.participantRoleID === 1 &&
                   minutesDifference < 15 ? (
-                  // &&
-                  // minutesDifference > 0
-                  //   &&
-                  //     minutesDifference <= 99999999 &&
-                  //     minutesDifference > 0
                   <Button
                     text={t("Start-meeting")}
                     className="Start-Meeting-Upcoming"
@@ -526,7 +504,6 @@ const Events = () => {
       if (meetingIdReducer.MeetingStatusEnded !== null) {
         try {
           let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
-          console.log(meetingID, "meetingIDmeetingIDmeetingID");
           setUpComingEvents((upcomingeventData) => {
             return upcomingeventData.filter((meetingData) => {
               return (
