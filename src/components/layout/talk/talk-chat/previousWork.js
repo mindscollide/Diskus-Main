@@ -624,7 +624,7 @@ const TalkChat = () => {
     if (
       talkStateData.AllUsers.AllUsersData !== undefined &&
       talkStateData.AllUsers.AllUsersData !== null &&
-      talkStateData.AllUsers.AllUsersData !== []
+      talkStateData.AllUsers.AllUsersData.length !== 0
     ) {
       setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
     }
@@ -688,7 +688,7 @@ const TalkChat = () => {
         undefined &&
       talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
         null &&
-      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !== []
+      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData.length !== 0
     ) {
       setAllUsersGroupsRooms(
         talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
@@ -4109,7 +4109,7 @@ const TalkChat = () => {
     // e.preventDefault()
     dispatch(activeChatID(activeChat));
     if (
-      (messageSendData.Body !== "" && uploadFileTalk !== {}) ||
+      (messageSendData.Body !== "" && Object.keys(uploadFileTalk).length !== 0) ||
       messageSendData.Body !== ""
     ) {
       if (chatClickData.messageType === "O") {
