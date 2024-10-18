@@ -18,14 +18,11 @@ import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,
-  showDeleteMeetingModal,
   showSceduleProposedMeeting,
   scheduleMeetingPageFlag,
   viewProposeDateMeetingPageFlag,
-  viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
   viewMeetingFlag,
   meetingDetailsGlobalFlag,
   organizersGlobalFlag,
@@ -43,8 +40,10 @@ import {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
-  validateStringEmailApi,
   validateStringParticipantProposedApi,
+  GetAllProposedMeetingDateApiFunc,
+  GetAllSavedparticipantsAPI,
+  CleareMessegeNewMeeting,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -56,7 +55,6 @@ import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeet
 import { useEffect } from "react";
 import { StatusValue } from "../../../statusJson";
 import {
-  convertDateinGMT,
   forRecentActivity,
   getDifferentisDateisPassed,
   newTimeFormaterAsPerUTCFullDate,
@@ -72,19 +70,17 @@ import { checkFeatureIDAvailability } from "../../../../../../commen/functions/u
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
   setViewProposeOrganizerPoll,
-  viewProposeDatePoll,
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModalUnpublish,
   setSceduleMeeting,
   setEdiorRole,
   setEditMeeting,
   setCurrentMeetingID,
-  currentMeeting,
-  editorRole,
   setDataroomMapFolderId,
   setResponseByDate,
   setVideoTalk,
-  videoTalk,
+  setProposedNewMeeting,
+  setIsProposedMeetEdit,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -116,15 +112,6 @@ const UnpublishedProposedMeeting = ({
   const [rows, setRow] = useState([]);
   const [publishState, setPublishState] = useState(null);
   const [organizerViewModal, setOrganizerViewModal] = useState(false);
-  let Meetingprop = localStorage.getItem("meetingprop");
-
-  const handleDeleteMeetingModal = () => {
-    dispatch(showDeleteMeetingModal(true));
-  };
-
-  const enableScedulePrposedMeetingModal = () => {
-    dispatch(showSceduleProposedMeeting(true));
-  };
 
   // Empty text data
   const emptyText = () => {
@@ -194,8 +181,30 @@ const UnpublishedProposedMeeting = ({
     dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
   };
 
-  const handleEditMeeting = async (id, record, role) => {
-    if (role !== "Agenda Contributor") {
+  const handleEditMeeting = async (id, agendaContributorFlag, record) => {
+    if (agendaContributorFlag === false && record.status === "12") {
+      let Data = {
+        MeetingID: Number(id),
+      };
+
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          false,
+          setCurrentMeetingID,
+          setSceduleMeeting,
+          setDataroomMapFolderId,
+          0,
+          2
+        )
+      );
+      await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
+      await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
+      setIsProposedMeetEdit(true);
+      setProposedNewMeeting(true);
+    } else if (agendaContributorFlag === false) {
       let Data = {
         MeetingID: Number(id),
       };
@@ -212,8 +221,8 @@ const UnpublishedProposedMeeting = ({
           1
         )
       );
+      dispatch(scheduleMeetingPageFlag(true));
     }
-    dispatch(scheduleMeetingPageFlag(true));
   };
 
   const changeDateStartHandler2 = (date) => {
@@ -475,8 +484,7 @@ const UnpublishedProposedMeeting = ({
                       onClick={() => {
                         handleEditMeeting(
                           record.pK_MDID,
-                          record.isQuickMeeting,
-                          // record.isAgendaContributor,
+                          record.isAgendaContributor,
                           record
                         );
                         setVideoTalk({
@@ -521,8 +529,7 @@ const UnpublishedProposedMeeting = ({
                         onClick={() => {
                           handleEditMeeting(
                             record.pK_MDID,
-                            record.isQuickMeeting,
-                            // record.isAgendaContributor,
+                            record.isAgendaContributor,
                             record
                           );
                           setVideoTalk({
@@ -887,10 +894,6 @@ const UnpublishedProposedMeeting = ({
       callApi();
     }
   }, [MeetingProp]); // Add `dispatch` to the dependency array
-
-  console.log("rowsrowsrows", rows);
-
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <section>

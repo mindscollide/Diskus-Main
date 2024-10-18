@@ -156,6 +156,7 @@ const initialState = {
   validateEncryptedStringParticipantProposed: null,
   getMeetingUsersRSVP: null,
   meetingReminderNotification: null,
+  updatedPartcipantsData: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2438,6 +2439,31 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         getAllMeetingDetails: null,
+      };
+    }
+
+    case actions.PARTICIPANT_SAVED_PROPOSED_NEW_MEETING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.PARTICIPANT_SAVED_PROPOSED_NEW_MEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        updatedPartcipantsData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.PARTICIPANT_SAVED_PROPOSED_NEW_MEETING_FAIL: {
+      return {
+        ...state,
+        Loading: true,
+        updatedPartcipantsData: null,
+        ResponseMessage: action.message,
       };
     }
 

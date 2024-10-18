@@ -10,37 +10,25 @@ import {
   RemoveTimeDashes,
 } from "../../commen/functions/date_formater";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
 import {
   TextField,
   Button,
   Modal,
-  TimePickers,
-  CustomDatePicker,
   SelectBox,
   Accordian,
   EmployeeCard,
-  InputSearchFilter,
   Notification,
   Checkbox,
-  Loader,
-  MultiDatePicker,
   AttachmentViewer,
 } from "./../../components/elements";
 import {
   FileUploadToDo,
   ResetAllFilesUpload,
 } from "../../store/actions/Upload_action";
-import {
-  addMinutesofMeetings,
-  HideMinuteMeetingMessage,
-} from "../../store/actions/AddMinutesofMeeting_action";
 import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar";
-import userImage from "../../assets/images/user.png";
 import { Row, Col, Container } from "react-bootstrap";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import CustomUpload from "../../components/elements/upload/Upload";
@@ -48,18 +36,15 @@ import { CameraVideo } from "react-bootstrap-icons";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  allAssignessList,
   UpdateMeeting,
   cleareAssigneesState,
   CancelMeeting,
-  GetAllReminders,
 } from "../../store/actions/Get_List_Of_Assignees";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-import TextFieldTime from "../../components/elements/input_field_time/Input_field";
 import {
   getCurrentDate,
   getCurrentDateTime,
@@ -1757,9 +1742,17 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       }
     }
   };
-
+  console.log(createMeeting.IsVideoCall, "createMeetingcreateMeeting");
+  console.log(addedParticipantNameList, "createMeetingcreateMeeting");
   // for attendies handler
   const handleSubmit = async () => {
+    if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
+      setOpen({
+        message: t("Please-add-atleast-one-participant"),
+        flag: true,
+      });
+      return;
+    }
     let hasOrganizer = createMeeting.MeetingAttendees.some(
       (attendee) => attendee.MeetingAttendeeRole.PK_MARID === 1
     );
@@ -1782,9 +1775,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       let newTime = finalDateTimeWithoutUTC.slice(8, 14);
       let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
       let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
-      // let newDate = finalDateTime.slice(0, 8);
-      // let newTime = finalDateTime.slice(8, 14);
-      // let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
       let newData = {
         MeetingID: createMeeting.MeetingID,
         MeetingTitle:
@@ -2321,7 +2311,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           onHide={onHideHandleModal}
           show={editFlag}
           setShow={setEditFlag}
-          className={closeConfirmationModal || isCancelMeetingModal ? null : "meeting_update"}
+          className={
+            closeConfirmationModal || isCancelMeetingModal
+              ? null
+              : "meeting_update"
+          }
           ButtonTitle={ModalTitle}
           modalFooterClassName={"d-block"}
           modalHeaderClassName={"d-none"}
