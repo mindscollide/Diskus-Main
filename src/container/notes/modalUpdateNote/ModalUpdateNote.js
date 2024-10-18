@@ -46,9 +46,45 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const [fileForSend, setFileForSend] = useState([]);
   const [attachments, setAttachments] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  const [isdescription, setDescription] = useState(null);
+  console.log(isdescription, "isdescriptionisdescriptionisdescription");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [addNoteFields, setAddNoteFields] = useState({
+    Title: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    Description: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    createdDate: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    createdTime: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    ModifiedDate: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    ModifieTime: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    PK_NotesID: 0,
+    FK_NotesStatusID: 0,
+  });
   const deleteNoteModalHandler = async () => {
     setIsUpdateNote(false);
     setIsDeleteNote(true);
@@ -86,41 +122,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       handlers: {},
     },
   };
-
-  const [addNoteFields, setAddNoteFields] = useState({
-    Title: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    Description: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    createdDate: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    createdTime: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    ModifiedDate: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    ModifieTime: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    PK_NotesID: 0,
-    FK_NotesStatusID: 0,
-  });
 
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -220,8 +221,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     }
   };
 
-
-
   useEffect(() => {
     try {
       if (
@@ -232,10 +231,48 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           NotesReducer.GetNotesByNotesId,
           "NotesReducerNotesReducerNotesReducer"
         );
+        const {
+          title,
+          date,
+          description,
+          fK_NotesStatus,
+          fK_OrganizationID,
+          isAttachment,
+          isStarred,
+          modifiedDate,
+          modifiedTime,
+          notesAttachments,
+          notesStatus,
+          organizationName,
+          pK_NotesID,
+          time,
+          username,
+        } = NotesReducer.GetNotesByNotesId;
+        console.log(
+          {
+            title,
+            date,
+            description,
+            fK_NotesStatus,
+            fK_OrganizationID,
+            isAttachment,
+            isStarred,
+            modifiedDate,
+            modifiedTime,
+            notesAttachments,
+            notesStatus,
+            organizationName,
+            pK_NotesID,
+            time,
+            username,
+          },
+          "titletitle"
+        );
+        setDescription(description);
         setAddNoteFields({
           ...addNoteFields,
           Title: {
-            value: NotesReducer.GetNotesByNotesId.title,
+            value: title,
             errorMessage: "",
             errorStatus: false,
           },
@@ -259,11 +296,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             errorMessage: "",
             errorStatus: false,
           },
-          Description: {
-            value: NotesReducer.GetNotesByNotesId.description,
-            errorMessage: "",
-            errorStatus: false,
-          },
+
           PK_NotesID: NotesReducer.GetNotesByNotesId.pK_NotesID,
 
           FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
@@ -293,8 +326,23 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           });
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error, "GetNotesByNotesIdGetNotesByNotesId");
+    }
   }, [NotesReducer.GetNotesByNotesId]);
+
+  useEffect(() => {
+    if (isdescription !== null) {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: isdescription,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  }, [isdescription]);
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
@@ -482,6 +530,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes));
   };
 
+  console.log(addNoteFields, "addNoteFieldsaddNoteFields");
+
   return (
     <>
       <Container>
@@ -627,7 +677,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       <ReactQuill
                         ref={editorRef}
                         theme='snow'
-                        value={addNoteFields.Description.value || ""}
+                        value={addNoteFields.Description.value}
                         // defaultValue={addNoteFields.Description.value}
                         onChange={onTextChange}
                         modules={modules}

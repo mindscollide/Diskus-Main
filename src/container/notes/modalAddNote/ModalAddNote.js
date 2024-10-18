@@ -150,6 +150,13 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         },
       });
     } else {
+      console.log(String(content).length, "contentcontent");
+      console.log(
+        removeHTMLTagsAndTruncate(String(content).length),
+        removeHTMLTagsAndTruncate(String(content), 2500),
+        "contentcontent"
+      );
+
       if (source === "user" && String(content).length >= 2500) {
         // Update state only if no image is detected in the content
         setAddNoteFields({

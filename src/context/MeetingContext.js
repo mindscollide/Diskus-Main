@@ -9,6 +9,7 @@ export const MeetingProvider = ({ children }) => {
   const { settingReducer } = useSelector((state) => state);
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
+  const [canceConfirmationModal, setConfirmationModal] = useState(false);
   const [editorRole, setEdiorRole] = useState({
     status: null,
     role: null,
@@ -32,7 +33,13 @@ export const MeetingProvider = ({ children }) => {
   }, [settingReducer.UserProfileData]);
   return (
     <MeetingContext.Provider
-      value={{ editorRole, setEdiorRole, isAgendaUpdateWhenMeetingActive }}>
+      value={{
+        editorRole,
+        setEdiorRole,
+        isAgendaUpdateWhenMeetingActive,
+        canceConfirmationModal,
+        setConfirmationModal,
+      }}>
       {children}
     </MeetingContext.Provider>
   );
