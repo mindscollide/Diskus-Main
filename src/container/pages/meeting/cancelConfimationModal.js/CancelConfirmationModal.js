@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import styles from "./CancelConfirmationModal.module.css";
 import { Col, Modal, Row } from "react-bootstrap";
-import CustomModal from "../../../../../components/elements/modal/Modal";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import CustomModal from "../../../../components/elements/modal/Modal";
+import { MeetingContext } from "../../../../context/MeetingContext";
 import { useTranslation } from "react-i18next";
-import { Button } from "../../../../../components/elements";
+import { Button } from "../../../../components/elements";
 const CancelConfirmationModal = ({
   handleClickDiscard,
   handleClickContinue,
