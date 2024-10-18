@@ -1,9 +1,10 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
-import { Button, Modal, Notification } from "../../components/elements";
+import { Button, Loader, Modal, Notification } from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
 import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
+import { Pagination } from "antd";
 import { useTranslation } from "react-i18next";
 import CreateGroup from "../../components/elements/CreateGroup/CreateGroup";
 import UpdateGroupPage from "../../components/elements/updateGroupPage/UpdateGroupPage";
@@ -17,6 +18,7 @@ import {
   clearMessagesGroup,
   getbyGroupID,
   getGroups,
+  groupLoader,
   realtimeGroupStatusResponse,
   updateGroupStatus,
   createGroupPageFlag,
@@ -47,15 +49,19 @@ import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const Groups = () => {
   const { t } = useTranslation();
-  const { GroupsReducer, talkStateData } = useSelector((state) => state);
+  const { GroupsReducer, talkStateData, talkFeatureStates } = useSelector(
+    (state) => state
+  );
   const [modalStatusChange, setModalStatusChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [viewGroupTab, setViewGroupTab] = useState(0);
   const [ViewGroupID, setViewGroupID] = useState(0);
+
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [ViewGroupPage, setViewGroupPage] = useState(true);
   const [creategrouppage, setCreategrouppage] = useState(false);
@@ -89,6 +95,7 @@ const Groups = () => {
     dispatch(viewGroupPageFlag(false));
     localStorage.removeItem("groupsArCurrent");
     localStorage.removeItem("ViewGroupID");
+
     localStorage.setItem("groupsCurrent", 1);
     dispatch(getGroups(navigate, t, 1));
   }, []);
@@ -98,7 +105,8 @@ const Groups = () => {
       let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
       if (status === 2) {
         let findGroupIndex = groupsData.findIndex(
-          (data) => data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+          (data, index) =>
+            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
         );
         if (findGroupIndex !== -1) {
           let newArr = [...groupsData];
@@ -176,7 +184,10 @@ const Groups = () => {
       setgroupsData([newData, ...groupsData]);
     }
   }, [GroupsReducer.realtimeGroupCreateResponse]);
-
+  console.log(
+    GroupsReducer.getAllGroupsResponse,
+    "GroupsReducerGroupsReducerGroupsReducer"
+  );
   useEffect(() => {
     try {
       if (
@@ -303,11 +314,15 @@ const Groups = () => {
           )
         );
       } else {
-        showMessage(t("Talk-group-doesn't-exist"), "error", setOpen);
+        showMessage(t("Talk-group-doesnt-exist"), "error", setOpen);
       }
     } else {
       showMessage(t("No-talk-group-created"), "error", setOpen);
     }
+  };
+
+  const activegroupmodal = () => {
+    setShowActivegroup(true);
   };
 
   const handleDocumentsClickTab = (data) => {
@@ -347,7 +362,7 @@ const Groups = () => {
       GroupsReducer.ResponseMessage !== "" &&
       GroupsReducer.ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(GroupsReducer.ResponseMessage, "success", setOpen);
+      showMessage(GroupsReducer.ResponseMessage, "error", setOpen);
       dispatch(clearMessagesGroup());
     } else {
       dispatch(clearMessagesGroup());
@@ -368,7 +383,7 @@ const Groups = () => {
   };
 
   const openNotification = () => {
-    showMessage(t("Not-a-member-of-talk-group"), "error", setOpen);
+    showMessage(t("Not-a-member-of-talk-group"), "success", setOpen);
   };
 
   return (
@@ -523,11 +538,7 @@ const Groups = () => {
                         >
                           <Row>
                             <Col>
-                              <img
-                                draggable="false"
-                                src={NoGroupsData}
-                                alt=""
-                              />
+                              <img draggable="false" src={NoGroupsData} />
                             </Col>
                             <Col
                               sm={12}
@@ -593,6 +604,12 @@ const Groups = () => {
                       onChange={handlechange}
                       showSizer={false}
                     />
+                    {/* <Pagination
+                      current={currentPage}
+                      total={totalLength}
+                      pageSize={8}
+                      onChange={handlechange}
+                    /> */}
                   </span>
                 </Col>
               </Row>
@@ -697,7 +714,7 @@ const Groups = () => {
         setOpen={(status) => setOpen({ ...open, open: status.flag })}
         severity={open.severity}
       />
-    </>Ï
+    </>
   );
 };
 
