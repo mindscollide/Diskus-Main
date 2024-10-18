@@ -1780,6 +1780,10 @@ const leaveMeetingVideo = {
   RequestMethod: "ServiceManager.LeaveMeetingVideo",
 };
 
+const ProposeNewMeetingSaveParticipants = {
+  RequestMethod: "ServiceManager.SaveMeetingParticipantsForProposedMeeting",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2251,4 +2255,5 @@ export {
   downloadCallRecording,
   downloadMeetingRecording,
   leaveMeetingVideo,
+  ProposeNewMeetingSaveParticipants,
 };

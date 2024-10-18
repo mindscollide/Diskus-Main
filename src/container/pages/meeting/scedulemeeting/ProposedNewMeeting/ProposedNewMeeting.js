@@ -13,21 +13,20 @@ import {
   Button,
   TextField,
   Notification,
-  InputSearchFilter,
 } from "../../../../../components/elements";
 import { useState } from "react";
 import DatePicker from "react-multi-date-picker";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { DateObject } from "react-multi-date-picker";
 import desh from "../../../../../assets/images/desh.svg";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
 import {
-  convertToUTC,
-  createConvert,
+  forRecentActivity,
+  multiDatePickerDateChangIntoUTC,
+  resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -36,27 +35,31 @@ import makeAnimated from "react-select/animated";
 import { getAllCommitteesandGroups } from "../../../../../store/actions/Polls_actions";
 import {
   getCurrentDate,
-  getNextDay,
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
 import {
-  SaveMeetingDetialsNewApiFunction,
+  GetAllMeetingDetialsData,
   GetAllMeetingTypesNewFunction,
+  newMeetingGlobalLoader,
+  ParticipantsData,
+  proposedMeetingData,
+  SaveMeetingDetialsNewApiFunction,
+  searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
+  editorRole,
+  isEditMeeting,
+  isProposedMeetEdit,
+  setSceduleMeeting,
   setorganizers,
   setmeetingDetails,
-  setSceduleMeeting,
   setCurrentMeetingID,
-  currentMeeting,
-  editorRole,
-  setEditMeeting,
-  isEditMeeting,
   setDataroomMapFolderId,
-  setEdiorRole,
+  currentMeeting,
+  setIsProposedMeetEdit,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -66,44 +69,112 @@ const ProposedNewMeeting = ({
   const calendRef = useRef();
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
+  const getAllParticipants = useSelector(
+    (state) => state.NewMeetingreducer.getAllSavedparticipants
+  );
+  const getAllProposedDatesEditFlow = useSelector(
+    (state) => state.NewMeetingreducer.getAllProposedDates
+  );
+
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
-  const [sendResponseVal, setSendResponseVal] = useState("");
   const [participantUsers, setParticipantUsers] = useState([]);
-  const [members, setMembers] = useState([]);
   const [membersParticipants, setMembersParticipants] = useState([]);
-  const [selectedsearch, setSelectedsearch] = useState([]);
-  const [meetingTypeDetails, setMeetingTypeDetails] = useState({
-    MeetingType: {
-      PK_MTID: 1,
-      Type: t("Board-meeting"),
-    },
-  });
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
-  const getNextDateforMeeting = {
-    dateFormat: getNextDay(),
-  };
+  const [editProposedMeetingID, setEditProposedMeetingID] = useState(0);
+  const [EditmeetingTypeDetails, setEditmeetingTypeDetails] = useState({
+    MeetingType: {
+      PK_MTID: 0,
+      Type: "",
+    },
+  });
+  console.log(isProposedMeetEdit, "isProposedMeetEditisProposedMeetEdit");
+  const [meetingTypeDetails, setMeetingTypeDetails] = useState({
+    MeetingType: {
+      PK_MTID: isProposedMeetEdit
+        ? EditmeetingTypeDetails.MeetingType.PK_MTID
+        : 0,
+      Type: isProposedMeetEdit
+        ? EditmeetingTypeDetails.MeetingType.Type
+        : t("Board-meeting"),
+    },
+  });
 
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
   });
+  //Now Working on Edit Flow Proposed new  Meeting
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllMeetingDetails !== null &&
+        NewMeetingreducer.getAllMeetingDetails !== undefined
+      ) {
+        const EditFlowData =
+          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+        console.log(EditFlowData, "EditFlowData");
+        if (isProposedMeetEdit) {
+          setEditmeetingTypeDetails({
+            MeetingType: {
+              PK_MTID: EditFlowData.meetingType.pK_MTID,
+              Type: EditFlowData.meetingType.type,
+            },
+          });
+
+          // Update meetingTypeDetails based on the edit flow
+          setMeetingTypeDetails({
+            MeetingType: {
+              PK_MTID: EditFlowData.meetingType.pK_MTID,
+              Type: EditFlowData.meetingType.type,
+            },
+          });
+
+          setProposedMeetingDetails({
+            MeetingTitle: EditFlowData.meetingTitle,
+            Description: EditFlowData.description,
+          });
+
+          setEditProposedMeetingID(EditFlowData.meetingID);
+        }
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [NewMeetingreducer.getAllMeetingDetails, isProposedMeetEdit]);
+
+  //Getting All the Participants for edit flow
+  useEffect(() => {
+    try {
+      if (
+        getAllParticipants &&
+        getAllParticipants.length > 0 &&
+        getAllParticipants !== undefined
+      ) {
+        setMembersParticipants(getAllParticipants);
+        setDropdowndata(getAllParticipants);
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [getAllParticipants]);
 
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
-
-  //Getting Data from States
-  const { PollsReducer } = useSelector((state) => state);
 
   //Send Response By Date
   const [sendResponseBy, setSendResponseBy] = useState({
@@ -113,20 +184,21 @@ const ProposedNewMeeting = ({
   //state for adding Date and Time Rows
   const [rows, setRows] = useState([
     {
-      selectedOption: getCurrentDateforMeeting.dateFormat,
-      dateForView: getCurrentDateforMeeting.DateGMT,
-      startDate: getStartTime?.formattedTime,
+      dateSelect: getCurrentDateforMeeting.DateGMT,
       startTime: getStartTime?.newFormatTime,
-      endDate: getEndTime?.formattedTime,
       endTime: getEndTime?.newFormatTime,
     },
   ]);
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
-    dispatch(getAllCommitteesandGroups(navigate, t));
+    dispatch(getAllCommitteesandGroups(navigate, t, false));
+    dispatch(newMeetingGlobalLoader(false));
     return () => {
-      setMembers([]);
+      dispatch(proposedMeetingData());
+      dispatch(ParticipantsData());
+      dispatch(GetAllMeetingDetialsData());
+      setIsProposedMeetEdit(false);
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",
@@ -137,11 +209,63 @@ const ProposedNewMeeting = ({
     };
   }, []);
 
+  // Getting all proposed Dates data
+  useEffect(() => {
+    try {
+      if (
+        getAllProposedDatesEditFlow &&
+        getAllProposedDatesEditFlow !== undefined &&
+        getAllProposedDatesEditFlow.meetingProposedDates.length > 0 &&
+        isProposedMeetEdit
+      ) {
+        let DatesDataEditFlow =
+          getAllProposedDatesEditFlow.meetingProposedDates;
+        console.log(DatesDataEditFlow, "DatesDataEditFlowDatesDataEditFlow");
+
+        let dateArray = DatesDataEditFlow.map((datedata) => {
+          console.log(datedata, "datedata");
+          if (
+            datedata.proposedDate === "10000101" &&
+            datedata.endTime === "000000" &&
+            datedata.startTime === "000000"
+          ) {
+            return false;
+          } else {
+            return {
+              dateSelect: resolutionResultTable(
+                datedata.proposedDate + datedata.startTime
+              ),
+              startTime: resolutionResultTable(
+                datedata.proposedDate + datedata.startTime
+              ),
+              endTime: resolutionResultTable(
+                datedata.proposedDate + datedata.endTime
+              ),
+            };
+          }
+        });
+        setRows(dateArray);
+        let convertResponseDate = forRecentActivity(
+          getAllProposedDatesEditFlow.deadLineDate + "000000"
+        );
+
+        setSendResponseBy({
+          ...sendResponseBy,
+          date: convertResponseDate,
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [getAllProposedDatesEditFlow]);
+
+  //Getting All Groups And Committees and users data from polls api
   useEffect(() => {
     let newParticpantData = PollsReducer.gellAllCommittesandGroups;
     try {
       if (newParticpantData !== null && newParticpantData !== undefined) {
         let temp = [];
+
         if (Object.keys(newParticpantData).length > 0) {
           if (Object.keys(newParticpantData.groups).length > 0) {
             newParticpantData.groups.forEach((a, index) => {
@@ -149,117 +273,132 @@ const ProposedNewMeeting = ({
                 value: a.groupID,
                 name: a.groupName,
                 label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={GroupIcon}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.groupName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
                 ),
-                // profilePic: GroupIcon,
                 type: 1,
               };
               temp.push(newData);
             });
           }
+
           if (Object.keys(newParticpantData.committees).length > 0) {
             newParticpantData.committees.forEach((a, index) => {
               let newData = {
                 value: a.committeeID,
                 name: a.committeeName,
                 label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={committeeicon}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.committeeName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
                 ),
-                // profilePic: committeeicon,
-
                 type: 2,
               };
               temp.push(newData);
             });
           }
+
           if (Object.keys(newParticpantData.organizationUsers).length > 0) {
-            let filterOutCreatorUser =
-              newParticpantData?.organizationUsers?.filter(
-                (data, index) => Number(data?.userID) !== Number(userID)
-              );
+            let filteredUsers = newParticpantData.organizationUsers;
+
+            // Filter out the creator user
+            let filterOutCreatorUser = filteredUsers.filter(
+              (data, index) => Number(data?.userID) !== Number(userID)
+            );
+
             filterOutCreatorUser.forEach((a, index) => {
               let newData = {
                 value: a.userID,
                 name: a.userName,
-                // profilePic: a?.profilePicture?.displayProfilePictureName,
                 label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                          // src={}
-                          alt=""
-                          className={styles["UserProfilepic"]}
-                          width="18px"
-                          height="18px"
-                          draggable="false"
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.userName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
                 ),
                 type: 3,
               };
               temp.push(newData);
             });
+
+            // Check if isProposedMeetEdit is true
+            if (isProposedMeetEdit && membersParticipants?.length > 0) {
+              // Filter out the users that are already part of membersParticipants
+              temp = temp.filter(
+                (participant) =>
+                  !membersParticipants.some(
+                    (member) =>
+                      Number(member.userID) === Number(participant.value)
+                  )
+              );
+            }
           }
+
           setDropdowndata(temp);
         } else {
           setDropdowndata([]);
         }
       }
-    } catch {}
-  }, [PollsReducer.gellAllCommittesandGroups]);
+    } catch (error) {
+      console.error("Error processing participant data:", error);
+    }
+  }, [
+    PollsReducer.gellAllCommittesandGroups,
+    isProposedMeetEdit,
+    membersParticipants,
+    userID,
+  ]);
 
+  //Getting all meeting Types
   useEffect(() => {
     if (
       getALlMeetingTypes.length === 0 &&
@@ -269,225 +408,100 @@ const ProposedNewMeeting = ({
     }
   }, []);
 
+  //Getting Data of All meeting types
   useEffect(() => {
     try {
       if (
         getALlMeetingTypes.meetingTypes !== null &&
         getALlMeetingTypes.meetingTypes !== undefined
       ) {
-        let Newdata = [];
-        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
-          Newdata.push({
-            value: data.pK_MTID,
-            label: data.type,
-          });
+        const Newdata = getALlMeetingTypes.meetingTypes.map((data) => ({
+          value: data.pK_MTID,
+          label: data.type,
+        }));
+        setmeetingTypeDropdown(Newdata);
+
+        // Only set meetingTypeDetails if it wasn't set from the Edit flow
+        if (!isProposedMeetEdit) {
           setMeetingTypeDetails({
-            ...meetingTypeDetails,
             MeetingType: {
               PK_MTID: getALlMeetingTypes.meetingTypes[0].pK_MTID,
               Type: getALlMeetingTypes.meetingTypes[0].type,
             },
           });
-        });
-        setmeetingTypeDropdown(Newdata);
+        }
       }
-    } catch (error) {}
-  }, [getALlMeetingTypes.meetingTypes]);
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [getALlMeetingTypes.meetingTypes, isProposedMeetEdit]);
 
   //onChange function Search
   const onChangeSearch = (event) => {
-    console.log(event, "eventeventeventevent");
     setParticipantUsers(event);
-    // setParticipantUsers(e.target.value.trimStart());
-  };
-
-  //onSearch function
-  const onSearch = (name, id, type, item) => {
-    let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
-    let tem = [...membersParticipants];
-    if (type === 1) {
-      // Groups Search
-      let check1 = newOrganizersData.groups.find(
-        (data, index) => data.groupID === id
-      );
-      if (check1 !== undefined) {
-        let groupUsers = check1.groupUsers;
-        if (Object.keys(groupUsers).length > 0) {
-          groupUsers.forEach((gUser, index) => {
-            let check2 = membersParticipants.find(
-              (data, index) => data.UserID === gUser.userID
-            );
-            if (check2 !== undefined) {
-            } else {
-              let newUser = {
-                userName: gUser.userName,
-                userID: gUser.userID,
-                displayPicture: gUser.profilePicture.displayProfilePictureName,
-                email: gUser.emailAddress,
-                IsPrimaryOrganizer: false,
-                IsOrganizerNotified: false,
-                Title: "",
-                isRSVP: false,
-                participantRole: {
-                  participantRole: "Participant",
-                  participantRoleID: 2,
-                },
-                isComingApi: false,
-              };
-              tem.push(newUser);
-            }
-          });
-        }
-      }
-    } else if (type === 2) {
-      // Committees Search
-      let check1 = newOrganizersData.committees.find(
-        (data, index) => data.committeeID === id
-      );
-
-      if (check1 !== undefined) {
-        let committeesUsers = check1.committeeUsers;
-        if (Object.keys(committeesUsers).length > 0) {
-          committeesUsers.forEach((cUser, index) => {
-            let check2 = membersParticipants.find(
-              (data, index) => data.UserID === cUser.userID
-            );
-            if (check2 !== undefined) {
-            } else {
-              let newUser = {
-                userName: cUser.userName,
-                userID: cUser.userID,
-                displayPicture: cUser.profilePicture.displayProfilePictureName,
-                email: cUser.emailAddress,
-                IsPrimaryOrganizer: false,
-                IsOrganizerNotified: false,
-                Title: "",
-                isRSVP: false,
-                participantRole: {
-                  participantRole: "Participant",
-                  participantRoleID: 2,
-                },
-                isComingApi: false,
-              };
-              tem.push(newUser);
-            }
-          });
-        }
-      }
-    } else if (type === 3) {
-      // User Search
-      let check1 = membersParticipants.find(
-        (data, index) => data.UserID === id
-      );
-
-      if (check1 !== undefined) {
-      } else {
-        let check2 = newOrganizersData.organizationUsers.find(
-          (data, index) => data.userID === id
-        );
-        if (check2 !== undefined) {
-          let newUser = {
-            userName: check2.userName,
-            userID: check2.userID,
-            displayPicture: check2.profilePicture.displayProfilePictureName,
-            email: check2.emailAddress,
-            IsPrimaryOrganizer: false,
-            IsOrganizerNotified: false,
-            Title: "",
-            isRSVP: false,
-            participantRole: {
-              participantRole: "Participant",
-              participantRoleID: 2,
-            },
-            isComingApi: false,
-          };
-          tem.push(newUser);
-        }
-      }
-    }
-    const uniqueData = new Set(tem.map(JSON.stringify));
-
-    const result = Array.from(uniqueData).map(JSON.parse);
-    setMembersParticipants(result);
-    setParticipantUsers([]);
-  };
-
-  // for selection of data
-  const handleSelectValue = (value) => {
-    setSelectedsearch(value);
   };
 
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
-    console.log(index, "indexindexindexindex");
     let removeParticipant = [...membersParticipants];
     removeParticipant.splice(index, 1);
     setMembersParticipants(removeParticipant);
   };
 
   //Adding the Dates Rows
-
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
-
+    console.log(lastRow, "lastRowlastRowlastRow");
     if (isValidRow(lastRow)) {
-      let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
-        lastRow.dateForView
-      );
+      let { DateGMT } = incrementDateforPropsedMeeting(lastRow.dateSelect);
       setRows([
         ...rows,
         {
-          selectedOption: dateFormat,
-          dateForView: DateGMT,
-          startDate: getStartTime?.formattedTime,
+          dateSelect: DateGMT,
           startTime: getStartTime?.newFormatTime,
-          endDate: getEndTime?.formattedTime,
           endTime: getEndTime?.newFormatTime,
         },
       ]);
     }
   };
-  //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
+
+  //Validating Row Function if its Empty or not
   const isValidRow = (row) => {
-    console.log(row, "isValidRowisValidRowisValidRow");
-    return (
-      row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
-    );
+    return row.dateSelect !== "" && row.startTime !== "" && row.endTime !== "";
   };
 
-  //OnChange Function For Select Dates
-  const handleStartDateChange = (index, date) => {
-    let newDate = new Date(date);
+  //Handle StartTime Change
+  const handleStartTimeChange = (index, date) => {
+    let newDate = new Date(date); //Getting the instance of the date
 
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours}${minutes}${"00"}`;
-
-      const updatedRows = [...rows];
+      const updatedRows = [...rows]; // Making copy of the array of object
 
       if (
+        //Main Check of Checking that is the upper row and lower date are same along if the index is > 0
         index > 0 &&
-        updatedRows[index - 1].selectedOption ===
-          updatedRows[index].selectedOption
+        updatedRows[index - 1].dateSelect?.toDateString() ===
+          updatedRows[index].dateSelect?.toDateString()
       ) {
-        if (formattedTime <= updatedRows[index - 1].endDate) {
+        if (
+          //Checks that if the start time of lower row is less then end time of upper row (same date scenario)
+          updatedRows[index - 1].startTime <= updatedRows[index - 1].endTime
+        ) {
           setOpen({
             flag: true,
             message: t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
           });
-          updatedRows[index].startDate = getStartTime?.formattedTime;
-          updatedRows[index].startTime = getStartTime?.newFormatTime;
+          //if the scnario gets exist paste the current value that is assigned to it already
+          updatedRows[index].startTime = updatedRows[index - 1].endTime;
           setRows(updatedRows);
           return;
         } else {
           if (
-            updatedRows[index].endDate !== "" &&
-            formattedTime >= updatedRows[index].endDate
+            //checks the condtion that the start time should not be greater then end time
+            updatedRows[index].endTime !== "" &&
+            newDate >= updatedRows[index].endTime
           ) {
             setOpen({
               flag: true,
@@ -495,20 +509,18 @@ const ProposedNewMeeting = ({
                 "Selected-start-time-should-not-be-greater-than-the-endTime"
               ),
             });
-            updatedRows[index].startDate = formattedTime;
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
             return;
           } else {
-            updatedRows[index].startDate = formattedTime;
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
           }
         }
       } else {
         if (
-          updatedRows[index].endDate !== "" &&
-          formattedTime >= updatedRows[index].endDate
+          updatedRows[index].endTime !== "" &&
+          newDate >= updatedRows[index].endTime
         ) {
           setOpen({
             flag: true,
@@ -516,12 +528,10 @@ const ProposedNewMeeting = ({
               "Selected-start-time-should-not-be-greater-than-the-endTime"
             ),
           });
-          updatedRows[index].startDate = formattedTime;
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
           return;
         } else {
-          updatedRows[index].startDate = formattedTime;
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
         }
@@ -529,210 +539,308 @@ const ProposedNewMeeting = ({
     } else {
     }
   };
-
-  const handleEndDateChange = (index, date) => {
+  //Handle EndTime Change
+  const handleEndTimeChange = (index, date) => {
     let newDate = new Date(date);
 
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours}${minutes}${"00"}`;
-
       const updatedRows = [...rows];
 
       if (
         index > 0 &&
-        updatedRows[index - 1].selectedOption ===
-          updatedRows[index].selectedOption
+        updatedRows[index - 1].dateSelect?.toDateString() ===
+          updatedRows[index].dateSelect?.toDateString()
       ) {
-        if (formattedTime <= updatedRows[index].startDate) {
+        if (updatedRows[index - 1].endTime <= updatedRows[index].startTime) {
           setOpen({
             flag: true,
             message: t(
               "Selected-end-time-should-not-be-less-than-the-previous-one"
             ),
           });
-          updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           return;
         } else {
-          updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       } else {
-        if (formattedTime <= updatedRows[index].startDate) {
+        if (newDate <= updatedRows[index].startTime) {
           setOpen({
             flag: true,
             message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
-          updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           return;
         } else {
-          updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       }
-      // }
     } else {
     }
   };
-
-  const changeDateStartHandler = (date, index) => {
+  //Handle Date Selection Change
+  const handleDateSelector = (date, index) => {
     try {
       let newDate = new Date(date);
-      let DateDate = new DateObject(date).format("YYYYMMDD");
       const updatedRows = [...rows];
-      updatedRows[index].selectedOption = DateDate;
-      updatedRows[index].dateForView = newDate;
+      updatedRows[index].dateSelect = newDate;
       setRows(updatedRows);
-      // if (
-      //   index > 0 &&
-      //   Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
-      // ) {
-      //   setOpen({
-      //     flag: true,
-      //     message: t("Selected-date-should-not-be-less-than-the-previous-one"),
-      //   });
-      //   return;
-      // } else {
-
-      // }
-    } catch {}
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   //Removing the Date Time Rows
   const HandleCancelFunction = (index) => {
-    let optionscross = [...rows];
-    optionscross.splice(index, 1);
-    setRows(optionscross);
+    if (rows.length === 1) {
+      // If there's only one record, show the setOpen message
+      setOpen({
+        flag: true,
+        message: t("At-least-one-date-time-slot-is-mandatory"),
+      });
+    } else {
+      // Otherwise, remove the record at the given index
+      const updatedRows = [...rows];
+      updatedRows.splice(index, 1);
+      setRows(updatedRows);
+    }
   };
 
   //Send Response By Handler
   const SendResponseHndler = (date) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = convertToUTC(meetingDateValueFormat);
-    setSendResponseVal(meetingDateValueFormat);
     setSendResponseBy({
       ...sendResponseBy,
-      date: DateDate.slice(0, 8),
+      date: new Date(date),
     });
   };
-
   //for handling Cancel the ProposedMeeting Page
   const handleCancelButtonProposedMeeting = () => {
     setProposedNewMeeting(false);
+    setIsProposedMeetEdit(false);
+    dispatch(proposedMeetingData());
+    dispatch(ParticipantsData());
+    dispatch(GetAllMeetingDetialsData());
+
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings: Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
-    let Dates = [];
-    rows.forEach((data, index) => {
-      Dates.push({
-        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
-          0,
-          8
-        ),
-        StartTime: createConvert(data.selectedOption + data.startDate).slice(
-          8,
-          14
-        ),
-        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+    if (isProposedMeetEdit) {
+      let Dates = [];
+
+      rows.forEach((data, index) => {
+        Dates.push({
+          MeetingDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
+            0,
+            8
+          ),
+          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
+            8,
+            14
+          ),
+          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+        });
       });
-    });
 
-    console.log(rows, "sortedDatessortedDates");
-
-    //For Set Proposed  Dates
-    let ProposedDates = [];
-    rows.forEach((data, index) => {
-      ProposedDates.push({
-        ProposedDate: createConvert(data.selectedOption + data.startDate).slice(
-          0,
-          8
-        ),
-        StartTime: createConvert(data.selectedOption + data.startDate).slice(
-          8,
-          14
-        ),
-        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+      let ProposedDates = [];
+      rows.forEach((data, index) => {
+        ProposedDates.push({
+          ProposedDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
+            0,
+            8
+          ),
+          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
+            8,
+            14
+          ),
+          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+        });
       });
-    });
 
-    // Sorting the Dates array
-    let sortedDates = ProposedDates.sort((a, b) => {
-      if (a.ProposedDate !== b.ProposedDate) {
-        return a.ProposedDate.localeCompare(b.ProposedDate);
-      } else if (a.StartTime !== b.StartTime) {
-        return a.StartTime.localeCompare(b.StartTime);
+      // Sorting the Dates array
+      let sortedDates = ProposedDates.sort((a, b) => {
+        if (a.ProposedDate !== b.ProposedDate) {
+          return a.ProposedDate.localeCompare(b.ProposedDate);
+        } else if (a.StartTime !== b.StartTime) {
+          return a.StartTime.localeCompare(b.StartTime);
+        } else {
+          return a.EndTime.localeCompare(b.EndTime);
+        }
+      });
+
+      if (
+        proposedMeetingDetails.MeetingTitle !== "" &&
+        membersParticipants.length !== 0 &&
+        sendResponseBy.date !== "" &&
+        rows.length !== 1
+      ) {
+        let data = {
+          MeetingDetails: {
+            MeetingID: isProposedMeetEdit ? Number(editProposedMeetingID) : 0,
+            MeetingTitle: proposedMeetingDetails.MeetingTitle,
+            MeetingType: meetingTypeDetails.MeetingType,
+            Location: "",
+            Description: proposedMeetingDetails.Description,
+            IsVideoChat: false,
+            IsTalkGroup: false,
+            OrganizationId: Number(OrganizationID),
+            MeetingDates: Dates[0] ? [Dates[0]] : [],
+            MeetingReminders: [4],
+            Notes: "",
+            AllowRSVP: true,
+            NotifyOrganizerOnRSVP: true,
+            ReucurringMeetingID: 1,
+            VideoURL: "",
+            MeetingStatusID: 11,
+          },
+        };
+        console.log(data, "datadatadata");
+        console.log(sortedDates, "datadatadata");
+
+        dispatch(
+          SaveMeetingDetialsNewApiFunction(
+            navigate,
+            t,
+            data,
+            setSceduleMeeting,
+            setorganizers,
+            setmeetingDetails,
+            1,
+            setCurrentMeetingID,
+            currentMeeting,
+            proposedMeetingDetails,
+            setDataroomMapFolderId,
+            membersParticipants,
+            sortedDates,
+            multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
+            setProposedNewMeeting,
+            true
+          )
+        );
+
+        seterror(false);
+      } else if (
+        proposedMeetingDetails.MeetingTitle === "" &&
+        membersParticipants.length !== 0
+      ) {
+        seterror(true);
       } else {
-        return a.EndTime.localeCompare(b.EndTime);
+        seterror(true);
       }
-    });
-
-    console.log(sortedDates, "sortedDatessortedDates");
-
-    if (
-      proposedMeetingDetails.MeetingTitle !== "" &&
-      membersParticipants.length !== 0 &&
-      sendResponseVal !== "" &&
-      rows.length !== 1
-    ) {
-      let data = {
-        MeetingDetails: {
-          MeetingID: 0,
-          MeetingTitle: proposedMeetingDetails.MeetingTitle,
-          MeetingType: meetingTypeDetails.MeetingType,
-          Location: "",
-          Description: proposedMeetingDetails.Description,
-          IsVideoChat: true,
-          IsTalkGroup: false,
-          OrganizationId: Number(OrganizationID),
-          MeetingDates: Dates[0] ? [Dates[0]] : [],
-          MeetingReminders: [4],
-          Notes: "",
-          AllowRSVP: true,
-          NotifyOrganizerOnRSVP: true,
-          ReucurringMeetingID: 1,
-          VideoURL: "",
-          MeetingStatusID: 11,
-        },
-      };
-      console.log(data, "sortedDatessortedDates");
-
-      dispatch(
-        SaveMeetingDetialsNewApiFunction(
-          navigate,
-          t,
-          data,
-          setSceduleMeeting,
-          setorganizers,
-          setmeetingDetails,
-          1,
-          setCurrentMeetingID,
-          currentMeeting,
-          proposedMeetingDetails,
-          setDataroomMapFolderId,
-          membersParticipants,
-          sortedDates,
-          sendResponseBy.date,
-          setProposedNewMeeting
-        )
-      );
-
-      seterror(false);
-    } else if (
-      proposedMeetingDetails.MeetingTitle === "" &&
-      membersParticipants.length === 0 &&
-      sendResponseVal === ""
-    ) {
-      seterror(true);
     } else {
-      seterror(true);
+      let Dates = [];
+
+      rows.forEach((data, index) => {
+        Dates.push({
+          MeetingDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
+            0,
+            8
+          ),
+          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
+            8,
+            14
+          ),
+          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+        });
+      });
+
+      let ProposedDates = [];
+      rows.forEach((data, index) => {
+        ProposedDates.push({
+          ProposedDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
+            0,
+            8
+          ),
+          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
+            8,
+            14
+          ),
+          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
+        });
+      });
+
+      // Sorting the Dates array
+      let sortedDates = ProposedDates.sort((a, b) => {
+        if (a.ProposedDate !== b.ProposedDate) {
+          return a.ProposedDate.localeCompare(b.ProposedDate);
+        } else if (a.StartTime !== b.StartTime) {
+          return a.StartTime.localeCompare(b.StartTime);
+        } else {
+          return a.EndTime.localeCompare(b.EndTime);
+        }
+      });
+
+      if (
+        proposedMeetingDetails.MeetingTitle !== "" &&
+        membersParticipants.length !== 0 &&
+        sendResponseBy.date !== "" &&
+        rows.length !== 1
+      ) {
+        let data = {
+          MeetingDetails: {
+            MeetingID: isProposedMeetEdit ? Number(editProposedMeetingID) : 0,
+            MeetingTitle: proposedMeetingDetails.MeetingTitle,
+            MeetingType: meetingTypeDetails.MeetingType,
+            Location: "",
+            Description: proposedMeetingDetails.Description,
+            IsVideoChat: false,
+            IsTalkGroup: false,
+            OrganizationId: Number(OrganizationID),
+            MeetingDates: Dates[0] ? [Dates[0]] : [],
+            MeetingReminders: [4],
+            Notes: "",
+            AllowRSVP: true,
+            NotifyOrganizerOnRSVP: true,
+            ReucurringMeetingID: 1,
+            VideoURL: "",
+            MeetingStatusID: 11,
+          },
+        };
+        console.log(data, "datadatadata");
+        console.log(sortedDates, "datadatadata");
+
+        dispatch(
+          SaveMeetingDetialsNewApiFunction(
+            navigate,
+            t,
+            data,
+            setSceduleMeeting,
+            setorganizers,
+            setmeetingDetails,
+            1,
+            setCurrentMeetingID,
+            currentMeeting,
+            proposedMeetingDetails,
+            setDataroomMapFolderId,
+            membersParticipants,
+            sortedDates,
+            multiDatePickerDateChangIntoUTC(sendResponseBy.date).slice(0, 8),
+            setProposedNewMeeting,
+            false
+          )
+        );
+
+        seterror(false);
+      } else if (
+        proposedMeetingDetails.MeetingTitle === "" &&
+        membersParticipants.length !== 0
+      ) {
+        seterror(true);
+      } else {
+        seterror(true);
+      }
     }
   };
 
@@ -795,16 +903,13 @@ const ProposedNewMeeting = ({
   }, [currentLanguage]);
 
   const today = moment().startOf("day");
-  const firstSelectedDate = moment(rows[0].selectedOption, "YYYYMMDD").startOf(
-    "day"
-  ); // Date selected at zero index
+  const firstSelectedDate = moment(rows[0].dateSelect).startOf("day");
   const minSelectableDate = today.isSameOrBefore(firstSelectedDate)
     ? today
     : firstSelectedDate;
   const maxSelectableDate = firstSelectedDate;
 
   //Custom Filter for Selector
-
   const customFilter = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
@@ -813,10 +918,13 @@ const ProposedNewMeeting = ({
     }
   };
 
+  //Click Function for adding the participants
   const handleClickAddParticipants = () => {
     let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
     console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
+
     let tem = [...membersParticipants];
+
     if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
         if (userData.type === 1) {
@@ -833,16 +941,17 @@ const ProposedNewMeeting = ({
                     Number(groupFilter.userID) !== Number(userID)
                 )
                 .forEach((gUser, index) => {
-                  let check2 = membersParticipants.find(
-                    (data, index) => data.UserID === gUser.userID
+                  let check2 = tem.find(
+                    (data, index) => data.userID === gUser.userID
                   );
-                  if (check2 !== undefined) {
-                  } else {
+                  if (check2 === undefined) {
                     let newUser = {
                       userName: gUser.userName,
                       userID: gUser.userID,
-                      displayPicture:
-                        gUser.profilePicture.displayProfilePictureName,
+                      userProfilePicture: {
+                        displayProfilePictureName:
+                          gUser.profilePicture.displayProfilePictureName,
+                      },
                       email: gUser.emailAddress,
                       IsPrimaryOrganizer: false,
                       IsOrganizerNotified: false,
@@ -864,7 +973,6 @@ const ProposedNewMeeting = ({
           let check1 = newOrganizersData.committees.find(
             (data, index) => data.committeeID === userData.value
           );
-
           if (check1 !== undefined) {
             let committeesUsers = check1.committeeUsers;
             if (Object.keys(committeesUsers).length > 0) {
@@ -874,16 +982,17 @@ const ProposedNewMeeting = ({
                     Number(filterData.userID) !== Number(userID)
                 )
                 .forEach((cUser, index) => {
-                  let check2 = membersParticipants.find(
-                    (data, index) => data.UserID === cUser.userID
+                  let check2 = tem.find(
+                    (data, index) => data.userID === cUser.userID
                   );
-                  if (check2 !== undefined) {
-                  } else {
+                  if (check2 === undefined) {
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
-                      displayPicture:
-                        cUser.profilePicture.displayProfilePictureName,
+                      userProfilePicture: {
+                        displayProfilePictureName:
+                          cUser.profilePicture.displayProfilePictureName,
+                      },
                       email: cUser.emailAddress,
                       IsPrimaryOrganizer: false,
                       IsOrganizerNotified: false,
@@ -902,12 +1011,10 @@ const ProposedNewMeeting = ({
           }
         } else if (userData.type === 3) {
           // User Search
-          let check1 = membersParticipants.find(
-            (data, index) => data.UserID === userData.value
+          let check1 = tem.find(
+            (data, index) => data.userID === userData.value
           );
-
-          if (check1 !== undefined) {
-          } else {
+          if (check1 === undefined) {
             let check2 = newOrganizersData.organizationUsers.find(
               (data, index) => data.userID === userData.value
             );
@@ -915,7 +1022,10 @@ const ProposedNewMeeting = ({
               let newUser = {
                 userName: check2.userName,
                 userID: check2.userID,
-                displayPicture: check2.profilePicture.displayProfilePictureName,
+                userProfilePicture: {
+                  displayProfilePictureName:
+                    check2.profilePicture.displayProfilePictureName,
+                },
                 email: check2.emailAddress,
                 IsPrimaryOrganizer: false,
                 IsOrganizerNotified: false,
@@ -931,11 +1041,17 @@ const ProposedNewMeeting = ({
             }
           }
         }
-        const uniqueData = new Set(tem.map(JSON.stringify));
-        const result = Array.from(uniqueData).map(JSON.parse);
-        setMembersParticipants(result);
-        setParticipantUsers([]);
       });
+
+      // Remove duplicates
+      const uniqueData = new Set(tem.map(JSON.stringify));
+      const result = Array.from(uniqueData).map(JSON.parse);
+
+      // Set the appropriate state based on isProposedMeetEdit
+
+      setMembersParticipants(result);
+
+      setParticipantUsers([]);
     }
   };
 
@@ -990,7 +1106,6 @@ const ProposedNewMeeting = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Sub_headings"]}>
                       {t("Description")}
-                      {/* <span className={styles["res_steric"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
@@ -1052,89 +1167,94 @@ const ProposedNewMeeting = ({
                     sm={12}
                     className={styles["Scroller_ProposedMeeting"]}
                   >
-                    <Row className="mt-2">
-                      {membersParticipants.length > 0
-                        ? membersParticipants.map((participant, index) => {
-                            console.log(participant, "participantparticipant");
-                            return (
-                              <>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={12}
-                                  className="mt-2"
-                                  key={index}
-                                >
-                                  <Row className="m-0 p-0">
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className={styles["Box_for_Assignee"]}
-                                    >
-                                      <Row className="mt-1">
-                                        <Col
-                                          lg={10}
-                                          md={10}
-                                          sm={12}
-                                          className="d-flex gap-2 align-items-center"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={`data:image/jpeg;base64,${participant.displayPicture}`}
-                                            width="50px"
-                                            alt=""
-                                            height="50px"
-                                            className={styles["ProfilePic"]}
-                                          />
-                                          <span
-                                            className={
-                                              styles["ParticipantName"]
-                                            }
+                    <>
+                      <Row className="mt-2">
+                        {membersParticipants.length > 0
+                          ? membersParticipants.map((participant, index) => {
+                              console.log(
+                                participant,
+                                "participantparticipant"
+                              );
+                              return (
+                                <>
+                                  <Col
+                                    lg={6}
+                                    md={6}
+                                    sm={12}
+                                    className="mt-2"
+                                    key={index}
+                                  >
+                                    <Row className="m-0 p-0">
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className={styles["Box_for_Assignee"]}
+                                      >
+                                        <Row className="mt-1">
+                                          <Col
+                                            lg={10}
+                                            md={10}
+                                            sm={12}
+                                            className="d-flex gap-2 align-items-center"
                                           >
-                                            {participant.userName}
-                                          </span>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={2}
-                                          className="d-flex  align-items-center"
-                                        >
-                                          <img
-                                            src={CrossIcon}
-                                            width="14px"
-                                            height="14px"
-                                            draggable="false"
-                                            style={{ cursor: "pointer" }}
-                                            alt=""
-                                            onClick={() =>
-                                              hanleRemovingParticipants(index)
-                                            }
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </>
-                            );
-                          })
-                        : null}
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error && membersParticipants.length === 0
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {t("Add-at-least-one-participant")}
-                          </p>
-                        </Col>
+                                            <img
+                                              draggable={false}
+                                              src={`data:image/jpeg;base64,${participant.userProfilePicture.displayProfilePictureName}`}
+                                              width="50px"
+                                              alt=""
+                                              height="50px"
+                                              className={styles["ProfilePic"]}
+                                            />
+                                            <span
+                                              className={
+                                                styles["ParticipantName"]
+                                              }
+                                            >
+                                              {participant.userName}
+                                            </span>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={2}
+                                            className="d-flex  align-items-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              width="14px"
+                                              height="14px"
+                                              draggable="false"
+                                              style={{ cursor: "pointer" }}
+                                              alt=""
+                                              onClick={() =>
+                                                hanleRemovingParticipants(index)
+                                              }
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
+                        <Row>
+                          <Col>
+                            <p
+                              className={
+                                error && membersParticipants.length === 0
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Add-at-least-one-participant")}
+                            </p>
+                          </Col>
+                        </Row>
                       </Row>
-                    </Row>
+                    </>
                   </Col>
                 </Row>
               </Col>
@@ -1164,6 +1284,7 @@ const ProposedNewMeeting = ({
                   >
                     {rows.length > 0
                       ? rows.map((data, index) => {
+                          console.log(data, "indexindexindex");
                           return (
                             <>
                               <Row key={index}>
@@ -1171,8 +1292,7 @@ const ProposedNewMeeting = ({
                                   <Row className="mt-2">
                                     <Col lg={4} md={4} sm={12}>
                                       <DatePicker
-                                        selected={data.selectedOption}
-                                        value={data.dateForView}
+                                        value={data.dateSelect}
                                         format={"DD/MM/YYYY"}
                                         minDate={
                                           index > 0
@@ -1194,7 +1314,7 @@ const ProposedNewMeeting = ({
                                         locale={localValue}
                                         ref={calendRef}
                                         onFocusedDateChange={(value) =>
-                                          changeDateStartHandler(value, index)
+                                          handleDateSelector(value, index)
                                         }
                                         disabled={
                                           (Number(editorRole.status) === 9 ||
@@ -1245,13 +1365,11 @@ const ProposedNewMeeting = ({
                                         calendar={calendarValue}
                                         locale={localValue}
                                         format="hh:mm A"
-                                        selected={data.startDate}
-                                        // onOpen={() => handleOpenStartTime(index)}
                                         value={data.startTime}
                                         editable={false}
                                         plugins={[<TimePicker hideSeconds />]}
                                         onChange={(date) =>
-                                          handleStartDateChange(index, date)
+                                          handleStartTimeChange(index, date)
                                         }
                                         disabled={
                                           (Number(editorRole.status) === 9 ||
@@ -1300,12 +1418,7 @@ const ProposedNewMeeting = ({
                                         alt=""
                                       />
                                     </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={12}
-                                      // className="d-flex justify-content-end"
-                                    >
+                                    <Col lg={3} md={3} sm={12}>
                                       <DatePicker
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
@@ -1316,13 +1429,10 @@ const ProposedNewMeeting = ({
                                         locale={localValue}
                                         value={data.endTime}
                                         format="hh:mm A"
-                                        // onOpen={() => handleOpenEndTime(index)}
-                                        // onOpen={() => handleOpenStartTime()}
-                                        selected={data.endDate}
                                         plugins={[<TimePicker hideSeconds />]}
                                         editable={false}
                                         onChange={(date) =>
-                                          handleEndDateChange(index, date)
+                                          handleEndTimeChange(index, date)
                                         }
                                         disabled={
                                           (Number(editorRole.status) === 9 ||
@@ -1364,11 +1474,9 @@ const ProposedNewMeeting = ({
                                       sm={12}
                                       className="d-flex justify-content-end position-relative align-items-center"
                                     >
-                                      {index === 0 ? null : Number(
-                                          editorRole.status
-                                        ) === 9 &&
-                                        isEditMeeting ===
-                                          true ? null : editorRole.role ===
+                                      {Number(editorRole.status) === 9 &&
+                                      isEditMeeting ===
+                                        true ? null : editorRole.role ===
                                           "Agenda Contributor" &&
                                         isEditMeeting === true ? null : (
                                         <img
@@ -1478,12 +1586,7 @@ const ProposedNewMeeting = ({
                         </span>
 
                         <DatePicker
-                          value={sendResponseVal === "" ? "" : sendResponseVal}
-                          selected={
-                            sendResponseBy.date === ""
-                              ? ""
-                              : sendResponseBy.date
-                          }
+                          value={sendResponseBy.date}
                           format={"DD/MM/YYYY"}
                           minDate={minSelectableDate.toDate()}
                           maxDate={maxSelectableDate.toDate()}
@@ -1513,7 +1616,7 @@ const ProposedNewMeeting = ({
                           <Col>
                             <p
                               className={
-                                error && sendResponseVal === ""
+                                error && sendResponseBy.date === ""
                                   ? ` ${styles["errorMessage-inLogin"]} `
                                   : `${styles["errorMessage-inLogin_hidden"]}`
                               }
@@ -1541,7 +1644,7 @@ const ProposedNewMeeting = ({
                     />
 
                     <Button
-                      text={t("Propose")}
+                      text={isProposedMeetEdit ? t("Update") : t("Propose")}
                       className={styles["Proposed_Button_Proposed_Meeting"]}
                       onClick={handleProposedButtonProposedMeeting}
                     />
