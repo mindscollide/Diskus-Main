@@ -111,7 +111,7 @@ const AppReducer = combineReducers({
 
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
-  if (action.type === actions.SIGN_OUT) {
+  if (action.type === actions.SET_INITIAL_ALLSTATE) {
     state = undefined;
   }
   return AppReducer(state, action);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -57,6 +57,7 @@ import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const ParentAgenda = ({
   data,
@@ -83,6 +84,7 @@ const ParentAgenda = ({
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
+  const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -116,15 +118,14 @@ const ParentAgenda = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
+              className='d-flex gap-2 align-items-center'>
               <img
                 draggable={false}
                 src={profile}
-                width="17px"
-                height="17px"
+                width='17px'
+                height='17px'
                 className={styles["Image_class_Agenda"]}
-                alt=""
+                alt=''
               />
               <span className={styles["Name_Class"]}>Oliver Davis</span>
             </Col>
@@ -429,12 +430,12 @@ const ParentAgenda = ({
         label: (
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                 <img
-                  alt=""
+                  alt=''
                   src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-                  width="17px"
-                  height="17px"
+                  width='17px'
+                  height='17px'
                   className={styles["Image_class_Agenda"]}
                 />
                 <span className={styles["Name_Class"]}>
@@ -455,17 +456,19 @@ const ParentAgenda = ({
       });
     }
     const updatedAgendaItems = [...rows];
-    if(
+    if (
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null &&
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
         undefined &&
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length === 0 && 
-      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData).length === 0
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length ===
+        0 &&
+      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData)
+        .length === 0
     ) {
-      console.log("updated Rows ROWS ROWS")
-    updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
-    updatedAgendaItems[index].presenterName = allSavedPresenters[0]?.label;
-  }
+      console.log("updated Rows ROWS ROWS");
+      updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
+      updatedAgendaItems[index].presenterName = allSavedPresenters[0]?.label;
+    }
     setRows(updatedAgendaItems);
   }, [presenters, allPresenters]);
 
@@ -490,8 +493,7 @@ const ParentAgenda = ({
           data.canView === false && editorRole.role === "Agenda Contributor"
             ? "d-none"
             : ""
-        }
-      >
+        }>
         <Draggable
           key={data.iD}
           draggableId={data.iD}
@@ -504,13 +506,12 @@ const ParentAgenda = ({
               ? true
               : false
           }
-          className="Draggable Data Grid"
-        >
+          className='Draggable Data Grid'>
           {(provided, snapshot) => (
             <div ref={provided.innerRef} {...provided.draggableProps}>
               {/* Main Agenda Items Mapping */}
-              <span className="position-relative">
-                <Row key={data.iD} className="m-0 p-0">
+              <span className='position-relative'>
+                <Row key={data.iD} className='m-0 p-0'>
                   <Col
                     lg={12}
                     md={12}
@@ -523,24 +524,21 @@ const ParentAgenda = ({
                         : editorRole.status === 9 || editorRole.status === "9"
                         ? styles["BackGround_Agenda_InActive"]
                         : styles["BackGround_Agenda"]
-                    }
-                  >
+                    }>
                     <Row>
                       <Col
                         lg={1}
                         md={1}
                         sm={1}
-                        className={styles["BackGroundNewImplemented"]}
-                      >
-                        <Row className="mt-4" isDragging={snapshot.isDragging}>
+                        className={styles["BackGroundNewImplemented"]}>
+                        <Row className='mt-4' isDragging={snapshot.isDragging}>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center align-items-center"
+                            className='d-flex justify-content-center align-items-center'
                             isDragging={snapshot.isDragging}
-                            {...provided.dragHandleProps}
-                          >
+                            {...provided.dragHandleProps}>
                             <img
                               draggable={false}
                               src={
@@ -548,14 +546,14 @@ const ParentAgenda = ({
                                   ? blackArrowUpper
                                   : dropmdownblack
                               }
-                              width="18.71px"
-                              height="9.36px"
+                              width='18.71px'
+                              height='9.36px'
                               className={
                                 expandIndex === index && expand
                                   ? styles["Arrow_Expanded"]
                                   : styles["Arrow"]
                               }
-                              alt=""
+                              alt=''
                               onClick={() => {
                                 handleExpandedBtn(index);
                               }}
@@ -566,13 +564,12 @@ const ParentAgenda = ({
 
                       <Col lg={11} md={11} sm={11}>
                         <section className={styles["SectionInnerClass"]}>
-                          <Row key={index + 2} className="mt-4">
+                          <Row key={index + 2} className='mt-4'>
                             <Col lg={5} md={5} sm={12}>
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <span
-                                    className={styles["Meeting_title_heading"]}
-                                  >
+                                    className={styles["Meeting_title_heading"]}>
                                     <span>{index + 1}.</span>{" "}
                                     {t("Agenda-title")} <span>{index + 1}</span>
                                   </span>
@@ -595,6 +592,9 @@ const ParentAgenda = ({
                                     : editorRole.status === 9 ||
                                       editorRole.status === "9"
                                     ? true
+                                    : Number(editorRole.status) === 10 &&
+                                      !isAgendaUpdateWhenMeetingActive
+                                    ? true
                                     : false
                                 }
                               />
@@ -603,8 +603,7 @@ const ParentAgenda = ({
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <span
-                                    className={styles["Meeting_title_heading"]}
-                                  >
+                                    className={styles["Meeting_title_heading"]}>
                                     {t("Presenter")}
                                   </span>
                                 </Col>
@@ -627,6 +626,9 @@ const ParentAgenda = ({
                                     : editorRole.status === 9 ||
                                       editorRole.status === "9"
                                     ? true
+                                    : Number(editorRole.status) === 10 &&
+                                      !isAgendaUpdateWhenMeetingActive
+                                    ? true
                                     : false
                                 }
                                 classNamePrefix={
@@ -640,8 +642,7 @@ const ParentAgenda = ({
                               sm={12}
                               md={4}
                               lg={4}
-                              className="d-flex gap-4 justify-content-start align-items-center"
-                            >
+                              className='d-flex gap-4 justify-content-start align-items-center'>
                               <Row>
                                 <Col lg={5} md={5} sm={5}>
                                   <Row>
@@ -649,21 +650,20 @@ const ParentAgenda = ({
                                       <span
                                         className={
                                           styles["Meeting_title_heading"]
-                                        }
-                                      >
+                                        }>
                                         {t("Start-date")}
                                       </span>
                                     </Col>
                                   </Row>
                                   <DatePicker
-                                    arrowClassName="arrowClass"
-                                    containerClassName="containerClassTimePicker"
-                                    className="timePicker"
+                                    arrowClassName='arrowClass'
+                                    containerClassName='containerClassTimePicker'
+                                    className='timePicker'
                                     disableDayPicker
-                                    inputClass="inputTImeMeeting"
+                                    inputClass='inputTImeMeeting'
                                     calendar={calendarValue}
                                     locale={localValue}
-                                    format="hh:mm A"
+                                    format='hh:mm A'
                                     selected={data.startDate}
                                     value={data.startDate}
                                     plugins={[<TimePicker hideSeconds />]}
@@ -680,6 +680,9 @@ const ParentAgenda = ({
                                         : editorRole.status === 9 ||
                                           editorRole.status === "9"
                                         ? true
+                                        : Number(editorRole.status) === 10 &&
+                                          !isAgendaUpdateWhenMeetingActive
+                                        ? true
                                         : false
                                     }
                                     editable={false}
@@ -689,13 +692,12 @@ const ParentAgenda = ({
                                   lg={2}
                                   md={2}
                                   sm={2}
-                                  className="d-flex justify-content-center align-items-center marginTop20"
-                                >
+                                  className='d-flex justify-content-center align-items-center marginTop20'>
                                   <img
-                                    alt=""
+                                    alt=''
                                     draggable={false}
                                     src={desh}
-                                    width="19.02px"
+                                    width='19.02px'
                                   />
                                 </Col>
                                 <Col lg={5} md={5} sm={5}>
@@ -704,19 +706,18 @@ const ParentAgenda = ({
                                       <span
                                         className={
                                           styles["Meeting_title_heading"]
-                                        }
-                                      >
+                                        }>
                                         {t("End-date")}
                                       </span>
                                     </Col>
                                   </Row>
                                   <DatePicker
-                                    arrowClassName="arrowClass"
-                                    containerClassName="containerClassTimePicker"
-                                    className="timePicker"
+                                    arrowClassName='arrowClass'
+                                    containerClassName='containerClassTimePicker'
+                                    className='timePicker'
                                     disableDayPicker
-                                    inputClass="inputTImeMeeting"
-                                    format="hh:mm A"
+                                    inputClass='inputTImeMeeting'
+                                    format='hh:mm A'
                                     calendar={calendarValue}
                                     locale={localValue}
                                     selected={data.endDate}
@@ -735,6 +736,9 @@ const ParentAgenda = ({
                                         : editorRole.status === 9 ||
                                           editorRole.status === "9"
                                         ? true
+                                        : Number(editorRole.status) === 10 &&
+                                          !isAgendaUpdateWhenMeetingActive
+                                        ? true
                                         : false
                                     }
                                     editable={false}
@@ -745,13 +749,15 @@ const ParentAgenda = ({
                                 (editorRole.role === "Participant" ||
                                 editorRole.role === "Agenda Contributor" ||
                                 editorRole.status === "9" ||
-                                editorRole.status === 9 ? null : (
+                                editorRole.status === 9 ||
+                                (!isAgendaUpdateWhenMeetingActive &&
+                                  Number(editorRole.status) === 10) ? null : (
                                   <img
-                                    alt=""
+                                    alt=''
                                     draggable={false}
                                     src={redcrossIcon}
-                                    height="25px"
-                                    width="25px"
+                                    height='25px'
+                                    width='25px'
                                     className={
                                       styles["RedCross_Icon_class_Main_agenda"]
                                     }
@@ -762,7 +768,7 @@ const ParentAgenda = ({
                                 ))}
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             <Col lg={12} md={12} sm={12}>
                               {/* <span
                                 className={styles["Show_Details_Tag"]}
@@ -776,6 +782,12 @@ const ParentAgenda = ({
                                   className={
                                     styles["show-attachments-button-hide"]
                                   }
+                                  disableBtn={
+                                    Number(editorRole.status) === 10 &&
+                                    !isAgendaUpdateWhenMeetingActive
+                                      ? true
+                                      : false
+                                  }
                                   onClick={() => {
                                     handleExpandedBtn(index);
                                   }}
@@ -788,6 +800,12 @@ const ParentAgenda = ({
                                   className={
                                     styles["show-attachments-button-show"]
                                   }
+                                  disableBtn={
+                                    Number(editorRole.status) === 10 &&
+                                    !isAgendaUpdateWhenMeetingActive
+                                      ? true
+                                      : false
+                                  }
                                   onClick={() => {
                                     handleExpandedBtn(index);
                                   }}
@@ -798,25 +816,25 @@ const ParentAgenda = ({
                                 <img
                                   className={styles["AttachmentIconImage"]}
                                   src={AttachmentIcon}
-                                  alt=""
+                                  alt=''
                                 />
                               ) : null}
                             </Col>
                           </Row>
                           {expandIndex === index && expand ? (
                             <>
-                              <Row className="mb-2">
+                              <Row className='mb-2'>
                                 <Col lg={12} md={12} sm={12}>
                                   <TextField
-                                    applyClass="text-area-create-resolution"
-                                    type="text"
+                                    applyClass='text-area-create-resolution'
+                                    type='text'
                                     as={"textarea"}
                                     name={"Description"}
                                     value={data.description}
                                     change={(e) =>
                                       handleAgendaDescription(index, e)
                                     }
-                                    rows="4"
+                                    rows='4'
                                     placeholder={t("Agenda-description")}
                                     required={true}
                                     disable={
@@ -829,6 +847,9 @@ const ParentAgenda = ({
                                         : editorRole.status === 9 ||
                                           editorRole.status === "9"
                                         ? true
+                                        : Number(editorRole.status) === 10 &&
+                                          !isAgendaUpdateWhenMeetingActive
+                                        ? true
                                         : false
                                     }
                                   />
@@ -839,14 +860,14 @@ const ParentAgenda = ({
 
                                 </Col>
                               </Row> */}
-                              <Row key={index + 3} className="mt-3">
+                              <Row key={index + 3} className='mt-3'>
                                 <Col lg={12} md={12} sm={12}>
                                   <span className={styles["Agenda_Heading"]}>
                                     {t("Attachments")}
                                   </span>
                                 </Col>
                               </Row>
-                              <Row key={index + 4} className="mt-3">
+                              <Row key={index + 4} className='mt-3'>
                                 <Col lg={6} md={6} sm={6}>
                                   <Radio.Group
                                     onChange={(e) =>
@@ -862,15 +883,16 @@ const ParentAgenda = ({
                                           editorRole.role ===
                                             "Agenda Contributor"
                                         ? true
+                                        : Number(editorRole.status) === 10 &&
+                                          !isAgendaUpdateWhenMeetingActive
+                                        ? true
                                         : false
-                                    }
-                                  >
+                                    }>
                                     <Radio value={1}>
                                       <span
                                         className={
                                           styles["Radio_Button_options"]
-                                        }
-                                      >
+                                        }>
                                         {t("Document")}
                                       </span>
                                     </Radio>
@@ -878,8 +900,7 @@ const ParentAgenda = ({
                                       <span
                                         className={
                                           styles["Radio_Button_options"]
-                                        }
-                                      >
+                                        }>
                                         {t("URL")}
                                       </span>
                                     </Radio>
@@ -896,8 +917,7 @@ const ParentAgenda = ({
                                   lg={6}
                                   md={6}
                                   sm={6}
-                                  className="d-flex justify-content-end gap-4 align-items-center"
-                                >
+                                  className='d-flex justify-content-end gap-4 align-items-center'>
                                   {editorRole.role === "Participant" ||
                                   editorRole.role === "Agenda Contributor" ||
                                   editorRole.status === "9" ||
@@ -906,23 +926,27 @@ const ParentAgenda = ({
                                       {data.iD.includes("A") ? null : (
                                         <>
                                           <Tooltip
-                                            placement="bottomLeft"
-                                            title={t("Permission-settings")}
-                                          >
+                                            placement='bottomLeft'
+                                            title={t("Permission-settings")}>
                                             <img
                                               draggable={false}
                                               src={Key}
-                                              alt=""
-                                              width="24.07px"
-                                              height="24.09px"
+                                              alt=''
+                                              width='24.07px'
+                                              height='24.09px'
                                               className={`cursor-pointer ${
                                                 data.isLocked ||
                                                 editorRole.status === 9 ||
                                                 editorRole.status === "9"
                                                   ? "pe-none"
+                                                  : Number(
+                                                      editorRole.status
+                                                    ) === 10 &&
+                                                    !isAgendaUpdateWhenMeetingActive
+                                                  ? "pe-none"
                                                   : ""
                                               }`}
-                                              role="button"
+                                              role='button'
                                               onClick={() => {
                                                 if (!data.isLocked) {
                                                   openAdvancePermissionModal(
@@ -934,19 +958,23 @@ const ParentAgenda = ({
                                             />
                                           </Tooltip>
                                           <Tooltip
-                                            placement="bottomLeft"
-                                            title={t("Add-vote")}
-                                          >
+                                            placement='bottomLeft'
+                                            title={t("Add-vote")}>
                                             <img
-                                              alt=""
+                                              alt=''
                                               draggable={false}
                                               src={Cast}
-                                              width="25.85px"
-                                              height="25.89px"
+                                              width='25.85px'
+                                              height='25.89px'
                                               className={
                                                 editorRole.status === 9 ||
                                                 editorRole.status === "9"
                                                   ? "locked-cursor"
+                                                  : Number(
+                                                      editorRole.status
+                                                    ) === 10 &&
+                                                    !isAgendaUpdateWhenMeetingActive
+                                                  ? "pe-none"
                                                   : "cursor-pointer"
                                               }
                                               onClick={() =>
@@ -964,20 +992,19 @@ const ParentAgenda = ({
                                             />
                                           </Tooltip>
                                           <Tooltip
-                                            placement="bottomLeft"
+                                            placement='bottomLeft'
                                             title={
                                               data.isLocked
                                                 ? t("Agenda-locked")
                                                 : t("Agenda-unlocked")
-                                            }
-                                          >
+                                            }>
                                             <img
-                                              alt=""
+                                              alt=''
                                               draggable={false}
                                               src={
                                                 data.isLocked ? DarkLock : Lock
                                               }
-                                              width="18.87px"
+                                              width='18.87px'
                                               className={
                                                 data.isLocked
                                                   ? styles["lockBtn_inActive"]
@@ -986,9 +1013,16 @@ const ParentAgenda = ({
                                                   ? `${
                                                       styles["lockBtn_inActive"]
                                                     } ${"pe-none"}`
+                                                  : Number(
+                                                      editorRole.status
+                                                    ) === 10 &&
+                                                    !isAgendaUpdateWhenMeetingActive
+                                                  ? `${
+                                                      styles["lockBtn_inActive"]
+                                                    } ${"pe-none"}`
                                                   : styles["lockBtn"]
                                               }
-                                              height="26.72px"
+                                              height='26.72px'
                                               onClick={() =>
                                                 editorRole.status === 9 ||
                                                 editorRole.status === "9"
@@ -1007,14 +1041,18 @@ const ParentAgenda = ({
                                 </Col>
                               </Row>
                               <Droppable
+                                isDropDisabled={
+                                  Number(editorRole.status) === 10 &&
+                                  !isAgendaUpdateWhenMeetingActive
+                                    ? true
+                                    : false
+                                }
                                 droppableId={`parent-${data.iD}-parent-attachments`}
-                                type="attachment"
-                              >
+                                type='attachment'>
                                 {(provided) => (
                                   <div
                                     {...provided.droppableProps}
-                                    ref={provided.innerRef}
-                                  >
+                                    ref={provided.innerRef}>
                                     {data.selectedRadio === 1 ? (
                                       <>
                                         {data.files.length > 0 ? (
@@ -1119,7 +1157,7 @@ const ParentAgenda = ({
               editorRole.role === "Agenda Contributor" ||
               editorRole.status === 9 ||
               editorRole.status === "9" ? null : (
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col lg={12} md={12} sm={12}>
                     <Button
                       text={
@@ -1129,14 +1167,13 @@ const ParentAgenda = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center gap-2 align-items-center"
-                            >
+                              className='d-flex justify-content-center gap-2 align-items-center'>
                               <img
-                                alt=""
+                                alt=''
                                 draggable={false}
                                 src={plusFaddes}
-                                height="10.77px"
-                                width="10.77px"
+                                height='10.77px'
+                                width='10.77px'
                               />
                               <span className={styles["Add_Agen_Heading"]}>
                                 {t("Add-sub-agenda")}
@@ -1149,6 +1186,12 @@ const ParentAgenda = ({
                       onClick={() => {
                         addSubAjendaRows(index);
                       }}
+                      disableBtn={
+                        Number(editorRole.status) === 10 &&
+                        !isAgendaUpdateWhenMeetingActive
+                          ? true
+                          : false
+                      }
                     />
                   </Col>
                 </Row>

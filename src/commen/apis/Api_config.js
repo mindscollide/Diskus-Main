@@ -1828,6 +1828,10 @@ const hideUnHidePaticipantVideo = {
   RequestMethod: "ServiceManager.HideUnHideParticpantVideo",
 };
 
+const ProposeNewMeetingSaveParticipants = {
+  RequestMethod: "ServiceManager.SaveMeetingParticipantsForProposedMeeting",
+};
+
 export {
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
@@ -2311,4 +2315,5 @@ export {
   muteUnMuteSelf,
   hideUnHideVideoSelf,
   hideUnHidePaticipantVideo,
+  ProposeNewMeetingSaveParticipants,
 };

@@ -1152,7 +1152,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               allMeetingDetails.meetingStatus.status === "10" ||
               allMeetingDetails.meetingStatus.status === 10
             ) {
-              leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
+              setViewFlag(true);
             } else {
               setViewFlag(false);
             }
@@ -1410,6 +1410,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                                 <AttachmentViewer
                                                   id={1}
                                                   // fk_UID={}
+                                                  isQuickMeeting={true}
                                                   handleClickDownload={() =>
                                                     downloadClick(
                                                       MeetingAgendaAttachmentsData
@@ -1619,6 +1620,21 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                             }
                             text={t("Start-meeting")}
                             disableBtn={startMeetingStatus}
+                          />
+                        ) : null}
+
+                        {allMeetingDetails.meetingStatus.status === "10" ? (
+                          <Button
+                            onClick={() =>
+                              leaveMeeting(
+                                allMeetingDetails.meetingDetails.pK_MDID
+                              )
+                            }
+                            className={
+                              "  end-meeting-btn_view-org" + " " + currentLanguage
+                            }
+                            text={t("Leave-meeting")}
+                            // disableBtn={endMeetingStatus}
                           />
                         ) : null}
 

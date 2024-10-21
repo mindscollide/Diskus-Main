@@ -42,6 +42,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../container/DataRoom/SearchFunctionality/option";
+import { maxFileSize } from "../../../commen/functions/utils";
 
 const CreateGroup = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
@@ -130,14 +131,13 @@ const CreateGroup = ({ setCreategrouppage }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
+                    className='d-flex gap-2 align-items-center'>
                     <img
                       src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                      alt=''
                     />
                     <span>{user.name}</span>
                   </Col>
@@ -521,22 +521,22 @@ const CreateGroup = ({ setCreategrouppage }) => {
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + fileAttachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
+      if (totalFiles > 15) {
         setOpen({
           flag: true,
-          message: t("Not-allowed-more-than-10-files"),
+          message: t("Not-allowed-more-than-15-files"),
         });
         return;
       }
-
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        console.log(fileData.size, maxFileSize, "fileListfileList");
+
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -547,12 +547,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-greater-then-1-5GB"),
+          });
         } else if (!sizezero) {
           setTimeout(() => {
             setOpen({
@@ -588,18 +586,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-
-  //Sliders For Attachments
-
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   const handleRemoveFile = (index) => {
     const updatedFies = [...fileAttachments];
@@ -661,20 +647,19 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   return (
     <>
-      <section className=" color-5a5a5a">
-        <Row className="mt-3">
+      <section className=' color-5a5a5a'>
+        <Row className='mt-3'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-start "
-          >
+            className='d-flex justify-content-start '>
             <span className={styles["Create-Group-Heading"]}>
               {t("Create-new-group")}
             </span>
           </Col>
         </Row>
-        <Row className="mt-2">
+        <Row className='mt-2'>
           <Col lg={12} md={12} sm={12}>
             <Paper className={styles["Create-Group-paper"]}>
               <Row>
@@ -688,24 +673,23 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="Group_input_field "
-                        >
+                          className='Group_input_field '>
                           <Form.Control
-                            applyClass="form-control2"
+                            applyClass='form-control2'
                             ref={GroupeTitle}
                             // className="Focuson"
-                            type="text"
+                            type='text'
                             maxLength={300}
                             placeholder={t("Group-title")}
                             required={true}
                             value={createGroupDetails.Title}
                             onChange={onChangeFunc}
-                            name="tasktitle"
+                            name='tasktitle'
                           />
                         </Col>
                       </Row>
@@ -716,8 +700,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               erorbar && createGroupDetails.Title === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
-                            }
-                          >
+                            }>
                             {t("Group-title-is-required")}
                           </p>
                         </Col>
@@ -727,19 +710,18 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="Group_input_field CreateMeetingInput "
-                        >
+                          className='Group_input_field CreateMeetingInput '>
                           <TextField
-                            applyClass="text-area-create-group"
-                            type="text"
+                            applyClass='text-area-create-group'
+                            type='text'
                             as={"textarea"}
-                            rows="8"
+                            rows='8'
                             value={createGroupDetails.Description}
                             maxLength={500}
                             placeholder={t("Group-Description")}
                             required={true}
                             change={onChangeFunc}
-                            name="groupdescription"
+                            name='groupdescription'
                           />
                         </Col>
                       </Row>
@@ -750,35 +732,31 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               erorbar && createGroupDetails.Description === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
-                            }
-                          >
+                            }>
                             {t("Group-description-is-required")}
                           </p>
                         </Col>
                       </Row>
-                      <Row className="mt-1">
+                      <Row className='mt-1'>
                         <Col
                           lg={6}
                           md={6}
                           sm={6}
-                          className={styles["CheckBoxalign"]}
-                        >
+                          className={styles["CheckBoxalign"]}>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox Saved_money_Tagline"
-                            >
+                              className='UpdateCheckbox Saved_money_Tagline'>
                               <Checkbox
-                                className="SearchCheckbox "
-                                name="IsChat"
+                                className='SearchCheckbox '
+                                name='IsChat'
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 label2={t("Create-talk-group")}
                                 checked={createGroupDetails.isGroupChat}
                                 onChange={CheckBoxHandler}
-                                classNameDiv="checkboxParentClass"
-                              ></Checkbox>
+                                classNameDiv='checkboxParentClass'></Checkbox>
                             </Col>
                           </Row>
                         </Col>
@@ -787,10 +765,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={5}
                           md={5}
                           sm={5}
-                          className="group-type-select-field m-0 CreateMeetingReminder"
-                        >
+                          className='group-type-select-field m-0 CreateMeetingReminder'>
                           <SelectBox
-                            name="grouptype"
+                            name='grouptype'
                             placeholder={t("Group-Type-Group")}
                             option={groupTypeOptions}
                             change={groupTypeChangeHandler}
@@ -800,15 +777,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
                         </Col>
                         <Row>
                           <Col
-                            className={styles["create-grouperror-type-heading"]}
-                          >
+                            className={
+                              styles["create-grouperror-type-heading"]
+                            }>
                             <p
                               className={
                                 erorbar && groupTypeValue === ""
                                   ? styles["errorMessage"]
                                   : styles["errorMessage_hidden"]
-                              }
-                            >
+                              }>
                               {t("Group-type-is-required")}
                             </p>
                           </Col>
@@ -820,18 +797,16 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["scroll-bar-creategroup"]}
-                        >
-                          <Row className="mt-1">
+                          className={styles["scroll-bar-creategroup"]}>
+                          <Row className='mt-1'>
                             <Col lg={12} md={12} sm={12}>
                               <span
-                                className={styles["Create-group-Head-Heading"]}
-                              >
+                                className={styles["Create-group-Head-Heading"]}>
                                 {t("Group-head")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             {groupMembers.length > 0 ? (
                               groupMembers.map((renderdata, index) => {
                                 if (renderdata.role === 2) {
@@ -841,15 +816,14 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                         <section
                                           className={
                                             styles["Outer_Border-Line"]
-                                          }
-                                        >
+                                          }>
                                           <Row>
                                             <Col lg={3} md={3} sm={12}>
                                               <img
                                                 src={`data:image/jpeg;base64,${renderdata.data.displayProfilePictureName}`}
                                                 width={50}
                                                 height={50}
-                                                draggable="false"
+                                                draggable='false'
                                               />
                                             </Col>
                                             <Col
@@ -858,17 +832,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                               sm={7}
                                               className={
                                                 styles["group-head-info"]
-                                              }
-                                            >
-                                              <Row className="mt-1">
+                                              }>
+                                              <Row className='mt-1'>
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
                                                     className={
                                                       styles[
                                                         "name-create-group"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     {renderdata.data.name}
                                                   </span>
                                                 </Col>
@@ -880,8 +852,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                       styles[
                                                         "Designation-create-group"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     {
                                                       renderdata.data
                                                         .designation
@@ -896,8 +867,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                       styles[
                                                         "email-create-group"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     <a>
                                                       {" "}
                                                       {
@@ -913,11 +883,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                               lg={2}
                                               md={2}
                                               sm={2}
-                                              className="d-flex align-items-center"
-                                            >
+                                              className='d-flex align-items-center'>
                                               <img
                                                 src={deleteButtonCreateMeeting}
-                                                className="cursor-pointer"
+                                                className='cursor-pointer'
                                                 width={20}
                                                 height={20}
                                                 onClick={() =>
@@ -925,7 +894,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                     renderdata.data.pK_UID
                                                   )
                                                 }
-                                                draggable="false"
+                                                draggable='false'
                                               />
                                             </Col>
                                           </Row>
@@ -941,23 +910,21 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={styles["no-members-found"]}
-                                >
+                                  className={styles["no-members-found"]}>
                                   {t("No-group-heads-found")}
                                 </Col>
                               </>
                             )}
                           </Row>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} md={12} sm={12}>
                               <span
-                                className={styles["members-create-group-page"]}
-                              >
+                                className={styles["members-create-group-page"]}>
                                 {t("Members")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
                                 console.log(
@@ -968,16 +935,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                   return (
                                     <Col lg={6} md={6} sm={6}>
                                       <section
-                                        className={styles["Outer_Border-Line"]}
-                                      >
+                                        className={styles["Outer_Border-Line"]}>
                                         <Row>
                                           <Col lg={3} md={3} sm={12}>
                                             <img
                                               src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
                                               width={50}
-                                              alt=""
+                                              alt=''
                                               height={50}
-                                              draggable="false"
+                                              draggable='false'
                                             />
                                           </Col>
                                           <Col
@@ -986,15 +952,13 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             sm={7}
                                             className={
                                               styles["group-head-info"]
-                                            }
-                                          >
-                                            <Row className="mt-1">
+                                            }>
+                                            <Row className='mt-1'>
                                               <Col lg={12} md={12} sm={12}>
                                                 <span
                                                   className={
                                                     styles["name-create-group"]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.name}
                                                 </span>
                                               </Col>
@@ -1006,8 +970,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "Designation-create-group"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.designation}
                                                 </span>
                                               </Col>
@@ -1017,8 +980,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 <span
                                                   className={
                                                     styles["email-create-group"]
-                                                  }
-                                                >
+                                                  }>
                                                   <a>
                                                     {" "}
                                                     {data.data.emailAddress}
@@ -1031,20 +993,19 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             lg={2}
                                             md={2}
                                             sm={2}
-                                            className="d-flex align-items-center"
-                                          >
+                                            className='d-flex align-items-center'>
                                             <img
-                                              alt=""
+                                              alt=''
                                               src={deleteButtonCreateMeeting}
                                               width={20}
-                                              className="cursor-pointer"
+                                              className='cursor-pointer'
                                               height={20}
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
                                                 )
                                               }
-                                              draggable="false"
+                                              draggable='false'
                                             />
                                           </Col>
                                         </Row>
@@ -1058,8 +1019,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className={styles["no-members-found"]}
-                              >
+                                className={styles["no-members-found"]}>
                                 {t("No-group-memebers-found")}
                               </Col>
                             )}
@@ -1084,8 +1044,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               md={12}
                               lg={12}
                               sm={12}
-                              className="group-fields"
-                            >
+                              className='group-fields'>
                               <Select
                                 options={allPresenters}
                                 maxMenuHeight={140}
@@ -1100,15 +1059,14 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               />
                             </Col>
                           </Row>
-                          <Row className="mt-4">
+                          <Row className='mt-4'>
                             <Col
                               lg={10}
                               md={10}
                               sm={10}
-                              className="group-select-field  CreateMeetingReminder   "
-                            >
+                              className='group-select-field  CreateMeetingReminder   '>
                               <SelectBox
-                                name="Participant"
+                                name='Participant'
                                 placeholder={t("Type")}
                                 option={participantOptions}
                                 value={participantRoleName}
@@ -1119,8 +1077,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               lg={2}
                               md={2}
                               sm={2}
-                              className=" d-flex justify-content-end"
-                            >
+                              className=' d-flex justify-content-end'>
                               <Button
                                 className={styles["ADD-Group-btn"]}
                                 text={t("Add")}
@@ -1136,8 +1093,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               sm={12}
                               className={
                                 styles["scrollbar-addmember-creategroup"]
-                              }
-                            >
+                              }>
                               {meetingAttendeesList.length > 0
                                 ? meetingAttendeesList.map(
                                     (attendeelist, index) => {
@@ -1147,17 +1103,16 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             lg={6}
                                             md={6}
                                             sm={6}
-                                            className="mt-3"
-                                          >
-                                            <Row className="d-flex gap-2">
+                                            className='mt-3'>
+                                            <Row className='d-flex gap-2'>
                                               <Col lg={2} md={2} sm={12}>
                                                 <img
                                                   // src={Newprofile}
                                                   src={`data:image/jpeg;base64,${attendeelist.displayProfilePictureName}`}
                                                   width={50}
                                                   height={50}
-                                                  alt=""
-                                                  draggable="false"
+                                                  alt=''
+                                                  draggable='false'
                                                 />
                                               </Col>
 
@@ -1169,17 +1124,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                   styles[
                                                     "group-head-info-Add-Members"
                                                   ]
-                                                }
-                                              >
-                                                <Row className="mt-1">
+                                                }>
+                                                <Row className='mt-1'>
                                                   <Col lg={12} md={12} sm={12}>
                                                     <span
                                                       className={
                                                         styles[
                                                           "name-create-group"
                                                         ]
-                                                      }
-                                                    >
+                                                      }>
                                                       {attendeelist.name}
                                                     </span>
                                                   </Col>
@@ -1191,8 +1144,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                         styles[
                                                           "Designation-create-group"
                                                         ]
-                                                      }
-                                                    >
+                                                      }>
                                                       {attendeelist.designation}
                                                     </span>
                                                   </Col>
@@ -1204,8 +1156,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                         styles[
                                                           "email-create-group"
                                                         ]
-                                                      }
-                                                    >
+                                                      }>
                                                       <a>
                                                         {
                                                           attendeelist.emailAddress
@@ -1219,8 +1170,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 lg={2}
                                                 md={2}
                                                 sm={12}
-                                                className="mt-2 "
-                                              >
+                                                className='mt-2 '>
                                                 <Checkbox
                                                   checked={
                                                     attendees.includes(
@@ -1229,7 +1179,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                       ? true
                                                       : false
                                                   }
-                                                  classNameDiv=""
+                                                  classNameDiv=''
                                                   onChange={() =>
                                                     checkAttendeeBox(
                                                       attendeelist,
@@ -1254,7 +1204,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           {/* at this point it is ending  */}
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Attachments_Heading"]}>
                             {"Attachment"}
@@ -1262,27 +1212,27 @@ const CreateGroup = ({ setCreategrouppage }) => {
                         </Col>
                       </Row>
                       <section className={styles["CreateGroupAttachments"]}>
-                      <Row>
-                        {fileAttachments.length > 0
-                          ? fileAttachments.map((data, index) => {
-                              return (
-                                <>
-                                  <Col
-                                    lg={4}
-                                    md={4}
-                                    sm={4}
-                                    // className="position-relative gap-2"
-                                  >
-                                    <AttachmentViewer
-                                      data={data}
-                                      name={data.DisplayAttachmentName}
-                                      fk_UID={creatorID}
-                                      id={0}
-                                      handleClickRemove={() => {
-                                        handleRemoveFile(index)
-                                      }}
-                                    />
-                                    {/* <span
+                        <Row>
+                          {fileAttachments.length > 0
+                            ? fileAttachments.map((data, index) => {
+                                return (
+                                  <>
+                                    <Col
+                                      lg={4}
+                                      md={4}
+                                      sm={4}
+                                      // className="position-relative gap-2"
+                                    >
+                                      <AttachmentViewer
+                                        data={data}
+                                        name={data.DisplayAttachmentName}
+                                        fk_UID={creatorID}
+                                        id={0}
+                                        handleClickRemove={() => {
+                                          handleRemoveFile(index);
+                                        }}
+                                      />
+                                      {/* <span
                                             className={
                                               styles["Crossicon_Class"]
                                             }
@@ -1352,31 +1302,29 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                               </Row>
                                             </section>
                                           </section> */}
-                                  </Col>
-                                </>
-                              );
-                            })
-                          : null}
-                      </Row>
+                                    </Col>
+                                  </>
+                                );
+                              })
+                            : null}
+                        </Row>
                       </section>
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col lg={12} md={12} sm={12}>
                           <Dragger
                             fileList={[]}
                             {...props}
                             className={
                               styles["dragdrop_attachment_create_resolution"]
-                            }
-                          >
-                            <p className="ant-upload-drag-icon">
+                            }>
+                            <p className='ant-upload-drag-icon'>
                               <span
-                                className={styles["create_resolution_dragger"]}
-                              >
+                                className={styles["create_resolution_dragger"]}>
                                 <img
                                   src={featherupload}
-                                  width="18.87px"
-                                  height="18.87px"
-                                  draggable="false"
+                                  width='18.87px'
+                                  height='18.87px'
+                                  draggable='false'
                                 />
                               </span>
                             </p>
@@ -1397,8 +1345,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-end gap-3 mt-4"
-                        >
+                          className='d-flex justify-content-end gap-3 mt-4'>
                           <Button
                             className={styles["Cancell-CreateGroup-btn"]}
                             text={t("Cancel")}
