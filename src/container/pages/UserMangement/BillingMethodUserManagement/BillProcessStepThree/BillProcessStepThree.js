@@ -34,7 +34,7 @@ const BillProcessStepThree = () => {
   const [getAllPakagesData, setGetAllPakagesData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(null);
   const [tenureID, setTenureID] = useState(0);
-
+  console.log("check error k");
   //UseEffect For Get All Organziation Selected Pakages
 
   useEffect(() => {
@@ -116,7 +116,7 @@ const BillProcessStepThree = () => {
       render: (record) => {
         const { name } = calculateTotalsBillingStepper(getAllPakagesData);
 
-        if (record.isTotalRow) {
+        if (record?.isTotalRow) {
           return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
         } else {
           return (
@@ -142,7 +142,7 @@ const BillProcessStepThree = () => {
         return (
           <>
             <span className={styles["ChargesPerLicesense"]}>
-              {record.price}
+              {record?.price}
             </span>
           </>
         );
@@ -187,7 +187,7 @@ const BillProcessStepThree = () => {
       render: (record) => {
         const { Yearlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
-        if (record.isTotalRow) {
+        if (record?.isTotalRow) {
           // For the total row, directly use the calculated value
           return (
             <span className={styles["ChargesPerLicesense"]}>
@@ -196,7 +196,7 @@ const BillProcessStepThree = () => {
           );
         } else {
           // For regular rows, calculate the yearly charges
-          const yearlyCharge = (record.price * record.headCount || 0) * 12;
+          const yearlyCharge = (record?.price * record?.headCount || 0) * 12;
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {yearlyCharge.toLocaleString()}
@@ -220,7 +220,7 @@ const BillProcessStepThree = () => {
       render: (record) => {
         const { Monthlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
-        if (record.isTotalRow) {
+        if (record?.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {Monthlycharges}
@@ -228,7 +228,7 @@ const BillProcessStepThree = () => {
           );
         } else {
           // For regular rows, calculate the yearly charges
-          const MonthlyCharge = record.price * record.headCount || 0;
+          const MonthlyCharge = record?.price * record?.headCount || 0;
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {MonthlyCharge.toLocaleString()}
@@ -252,14 +252,14 @@ const BillProcessStepThree = () => {
       render: (record) => {
         const { Quaterlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
-        if (record.isTotalRow) {
+        if (record?.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {Quaterlycharges}
             </span>
           );
         } else {
-          const QuaterlyCharge = (record.price * record.headCount || 0) * 3;
+          const QuaterlyCharge = (record?.price * record?.headCount || 0) * 3;
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {QuaterlyCharge.toLocaleString()}

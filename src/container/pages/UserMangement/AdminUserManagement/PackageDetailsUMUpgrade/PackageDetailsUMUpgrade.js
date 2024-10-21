@@ -32,6 +32,7 @@ const PakageDetailsUMUpgrade = () => {
   let isTrial = localStorage.getItem("isTrial");
   const [packageDetail, setPackageDetail] = useState([]);
   const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
+  console.log("check error k");
 
   //get All user pakages Api call
   useEffect(() => {
@@ -145,6 +146,10 @@ const PakageDetailsUMUpgrade = () => {
       key: "name",
       align: "center",
       render: (text, response) => {
+        {
+          console.log("check error k", response);
+        }
+
         return (
           <>
             <span className={styles["Tableheading"]}>{response.name}</span>
@@ -166,14 +171,15 @@ const PakageDetailsUMUpgrade = () => {
       width: 100,
       align: "center",
       render: (text, response) => {
+        console.log("check error k", response);
         // Check if 'price' is available and greater than zero before rendering it
-        if (response.isTotalRow) {
+        if (response?.isTotalRow) {
           return;
         } else {
           return (
             <>
               <span className={styles["ChargesPerLicesense"]}>
-                {response.price}
+                {response?.price}
               </span>
             </>
           );
@@ -194,13 +200,14 @@ const PakageDetailsUMUpgrade = () => {
       key: "Numberoflicenses",
       align: "center",
       render: (text, row, index) => {
-        if (row.shouldDisplayTextField) {
+        if (row?.shouldDisplayTextField) {
           return;
         } else {
-          if (row.isTotalRow) {
+          console.log("check error k", row);
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
-                {row.Numberoflicenses}
+                {row?.Numberoflicenses}
               </span>
             );
           } else {
@@ -257,15 +264,13 @@ const PakageDetailsUMUpgrade = () => {
         let monthlyCharges = 0;
         if (row?.name) {
           const matchedPackage = organizationPackagePrice.find(
-            (pkg) => pkg.name === row.name
+            (pkg) => pkg.name === row?.name
           );
           if (matchedPackage) {
-            monthlyCharges = row.price * matchedPackage.licenseCount;
+            monthlyCharges = row?.price * matchedPackage.licenseCount;
           }
         }
-
-        console.log(monthlyCharges, "shouldDisplayTextFieldprice");
-        if (row.shouldDisplayTextField) {
+        if (row?.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -278,7 +283,7 @@ const PakageDetailsUMUpgrade = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>{text}</span>
             );
@@ -313,14 +318,14 @@ const PakageDetailsUMUpgrade = () => {
         let quarterlyCharges = 0;
         if (row?.name) {
           const findName = organizationPackagePrice.find(
-            (pkg) => pkg.name === row.name
+            (pkg) => pkg.name === row?.name
           );
           if (findName) {
-            quarterlyCharges = row.price * (findName.licenseCount * 3);
+            quarterlyCharges = row?.price * (findName.licenseCount * 3);
           }
         }
 
-        if (row.shouldDisplayTextField) {
+        if (row?.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -333,7 +338,8 @@ const PakageDetailsUMUpgrade = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
+          console.log("check error k", row);
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>{text}</span>
             );
@@ -366,14 +372,14 @@ const PakageDetailsUMUpgrade = () => {
         let YearlyCharges = 0;
         if (row?.name) {
           const findName = organizationPackagePrice.find(
-            (pkg) => pkg.name === row.name
+            (pkg) => pkg.name === row?.name
           );
           if (findName) {
-            YearlyCharges = row.price * (findName.licenseCount * 12);
+            YearlyCharges = row?.price * (findName.licenseCount * 12);
           }
         }
 
-        if (row.shouldDisplayTextField) {
+        if (row?.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -386,7 +392,7 @@ const PakageDetailsUMUpgrade = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>{text}</span>
             );
@@ -419,14 +425,14 @@ const PakageDetailsUMUpgrade = () => {
     // Calculate total monthly charges
     const totalMonthlyCharges = packageTableData.reduce((total, row) => {
       const matchedPackage = organizationPackagePrice.find(
-        (pkg) => pkg.name === row.name
+        (pkg) => pkg.name === row?.name
       );
       const monthlyCharges =
-        row.price &&
+        row?.price &&
         matchedPackage &&
-        !isNaN(row.price) &&
+        !isNaN(row?.price) &&
         !isNaN(matchedPackage.price)
-          ? row.price * matchedPackage.licenseCount
+          ? row?.price * matchedPackage.licenseCount
           : 0; // Multiply by 3 for quarterly
 
       return total + monthlyCharges;
@@ -437,11 +443,11 @@ const PakageDetailsUMUpgrade = () => {
         (pkg) => pkg.name === row.name
       );
       const quarterlyCharge =
-        row.price &&
+        row?.price &&
         matchedPackage &&
-        !isNaN(row.price) &&
+        !isNaN(row?.price) &&
         !isNaN(matchedPackage.price)
-          ? row.price * matchedPackage.licenseCount * 3
+          ? row?.price * matchedPackage.licenseCount * 3
           : 0; // Multiply by 3 for quarterly
 
       return total + quarterlyCharge;
@@ -450,14 +456,14 @@ const PakageDetailsUMUpgrade = () => {
     console.log(totalQuarterlyCharges, "totalMonthlyCharges");
     const totalYearlyCharges = packageTableData.reduce((total, row) => {
       const matchedPackage = organizationPackagePrice.find(
-        (pkg) => pkg.name === row.name
+        (pkg) => pkg.name === row?.name
       );
       const yearlyCharge =
-        row.price &&
+        row?.price &&
         matchedPackage &&
-        !isNaN(row.price) &&
+        !isNaN(row?.price) &&
         !isNaN(matchedPackage.price)
-          ? row.price * matchedPackage.licenseCount * 12
+          ? row?.price * matchedPackage.licenseCount * 12
           : 0; // Multiply by 3 for quarterly
 
       return total + yearlyCharge;
@@ -536,7 +542,7 @@ const PakageDetailsUMUpgrade = () => {
                         <Col sm={12} md={8} lg={8}>
                           <div className={styles["packagecard_pricebox"]}>
                             <span className={styles["package_actualPrice"]}>
-                              ${data.price}/
+                              ${data?.price}/
                               <p className={styles["package_actualPrice_p"]}>
                                 {t("Month")}
                               </p>

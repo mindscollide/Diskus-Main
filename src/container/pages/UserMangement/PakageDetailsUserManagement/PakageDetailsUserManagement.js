@@ -56,6 +56,7 @@ const PakageDetailsUserManagement = () => {
       console.log(error, "error");
     }
   }, []);
+  console.log("check error k");
 
   useEffect(() => {
     try {
@@ -143,12 +144,13 @@ const PakageDetailsUserManagement = () => {
       render: (response) => {
         const { name } = calculateTotals(tableData);
 
-        if (response.isTotalRow) {
+        console.log("check error k", response);
+        if (response?.isTotalRow) {
           return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
         } else {
           return (
             <>
-              <span className={styles["Tableheading"]}>{response.name}</span>
+              <span className={styles["Tableheading"]}>{response?.name}</span>
             </>
           );
         }
@@ -169,12 +171,12 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       render: (text, row) => {
         // Check if 'price' is available and greater than zero before rendering it
-        if (row.isTotalRow) {
+        if (row?.isTotalRow) {
           return;
         } else {
           return (
             <>
-              <span className={styles["ChargesPerLicesense"]}>{row.price}</span>
+              <span className={styles["ChargesPerLicesense"]}>{row?.price}</span>
             </>
           );
         }
@@ -196,10 +198,10 @@ const PakageDetailsUserManagement = () => {
       render: (row) => {
         const { Numberoflicenses } = calculateTotals(tableData);
 
-        if (row.shouldDisplayTextField) {
+        if (row?.shouldDisplayTextField) {
           return;
         } else {
-          if (row.isTotalRow) {
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
                 {Numberoflicenses}
@@ -211,7 +213,7 @@ const PakageDetailsUserManagement = () => {
 
               // Update state with numeric value
               const newData = tableData.map((item) => {
-                return item.pK_PackageID === row.pK_PackageID
+                return item?.pK_PackageID === row?.pK_PackageID
                   ? { ...item, licenseCount: numericValue }
                   : item;
               });
@@ -226,7 +228,7 @@ const PakageDetailsUserManagement = () => {
                     applyClass="PakageDetails"
                     name="noofLisence"
                     maxLength={3}
-                    value={row.licenseCount}
+                    value={row?.licenseCount}
                     change={(e) => handleChange(e.target.value)}
                   />
                 </Col>
@@ -252,8 +254,8 @@ const PakageDetailsUserManagement = () => {
       render: (row) => {
         const { MonthCharges } = calculateTotals(tableData);
         const monthlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount : 0;
-        if (row.shouldDisplayTextField) {
+          row?.price && row?.licenseCount ? row?.price * row?.licenseCount : 0;
+        if (row?.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -273,7 +275,7 @@ const PakageDetailsUserManagement = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
                 {MonthCharges}
@@ -310,8 +312,8 @@ const PakageDetailsUserManagement = () => {
         const { Quarterlycharges } = calculateTotals(tableData);
 
         const quarterlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount * 3 : 0;
-        if (row.shouldDisplayTextField) {
+          row?.price && row?.licenseCount ? row?.price * row?.licenseCount * 3 : 0;
+        if (row?.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -331,7 +333,7 @@ const PakageDetailsUserManagement = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
                 {Quarterlycharges}
@@ -366,8 +368,8 @@ const PakageDetailsUserManagement = () => {
         const { YearlychargesTotal } = calculateTotals(tableData);
 
         const YearlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount * 12 : 0;
-        if (row.shouldDisplayTextField) {
+          row?.price && row?.licenseCount ? row?.price * row?.licenseCount * 12 : 0;
+        if (row?.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -387,7 +389,7 @@ const PakageDetailsUserManagement = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
                 {YearlychargesTotal}
@@ -415,7 +417,7 @@ const PakageDetailsUserManagement = () => {
       if (data?.licenseCount) {
         if (data?.licenseCount !== "") {
           newArr.push({
-            PackageID: data.pK_PackageID,
+            PackageID: data?.pK_PackageID,
             HeadCount: Number(data.licenseCount),
           });
         }
@@ -519,7 +521,7 @@ const PakageDetailsUserManagement = () => {
                         <Col sm={12} md={8} lg={8}>
                           <div className={styles["packagecard_pricebox"]}>
                             <span className={styles["package_actualPrice"]}>
-                              ${data.price}/
+                              ${data?.price}/
                               <p className={styles["package_actualPrice_p"]}>
                                 {t("Month")}
                               </p>
