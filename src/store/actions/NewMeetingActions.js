@@ -69,6 +69,7 @@ import {
   validateEncryptedStringParticipantProposedRM,
   getAllMeetingUsersRSVPDetailsRM,
   leaveMeetingVideo,
+  ProposeNewMeetingSaveParticipants,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -654,23 +655,7 @@ const SaveMeetingDetialsNewApiFunction = (
                   dispatch(uploadGlobalFlag(false));
                   setorganizers(true);
                   setmeetingDetails(false);
-                  // let MappedData = {
-                  //   MeetingID: response.data.responseResult.meetingID,
-                  //   MeetingTitle: meetingDetails.MeetingTitle,
-                  //   IsUpdateFlow: false,
-                  // };
-                  // dispatch(
-                  //   CreateUpdateMeetingDataRoomMapeedApiFunc(
-                  //     navigate,
-                  //     MappedData,
-                  //     t,
-                  //     setDataroomMapFolderId,
-                  //     viewValue
-                  //   )
-                  // );
                 }
-
-                // setSceduleMeeting(false);
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);
@@ -691,18 +676,7 @@ const SaveMeetingDetialsNewApiFunction = (
                 let Data = {
                   MeetingID: Number(response.data.responseResult.meetingID),
                 };
-                // await dispatch(
-                //   GetAllMeetingDetailsApiFunc(
-                //     navigate,
-                //     t,
-                //     Data,
-                //     true,
-                //     setCurrentMeetingID,
-                //     setSceduleMeeting,
-                //     setDataroomMapFolderId,
-                //     data.MeetingDetails.MeetingStatusID
-                //   )
-                // );
+
                 dispatch(meetingDetailsGlobalFlag(false));
                 dispatch(organizersGlobalFlag(true));
                 dispatch(agendaContributorsGlobalFlag(false));
@@ -1642,8 +1616,161 @@ const FetchMeetingURLClipboard = (
   };
 };
 
-//Save Participants
+//Proposed New meeting for Saved participants (New API)
+const saveParcipantsProposeMeetingInit = () => {
+  return {
+    type: actions.PARTICIPANT_SAVED_PROPOSED_NEW_MEETING_INIT,
+  };
+};
 
+const saveParcipantsProposeMeetingSuccess = (response, message) => {
+  return {
+    type: actions.PARTICIPANT_SAVED_PROPOSED_NEW_MEETING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const saveParcipantsProposeMeetingFail = (message) => {
+  return {
+    type: actions.PARTICIPANT_SAVED_PROPOSED_NEW_MEETING_FAIL,
+    message: message,
+  };
+};
+
+const saveParcipantsProposeMeetingAPI = (
+  Data,
+  navigate,
+  t,
+  currentMeeting,
+  flag,
+  rows,
+  ResponseDate,
+  setProposedNewMeeting
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(saveParcipantsProposeMeetingInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      ProposeNewMeetingSaveParticipants.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            saveParcipantsProposeMeetingAPI(
+              Data,
+              navigate,
+              t,
+              currentMeeting,
+              flag,
+              rows,
+              ResponseDate,
+              setProposedNewMeeting
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingParticipantsForProposedMeeting_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveParcipantsProposeMeetingSuccess(
+                  response.data.responseResult,
+                  t("Successfully Updated Participants List")
+                )
+              );
+              if (flag === true) {
+                let Data = {
+                  MeetingID: currentMeeting,
+                  SendResponsebyDate: ResponseDate,
+                  ProposedDates: rows,
+                };
+                dispatch(
+                  setProposedMeetingDateApiFunc(
+                    Data,
+                    navigate,
+                    t,
+                    true,
+                    setProposedNewMeeting
+                  )
+                );
+              } else {
+                let Data = {
+                  MeetingID: Number(currentMeeting),
+                };
+                dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, false));
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingParticipantsForProposedMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveParcipantsProposeMeetingFail(
+                  t("Participants Update Failed")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingParticipantsForProposedMeeting_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveParcipantsProposeMeetingFail(t("Something-went-wrong"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingParticipantsForProposedMeeting_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveParcipantsProposeMeetingFail(
+                  t("Meeting is not in proposed state")
+                )
+              );
+            } else {
+              dispatch(
+                saveParcipantsProposeMeetingFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              saveParcipantsProposeMeetingFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(saveParcipantsProposeMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(saveParcipantsProposeMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Save Participants
 const showSavedParticipantsInit = () => {
   return {
     type: actions.SAVE_MEETING_PARTICIPANTS_INIT,
@@ -2348,41 +2475,42 @@ const GetAllMeetingDetailsApiFunc = (
                   );
                   // Recurring Drop Down API
                   await dispatch(
-                    GetAllMeetingRecurringApiNew(navigate, t, true)
+                    GetAllMeetingRecurringApiNew(navigate, t, false)
                   );
                 } else if (flag === 2) {
                   console.log("Flag for proposed meeting Edit flow only");
-                  await dispatch(
-                    CreateUpdateMeetingDataRoomMapeedApiFunc(
-                      navigate,
-                      MappedData,
-                      t,
-                      setDataroomMapFolderId,
-                      false,
-                      false,
-                      false,
-                      false,
-                      false,
-                      true
-                    )
-                  );
+                  // await dispatch(
+                  //   CreateUpdateMeetingDataRoomMapeedApiFunc(
+                  //     navigate,
+                  //     MappedData,
+                  //     t,
+                  //     setDataroomMapFolderId,
+                  //     false,
+                  //     false,
+                  //     false,
+                  //     false,
+                  //     false,
+                  //     true
+                  //   )
+                  // );
                 }
+              } else {
+                await dispatch(
+                  CreateUpdateMeetingDataRoomMapeedApiFunc(
+                    navigate,
+                    MappedData,
+                    t,
+                    setDataroomMapFolderId,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  )
+                );
               }
-              console.log("hello loader check", loader);
-              await dispatch(
-                CreateUpdateMeetingDataRoomMapeedApiFunc(
-                  navigate,
-                  MappedData,
-                  t,
-                  setDataroomMapFolderId,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-                )
-              );
+
               await dispatch(
                 showGetAllMeetingDetialsSuccess(
                   response.data.responseResult,
@@ -6869,11 +6997,9 @@ const UpdateMeetingUserApiFunc = (
                   let saveParticipant = {
                     MeetingParticipants: newMembers,
                     MeetingID: currentMeeting,
-                    IsParticipantsAddFlow: true,
-                    NotificationMessage: "",
                   };
                   await dispatch(
-                    SaveparticipantsApi(
+                    saveParcipantsProposeMeetingAPI(
                       saveParticipant,
                       navigate,
                       t,
@@ -6881,7 +7007,6 @@ const UpdateMeetingUserApiFunc = (
                       true,
                       rows,
                       ResponseDate,
-                      true,
                       setProposedNewMeeting
                     )
                   );
