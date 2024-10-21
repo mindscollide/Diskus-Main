@@ -197,7 +197,8 @@ const AgendaViewer = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));

@@ -804,6 +804,7 @@ const Organizers = ({
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    console.log("end meeting chaek")
     dispatch(
       UpdateOrganizersMeeting(
         false,

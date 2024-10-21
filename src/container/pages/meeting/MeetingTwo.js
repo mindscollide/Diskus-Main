@@ -329,6 +329,8 @@ const NewMeeting = () => {
           await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         }
         // await dispatch(allAssignessList(navigate, t));
+        console.log("Test is calling or not");
+        console.log("chek search meeting")
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
       } else {
@@ -350,6 +352,9 @@ const NewMeeting = () => {
           await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         }
         // await dispatch(allAssignessList(navigate, t));
+        console.log("Test is calling or not");
+
+        console.log("chek search meeting")
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
       }
@@ -757,7 +762,8 @@ const NewMeeting = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSearchFeilds({
       ...searchFields,
       Date: "",
@@ -780,7 +786,8 @@ const NewMeeting = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
     // setSearchFeilds({
     //   ...searchFields,
     //   Date: "",
@@ -940,7 +947,8 @@ const NewMeeting = () => {
     ) {
       await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     }
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
@@ -963,7 +971,8 @@ const NewMeeting = () => {
     ) {
       await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     }
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
@@ -1323,7 +1332,6 @@ const NewMeeting = () => {
       key: "Chat",
       width: "85px",
       render: (text, record) => {
-        console.log(record, "recordrecord");
         let isEmptyIcon = `<span className={styles["isempty"]}></span>`;
         return (
           <>
@@ -1453,6 +1461,7 @@ const NewMeeting = () => {
                   text={t("Start-meeting")}
                   className={styles["Start-Meeting"]}
                   onClick={() => {
+                    console.log("end meeting chaek");
                     dispatch(
                       UpdateOrganizersMeeting(
                         record.isQuickMeeting,
@@ -1494,6 +1503,7 @@ const NewMeeting = () => {
                   text={t("Start-meeting")}
                   className={styles["Start-Meeting"]}
                   onClick={() => {
+                    console.log("end meeting chaek");
                     dispatch(
                       UpdateOrganizersMeeting(
                         record.isQuickMeeting,
@@ -1851,7 +1861,8 @@ const NewMeeting = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSearchText("");
     setentereventIcon(false);
   };
@@ -1869,7 +1880,8 @@ const NewMeeting = () => {
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
         PublishedMeetings: Number(currentView) === 1 ? true : false,
       };
-      await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
       setentereventIcon(true);
     }
   };
@@ -1965,6 +1977,7 @@ const NewMeeting = () => {
           dashboardEventData.statusID === 1
         ) {
           if (dashboardEventData.isQuickMeeting === true) {
+            console.log("end meeting chaek");
             dispatch(
               UpdateOrganizersMeeting(
                 true,
@@ -1981,6 +1994,7 @@ const NewMeeting = () => {
               )
             );
           } else if (dashboardEventData.isQuickMeeting === false) {
+            console.log("end meeting chaek");
             dispatch(
               UpdateOrganizersMeeting(
                 false,
@@ -2173,7 +2187,8 @@ const NewMeeting = () => {
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   useEffect(() => {
@@ -2555,6 +2570,7 @@ const NewMeeting = () => {
               // setIsOrganisers(isOrganiser);
             } else if (meeting.status === "1" || meeting.status === 1) {
               if (meeting.isQuickMeeting === true) {
+                console.log("end meeting chaek");
                 dispatch(
                   UpdateOrganizersMeeting(
                     true,
@@ -2570,7 +2586,9 @@ const NewMeeting = () => {
                     setEditFlag
                   )
                 );
+                console.log("end meeting chaek");
               } else if (meeting.isQuickMeeting === false) {
+                console.log("end meeting chaek");
                 dispatch(
                   UpdateOrganizersMeeting(
                     false,

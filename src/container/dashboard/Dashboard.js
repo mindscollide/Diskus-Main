@@ -348,13 +348,7 @@ const Dashboard = () => {
               if (
                 Number(meetingVideoID) === Number(data.payload.meeting.pK_MDID)
               ) {
-                console.log(
-                  Number(meetingVideoID),
-                  Number(data.payload.meeting.pK_MDID),
-                  Number(meetingVideoID) ===
-                    Number(data.payload.meeting.pK_MDID),
-                  "isMeetingVideoisMeetingVideoisMeetingVideo"
-                );
+        
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -417,10 +411,6 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "NEW_UPCOMING_EVENTS".toLowerCase()
             ) {
-              let Data2 = {
-                UserID: Number(createrID),
-              };
-              dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
               dispatch(
                 setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
               );

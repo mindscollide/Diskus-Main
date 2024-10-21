@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./ViewMeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row, Container } from "react-bootstrap";
@@ -71,7 +71,9 @@ import {
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
-
+import EndMeetingConfirmationModal from "../../EndMeetingConfirmationModal/EndMeetingConfirmationModal";
+import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useCallback } from "react";
 const ViewMeetingDetails = ({
   setorganizers,
   setmeetingDetails,
@@ -89,6 +91,7 @@ const ViewMeetingDetails = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer, talkStateData } = useSelector((state) => state);
+  const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
   // For cancel with no modal Open
@@ -296,7 +299,8 @@ const ViewMeetingDetails = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEdiorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
@@ -304,11 +308,6 @@ const ViewMeetingDetails = ({
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     }
-  };
-
-  let endMeetingRequest = {
-    MeetingID: Number(advanceMeetingModalID),
-    StatusID: 9,
   };
 
   //Fetching All Saved Data
@@ -430,8 +429,7 @@ const ViewMeetingDetails = ({
         currentUserID,
         currentOrganization,
         0,
-        meetingDetails.MeetingTitle
-        ,
+        meetingDetails.MeetingTitle,
         advanceMeetingModalID
       )
     );
@@ -618,33 +616,48 @@ const ViewMeetingDetails = ({
 
   console.log("talkStateDatatalkStateData", talkStateData);
 
+  const handleClickEndMeeting = useCallback(async () => {
+    let endMeetingRequest = {
+      MeetingID: Number(advanceMeetingModalID),
+      StatusID: 9,
+    };
+    await dispatch(
+      UpdateOrganizersMeeting(
+        false,
+        navigate,
+        t,
+        4,
+        endMeetingRequest,
+        setEdiorRole,
+        setAdvanceMeetingModalID,
+        setDataroomMapFolderId,
+        setViewAdvanceMeetingModal,
+        "",
+        "",
+        "",
+        "",
+        "",
+        setEndMeetingConfirmationModal
+      )
+    );
+  }, []);
+
   return (
     <>
       <section>
         {meetingStatus === 10 && (
-          <Row className="mt-3">
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Row className='mt-3'>
+            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
               {Number(editorRole.status) === 10 &&
               editorRole.role === "Organizer" ? (
                 <>
                   <Button
                     text={t("End-meeting")}
                     className={styles["LeaveMeetinButton"]}
-                    onClick={() =>
-                      dispatch(
-                        UpdateOrganizersMeeting(
-                          false,
-                          navigate,
-                          t,
-                          4,
-                          endMeetingRequest,
-                          setEdiorRole,
-                          setAdvanceMeetingModalID,
-                          setDataroomMapFolderId,
-                          setViewAdvanceMeetingModal
-                        )
-                      )
-                    }
+                    onClick={() => {
+                      console.log("end meeting chaek");
+                      setEndMeetingConfirmationModal(true);
+                    }}
                   />
                 </>
               ) : meetingDetails.IsVideoCall === true ? (
@@ -671,13 +684,12 @@ const ViewMeetingDetails = ({
           </Row>
         )}
 
-        <Row className="mt-4">
+        <Row className='mt-4'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className={styles["ScrollerMeeting_Active"]}
-          >
+            className={styles["ScrollerMeeting_Active"]}>
             <Row className={meetingStatus === 10 ? "mt-4" : ""}>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_Gray_meeting"]}>
@@ -687,14 +699,14 @@ const ViewMeetingDetails = ({
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["MeetingTitle_Heading"]}>
                   {meetingDetails.MeetingTitle}
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               {/* <Col lg={12} md={12} sm={12} className="textAreaDivVieww vv"> */}
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["ParaGraph_SavedMeeting"]}>
@@ -715,9 +727,9 @@ const ViewMeetingDetails = ({
                 /> */}
               </Col>
             </Row>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col lg={5} md={5} sm={5}>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NOtes_heading"]}>
                       {t("Notes")}
@@ -731,7 +743,7 @@ const ViewMeetingDetails = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Scedule_OnHeading"]}>
                       {t("Scheduled-on")}
@@ -772,16 +784,15 @@ const ViewMeetingDetails = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex align-items-center gap-1"
-                  >
+                    className='d-flex align-items-center gap-1'>
                     {meetingDetails.groupChat && (
                       <img
                         src={Messegeblue}
-                        height="20.44px"
-                        width="25.68px"
-                        alt=""
+                        height='20.44px'
+                        width='25.68px'
+                        alt=''
                         onClick={() => groupChatInitiation(meetingDetails)}
-                        className="cursor-pointer mx-2"
+                        className='cursor-pointer mx-2'
                       />
                     )}
                     {meetingDetails.IsVideoCall && (
@@ -842,7 +853,7 @@ const ViewMeetingDetails = ({
                     )}
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NOtes_heading"]}>{t("RSVP")}</span>
                   </Col>
@@ -856,9 +867,9 @@ const ViewMeetingDetails = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col lg={6} md={6} sm={6}>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["NOtes_heading"]}>
                           {t("Reminder-frequency")}
@@ -891,7 +902,7 @@ const ViewMeetingDetails = ({
                     </Row>
                   </Col>
                   <Col lg={6} md={6} sm={6}>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["NOtes_heading"]}>
                           {t("Recurring")}
@@ -911,13 +922,12 @@ const ViewMeetingDetails = ({
             </Row>
           </Col>
         </Row>
-        <Row className="mt-2">
+        <Row className='mt-2'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             <Button
               text={t("Cancel")}
               className={styles["Cancel_Meeting_Details"]}
@@ -930,6 +940,12 @@ const ViewMeetingDetails = ({
             />
           </Col>
         </Row>
+        {
+          <EndMeetingConfirmationModal
+            handleClickContinue={handleClickEndMeeting}
+            handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
+          />
+        }
         {/* {NewMeetingreducer.LoadingViewModal && <Loader />} */}
         {cancelModalView && (
           <CancelButtonModal
@@ -954,7 +970,7 @@ const ViewMeetingDetails = ({
           setInitiateVideoModalOto(false);
         }}
         setShow={setInitiateVideoModalOto}
-        modalFooterClassName="d-none"
+        modalFooterClassName='d-none'
         centered
         size={"sm"}
         ModalBody={
@@ -965,13 +981,12 @@ const ViewMeetingDetails = ({
                   <p> Disconnect current call? </p>
                 </Col>
               </Row>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
@@ -980,7 +995,7 @@ const ViewMeetingDetails = ({
                         ? t("End Participant")
                         : null
                     }
-                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    className='leave-meeting-options__btn leave-meeting-red-button'
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHost
@@ -992,7 +1007,7 @@ const ViewMeetingDetails = ({
 
                   <Button
                     text={t("Cancel")}
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    className='leave-meeting-options__btn leave-meeting-gray-button'
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
                 </Col>

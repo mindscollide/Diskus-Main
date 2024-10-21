@@ -10,6 +10,7 @@ export const MeetingProvider = ({ children }) => {
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
   const [canceConfirmationModal, setConfirmationModal] = useState(false);
+  const [endMeetingConfirmationModal, setEndMeetingConfirmationModal] = useState(false)
   const [editorRole, setEdiorRole] = useState({
     status: null,
     role: null,
@@ -39,6 +40,8 @@ export const MeetingProvider = ({ children }) => {
         isAgendaUpdateWhenMeetingActive,
         canceConfirmationModal,
         setConfirmationModal,
+        endMeetingConfirmationModal,
+        setEndMeetingConfirmationModal
       }}>
       {children}
     </MeetingContext.Provider>

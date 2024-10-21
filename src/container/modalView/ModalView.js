@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import "./ModalView.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import {
@@ -39,7 +39,8 @@ import {
 } from "../../store/actions/NewMeetingActions";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { callRequestReceivedMQTT } from "../../store/actions/VideoMain_actions";
-import { UpdateOrganizersMeeting } from "../../store/actions/MeetingOrganizers_action";
+import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
+import { MeetingContext } from "../../context/MeetingContext";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
@@ -53,7 +54,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("acceptedRoomID"));
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-
+  const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
   const [getMeetID, setMeetID] = useState(0);
   const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
   const [isDetails, setIsDetails] = useState(true);
@@ -917,14 +918,28 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
   };
 
-  const endMeeting = async () => {
-    // await setViewFlag(false);
+  const handleClickEndMeeting = useCallback(async () => {
     let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
     let newData = {
       MeetingID: meetingID,
       StatusID: 9,
     };
-    await dispatch(endMeetingStatusApi(navigate, t, newData, setViewFlag));
+    console.log("end meeting chaek")
+    await dispatch(
+      endMeetingStatusApi(
+        navigate,
+        t,
+        newData,
+        setViewFlag,
+        setEndMeetingConfirmationModal,
+      )
+    );
+  }, []);
+
+  const endMeeting = async () => {
+    setEndMeetingConfirmationModal(true);
+    // setViewFlag(false);
+    // await setViewFlag(false);
   };
   const leaveMeeting = async (id) => {
     let leaveMeetingData = {
@@ -1115,18 +1130,19 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           // setCurrentMeetingID(0);
           // setAdvanceMeetingModalID(null);
           // setDataroomMapFolderId(0);
-          let searchData = {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: currentUserID,
-            PageNumber:
-              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-            Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-            PublishedMeetings:
-              currentView && Number(currentView) === 1 ? true : false,
-          };
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
+        //   let searchData = {
+        //     Date: "",
+        //     Title: "",
+        //     HostName: "",
+        //     UserID: currentUserID,
+        //     PageNumber:
+        //       meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        //     Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        //     PublishedMeetings:
+        //       currentView && Number(currentView) === 1 ? true : false,
+        //   };
+        // console.log("chek search meeting")
+        // dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       }
     } catch (error) {
@@ -1151,19 +1167,19 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             }
           }}
           show={viewFlag}
-          size="lg"
+          size='lg'
           setShow={setViewFlag}
-          modalParentClass="modaldialog MeetingView"
-          className="MeetingView"
+          modalParentClass='modaldialog MeetingView'
+          className='MeetingView'
           ButtonTitle={ModalTitle}
-          modalBodyClassName="modalMeetingViewBody"
-          modalFooterClassName="modalMeetingViewFooter"
-          modalHeaderClassName="modalMeetingViewHeader"
+          modalBodyClassName='modalMeetingViewBody'
+          modalFooterClassName='modalMeetingViewFooter'
+          modalHeaderClassName='modalMeetingViewHeader'
           // ModalTitle={"Modal Header"}
           ModalBody={
             <>
               <Row>
-                <Col lg={3} md={3} sm={2} xs={12} className="isDetailBtn">
+                <Col lg={3} md={3} sm={2} xs={12} className='isDetailBtn'>
                   <Button
                     className={
                       isDetails
@@ -1192,7 +1208,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     variant={"Primary"}
                     text={t("Agendas")}
                     onClick={changeSelectAgenda}
-                    datatut="show-agenda"
+                    datatut='show-agenda'
                   />
                 </Col>
                 <Col
@@ -1211,9 +1227,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     }
                     variant={"Primary"}
                     text={t("Attendees")}
-                    datatut="show-meeting-attendees"
-                    onClick={changeSelectAttendees}
-                  ></Button>
+                    datatut='show-meeting-attendees'
+                    onClick={changeSelectAttendees}></Button>
                 </Col>
                 {minutesOftheMeatingStatus ? (
                   <Col
@@ -1221,8 +1236,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     md={2}
                     sm={2}
                     xs={12}
-                    className={" minutes-upper-btn" + " " + currentLanguage}
-                  >
+                    className={" minutes-upper-btn" + " " + currentLanguage}>
                     <Button
                       className={
                         isMinutes
@@ -1231,9 +1245,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       }
                       variant={"Primary"}
                       text={t("Minutes")}
-                      datatut="show-minutes"
-                      onClick={navigateToMinutes}
-                    ></Button>
+                      datatut='show-minutes'
+                      onClick={navigateToMinutes}></Button>
                   </Col>
                 ) : null}
 
@@ -1266,17 +1279,16 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               </Row>
               {isDetails ? (
                 <>
-                  <Row className="my-4">
+                  <Row className='my-4'>
                     <Col
                       lg={6}
                       md={6}
                       xs={6}
-                      className="MontserratRegular d-flex flex-column lh-sm my-3"
-                    >
-                      <span className="MeetingViewDateTimeTextField">
+                      className='MontserratRegular d-flex flex-column lh-sm my-3'>
+                      <span className='MeetingViewDateTimeTextField'>
                         {createMeeting.MeetingDate}
                       </span>
-                      <span className="MeetingViewLocationText_Field">
+                      <span className='MeetingViewLocationText_Field'>
                         {createMeeting.MeetingLocation}
                       </span>
                     </Col>
@@ -1284,8 +1296,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={6}
                       md={6}
                       xs={6}
-                      className="MontserratRegular d-flex gap-2 align-items-center"
-                    >
+                      className='MontserratRegular d-flex gap-2 align-items-center'>
                       <Button
                         disableBtn={isVideo && meetStatus === 10 ? false : true}
                         text={t("Copy-link")}
@@ -1305,9 +1316,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" MeetingViewTitleTextField p-0"
-                    >
-                      <p className="viewModalTitle">
+                      className=' MeetingViewTitleTextField p-0'>
+                      <p className='viewModalTitle'>
                         {createMeeting.MeetingTitle.length < 100
                           ? `${createMeeting.MeetingTitle}`
                           : `${createMeeting.MeetingTitle.substring(
@@ -1323,16 +1333,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratRegular textAreaDivView p-0"
-                    >
+                      className='MontserratRegular textAreaDivView p-0'>
                       <TextField
                         change={detailsHandler}
-                        name="MeetingDescription"
-                        applyClass="form-control2 textbox-height-details-view"
-                        type="text"
+                        name='MeetingDescription'
+                        applyClass='form-control2 textbox-height-details-view'
+                        type='text'
                         disable={true}
                         as={"textarea"}
-                        rows="7"
+                        rows='7'
                         // label={}
                         // placeholder={t("Description") + "*"}
                         value={createMeeting.MeetingDescription}
@@ -1343,15 +1352,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 </>
               ) : isAgenda ? (
                 <>
-                  <div className="agendaList">
+                  <div className='agendaList'>
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
                           return (
-                            <div className="margin-top-20">
+                            <div className='margin-top-20'>
                               <>
-                                <Row className="mt-4">
+                                <Row className='mt-4'>
                                   <Col lg={1} md={1} xs={12}>
-                                    <span className=" agendaIndex">
+                                    <span className=' agendaIndex'>
                                       {index + 1}
                                     </span>
                                   </Col>
@@ -1360,9 +1369,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                     md={7}
                                     sm={7}
                                     xs={12}
-                                    className="MeetingAgendaView p-0"
-                                  >
-                                    <p className=" agendaTitle">
+                                    className='MeetingAgendaView p-0'>
+                                    <p className=' agendaTitle'>
                                       {data.ObjMeetingAgenda.Title}
                                     </p>
                                   </Col>
@@ -1372,25 +1380,24 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                       lg={4}
                                       md={4}
                                       xs={12}
-                                      className="MeetingAgendaPresented MeetingAgendaURL"
-                                    >
+                                      className='MeetingAgendaPresented MeetingAgendaURL'>
                                       <TextField
                                         disable={true}
                                         name={"PresenterName"}
                                         value={
                                           data.ObjMeetingAgenda.PresenterName
                                         }
-                                        applyClass="form-control2"
-                                        type="text"
+                                        applyClass='form-control2'
+                                        type='text'
                                         label={t("Presented-by")}
                                       />
-                                      <p className="url m-0 p-0">
+                                      <p className='url m-0 p-0'>
                                         {data.ObjMeetingAgenda.URLs}
                                       </p>
                                     </Col>
                                   )}
                                 </Row>
-                                <div className="meetingView_documents">
+                                <div className='meetingView_documents'>
                                   <Row>
                                     {data.MeetingAgendaAttachments.length > 0
                                       ? data.MeetingAgendaAttachments.map(
@@ -1437,8 +1444,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" meeting-view-attendee-organizer-tab"
-                    >
+                      className=' meeting-view-attendee-organizer-tab'>
                       <label>{t("Organizer")}</label>
                     </Col>
                   </Row>
@@ -1448,8 +1454,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="meeting-view-attendee-organizer-list"
-                    >
+                      className='meeting-view-attendee-organizer-list'>
                       {/* <EmployeeCard
                         employeeName="Saad Fudda"
                         employeeDesignation="Founder, Diara Studio"
@@ -1480,8 +1485,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" meeting-view-attendee-participant-tab"
-                    >
+                      className=' meeting-view-attendee-participant-tab'>
                       <label>{t("Participants")}</label>
                     </Col>
                   </Row>
@@ -1490,8 +1494,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="meeting-view-attendee-participant-list"
-                    >
+                      className='meeting-view-attendee-participant-list'>
                       {addedParticipantNameList ? (
                         <>
                           <span>
@@ -1517,27 +1520,26 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 <>
                   <Row>
                     <Col sm={12}>
-                      <Row className="my-3 minutes-view px-3 d-flex flex-row ">
+                      <Row className='my-3 minutes-view px-3 d-flex flex-row '>
                         {createMeeting.MinutesOfMeeting.length > 0 ? (
                           createMeeting.MinutesOfMeeting.map(
                             (minutesOfMeetingLdata, index) => {
                               return (
                                 <Col
-                                  className="border p-2 minutes-box rounded my-2"
+                                  className='border p-2 minutes-box rounded my-2'
                                   sm={12}
                                   md={12}
-                                  lg={12}
-                                >
+                                  lg={12}>
                                   <Row>
                                     <Col sm={12}>
                                       <Row>
                                         <Col sm={1}>
-                                          <span className="agendaIndex">
+                                          <span className='agendaIndex'>
                                             {index + 1}
                                           </span>
                                         </Col>
-                                        <Col sm={11} className="fs-6">
-                                          <p className="agendaTitle meeting-view-minutes-title">
+                                        <Col sm={11} className='fs-6'>
+                                          <p className='agendaTitle meeting-view-minutes-title'>
                                             {minutesOfMeetingLdata.Description}
                                           </p>
                                         </Col>
@@ -1549,13 +1551,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                             }
                           )
                         ) : (
-                          <Row className="meeting-view-minutes-tab">
+                          <Row className='meeting-view-minutes-tab'>
                             <Col
                               lg={12}
                               md={12}
                               xs={12}
-                              className="d-flex justify-content-center align-items-center"
-                            >
+                              className='d-flex justify-content-center align-items-center'>
                               <h3>{t("There-are-no-minutes-available")}</h3>
                             </Col>
                           </Row>
@@ -1566,7 +1567,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 </>
               ) : isAttachments ? (
                 <>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
                           return (
@@ -1599,8 +1600,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className="d-flex justify-content-end"
-                      >
+                        className='d-flex justify-content-end'>
                         {meetingDifference <= 5 &&
                         meetingDifference > 0 &&
                         allMeetingDetails.meetingStatus.status === "1" ? (
@@ -1624,7 +1624,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                               )
                             }
                             className={
-                              "  end-meeting-btn_view-org" + " " + currentLanguage
+                              "  end-meeting-btn_view-org" +
+                              " " +
+                              currentLanguage
                             }
                             text={t("Leave-meeting")}
                             // disableBtn={endMeetingStatus}
@@ -1667,6 +1669,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               ) : null}
             </>
           }
+        />
+        <EndMeetingConfirmationModal
+          handleClickContinue={handleClickEndMeeting}
+          handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
         />
         <Notification
           setOpen={setOpen}
