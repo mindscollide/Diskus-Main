@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
 import { removePropertiesFromObject } from "../../../../../commen/functions/validations";
@@ -55,6 +55,7 @@ import {
   previousTabAgenda,
   nextTabAgenda,
 } from "../../../../../store/actions/MeetingAgenda_action";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Agenda = ({
@@ -97,9 +98,7 @@ const Agenda = ({
     DataRoomReducer,
     settingReducer,
   } = useSelector((state) => state);
-  const isShouldAgendaUpdatedOrNot =
-    settingReducer?.UserProfileData?.emailWhenActiveMeetingAgendaUpdated ||
-    true;
+  const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
   let meetingTitle = localStorage.getItem("MeetingTitle");
 
@@ -1720,7 +1719,7 @@ const Agenda = ({
                     className={styles["AddMoreBtnAgenda"]}
                     disableBtn={
                       Number(editorRole.status) === 10 &&
-                      !isShouldAgendaUpdatedOrNot
+                      !isAgendaUpdateWhenMeetingActive
                         ? true
                         : false
                     }

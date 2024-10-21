@@ -78,7 +78,7 @@ const TodoList = () => {
   const [statusOptions, setStatusOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-
+  console.log(rowsToDo, "rowsToDorowsToDo")
   // GET TODOS STATUS
   useEffect(() => {
     if (!todoStatus.Response?.length > 0) {
@@ -401,7 +401,7 @@ const TodoList = () => {
           return (
             <>
               <Select
-                defaultValue={text.status}
+                value={text.status}
                 bordered={false}
                 dropdownClassName="Status-Todo"
                 className={

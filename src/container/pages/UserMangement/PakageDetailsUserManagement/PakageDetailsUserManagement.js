@@ -133,7 +133,7 @@ const PakageDetailsUserManagement = () => {
   const ColumnsPakageSelection = [
     {
       title: (
-        <span className="pakageselectionSpanUsermanagement">
+        <span className='pakageselectionSpanUsermanagement'>
           {t("Package-details")}
         </span>
       ),
@@ -158,9 +158,9 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
           {t("Charges-per")}
-          <span className="pakageselectionSpanUsermanagement">
+          <span className='pakageselectionSpanUsermanagement'>
             {t("License-US$")}
           </span>
         </span>
@@ -184,9 +184,9 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
           {t("Number")}
-          <span className="pakageselectionSpanUsermanagement">
+          <span className='pakageselectionSpanUsermanagement'>
             {t("of-licenses")}
           </span>
         </span>
@@ -222,11 +222,11 @@ const PakageDetailsUserManagement = () => {
 
             return (
               <Row>
-                <Col className="d-flex justify-content-center">
+                <Col className='d-flex justify-content-center'>
                   <TextField
-                    labelclass="d-none"
-                    applyClass="PakageDetails"
-                    name="noofLisence"
+                    labelclass='d-none'
+                    applyClass='PakageDetails'
+                    name='noofLisence'
                     maxLength={3}
                     value={row?.licenseCount}
                     change={(e) => handleChange(e.target.value)}
@@ -240,9 +240,9 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
           {t("Monthly")}
-          <span className="pakageselectionSpanUsermanagement">
+          <span className='pakageselectionSpanUsermanagement'>
             {t("charges-in")}
           </span>
         </span>
@@ -297,9 +297,9 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
           {t("Quarterly")}
-          <span className="pakageselectionSpanUsermanagement">
+          <span className='pakageselectionSpanUsermanagement'>
             {t("charges-in")}
           </span>
         </span>
@@ -353,9 +353,9 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
           {t("Yearly")}
-          <span className="pakageselectionSpanUsermanagement">
+          <span className='pakageselectionSpanUsermanagement'>
             {t("charges-in")}
           </span>
         </span>
@@ -471,30 +471,36 @@ const PakageDetailsUserManagement = () => {
 
   //Handle Goback Function
   const onClickLink = () => {
-    navigate("/Admin/subscriptionDetailsUserManagement");
+    let token = localStorage.getItem("token");
+    if (token == null) {
+      dispatch(LoginFlowRoutes(1));
+      localStorage.setItem("LoginFlowPageRoute", 1);
+      navigate("/")
+    } else {
+      navigate("/Admin/subscriptionDetailsUserManagement");
+    }
   };
 
   return (
     <Container>
       <Row>
-        <Col sm={12} className="mt-4">
+        <Col sm={12} className='mt-4'>
           <h2
             className={`${"MontserratSemiBold"} ${
               styles["packageselection_heading"]
-            }`}
-          >
+            }`}>
             {t("Diskus-pakage-details")}
           </h2>
         </Col>
       </Row>
       <Row>
-        <Col sm={12} md={12} lg={12} className="d-flex justify-content-center">
+        <Col sm={12} md={12} lg={12} className='d-flex justify-content-center'>
           <span className={styles["PerUserheading"]}>
             {t("Per-user-per-month-billed-annually")}
           </span>
         </Col>
       </Row>
-      <Row className="mt-3 ">
+      <Row className='mt-3 '>
         {packageDetail.length > 0 ? (
           packageDetail.map((data, index) => {
             return (
@@ -502,12 +508,11 @@ const PakageDetailsUserManagement = () => {
                 sm={12}
                 lg={4}
                 md={4}
-                className={index === 1 && index === 3 ? "p-0" : "my-2"}
-              >
-                <Row className="g-4">
+                className={index === 1 && index === 3 ? "p-0" : "my-2"}>
+                <Row className='g-4'>
                   <Col sm={12} className={styles["packageCardBox"]}>
                     <Card className={styles["packagecard"]}>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col sm={12}>
                           <>
                             <span className={styles["package_title"]}>
@@ -516,7 +521,7 @@ const PakageDetailsUserManagement = () => {
                           </>
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col sm={false} md={2} lg={2}></Col>
                         <Col sm={12} md={8} lg={8}>
                           <div className={styles["packagecard_pricebox"]}>
@@ -530,7 +535,7 @@ const PakageDetailsUserManagement = () => {
                         </Col>
                         <Col sm={false} md={2} lg={2}></Col>
                       </Row>{" "}
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         {" "}
                         <Col lg={1} md={1} sm={1}></Col>
                         <Col lg={11} md={11} sm={11} xs={12}>
@@ -539,10 +544,9 @@ const PakageDetailsUserManagement = () => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <section
-                          className={styles["Scroller_PakagesSelectionCard"]}
-                        >
+                          className={styles["Scroller_PakagesSelectionCard"]}>
                           {data.packageFeatures !== null &&
                           data.packageFeatures !== undefined
                             ? data.packageFeatures.map((features, index) => {
@@ -554,8 +558,7 @@ const PakageDetailsUserManagement = () => {
                                         lg={11}
                                         md={11}
                                         sm={11}
-                                        className="d-flex flex-column flex-wrap gap-3 mt-1"
-                                      >
+                                        className='d-flex flex-column flex-wrap gap-3 mt-1'>
                                         <span className={styles["keypoints"]}>
                                           {features.name}
                                         </span>
@@ -577,35 +580,34 @@ const PakageDetailsUserManagement = () => {
           <Loader />
         )}
       </Row>
-      <Row className="mt-4">
-        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
+      <Row className='mt-4'>
+        <Col lg={12} md={12} sm={12} className='d-flex justify-content-center'>
           <span className={styles["BillingHeading"]}>
             {t("Billing-calculator")}
           </span>
         </Col>
       </Row>
-      <Row className="mt-3">
+      <Row className='mt-3'>
         <Col lg={12} md={12} sm={12}>
           <TableToDo
             column={ColumnsPakageSelection}
             className={"Billing_TablePakageSelection"}
             rows={[...tableData, showTotalValues, defaultRowWithButtons]}
             pagination={false}
-            id="PakageDetailsTable"
-            rowHoverBg="none"
+            id='PakageDetailsTable'
+            rowHoverBg='none'
           />
         </Col>
       </Row>
       <>
         {SignupPage ? (
           <>
-            <Row className="mt-3 mb-3">
+            <Row className='mt-3 mb-3'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span onClick={onClickLink} className={styles["signUp_goBack"]}>
                   {t("Go-back")}
                 </span>

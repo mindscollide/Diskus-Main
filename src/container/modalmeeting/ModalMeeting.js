@@ -180,7 +180,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     MeetingStartTime: getStartTime.formattedTime,
     MeetingEndTime: getStartTime.formattedTime,
     MeetingLocation: "",
-    IsVideoCall: true,
+    IsVideoCall: false,
     IsChat: false,
     MeetingReminderID: [4],
     MeetingAgendas: [],
@@ -1385,8 +1385,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     }
   };
 
+  console.log(createMeeting.IsVideoCall, "IsVideoCallIsVideoCall");
+  console.log(addedParticipantNameList, "IsVideoCallIsVideoCall");
+
   // for attendies handler
   const handleSubmit = async () => {
+    if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
+      setOpen({
+        message: t("Please-add-atleast-one-participant"),
+        flag: true,
+      });
+      return;
+    }
     let finalDateTime = createConvert(
       createMeeting.MeetingDate + createMeeting.MeetingStartTime
     );

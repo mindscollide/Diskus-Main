@@ -90,7 +90,7 @@ const AcceptCommentModal = ({
           <>
             {/* Delete comment message */}
             <p className={styles["delete-comment-message"]}>
-              {t("If-you-accept-all-minutes")}
+              {t("Would-you-like-to-proceed-with-accepting-all-minutes")}
               {/* Translation for delete comment message */}
             </p>
           </>

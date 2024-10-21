@@ -1551,9 +1551,17 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       }
     }
   };
-
+  console.log(createMeeting.IsVideoCall, "createMeetingcreateMeeting");
+  console.log(addedParticipantNameList, "createMeetingcreateMeeting");
   // for attendies handler
   const handleSubmit = async () => {
+    if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
+      setOpen({
+        message: t("Please-add-atleast-one-participant"),
+        flag: true,
+      });
+      return;
+    }
     let hasOrganizer = createMeeting.MeetingAttendees.some(
       (attendee) => attendee.MeetingAttendeeRole.PK_MARID === 1
     );

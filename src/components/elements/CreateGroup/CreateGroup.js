@@ -35,6 +35,11 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../container/DataRoom/SearchFunctionality/option";
+import { maxFileSize } from "../../../commen/functions/utils";
 import { showMessage } from "../snack_bar/utill";
 
 const CreateGroup = ({ setCreategrouppage }) => {
@@ -482,18 +487,19 @@ const CreateGroup = ({ setCreategrouppage }) => {
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + fileAttachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (totalFiles > 15) {
+        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
         return;
       }
-
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        console.log(fileData.size, maxFileSize, "fileListfileList");
+
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -505,7 +511,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
+            t("File-size-should-not-be-greater-then-1-5GB"),
             "error",
             setOpen
           );
@@ -632,6 +638,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <Form.Control
                             applyClass="form-control2"
                             ref={GroupeTitle}
+                            // className="Focuson"
                             type="text"
                             maxLength={300}
                             placeholder={t("Group-title")}
@@ -1196,7 +1203,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             ? fileAttachments.map((data, index) => {
                                 return (
                                   <>
-                                    <Col lg={4} md={4} sm={4}>
+                                    <Col
+                                      lg={4}
+                                      md={4}
+                                      sm={4}
+                                      // className="position-relative gap-2"
+                                    >
                                       <AttachmentViewer
                                         data={data}
                                         name={data.DisplayAttachmentName}
@@ -1206,6 +1218,76 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                           handleRemoveFile(index);
                                         }}
                                       />
+                                      {/* <span
+                                            className={
+                                              styles["Crossicon_Class"]
+                                            }
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              height="12.68px"
+                                              alt=""
+                                              width="12.68px"
+                                              onClick={() =>
+                                                handleRemoveFile(index)
+                                              }
+                                            />
+                                          </span>
+                                          <section
+                                            className={styles["Outer_Box"]}
+                                          >
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <img
+                                                  src={file_image}
+                                                  width={"100%"}
+                                                  alt=""
+                                                  draggable="false"
+                                                />
+                                              </Col>
+                                            </Row>
+
+                                            <section
+                                              className={
+                                                styles["backGround_name_Icon"]
+                                              }
+                                            >
+                                              <Row className="mb-2">
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className={
+                                                    styles["IconTextClass"]
+                                                  }
+                                                >
+                                                  <img
+                                                    src={getIconSource(
+                                                      getFileExtension(
+                                                        data.DisplayAttachmentName
+                                                      )
+                                                    )}
+                                                    height="10px"
+                                                    width="10px"
+                                                    alt=""
+                                                    className={
+                                                      styles["IconPDF"]
+                                                    }
+                                                  />
+                                                  <span
+                                                    className={
+                                                      styles["FileName"]
+                                                    }
+                                                    title={
+                                                      data.DisplayAttachmentName
+                                                    }
+                                                  >
+                                                    {data.DisplayAttachmentName}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </section>
+                                          </section> */}
                                     </Col>
                                   </>
                                 );
@@ -1229,7 +1311,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 <img
                                   src={featherupload}
                                   width="18.87px"
-                                  alt=""
                                   height="18.87px"
                                   draggable="false"
                                 />

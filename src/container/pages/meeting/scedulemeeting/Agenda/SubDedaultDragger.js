@@ -1,5 +1,5 @@
 import Dragger from "antd/lib/upload/Dragger";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Notification } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
@@ -7,6 +7,7 @@ import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 import { useTranslation } from "react-i18next";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const SubDedaultDragger = ({
@@ -26,11 +27,7 @@ const SubDedaultDragger = ({
     message: "",
     severity: "error",
   });
-  const isShouldAgendaUpdatedOrNot = useSelector(
-    (state) =>
-      state.settingReducer?.UserProfileData
-        ?.emailWhenActiveMeetingAgendaUpdated || true
-  );
+  const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
   let currentUserID = Number(localStorage.getItem("userID"));
 
@@ -147,7 +144,7 @@ const SubDedaultDragger = ({
               editorRole.status === 9
                 ? true
                 : Number(editorRole.status) === 10 &&
-                  !isShouldAgendaUpdatedOrNot
+                  !isAgendaUpdateWhenMeetingActive
                 ? true
                 : false
             }

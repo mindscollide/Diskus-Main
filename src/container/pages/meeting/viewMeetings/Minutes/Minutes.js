@@ -322,7 +322,7 @@ const Minutes = ({
   };
 
   console.log("addNoteFieldsaddNoteFields", addNoteFields);
-
+  console.log(isMinutePublishable, "isMinutePublishable");
   const props = {
     name: "file",
     multiple: true,
@@ -1081,6 +1081,7 @@ const Minutes = ({
       );
     } else {
       setDeadLineDate(null);
+      setIsMinutePublishable(false);
     }
   }, [MinutesReducer.GetMinuteReviewFlowByMeetingIdData]);
 
@@ -1170,11 +1171,6 @@ const Minutes = ({
     publishMinutesDataAgenda
   );
 
-  console.log(
-    "publishMinutesDataGeneralpublishMinutesDataGeneral",
-    publishMinutesDataGeneral
-  );
-
   console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   return JSON.parse(isMinutePublished) ? (
@@ -1188,12 +1184,12 @@ const Minutes = ({
           )
         );
         return (
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
               <>
                 <div>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="mt-2">
+                    <Col lg={12} md={12} sm={12} className='mt-2'>
                       <div
                         onClick={() =>
                           accordianClick(data, data.agendaID, index)
@@ -1202,22 +1198,21 @@ const Minutes = ({
                           isOpen
                             ? styles["agenda-wrapper-closed"]
                             : styles["agenda-wrapper-open"]
-                        }
-                      >
+                        }>
                         <p className={styles["agenda-title"]}>
                           {index + 1 + "." + " " + data.agendaTitle}
                         </p>
-                        <span className="d-flex justify-content-center align-items-center">
+                        <span className='d-flex justify-content-center align-items-center'>
                           {data?.agendaMinutes?.minutesAttachmets?.length > 0 ||
                           hasAttachments ? (
                             <img
                               className={styles["Attachment"]}
-                              alt=""
+                              alt=''
                               src={AttachmentIcon}
                             />
                           ) : null}
                           <img
-                            alt=""
+                            alt=''
                             src={ArrowDown}
                             className={
                               isOpen
@@ -1249,13 +1244,11 @@ const Minutes = ({
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="position-relative"
-                                >
+                                  className='position-relative'>
                                   <div
                                     className={
                                       styles["version-control-wrapper"]
-                                    }
-                                  >
+                                    }>
                                     <span></span>
                                   </div>
                                   <div className={styles["uploaded-details"]}>
@@ -1266,8 +1259,9 @@ const Minutes = ({
                                             __html:
                                               parentMinuteData.minutesDetails,
                                           }}
-                                          className={styles["minutes-text"]}
-                                        ></p>
+                                          className={
+                                            styles["minutes-text"]
+                                          }></p>
                                         {parentMinuteData.minutesAttachmets
                                           .length > 0 ? (
                                           <Row>
@@ -1318,41 +1312,37 @@ const Minutes = ({
                                         lg={2}
                                         md={2}
                                         sm={12}
-                                        className="position-relative"
-                                      >
-                                        <Row className="m-0">
+                                        className='position-relative'>
+                                        <Row className='m-0'>
                                           <Col
                                             lg={12}
                                             md={12}
                                             sm={12}
-                                            className="p-0"
-                                          >
+                                            className='p-0'>
                                             <span
-                                              className={styles["bar-line"]}
-                                            ></span>
+                                              className={
+                                                styles["bar-line"]
+                                              }></span>
                                             <p
-                                              className={`${styles["uploadedbyuser"]} m-0`}
-                                            >
+                                              className={`${styles["uploadedbyuser"]} m-0`}>
                                               {t("Uploaded-by")}
                                             </p>
                                             <div className={styles["gap-ti"]}>
                                               <img
                                                 src={`data:image/jpeg;base64,${parentMinuteData?.userProfilePicture?.displayProfilePictureName}`}
                                                 className={styles["Image"]}
-                                                alt=""
+                                                alt=''
                                                 draggable={false}
                                               />
                                               <p
                                                 className={
                                                   styles["agendaCreater"]
-                                                }
-                                              >
+                                                }>
                                                 {parentMinuteData.userName}
                                               </p>
                                             </div>
                                             <p
-                                              className={`${styles["uploadedbyuser"]} mt-3`}
-                                            >
+                                              className={`${styles["uploadedbyuser"]} mt-3`}>
                                               {t("Approved-by")}
                                             </p>
                                             <div className={styles["gap-ti"]}>
@@ -1365,7 +1355,7 @@ const Minutes = ({
                                                     key={subFileIndex}
                                                     src={`data:image/jpeg;base64,${approvedUserList?.displayProfilePictureName}`}
                                                     className={styles["Image"]}
-                                                    alt=""
+                                                    alt=''
                                                     draggable={false}
                                                   />
                                                 )
@@ -1374,8 +1364,7 @@ const Minutes = ({
                                                 <span
                                                   className={
                                                     styles["reviewer-count"]
-                                                  }
-                                                >
+                                                  }>
                                                   +{remainingCount}
                                                 </span>
                                               )}
@@ -1396,7 +1385,7 @@ const Minutes = ({
                         (childAgendaData, subMinuteIndex) => {
                           return (
                             <div>
-                              <Row className="mx-50">
+                              <Row className='mx-50'>
                                 <Col lg={12} md={12} sm={12}>
                                   <p className={styles["Parent-title-heading"]}>
                                     {index +
@@ -1424,27 +1413,26 @@ const Minutes = ({
                                         currentLanguage === "ar"
                                           ? "mxr-50"
                                           : "mxl-50"
-                                      }
-                                    >
+                                      }>
                                       <Col
                                         lg={12}
                                         md={12}
                                         sm={12}
-                                        className="position-relative"
-                                      >
+                                        className='position-relative'>
                                         <div
                                           className={
                                             styles["version-control-wrapper"]
-                                          }
-                                        >
+                                          }>
                                           <span></span>
                                         </div>
                                         <div
-                                          className={styles["uploaded-details"]}
-                                        >
+                                          className={
+                                            styles["uploaded-details"]
+                                          }>
                                           <Row
-                                            className={styles["inherit-height"]}
-                                          >
+                                            className={
+                                              styles["inherit-height"]
+                                            }>
                                             <Col lg={10} md={10} sm={12}>
                                               <p
                                                 dangerouslySetInnerHTML={{
@@ -1453,8 +1441,7 @@ const Minutes = ({
                                                 }}
                                                 className={
                                                   styles["minutes-text"]
-                                                }
-                                              ></p>
+                                                }></p>
                                               {childAgendaMinuteData
                                                 .minutesAttachmets.length >
                                               0 ? (
@@ -1467,8 +1454,7 @@ const Minutes = ({
                                                       <Col
                                                         lg={3}
                                                         md={3}
-                                                        sm={12}
-                                                      >
+                                                        sm={12}>
                                                         {/* <AttachmentViewer
                                                           id={0}
                                                           name={
@@ -1515,55 +1501,51 @@ const Minutes = ({
                                               lg={2}
                                               md={2}
                                               sm={12}
-                                              className="position-relative"
-                                            >
-                                              <Row className="m-0">
+                                              className='position-relative'>
+                                              <Row className='m-0'>
                                                 <Col
                                                   lg={12}
                                                   md={12}
                                                   sm={12}
-                                                  className="p-0"
-                                                >
+                                                  className='p-0'>
                                                   <span
                                                     className={
                                                       styles["bar-line"]
-                                                    }
-                                                  ></span>
+                                                    }></span>
                                                   <p
-                                                    className={`${styles["uploadedbyuser"]} m-0`}
-                                                  >
+                                                    className={`${styles["uploadedbyuser"]} m-0`}>
                                                     {t("Uploaded-by")}
                                                   </p>
                                                   <div
-                                                    className={styles["gap-ti"]}
-                                                  >
+                                                    className={
+                                                      styles["gap-ti"]
+                                                    }>
                                                     <img
                                                       // src={DefaultAvatar}
                                                       src={`data:image/jpeg;base64,${childAgendaMinuteData?.userProfilePicture?.displayProfilePictureName}`}
                                                       className={
                                                         styles["Image"]
                                                       }
-                                                      alt=""
+                                                      alt=''
                                                       draggable={false}
                                                     />
                                                     <p
                                                       className={
                                                         styles["agendaCreater"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {
                                                         childAgendaMinuteData.userName
                                                       }
                                                     </p>
                                                   </div>
                                                   <p
-                                                    className={`${styles["uploadedbyuser"]} mt-3`}
-                                                  >
+                                                    className={`${styles["uploadedbyuser"]} mt-3`}>
                                                     {t("Approved-by")}
                                                   </p>
                                                   <div
-                                                    className={styles["gap-ti"]}
-                                                  >
+                                                    className={
+                                                      styles["gap-ti"]
+                                                    }>
                                                     {visibleApprovedUsers.map(
                                                       (
                                                         approvedUserList,
@@ -1575,7 +1557,7 @@ const Minutes = ({
                                                           className={
                                                             styles["Image"]
                                                           }
-                                                          alt=""
+                                                          alt=''
                                                           draggable={false}
                                                         />
                                                       )
@@ -1586,8 +1568,7 @@ const Minutes = ({
                                                           styles[
                                                             "reviewer-count"
                                                           ]
-                                                        }
-                                                      >
+                                                        }>
                                                         +{remainingCount}
                                                       </span>
                                                     )}
@@ -1622,12 +1603,12 @@ const Minutes = ({
         const visibleApprovedUsers = approvedByUsers.slice(0, maxVisibleImages);
         const remainingCount = approvedByUsers.length - maxVisibleImages;
         return (
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
               <>
                 <div>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="mt-2">
+                    <Col lg={12} md={12} sm={12} className='mt-2'>
                       <div
                         onClick={() =>
                           accordianClickGeneral(data, data.minuteID, index)
@@ -1636,21 +1617,20 @@ const Minutes = ({
                           isOpen
                             ? styles["agenda-wrapper-closed"]
                             : styles["agenda-wrapper-open"]
-                        }
-                      >
+                        }>
                         <p className={styles["agenda-title"]}>
                           {index + 1 + "." + " " + t("General-minute")}
                         </p>
-                        <span className="d-flex justify-content-center align-items-center">
+                        <span className='d-flex justify-content-center align-items-center'>
                           {data.minutesAttachmets.length > 0 ? (
                             <img
                               className={styles["Attachment"]}
-                              alt=""
+                              alt=''
                               src={AttachmentIcon}
                             />
                           ) : null}
                           <img
-                            alt=""
+                            alt=''
                             src={ArrowDown}
                             className={
                               isOpen
@@ -1670,8 +1650,7 @@ const Minutes = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="position-relative"
-                          >
+                            className='position-relative'>
                             <div className={styles["version-control-wrapper"]}>
                               <span></span>
                             </div>
@@ -1682,8 +1661,7 @@ const Minutes = ({
                                     dangerouslySetInnerHTML={{
                                       __html: data.minutesDetails,
                                     }}
-                                    className={styles["minutes-text"]}
-                                  ></p>
+                                    className={styles["minutes-text"]}></p>
                                   {data.minutesAttachmets.length > 0 ? (
                                     <Row>
                                       {data.minutesAttachmets.map(
@@ -1719,28 +1697,24 @@ const Minutes = ({
                                   lg={2}
                                   md={2}
                                   sm={12}
-                                  className="position-relative"
-                                >
-                                  <Row className="m-0">
+                                  className='position-relative'>
+                                  <Row className='m-0'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="p-0"
-                                    >
+                                      className='p-0'>
                                       <span
-                                        className={styles["bar-line"]}
-                                      ></span>
+                                        className={styles["bar-line"]}></span>
                                       <p
-                                        className={`${styles["uploadedbyuser"]} m-0`}
-                                      >
+                                        className={`${styles["uploadedbyuser"]} m-0`}>
                                         {t("Uploaded-by")}
                                       </p>
                                       <div className={styles["gap-ti"]}>
                                         <img
                                           src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                                           className={styles["Image"]}
-                                          alt=""
+                                          alt=''
                                           draggable={false}
                                         />
                                         <p className={styles["agendaCreater"]}>
@@ -1748,8 +1722,7 @@ const Minutes = ({
                                         </p>
                                       </div>
                                       <p
-                                        className={`${styles["uploadedbyuser"]} mt-3`}
-                                      >
+                                        className={`${styles["uploadedbyuser"]} mt-3`}>
                                         {t("Approved-by")}
                                       </p>
                                       <div className={styles["gap-ti"]}>
@@ -1759,15 +1732,16 @@ const Minutes = ({
                                               key={subFileIndex}
                                               src={`data:image/jpeg;base64,${approvedUserList?.displayProfilePictureName}`}
                                               className={styles["Image"]}
-                                              alt=""
+                                              alt=''
                                               draggable={false}
                                             />
                                           )
                                         )}
                                         {remainingCount > 0 && (
                                           <span
-                                            className={styles["reviewer-count"]}
-                                          >
+                                            className={
+                                              styles["reviewer-count"]
+                                            }>
                                             +{remainingCount}
                                           </span>
                                         )}
@@ -1792,8 +1766,8 @@ const Minutes = ({
   ) : (
     <>
       <section>
-        <Row className="mt-3">
-          <Col lg={6} md={6} sm={12} className="d-flex gap-2">
+        <Row className='mt-3'>
+          <Col lg={6} md={6} sm={12} className='d-flex gap-2'>
             <Button
               text={t("General")}
               className={
@@ -1817,8 +1791,7 @@ const Minutes = ({
             lg={6}
             md={6}
             sm={12}
-            className="d-flex justify-content-between align-items-center"
-          >
+            className='d-flex justify-content-between align-items-center'>
             {Number(editorRole.status) === 1 ||
             Number(editorRole.status) === 11 ||
             Number(editorRole.status) === 12 ? null : (editorRole.role ===
@@ -1880,7 +1853,7 @@ const Minutes = ({
               (Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer") ? (
               <>
-                <Row className="mt-4">
+                <Row className='mt-4'>
                   <Col lg={6} md={6} sm={6}>
                     <Row className={styles["Add-note-QuillRow"]}>
                       <Col
@@ -1888,11 +1861,10 @@ const Minutes = ({
                         md={12}
                         sm={12}
                         xs={12}
-                        className={styles["Arabic_font_Applied"]}
-                      >
+                        className={styles["Arabic_font_Applied"]}>
                         <ReactQuill
                           ref={editorRef}
-                          theme="snow"
+                          theme='snow'
                           value={addNoteFields.Description.value || ""}
                           placeholder={t("Minutes-details")}
                           onChange={onTextChange}
@@ -1904,7 +1876,7 @@ const Minutes = ({
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-5">
+                    <Row className='mt-5'>
                       <Col>
                         <p
                           className={
@@ -1912,20 +1884,18 @@ const Minutes = ({
                             addNoteFields.Description.value === ""
                               ? ` ${styles["errorNotesMessage"]} `
                               : `${styles["errorNotesMessage_hidden"]}`
-                          }
-                        >
+                          }>
                           {addNoteFields.Description.errorMessage}
                         </p>
                       </Col>
                     </Row>
                     {/* Button For Saving the The Minutes  */}
-                    <Row className="mt-0">
+                    <Row className='mt-0'>
                       <Col
                         lg={12}
                         md={6}
                         sm={12}
-                        className="d-flex gap-2 justify-content-end"
-                      >
+                        className='d-flex gap-2 justify-content-end'>
                         <Button
                           text={t("Reset")}
                           className={styles["Reset_Button"]}
@@ -1980,25 +1950,23 @@ const Minutes = ({
                       ) : null}
                     </section>
 
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <Dragger
                           fileList={[]}
                           {...props}
                           className={
                             styles["dragdrop_attachment_create_resolution"]
-                          }
-                        >
-                          <p className="ant-upload-drag-icon">
+                          }>
+                          <p className='ant-upload-drag-icon'>
                             <span
-                              className={styles["create_resolution_dragger"]}
-                            >
+                              className={styles["create_resolution_dragger"]}>
                               <img
                                 src={featherupload}
-                                width="18.87px"
-                                height="18.87px"
-                                draggable="false"
-                                alt=""
+                                width='18.87px'
+                                height='18.87px'
+                                draggable='false'
+                                alt=''
                               />
                             </span>
                           </p>
@@ -2023,17 +1991,16 @@ const Minutes = ({
               const isOpen = openIndices.includes(index);
               const isOpenReviewer = openReviewerDetail.includes(index);
               return (
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["ScrollerMinutes"]}
-                  >
+                    className={styles["ScrollerMinutes"]}>
                     <>
                       <div>
                         <Row>
-                          <Col lg={12} md={12} sm={12} className="mt-2">
+                          <Col lg={12} md={12} sm={12} className='mt-2'>
                             <div
                               onClick={() =>
                                 accordianClick(data, data.minuteID, index)
@@ -2042,8 +2009,7 @@ const Minutes = ({
                                 isOpen
                                   ? styles["agenda-wrapper-closed"]
                                   : styles["agenda-wrapper-open"]
-                              }
-                            >
+                              }>
                               <p className={styles["agenda-title"]}>
                                 {`${t("General-minute")} ${+index + 1}`}
                               </p>
@@ -2051,12 +2017,12 @@ const Minutes = ({
                                 {data.attachments.length > 0 ? (
                                   <img
                                     className={styles["Attachment"]}
-                                    alt=""
+                                    alt=''
                                     src={AttachmentIcon}
                                   />
                                 ) : null}
                                 <img
-                                  alt=""
+                                  alt=''
                                   src={ArrowDown}
                                   className={
                                     isOpen
@@ -2078,31 +2044,29 @@ const Minutes = ({
                                   <div
                                     className={
                                       styles["reviewer-progress-wrapper"]
-                                    }
-                                  >
+                                    }>
                                     <Row>
                                       <Col lg={11} md={11} sm={12}>
                                         <div
                                           className={
                                             styles["reviewer-progress-text"]
-                                          }
-                                        >
-                                          <p className="m-0">
+                                          }>
+                                          <p className='m-0'>
                                             {t("Total")}{" "}
                                             {data?.MinuteStats?.totalReviews}
                                           </p>
                                           <span>|</span>
-                                          <p className="m-0">
+                                          <p className='m-0'>
                                             {t("Pending")}{" "}
                                             {data?.MinuteStats?.pending}
                                           </p>
                                           <span>|</span>
-                                          <p className="m-0">
+                                          <p className='m-0'>
                                             {t("Accepted")}{" "}
                                             {data?.MinuteStats?.accepted}
                                           </p>
                                           <span>|</span>
-                                          <p className="m-0">
+                                          <p className='m-0'>
                                             {t("Rejected")}{" "}
                                             {data?.MinuteStats?.rejected}
                                           </p>
@@ -2116,10 +2080,9 @@ const Minutes = ({
                                           currentLanguage === "ar"
                                             ? "text-start"
                                             : "text-end"
-                                        }
-                                      >
+                                        }>
                                         <img
-                                          alt=""
+                                          alt=''
                                           src={DropdownPurple}
                                           className={
                                             isOpenReviewer
@@ -2143,31 +2106,29 @@ const Minutes = ({
                                   <div
                                     className={
                                       styles["reviewer-progress-wrapper"]
-                                    }
-                                  >
+                                    }>
                                     <Row>
                                       <Col lg={11} md={11} sm={12}>
                                         <div
                                           className={
                                             styles["reviewer-progress-text"]
-                                          }
-                                        >
-                                          <p className="m-0">
+                                          }>
+                                          <p className='m-0'>
                                             {t("Total")}{" "}
                                             {data?.MinuteStats?.totalReviews}
                                           </p>
                                           <span>|</span>
-                                          <p className="m-0">
+                                          <p className='m-0'>
                                             {t("Pending")}{" "}
                                             {data?.MinuteStats?.pending}
                                           </p>
                                           <span>|</span>
-                                          <p className="m-0">
+                                          <p className='m-0'>
                                             {t("Accepted")}{" "}
                                             {data?.MinuteStats?.accepted}
                                           </p>
                                           <span>|</span>
-                                          <p className="m-0">
+                                          <p className='m-0'>
                                             {t("Rejected")}{" "}
                                             {data?.MinuteStats?.rejected}
                                           </p>
@@ -2181,10 +2142,9 @@ const Minutes = ({
                                           currentLanguage === "ar"
                                             ? "text-start"
                                             : "text-end"
-                                        }
-                                      >
+                                        }>
                                         <img
-                                          alt=""
+                                          alt=''
                                           src={DropdownPurple}
                                           className={
                                             isOpenReviewer
@@ -2200,11 +2160,11 @@ const Minutes = ({
                                     <Row>
                                       <Col lg={12} md={12} sm={12}>
                                         <p
-                                          className={`${styles["text-wrapper-review"]}`}
-                                        >
+                                          className={`${styles["text-wrapper-review"]}`}>
                                           <span
-                                            className={styles["Review-pending"]}
-                                          >
+                                            className={
+                                              styles["Review-pending"]
+                                            }>
                                             Review Pending:
                                           </span>
                                           {data?.MinuteStats?.pendingUsers
@@ -2220,13 +2180,11 @@ const Minutes = ({
                                             )}
                                         </p>
                                         <p
-                                          className={`${styles["text-wrapper-review"]}`}
-                                        >
+                                          className={`${styles["text-wrapper-review"]}`}>
                                           <span
                                             className={
                                               styles["Review-accepted"]
-                                            }
-                                          >
+                                            }>
                                             Review Accepted:
                                           </span>{" "}
                                           {data?.MinuteStats?.acceptedByUsers
@@ -2242,13 +2200,11 @@ const Minutes = ({
                                             )}
                                         </p>
                                         <p
-                                          className={`${styles["text-wrapper-review"]}`}
-                                        >
+                                          className={`${styles["text-wrapper-review"]}`}>
                                           <span
                                             className={
                                               styles["Review-declined"]
-                                            }
-                                          >
+                                            }>
                                             Review Rejected:
                                           </span>{" "}
                                           {/* {data?.MinuteStats?.rejectedByUsers
@@ -2280,8 +2236,7 @@ const Minutes = ({
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="position-relative"
-                              >
+                                className='position-relative'>
                                 <div className={styles["uploaded-details"]}>
                                   {(
                                     (data.isEditable === true &&
@@ -2301,8 +2256,8 @@ const Minutes = ({
                                     <img
                                       draggable={false}
                                       src={RedCroseeIcon}
-                                      height="20.76px"
-                                      width="20.76px"
+                                      height='20.76px'
+                                      width='20.76px'
                                       className={styles["RedCrossClass"]}
                                       onClick={() => {
                                         dispatch(
@@ -2310,7 +2265,7 @@ const Minutes = ({
                                         );
                                         dispatch(DeleteMinuteReducer(data));
                                       }}
-                                      alt=""
+                                      alt=''
                                     />
                                   ) : null}
                                   <Row className={styles["inherit-height"]}>
@@ -2319,8 +2274,7 @@ const Minutes = ({
                                         dangerouslySetInnerHTML={{
                                           __html: data.description,
                                         }}
-                                        className={styles["minutes-text"]}
-                                      ></p>
+                                        className={styles["minutes-text"]}></p>
                                       {data.attachments.length > 0 ? (
                                         <Row>
                                           {data.attachments.map(
@@ -2358,35 +2312,34 @@ const Minutes = ({
                                       lg={3}
                                       md={3}
                                       sm={12}
-                                      className="position-relative"
-                                    >
-                                      <Row className="m-0">
+                                      className='position-relative'>
+                                      <Row className='m-0'>
                                         <Col
                                           lg={9}
                                           md={9}
                                           sm={12}
-                                          className="p-0"
-                                        >
+                                          className='p-0'>
                                           <span
-                                            className={styles["bar-line"]}
-                                          ></span>
+                                            className={
+                                              styles["bar-line"]
+                                            }></span>
                                           <p
-                                            className={styles["uploadedbyuser"]}
-                                          >
+                                            className={
+                                              styles["uploadedbyuser"]
+                                            }>
                                             {t("Uploaded-by")}
                                           </p>
                                           <div className={styles["gap-ti"]}>
                                             <img
                                               src={`data:image/jpeg;base64,${data.uploader.displayProfilePictureName}`}
                                               className={styles["Image"]}
-                                              alt=""
+                                              alt=''
                                               draggable={false}
                                             />
                                             <p
                                               className={
                                                 styles["agendaCreater"]
-                                              }
-                                            >
+                                              }>
                                               {data.userName}
                                             </p>
                                           </div>
@@ -2395,8 +2348,7 @@ const Minutes = ({
                                           lg={3}
                                           md={3}
                                           sm={12}
-                                          className="d-grid justify-content-end p-0"
-                                        >
+                                          className='d-grid justify-content-end p-0'>
                                           <div>
                                             {(
                                               (data.isEditable === true &&
@@ -2423,12 +2375,12 @@ const Minutes = ({
                                                       "Organizer")
                                             ) ? (
                                               <img
-                                                className="cursor-pointer mx-2"
+                                                className='cursor-pointer mx-2'
                                                 src={EditIcon}
                                                 onClick={() =>
                                                   handleEditFunc(data)
                                                 }
-                                                alt=""
+                                                alt=''
                                               />
                                             ) : null}
                                             <div
@@ -2436,12 +2388,11 @@ const Minutes = ({
                                                 menuPopupMinute(data.minuteID)
                                               }
                                               className={styles["box-agendas"]}
-                                              ref={closeMenuMinute}
-                                            >
+                                              ref={closeMenuMinute}>
                                               <img
-                                                className="cursor-pointer"
+                                                className='cursor-pointer'
                                                 src={MenuIcon}
-                                                alt=""
+                                                alt=''
                                               />
                                               <div
                                                 className={
@@ -2456,8 +2407,7 @@ const Minutes = ({
                                                           "popup-agenda-menu"
                                                         ]
                                                       } ${"opacity-0 pe-none"}`
-                                                }
-                                              >
+                                                }>
                                                 <span
                                                   onClick={() =>
                                                     // setShowRevisionHistory(
@@ -2467,8 +2417,7 @@ const Minutes = ({
                                                       data,
                                                       data.minuteID
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Revisions")}
                                                 </span>
                                                 <span
@@ -2480,8 +2429,7 @@ const Minutes = ({
                                                       )
                                                     // setShowVersionHistory(true)
                                                   }
-                                                  className="border-0"
-                                                >
+                                                  className='border-0'>
                                                   {t("Version-history")}
                                                 </span>
                                               </div>
@@ -2492,16 +2440,14 @@ const Minutes = ({
                                       <Row>
                                         <Col lg={12} md={12} sm={12}>
                                           <p
-                                            className={styles["time-uploader"]}
-                                          >
+                                            className={styles["time-uploader"]}>
                                             {convertToGMTMinuteTime(
                                               data.lastUpdatedDate +
                                                 data.lastUpdatedTime
                                             ) + ","}
                                           </p>
                                           <p
-                                            className={styles["date-uploader"]}
-                                          >
+                                            className={styles["date-uploader"]}>
                                             {convertDateToGMTMinute(
                                               data.lastUpdatedDate +
                                                 data.lastUpdatedTime
@@ -2524,13 +2470,12 @@ const Minutes = ({
             })}
           </>
         ) : null}
-        <Row className="mt-5">
+        <Row className='mt-5'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             {editorRole.isPrimaryOrganizer === true ? (
               <Button
                 text={t("Invite-to-collaborate")}

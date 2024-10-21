@@ -30,60 +30,7 @@ const CancelButtonModal = ({
   };
 
   const handleYesFunctionality = () => {
-    localStorage.removeItem("meetingID");
-    dispatch(showGetAllMeetingDetialsFailed(""));
-    setMeetingDetails({
-      MeetingTitle: "",
-      MeetingType: 0,
-      Location: "",
-      Description: "",
-      Link: "",
-      ReminderFrequency: {
-        value: 0,
-        label: "",
-      },
-      ReminderFrequencyTwo: {
-        value: 0,
-        label: "",
-      },
-      ReminderFrequencyThree: {
-        value: 0,
-        label: "",
-      },
-      Notes: "",
-      groupChat: false,
-      AllowRSPV: false,
-      NotifyMeetingOrganizer: false,
-      RecurringOptions: {
-        value: 0,
-        label: "",
-      },
-      Location: "",
-      IsVideoCall: false,
-    });
-    setRows([
-      {
-        selectedOption: "",
-        dateForView: "",
-        startDate: "",
-        startTime: "",
-        endDate: "",
-        endTime: "",
-      },
-    ]);
-    setSceduleMeeting(false);
-    dispatch(showCancelModalmeetingDeitals(false));
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+ 
   };
 
   return (
@@ -108,22 +55,11 @@ const CancelButtonModal = ({
                   className="d-flex justify-content-center"
                 >
                   <span className={styles["UnsaveheadingFileUpload"]}>
-                    {t("Any-unsaved-changes-will-be")}
+                    {t("You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving")}
                   </span>
                 </Col>
               </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <span className={styles["UnsaveheadingFileUpload"]}>
-                    {t("Lost-continue")}
-                  </span>
-                </Col>
-              </Row>
+      
             </>
           }
           ModalFooter={

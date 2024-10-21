@@ -1,5 +1,5 @@
 import Dragger from "antd/lib/upload/Dragger";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Notification } from "../../../../../components/elements";
@@ -8,6 +8,7 @@ import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 
 import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const DefaultDragger = ({
@@ -20,12 +21,12 @@ const DefaultDragger = ({
 }) => {
   const { t } = useTranslation();
   console.log("ediorRoleediorRoleediorRole", editorRole);
-  const isShouldAgendaUpdatedOrNot = useSelector(
-    (state) =>
-      state.settingReducer?.UserProfileData
-        ?.emailWhenActiveMeetingAgendaUpdated || true
+  const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
+
+  console.log(
+    isAgendaUpdateWhenMeetingActive,
+    "isAgendaUpdateWhenMeetingActive"
   );
-  console.log(isShouldAgendaUpdatedOrNot, "isShouldAgendaUpdatedOrNot");
   let currentUserID = Number(localStorage.getItem("userID"));
 
   const [open, setOpen] = useState({
@@ -146,7 +147,7 @@ const DefaultDragger = ({
                 : editorRole.status === 9 || editorRole.status === "9"
                 ? true
                 : Number(editorRole.status) === 10 &&
-                  !isShouldAgendaUpdatedOrNot
+                  !isAgendaUpdateWhenMeetingActive
                 ? true
                 : false
             }

@@ -27,6 +27,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
 import { Tooltip } from "antd";
+import { removeHTMLTagsAndTruncate } from "../../../commen/functions/utils";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
@@ -44,9 +45,45 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const [fileForSend, setFileForSend] = useState([]);
   const [attachments, setAttachments] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  const [isdescription, setDescription] = useState(null);
+  console.log(isdescription, "isdescriptionisdescriptionisdescription");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [addNoteFields, setAddNoteFields] = useState({
+    Title: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    Description: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    createdDate: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    createdTime: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    ModifiedDate: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    ModifieTime: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    PK_NotesID: 0,
+    FK_NotesStatusID: 0,
+  });
   const deleteNoteModalHandler = async () => {
     setIsUpdateNote(false);
     setIsDeleteNote(true);
@@ -84,41 +121,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       handlers: {},
     },
   };
-
-  const [addNoteFields, setAddNoteFields] = useState({
-    Title: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    Description: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    createdDate: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    createdTime: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    ModifiedDate: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    ModifieTime: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    PK_NotesID: 0,
-    FK_NotesStatusID: 0,
-  });
 
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -181,55 +183,43 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     }
   };
 
-  //State management of the Quill Editor
   const onTextChange = (content, delta, source) => {
-    const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText) {
+    const deltaOps = delta.ops || [];
+
+    // Check if any image is being pasted
+    const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
+    if (containsImage) {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
-          value: content,
+          value: "",
           errorMessage: "",
           errorStatus: false,
         },
       });
+    } else {
+      if (source === "user" && String(content).length >= 2500) {
+        // Update state only if no image is detected in the content
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: removeHTMLTagsAndTruncate(String(content), 2500),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else {
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: content,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     }
   };
-
-  useEffect(() => {
-    const editor = editorRef.current.getEditor();
-
-    const limitCharacters = (event) => {
-      const text = editor.getText();
-      if (text.length >= maxCharacters && event.key !== "Backspace") {
-        event.preventDefault();
-
-        const truncatedText = text.substring(0, maxCharacters - 1); // Remove the last character
-        editor.setText(truncatedText);
-      }
-    };
-
-    const handlePaste = (event) => {
-      const clipboardData = event.clipboardData || window.clipboardData;
-      const pastedText = clipboardData.getData("Text");
-      const text = editor.getText();
-      const remainingSpace = maxCharacters - text.length;
-
-      if (pastedText.length > remainingSpace) {
-        const truncatedText = pastedText.substring(0, remainingSpace);
-        document.execCommand("insertText", false, truncatedText);
-        event.preventDefault();
-      }
-    };
-
-    editor.root.addEventListener("keydown", limitCharacters);
-    editor.root.addEventListener("paste", handlePaste);
-
-    return () => {
-      editor.root.removeEventListener("keydown", limitCharacters);
-      editor.root.removeEventListener("paste", handlePaste);
-    };
-  }, [maxCharacters]);
 
   useEffect(() => {
     try {
@@ -237,10 +227,52 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         NotesReducer.GetNotesByNotesId !== null &&
         NotesReducer.GetNotesByNotesId !== undefined
       ) {
+        console.log(
+          NotesReducer.GetNotesByNotesId,
+          "NotesReducerNotesReducerNotesReducer"
+        );
+        const {
+          title,
+          date,
+          description,
+          fK_NotesStatus,
+          fK_OrganizationID,
+          isAttachment,
+          isStarred,
+          modifiedDate,
+          modifiedTime,
+          notesAttachments,
+          notesStatus,
+          organizationName,
+          pK_NotesID,
+          time,
+          username,
+        } = NotesReducer.GetNotesByNotesId;
+        console.log(
+          {
+            title,
+            date,
+            description,
+            fK_NotesStatus,
+            fK_OrganizationID,
+            isAttachment,
+            isStarred,
+            modifiedDate,
+            modifiedTime,
+            notesAttachments,
+            notesStatus,
+            organizationName,
+            pK_NotesID,
+            time,
+            username,
+          },
+          "titletitle"
+        );
+        setDescription(description);
         setAddNoteFields({
           ...addNoteFields,
           Title: {
-            value: NotesReducer.GetNotesByNotesId.title,
+            value: title,
             errorMessage: "",
             errorStatus: false,
           },
@@ -264,11 +296,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             errorMessage: "",
             errorStatus: false,
           },
-          Description: {
-            value: NotesReducer.GetNotesByNotesId.description,
-            errorMessage: "",
-            errorStatus: false,
-          },
+
           PK_NotesID: NotesReducer.GetNotesByNotesId.pK_NotesID,
 
           FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
@@ -298,8 +326,23 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           });
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error, "GetNotesByNotesIdGetNotesByNotesId");
+    }
   }, [NotesReducer.GetNotesByNotesId]);
+
+  useEffect(() => {
+    if (isdescription !== null) {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: isdescription,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  }, [isdescription]);
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
@@ -461,6 +504,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes));
   };
 
+  console.log(addNoteFields, "addNoteFieldsaddNoteFields");
+
   return (
     <>
       <Container>
@@ -609,7 +654,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       <ReactQuill
                         ref={editorRef}
                         theme="snow"
-                        value={addNoteFields.Description.value || ""}
+                        value={addNoteFields.Description.value}
+                        // defaultValue={addNoteFields.Description.value}
                         onChange={onTextChange}
                         modules={modules}
                         className={styles["quill-update-height"]}

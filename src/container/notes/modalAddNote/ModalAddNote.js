@@ -22,8 +22,12 @@ import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "antd";
-import { validateInput } from "../../../commen/functions/regex";
+import {
+  regexOnlyForNumberNCharacters,
+  validateInput,
+} from "../../../commen/functions/regex";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { removeHTMLTagsAndTruncate } from "../../../commen/functions/utils";
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -119,62 +123,50 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       });
     }
   };
-
   const onTextChange = (content, delta, source) => {
-    //it will remove the &nbsp tag which comes in description in
-    // request data and add space also it take only 3000 character
-    const plainText = content
-      .replace(/&nbsp;/g, " ")
-      .replace(/(<([^>]+)>)/gi, "")
-      .trim();
+    const deltaOps = delta.ops || [];
 
-    const plainTextLength = plainText.length;
-    if (source === "user" && plainText && plainTextLength <= 2500) {
+    // Check if any image is being pasted
+    const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
+    if (containsImage) {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
-          value: content,
+          value: "",
           errorMessage: "",
           errorStatus: false,
         },
       });
+    } else {
+      console.log(String(content).length, "contentcontent");
+      console.log(
+        removeHTMLTagsAndTruncate(String(content).length),
+        removeHTMLTagsAndTruncate(String(content), 2500),
+        "contentcontent"
+      );
+
+      if (source === "user" && String(content).length >= 2500) {
+        // Update state only if no image is detected in the content
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: removeHTMLTagsAndTruncate(String(content), 2500),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else {
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: content,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     }
   };
-
-  useEffect(() => {
-    const editor = editorRef.current.getEditor();
-
-    const limitCharacters = (event) => {
-      const text = editor.getText();
-      if (text.length >= maxCharacters && event.key !== "Backspace") {
-        event.preventDefault();
-
-        const truncatedText = text.substring(0, maxCharacters - 1); // Remove the last character
-        editor.setText(truncatedText);
-      }
-    };
-
-    const handlePaste = (event) => {
-      const clipboardData = event.clipboardData || window.clipboardData;
-      const pastedText = clipboardData.getData("Text");
-      const text = editor.getText();
-      const remainingSpace = maxCharacters - text.length;
-
-      if (pastedText.length > remainingSpace) {
-        const truncatedText = pastedText.substring(0, remainingSpace);
-        document.execCommand("insertText", false, truncatedText);
-        event.preventDefault();
-      }
-    };
-
-    editor.root.addEventListener("keydown", limitCharacters);
-    editor.root.addEventListener("paste", handlePaste);
-
-    return () => {
-      editor.root.removeEventListener("keydown", limitCharacters);
-      editor.root.removeEventListener("paste", handlePaste);
-    };
-  }, [maxCharacters]);
 
   // for save button hit
 
@@ -333,25 +325,25 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     }
   };
 
-  useEffect(() => {
-    if (editorRef.current) {
-      const editor = editorRef.current.getEditor();
+  // useEffect(() => {
+  //   if (editorRef.current) {
+  //     const editor = editorRef.current.getEditor();
 
-      if (editor) {
-        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-          const plaintext = node.innerText || node.textContent || "";
-          const isImage = node.nodeName === "IMG";
+  //     if (editor) {
+  //       editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+  //         const plaintext = node.innerText || node.textContent || "";
+  //         const isImage = node.nodeName === "IMG";
 
-          if (isImage) {
-            // Block image paste by returning an empty delta
-            return new Delta();
-          }
+  //         if (isImage) {
+  //           // Block image paste by returning an empty delta
+  //           return new Delta();
+  //         }
 
-          return delta.compose(new Delta().insert(plaintext));
-        });
-      }
-    }
-  }, []);
+  //         return delta.compose(new Delta().insert(plaintext));
+  //       });
+  //     }
+  //   }
+  // }, []);
 
   return (
     <>

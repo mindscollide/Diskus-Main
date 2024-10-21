@@ -200,17 +200,6 @@ const NewMeeting = () => {
   const [isProposedMeetEdit, setIsProposedMeetEdit] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
 
-  // const [isMeetingTypeFilter, setMeetingTypeFilter] =
-  //   useState(meetingtypeFilter);
-
-  // const meetingTypeFilterData = isMeetingTypeFilter?.map((meeting) =>
-  //   String(meeting.value)
-  // );
-
-  // const [defaultFiltersValues, setDefaultFilterValues] = useState(
-  //   meetingTypeFilterData
-  // );
-
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
 
