@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import {
   guestVideoNavigationScreen,
   hideUnHideVideoByHost,
+  hostEndVideoCallMeeting,
   muteUnMuteByHost,
   validateEncryptGuestVideoMainApi,
 } from "../../../../../store/actions/Guest_Video";
@@ -36,6 +37,7 @@ const GuestVideoCall = () => {
   const guestVideoNavigationData = useSelector(
     (state) => state.GuestVideoReducer.guestVideoNavigationData
   );
+  let viewState = Number(sessionStorage.getItem("viewState"));
 
   const [actionValue, setActionValue] = useState("");
   //video Url state
@@ -101,6 +103,14 @@ const GuestVideoCall = () => {
         dispatch(hideUnHideVideoByHost(data.payload));
         console.log(data.payload, "guestDataGuestData");
       }
+      // below MQTT is imagined will replace this soon
+      else if (
+        data.payload.message.toLowerCase() ===
+        "HOST_END_VIDEO_CALL_MEETING".toLowerCase()
+      ) {
+        dispatch(guestVideoNavigationScreen(4));
+        console.log(data.payload, "guestDataGuestData");
+      }
     }
   };
 
@@ -141,13 +151,13 @@ const GuestVideoCall = () => {
       };
       dispatch(validateEncryptGuestVideoMainApi(navigate, t, data));
     }
-    if (validateData !== null && validateData !== undefined) {
-      setExtractMeetingId(validateData.meetingId);
-      setExtractMeetingTitle(validateData.meetingTitle);
-    } else {
-      setExtractMeetingId(0);
-      setExtractMeetingTitle("");
-    }
+    // if (validateData !== null && validateData !== undefined) {
+    //   setExtractMeetingId(validateData.meetingId);
+    //   setExtractMeetingTitle(validateData.meetingTitle);
+    // } else {
+    //   setExtractMeetingId(0);
+    //   setExtractMeetingTitle("");
+    // }
   }, [actionValue]);
 
   useEffect(() => {

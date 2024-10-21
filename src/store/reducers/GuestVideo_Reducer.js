@@ -148,6 +148,8 @@ const GuestVideoReducer = (state = initialState, action) => {
     }
 
     case actions.GUEST_VIDEO_SCREEN_NAVIGATION: {
+      // sessionStorage.setItem("viewState", action.response);
+
       return {
         ...state,
         guestVideoNavigationData: action.response,

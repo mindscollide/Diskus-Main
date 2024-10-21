@@ -52,14 +52,19 @@ const GuestJoinVideo = ({
           audio: true,
         })
         .then((stream) => {
-          const video = videoRef.current;
-          if (video) {
-            video.srcObject = stream;
-            video.muted = true;
-            video.play();
+          if (videoRef.current) {
+            // Stop any existing stream before starting a new one
+            if (stream) {
+              stream.getTracks().forEach((track) => track.stop());
+            }
+            videoRef.current.srcObject = stream;
+            videoRef.current.muted = true;
+            videoRef.current.play().catch((error) => {
+              console.error("Error playing video:", error);
+            });
           }
-          setStream(stream); // Store the stream to disable later
-          setIsWebCamEnabled(true); // Webcam is now enabled
+          setStream(stream);
+          setIsWebCamEnabled(true);
         })
         .catch((error) => {
           alert(error.message);
@@ -139,7 +144,8 @@ const GuestJoinVideo = ({
                 <Container>
                   <Row>
                     <label className="name-label">
-                      Name<span className="aesterick-name">*</span>
+                      {t("Name")}
+                      <span className="aesterick-name">*</span>
                     </label>
                     <Col lg={5} md={5} sm={12}>
                       <TextField

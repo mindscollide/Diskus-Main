@@ -110,44 +110,21 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       console.log("Sending message...");
       if (webcamStatus === false || webcamStatus === "false") {
         console.log("Sending message...");
-        setTimeout(() => {
-          iframe.contentWindow.postMessage("VidOff", "*");
-        }, 2000);
+        // setTimeout(() => {
+        iframe.contentWindow.postMessage("VidOff", "*");
+        // }, 2000);
         console.log("Turning webcam off");
         setIsVideoOn(true);
       } else {
-        setTimeout(() => {
-          iframe.contentWindow.postMessage("VidOn", "*");
-        }, 2000);
+        // setTimeout(() => {
+        iframe.contentWindow.postMessage("VidOn", "*");
+        // }, 2000);
         console.log("Turning webcam on");
         setIsVideoOn(false);
       }
     }
-
     console.log("Webcam status read from sessionStorage:", webcamStatus);
   }, []);
-
-  // useEffect(() => {
-  //   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
-  //   const iframe = frameRef.current;
-
-  //   // Only send messages when the iframe is loaded
-  //   if (isIframeLoaded && iframe && iframe.contentWindow) {
-  //     console.log("Sending message...");
-
-  //     if (webcamStatus === "false") {
-  //       console.log("Turning webcam off");
-  //       setTimeout(() => {
-  //         iframe.contentWindow.postMessage("VidOff", "*");
-  //       }, 2000);
-  //     } else {
-  //       console.log("Turning webcam on");
-  //       setTimeout(() => {
-  //         iframe.contentWindow.postMessage("VidOn", "*");
-  //       }, 5000);
-  //     }
-  //   }
-  // }, [isIframeLoaded]);
 
   const openMicStatus = (flag) => {
     const iframe = frameRef.current;
@@ -199,7 +176,11 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   };
 
   const openScreenShare = () => {
-    setIsScreenShare(!isScreenShare);
+    const iframe = frameRef.current;
+    if (iframe) {
+      iframe.contentWindow.postMessage("ScreenShare", "*");
+      setIsScreenShare(!isScreenShare);
+    }
   };
 
   const openRaiseHand = (flag) => {
@@ -272,11 +253,8 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
             )}
           </div>
           <div className="Guest-Icons-state">
-            {isScreenShare ? (
-              <img src={ScreenShareEnabled} onClick={openScreenShare} />
-            ) : (
-              <img src={Screenshare} onClick={openScreenShare} />
-            )}
+            {/* <img src={ScreenShareEnabled} onClick={openScreenShare} /> */}
+            <img src={Screenshare} onClick={openScreenShare} />
           </div>
           <div className="Guest-Icons-state">
             {isRaiseHand ? (

@@ -23,6 +23,7 @@ import {
   participantAcceptandReject,
   participantWaitingListBox,
 } from "./VideoFeature_actions";
+import { isArray } from "lodash";
 
 const guestVideoNavigationScreen = (response) => {
   return {
@@ -170,6 +171,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_01".toLowerCase()
                 )
             ) {
+              // sessionStorage.setItem("viewState", 1);
               await dispatch(
                 validateEncryptGuestVideoSuccess(
                   response.data.responseResult,
@@ -356,10 +358,17 @@ const admitRejectFail = (message) => {
   };
 };
 
-const admitRejectAttendeeMainApi = (Data, navigate, t) => {
+const admitRejectAttendeeMainApi = (
+  Data,
+  navigate,
+  t,
+  flag,
+  participantsList
+) => {
   let filterGuids = Data.AttendeeResponseList.map(
     (guidMap, index) => guidMap.UID
   );
+
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(admitRejectInit());
@@ -377,7 +386,15 @@ const admitRejectAttendeeMainApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
+          dispatch(
+            admitRejectAttendeeMainApi(
+              Data,
+              navigate,
+              t,
+              flag,
+              participantsList
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -393,8 +410,17 @@ const admitRejectAttendeeMainApi = (Data, navigate, t) => {
                   t("Successful")
                 )
               );
-              if (filterGuids.length > 1) {
+              // when flag is true then after click on accept all participantWaitinglistbox closed
+              if (flag === true) {
                 dispatch(participantWaitingListBox(false));
+              } else if (flag === false) {
+                // when flag is false then after click on accept singly participantWaitinglistbox close if they have length 1
+                if (
+                  participantsList !== undefined &&
+                  participantsList.length === 1
+                ) {
+                  dispatch(participantWaitingListBox(false));
+                }
               }
 
               let participants = Data.AttendeeResponseList.filter(

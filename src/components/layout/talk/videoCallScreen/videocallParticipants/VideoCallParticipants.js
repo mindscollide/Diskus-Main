@@ -63,7 +63,9 @@ const VideoCallParticipants = () => {
       }),
     };
 
-    dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
+    dispatch(
+      admitRejectAttendeeMainApi(Data, navigate, t, true, participantsList)
+    );
   };
   const handleClickAcceptAndReject = (participantInfo, flag) => {
     console.log(participantInfo, "participantInfo");
@@ -84,7 +86,9 @@ const VideoCallParticipants = () => {
         },
       ],
     };
-    dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
+    dispatch(
+      admitRejectAttendeeMainApi(Data, navigate, t, false, participantsList)
+    );
   };
   console.log(
     videoFeatureReducer,

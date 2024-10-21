@@ -7,7 +7,8 @@ import "./GuestVideoScreen.css";
 
 const GuestVideoScreen = ({ videoUrlName, roomId }) => {
   const frameRef = useRef(null);
-
+  // let videoUrl = sessionStorage.getItem("videoUrl");
+  // let roomId = sessionStorage.getItem("roomId");
   const validateData = useSelector(
     (state) => state.GuestVideoReducer.validateData
   );
