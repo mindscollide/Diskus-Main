@@ -702,13 +702,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                   </Row>
 
                   <Row className="mt-5">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      // className="d-flex justify-content-start"
-                    >
+                    <Col lg={12} md={12} sm={12} xs={12}>
                       <Row className="mt-4">
                         <Col
                           lg={12}
@@ -768,112 +762,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                       localStorage.getItem("userID")
                                     )}
                                   />
-                                  // <Col
-                                  //   sm={12}
-                                  //   lg={2}
-                                  //   md={2}
-                                  //   className={
-                                  //     styles["modaltodolist-attachment-icon"]
-                                  //   }
-                                  // >
-                                  //   {ext === "doc" ? (
-                                  //     <FileIcon
-                                  //       extension={"docx"}
-                                  //       size={78}
-                                  //       type={"document"}
-                                  //       labelColor={"rgba(44, 88, 152)"}
-                                  //     />
-                                  //   ) : ext === "docx" ? (
-                                  //     <FileIcon
-                                  //       extension={"docx"}
-                                  //       size={78}
-                                  //       type={"font"}
-                                  //       labelColor={"rgba(44, 88, 152)"}
-                                  //     />
-                                  //   ) : ext === "xls" ? (
-                                  //     <FileIcon
-                                  //       extension={"xls"}
-                                  //       type={"spreadsheet"}
-                                  //       size={78}
-                                  //       labelColor={"rgba(16, 121, 63)"}
-                                  //     />
-                                  //   ) : ext === "xlsx" ? (
-                                  //     <FileIcon
-                                  //       extension={"xls"}
-                                  //       type={"spreadsheet"}
-                                  //       size={78}
-                                  //       labelColor={"rgba(16, 121, 63)"}
-                                  //     />
-                                  //   ) : ext === "pdf" ? (
-                                  //     <FileIcon
-                                  //       extension={"pdf"}
-                                  //       size={78}
-                                  //       {...defaultStyles.pdf}
-                                  //     />
-                                  //   ) : ext === "png" ? (
-                                  //     <FileIcon
-                                  //       extension={"png"}
-                                  //       size={78}
-                                  //       type={"image"}
-                                  //       labelColor={"rgba(102, 102, 224)"}
-                                  //     />
-                                  //   ) : ext === "txt" ? (
-                                  //     <FileIcon
-                                  //       extension={"txt"}
-                                  //       size={78}
-                                  //       type={"document"}
-                                  //       labelColor={"rgba(52, 120, 199)"}
-                                  //     />
-                                  //   ) : ext === "jpg" ? (
-                                  //     <FileIcon
-                                  //       extension={"jpg"}
-                                  //       size={78}
-                                  //       type={"image"}
-                                  //       labelColor={"rgba(102, 102, 224)"}
-                                  //     />
-                                  //   ) : ext === "jpeg" ? (
-                                  //     <FileIcon
-                                  //       extension={"jpeg"}
-                                  //       size={78}
-                                  //       type={"image"}
-                                  //       labelColor={"rgba(102, 102, 224)"}
-                                  //     />
-                                  //   ) : ext === "gif" ? (
-                                  //     <FileIcon
-                                  //       extension={"gif"}
-                                  //       size={78}
-                                  //       {...defaultStyles.gif}
-                                  //     />
-                                  //   ) : (
-                                  //     <FileIcon
-                                  //       extension={ext}
-                                  //       size={78}
-                                  //       {...defaultStyles.ext}
-                                  //     />
-                                  //   )}
-                                  //   <span
-                                  //     className={
-                                  //       styles["deleteUpdateNoteAttachment"]
-                                  //     }
-                                  //   >
-                                  //     <img
-                                  //       draggable="false"
-                                  //       src={deleteButtonCreateMeeting}
-                                  //       width={15}
-                                  //       height={15}
-                                  //       alt=""
-                                  //       onClick={() =>
-                                  //         deleteFilefromAttachments(data, index)
-                                  //       }
-                                  //     />
-                                  //   </span>
-                                  //   <p
-                                  //     className="modaltodolist-attachment-text"
-                                  //     title={data.displayAttachmentName}
-                                  //   >
-                                  //     {first}
-                                  //   </p>
-                                  // </Col>
                                 );
                               })
                             : null}
@@ -1036,7 +924,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         setIsUpdateNote(true);
                         setUpdateConfirmation(false);
                       }}
-                      // onClick={handleClickCancelDeleteModal}
                     />
                   </Col>
                   <Col
