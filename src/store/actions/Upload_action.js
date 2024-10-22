@@ -10,7 +10,7 @@ const UploadLoaderStart = () => {
   };
 };
 
-const uploadDocumentSuccess = (response, message, loading = false) => {
+const uploadDocumentSuccess = (response, message, loading) => {
   return {
     type: actions.UPLOAD_DOCUMNET_FILE_SUCCESS,
     response: response,
@@ -47,7 +47,7 @@ const uploaddocumentloader = (payload) => {
 };
 //File Upload
 const FileUploadToDo = (navigate, data, t, newfile, route) => {
-  console.log(route, "routerouteroute")
+  console.log(route, typeof route, "routerouteroute");
   let token = JSON.parse(localStorage.getItem("token"));
 
   let form = new FormData();
@@ -94,15 +94,19 @@ const FileUploadToDo = (navigate, data, t, newfile, route) => {
                 };
                 await newfile.push(dataresponce);
               }
-              let loaderVal = route === 1 || route === 2 || route === false ? false : true;
-
-              await dispatch(
-                uploadDocumentSuccess(
-                  response.data.responseResult,
-                  t("valid-data"),
-                  loaderVal
-                )
-              );
+              let loaderVal =
+                Number(route) === 1 || Number(route) === 2 || route === false
+                  ? false
+                  : true;
+              if (Number(route) !== 10) {
+                await dispatch(
+                  uploadDocumentSuccess(
+                    response.data.responseResult,
+                    t("valid-data"),
+                    loaderVal
+                  )
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

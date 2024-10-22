@@ -11,13 +11,15 @@ import "react-quill/dist/quill.snow.css";
 import { Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ModalUpdateNote.module.css";
-import { FileUploadToDo } from "../../../store/actions/Upload_action";
+import {
+  FileUploadToDo,
+  uploaddocumentloader,
+} from "../../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import {
   deleteNotesApi,
   UpdateNotesAPI,
 } from "../../../store/actions/Notes_actions";
-// import { countryName } from "../../AllUsers/AddUser/CountryJson";
 import { useTranslation } from "react-i18next";
 import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
@@ -28,15 +30,17 @@ import {
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
 import { Tooltip } from "antd";
-import { removeHTMLTagsAndTruncate } from "../../../commen/functions/utils";
+import {
+  maxFileSize,
+  removeHTMLTagsAndTruncate,
+} from "../../../commen/functions/utils";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
-  const { NotesReducer, uploadReducer } = useSelector((state) => state);
+  const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
   const Delta = Quill.import("delta");
   const editorRef = useRef(null);
-  const maxCharacters = 2500;
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isDeleteNote, setIsDeleteNote] = useState(false);
@@ -47,7 +51,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const [attachments, setAttachments] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [isdescription, setDescription] = useState(null);
-  console.log(isdescription, "isdescriptionisdescriptionisdescription");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -332,36 +335,39 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   }, [NotesReducer.GetNotesByNotesId]);
 
   useEffect(() => {
-    if (isdescription !== null) {
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: isdescription,
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+    try {
+      if (isdescription !== null) {
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: isdescription,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [isdescription]);
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
     let filesArray = Object.values(data.target.files);
-    console.log(filesArray, "uploadFilesToDouploadFilesToDo");
+    let totalFiles = filesArray.length + attachments.length;
     let fileSizeArr = fileSize;
-    let flag = false;
     let sizezero = true;
     let size = true;
 
-    if (tasksAttachments.TasksAttachments.length > 9) {
+    if (totalFiles > 15) {
       setOpen({
         flag: true,
-        message: t("Not-allowed-more-than-10-files"),
+        message: t("Not-allowed-more-than-15-files"),
       });
       return;
     }
     filesArray.forEach((fileData, index) => {
-      if (fileData.size > 10485760) {
+      if (fileData.size > maxFileSize) {
         size = false;
       } else if (fileData.size === 0) {
         sizezero = false;
@@ -375,7 +381,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         setTimeout(() => {
           setOpen({
             flag: true,
-            message: t("File-size-should-not-be-greater-then-zero"),
+            message: t("File-size-should-not-be-greater-then-1-5GB"),
           });
         }, 3000);
       } else if (!sizezero) {
@@ -398,10 +404,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           OriginalAttachmentName: fileData.name,
           fileSize: fileData.size,
         };
-        // setTasksAttachments((prevAttachments) => ({
-        //   ...prevAttachments,
-        //   TasksAttachments: [...prevAttachments.TasksAttachments, file],
-        // }));
+
         console.log(file, "filefilefilefile");
         setAttachments((prevAttachments) => [...prevAttachments, file]);
         fileSizeArr += fileData.size;
@@ -413,27 +416,20 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     });
   };
   let previousFileList = [];
-  console.log(attachments, "newfilesnewfiles");
-  console.log(tasksAttachments.TasksAttachments, "newfilesnewfiles");
-  console.log(fileForSend, "newfilesnewfiles");
 
   const notesSaveHandler = async () => {
     try {
       if (addNoteFields.Title.value !== "") {
         if (Object.keys(fileForSend).length > 0) {
           let newfiles = [...tasksAttachments.TasksAttachments];
-          console.log(newfiles, "PromisePromisePromise");
+          console.log(newfiles, "DataDataData");
           const uploadPromises = fileForSend.map((newData, index) => {
-            let flag = fileForSend.length !== index + 1;
             // Return the promise from FileUploadToDo
-            return dispatch(
-              FileUploadToDo(navigate, newData, t, newfiles, flag, 1)
-            );
+            return dispatch(FileUploadToDo(navigate, newData, t, newfiles, 10));
           });
 
           // Wait for all uploadPromises to resolve
           await Promise.all(uploadPromises);
-          console.log(newfiles, "PromisePromisePromise");
           setErrorBar(false);
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
@@ -459,7 +455,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
             NotesAttachments: notesAttachment,
           };
-
+          console.log(Data, "DataDataData");
           dispatch(
             UpdateNotesAPI(
               navigate,
@@ -470,13 +466,14 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
               setUpdateNotes
             )
           );
+          dispatch(uploaddocumentloader(false));
         } else {
           setErrorBar(false);
-          // setUpdateNotesModalHomePage(false);
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
           let copData = [...tasksAttachments.TasksAttachments];
+          console.log(copData, "DataDataData");
           copData.map((data, index) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
@@ -498,6 +495,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
             NotesAttachments: notesAttachment,
           };
+          console.log(Data, "DataDataData");
           dispatch(
             UpdateNotesAPI(
               navigate,
@@ -516,7 +514,9 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           message: t("Please-fill-all-the-fields"),
         });
       }
-    } catch {}
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   const handleClickCancelDeleteModal = () => {
@@ -529,8 +529,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     }
     dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes));
   };
-
-  console.log(addNoteFields, "addNoteFieldsaddNoteFields");
 
   return (
     <>
@@ -555,7 +553,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           modalFooterClassName={styles["modalUpdateNotes"]}
           ButtonTitle={ModalTitle}
           centered
-          //   modalFooterClassName={styles["modal-userprofile-footer"]}
           size={
             isUpdateNote === true
               ? "md"
@@ -575,28 +572,28 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className='d-flex align-items-center justify-content-start gap-3'>
+                      className="d-flex align-items-center justify-content-start gap-3"
+                    >
                       <p className={styles["UpdateNote-heading"]}>
                         {t("Update-note")}
-                        {/* {t("Update-note")} */}
                       </p>
                       {isStarred ? (
-                        <Tooltip placement='topLeft' title={t("Starred")}>
+                        <Tooltip placement="topLeft" title={t("Starred")}>
                           <img
-                            draggable='false'
+                            draggable="false"
                             src={hollowstar}
                             className={styles["star-updatenote"]}
-                            alt=''
+                            alt=""
                             onClick={() => setIsStarrted(!isStarred)}
                           />
                         </Tooltip>
                       ) : (
-                        <Tooltip placement='topLeft' title={t("unstarred")}>
+                        <Tooltip placement="topLeft" title={t("unstarred")}>
                           <img
-                            draggable='false'
+                            draggable="false"
                             className={styles["star-updatenote"]}
                             src={StarIcon}
-                            alt=''
+                            alt=""
                             onClick={() => setIsStarrted(!isStarred)}
                           />
                         </Tooltip>
@@ -610,7 +607,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-start mb-0'>
+                      className="d-flex justify-content-start mb-0"
+                    >
                       <p className={styles["date-updatenote"]}>
                         {t("Created-On")} :{" "}
                         {_justShowDateformat(
@@ -630,7 +628,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-end'>
+                      className="d-flex justify-content-end"
+                    >
                       <p className={styles["date-updatenote2"]}>
                         {t("Last-modified-on")} :{" "}
                         {_justShowDateformat(
@@ -650,8 +649,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <Form.Control
                         placeholder={t("Meeting-with")}
-                        applyClass='updateNotes_titleInput'
-                        name='Title'
+                        applyClass="updateNotes_titleInput"
+                        name="Title"
                         maxLength={290}
                         value={addNoteFields.Title.value || ""}
                         onChange={addNotesFieldHandler}
@@ -664,7 +663,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                               erorbar && addNoteFields.Title.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
-                            }>
+                            }
+                          >
                             {t("Title-is-required")}
                           </p>
                         </Col>
@@ -673,10 +673,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                   </Row>
 
                   <Row className={styles["QuillRow"]}>
-                    <Col lg={12} md={12} sm={12} xs={12} className='mt-1'>
+                    <Col lg={12} md={12} sm={12} xs={12} className="mt-1">
                       <ReactQuill
                         ref={editorRef}
-                        theme='snow'
+                        theme="snow"
                         value={addNoteFields.Description.value}
                         // defaultValue={addNoteFields.Description.value}
                         onChange={onTextChange}
@@ -695,13 +695,14 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                           erorbar && addNoteFields.Description.value === ""
                             ? ` ${styles["errorUpdateMessage_hidden"]} `
                             : `${styles["errorUpdateMessage_hidden"]}`
-                        }>
+                        }
+                      >
                         {t("Description-is-required")}
                       </p>
                     </Col>
                   </Row>
 
-                  <Row className='mt-5'>
+                  <Row className="mt-5">
                     <Col
                       lg={12}
                       md={12}
@@ -709,25 +710,27 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       xs={12}
                       // className="d-flex justify-content-start"
                     >
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           xs={12}
-                          className='d-flex justify-content-start'>
+                          className="d-flex justify-content-start"
+                        >
                           <label className={styles["attached-title"]}>
                             {t("Attachement")}
                           </label>
                         </Col>
                       </Row>
-                      <Row className='mt-2'>
+                      <Row className="mt-2">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           xs={12}
-                          className='d-flex justify-content-start'>
+                          className="d-flex justify-content-start"
+                        >
                           <span className={styles["Notes-upload-input"]}>
                             <CustomUpload
                               change={uploadFilesToDo}
@@ -735,7 +738,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                               onClick={(event) => {
                                 event.target.value = null;
                               }}
-                              className='UploadFileButton'
+                              className="UploadFileButton"
                             />
                           </span>
                         </Col>
@@ -745,7 +748,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                           sm={12}
                           lg={12}
                           md={12}
-                          className={styles["notes-updates-attachment"]}>
+                          className={styles["notes-updates-attachment"]}
+                        >
                           {attachments.length > 0
                             ? attachments.map((data, index) => {
                                 var ext =
@@ -887,7 +891,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["delete-note-modal-text"]}>
+                        className={styles["delete-note-modal-text"]}
+                      >
                         <p>{t("Are-you-sure-you-want-to-delete-this-note")}?</p>
                       </Col>
                     </Row>
@@ -900,7 +905,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className={styles["Confirmationmodal_body_text"]}>
+                      className={styles["Confirmationmodal_body_text"]}
+                    >
                       {t("Are-you-sure-note-reset-closed")}
                     </Col>
                   </Row>
@@ -911,7 +917,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["delete-note-modal-text"]}>
+                    className={styles["delete-note-modal-text"]}
+                  >
                     <p>{t("Are-you-sure-you-want-to-update-this-note")}?</p>
                   </Col>
                 </Row>
@@ -921,12 +928,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           ModalFooter={
             <>
               {isUpdateNote ? (
-                <Row className=' '>
+                <Row className=" ">
                   <Col
                     lg={12}
                     md={12}
                     xs={12}
-                    className='d-flex gap-3 justify-content-end'>
+                    className="d-flex gap-3 justify-content-end"
+                  >
                     <Button
                       text={t("Delete")}
                       onClick={deleteNoteModalHandler}
@@ -945,14 +953,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
                     <Button
                       text={t("Update")}
-                      type='submit'
+                      type="submit"
                       onClick={() => {
                         setCloseConfirmationBox(false);
                         setIsDeleteNote(false);
                         setIsUpdateNote(false);
                         setUpdateConfirmation(true);
                       }}
-                      // onClick={notesSaveHandler}
                       className={styles["Update-notes-Button"]}
                     />
                   </Col>
@@ -965,7 +972,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-end '>
+                      className="d-flex justify-content-end "
+                    >
                       <Button
                         text={t("Cancel")}
                         className={styles["cancel-note-modal-btn"]}
@@ -977,7 +985,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className='d-flex justify-content-start '>
+                      className="d-flex justify-content-start "
+                    >
                       <Button
                         text={t("Delete")}
                         className={styles["delete-note-modal-btn"]}
@@ -995,7 +1004,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='d-flex justify-content-center gap-3'>
+                      className="d-flex justify-content-center gap-3"
+                    >
                       <Button
                         onClick={() => setIsUpdateNote(true)}
                         className={styles["cancel-Update-notes"]}
@@ -1016,7 +1026,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     md={6}
                     sm={6}
                     xs={12}
-                    className='d-flex justify-content-end '>
+                    className="d-flex justify-content-end "
+                  >
                     <Button
                       text={t("Cancel")}
                       className={styles["cancel-note-modal-btn"]}
@@ -1034,7 +1045,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     md={6}
                     sm={6}
                     xs={12}
-                    className='d-flex justify-content-start '>
+                    className="d-flex justify-content-start "
+                  >
                     <Button
                       text={t("Update")}
                       className={styles["delete-note-modal-btn"]}
