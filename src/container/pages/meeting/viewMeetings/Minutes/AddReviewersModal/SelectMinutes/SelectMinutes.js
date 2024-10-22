@@ -16,7 +16,6 @@ import {
   handleCheck,
   checkReviewersListAgenda,
   checkReviewersListGeneral,
-  updateMinutesData,
   hasNonEmptyReviewersAgenda,
   allReviewersListsNonEmptyGeneral,
 } from "../functionsAddReviewers";

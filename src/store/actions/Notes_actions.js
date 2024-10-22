@@ -2,7 +2,6 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { getNotesApi } from "../../commen/apis/Api_ends_points";
 import {
-  GetNotesByUserIDAndOrganizationID,
   SavesNotesRequestMethod,
   UpdateNotesRequestMethod,
   GetNotesByNotesIDRequestMethod,

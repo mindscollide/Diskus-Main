@@ -98,9 +98,9 @@
     "xregexp": "^5.1.1"
   },
   "scripts": {
-    "start": "react-scripts --max_old_space_size=8192 start",
-    "build": "react-scripts --max_old_space_size=8192 build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -124,6 +124,7 @@
   "devDependencies": {
     "buffer": "^6.0.3",
     "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5"
   }

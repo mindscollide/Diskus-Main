@@ -21,10 +21,8 @@ import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
   CleareMessegeNewMeeting,
-  DeleteAgendaWiseMinutesDocumentsApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
-  cleareAllState,
   saveFilesMeetingagendaWiseMinutesApi,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -32,7 +30,6 @@ import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../..
 import AttachmentIcon from "./../Images/Attachment-Icon.png";
 import ArrowDown from "./../Images/Arrow-Down.png";
 import DropdownPurple from "./../Images/Dropdown-Purple.png";
-import DefaultAvatar from "./../Images/avatar.png";
 import EditIcon from "./../Images/Edit-Icon.png";
 import MenuIcon from "./../Images/MenuIcon.png";
 import DeleteIcon from "./../Images/DeleteIcon.png";
@@ -47,7 +44,6 @@ import {
   GetMinuteReviewStatsForOrganizerByMeetingId,
   DeleteMinuteReducer,
 } from "../../../../../../store/actions/Minutes_action";
-import { transform } from "lodash";
 import {
   convertToGMTMinuteTime,
   convertDateToGMTMinute,
@@ -66,8 +62,6 @@ const AgendaWise = ({
   setAddNoteFields,
   fileAttachments,
   setFileAttachments,
-  addReviewers,
-  setAddReviewers,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -76,36 +70,57 @@ const AgendaWise = ({
 
   let isAgenda = true;
 
-  const Delta = Quill.import("delta");
-
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
+  const [openMenuId, setOpenMenuId] = useState(null);
+
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [showRevisionHistory, setShowRevisionHistory] = useState(false);
+
+  const [minutesData, setMinutesData] = useState([]);
+
+  const [openIndices, setOpenIndices] = useState([]);
+
+  const [isOpenDrawerMinute, setIsOpenDrawerMinute] = useState(null);
+
+  const [isOpenDrawerSubMinute, setIsOpenDrawerSubMinute] = useState(null);
+
+  const [menuMinute, setMenuMinute] = useState(false);
+
+  const [minuteReviewData, setMinuteReviewData] = useState(null);
+
+  const closeMenuMinute = useRef(null);
+
   const [isEdit, setisEdit] = useState(false);
+
   const [fileSize, setFileSize] = useState(0);
+
   let currentLanguage = localStorage.getItem("i18nextLng");
+
   const { NewMeetingreducer, AgendaWiseAgendaListReducer, MinutesReducer } =
     useSelector((state) => state);
+
   const editorRef = useRef(null);
+
   const { Dragger } = Upload;
+
   const [fileForSend, setFileForSend] = useState([]);
+
   const [accordianExpand, setAccordianExpand] = useState(false);
-  const [general, setGeneral] = useState(false);
+
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
+
   const [messages, setMessages] = useState([]);
-  const [agenda, setAgenda] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [organizerID, setOrganizerID] = useState(0);
-  const [expandedFiles, setExpandedFiles] = useState([]);
-  const [minuteID, setMinuteID] = useState(0);
+
   const [updateData, setupdateData] = useState(null);
+
   const [agendaOptions, setAgendaOptions] = useState([]);
 
-  const [showMore, setShowMore] = useState(false);
-  const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [agendaID, setAgendaID] = useState([]);
+
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
       id: 0,
@@ -113,10 +128,14 @@ const AgendaWise = ({
     },
   });
 
-  console.log(
-    AgendaWiseAgendaListReducer.AllAgendas,
-    "AgendaWiseAgendaListReducer"
-  );
+  let userID = localStorage.getItem("userID");
+  var Size = Quill.import("attributors/style/size");
+  Size.whitelist = ["14px", "16px", "18px"];
+  Quill.register(Size, true);
+  var FontAttributor = Quill.import("formats/font");
+  var fonts = ["impact", "courier", "comic"];
+  FontAttributor.whitelist = fonts;
+  Quill.register(FontAttributor, true);
 
   useEffect(() => {
     try {
@@ -124,15 +143,9 @@ const AgendaWise = ({
         AgendaWiseAgendaListReducer.AllAgendas !== null &&
         AgendaWiseAgendaListReducer.AllAgendas !== undefined
       ) {
-        console.log(AgendaWiseAgendaListReducer.AllAgendas, "AllAgendas");
         let NewData = [];
-        console.log(
-          AgendaWiseAgendaListReducer.AllAgendas,
-          "agendaListagendaList"
-        );
         AgendaWiseAgendaListReducer.AllAgendas.agendaList.map(
           (agenda, index) => {
-            console.log(agenda, "agendaListagendaList");
             NewData.push({
               value: agenda.id,
               label: agenda.title,
@@ -151,56 +164,6 @@ const AgendaWise = ({
       }
     } catch {}
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
-
-  console.log(agendaOptions, "agendaOptionsagendaOptions");
-
-  // Grouping the messages by agendaID while maintaining the unique titles
-  const groupedMessages = messages.reduce((acc, curr) => {
-    if (!acc[curr.agendaID]) {
-      acc[curr.agendaID] = {
-        agendaID: curr.agendaID,
-        agendaTitle: curr.agendaTitle,
-        items: [
-          {
-            minuteID: curr.minuteID,
-            minutesDetails: curr.minutesDetails,
-            userID: curr.userID,
-            userName: curr.userName,
-            lastUpdatedDate: curr.lastUpdatedDate,
-            lastUpdatedTime: curr.lastUpdatedTime,
-            userProfilePicture: curr.userProfilePicture,
-            minutesAttachmets: curr.minutesAttachmets,
-            agendaTitle: curr.agendaTitle,
-          },
-        ],
-      };
-    } else {
-      acc[curr.agendaID].items.push({
-        minuteID: curr.minuteID,
-        minutesDetails: curr.minutesDetails,
-        userID: curr.userID,
-        userName: curr.userName,
-        lastUpdatedDate: curr.lastUpdatedDate,
-        lastUpdatedTime: curr.lastUpdatedTime,
-        userProfilePicture: curr.userProfilePicture,
-        minutesAttachmets: curr.minutesAttachmets,
-        agendaTitle: curr.agendaTitle,
-      });
-    }
-
-    console.log(acc, "returnreturnreturn");
-    return acc;
-  }, {});
-
-  let userID = localStorage.getItem("userID");
-  var Size = Quill.import("attributors/style/size");
-  Size.whitelist = ["14px", "16px", "18px"];
-  Quill.register(Size, true);
-  console.log("fileSizefileSize", fileSize);
-  var FontAttributor = Quill.import("formats/font");
-  var fonts = ["impact", "courier", "comic"];
-  FontAttributor.whitelist = fonts;
-  Quill.register(FontAttributor, true);
 
   const modules = {
     toolbar: {
@@ -224,10 +187,6 @@ const AgendaWise = ({
     },
   };
 
-  const toggleExpansion = () => {
-    setExpanded(!expanded);
-  };
-
   const props = {
     name: "file",
     multiple: true,
@@ -241,7 +200,6 @@ const AgendaWise = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -305,18 +263,6 @@ const AgendaWise = ({
   // Initialize previousFileList to an empty array
   let previousFileList = [];
 
-  //Sliders For Attachments
-
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
-
   const onTextChange = (content, delta, source) => {
     if (source === "user") {
       const deltaOps = delta.ops || [];
@@ -353,20 +299,6 @@ const AgendaWise = ({
             },
           });
         }
-
-        console.log(String(content).length, content, "String Length ....");
-        // if (source === "user") {
-        //   // Update state only if no image is detected in the content
-        //   const isEmptyContent = content === "<p><br></p>";
-        //   setAddNoteFields({
-        //     ...addNoteFields,
-        //     Description: {
-        //       value: isEmptyContent ? "" : content,
-        //       errorMessage: "",
-        //       errorStatus: false,
-        //     },
-        //   });
-        // }
       }
     }
   };
@@ -399,10 +331,6 @@ const AgendaWise = ({
       dispatch(
         AddAgendaWiseMinutesApiFunc(navigate, Data, t, setAgendaOptionValue)
       );
-      // setAgendaOptionValue({
-      //   value: 0,
-      //   label: "",
-      // });
     } else {
       if (!isDescriptionNotEmpty) {
         setAddNoteFields((prevState) => ({
@@ -611,17 +539,6 @@ const AgendaWise = ({
     );
   };
 
-  const toggleAcordion = (agendaID) => {
-    console.log(agendaID, "notesIDnotesIDnotesID");
-    // setExpanded((prev) => (prev === notesID ? true : false));
-    if (accordianExpand === agendaID) {
-      setAccordianExpand(false);
-    } else {
-      setAccordianExpand(agendaID);
-    }
-    // setExpand(!isExpand);
-  };
-
   useEffect(() => {
     try {
       if (
@@ -760,67 +677,6 @@ const AgendaWise = ({
         )
       );
     }
-
-    // setAgendaOptionValue({
-    //   label: "",
-    //   value: 0,
-    // });
-    // setAddNoteFields({
-    //   ...addNoteFields,
-    //   Description: {
-    //     value: "",
-    //     errorMessage: "",
-    //     errorStatus: true,
-    //   },
-    // });
-
-    // setFileAttachments([]);
-    // setFileForSend([]);
-    // setisEdit(false);
-  };
-  const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
-    console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
-    let minuteID = 0;
-    AgendaWiseData.items.map((id, index) => {
-      minuteID = id.minuteID;
-    });
-    let Data = {
-      MDID: advanceMeetingModalID,
-      MeetingAgendaMinutesID: Number(minuteID),
-    };
-
-    dispatch(
-      DeleteAgendaWiseMinutesDocumentsApiFunc(
-        navigate,
-        Data,
-        t,
-        advanceMeetingModalID,
-        minuteID
-      )
-    );
-    setAddNoteFields({
-      ...addNoteFields,
-      Description: {
-        value: "",
-        errorMessage: "",
-        errorStatus: true,
-      },
-    });
-
-    setFileAttachments([]);
-    // setAgendaOptions([]);
-  };
-
-  const handleshowMore = (index) => {
-    if (showMoreIndex === index && showMore) {
-      // If the clicked index is the same as the expanded one, collapse it
-      setShowMoreIndex(null);
-      setShowMore(false);
-    } else {
-      // If a different index is clicked or it's not expanded, expand the clicked section
-      setShowMoreIndex(index);
-      setShowMore(true);
-    }
   };
 
   useEffect(() => {
@@ -869,28 +725,6 @@ const AgendaWise = ({
 
   // NEW WORK OWAIS!!!!!!!!! ->>>> cxxx|::::::::::::::>
 
-  const [openMenuId, setOpenMenuId] = useState(null);
-
-  const [showVersionHistory, setShowVersionHistory] = useState(false);
-  const [showRevisionHistory, setShowRevisionHistory] = useState(false);
-
-  const [minutesData, setMinutesData] = useState([]);
-
-  const [openIndices, setOpenIndices] = useState([]);
-
-  const [openReviewerDetail, setOpenReviewerDetail] = useState([]);
-  const [openReviewerDetailSubminute, setOpenReviewerDetailSubminute] =
-    useState([]);
-
-  const [isOpenDrawerMinute, setIsOpenDrawerMinute] = useState(null);
-  const [isOpenDrawerSubMinute, setIsOpenDrawerSubMinute] = useState(null);
-
-  const [menuMinute, setMenuMinute] = useState(false);
-
-  const [minuteReviewData, setMinuteReviewData] = useState(null);
-
-  const closeMenuMinute = useRef(null);
-
   const menuPopupMinute = (id) => {
     setOpenMenuId(openMenuId === id ? null : id); // Toggle the menu for the clicked item
   };
@@ -934,22 +768,6 @@ const AgendaWise = ({
     } else {
       setIsOpenDrawerSubMinute(subMinuteID);
     }
-  };
-
-  const openCloseReviewerDetail = (index) => {
-    setOpenReviewerDetail((prevIndices) =>
-      prevIndices.includes(index)
-        ? prevIndices.filter((i) => i !== index)
-        : [...prevIndices, index]
-    );
-  };
-
-  const openCloseReviewerDetailSubminute = (index) => {
-    setOpenReviewerDetailSubminute((prevIndices) =>
-      prevIndices.includes(index)
-        ? prevIndices.filter((i) => i !== index)
-        : [...prevIndices, index]
-    );
   };
 
   function hasAttachments(data) {
@@ -1343,7 +1161,6 @@ const AgendaWise = ({
       {minutesData.map((data, index) => {
         console.log(data, "minutesDataminutesDataminutesData");
         const isOpen = openIndices.includes(index);
-        const isOpenReviewer = openReviewerDetail.includes(index);
         let attachmentResult = hasAttachments(data);
         return (
           <Row className="mt-2">
@@ -1500,12 +1317,6 @@ const AgendaWise = ({
                                               >
                                                 Review Pending:
                                               </span>{" "}
-                                              {/* {parentMinutedata?.MinuteStats
-                                                ?.pendingUsers?.length > 0 &&
-                                                parentMinutedata?.MinuteStats?.pendingUsers?.map(
-                                                  (pendingUserData, index) =>
-                                                    `${pendingUserData}, `
-                                                )} */}
                                               {parentMinutedata?.MinuteStats
                                                 ?.pendingUsers?.length > 0 &&
                                                 parentMinutedata?.MinuteStats?.pendingUsers.map(
@@ -1528,12 +1339,6 @@ const AgendaWise = ({
                                               >
                                                 Review Accepted:
                                               </span>{" "}
-                                              {/* {parentMinutedata?.MinuteStats
-                                                ?.acceptedByUsers?.length > 0 &&
-                                                parentMinutedata?.MinuteStats?.acceptedByUsers?.map(
-                                                  (acceptedUser, index) =>
-                                                    `${acceptedUser}, `
-                                                )} */}
                                               {parentMinutedata?.MinuteStats
                                                 ?.acceptedByUsers?.length > 0 &&
                                                 parentMinutedata?.MinuteStats?.acceptedByUsers.map(
@@ -1665,10 +1470,6 @@ const AgendaWise = ({
                                                           )
                                                         )
                                                       }
-                                                      // name={
-                                                      //   fileData?.displayFileName
-                                                      // }
-                                                      // id={fileData.pK_FileID}
                                                     />
                                                   </Col>
                                                 )
@@ -1863,12 +1664,6 @@ const AgendaWise = ({
                         </>
                       ) : null}
                       {data.subMinutes.map((subMinuteData, subMinuteIndex) => {
-                        console.log(
-                          { subMinuteData },
-                          "parentMinutedataparentMinutedata"
-                        );
-                        const isOpenReviewerSubminute =
-                          openReviewerDetailSubminute.includes(subMinuteIndex);
                         return (
                           <div>
                             {subMinuteData.minuteData.length === 0 ? null : (
@@ -1886,8 +1681,6 @@ const AgendaWise = ({
                                 </Col>
                               </Row>
                             )}
-                            {/* {isOpenReviewerSubminute === false &&
-                            minuteReviewData !== null ? ( */}
                             <>
                               {subMinuteData.minuteData.map(
                                 (minuteDataSubminute) => (
@@ -2003,13 +1796,6 @@ const AgendaWise = ({
                                                   >
                                                     Review Pending:
                                                   </span>{" "}
-                                                  {/* {minuteDataSubminute
-                                                    ?.MinuteStats?.pendingUsers
-                                                    ?.length > 0 &&
-                                                    minuteDataSubminute?.MinuteStats?.pendingUsers?.map(
-                                                      (pendingUserData) =>
-                                                        `${pendingUserData}, `
-                                                    )} */}
                                                   {minuteDataSubminute
                                                     ?.MinuteStats?.pendingUsers
                                                     ?.length > 0 &&
@@ -2037,14 +1823,6 @@ const AgendaWise = ({
                                                   >
                                                     Review Accepted:
                                                   </span>{" "}
-                                                  {/* {minuteDataSubminute
-                                                    ?.MinuteStats
-                                                    ?.acceptedByUsers?.length >
-                                                    0 &&
-                                                    minuteDataSubminute?.MinuteStats?.acceptedByUsers?.map(
-                                                      (acceptedUserData) =>
-                                                        `${acceptedUserData}, `
-                                                    )} */}
                                                   {minuteDataSubminute
                                                     ?.MinuteStats
                                                     ?.acceptedByUsers?.length >
@@ -2074,14 +1852,6 @@ const AgendaWise = ({
                                                   >
                                                     Review Rejected:
                                                   </span>{" "}
-                                                  {/* {minuteDataSubminute
-                                                    ?.MinuteStats
-                                                    ?.rejectedByUsers?.length >
-                                                    0 &&
-                                                    minuteDataSubminute?.MinuteStats?.rejectedByUsers?.map(
-                                                      (rejectedUserData) =>
-                                                        `${rejectedUserData}, `
-                                                    )} */}
                                                   {minuteDataSubminute
                                                     ?.MinuteStats
                                                     ?.rejectedByUsers?.length >
@@ -2186,12 +1956,6 @@ const AgendaWise = ({
                                                               )
                                                             )
                                                           }
-                                                          // name={
-                                                          //   subFileData.displayFileName
-                                                          // }
-                                                          // id={
-                                                          //   subFileData.pK_FileID
-                                                          // }
                                                         />
                                                       </Col>
                                                     )
@@ -2342,15 +2106,11 @@ const AgendaWise = ({
                                                           {t("Revisions")}
                                                         </span>
                                                         <span
-                                                          onClick={
-                                                            () =>
-                                                              handleClickShowVersionHistory(
-                                                                data,
-                                                                minuteDataSubminute.minuteID
-                                                              )
-                                                            // setShowVersionHistory(
-                                                            //   true
-                                                            // )
+                                                          onClick={() =>
+                                                            handleClickShowVersionHistory(
+                                                              data,
+                                                              minuteDataSubminute.minuteID
+                                                            )
                                                           }
                                                           className="border-0"
                                                         >
@@ -2420,7 +2180,6 @@ const AgendaWise = ({
                                 )
                               )}
                             </>
-                            {/* ) : null} */}
                           </div>
                         );
                       })}

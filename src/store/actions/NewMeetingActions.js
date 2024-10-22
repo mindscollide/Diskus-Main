@@ -55,11 +55,9 @@ import {
   UpdateMeetingUserhit,
   setMeetingbyGroupIDRM,
   getMeetingbyGroupIDRM,
-  getAdvanceMeetingAgendabyMeetingID,
   getAllagendaWiseDocumentsApi,
   inviteForCollaboration,
   validateEncryptedStringUserAvailabilityForMeeting,
-  getAllCommittesandGroupsforPolls,
   getUserWiseProposeDateOrganizer,
   endMeetingStatus,
   joinMeeting,
@@ -72,11 +70,7 @@ import {
   ProposeNewMeetingSaveParticipants,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
-import {
-  groupCallRecipients,
-  callRequestReceivedMQTT,
-  LeaveCall,
-} from "./VideoMain_actions";
+import { callRequestReceivedMQTT, LeaveCall } from "./VideoMain_actions";
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -85,15 +79,10 @@ import {
 } from "./VideoFeature_actions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
-import {
-  createConvert,
-  getCurrentDateTimeUTC,
-} from "../../commen/functions/date_formater";
+import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
-import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
-import { GetAllUserChats } from "./Talk_action";
 import {
   endIndexUrl,
   extractedUrl,
@@ -101,7 +90,6 @@ import {
   generateURLParticipant,
 } from "../../commen/functions/urlVideoCalls";
 import copyToClipboard from "../../hooks/useClipBoard";
-import ProposedNewMeeting from "../../container/pages/meeting/scedulemeeting/ProposedNewMeeting/ProposedNewMeeting";
 
 const boardDeckModal = (response) => {
   return {
@@ -672,9 +660,6 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
-                let Data = {
-                  MeetingID: Number(response.data.responseResult.meetingID),
-                };
 
                 dispatch(meetingDetailsGlobalFlag(false));
                 dispatch(organizersGlobalFlag(true));
@@ -782,12 +767,6 @@ const SaveMeetingDetialsNewApiFunction = (
   };
 };
 
-const handlegetallReminderFrequencyInit = () => {
-  return {
-    type: actions.GET_ALL_REMINDER_FREQUENCY_INIT,
-  };
-};
-
 const handlegetallReminderFrequencySuccess = (response, message) => {
   return {
     type: actions.GET_ALL_REMINDER_FREQUENCY_SUCCESS,
@@ -807,7 +786,6 @@ const handlegetallReminderFrequencyFailed = (message) => {
 const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
-    // dispatch(handlegetallReminderFrequencyInit());
     let form = new FormData();
     form.append("RequestMethod", GetMeetingNewFrequencyReminder.RequestMethod);
 
@@ -880,12 +858,6 @@ const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
   };
 };
 
-const handleReucrringInit = () => {
-  return {
-    type: actions.GET_ALL_RECURRING_INIT,
-  };
-};
-
 const handleReucrringSuccess = (response, message, loader) => {
   return {
     type: actions.GET_ALL_RECURRING_SUCCESS,
@@ -907,7 +879,6 @@ const handleReucrringFailed = (message, loader) => {
 const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    // dispatch(handleReucrringInit());
     let form = new FormData();
     form.append("RequestMethod", GetAllRecurringNewMeeting.RequestMethod);
     axios({
@@ -992,8 +963,6 @@ const SearchMeeting_Fail = (message) => {
 };
 const searchNewUserMeeting = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentUserId = localStorage.getItem("userID");
-  let currentOrganizationId = localStorage.getItem("organizationID");
   return (dispatch) => {
     dispatch(SearchMeeting_Init());
     let form = new FormData();
@@ -1036,14 +1005,6 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 totalRecords: response.data.responseResult.totalRecords,
               };
               dispatch(SearchMeeting_Success(newMeetingData, ""));
-              // await dispatch(
-              //   GetAllUserChats(
-              //     navigate,
-              //     parseInt(currentUserId),
-              //     parseInt(currentOrganizationId),
-              //     t
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1328,12 +1289,6 @@ const GetAllParticipantsRoleNew = (navigate, t) => {
 
 //Get Meeting URL
 
-const showMeetingURLInit = () => {
-  return {
-    type: actions.GET_MEETING_URL_INIT,
-  };
-};
-
 const showMeetingURLSuccess = (response, message) => {
   return {
     type: actions.GET_MEETING_URL_SUCCESS,
@@ -1369,7 +1324,6 @@ const FetchMeetingURLApi = (
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    // dispatch(showMeetingURLInit());
     dispatch(MeetingUrlSpinner(true));
     let form = new FormData();
     let videoMeetingID = Number(meetingID);
@@ -1412,7 +1366,6 @@ const FetchMeetingURLApi = (
               dispatch(MeetingUrlSpinner(false));
               let meetingURL = response.data.responseResult.videoURL;
               var match = meetingURL.match(/RoomID=([^&]*)/);
-              let initiateRoomID = localStorage.getItem("initiateCallRoomID");
               let acceptedRoomID = localStorage.getItem("activeRoomID");
               let initiateVideoCallFlag = JSON.parse(
                 localStorage.getItem("initiateVideoCall")
@@ -3748,12 +3701,6 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
 };
 
 //Retrive Document For Meeting
-const showRetriveGeneralMinutesDocsMeetingInit = () => {
-  return {
-    type: actions.GENERAL_DOCUMENT_FOR_MEETING_INIT,
-  };
-};
-
 const showRetriveGeneralMinutesDocsMeetingSuccess = (response, message) => {
   return async (dispatch) => {
     return new Promise((resolve) => {
@@ -4249,7 +4196,6 @@ const showSaveMinutesDocsFailed = (message) => {
 
 const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showSaveMinutesDocsInit());
     let form = new FormData();
@@ -4342,7 +4288,6 @@ const showRetriveGeneralMinutesDocsFailed = (message) => {
 
 const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showRetriveGeneralMinutesDocsInit());
     let form = new FormData();
@@ -4684,7 +4629,6 @@ const UpdateAgendaWiseMinutesApiFunc = (
   setisEdit
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showUpdateAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4855,7 +4799,6 @@ const DeleteAgendaWiseMinutesApiFunc = (
   id
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showDeleteAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4983,8 +4926,6 @@ const DeleteGeneralMinutesFailed = (message) => {
 
 const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
-  let currentMeetingID = localStorage.getItem("meetingID");
   return (dispatch) => {
     dispatch(DeleteGeneralMinutesInit());
     let form = new FormData();
@@ -5112,7 +5053,6 @@ const AddAgendaWiseMinutesApiFunc = (
   setAgendaOptionValue
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showAgendaWiseAddMinutesInit());
     let form = new FormData();
@@ -5329,7 +5269,6 @@ const UpdateMinutesGeneralApiFunc = (
   fileUploadFlag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   let currentMeeting = JSON.parse(localStorage.getItem("currentMeetingID"));
   return async (dispatch) => {
     dispatch(showUpdateMinutesInit());
@@ -5733,7 +5672,6 @@ const showRetriveAgendaWiseDocumentsFailed = (message) => {
 
 const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showRetriveAgendaWiseDocumentsInit());
     let form = new FormData();
@@ -5839,7 +5777,6 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
   MinuteData
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showDeleteGeneralMeetingDocumentsInit());
     let form = new FormData();
@@ -7063,7 +7000,6 @@ const UpdateMeetingUserForAgendaContributor = (
   notifyMessageField
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(UpdateMeetingUserAgendaContributorInit());
     let form = new FormData();
@@ -7233,7 +7169,6 @@ const UpdateMeetingUserForOrganizers = (
   setIsEdit
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(UpdateMeetingUserOrganizersInit());
     let form = new FormData();
@@ -8628,72 +8563,6 @@ const validateStringEmail_fail = (message) => {
   };
 };
 
-// const validateStringEmailApi = (emailString, navigate, t, RouteNo) => {
-//   let Data = {
-//     EncryptedString: emailString,
-//   };
-//   let token = JSON.parse(localStorage.getItem("token"));
-//   return async (dispatch) => {
-//     await dispatch(validateStringEmail_init());
-//     let form = new FormData();
-//     form.append("RequestMethod", ValidateEmailRelatedString.RequestMethod);
-//     form.append("RequestData", JSON.stringify(Data));
-//     axios({
-//       method: "post",
-//       url: meetingApi,
-//       data: form,
-//       headers: {
-//         _token: token,
-//       },
-//     })
-//       .then(async (response) => {
-//         if (response.data.responseCode === 417) {
-//           await dispatch(RefreshToken(navigate, t));
-//           dispatch(validateStringEmailApi(emailString, navigate, t, RouteNo));
-//         } else if (response.data.responseCode === 200) {
-//           if (response.data.responseResult.isExecuted === true) {
-//             if (
-//               response.data.responseResult.responseMessage
-//                 .toLowerCase()
-//                 .includes(
-//                   "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_01".toLowerCase()
-//                 )
-//             ) {
-//               await dispatch(
-//                 validateStringEmail_success(
-//                   response.data.responseResult?.data,
-//                   t("Successfully")
-//                 )
-//               );
-//             } else if (
-//               response.data.responseResult.responseMessage
-//                 .toLowerCase()
-//                 .includes(
-//                   "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_02".toLowerCase()
-//                 )
-//             ) {
-//               dispatch(validateStringEmail_fail(t("Unsuccessful")));
-//             } else if (
-//               response.data.responseResult.responseMessage
-//                 .toLowerCase()
-//                 .includes(
-//                   "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
-//                 )
-//             ) {
-//               dispatch(validateStringEmail_fail(t("Something-went-wrong")));
-//             }
-//           } else {
-//             dispatch(validateStringEmail_fail(t("Something-went-wrong")));
-//           }
-//         } else {
-//           dispatch(validateStringEmail_fail(t("Something-went-wrong")));
-//         }
-//       })
-//       .catch((response) => {
-//         dispatch(validateStringEmail_fail("Something-went-wrong"));
-//       });
-//   };
-// };
 const validateStringEmailApi = (
   emailString,
   navigate,
@@ -9072,19 +8941,6 @@ const getAllMeetingUsersRSVPApi = (navigate, t, Data) => {
 };
 
 // leaveMeetingVideo new Api
-const leaveMeetingVideoInit = () => {
-  return {
-    type: actions.LEAVE_MEETING_VIDEO_INIT,
-  };
-};
-
-const leaveMeetingVideoSuccess = (response, message) => {
-  return {
-    type: actions.LEAVE_MEETING_VIDEO_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
 
 const leaveMeetingVideoFail = (message) => {
   return {
@@ -9096,7 +8952,6 @@ const leaveMeetingVideoFail = (message) => {
 const LeaveMeetingVideo = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
-    // await dispatch(leaveMeetingVideoInit());
     let form = new FormData();
     form.append("RequestMethod", leaveMeetingVideo.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -9121,7 +8976,6 @@ const LeaveMeetingVideo = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
