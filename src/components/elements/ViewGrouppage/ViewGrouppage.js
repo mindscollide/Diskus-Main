@@ -26,8 +26,12 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   );
 
   useEffect(() => {
-    if (ViewGroupID !== null) {
-      dispatch(getbyGroupID(navigate, ViewGroupID, t));
+    try {
+      if (ViewGroupID !== null) {
+        dispatch(getbyGroupID(navigate, ViewGroupID, t));
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, []);
 
