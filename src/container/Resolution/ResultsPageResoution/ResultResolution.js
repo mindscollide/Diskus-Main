@@ -108,10 +108,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
     );
   };
   useEffect(() => {
-    console.log(
-      ResolutionReducer.getResolutionResult,
-      "ResolutionReducerResolutionReducerResolutionReducer"
-    );
     try {
       if (ResolutionReducer.getResolutionResult !== null) {
         let resolutionresult = ResolutionReducer.getResolutionResult;
@@ -281,7 +277,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     className="d-flex justify-content-center"
                   >
                     <Chart
-                      // controls={false}
                       chartType="ColumnChart"
                       width="450px"
                       height="250px"
@@ -289,7 +284,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       data={data}
                       options={options}
                       className={styles["Addchart"]}
-                      
                     />
                   </Col>
                 </Row>
@@ -335,7 +329,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     <Row>
                       {voter.length > 0
                         ? voter.map((data, index) => {
-                            console.log(data, "datadatadata");
                             return (
                               <>
                                 <Col
