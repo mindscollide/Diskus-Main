@@ -78,12 +78,16 @@ const Committee = () => {
   const [mapgroupsData, setMapGroupData] = useState(null);
 
   useEffect(() => {
-    if (currentPage !== null) {
-      dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
-    } else {
-      localStorage.removeItem("CoArcurrentPage");
-      localStorage.setItem("CocurrentPage", 1);
-      dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
+    try {
+      if (currentPage !== null) {
+        dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
+      } else {
+        localStorage.removeItem("CoArcurrentPage");
+        localStorage.setItem("CocurrentPage", 1);
+        dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, []);
 
@@ -121,80 +125,92 @@ const Committee = () => {
   }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
-    if (CommitteeReducer.realtimeCommitteeStatus !== null) {
-      let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
-      if (status === 2) {
-        let findINdexCommitteeStatus = getcommitteedata.findIndex(
-          (data, index) =>
-            data.committeeID ===
-            CommitteeReducer.realtimeCommitteeStatus.commmitteeID
-        );
-        if (findINdexCommitteeStatus !== -1) {
-          let newData = [...getcommitteedata];
-          newData.splice(findINdexCommitteeStatus, 1);
-          setGetCommitteeData(newData);
-          dispatch(realtimeCommitteeStatusResponse(null));
-        }
-      } else if (status === 1 || status === 3) {
-        if (
-          CommitteeReducer.ArcheivedCommittees !== null &&
-          CommitteeReducer.ArcheivedCommittees.committees.length > 0
-        ) {
-          let findisExist =
-            CommitteeReducer.ArcheivedCommittees.committees.findIndex(
-              (data, index) =>
-                Number(data.groupID) ===
-                Number(CommitteeReducer.realtimeCommitteeStatus.commmitteeID)
-            );
-          if (findisExist !== -1) {
-            let findGroupData =
-              CommitteeReducer.ArcheivedCommittees.committees[findisExist];
-            let modifiedData = { ...findGroupData, groupStatusID: status };
-            setGetCommitteeData([modifiedData, ...getcommitteedata]);
-          }
-        } else {
+    try {
+      if (CommitteeReducer.realtimeCommitteeStatus !== null) {
+        let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
+        if (status === 2) {
           let findINdexCommitteeStatus = getcommitteedata.findIndex(
             (data, index) =>
               data.committeeID ===
               CommitteeReducer.realtimeCommitteeStatus.commmitteeID
           );
           if (findINdexCommitteeStatus !== -1) {
-            let newArr = getcommitteedata.map((committeeCard, index) => {
-              if (findINdexCommitteeStatus === index) {
-                let newData = {
-                  ...committeeCard,
-                  committeeStatusID:
-                    CommitteeReducer.realtimeCommitteeStatus.committeeStatusID,
-                };
-                return newData;
-              }
-              return committeeCard;
-            });
-            setGetCommitteeData(newArr);
+            let newData = [...getcommitteedata];
+            newData.splice(findINdexCommitteeStatus, 1);
+            setGetCommitteeData(newData);
             dispatch(realtimeCommitteeStatusResponse(null));
+          }
+        } else if (status === 1 || status === 3) {
+          if (
+            CommitteeReducer.ArcheivedCommittees !== null &&
+            CommitteeReducer.ArcheivedCommittees.committees.length > 0
+          ) {
+            let findisExist =
+              CommitteeReducer.ArcheivedCommittees.committees.findIndex(
+                (data, index) =>
+                  Number(data.groupID) ===
+                  Number(CommitteeReducer.realtimeCommitteeStatus.commmitteeID)
+              );
+            if (findisExist !== -1) {
+              let findGroupData =
+                CommitteeReducer.ArcheivedCommittees.committees[findisExist];
+              let modifiedData = {
+                ...findGroupData,
+                groupStatusID: status,
+              };
+              setGetCommitteeData([modifiedData, ...getcommitteedata]);
+            }
+          } else {
+            let findINdexCommitteeStatus = getcommitteedata.findIndex(
+              (data, index) =>
+                data.committeeID ===
+                CommitteeReducer.realtimeCommitteeStatus.commmitteeID
+            );
+            if (findINdexCommitteeStatus !== -1) {
+              let newArr = getcommitteedata.map((committeeCard, index) => {
+                if (findINdexCommitteeStatus === index) {
+                  let newData = {
+                    ...committeeCard,
+                    committeeStatusID:
+                      CommitteeReducer.realtimeCommitteeStatus
+                        .committeeStatusID,
+                  };
+                  return newData;
+                }
+                return committeeCard;
+              });
+              setGetCommitteeData(newArr);
+              dispatch(realtimeCommitteeStatusResponse(null));
+            }
           }
         }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.realtimeCommitteeStatus]);
 
   useEffect(() => {
-    if (CommitteeReducer.realtimeCommitteeCreateResponse !== null) {
-      let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse;
-      let CommitteeMembers = [...committeeData.committeeMembers];
-      let newCommitteeData = {
-        committeesTitle: committeeData.committeesTitle,
-        committeeID: committeeData.committeeID,
-        userCount: committeeData.userCount,
-        committeeMembers: CommitteeMembers,
-        committeeStatusID: committeeData.committeeStatusID,
-        listofGroups: committeeData.listOfGroups,
-        creatorId: committeeData.creatorID,
-      };
+    try {
+      if (CommitteeReducer.realtimeCommitteeCreateResponse !== null) {
+        let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse;
+        let CommitteeMembers = [...committeeData.committeeMembers];
+        let newCommitteeData = {
+          committeesTitle: committeeData.committeesTitle,
+          committeeID: committeeData.committeeID,
+          userCount: committeeData.userCount,
+          committeeMembers: CommitteeMembers,
+          committeeStatusID: committeeData.committeeStatusID,
+          listofGroups: committeeData.listOfGroups,
+          creatorId: committeeData.creatorID,
+        };
 
-      setGetCommitteeData([newCommitteeData, ...getcommitteedata]);
+        setGetCommitteeData([newCommitteeData, ...getcommitteedata]);
 
-      dispatch(realtimeCommitteeResponse(null));
+        dispatch(realtimeCommitteeResponse(null));
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
 
@@ -221,6 +237,7 @@ const Committee = () => {
       console.log(error);
     }
   }, [CommitteeReducer.removeCommitteeMember]);
+
   const archivedmodaluser = async (e) => {
     setShowModal(true);
   };
@@ -391,27 +408,31 @@ const Committee = () => {
     localStorage.setItem("ViewCommitteeID", data.committeeID);
   };
   useEffect(() => {
-    if (
-      CommitteeReducer.ResponseMessage !== "" &&
-      CommitteeReducer.ResponseMessage !== undefined &&
-      CommitteeReducer.ResponseMessage !== t("No-data-available")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: CommitteeReducer.ResponseMessage,
-      });
-      setTimeout(() => {
+    try {
+      if (
+        CommitteeReducer.ResponseMessage !== "" &&
+        CommitteeReducer.ResponseMessage !== undefined &&
+        CommitteeReducer.ResponseMessage !== t("No-data-available")
+      ) {
         setOpen({
           ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: CommitteeReducer.ResponseMessage,
         });
-      }, 3000);
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
 
-      dispatch(getallcommitteebyuserid_clear());
-    } else {
-      dispatch(getallcommitteebyuserid_clear());
+        dispatch(getallcommitteebyuserid_clear());
+      } else {
+        dispatch(getallcommitteebyuserid_clear());
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.ResponseMessage]);
 
@@ -466,8 +487,8 @@ const Committee = () => {
           </>
         ) : (
           <>
-            <Row className='mt-3'>
-              <Col md={6} sm={6} lg={6} className='d-flex gap-3 '>
+            <Row className="mt-3">
+              <Col md={6} sm={6} lg={6} className="d-flex gap-3 ">
                 <span className={styles["Committee-heading-size"]}>
                   {t("Committees")}
                 </span>
@@ -477,12 +498,12 @@ const Committee = () => {
                   onClick={groupModal}
                   icon={
                     <img
-                      draggable='false'
+                      draggable="false"
                       src={plusbutton}
-                      height='7.6px'
-                      width='7.6px'
+                      height="7.6px"
+                      width="7.6px"
                       className={styles["PLusICon"]}
-                      alt=''
+                      alt=""
                     />
                   }
                 />
@@ -492,25 +513,26 @@ const Committee = () => {
                 lg={6}
                 md={6}
                 sm={6}
-                className='d-flex justify-content-end mt-2 '>
+                className="d-flex justify-content-end mt-2 "
+              >
                 <Button
                   className={styles["Archived-Group-btn-Committee-section"]}
                   text={t("Archived-committees")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
-                      draggable='false'
+                      draggable="false"
                       src={archivedbtn}
-                      width='18px'
-                      height='18px'
+                      width="18px"
+                      height="18px"
                       className={styles["archivedbtnIcon"]}
-                      alt=''
+                      alt=""
                     />
                   }
                 />
               </Col>
             </Row>
-            <Row className='mt-4'>
+            <Row className="mt-4">
               <Col
                 lg={12}
                 md={12}
@@ -520,8 +542,9 @@ const Committee = () => {
                 <Row
                   className={`${"d-flex text-center committees_box   color-5a5a5a m-0 p-0  mt-1"} ${
                     styles["committess_box"]
-                  }`}>
-                  <Col sm={12} md={12} lg={12} className='m-0 p-0 mt-2 '>
+                  }`}
+                >
+                  <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
                     <Row>
                       {getcommitteedata.length > 0 ? (
                         getcommitteedata.map((data, index) => {
@@ -530,8 +553,9 @@ const Committee = () => {
                               lg={3}
                               md={3}
                               sm={12}
-                              className='mb-3'
-                              key={index}>
+                              className="mb-3"
+                              key={index}
+                            >
                               <Card
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}
@@ -586,11 +610,11 @@ const Committee = () => {
                                 changeHandleStatus={changeHandleStatus}
                                 Icon={
                                   <img
-                                    draggable='false'
+                                    draggable="false"
                                     src={committeeicon}
-                                    width='32.88px'
-                                    height='28.19px'
-                                    alt=''
+                                    width="32.88px"
+                                    height="28.19px"
+                                    alt=""
                                   />
                                 }
                                 BtnText={
@@ -611,46 +635,50 @@ const Committee = () => {
                           sm={12}
                           lg={12}
                           md={12}
-                          className={styles["CommiiteeNotFoundContainer"]}>
+                          className={styles["CommiiteeNotFoundContainer"]}
+                        >
                           <Row>
-                            <Col sm={12} md={12} lg={12} className='mb-3'>
+                            <Col sm={12} md={12} lg={12} className="mb-3">
                               <img
-                                draggable='false'
+                                draggable="false"
                                 src={NoCommitteeImg}
-                                alt=''
+                                alt=""
                               />
                             </Col>
                             <Col
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles["CommitteeNotFoundText"]}>
+                              className={styles["CommitteeNotFoundText"]}
+                            >
                               {t("You-dont-have-any-committee-yet")}
                             </Col>
                             <Col
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles["CommitteeNotFoundText"]}>
+                              className={styles["CommitteeNotFoundText"]}
+                            >
                               {t("Click-create-new-committee")}
                             </Col>
                             <Col
                               sm={12}
                               md={12}
                               lg={12}
-                              className='d-flex justify-content-center mt-3'>
+                              className="d-flex justify-content-center mt-3"
+                            >
                               <Button
                                 className={styles["create-Committee-btn"]}
                                 text={t("Create-new-committee")}
                                 onClick={groupModal}
                                 icon={
                                   <img
-                                    draggable='false'
+                                    draggable="false"
                                     src={plusbutton}
-                                    height='7.6px'
-                                    width='7.6px'
+                                    height="7.6px"
+                                    width="7.6px"
                                     className={styles["PLusICon"]}
-                                    alt=''
+                                    alt=""
                                   />
                                 }
                               />
@@ -667,19 +695,21 @@ const Committee = () => {
               </Col>
             </Row>
             {getcommitteedata.length > 0 && (
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center '>
+                  className="d-flex justify-content-center "
+                >
                   <Container className={styles["PaginationStyle-Committee"]}>
                     <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={"pagination-groups-table"}>
+                        className={"pagination-groups-table"}
+                      >
                         <CustomPagination
                           total={totalRecords}
                           current={currentPage}
