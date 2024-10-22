@@ -25,7 +25,6 @@ import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm
 import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
-import AgendaView from "./AgendaView/AgendaView";
 import ParentAgenda from "./ParentAgenda";
 import { onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
@@ -84,9 +83,7 @@ const Agenda = ({
   );
 
   const [enableVotingPage, setenableVotingPage] = useState(false);
-  const [agendaViewPage, setagendaViewPage] = useState(false);
   const [cancelModalView, setCancelModalView] = useState(false);
-  const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
@@ -333,11 +330,7 @@ const Agenda = ({
           </Row>
         </>
       ) : null}
-      {savedViewAgenda ? (
-        <SaveAgendaView />
-      ) : agendaViewPage ? (
-        <AgendaView />
-      ) : enableVotingPage ? (
+      {enableVotingPage ? (
         <VotingPage />
       ) : (
         <>
