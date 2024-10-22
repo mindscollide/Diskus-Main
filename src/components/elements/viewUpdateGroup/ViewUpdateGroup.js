@@ -91,7 +91,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       if (totalFiles > 15) {
         setOpen({
           flag: true,
-          message: t("Not-allowed-more-than-10-files"),
+          message: t("Not-allowed-more-than-15-files"),
         });
         return;
       }
