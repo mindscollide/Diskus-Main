@@ -455,7 +455,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
             NotesAttachments: notesAttachment,
           };
-          console.log(Data, "DataDataData");
           dispatch(
             UpdateNotesAPI(
               navigate,
