@@ -4,7 +4,6 @@ import {
   getAllCommittesandGroupsforPolls,
   searcPollsRequestMethod,
   castVote,
-  getAllPollStatus,
   getPollByPollID,
   updatePolls,
   viewvotes,
@@ -277,13 +276,6 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
                   )
                 );
               }
-              // dispatch(
-              //   deltePollsSuccess(
-              //     response.data.responseResult,
-
-              //     t("Poll Status Updated Successfully")
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -658,27 +650,6 @@ const castVoteApi = (
         dispatch(castVoteFailed(t("Something-went-wrong")));
       }
     });
-  };
-};
-
-const getAllPollsStatusInit = () => {
-  return {
-    type: actions.GET_ALL_POLL_STATUS_INIT,
-  };
-};
-
-const getAllPollsStatusSuccess = (response, message) => {
-  return {
-    type: actions.GET_ALL_POLL_STATUS_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-const getAllPollsStatusFailed = (message) => {
-  return {
-    type: actions.GET_ALL_POLL_STATUS_FAILED,
-    message: message,
   };
 };
 
@@ -2335,53 +2306,6 @@ const getPollsByPollIdforCommitteeApi = (
             } else if (Number(check) === 4) {
               setViewPublishedPoll(true);
             }
-            // if (parseInt(check) === 1) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(globalFlag(true));
-            //   await dispatch(setEditpollModal(true));
-            //
-            // } else if (parseInt(check) === 2) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(getAllCommitteesandGroups(navigate, t));
-            //   await dispatch(setEditpollModal(true));
-
-            //
-            // } else if (parseInt(check) === 3) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollProgressModal(true));
-            //
-            // } else if (parseInt(check) === 4) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollModal(true));
-            //
-            // } else if (parseInt(check) === 5) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setVotePollModal(true));
-            // }
             await dispatch(
               getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );
@@ -2476,53 +2400,6 @@ const getPollByPollIdforGroups = (
             } else if (Number(check) === 4) {
               setViewPublishedPoll(true);
             }
-            // if (parseInt(check) === 1) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(globalFlag(true));
-            //   await dispatch(setEditpollModal(true));
-            //
-            // } else if (parseInt(check) === 2) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(getAllCommitteesandGroups(navigate, t));
-            //   await dispatch(setEditpollModal(true));
-
-            //
-            // } else if (parseInt(check) === 3) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollProgressModal(true));
-            //
-            // } else if (parseInt(check) === 4) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollModal(true));
-            //
-            // } else if (parseInt(check) === 5) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setVotePollModal(true));
-            // }
             await dispatch(
               getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );
@@ -2617,53 +2494,6 @@ const getPollByPollIdforMeeting = (
             } else if (Number(check) === 4) {
               setViewPublishedPoll(true);
             }
-            // if (parseInt(check) === 1) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(globalFlag(true));
-            //   await dispatch(setEditpollModal(true));
-            //
-            // } else if (parseInt(check) === 2) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(getAllCommitteesandGroups(navigate, t));
-            //   await dispatch(setEditpollModal(true));
-
-            //
-            // } else if (parseInt(check) === 3) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollProgressModal(true));
-            //
-            // } else if (parseInt(check) === 4) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollModal(true));
-            //
-            // } else if (parseInt(check) === 5) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setVotePollModal(true));
-            // }
             await dispatch(
               getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );
