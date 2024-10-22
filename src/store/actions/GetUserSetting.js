@@ -74,7 +74,7 @@ const getUserSetting = (navigate, t, loader) => {
                 response.data.responseResult.userSettings
                   .userAllowMicrosoftCalendarSynch != null &&
                 response.data.responseResult.userSettings
-                  .userAllowMicrosoftCalendarSynch != false
+                  .userAllowMicrosoftCalendarSynch !== false
               ) {
                 localStorage.setItem(
                   "officeEventColor",
@@ -87,7 +87,7 @@ const getUserSetting = (navigate, t, loader) => {
                 response.data.responseResult.userSettings
                   .userAllowGoogleCalendarSynch != null &&
                 response.data.responseResult.userSettings
-                  .userAllowGoogleCalendarSynch != false
+                  .userAllowGoogleCalendarSynch !== false
               ) {
                 localStorage.setItem(
                   "googleEventColor",
@@ -159,13 +159,6 @@ const getUserSetting = (navigate, t, loader) => {
                   getCallRinger.configValue
                 );
               }
-
-              // localStorage.setItem(
-              //   "videoBaseURLParticipant",
-              //   response.data.responseResult.userSettings.configurations[14]
-              //     .configValue
-              // );
-
               await dispatch(
                 settingSuccess(response.data.responseResult.userSettings, "")
               );
@@ -367,8 +360,6 @@ const updateuserprofile = (
   setUser
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let userID = JSON.parse(localStorage.getItem("userID"));
-  let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   return (dispatch) => {
     dispatch(updateprofileinit());
     let form = new FormData();

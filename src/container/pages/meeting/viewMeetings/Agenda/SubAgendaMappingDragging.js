@@ -52,14 +52,10 @@ const SubAgendaMappingDragging = ({
   advanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
-  //Timepicker
-  let currentLanguage = localStorage.getItem("i18nextLng");
 
   const { MeetingAgendaReducer } = useSelector((state) => state);
 
   const navigate = useNavigate();
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
   const dispatch = useDispatch();
   let currentUserID = localStorage.getItem("userID");
 
@@ -125,17 +121,7 @@ const SubAgendaMappingDragging = ({
     }
   };
 
-  useEffect(() => {
-    if (currentLanguage !== undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
-      }
-    }
-  }, [currentLanguage]);
+
 
   const EnableViewVoteModal = (record) => {
     dispatch(showviewVotesAgenda(true));

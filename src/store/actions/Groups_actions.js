@@ -25,11 +25,6 @@ const clearMessagesGroup = () => {
     type: actions.CLEAR_MESSAGE_RESPONSE_COMMITTEE,
   };
 };
-const getGroup_Init = () => {
-  return {
-    type: actions.GET_GROUPS_BYUSERID_INIT,
-  };
-};
 
 const getGroup_Success = (response, message) => {
   return {
@@ -50,7 +45,6 @@ const getGroups = (navigate, t, currentPage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  // let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
   let Data = {
     UserID: JSON.parse(createrID),
     OrganizationID: JSON.parse(OrganizationID),
@@ -88,13 +82,8 @@ const getGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(groupLoader(false));
-         
-              dispatch(
-                getGroup_Success(
-                  response.data.responseResult,
-                  ""
-                )
-              );
+
+              dispatch(getGroup_Success(response.data.responseResult, ""));
               // }
             } else if (
               response.data.responseResult.responseMessage
@@ -187,7 +176,6 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  // let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
   let Data = {
     UserID: JSON.parse(createrID),
     OrganizationID: JSON.parse(OrganizationID),
@@ -224,10 +212,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(
-                getArchivedGroups_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getArchivedGroups_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -355,10 +340,7 @@ const getbyGroupID = (
                 )
             ) {
               dispatch(
-                getbyGroupID_Success(
-                  response.data.responseResult.group,
-                  ""
-                )
+                getbyGroupID_Success(response.data.responseResult.group, "")
               );
               let newData = {
                 GroupID: Number(GroupId),
@@ -443,7 +425,6 @@ const createGroup_Fail = (message) => {
 };
 const createGroup = (navigate, Data, t, setCreategrouppage) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   return (dispatch) => {
@@ -473,10 +454,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                 )
             ) {
               await dispatch(
-                createGroup_Success(
-                  response.data.responseResult,
-                  ""
-                )
+                createGroup_Success(response.data.responseResult, "")
               );
               localStorage.setItem(
                 "groupID",
@@ -736,7 +714,6 @@ const updateGroup_Fail = (message) => {
 };
 const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(updateGroup_Init());
     let form = new FormData();
@@ -780,8 +757,6 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               };
 
               dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
-              // dispatch(getGroups(navigate, t, currentPage));
-              // setViewUpdateGroup(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -976,10 +951,7 @@ const getAllGroups = (navigate, t) => {
               "Groups_GroupServiceManager_GetAllOrganizationGroups_01".toLowerCase()
             ) {
               dispatch(
-                getAllGroups_Success(
-                  response.data.responseResult.groups,
-                  ""
-                )
+                getAllGroups_Success(response.data.responseResult.groups, "")
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1299,7 +1271,6 @@ const saveFiles_fail = (message) => {
 const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
     Files: data,
@@ -1515,7 +1486,6 @@ const showRetriveDocumentsFailed = (message) => {
 
 const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showRetriveDocumentsInit());
     let form = new FormData();
@@ -1543,10 +1513,7 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
                 )
             ) {
               await dispatch(
-                showRetriveDocumentsSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                showRetriveDocumentsSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage

@@ -29,7 +29,6 @@ const VoteModal = ({ setenableVotingPage }) => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [addOptions, setAddOptions] = useState(false);
   const [saveOptions, setSaveOptions] = useState([{ text: "" }]);
-  const [error, setError] = useState(false);
   const [voteModalAttrbutes, setVoteModalAttrbutes] = useState({
     VoteQuestion: "",
     Answer: "",
@@ -46,35 +45,8 @@ const VoteModal = ({ setenableVotingPage }) => {
   const cancelButtonFunc = () => {
     setAddOptions(false);
   };
-  const data = [
-    {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muhammad Saif</label>,
-      Role: <label className="column-boldness">Content Writer</label>,
-      Email: <label className="column-boldness">muhammadsaif@gmail.com</label>,
-      Button: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-center"
-            >
-              <img
-                src={redcrossIcon}
-                alt=""
-                height="21.79px"
-                width="21.79px"
-                className="cursor-pointer"
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
-  const [rowsData, setRowsData] = useState(data);
+
+  const [rowsData, setRowsData] = useState([]);
   const MeetingColoumns = [
     {
       title: (
@@ -549,10 +521,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                 <Row className="mt-2">
                   <Col lg={12} md={12} sm={12}>
                     <TextField
-                      applyClass={
-                        error
-                          ? "text-area-close-New_meeting_error"
-                          : "text-area-close-New_meeting"
+                      applyClass={ "text-area-close-New_meeting"
                       }
                       labelclass={"d-none"}
                       type="text"
@@ -569,8 +538,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                   <Row>
                     <Col>
                       <p
-                        className={
-                          error && voteModalAttrbutes.VoteQuestion === ""
+                        className={ voteModalAttrbutes.VoteQuestion === ""
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
                         }
@@ -787,8 +755,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                       <Row>
                         <Col>
                           <p
-                            className={
-                              error && voteModalAttrbutes.SelectOrganizers === 0
+                            className={voteModalAttrbutes.SelectOrganizers === 0
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
                             }
@@ -820,8 +787,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                       <Row>
                         <Col>
                           <p
-                            className={
-                              error && voteModalAttrbutes.SelectOptions === 0
+                            className={voteModalAttrbutes.SelectOptions === 0
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
                             }
@@ -852,8 +818,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                     <Row>
                       <Col>
                         <p
-                          className={
-                            error && rowsData.length <= 0
+                          className={rowsData.length <= 0
                               ? ` ${styles["errorMessage-inLogin"]} `
                               : `${styles["errorMessage-inLogin_hidden"]}`
                           }

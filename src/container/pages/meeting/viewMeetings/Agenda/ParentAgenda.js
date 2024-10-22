@@ -74,9 +74,6 @@ const ParentAgenda = ({
   const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
-  //Timepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
 
   // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index) => {
@@ -102,18 +99,6 @@ const ParentAgenda = ({
 
     return exists;
   };
-
-  useEffect(() => {
-    if (currentLanguage !== undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
-      }
-    }
-  }, [currentLanguage]);
 
   const EnableViewVoteModal = (record) => {
     dispatch(showviewVotesAgenda(true));

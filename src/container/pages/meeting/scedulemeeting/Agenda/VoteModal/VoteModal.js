@@ -7,7 +7,6 @@ import {
   Table,
   Notification,
 } from "../../../../../../components/elements";
-import { Checkbox } from "antd";
 import styles from "./VoteModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,10 +20,8 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAllMeetingOrganizers } from "../../../../../../store/actions/MeetingOrganizers_action";
 import {
-  GetAgendaVotingDetails,
   SaveAgendaVoting,
   GetAllVotingResultDisplay,
-  clearResponseMessage,
   GetCurrentAgendaDetails,
   getAgendaVotingDetails_success,
 } from "../../../../../../store/actions/MeetingAgenda_action";
@@ -46,7 +43,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     localStorage.getItem("currentAgendaVotingID")
   );
 
-  // let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
   const { NewMeetingreducer, MeetingAgendaReducer, MeetingOrganizersReducer } =
     useSelector((state) => state);
@@ -303,20 +299,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     dispatch(GetAllVotingResultDisplay(navigate, t));
   }, []);
 
-  // useEffect(() => {
-  //   if (
-  //     MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
-  //     MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
-  //     MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
-  //   ) {
-  //     setAgendaVotingDetails(
-  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails
-  //     );
-  //   } else {
-  //     setAgendaVotingDetails([]);
-  //   }
-  // }, [MeetingAgendaReducer.MeetingAgendaVotingDetailsData]);
-
   useEffect(() => {
     if (
       MeetingAgendaReducer.GetCurrentAgendaDetails !== null &&
@@ -329,60 +311,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     }
   }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
 
-  // console.log("agendaVotingDetails", agendaVotingDetails);
-
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
-  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
-  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0 &&
-  //       Object.keys(MeetingAgendaReducer.MeetingAgendaVotingDetailsData)
-  //         .length > 0
-  //     ) {
-  //       console.log("Going in the condition");
-  //       let agendaVotingDetails =
-  //         MeetingAgendaReducer.MeetingAgendaVotingDetailsData
-  //           .agendaVotingDetails;
-  //       console.log("Going in the condition", agendaVotingDetails);
-  //       setAgendaDetails({
-  //         ...agendaDetails,
-  //         userID: agendaVotingDetails.userID,
-  //         voteQuestion: agendaVotingDetails.voteQuestion,
-  //         agendaTitle: currentAgendaDetails.title,
-  //         votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
-  //         votingResultDisplayID:
-  //           agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
-  //         agendaId: currentAgendaDetails.iD,
-  //         agendaVotingID: agendaVotingDetails.agendaVotingID,
-  //         isvotingClosed: false,
-  //       });
-  //       const newSaveOptions = [...saveOptions];
-  //       let votingAnswerData = agendaVotingDetails.votingAnswers;
-
-  //       if (Array.isArray(votingAnswerData)) {
-  //         votingAnswerData.forEach((item) => {
-  //           if (
-  //             !newSaveOptions.some(
-  //               (option) => option.votingAnswer === item.votingAnswer
-  //             )
-  //           ) {
-  //             newSaveOptions.push({
-  //               votingAnswer: item.votingAnswer,
-  //               votingAnswerID: item.votingAnswerID,
-  //               agendaID: item.agendaID,
-  //             });
-  //           }
-  //         });
-  //         setSaveOptions(newSaveOptions);
-  //       } else {
-  //         setSaveOptions(saveOptions);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.log("Going in the error condition", error);
-  //   }
-  // }, [MeetingAgendaReducer.MeetingAgendaVotingDetailsData]);
 
   useEffect(() => {
     if (currentAgendaDetails.length !== 0) {
@@ -483,6 +411,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                 className="cursor-pointer"
                 draggable={false}
                 onClick={() => deleteRow(record)}
+                alt=""
               />
             </>
           );
@@ -539,6 +468,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     width="17px"
                     height="17px"
                     className={styles["Image_profile"]}
+                    alt=""
                   />
                   <span className={styles["Participant_names"]}>
                     {matchedOrganizer.userName}
@@ -615,6 +545,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
               width="17px"
               height="17px"
               className={styles["Image_profile"]}
+              alt=""
             />
             <span className={styles["Participant_names"]}>
               {organizer.userName}
@@ -766,7 +697,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
               <Col lg={12} md={12} sm={12} className={styles["OVer_padding"]}>
                 <Row>
                   <Col lg={7} md={7} sm={7} className="d-flex gap-2">
-                    <img src={Cast} height="25.85px" width="25.85px" />
+                    <img src={Cast} height="25.85px" width="25.85px" alt=""/>
                     <span className={styles["Voter_modal_heading"]}>
                       {t("Add-vote-item")}
                     </span>
@@ -896,6 +827,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                           height="15px"
                           onClick={SlideLeft}
                           className="cursor-pointer"
+                          alt=""
                         />
                       </Col>
 
@@ -923,6 +855,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                                         height="20.68px"
                                         width="20.68px"
                                         className={styles["IconClass"]}
+                                        alt=""
                                       />
                                     </Col>
                                   </Row>
@@ -986,6 +919,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                                                 height="21.79px"
                                                 width="21.79px"
                                                 className="cursor-pointer"
+                                                alt=""
                                                 onClick={() =>
                                                   handleCrossBtn(index)
                                                 }
@@ -1013,6 +947,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                           height="15px"
                           onClick={Slideright}
                           className="cursor-pointer"
+                          alt=""
                         />
                       </Col>
                     </Row>
