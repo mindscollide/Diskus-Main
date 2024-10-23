@@ -640,6 +640,7 @@ const ReviewMinutes = () => {
           "updatedMinutesAgendaupdatedMinutesAgenda"
         );
         setMinutesGeneral(updatedMinutesData);
+        setMinutesToReview(minutesToReview - 1);
       } else if (minuteViewFlag === 2 || minuteViewFlag === 1) {
         const updatedMinuteData = {
           ...minuteDataToReject,
@@ -662,15 +663,11 @@ const ReviewMinutes = () => {
           "updatedMinutesAgendaupdatedMinutesAgenda"
         );
         setMinutesAgenda(updatedMinutesAgenda);
+        setMinutesToReview(minutesToReview - 1);
       }
       dispatch(rejectCommentModal(false));
 
-      // console.log(
-      //   commentText,
-      //   minuteDataToReject,
-      //   minuteViewFlag,
-      //   "commentTextcommentTextcommentText"
-      // );
+   
     },
     [minuteDataToReject, minuteViewFlag]
   );
