@@ -244,10 +244,7 @@ const ModalShareFile = ({
           value: 1,
         });
       } else {
-        // setOpen({
-        //   flag: true,
-        //   message: t("User-select-must"),
-        // });
+        // showMessage(t("User-select-must"), "error", setOpen);
       }
     } else {
       showMessage(t("All-options-must-be-selected"), "error", setOpen);

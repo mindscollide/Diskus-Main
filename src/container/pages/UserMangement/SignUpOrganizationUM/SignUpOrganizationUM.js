@@ -24,6 +24,7 @@ import {
 } from "../../../../store/actions/Admin_Organization";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const SignUpOrganizationUM = () => {
   const { t } = useTranslation();
@@ -103,6 +104,7 @@ const SignUpOrganizationUM = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
   const [isEmailUnique, setEmailUnique] = useState(false);
@@ -472,11 +474,7 @@ const SignUpOrganizationUM = () => {
             setAgainCall(true);
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t("Email-should-be-in-email-format"),
-          });
+          showMessage(t("Email-should-be-in-email-format"), "error", setOpen);
         }
       } else {
         setSignUpDetails({
@@ -568,11 +566,8 @@ const SignUpOrganizationUM = () => {
                 : signUpDetails.PhoneNumber.errorStatus,
           },
         });
-        setOpen({
-          ...open,
-          open: true,
-          message: t("Please-fill-all-the-fields"),
-        });
+
+        showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
       }
     } else {
       //if its not a free trial in User Management
@@ -628,11 +623,7 @@ const SignUpOrganizationUM = () => {
             setAgainCall(true);
           }
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t("Email-should-be-in-email-format"),
-          });
+          showMessage(t("Email-should-be-in-email-format"), "error", setOpen);
         }
       } else {
         setSignUpDetails({
@@ -724,11 +715,7 @@ const SignUpOrganizationUM = () => {
                 : signUpDetails.PhoneNumber.errorStatus,
           },
         });
-        setOpen({
-          ...open,
-          open: true,
-          message: t("Please-fill-all-the-fields"),
-        });
+        showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
       }
     }
   };

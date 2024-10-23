@@ -669,7 +669,7 @@ const Minutes = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     } else if (general) {
@@ -695,7 +695,7 @@ const Minutes = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     }
@@ -795,26 +795,12 @@ const Minutes = ({
       ResponseMessage !== t("List-updated-successfully") &&
       ResponseMessage !== t("No-data-available")
     ) {
-      console.log(ResponseMessage, "ResponseMessageResponseMessage");
-      // setOpen({
-      //   ...open,
-      //   flag: true,
-      //   message: ResponseMessage,
-      // });
-      // setTimeout(() => {
-      //   setOpen({
-      //     ...open,
-      //     flag: false,
-      //     message: "",
-      //   });
+      // showMessage(ResponseMessage, "success", setOpen);
       //   dispatch(CleareMessegeNewMeeting());
-      // }, 3000);
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
   }, [ResponseMessage]);
-
-  console.log("editorRoleeditorRole", editorRole);
 
   return (
     <section>

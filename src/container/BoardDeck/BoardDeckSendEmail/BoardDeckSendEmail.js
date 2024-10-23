@@ -168,29 +168,6 @@ const BoardDeckSendEmail = ({
       e.target.value = "";
     }
   };
-  // function handleKeyDown(e) {
-  //   if (e.key !== "Enter") return;
-  //   const value = e.target.value.trim();
-
-  //   // Regular expression to validate email format
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  // if (!emailRegex.test(value)) {
-  //   setTimeout(
-  //     setOpen({
-  //       open: true,
-  //       message: t("Invalid-email-format"),
-  //     }),
-  //     3000
-  //   );
-  //   return;
-  // }
-
-  //   setTags([...tags, value]);
-  //   e.target.value = "";
-  // }
-
-  //Organizational Users
   useEffect(() => {
     let newOrganizersData =
       MeetingOrganizersReducer.AllUserCommitteesGroupsData;
