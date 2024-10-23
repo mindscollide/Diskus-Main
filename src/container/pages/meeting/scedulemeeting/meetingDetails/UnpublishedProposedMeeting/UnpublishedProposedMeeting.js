@@ -204,7 +204,7 @@ const UnpublishedProposedMeeting = ({
       await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
       setIsProposedMeetEdit(true);
       setProposedNewMeeting(true);
-    } else if (agendaContributorFlag === false) {
+    } else {
       let Data = {
         MeetingID: Number(id),
       };
@@ -603,8 +603,8 @@ const UnpublishedProposedMeeting = ({
                     <Button
                       text={t("Publish-meeting")}
                       className={styles["publish_meeting_btn"]}
-                      onClick={() =>{
-                        console.log("end meeting chaek")
+                      onClick={() => {
+                        console.log("end meeting chaek");
                         dispatch(
                           UpdateOrganizersMeeting(
                             false,
@@ -613,8 +613,8 @@ const UnpublishedProposedMeeting = ({
                             5,
                             apiData
                           )
-                        )}
-                      }
+                        );
+                      }}
                     />
                   )
                 ) : record.status === "12" ? (

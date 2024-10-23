@@ -37,6 +37,7 @@ import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar
 import {
   FileUploadToDo,
   ResetAllFilesUpload,
+  uploaddocumentloader,
 } from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
@@ -580,11 +581,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     let size = true;
     let sizezero = true;
 
-    if (updatedFilesForSend.length + filesArray.length > 15) {
+    if (updatedFilesForSend.length + filesArray.length > 10) {
       setTimeout(() => {
         setOpen({
           flag: true,
-          message: t("Not-allowed-more-than-15-files"),
+          message: t("Not-allowed-more-than-10-files"),
         });
       }, 3000);
       return;
@@ -751,7 +752,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               const uploadPromises = fileForSend.map((newData) => {
                 // Return the promise from FileUploadToDo
                 return dispatch(
-                  FileUploadToDo(navigate, newData, t, newfile, 1)
+                  FileUploadToDo(navigate, newData, t, newfile, 3)
                 );
               });
               // Wait for all uploadPromises to resolve
@@ -784,6 +785,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               setObjMeetingAgenda(defaultMeetingAgenda);
               setFileForSend([]);
               setAttachments([]);
+              dispatch(uploaddocumentloader(false));
             } else {
               let newData = {
                 ObjMeetingAgenda: objMeetingAgenda,
@@ -820,7 +822,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             let newfile = [];
             const uploadPromises = fileForSend.map((newData) => {
               // Return the promise from FileUploadToDo
-              return dispatch(FileUploadToDo(navigate, newData, t, newfile, 1));
+              return dispatch(FileUploadToDo(navigate, newData, t, newfile, 3));
             });
             // Wait for all uploadPromises to resolve
             await Promise.all(uploadPromises);
@@ -855,6 +857,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             setAttachments([]);
             setFileForSend([]);
             setForUpdateAttachent([]);
+            dispatch(uploaddocumentloader(false));
           } else {
             let newData = {
               ObjMeetingAgenda: objMeetingAgenda,
@@ -879,87 +882,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
       } else {
         setModalField(true);
-        // setOpen({
-        //   ...open,
-        //   flag: true,
-        //   message: t("Enter-Title-Information"),
-        // });
       }
       setModalField(false);
     } else {
       if (objMeetingAgenda.Title) {
-        // if (objMeetingAgenda.URLs !== "") {
-        //   if (urlPatternValidation(objMeetingAgenda.URLs)) {
-        //     if (fileForSend.length > 0) {
-        //       setModalField(false);
-        //       let fileforSend = [];
-        //       let newfile = [];
-        //       const uploadPromises = fileForSend.map((newData) => {
-        //         // Return the promise from FileUploadToDo
-        //         return dispatch(FileUploadToDo(navigate, newData, t, newfile));
-        //       });
-        //       // Wait for all uploadPromises to resolve
-        //       await Promise.all(uploadPromises);
-        //       newfile.forEach((fileData, index) => {
-        //         fileforSend.push({
-        //           PK_MAAID: 0,
-        //           DisplayAttachmentName: fileData.DisplayAttachmentName,
-        //           OriginalAttachmentName: fileData.OriginalAttachmentName,
-        //           CreationDateTime: "111111",
-        //           FK_MAID: 0,
-        //         });
-        //       });
-        //       let previousAdendas = [...createMeeting.MeetingAgendas];
-
-        //       let newData = {
-        //         ObjMeetingAgenda: objMeetingAgenda,
-        //         MeetingAgendaAttachments: fileforSend,
-        //       };
-        //       previousAdendas.push(newData);
-        //       setCreateMeeting({
-        //         ...createMeeting,
-        //         MeetingAgendas: previousAdendas,
-        //       });
-        //       setObjMeetingAgenda({
-        //         Title: "",
-        //         PresenterName: "",
-        //         URLs: "",
-        //         FK_MDID: 0,
-        //       });
-        //       setFileForSend([]);
-        //       setMeetingAgendaAttachments({
-        //         ...meetingAgendaAttachments,
-        //         MeetingAgendaAttachments: [],
-        //       });
-        //       setAttachments([]);
-        //     } else {
-        //       setModalField(false);
-        //       let previousAdendas = [...createMeeting.MeetingAgendas];
-        //       let newData = {
-        //         ObjMeetingAgenda: objMeetingAgenda,
-        //         MeetingAgendaAttachments: [],
-        //       };
-        //       previousAdendas.push(newData);
-        //       setCreateMeeting({
-        //         ...createMeeting,
-        //         MeetingAgendas: previousAdendas,
-        //       });
-        //       setObjMeetingAgenda({
-        //         Title: "",
-        //         PresenterName: "",
-        //         URLs: "",
-        //         FK_MDID: 0,
-        //       });
-        //     }
-        //   } else {
-        //     setModalField(false);
-        //     setOpen({
-        //       ...open,
-        //       flag: true,
-        //       message: t("Enter-valid-url"),
-        //     });
-        //   }
-        // } else {
         if (fileForSend.length > 0) {
           setModalField(false);
           setObjMeetingAgenda(defaultMeetingAgenda);
@@ -975,7 +901,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
           const uploadPromises = fileForSend.map((newData) => {
             // Return the promise from FileUploadToDo
-            return dispatch(FileUploadToDo(navigate, newData, t, newfile, 1));
+            return dispatch(FileUploadToDo(navigate, newData, t, newfile, 3));
           });
           // Wait for all uploadPromises to resolve
           await Promise.all(uploadPromises);
@@ -998,6 +924,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             ...createMeeting,
             MeetingAgendas: previousAdendas,
           });
+          dispatch(uploaddocumentloader(false));
         } else {
           setModalField(false);
           let previousAdendas = [...createMeeting.MeetingAgendas];

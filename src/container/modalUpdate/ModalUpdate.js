@@ -617,11 +617,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let fileSizeArr = fileSize;
 
     // Check if adding the new files exceeds the limit
-    if (currentFiles.length + filesArray.length > 15) {
+    if (currentFiles.length + filesArray.length > 10) {
       setTimeout(() => {
         setOpen({
           flag: true,
-          message: t("Not-allowed-more-than-15-files"),
+          message: t("Not-allowed-more-than-10-files"),
         });
       }, 3000);
       return;
@@ -2131,27 +2131,39 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     }
   };
 
+  // const deleteAttachmentfromAgenda = (attachmentdata, index) => {
+  //   let meetingAgendas = meetingAgendaAttachments.MeetingAgendaAttachments;
+  //   console.log(meetingAgendas, "meetingAgendasmeetingAgendas");
+  //   console.log(attachmentdata, "meetingAgendasmeetingAgendas");
+  //   console.log(index, "meetingAgendasmeetingAgendas");
+  //   // let newArray = {};
+
+  //   // if (attachmentdata.PK_MAAID > 0) {
+  //   //   newArray = {
+  //   //     CreationDateTime: attachmentdata.CreationDateTime,
+  //   //     DisplayAttachmentName: "",
+  //   //     FK_MAID: attachmentdata.FK_MAID,
+  //   //     OriginalAttachmentName: "",
+  //   //     PK_MAAID: attachmentdata.PK_MAAID,
+  //   //   };
+  //   //   meetingAgendas[index] = newArray;
+  //   // } else {
+  //   //   meetingAgendas.splice(index, 1);
+  //   // }
+
+  //   // setMeetingAgendaAttachments({
+  //   //   ...meetingAgendaAttachments,
+  //   //   ["MeetingAgendaAttachments"]: meetingAgendas,
+  //   // });
+  // };
+
   const deleteAttachmentfromAgenda = (attachmentdata, index) => {
-    let meetingAgendas = meetingAgendaAttachments.MeetingAgendaAttachments;
-
-    let newArray = {};
-
-    if (attachmentdata.PK_MAAID > 0) {
-      newArray = {
-        CreationDateTime: attachmentdata.CreationDateTime,
-        DisplayAttachmentName: "",
-        FK_MAID: attachmentdata.FK_MAID,
-        OriginalAttachmentName: "",
-        PK_MAAID: attachmentdata.PK_MAAID,
-      };
-      meetingAgendas[index] = newArray;
-    } else {
-      meetingAgendas.splice(index, 1);
-    }
-
     setMeetingAgendaAttachments({
       ...meetingAgendaAttachments,
-      ["MeetingAgendaAttachments"]: meetingAgendas,
+      MeetingAgendaAttachments:
+        meetingAgendaAttachments.MeetingAgendaAttachments.filter(
+          (agenda) => agenda.PK_MAAID !== attachmentdata.PK_MAAID
+        ),
     });
   };
 
