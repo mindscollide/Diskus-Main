@@ -51,6 +51,7 @@ import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB"
 import Select from "react-select";
 import { Tooltip } from "antd";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../commen/functions/utils";
 const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
@@ -552,8 +553,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     let size = true;
     let sizezero = true;
 
-    if (updatedFilesForSend.length + filesArray.length > 10) {
-      showMessage(t("You-can-not-upload-more-then-10-files"), "error", setOpen);
+    if (updatedFilesForSend.length + filesArray.length > 15) {
+      showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
       return;
     }
 
@@ -561,9 +562,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
       let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
 
-      if (mergeFileSizes + fileSizeinMB > 100) {
+      if (mergeFileSizes + fileSizeinMB > maxFileSize) {
         showMessage(
-          t("You-can-not-upload-more-then-100MB-files"),
+          t("File-size-should-not-be-greater-then-1-5GB"),
           "error",
           setOpen
         );
@@ -1391,10 +1392,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // for attendies handler
   const handleSubmit = async () => {
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
-      setOpen({
-        message: t("Please-add-atleast-one-participant"),
-        flag: true,
-      });
+        showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
       return;
     }
     let finalDateTime = createConvert(

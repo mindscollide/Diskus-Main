@@ -48,7 +48,6 @@ const Notes = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false);
-
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -63,34 +62,38 @@ const Notes = () => {
   const [isExpanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    if (notesPagesize !== null && notesPage !== null) {
-      let Data = {
-        UserID: parseInt(createrID),
-        OrganizationID: JSON.parse(OrganizationID),
-        Title: "",
-        PageNumber: JSON.parse(notesPage),
-        Length: JSON.parse(notesPagesize),
+    try {
+      if (notesPagesize !== null && notesPage !== null) {
+        let Data = {
+          UserID: parseInt(createrID),
+          OrganizationID: JSON.parse(OrganizationID),
+          Title: "",
+          PageNumber: JSON.parse(notesPage),
+          Length: JSON.parse(notesPagesize),
+        };
+        dispatch(GetNotes(navigate, Data, t));
+      } else {
+        localStorage.setItem("notesPage", 1);
+        localStorage.setItem("notesPageSize", 50);
+        let Data = {
+          UserID: parseInt(createrID),
+          OrganizationID: JSON.parse(OrganizationID),
+          Title: "",
+          PageNumber: 1,
+          Length: 50,
+        };
+        dispatch(GetNotes(navigate, Data, t));
+      }
+      setAddNotes(false);
+      setViewModalShow(false);
+      setUpdateShow(false);
+      return () => {
+        localStorage.removeItem("notesPage");
+        localStorage.removeItem("notesPageSize");
       };
-      dispatch(GetNotes(navigate, Data, t));
-    } else {
-      localStorage.setItem("notesPage", 1);
-      localStorage.setItem("notesPageSize", 50);
-      let Data = {
-        UserID: parseInt(createrID),
-        OrganizationID: JSON.parse(OrganizationID),
-        Title: "",
-        PageNumber: 1,
-        Length: 50,
-      };
-      dispatch(GetNotes(navigate, Data, t));
+    } catch (error) {
+      console.log(error, "error");
     }
-    setAddNotes(false);
-    setViewModalShow(false);
-    setUpdateShow(false);
-    return () => {
-      localStorage.removeItem("notesPage");
-      localStorage.removeItem("notesPageSize");
-    };
   }, []);
 
   // render Notes Data
@@ -218,13 +221,18 @@ const Notes = () => {
       setExpanded(number);
     }
   };
+
   useEffect(() => {
-    if (
-      NotesReducer.ResponseMessage !== "" &&
-      NotesReducer.ResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(NotesReducer.ResponseMessage, "success", setOpen);
-      dispatch(ClearNotesResponseMessage());
+    try {
+      if (
+        NotesReducer.ResponseMessage !== "" &&
+        NotesReducer.ResponseMessage !== t("No-data-available")
+      ) {
+        showMessage(NotesReducer.ResponseMessage, "success", setOpen);
+        dispatch(ClearNotesResponseMessage());
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [NotesReducer.ResponseMessage]);
 

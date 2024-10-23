@@ -26,19 +26,25 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
       : 1
   );
   useEffect(() => {
-    if (ViewCommitteeID !== null) {
-      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-      let Data = {
-        CommitteeID: Number(ViewCommitteeID),
-        OrganizationId: OrganizationID,
-      };
-      dispatch(getCommitteesbyCommitteeId(navigate, Data, t));
+    try {
+      if (ViewCommitteeID !== null) {
+        let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+        let Data = {
+          CommitteeID: Number(ViewCommitteeID),
+          OrganizationId: OrganizationID,
+        };
+        dispatch(getCommitteesbyCommitteeId(navigate, Data, t));
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ViewCommitteeID]);
+
   const handleClose = () => {
     setViewGroupPage(false);
     localStorage.removeItem("ViewCommitteeID");
   };
+
   useEffect(() => {
     try {
       if (
@@ -54,6 +60,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
       }
     } catch {}
   }, [CommitteeReducer.getCommitteeByCommitteeID]);
+
   return (
     <>
       <section className=" color-5a5a5a">

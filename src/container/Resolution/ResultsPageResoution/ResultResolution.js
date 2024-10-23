@@ -323,8 +323,7 @@ const ResultResolution = ({ setResultresolution }) => {
                   >
                     <Row>
                       {voter.length > 0
-                        ? voter.map((data) => {
-                            console.log(data, "datadatadata");
+                        ? voter.map((data, index) => {
                             return (
                               <>
                                 <Col

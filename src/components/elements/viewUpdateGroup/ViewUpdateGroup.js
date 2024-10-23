@@ -4,7 +4,12 @@ import styles from "./ViewUpdateGroup.module.css";
 import featherupload from "../../../assets/images/featherupload.svg";
 import { useTranslation } from "react-i18next";
 import { Upload } from "antd";
-import { Button, AttachmentViewer } from "./../../../components/elements";
+
+import {
+  Button,
+  AttachmentViewer,
+  Notification,
+} from "./../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,6 +19,7 @@ import {
 } from "../../../store/actions/Groups_actions";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 import { maxFileSize } from "../../../commen/functions/utils";
+import { showMessage } from "../snack_bar/utill";
 const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -26,8 +32,9 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   const [fileForSend, setFileForSend] = useState([]);
   const [fileSize, setFileSize] = useState(0);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [viewGroupDetails, setViewGroupDetails] = useState({
     Title: "",
@@ -43,24 +50,28 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   const { GroupsReducer } = useSelector((state) => state);
 
   useEffect(() => {
-    if (GroupsReducer.getGroupByGroupIdResponse !== null) {
-      let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
-      let groupHeadsData = groupDetails.groupMembers.filter(
-        (data) => data.groupRole.groupRoleID === 2
-      );
-      let groupMembersData = groupDetails.groupMembers.filter(
-        (data) => data.groupRole.groupRoleID === 1
-      );
-      setViewGroupDetails({
-        Title: groupDetails.title,
-        Description: groupDetails.description,
-        GroupMembers: groupMembersData,
-        GroupHeads: groupHeadsData,
-        GroupStatus: groupDetails.groupStatus,
-        GroupType: groupDetails.groupType,
-        isTalk: groupDetails.isTalk,
-        GroupID: groupDetails.groupID,
-      });
+    try {
+      if (GroupsReducer.getGroupByGroupIdResponse !== null) {
+        let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
+        let groupHeadsData = groupDetails.groupMembers.filter(
+          (data, index) => data.groupRole.groupRoleID === 2
+        );
+        let groupMembersData = groupDetails.groupMembers.filter(
+          (data, index) => data.groupRole.groupRoleID === 1
+        );
+        setViewGroupDetails({
+          Title: groupDetails.title,
+          Description: groupDetails.description,
+          GroupMembers: groupMembersData,
+          GroupHeads: groupHeadsData,
+          GroupStatus: groupDetails.groupStatus,
+          GroupType: groupDetails.groupType,
+          isTalk: groupDetails.isTalk,
+          GroupID: groupDetails.groupID,
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [GroupsReducer]);
 
@@ -75,21 +86,17 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + fileAttachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
       let sizezero = true;
       let size = true;
-      let totalFiles = fileList.length + fileAttachments.length;
       if (totalFiles > 15) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > maxFileSize)  {
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -100,24 +107,15 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         );
 
         if (!size) {
-          setOpen({
-            flag: true,
-            message: t("File-size-should-not-be-greater-then-1-5GB"),
-          });
+          showMessage(
+            t("File-size-should-not-be-greater-then-1-5GB"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -503,6 +501,12 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
           </Col>
         </Row>
       </section>
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        severity={open.severity}
+      />
     </>
   );
 };

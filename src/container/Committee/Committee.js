@@ -80,12 +80,16 @@ const Committee = () => {
   const [mapgroupsData, setMapGroupData] = useState(null);
 
   useEffect(() => {
-    if (currentPage !== null) {
-      dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
-    } else {
-      localStorage.removeItem("CoArcurrentPage");
-      localStorage.setItem("CocurrentPage", 1);
-      dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
+    try {
+      if (currentPage !== null) {
+        dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
+      } else {
+        localStorage.removeItem("CoArcurrentPage");
+        localStorage.setItem("CocurrentPage", 1);
+        dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, []);
 
@@ -123,80 +127,92 @@ const Committee = () => {
   }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
-    if (CommitteeReducer.realtimeCommitteeStatus !== null) {
-      let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
-      if (status === 2) {
-        let findINdexCommitteeStatus = getcommitteedata.findIndex(
-          (data, index) =>
-            data.committeeID ===
-            CommitteeReducer.realtimeCommitteeStatus.commmitteeID
-        );
-        if (findINdexCommitteeStatus !== -1) {
-          let newData = [...getcommitteedata];
-          newData.splice(findINdexCommitteeStatus, 1);
-          setGetCommitteeData(newData);
-          dispatch(realtimeCommitteeStatusResponse(null));
-        }
-      } else if (status === 1 || status === 3) {
-        if (
-          CommitteeReducer.ArcheivedCommittees !== null &&
-          CommitteeReducer.ArcheivedCommittees.committees.length > 0
-        ) {
-          let findisExist =
-            CommitteeReducer.ArcheivedCommittees.committees.findIndex(
-              (data, index) =>
-                Number(data.groupID) ===
-                Number(CommitteeReducer.realtimeCommitteeStatus.commmitteeID)
-            );
-          if (findisExist !== -1) {
-            let findGroupData =
-              CommitteeReducer.ArcheivedCommittees.committees[findisExist];
-            let modifiedData = { ...findGroupData, groupStatusID: status };
-            setGetCommitteeData([modifiedData, ...getcommitteedata]);
-          }
-        } else {
+    try {
+      if (CommitteeReducer.realtimeCommitteeStatus !== null) {
+        let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
+        if (status === 2) {
           let findINdexCommitteeStatus = getcommitteedata.findIndex(
             (data, index) =>
               data.committeeID ===
               CommitteeReducer.realtimeCommitteeStatus.commmitteeID
           );
           if (findINdexCommitteeStatus !== -1) {
-            let newArr = getcommitteedata.map((committeeCard, index) => {
-              if (findINdexCommitteeStatus === index) {
-                let newData = {
-                  ...committeeCard,
-                  committeeStatusID:
-                    CommitteeReducer.realtimeCommitteeStatus.committeeStatusID,
-                };
-                return newData;
-              }
-              return committeeCard;
-            });
-            setGetCommitteeData(newArr);
+            let newData = [...getcommitteedata];
+            newData.splice(findINdexCommitteeStatus, 1);
+            setGetCommitteeData(newData);
             dispatch(realtimeCommitteeStatusResponse(null));
+          }
+        } else if (status === 1 || status === 3) {
+          if (
+            CommitteeReducer.ArcheivedCommittees !== null &&
+            CommitteeReducer.ArcheivedCommittees.committees.length > 0
+          ) {
+            let findisExist =
+              CommitteeReducer.ArcheivedCommittees.committees.findIndex(
+                (data, index) =>
+                  Number(data.groupID) ===
+                  Number(CommitteeReducer.realtimeCommitteeStatus.commmitteeID)
+              );
+            if (findisExist !== -1) {
+              let findGroupData =
+                CommitteeReducer.ArcheivedCommittees.committees[findisExist];
+              let modifiedData = {
+                ...findGroupData,
+                groupStatusID: status,
+              };
+              setGetCommitteeData([modifiedData, ...getcommitteedata]);
+            }
+          } else {
+            let findINdexCommitteeStatus = getcommitteedata.findIndex(
+              (data, index) =>
+                data.committeeID ===
+                CommitteeReducer.realtimeCommitteeStatus.commmitteeID
+            );
+            if (findINdexCommitteeStatus !== -1) {
+              let newArr = getcommitteedata.map((committeeCard, index) => {
+                if (findINdexCommitteeStatus === index) {
+                  let newData = {
+                    ...committeeCard,
+                    committeeStatusID:
+                      CommitteeReducer.realtimeCommitteeStatus
+                        .committeeStatusID,
+                  };
+                  return newData;
+                }
+                return committeeCard;
+              });
+              setGetCommitteeData(newArr);
+              dispatch(realtimeCommitteeStatusResponse(null));
+            }
           }
         }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.realtimeCommitteeStatus]);
 
   useEffect(() => {
-    if (CommitteeReducer.realtimeCommitteeCreateResponse !== null) {
-      let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse;
-      let CommitteeMembers = [...committeeData.committeeMembers];
-      let newCommitteeData = {
-        committeesTitle: committeeData.committeesTitle,
-        committeeID: committeeData.committeeID,
-        userCount: committeeData.userCount,
-        committeeMembers: CommitteeMembers,
-        committeeStatusID: committeeData.committeeStatusID,
-        listofGroups: committeeData.listOfGroups,
-        creatorId: committeeData.creatorID,
-      };
+    try {
+      if (CommitteeReducer.realtimeCommitteeCreateResponse !== null) {
+        let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse;
+        let CommitteeMembers = [...committeeData.committeeMembers];
+        let newCommitteeData = {
+          committeesTitle: committeeData.committeesTitle,
+          committeeID: committeeData.committeeID,
+          userCount: committeeData.userCount,
+          committeeMembers: CommitteeMembers,
+          committeeStatusID: committeeData.committeeStatusID,
+          listofGroups: committeeData.listOfGroups,
+          creatorId: committeeData.creatorID,
+        };
 
-      setGetCommitteeData([newCommitteeData, ...getcommitteedata]);
+        setGetCommitteeData([newCommitteeData, ...getcommitteedata]);
 
-      dispatch(realtimeCommitteeResponse(null));
+        dispatch(realtimeCommitteeResponse(null));
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
 
@@ -223,6 +239,7 @@ const Committee = () => {
       console.log(error);
     }
   }, [CommitteeReducer.removeCommitteeMember]);
+
   const archivedmodaluser = async (e) => {
     setShowModal(true);
   };
@@ -371,16 +388,20 @@ const Committee = () => {
     localStorage.setItem("ViewCommitteeID", data.committeeID);
   };
   useEffect(() => {
-    if (
-      CommitteeReducer.ResponseMessage !== "" &&
-      CommitteeReducer.ResponseMessage !== undefined &&
-      CommitteeReducer.ResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(CommitteeReducer.ResponseMessage, "success", setOpen);
+    try {
+      if (
+        CommitteeReducer.ResponseMessage !== "" &&
+        CommitteeReducer.ResponseMessage !== undefined &&
+        CommitteeReducer.ResponseMessage !== t("No-data-available")
+      ) {
+        showMessage(CommitteeReducer.ResponseMessage, "success", setOpen);
 
-      dispatch(getallcommitteebyuserid_clear());
-    } else {
-      dispatch(getallcommitteebyuserid_clear());
+        dispatch(getallcommitteebyuserid_clear());
+      } else {
+        dispatch(getallcommitteebyuserid_clear());
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.ResponseMessage]);
 
@@ -470,7 +491,12 @@ const Committee = () => {
               </Col>
             </Row>
             <Row className="mt-4">
-              <Col lg={12} md={12} sm={12}>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                // className={styles["Committee-Main_Scrollbar"]}
+              >
                 <Row
                   className={`${"d-flex text-center committees_box   color-5a5a5a m-0 p-0  mt-1"} ${
                     styles["committess_box"]

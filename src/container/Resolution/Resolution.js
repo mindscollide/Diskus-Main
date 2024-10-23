@@ -98,28 +98,38 @@ const Resolution = () => {
   let resolutionNonVoter = localStorage.getItem("resNonVot");
 
   useEffect(() => {
-    if (resolutionVoter !== null) {
-      try {
+    try {
+      if (resolutionVoter !== null) {
         try {
-          validateStringResolutionApi(resolutionVoter, navigate, t, 1, dispatch)
-            .then((response) => {
-              dispatch(
-                getVotesDetails(
-                  navigate,
-                  response.resolutionID,
-                  t,
-                  setVoteresolution
-                )
-              );
-              localStorage.removeItem("resVot");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } catch (error) {
-          console.log(error);
-        }
-      } catch (error) {}
+          try {
+            validateStringResolutionApi(
+              resolutionVoter,
+              navigate,
+              t,
+              1,
+              dispatch
+            )
+              .then((response) => {
+                dispatch(
+                  getVotesDetails(
+                    navigate,
+                    response.resolutionID,
+                    t,
+                    setVoteresolution
+                  )
+                );
+                localStorage.removeItem("resVot");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          } catch (error) {
+            console.log(error);
+          }
+        } catch (error) {}
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [resolutionVoter]);
 
@@ -186,14 +196,18 @@ const Resolution = () => {
   }, []);
 
   useEffect(() => {
-    if (currentLanguage !== undefined && currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
+    try {
+      if (currentLanguage !== undefined && currentLanguage !== null) {
+        if (currentLanguage === "en") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_en);
+        } else if (currentLanguage === "ar") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_ar);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [currentLanguage]);
 
@@ -1067,89 +1081,106 @@ const Resolution = () => {
 
   // voter resolution state manage
   useEffect(() => {
-    if (ResolutionReducer.searchVoterResolution !== null) {
-      setSearchVoter(ResolutionReducer.searchVoterResolution.resolutionTable);
-      setTotalVoterResolution(
-        ResolutionReducer.searchVoterResolution.totalRecords
-      );
-    } else {
-      setSearchVoter([]);
+    try {
+      if (ResolutionReducer.searchVoterResolution !== null) {
+        setSearchVoter(ResolutionReducer.searchVoterResolution.resolutionTable);
+        setTotalVoterResolution(
+          ResolutionReducer.searchVoterResolution.totalRecords
+        );
+      } else {
+        setSearchVoter([]);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.searchVoterResolution]);
 
   // moderator resolution state manage
   useEffect(() => {
-    if (ResolutionReducer.GetResolutions !== null) {
-      setTotalResolution(ResolutionReducer.GetResolutions.totalRecords);
-      setRows(ResolutionReducer.GetResolutions.resolutionTable);
-    } else {
-      setRows([]);
+    try {
+      if (ResolutionReducer.GetResolutions !== null) {
+        setTotalResolution(ResolutionReducer.GetResolutions.totalRecords);
+        setRows(ResolutionReducer.GetResolutions.resolutionTable);
+      } else {
+        setRows([]);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.GetResolutions]);
 
   useEffect(() => {
-    if (ResolutionReducer.mqttResolutionCreated !== null) {
-      try {
-        let getData = ResolutionReducer.mqttResolutionCreated;
-        let findIndexModerator = isSearchVoter.findIndex(
-          (data, index) =>
-            data.resolutionID === getData.resolution.pK_ResolutionID
-        );
-        if (resolutionView === 2 && (buttonTab === 1 || buttonTab === 3)) {
-          // Check if the user is a valid voter or non-voter
-          const findVoterisValid =
-            getData?.voters.find((obj) => obj.fK_UID === Number(userID)) ||
-            getData?.nonVoters.find((obj) => obj.fK_UID === Number(userID));
-          console.log(
-            findIndexModerator,
-            findVoterisValid,
-            getData,
-            "findIndexModeratorfindIndexModerator"
+    try {
+      if (ResolutionReducer.mqttResolutionCreated !== null) {
+        try {
+          let getData = ResolutionReducer.mqttResolutionCreated;
+          let findIndexModerator = isSearchVoter.findIndex(
+            (data, index) =>
+              data.resolutionID === getData.resolution.pK_ResolutionID
           );
-          if (findVoterisValid) {
-            const voterResolution = {
-              attachments: getData.attachments,
-              decision: getData.resolution.resolutionDecision,
-              decisionDate: getData.resolution.decisionAnnouncementDateTime,
-              fK_VotingStatus_ID: findVoterisValid.fK_VotingStatus_ID,
-              isAlreadyVoted: findVoterisValid.isAlreadyVoted,
-              isAttachmentAvailable: getData.resolution.isAttachmentAvailable,
-              isVoter: findVoterisValid.isVoter === true ? 1 : 0,
-              resolutionID: getData.resolution.pK_ResolutionID,
-              resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
-              resolutionTitle: getData.resolution.title,
-              voterID: findVoterisValid.pK_RV_ID,
-              votingDeadline: getData.resolution.votingDeadline,
-              votingMethod: getData.resolution.votingMethod,
-              votingStatus: findVoterisValid.status,
-            };
+          if (resolutionView === 2 && (buttonTab === 1 || buttonTab === 3)) {
+            // Check if the user is a valid voter or non-voter
+            const findVoterisValid =
+              getData?.voters.find((obj) => obj.fK_UID === Number(userID)) ||
+              getData?.nonVoters.find((obj) => obj.fK_UID === Number(userID));
+            console.log(
+              findIndexModerator,
+              findVoterisValid,
+              getData,
+              "findIndexModeratorfindIndexModerator"
+            );
+            if (findVoterisValid) {
+              const voterResolution = {
+                attachments: getData.attachments,
+                decision: getData.resolution.resolutionDecision,
+                decisionDate: getData.resolution.decisionAnnouncementDateTime,
+                fK_VotingStatus_ID: findVoterisValid.fK_VotingStatus_ID,
+                isAlreadyVoted: findVoterisValid.isAlreadyVoted,
+                isAttachmentAvailable: getData.resolution.isAttachmentAvailable,
+                isVoter: findVoterisValid.isVoter === true ? 1 : 0,
+                resolutionID: getData.resolution.pK_ResolutionID,
+                resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
+                resolutionTitle: getData.resolution.title,
+                voterID: findVoterisValid.pK_RV_ID,
+                votingDeadline: getData.resolution.votingDeadline,
+                votingMethod: getData.resolution.votingMethod,
+                votingStatus: findVoterisValid.status,
+              };
 
-            if (findIndexModerator === -1) {
-              setSearchVoter((prev) => [voterResolution, ...prev]);
-            } else {
-              setSearchVoter((prev) => {
-                const copyData = [...prev];
-                copyData.splice(findIndexModerator, 1, voterResolution);
-                return copyData;
-              });
+              if (findIndexModerator === -1) {
+                setSearchVoter((prev) => [voterResolution, ...prev]);
+              } else {
+                setSearchVoter((prev) => {
+                  const copyData = [...prev];
+                  copyData.splice(findIndexModerator, 1, voterResolution);
+                  return copyData;
+                });
+              }
             }
           }
-        }
-      } catch {}
-      dispatch(resolutionMQTTCreate(null));
+        } catch {}
+        dispatch(resolutionMQTTCreate(null));
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.mqttResolutionCreated]);
 
   useEffect(() => {
-    if (ResolutionReducer.mqttResolutionCancelled !== null) {
-      try {
-        let findCancelledResolution = isSearchVoter.filter(
-          (obj) =>
-            obj.resolutionID !==
-            ResolutionReducer.mqttResolutionCancelled.resolution.pK_ResolutionID
-        );
-        setSearchVoter(findCancelledResolution);
-      } catch {}
+    try {
+      if (ResolutionReducer.mqttResolutionCancelled !== null) {
+        try {
+          let findCancelledResolution = isSearchVoter.filter(
+            (obj) =>
+              obj.resolutionID !==
+              ResolutionReducer.mqttResolutionCancelled.resolution
+                .pK_ResolutionID
+          );
+          setSearchVoter(findCancelledResolution);
+        } catch {}
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.mqttResolutionCancelled]);
 

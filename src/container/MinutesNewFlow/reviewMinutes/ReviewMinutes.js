@@ -60,7 +60,10 @@ const ReviewMinutes = () => {
   const [parentMinuteID, setParentMinuteID] = useState(0);
   const [isAgenda, setIsAgenda] = useState(false);
   const [disableSubmit, setDisableSubmit] = useState(false);
-
+  console.log(
+    { minutesAgenda, minutesGeneral },
+    "minutesGeneralminutesGeneral"
+  );
   const divRef = useRef(null);
 
   const countActorBundleStatusID2 = (data) => {
@@ -263,14 +266,27 @@ const ReviewMinutes = () => {
   };
 
   const updateAcceptMinutes = (minutesData, rejectData) => {
+    console.log(minutesData, "minutesDataminutesData updateAcceptMinutes");
     return minutesData.map((agenda) => {
       // Update main minuteData
       const updatedMinuteData = agenda.minuteData.map((minute) => {
         if (minute.minuteID === rejectData.minuteID) {
+          console.log(
+            minute.minuteID,
+            rejectData.minuteID,
+            minute,
+            "minutesDataminutesData updateAcceptMinutes"
+          );
+
           return {
             ...minute,
             reason: "",
             actorBundleStatusID: 3,
+            declinedReviews:
+              minute.declinedReviews.length > 0 &&
+              minute.declinedReviews.filter(
+                (userReview, index) => currentUserID !== userReview.fK_UID
+              ),
           };
         }
         return minute;
@@ -280,10 +296,22 @@ const ReviewMinutes = () => {
       const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
         const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
           if (subMinute.minuteID === rejectData.minuteID) {
+            console.log(
+              subMinute.minuteID,
+              rejectData.minuteID,
+              subMinute,
+              "minutesDataminutesData updateAcceptMinutes"
+            );
+
             return {
               ...subMinute,
               reason: "",
               actorBundleStatusID: 3,
+              declinedReviews:
+                subMinute.declinedReviews.length > 0 &&
+                subMinute.declinedReviews.filter(
+                  (userReview, index) => currentUserID !== userReview.fK_UID
+                ),
             };
           }
           return subMinute;
@@ -306,14 +334,31 @@ const ReviewMinutes = () => {
     // Update MinutesGeneral
     const updatedMinutesGeneral = minutesGeneral.map((minute) => {
       if (minute.minuteID === data.minuteID) {
+        console.log(
+          minute.minuteID,
+          data.minuteID,
+          minute,
+          "acceptMinuteacceptMinute minuteminute"
+        );
         return {
           ...minute,
           reason: "",
           actorBundleStatusID: 3,
+          declinedReviews:
+            minute.declinedReviews.length > 0 &&
+            minute.declinedReviews.filter(
+              (userReview, index) => currentUserID !== userReview.fK_UID
+            ),
         };
       }
+      console.log(minute, "acceptMinuteacceptMinute minuteminute");
+
       return minute;
     });
+    console.log(
+      { updatedMinutesGeneral },
+      "acceptMinuteacceptMinute minuteminute"
+    );
 
     setMinutesAgenda(updatedMinutesAgenda);
     setMinutesGeneral(updatedMinutesGeneral);
@@ -747,7 +792,9 @@ const ReviewMinutes = () => {
                                                 className={
                                                   styles["Accepted-comment"]
                                                 }
-                                                disableBtn={true}
+                                                onClick={() =>
+                                                  acceptMinute(parentMinutedata)
+                                                }
                                               />
                                             ) : parentMinutedata.actorBundleStatusID ===
                                               2 ? (
@@ -780,7 +827,15 @@ const ReviewMinutes = () => {
                                                 className={
                                                   styles["Reject-comment"]
                                                 }
-                                                disableBtn={true}
+                                                // disableBtn={true}
+                                                onClick={() => {
+                                                  dispatch(
+                                                    rejectCommentModal(true)
+                                                  );
+                                                  setMinuteDataToReject(
+                                                    parentMinutedata
+                                                  );
+                                                }}
                                               />
                                             ) : parentMinutedata.actorBundleStatusID ===
                                               2 ? (
@@ -1903,6 +1958,7 @@ const ReviewMinutes = () => {
                                                               "Rejected-comment"
                                                             ]
                                                           }
+                                                          disableBtn={true}
                                                         />
                                                       </>
                                                     ) : null}
@@ -2925,7 +2981,8 @@ const ReviewMinutes = () => {
                                     <Button
                                       text={t("Reject")}
                                       className={styles["Reject-comment"]}
-                                      disableBtn={true}
+                                      // disableBtn={true}
+                                      onClick={() => rejectGeneralComment(data)}
                                     />
                                   ) : data.actorBundleStatusID === 2 ? (
                                     <Button
@@ -2938,6 +2995,7 @@ const ReviewMinutes = () => {
                                       <Button
                                         text={t("Rejected")}
                                         className={styles["Rejected-comment"]}
+                                        disableBtn={true}
                                       />
                                     </>
                                   ) : null}

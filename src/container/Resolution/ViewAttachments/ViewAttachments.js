@@ -3,7 +3,6 @@ import styles from "./ViewAttachments.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@mui/material";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import Button from "../../../components/elements/button/Button";
 import { useNavigate } from "react-router-dom";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";

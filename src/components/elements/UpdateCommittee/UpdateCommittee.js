@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
 import { showMessage } from "../snack_bar/utill";
+import { maxFileSize } from "../../../commen/functions/utils";
 
 const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
@@ -511,18 +512,18 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + fileAttachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (totalFiles > 15) {
+        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -534,7 +535,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
+            t("File-size-should-not-be-greater-then-1-5GB"),
             "error",
             setOpen
           );
@@ -1765,7 +1766,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       <Notification
         open={open.open}
         message={open.message}
-        ß
         setOpen={(status) => setOpen({ ...open, open: status.flag })}
         severity={open.severity}
       />

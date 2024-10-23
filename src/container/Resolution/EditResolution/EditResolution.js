@@ -57,6 +57,7 @@ import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../../commen/functions/utils";
 const EditResolution = ({ setCancelresolution }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -72,14 +73,18 @@ const EditResolution = ({ setCancelresolution }) => {
   const currentDate = new Date();
 
   useEffect(() => {
-    if (currentLanguage !== undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
+    try {
+      if (currentLanguage !== undefined) {
+        if (currentLanguage === "en") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_en);
+        } else if (currentLanguage === "ar") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_ar);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [currentLanguage]);
   const [attachments, setAttachments] = useState([]);
@@ -354,7 +359,7 @@ const EditResolution = ({ setCancelresolution }) => {
               );
 
               if (checkIfExistInVoters.length > 0) {
-                checkIfExistInVoters.forEach((userData) => {
+                checkIfExistInVoters.forEach((userData, index) => {
                   voters_Data.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -723,18 +728,18 @@ const EditResolution = ({ setCancelresolution }) => {
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + attachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
       let sizezero = true;
       let size = true;
 
-      if (attachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (totalFiles > 15) {
+        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -746,7 +751,7 @@ const EditResolution = ({ setCancelresolution }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
+            t("File-size-should-not-be-greater-then-1-5GB"),
             "error",
             setOpen
           );
@@ -970,9 +975,13 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   useEffect(() => {
-    if (ResolutionReducer.updateResolutionDataroom !== 0) {
-      let folderIDCreated = ResolutionReducer.updateResolutionDataroom;
-      documentsUploadCall(folderIDCreated);
+    try {
+      if (ResolutionReducer.updateResolutionDataroom !== 0) {
+        let folderIDCreated = ResolutionReducer.updateResolutionDataroom;
+        documentsUploadCall(folderIDCreated);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.updateResolutionDataroom]);
 
@@ -1166,131 +1175,141 @@ const EditResolution = ({ setCancelresolution }) => {
   };
   // for api reponce of list of all assignees
   useEffect(() => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
-    if (newOrganizersData !== null && newOrganizersData !== undefined) {
-      let temp = [];
-      let usersData = [];
-      if (Object.keys(newOrganizersData).length > 0) {
-        if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.map((a) => {
-            let newData = {
-              value: a.groupID,
-              name: a.groupName,
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={GroupIcon}
-                        alt=""
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.groupName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              type: 1,
-            };
-            temp.push(newData);
-          });
+    try {
+      let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+      if (newOrganizersData !== null && newOrganizersData !== undefined) {
+        console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
+        let temp = [];
+        let usersData = [];
+        if (Object.keys(newOrganizersData).length > 0) {
+          if (Object.keys(newOrganizersData.groups).length > 0) {
+            newOrganizersData.groups.map((a, index) => {
+              let newData = {
+                value: a.groupID,
+                name: a.groupName,
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={GroupIcon}
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {a.groupName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                type: 1,
+              };
+              temp.push(newData);
+            });
+          }
+          if (Object.keys(newOrganizersData.committees).length > 0) {
+            newOrganizersData.committees.map((a, index) => {
+              let newData = {
+                value: a.committeeID,
+                name: a.committeeName,
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={committeeicon}
+                          width="21.71px"
+                          height="18.61px"
+                          draggable="false"
+                          alt=""
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {a.committeeName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                type: 2,
+              };
+              temp.push(newData);
+            });
+          }
+          if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
+            newOrganizersData.organizationUsers.map((a, index) => {
+              let newData = {
+                value: a.userID,
+                name: a.userName,
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                          // src={}
+                          alt=""
+                          className={styles["UserProfilepic"]}
+                          width="18px"
+                          height="18px"
+                          draggable="false"
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {a.userName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                type: 3,
+              };
+              usersData.push(a);
+              temp.push(newData);
+            });
+          }
+          setMeetingAttendeesList(temp);
+          setUsersList(usersData);
+        } else {
+          setMeetingAttendeesList([]);
+          setUsersList([]);
         }
-        if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.map((a) => {
-            let newData = {
-              value: a.committeeID,
-              name: a.committeeName,
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={committeeicon}
-                        alt=""
-                        width="21.71px"
-                        height="18.61px"
-                        draggable="false"
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.committeeName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              type: 2,
-            };
-            temp.push(newData);
-          });
-        }
-        if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.map((a) => {
-            let newData = {
-              value: a.userID,
-              name: a.userName,
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        alt=""
-                        className={styles["UserProfilepic"]}
-                        width="18px"
-                        height="18px"
-                        draggable="false"
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.userName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              type: 3,
-            };
-            usersData.push(a);
-            temp.push(newData);
-          });
-        }
-        setMeetingAttendeesList(temp);
-        setUsersList(usersData);
-      } else {
-        setMeetingAttendeesList([]);
-        setUsersList([]);
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.getAllCommitteesAndGroups]);
   // Get Voting Methods
   useEffect(() => {
-    if (ResolutionReducer.GetAllVotingMethods !== null) {
-      let newArr = [];
-      ResolutionReducer.GetAllVotingMethods.map((data) => {
-        newArr.push({
-          value: data.pK_ResolutionVotingMethodID,
-          label: data.votingMethod,
+    try {
+      if (ResolutionReducer.GetAllVotingMethods !== null) {
+        let newArr = [];
+        ResolutionReducer.GetAllVotingMethods.map((data, index) => {
+          newArr.push({
+            value: data.pK_ResolutionVotingMethodID,
+            label: data.votingMethod,
+          });
         });
-      });
-      setVotingMethods(newArr);
+        setVotingMethods(newArr);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.GetAllVotingMethods]);
 
@@ -1301,7 +1320,6 @@ const EditResolution = ({ setCancelresolution }) => {
     }
   }, [ResolutionReducer.ResponseMessage]);
 
-  console.log(meetingAttendeesList, "meetingAttendeesListmeetingAttendeesList");
   useEffect(() => {
     try {
       if (ResolutionReducer.getResolutionbyID !== null) {
@@ -2420,11 +2438,6 @@ const EditResolution = ({ setCancelresolution }) => {
                                       <Row>
                                         {attachments.length > 0
                                           ? attachments.map((data, index) => {
-                                              console.log(
-                                                data,
-                                                "attachmentsResolution"
-                                              );
-
                                               return (
                                                 <Col sm={4} lg={4} md={4}>
                                                   <AttachmentViewer

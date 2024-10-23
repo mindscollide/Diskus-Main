@@ -5,6 +5,10 @@ import { deleteCommentModal } from "../../../../store/actions/Minutes_action"; /
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useDispatch } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
+import {
+  updateCommentMinutesGeneral,
+  updateRejectMinutesAgenda,
+} from "../utilsFunction";
 
 // Functional component for deleting a comment
 const DeleteCommentModal = ({
@@ -22,110 +26,14 @@ const DeleteCommentModal = ({
 
   const dispatch = useDispatch(); // Redux dispatch hook
 
-  const updateRejectMinutesAgenda = (
-    minutesData,
-    updateData,
-    parentMinuteID
-  ) => {
-    return minutesData.map((agenda) => {
-      // Update main minuteData
-      const updatedMinuteData = agenda.minuteData.map((minute) => {
-        if (minute.minuteID === parentMinuteID.minuteID) {
-          const updatedDeclinedReviews = minute.declinedReviews.filter(
-            (review) => {
-              return !(
-                (review.fK_WorkFlowActor_ID === 0 &&
-                  review.reason === updateData.reason) ||
-                (review.fK_WorkFlowActor_ID ===
-                  deleteCommentLocal.fK_WorkFlowActor_ID &&
-                  review.reason === deleteCommentLocal.reason)
-              );
-            }
-          );
-
-          return {
-            ...minute,
-            reason: "",
-            actorBundleStatusID: 2,
-            declinedReviews: updatedDeclinedReviews,
-          };
-        }
-        return minute;
-      });
-
-      // Update subMinutes if they exist
-      const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
-        const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
-          if (subMinute.minuteID === parentMinuteID.minuteID) {
-            const updatedDeclinedReviews = subMinute.declinedReviews.filter(
-              (review) => {
-                return !(
-                  (review.fK_WorkFlowActor_ID === 0 &&
-                    review.reason === updateData.reason) ||
-                  (review.fK_WorkFlowActor_ID ===
-                    deleteCommentLocal.fK_WorkFlowActor_ID &&
-                    review.reason === deleteCommentLocal.reason)
-                );
-              }
-            );
-
-            return {
-              ...subMinute,
-              reason: "",
-              actorBundleStatusID: 2,
-              declinedReviews: updatedDeclinedReviews,
-            };
-          }
-          return subMinute;
-        });
-        return { ...subAgenda, minuteData: updatedSubMinuteData };
-      });
-
-      return {
-        ...agenda,
-        minuteData: updatedMinuteData,
-        subMinutes: updatedSubMinutes,
-      };
-    });
-  };
-
-  const updateCommentMinutesGeneral = (
-    minutesData,
-    updateData,
-    parentMinuteID
-  ) => {
-    return minutesData.map((minute) => {
-      if (minute.minuteID === parentMinuteID.minuteID) {
-        const updatedDeclinedReviews = minute.declinedReviews.filter(
-          (review) => {
-            return !(
-              (review.fK_WorkFlowActor_ID === 0 &&
-                review.reason === updateData.reason) ||
-              (review.fK_WorkFlowActor_ID ===
-                deleteCommentLocal.fK_WorkFlowActor_ID &&
-                review.reason === deleteCommentLocal.reason)
-            );
-          }
-        );
-
-        return {
-          ...minute,
-          reason: "",
-          actorBundleStatusID: 2,
-          declinedReviews: updatedDeclinedReviews,
-        };
-      }
-      return minute;
-    });
-  };
-
   // Example usage
   const deleteComment = () => {
     if (isAgenda === false) {
       const updatedMinutesData = updateCommentMinutesGeneral(
         minutesGeneral,
         deleteCommentLocal,
-        parentMinuteID
+        parentMinuteID,
+        deleteCommentLocal
       );
       setMinutesGeneral(updatedMinutesData);
       setMinutesToReview(minutesToReview + 1);
@@ -134,7 +42,8 @@ const DeleteCommentModal = ({
       const updatedMinutesData = updateRejectMinutesAgenda(
         minutesAgenda,
         deleteCommentLocal,
-        parentMinuteID
+        parentMinuteID,
+        deleteCommentLocal
       );
       setMinutesAgenda(updatedMinutesData);
       setMinutesToReview(minutesToReview + 1);

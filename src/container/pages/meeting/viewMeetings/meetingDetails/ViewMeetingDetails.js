@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./ViewMeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row, Container } from "react-bootstrap";
@@ -62,8 +62,10 @@ import {
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
+import EndMeetingConfirmationModal from "../../EndMeetingConfirmationModal/EndMeetingConfirmationModal";
+import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useCallback } from "react";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-
 const ViewMeetingDetails = ({
   setorganizers,
   setmeetingDetails,
@@ -79,6 +81,7 @@ const ViewMeetingDetails = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer, talkStateData } = useSelector((state) => state);
+  const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
   // For cancel with no modal Open
@@ -263,6 +266,7 @@ const ViewMeetingDetails = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
+      console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEdiorRole({ status: null, role: null });
@@ -271,11 +275,6 @@ const ViewMeetingDetails = ({
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     }
-  };
-
-  let endMeetingRequest = {
-    MeetingID: Number(advanceMeetingModalID),
-    StatusID: 9,
   };
 
   //Fetching All Saved Data
@@ -557,6 +556,32 @@ const ViewMeetingDetails = ({
 
   console.log("talkStateDatatalkStateData", talkStateData);
 
+  const handleClickEndMeeting = useCallback(async () => {
+    let endMeetingRequest = {
+      MeetingID: Number(advanceMeetingModalID),
+      StatusID: 9,
+    };
+    await dispatch(
+      UpdateOrganizersMeeting(
+        false,
+        navigate,
+        t,
+        4,
+        endMeetingRequest,
+        setEdiorRole,
+        setAdvanceMeetingModalID,
+        setDataroomMapFolderId,
+        setViewAdvanceMeetingModal,
+        "",
+        "",
+        "",
+        "",
+        "",
+        setEndMeetingConfirmationModal
+      )
+    );
+  }, []);
+
   return (
     <>
       <section>
@@ -569,21 +594,10 @@ const ViewMeetingDetails = ({
                   <Button
                     text={t("End-meeting")}
                     className={styles["LeaveMeetinButton"]}
-                    onClick={() =>
-                      dispatch(
-                        UpdateOrganizersMeeting(
-                          false,
-                          navigate,
-                          t,
-                          4,
-                          endMeetingRequest,
-                          setEdiorRole,
-                          setAdvanceMeetingModalID,
-                          setDataroomMapFolderId,
-                          setViewAdvanceMeetingModal
-                        )
-                      )
-                    }
+                    onClick={() => {
+                      console.log("end meeting chaek");
+                      setEndMeetingConfirmationModal(true);
+                    }}
                   />
                 </>
               ) : meetingDetails.IsVideoCall === true ? (
@@ -829,6 +843,13 @@ const ViewMeetingDetails = ({
             />
           </Col>
         </Row>
+        {
+          <EndMeetingConfirmationModal
+            handleClickContinue={handleClickEndMeeting}
+            handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
+          />
+        }
+        {/* {NewMeetingreducer.LoadingViewModal && <Loader />} */}
         {cancelModalView && (
           <CancelButtonModal
             setCancelModalView={setCancelModalView}

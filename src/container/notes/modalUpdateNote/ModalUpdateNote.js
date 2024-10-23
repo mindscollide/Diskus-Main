@@ -11,7 +11,10 @@ import "react-quill/dist/quill.snow.css";
 import { Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ModalUpdateNote.module.css";
-import { FileUploadToDo } from "../../../store/actions/Upload_action";
+import {
+  FileUploadToDo,
+  uploaddocumentloader,
+} from "../../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import {
   deleteNotesApi,
@@ -27,7 +30,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
 import { Tooltip } from "antd";
-import { removeHTMLTagsAndTruncate } from "../../../commen/functions/utils";
+import {
+  maxFileSize,
+  removeHTMLTagsAndTruncate,
+} from "../../../commen/functions/utils";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
@@ -35,7 +41,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
   const editorRef = useRef(null);
-  const maxCharacters = 2500;
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isDeleteNote, setIsDeleteNote] = useState(false);
@@ -46,7 +51,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const [attachments, setAttachments] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [isdescription, setDescription] = useState(null);
-  console.log(isdescription, "isdescriptionisdescriptionisdescription");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -332,31 +336,36 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   }, [NotesReducer.GetNotesByNotesId]);
 
   useEffect(() => {
-    if (isdescription !== null) {
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: isdescription,
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+    try {
+      if (isdescription !== null) {
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: isdescription,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [isdescription]);
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
     let filesArray = Object.values(data.target.files);
+    let totalFiles = filesArray.length + attachments.length;
     let fileSizeArr = fileSize;
     let sizezero = true;
     let size = true;
 
-    if (tasksAttachments.TasksAttachments.length > 9) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+    if (totalFiles > 15) {
+      showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
       return;
     }
     filesArray.forEach((fileData, index) => {
-      if (fileData.size > 10485760) {
+      if (fileData.size > maxFileSize) {
         size = false;
       } else if (fileData.size === 0) {
         sizezero = false;
@@ -368,7 +377,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
       if (!size) {
         showMessage(
-          t("File-size-should-not-be-greater-then-zero"),
+          t("File-size-should-not-be-greater-then-1-5GB"),
           "error",
           setOpen
         );
@@ -382,8 +391,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           OriginalAttachmentName: fileData.name,
           fileSize: fileData.size,
         };
-
-        console.log(file, "filefilefilefile");
         setAttachments((prevAttachments) => [...prevAttachments, file]);
         fileSizeArr += fileData.size;
         setFileForSend((prevFiles) => [...prevFiles, fileData]);
@@ -400,18 +407,14 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       if (addNoteFields.Title.value !== "") {
         if (Object.keys(fileForSend).length > 0) {
           let newfiles = [...tasksAttachments.TasksAttachments];
-          console.log(newfiles, "PromisePromisePromise");
+          console.log(newfiles, "DataDataData");
           const uploadPromises = fileForSend.map((newData, index) => {
-            let flag = fileForSend.length !== index + 1;
             // Return the promise from FileUploadToDo
-            return dispatch(
-              FileUploadToDo(navigate, newData, t, newfiles, flag, 1)
-            );
+            return dispatch(FileUploadToDo(navigate, newData, t, newfiles, 10));
           });
 
           // Wait for all uploadPromises to resolve
           await Promise.all(uploadPromises);
-          console.log(newfiles, "PromisePromisePromise");
           setErrorBar(false);
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
@@ -436,7 +439,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
             NotesAttachments: notesAttachment,
           };
-
           dispatch(
             UpdateNotesAPI(
               navigate,
@@ -447,14 +449,14 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
               setUpdateNotes
             )
           );
+          dispatch(uploaddocumentloader(false));
         } else {
           setErrorBar(false);
-          // setUpdateNotesModalHomePage(false);
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
           let copData = [...tasksAttachments.TasksAttachments];
-          copData.map((data) => {
+          copData.map((data, index) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
@@ -475,6 +477,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
             NotesAttachments: notesAttachment,
           };
+          console.log(Data, "DataDataData");
           dispatch(
             UpdateNotesAPI(
               navigate,
@@ -490,7 +493,9 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         setErrorBar(true);
         showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
       }
-    } catch {}
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   const handleClickCancelDeleteModal = () => {
@@ -503,8 +508,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     }
     dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes));
   };
-
-  console.log(addNoteFields, "addNoteFieldsaddNoteFields");
 
   return (
     <>
@@ -552,7 +555,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     >
                       <p className={styles["UpdateNote-heading"]}>
                         {t("Update-note")}
-                        {/* {t("Update-note")} */}
                       </p>
                       {isStarred ? (
                         <Tooltip placement="topLeft" title={t("Starred")}>

@@ -45,9 +45,14 @@ const ViewResolution = ({ setViewresolution }) => {
     };
     dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
   };
+
   useEffect(() => {
-    if (ResolutionReducer.getResolutionbyID !== null) {
-      setResolutionData(ResolutionReducer.getResolutionbyID);
+    try {
+      if (ResolutionReducer.getResolutionbyID !== null) {
+        setResolutionData(ResolutionReducer.getResolutionbyID);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.getResolutionbyID]);
 

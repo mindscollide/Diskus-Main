@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../../../commen/functions/utils";
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
@@ -71,14 +72,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [createTaskID, setCreateTaskID] = useState(0);
 
   useEffect(() => {
-    if (currentLanguage !== undefined && currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
+    try {
+      if (currentLanguage !== undefined && currentLanguage !== null) {
+        if (currentLanguage === "en") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_en);
+        } else if (currentLanguage === "ar") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_ar);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [currentLanguage]);
 
@@ -216,18 +221,19 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(data, "uploadFilesToDouploadFilesToDo");
     let filesArray = Object.values(data.target.files);
+    let totalFiles =
+      filesArray.length + tasksAttachments.TasksAttachments.length;
     let fileSizeArr = fileSize;
     let sizezero = true;
     let size = true;
 
-    if (tasksAttachments.TasksAttachments.length > 9) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+    if (totalFiles > 15) {
+      showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
       return;
     }
     filesArray.forEach((fileData, index) => {
-      if (fileData.size > 10485760) {
+      if (fileData.size > maxFileSize) {
         size = false;
       } else if (fileData.size === 0) {
         sizezero = false;
@@ -239,7 +245,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
       if (!size) {
         showMessage(
-          t("File-size-should-not-be-greater-then-zero"),
+          t("File-size-should-not-be-greater-then-1-5GB"),
           "error",
           setOpen
         );

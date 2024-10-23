@@ -453,7 +453,6 @@ const ProposedNewMeeting = ({
   //Adding the Dates Rows
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
-    console.log(lastRow, "lastRowlastRowlastRow");
     if (isValidRow(lastRow)) {
       let { DateGMT } = incrementDateforPropsedMeeting(lastRow.dateSelect);
       setRows([
@@ -1297,8 +1296,11 @@ const ProposedNewMeeting = ({
                                         format={"DD/MM/YYYY"}
                                         minDate={
                                           index > 0
-                                            ? rows[index - 1].selectedOption
-                                            : moment().toDate()
+                                            ? moment(
+                                                rows[index - 1].dateSelect,
+                                                "DD/MM/YYYY"
+                                              ).toDate()
+                                            : moment().startOf("day").toDate()
                                         }
                                         placeholder="DD/MM/YYYY"
                                         render={

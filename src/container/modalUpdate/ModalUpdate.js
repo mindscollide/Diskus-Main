@@ -52,6 +52,7 @@ import {
 } from "../../commen/functions/time_formatter";
 import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../commen/functions/utils";
 
 const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   //For Localization
@@ -578,8 +579,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let fileSizeArr = fileSize;
 
     // Check if adding the new files exceeds the limit
-    if (currentFiles.length + filesArray.length > 10) {
-      showMessage(t("You-can-not-upload-more-then-10-files"), "error", setOpen);
+    if (currentFiles.length + filesArray.length > 15) {
+      showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
       return;
     }
 
@@ -589,12 +590,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       let ext = uploadedFile.name.split(".").pop().toLowerCase();
 
       // Check total size after adding each file
-      if (mergeFileSizes + fileSizeinMB > 100) {
-        showMessage(
-          t("You-can-not-upload-more-then-100MB-files"),
-          "error",
-          setOpen
-        );
+      if (mergeFileSizes + fileSizeinMB > 15) {
+        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
         return;
       }
 
@@ -618,10 +615,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         );
 
         if (fileExists) {
-          showMessage(t("This-file-already-exist"), "error", setOpen);
-        } else if (fileSizeinMB > 10) {
+          showMessage(t("File-already-exists"), "error", setOpen);
+        } else if (fileSizeinMB > maxFileSize) {
           showMessage(
-            t("You-can-not-upload-more-then-10MB-file"),
+            t("File-size-should-not-be-greater-then-1-5GB"),
             "error",
             setOpen
           );
@@ -1556,10 +1553,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   // for attendies handler
   const handleSubmit = async () => {
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
-      setOpen({
-        message: t("Please-add-atleast-one-participant"),
-        flag: true,
-      });
+      showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
       return;
     }
     let hasOrganizer = createMeeting.MeetingAttendees.some(

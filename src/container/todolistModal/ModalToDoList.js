@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../commen/functions/utils";
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
@@ -118,8 +119,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
-  //Uploaded  objects
-
+ 
   //To Set task Creater ID
   useEffect(() => {
     try {
@@ -160,43 +160,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //To Set task Creater ID
   useEffect(() => {
-    let data = [...toDoListReducer.AllAssigneesData];
-    if (
-      data !== undefined &&
-      data !== null &&
-      data.length !== 0 &&
-      Object(data).length > 0
-    ) {
-      let PresenterData = [];
-      data.forEach((user, index) => {
-        PresenterData.push({
-          label: (
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-2 align-items-center"
-                >
-                  <img
-                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                    height="16.45px"
-                    width="18.32px"
-                    draggable="false"
-                    alt=""
-                  />
-                  <span>{user.name}</span>
-                </Col>
-              </Row>
-            </>
-          ),
-          value: user.pK_UID,
-          name: user.name,
-        });
-        if (Number(user.pK_UID) === Number(createrID)) {
-          setTaskAssignedTo([user.pK_UID]);
-          setPresenterValue({
+    try {
+      let data = [...toDoListReducer.AllAssigneesData];
+      if (
+        data !== undefined &&
+        data !== null &&
+        data.length !== 0 &&
+        Object(data).length > 0
+      ) {
+        let PresenterData = [];
+        data.forEach((user, index) => {
+          PresenterData.push({
             label: (
               <>
                 <Row>
@@ -221,10 +195,40 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             value: user.pK_UID,
             name: user.name,
           });
-        }
-      });
+          if (Number(user.pK_UID) === Number(createrID)) {
+            setTaskAssignedTo([user.pK_UID]);
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{user.name}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: user.pK_UID,
+              name: user.name,
+            });
+          }
+        });
 
-      setAllPresenters(PresenterData);
+        setAllPresenters(PresenterData);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [toDoListReducer.AllAssigneesData]);
 
@@ -277,19 +281,19 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(data, "uploadFilesToDouploadFilesToDo");
     let filesArray = Object.values(data.target.files);
+    let totalFiles =
+      filesArray.length + tasksAttachments.TasksAttachments.length;
     let fileSizeArr = fileSize;
-    let flag = false;
     let sizezero = true;
     let size = true;
 
-    if (tasksAttachments.TasksAttachments.length > 9) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+    if (totalFiles > 15) {
+      showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
       return;
     }
     filesArray.forEach((fileData, index) => {
-      if (fileData.size > 10485760) {
+      if (fileData.size > maxFileSize) {
         size = false;
       } else if (fileData.size === 0) {
         sizezero = false;
@@ -301,7 +305,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
       if (!size) {
         showMessage(
-          t("File-size-should-not-be-greater-then-zero"),
+          t("File-size-should-not-be-greater-then-1-5GB"),
           "error",
           setOpen
         );

@@ -22,20 +22,21 @@ import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "antd";
-import {
-  regexOnlyForNumberNCharacters,
-  validateInput,
-} from "../../../commen/functions/regex";
+import { validateInput } from "../../../commen/functions/regex";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
-import { removeHTMLTagsAndTruncate } from "../../../commen/functions/utils";
+import {
+  maxFileSize,
+  removeHTMLTagsAndTruncate,
+} from "../../../commen/functions/utils";
+
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
+  //For Localization
+  let createrID = localStorage.getItem("userID");
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const NoteTitle = useRef(null);
   const editorRef = useRef(null);
-  let createrID = localStorage.getItem("userID");
-  const maxCharacters = 2500;
-  const navigate = useNavigate();
   const Delta = Quill.import("delta");
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   let OrganizationID = localStorage.getItem("organizationID");
@@ -138,13 +139,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         },
       });
     } else {
-      console.log(String(content).length, "contentcontent");
-      console.log(
-        removeHTMLTagsAndTruncate(String(content).length),
-        removeHTMLTagsAndTruncate(String(content), 2500),
-        "contentcontent"
-      );
-
       if (source === "user" && String(content).length >= 2500) {
         // Update state only if no image is detected in the content
         setAddNoteFields({
@@ -172,18 +166,19 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(data, "uploadFilesToDouploadFilesToDo");
     let filesArray = Object.values(data.target.files);
+    let totalFiles =
+      filesArray.length + tasksAttachments.TasksAttachments.length;
     let fileSizeArr = fileSize;
     let sizezero = true;
     let size = true;
 
-    if (tasksAttachments.TasksAttachments.length > 9) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+    if (totalFiles > 15) {
+      showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
       return;
     }
     filesArray.forEach((fileData, index) => {
-      if (fileData.size > 10485760) {
+      if (fileData.size > maxFileSize) {
         size = false;
       } else if (fileData.size === 0) {
         sizezero = false;
@@ -195,7 +190,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
       if (!size) {
         showMessage(
-          t("File-size-should-not-be-greater-then-zero"),
+          t("File-size-should-not-be-greater-then-1-5GB"),
           "error",
           setOpen
         );
@@ -324,26 +319,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       quill.focus();
     }
   };
-
-  // useEffect(() => {
-  //   if (editorRef.current) {
-  //     const editor = editorRef.current.getEditor();
-
-  //     if (editor) {
-  //       editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-  //         const plaintext = node.innerText || node.textContent || "";
-  //         const isImage = node.nodeName === "IMG";
-
-  //         if (isImage) {
-  //           // Block image paste by returning an empty delta
-  //           return new Delta();
-  //         }
-
-  //         return delta.compose(new Delta().insert(plaintext));
-  //       });
-  //     }
-  //   }
-  // }, []);
 
   return (
     <>

@@ -18,8 +18,11 @@ import {
 import { Col, Row } from "react-bootstrap";
 import featherupload from "../../../assets/images/featherupload.svg";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
-import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import {
+  fileFormatforSignatureFlow,
+  maxFileSize,
+} from "../../../commen/functions/utils";
 const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const { Dragger } = Upload;
   const dispatch = useDispatch();
@@ -134,24 +137,29 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   };
 
   useEffect(() => {
-    if (
-      CommitteeReducer.getCommitteeByCommitteeID !== null &&
-      CommitteeReducer.getCommitteeByCommitteeID !== undefined
-    ) {
-      try {
-        let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
-        setCommitteeData({
-          committeeTitle: committeedetails.committeeTitle,
-          committeeDescription: committeedetails.committeeDescription,
-          isTalkGroup: committeedetails.isTalkChatGroup,
-          committeeType: committeedetails.committeeType?.committeeTypeId,
-          committeeStatus: committeedetails.committeeStatus?.committeeStatusID,
-          committeeID: committeedetails.committeMembers[0].committeeID,
-          committeeMembers: committeedetails.committeMembers,
-        });
-      } catch (error) {
-        console.log(error);
+    try {
+      if (
+        CommitteeReducer.getCommitteeByCommitteeID !== null &&
+        CommitteeReducer.getCommitteeByCommitteeID !== undefined
+      ) {
+        try {
+          let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
+          setCommitteeData({
+            committeeTitle: committeedetails.committeeTitle,
+            committeeDescription: committeedetails.committeeDescription,
+            isTalkGroup: committeedetails.isTalkChatGroup,
+            committeeType: committeedetails.committeeType?.committeeTypeId,
+            committeeStatus:
+              committeedetails.committeeStatus?.committeeStatusID,
+            committeeID: committeedetails.committeMembers[0].committeeID,
+            committeeMembers: committeedetails.committeMembers,
+          });
+        } catch (error) {
+          console.log(error);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
@@ -166,18 +174,19 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + fileAttachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (totalFiles > 15) {
+        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -189,7 +198,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
+            t("File-size-should-not-be-greater-then-1-5GB"),
             "error",
             setOpen
           );
@@ -468,7 +477,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                       (filterData, index) =>
                         filterData.committeeRole.committeeRoleID === 3
                     )
-                    .map((data) => {
+                    .map((data, index) => {
                       return (
                         <Col lg={6} md={6} sm={12} className="mt-2">
                           <Row>
@@ -715,6 +724,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                         src={featherupload}
                         alt=""
                         width="18.87px"
+                        alt=""
                         height="18.87px"
                         draggable="false"
                       />

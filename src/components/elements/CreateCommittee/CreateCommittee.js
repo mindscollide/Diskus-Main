@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import Newprofile from "../../../assets/images/newprofile.png";
 import { Paper } from "@mui/material";
 import featherupload from "../../../assets/images/featherupload.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
@@ -35,6 +34,7 @@ import {
 } from "../../../container/DataRoom/SearchFunctionality/option";
 import { showMessage } from "../snack_bar/utill";
 
+import { maxFileSize } from "../../../commen/functions/utils";
 const CreateCommittee = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
   const navigate = useNavigate();
@@ -94,79 +94,64 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   });
 
   useEffect(() => {
-    CommitteeTitle.current.focus();
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      OrganizationID: organizationID,
-    };
-    dispatch(allAssignessList(navigate, t, false));
+    try {
+      CommitteeTitle.current.focus();
+      let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let Data = {
+        OrganizationID: organizationID,
+      };
+      dispatch(allAssignessList(navigate, t, false));
 
-    dispatch(getCommitteeTypes(navigate, Data, t));
-    dispatch(getCommitteeMembersRole(navigate, Data, t));
+      dispatch(getCommitteeTypes(navigate, Data, t));
+      dispatch(getCommitteeMembersRole(navigate, Data, t));
+    } catch (error) {
+      console.log(error, "error");
+    }
   }, []);
 
   // for api response of list group roles
   useEffect(() => {
-    if (CommitteeReducer.getCommitteeMembersRoles !== null) {
-      let committeeMembersRoleValues = [];
-      let committeeMembersRoleOptions = [];
-      CommitteeReducer.getCommitteeMembersRoles.map((data, index) => {
-        committeeMembersRoleOptions.push({
-          label: data.role,
-          id: data.committeeRoleID,
+    try {
+      if (CommitteeReducer.getCommitteeMembersRoles !== null) {
+        let committeeMembersRoleValues = [];
+        let committeeMembersRoleOptions = [];
+        CommitteeReducer.getCommitteeMembersRoles.map((data, index) => {
+          committeeMembersRoleOptions.push({
+            label: data.role,
+            id: data.committeeRoleID,
+          });
+          committeeMembersRoleValues.push(data.role);
         });
-        committeeMembersRoleValues.push(data.role);
-      });
 
-      setCommitteeMemberRolesOptions(committeeMembersRoleOptions);
-      setCommitteeMemberRolesValues(committeeMembersRoleValues);
+        setCommitteeMemberRolesOptions(committeeMembersRoleOptions);
+        setCommitteeMemberRolesValues(committeeMembersRoleValues);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.getCommitteeMembersRoles]);
 
   // for api response of list group Types
   useEffect(() => {
-    if (CommitteeReducer.getCommitteeTypes !== null) {
-      let committeeTypeValues = [];
-      let committeeTypeOptions = [];
-      CommitteeReducer.getCommitteeTypes.map((data, index) => {
-        committeeTypeOptions.push({
-          label: data.type,
-          id: data.committeeTypeId,
+    try {
+      if (CommitteeReducer.getCommitteeTypes !== null) {
+        let committeeTypeValues = [];
+        let committeeTypeOptions = [];
+        CommitteeReducer.getCommitteeTypes.map((data, index) => {
+          committeeTypeOptions.push({
+            label: data.type,
+            id: data.committeeTypeId,
+          });
+          committeeTypeValues.push(data.type);
         });
-        committeeTypeValues.push(data.type);
-      });
-      setCommitteeTypesOptions(committeeTypeOptions);
-      setCommitteeTypesValues(committeeTypeValues);
+        setCommitteeTypesOptions(committeeTypeOptions);
+        setCommitteeTypesValues(committeeTypeValues);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.getCommitteeTypes]);
 
-  const searchFilterHandler = (value) => {
-    if (meetingAttendeesList.length > 0) {
-      return meetingAttendeesList
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-          return searchTerm && assigneesName.startsWith(searchTerm);
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            <img
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-              draggable="false"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
-  };
   // Group type Change Handler
   const CommitteeTypeChangeHandler = (e, value) => {
     setCommitteeTypeValue(value);
@@ -177,14 +162,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       ...createCommitteeDetails,
       CommitteeType: findID.id,
     });
-  };
-
-  // on Search filter for add members
-  const onSearch = (name, id) => {
-    setOnclickFlag(true);
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
   };
 
   // onChange Function for set input values in state
@@ -532,12 +509,17 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
 
   useEffect(() => {
-    if (CommitteeReducer.createUpdateCommitteeDataroom !== 0) {
-      let folderIdCreated = CommitteeReducer.createUpdateCommitteeDataroom;
-      documentsUploadCall(folderIdCreated);
+    try {
+      if (CommitteeReducer.createUpdateCommitteeDataroom !== 0) {
+        let folderIdCreated = CommitteeReducer.createUpdateCommitteeDataroom;
+        documentsUploadCall(folderIdCreated);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [CommitteeReducer.createUpdateCommitteeDataroom]);
-  // // set Meeting Attendees By default creator
+
+  // set Meeting Attendees By default creator
   useEffect(() => {
     setCreateCommitteeDetails({
       ...createCommitteeDetails,
@@ -558,18 +540,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + fileAttachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (totalFiles > 15) {
+        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -581,7 +563,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
+            t("File-size-should-not-be-greater-then-1-5GB"),
             "error",
             setOpen
           );

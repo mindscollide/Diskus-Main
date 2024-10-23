@@ -57,6 +57,7 @@ import {
   timeforViewScheduleResolution,
 } from "../../../commen/functions/time_formatter";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../../commen/functions/utils";
 
 const ScheduleNewResolution = () => {
   const { Dragger } = Upload;
@@ -863,18 +864,18 @@ const ScheduleNewResolution = () => {
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + tasksAttachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
       let sizezero = true;
       let size = true;
 
-      if (tasksAttachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (totalFiles > 15) {
+        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -886,7 +887,7 @@ const ScheduleNewResolution = () => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
+            t("File-size-should-not-be-greater-then-1-5GB"),
             "error",
             setOpen
           );

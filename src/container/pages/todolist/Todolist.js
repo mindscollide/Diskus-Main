@@ -78,82 +78,94 @@ const TodoList = () => {
   const [statusOptions, setStatusOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-  console.log(rowsToDo, "rowsToDorowsToDo")
+  console.log(rowsToDo, "rowsToDorowsToDo");
   // GET TODOS STATUS
   useEffect(() => {
-    if (!todoStatus.Response?.length > 0) {
-      dispatch(getTodoStatus(navigate, t));
+    try {
+      if (!todoStatus.Response?.length > 0) {
+        dispatch(getTodoStatus(navigate, t));
+      }
+      if (todoListPageSize !== null && todoListCurrentPage !== null) {
+        dispatch(
+          SearchTodoListApi(
+            navigate,
+            searchData,
+            todoListCurrentPage,
+            todoListPageSize,
+            t
+          )
+        );
+      } else {
+        localStorage.setItem("todoListPage", 1);
+        localStorage.setItem("todoListRow", 15);
+        dispatch(SearchTodoListApi(navigate, searchData, 1, 15, t));
+      }
+      return () => {
+        localStorage.removeItem("todoListPage");
+        localStorage.removeItem("todoListRow");
+      };
+    } catch (error) {
+      console.log(error, "error");
     }
-    if (todoListPageSize !== null && todoListCurrentPage !== null) {
-      dispatch(
-        SearchTodoListApi(
-          navigate,
-          searchData,
-          todoListCurrentPage,
-          todoListPageSize,
-          t
-        )
-      );
-    } else {
-      localStorage.setItem("todoListPage", 1);
-      localStorage.setItem("todoListRow", 15);
-      dispatch(SearchTodoListApi(navigate, searchData, 1, 15, t));
-    }
-    return () => {
-      localStorage.removeItem("todoListPage");
-      localStorage.removeItem("todoListRow");
-    };
   }, []);
 
   //get todolist reducer
   useEffect(() => {
-    if (
-      toDoListReducer.SearchTodolist !== null &&
-      toDoListReducer.SearchTodolist !== undefined
-    ) {
-      setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
-      if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
-        let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
-        const sortedTasks = dataToSort.sort((taskA, taskB) => {
-          const deadlineA = taskA?.deadlineDateTime;
-          const deadlineB = taskB?.deadlineDateTime;
+    try {
+      if (
+        toDoListReducer.SearchTodolist !== null &&
+        toDoListReducer.SearchTodolist !== undefined
+      ) {
+        setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
+        if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
+          let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
+          const sortedTasks = dataToSort.sort((taskA, taskB) => {
+            const deadlineA = taskA?.deadlineDateTime;
+            const deadlineB = taskB?.deadlineDateTime;
 
-          // Compare the deadlineDateTime values as numbers for sorting
-          return parseInt(deadlineB, 10) - parseInt(deadlineA, 10);
-        });
+            // Compare the deadlineDateTime values as numbers for sorting
+            return parseInt(deadlineB, 10) - parseInt(deadlineA, 10);
+          });
 
-        setRowToDo(sortedTasks);
+          setRowToDo(sortedTasks);
+        } else {
+          setRowToDo([]);
+        }
       } else {
         setRowToDo([]);
       }
-    } else {
-      setRowToDo([]);
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [toDoListReducer.SearchTodolist]);
 
   useEffect(() => {
-    if (
-      toDoListReducer.SocketTodoActivityData !== null &&
-      toDoListReducer.SocketTodoActivityData !== undefined
-    ) {
+    try {
       if (
-        toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
-        toDoListReducer.SocketTodoActivityData.groupID === -1 &&
-        toDoListReducer.SocketTodoActivityData.meetingID === -1
+        toDoListReducer.SocketTodoActivityData !== null &&
+        toDoListReducer.SocketTodoActivityData !== undefined
       ) {
-        let dataToSort = [
-          toDoListReducer.SocketTodoActivityData.todoList,
-          ...rowsToDo,
-        ];
-        const sortedTasks = dataToSort.sort((taskA, taskB) => {
-          const deadlineA = taskA?.deadlineDateTime;
-          const deadlineB = taskB?.deadlineDateTime;
+        if (
+          toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
+          toDoListReducer.SocketTodoActivityData.groupID === -1 &&
+          toDoListReducer.SocketTodoActivityData.meetingID === -1
+        ) {
+          let dataToSort = [
+            toDoListReducer.SocketTodoActivityData.todoList,
+            ...rowsToDo,
+          ];
+          const sortedTasks = dataToSort.sort((taskA, taskB) => {
+            const deadlineA = taskA?.deadlineDateTime;
+            const deadlineB = taskB?.deadlineDateTime;
 
-          // Compare the deadlineDateTime values as numbers for sorting
-          return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-        });
-        setRowToDo(sortedTasks);
+            // Compare the deadlineDateTime values as numbers for sorting
+            return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+          });
+          setRowToDo(sortedTasks);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [toDoListReducer.SocketTodoActivityData]);
 
@@ -187,30 +199,35 @@ const TodoList = () => {
       }
     } catch {}
   }, [toDoListReducer.socketTodoStatusData]);
+
   // SET STATUS VALUES
   useEffect(() => {
-    let optionsArr = [];
-    let newOptionsFilter = [];
-    let newArrStatus = [""];
-    if (
-      todoStatus.Response !== null &&
-      todoStatus.Response !== "" &&
-      todoStatus.Response.length > 0
-    ) {
-      todoStatus.Response.map((data) => {
-        optionsArr.push({
-          id: data.pK_TSID,
-          status: data.status,
+    try {
+      let optionsArr = [];
+      let newOptionsFilter = [];
+      let newArrStatus = [""];
+      if (
+        todoStatus.Response !== null &&
+        todoStatus.Response !== "" &&
+        todoStatus.Response.length > 0
+      ) {
+        todoStatus.Response.map((data, index) => {
+          optionsArr.push({
+            id: data.pK_TSID,
+            status: data.status,
+          });
+          newArrStatus.push(data.status);
+          newOptionsFilter.push({
+            key: data.pK_TSID,
+            label: data.status,
+          });
         });
-        newArrStatus.push(data.status);
-        newOptionsFilter.push({
-          key: data.pK_TSID,
-          label: data.status,
-        });
-      });
+      }
+      setStatusValues(newArrStatus);
+      setStatusOptions(optionsArr);
+    } catch (error) {
+      console.log(error, "error");
     }
-    setStatusValues(newArrStatus);
-    setStatusOptions(optionsArr);
   }, [todoStatus]);
 
   // for modal create  handler
@@ -479,13 +496,17 @@ const TodoList = () => {
   ];
 
   useEffect(() => {
-    setViewFlagToDo(false);
-    if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
-      if (modalsflag === true) {
-        setUpdateFlagToDo(true);
-        setModalsflag(false);
-      } else {
+    try {
+      setViewFlagToDo(false);
+      if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+        if (modalsflag === true) {
+          setUpdateFlagToDo(true);
+          setModalsflag(false);
+        } else {
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [toDoListReducer.ToDoDetails]);
 
@@ -602,18 +623,22 @@ const TodoList = () => {
   }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
 
   useEffect(() => {
-    if (removeTodo !== 0) {
-      if (
-        getTodosStatus.UpdateTodoStatusMessage ===
-        t("The-record-has-been-updated-successfully")
-      ) {
-        let copyData = [...rowsToDo];
-        let removeDeleteTodo = copyData.filter(
-          (todoData, index) => todoData.pK_TID !== removeTodo
-        );
-        setRowToDo(removeDeleteTodo);
-        setRemoveTodo(0);
+    try {
+      if (removeTodo !== 0) {
+        if (
+          getTodosStatus.UpdateTodoStatusMessage ===
+          t("The-record-has-been-updated-successfully")
+        ) {
+          let copyData = [...rowsToDo];
+          let removeDeleteTodo = copyData.filter(
+            (todoData, index) => todoData.pK_TID !== removeTodo
+          );
+          setRowToDo(removeDeleteTodo);
+          setRemoveTodo(0);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
 

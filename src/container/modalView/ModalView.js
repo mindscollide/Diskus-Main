@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import "./ModalView.css";
 import {
   EditmeetingDateFormat,
@@ -31,9 +31,11 @@ import {
   FetchMeetingURLApi,
   FetchMeetingURLClipboard,
   LeaveCurrentMeeting,
-  searchNewUserMeeting,
 } from "../../store/actions/NewMeetingActions";
 import { callRequestReceivedMQTT } from "../../store/actions/VideoMain_actions";
+import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
+import { MeetingContext } from "../../context/MeetingContext";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
@@ -48,9 +50,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("acceptedRoomID"));
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-
+  const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
   const [getMeetID, setMeetID] = useState(0);
-  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
   const [isAgenda, setIsAgenda] = useState(false);
@@ -59,36 +60,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [isVideo, setIsVideo] = useState(false);
   const [meetStatus, setMeetStatus] = useState(0);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
-  });
-  const [meetingReminderID, setMeetingReminderID] = useState([]);
-  const [meetingReminderValue, setMeetingReminderValue] = useState("");
-  const [objMeetingAgenda, setObjMeetingAgenda] = useState({
-    Title: "",
-    PresenterName: "",
-    URLs: "",
-    FK_MDID: 0,
-  });
-
-  //Attendees States
-
-  // for upload documents
-  const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
-    MeetingAgendaAttachments: [],
-  });
-
-  // for meatings  Attendees
-  const [meetingAttendees, setMeetingAttendees] = useState({
-    User: {
-      PK_UID: 0,
-    },
-    MeetingAttendeeRole: {
-      PK_MARID: 0,
-    },
-    AttendeeAvailability: {
-      PK_AAID: 1,
-    },
+    severity: "error",
   });
 
   // for meatings  Attendees List
@@ -96,16 +70,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-
-  // for   dropdown Attendees List
-  const [optiosnMeetingAttendeesList, setOptiosnMeetingAttendeesList] =
-    useState([]);
-
-  // for   selected Attendees Name
-  const [selectedAttendeesName, setSelectedAttendeesName] = useState("");
-
-  // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState("");
 
   // for   List Of Attachments
   const [attachmentsList, setattachmentsList] = useState([]);
@@ -127,7 +91,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
   const [startMeetingStatus, setStartMeetingStatus] = useState(false);
-  const [endMeetingStatus, setEndMeetingStatus] = useState(false);
   const [isOrganizer, setOrganizer] = useState(false);
   const [isParticipant, setIsParticipant] = useState(false);
   const [minutesOftheMeatingStatus, setMinutesOftheMeatingStatus] =
@@ -298,30 +261,23 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         }
         if (meetingStatus === "1") {
           setStartMeetingStatus(false);
-          setEndMeetingStatus(true);
           setMinutesOftheMeatingStatus(false);
         } else if (meetingStatus === "2") {
           setStartMeetingStatus(true);
-          setEndMeetingStatus(false);
           setMinutesOftheMeatingStatus(true);
         } else if (meetingStatus === "3") {
           setMinutesOftheMeatingStatus(true);
-          setEndMeetingStatus(true);
           setStartMeetingStatus(true);
         } else if (meetingStatus === "4") {
           setMinutesOftheMeatingStatus(true);
-          setEndMeetingStatus(true);
           setStartMeetingStatus(true);
         } else if (meetingStatus === "8") {
           setMinutesOftheMeatingStatus(true);
-          setEndMeetingStatus(false);
           setStartMeetingStatus(false);
         } else if (meetingStatus === "10") {
           setMinutesOftheMeatingStatus(false);
-          setEndMeetingStatus(false);
           setStartMeetingStatus(false);
         } else {
-          setEndMeetingStatus(false);
           setStartMeetingStatus(false);
           setStartMeetingStatus(false);
         }
@@ -335,7 +291,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             reminderoptionvalue = opData.label;
           }
         });
-        setMeetingReminderValue(reminderoptionvalue);
         // for meeting attendies
         let List = [];
         let user = meetingAttendeesList;
@@ -511,30 +466,23 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         }
         if (meetingStatus === "1") {
           setStartMeetingStatus(false);
-          setEndMeetingStatus(true);
           setMinutesOftheMeatingStatus(false);
         } else if (meetingStatus === "2") {
           setStartMeetingStatus(true);
-          setEndMeetingStatus(false);
           setMinutesOftheMeatingStatus(true);
         } else if (meetingStatus === "3") {
           setMinutesOftheMeatingStatus(true);
-          setEndMeetingStatus(true);
           setStartMeetingStatus(true);
         } else if (meetingStatus === "4") {
           setMinutesOftheMeatingStatus(true);
-          setEndMeetingStatus(true);
           setStartMeetingStatus(true);
         } else if (meetingStatus === "8") {
           setMinutesOftheMeatingStatus(true);
-          setEndMeetingStatus(false);
           setStartMeetingStatus(false);
         } else if (meetingStatus === "10") {
           setMinutesOftheMeatingStatus(false);
-          setEndMeetingStatus(false);
           setStartMeetingStatus(false);
         } else {
-          setEndMeetingStatus(false);
           setStartMeetingStatus(false);
           setStartMeetingStatus(false);
         }
@@ -548,10 +496,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             reminderoptionvalue = opData.label;
           }
         });
-        setMeetingReminderValue(reminderoptionvalue);
         // for meeting attendies
         let List = [];
-        let user = meetingAttendeesList;
         let emptyList = [];
         try {
           if (calendarMeetingData.meetingAttendees != undefined) {
@@ -581,7 +527,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               setAddedParticipantNameList(List);
             }
           }
-          if (viewData.externalMeetingAttendees != undefined) {
+          if (viewData.externalMeetingAttendees !== undefined) {
             if (viewData.externalMeetingAttendees.length > 0) {
               viewData.externalMeetingAttendees.map(
                 (externalMeetingAttendeesMeetingdata, index) => {
@@ -741,17 +687,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setIsAttachments(false);
         setIsAgenda(false);
         setIsAttendees(false);
-        setObjMeetingAgenda({
-          Title: "",
-          PresenterName: "",
-          URLs: "",
-          FK_MDID: 0,
-        });
-        setMeetingAgendaAttachments({
-          MeetingAgendaAttachments: [],
-        });
-        setParticipantRoleName("");
-        setSelectedAttendeesName("");
         setCreateMeeting({
           MeetingTitle: "",
           MeetingDescription: "",
@@ -766,19 +701,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           ExternalMeetingAttendees: [],
           MinutesOfMeeting: [],
         });
-        setMeetingAttendees({
-          User: {
-            PK_UID: 0,
-          },
-          MeetingAttendeeRole: {
-            PK_MARID: 0,
-          },
-          AttendeeAvailability: {
-            PK_AAID: 1,
-          },
-        });
-        setMeetingReminderValue("");
-        setMeetingReminderID([]);
       }
     } catch (error) {}
   }, [viewFlag]);
@@ -795,31 +717,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   // for  list of all assignees  drop down
   useEffect(() => {
     try {
-      let user = meetingAttendeesList;
-      if (user != undefined) {
-        if (meetingAttendeesList.length > 0) {
-          setOptiosnMeetingAttendeesList(
-            meetingAttendeesList.map((data, index) => {
-              return data.name;
-            })
-          );
-        }
-      }
-    } catch (error) {}
-  }, [meetingAttendeesList]);
-
-  // for  list of all assignees  drop down
-  useEffect(() => {
-    try {
       if (addedParticipantNameList != undefined) {
         if (addedParticipantNameList.length > 0) {
         }
       }
     } catch (error) {}
   }, [addedParticipantNameList]);
-
-  let meetingDateTime =
-    createMeeting.MeetingDate + createMeeting.MeetingStartTime;
 
   const startMeeting = async () => {
     await setViewFlag(false);
@@ -841,13 +744,26 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
   };
 
-  const endMeeting = async () => {
+  const handleClickEndMeeting = useCallback(async () => {
     let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
     let newData = {
       MeetingID: meetingID,
       StatusID: 9,
     };
-    await dispatch(endMeetingStatusApi(navigate, t, newData, setViewFlag));
+    console.log("end meeting chaek");
+    await dispatch(
+      endMeetingStatusApi(
+        navigate,
+        t,
+        newData,
+        setViewFlag,
+        setEndMeetingConfirmationModal
+      )
+    );
+  }, []);
+
+  const endMeeting = async () => {
+    setEndMeetingConfirmationModal(true);
   };
   const leaveMeeting = async (id) => {
     let leaveMeetingData = {
@@ -884,18 +800,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         )
       );
     }
-    setOpen({
-      ...open,
-      flag: true,
-      message: t("Generating-meeting-link"),
-    });
-    setTimeout(() => {
-      setOpen({
-        ...open,
-        flag: false,
-        message: "",
-      });
-    }, 3000);
+    showMessage("Generating-meeting-link", "error", setOpen);
   };
 
   const joinMeetingCall = () => {
@@ -916,7 +821,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       );
       localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
     } else if (activeCall === true && isMeeting === false) {
-      setInitiateVideoModalOto(true);
       dispatch(callRequestReceivedMQTT({}, ""));
     }
   };
@@ -927,10 +831,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         meetingIdReducer.MeetingStatusEnded !== undefined &&
         meetingIdReducer.MeetingStatusEnded.length !== 0
       ) {
-        let currentView = localStorage.getItem("MeetingCurrentView");
-        let meetingpageRow = localStorage.getItem("MeetingPageRows");
-        let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-
         let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
         if (
           getMeetID === endMeetingData.pK_MDID &&
@@ -944,17 +844,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           setIsAttachments(false);
           setIsAgenda(false);
           setIsAttendees(false);
-          setObjMeetingAgenda({
-            Title: "",
-            PresenterName: "",
-            URLs: "",
-            FK_MDID: 0,
-          });
-          setMeetingAgendaAttachments({
-            MeetingAgendaAttachments: [],
-          });
-          setParticipantRoleName("");
-          setSelectedAttendeesName("");
           setCreateMeeting({
             MeetingTitle: "",
             MeetingDescription: "",
@@ -969,31 +858,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             ExternalMeetingAttendees: [],
             MinutesOfMeeting: [],
           });
-          setMeetingAttendees({
-            User: {
-              PK_UID: 0,
-            },
-            MeetingAttendeeRole: {
-              PK_MARID: 0,
-            },
-            AttendeeAvailability: {
-              PK_AAID: 1,
-            },
-          });
-          setMeetingReminderValue("");
-          setMeetingReminderID([]);
-          let searchData = {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: currentUserID,
-            PageNumber:
-              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-            Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-            PublishedMeetings:
-              currentView && Number(currentView) === 1 ? true : false,
-          };
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       }
     } catch (error) {
@@ -1026,6 +890,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           modalBodyClassName="modalMeetingViewBody"
           modalFooterClassName="modalMeetingViewFooter"
           modalHeaderClassName="modalMeetingViewHeader"
+          // ModalTitle={"Modal Header"}
           ModalBody={
             <>
               <Row>
@@ -1419,7 +1284,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 </>
               ) : isAttachments ? (
                 <>
-                  <Row className="data-room-file-upload-section mt-4">
+                  <Row className="mt-2">
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
                           return (
@@ -1468,6 +1333,22 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
                         {allMeetingDetails.meetingStatus.status === "10" ? (
                           <Button
+                            onClick={() =>
+                              leaveMeeting(
+                                allMeetingDetails.meetingDetails.pK_MDID
+                              )
+                            }
+                            className={
+                              "  end-meeting-btn_view-org" +
+                              " " +
+                              currentLanguage
+                            }
+                            text={t("Leave-meeting")}
+                          />
+                        ) : null}
+
+                        {allMeetingDetails.meetingStatus.status === "10" ? (
+                          <Button
                             onClick={endMeeting}
                             className={
                               " btn btn-primary end-meeting-btn_view" +
@@ -1501,10 +1382,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             </>
           }
         />
+        <EndMeetingConfirmationModal
+          handleClickContinue={handleClickEndMeeting}
+          handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
+        />
         <Notification
-          setOpen={setOpen}
-          open={open.flag}
+          open={open.open}
           message={open.message}
+          setOpen={(status) => setOpen({ ...open, open: status.flag })}
+          severity={open.severity}
         />
       </Container>
     </>

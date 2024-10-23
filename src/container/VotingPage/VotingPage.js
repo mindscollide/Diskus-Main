@@ -105,30 +105,34 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     dispatch(updateVoteApi(navigate, Data, t, setVoteresolution));
   };
   useEffect(() => {
-    if (ResolutionReducer.getVoteDetailsByID !== null) {
-      try {
-        let getVoteresult = ResolutionReducer.getVoteDetailsByID;
-        setResolutionTitle(getVoteresult.resolutionTite);
-        setVotingMethod(getVoteresult.votingMethod);
-        setVotingMethodId(getVoteresult.votingMethodID);
-        setApproved(getVoteresult.approvedVotes);
-        setAbstain(0);
-        setPending(getVoteresult.pendingVoters);
-        setNonApproved(getVoteresult.nonApprovedVotes);
-        setTotalVoters(getVoteresult.totalVoters);
-        setDecision(getVoteresult.decision);
-        setVoter(getVoteresult.voters);
-        let findVoters = getVoteresult.voters.find(
-          (data, index) =>
-            data.fK_UID === Number(localStorage.getItem("userID"))
-        );
-        setCurrentUserVoterID(
-          findVoters !== undefined ? findVoters.pK_RV_ID : 0
-        );
-        setDecisionId(getVoteresult.decisionID);
-      } catch (error) {
-        console.log(error);
+    try {
+      if (ResolutionReducer.getVoteDetailsByID !== null) {
+        try {
+          let getVoteresult = ResolutionReducer.getVoteDetailsByID;
+          setResolutionTitle(getVoteresult.resolutionTite);
+          setVotingMethod(getVoteresult.votingMethod);
+          setVotingMethodId(getVoteresult.votingMethodID);
+          setApproved(getVoteresult.approvedVotes);
+          setAbstain(0);
+          setPending(getVoteresult.pendingVoters);
+          setNonApproved(getVoteresult.nonApprovedVotes);
+          setTotalVoters(getVoteresult.totalVoters);
+          setDecision(getVoteresult.decision);
+          setVoter(getVoteresult.voters);
+          let findVoters = getVoteresult.voters.find(
+            (data, index) =>
+              data.fK_UID === Number(localStorage.getItem("userID"))
+          );
+          setCurrentUserVoterID(
+            findVoters !== undefined ? findVoters.pK_RV_ID : 0
+          );
+          setDecisionId(getVoteresult.decisionID);
+        } catch (error) {
+          console.log(error);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.getVoteDetailsByID]);
   return (
@@ -159,9 +163,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         {isVotingMethodId === 2 ? (
                           <img
                             src={SeceretBallotingIcon}
-                            alt=""
                             height="23.19px"
                             width="23.19px"
+                            alt=""
                           />
                         ) : (
                           <img

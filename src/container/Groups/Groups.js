@@ -538,7 +538,11 @@ const Groups = () => {
                         >
                           <Row>
                             <Col>
-                              <img draggable="false" src={NoGroupsData} />
+                              <img
+                                draggable="false"
+                                src={NoGroupsData}
+                                alt=""
+                              />
                             </Col>
                             <Col
                               sm={12}
@@ -604,12 +608,6 @@ const Groups = () => {
                       onChange={handlechange}
                       showSizer={false}
                     />
-                    {/* <Pagination
-                      current={currentPage}
-                      total={totalLength}
-                      pageSize={8}
-                      onChange={handlechange}
-                    /> */}
                   </span>
                 </Col>
               </Row>

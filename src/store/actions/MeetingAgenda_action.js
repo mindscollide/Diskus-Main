@@ -1468,6 +1468,7 @@ const AddUpdateAdvanceMeetingAgenda = (
                 dispatch(attendanceGlobalFlag(false));
                 dispatch(uploadGlobalFlag(false));
               } else if (flag === 2) {
+                console.log("end meeting chaek");
                 dispatch(
                   UpdateOrganizersMeeting(
                     false,

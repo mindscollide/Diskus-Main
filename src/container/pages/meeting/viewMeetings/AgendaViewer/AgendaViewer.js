@@ -12,9 +12,6 @@ import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
 import {
-  searchNewUserMeeting,
-  viewAdvanceMeetingPublishPageFlag,
-  viewAdvanceMeetingUnpublishPageFlag,
   FetchMeetingURLApi,
   LeaveCurrentMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -142,13 +139,8 @@ const AgendaViewer = ({
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
-
   const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
-
   const [fullScreenView, setFullScreenView] = useState(true);
   const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
   const [exportAgendaView, setExportAgendaView] = useState(false);
