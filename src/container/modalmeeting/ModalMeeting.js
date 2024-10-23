@@ -50,6 +50,7 @@ import {
 import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
 import Select from "react-select";
 import { Tooltip } from "antd";
+import { maxFileSize } from "../../commen/functions/utils";
 const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
@@ -579,11 +580,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     let size = true;
     let sizezero = true;
 
-    if (updatedFilesForSend.length + filesArray.length > 10) {
+    if (updatedFilesForSend.length + filesArray.length > 15) {
       setTimeout(() => {
         setOpen({
           flag: true,
-          message: t("You-can-not-upload-more-then-10-files"),
+          message: t("Not-allowed-more-than-15-files"),
         });
       }, 3000);
       return;
@@ -593,11 +594,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
       let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
 
-      if (mergeFileSizes + fileSizeinMB > 100) {
+      if (mergeFileSizes + fileSizeinMB > maxFileSize) {
         setTimeout(() => {
           setOpen({
             flag: true,
-            message: t("You-can-not-upload-more-then-100MB-files"),
+            message: t("File-size-should-not-be-greater-then-1-5GB"),
           });
         }, 3000);
         return;
@@ -633,7 +634,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         if (fileExists) {
           setOpen({
             ...open,
-            message: t("This-file-already-exist"),
+            message: t("File-already-exists"),
             flag: true,
           });
         } else if (!size) {

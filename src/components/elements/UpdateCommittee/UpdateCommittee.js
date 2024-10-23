@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import Newprofile from "../../../assets/images/newprofile.png";
-import userImage from "../../../assets/images/user.png";
 import { Paper } from "@material-ui/core";
 import {
   TextField,
   Button,
   Checkbox,
   SelectBox,
-  InputSearchFilter,
   Notification,
   AttachmentViewer,
 } from "./../../../components/elements";
@@ -17,10 +14,6 @@ import styles from "./UpdateCommittee.module.css";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import featherupload from "../../../assets/images/featherupload.svg";
-import Leftploygon from "../../../assets/images/Polygon 3.svg";
-import file_image from "../../../assets/images/file_image.svg";
-import pdfIcon from "../../../assets/images/pdf_icon.svg";
-import Rightploygon from "../../../assets/images/Polygon right.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import Select from "react-select";
 import {
@@ -34,6 +27,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
+import { maxFileSize } from "../../../commen/functions/utils";
 
 const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
@@ -114,78 +108,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       isTalkGroup: e.target.checked,
     });
   };
-  //Drop Down Values
-  // const searchFilterHandler = (value) => {
-  //   let allAssignees = assignees.user;
-  //   if (
-  //     allAssignees != undefined &&
-  //     allAssignees != null &&
-  //     allAssignees != NaN &&
-  //     allAssignees != []
-  //   ) {
-  //     return allAssignees
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.name.toLowerCase();
-  //         return (
-  //           searchTerm &&
-  //           assigneesName.startsWith(searchTerm) &&
-  //           assigneesName !== searchTerm
-  //         );
-  //       })
-  //       .slice(0, 3)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.name, item.pK_UID)}
-  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
-  //           key={item.pK_UID}
-  //         >
-  //           <img src={userImage} />
-  //           <p className="p-0 m-0">{item.name}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
-
-  const searchFilterHandler = (value) => {
-    if (meetingAttendeesList.length > 0) {
-      return meetingAttendeesList
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            {}
-            <img
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-              draggable="false"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
-  };
-  const onSearch = (name, id) => {
-    setOnclickFlag(true);
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
-  };
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
@@ -196,14 +118,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const onChangeSearch = (item) => {
     setPresenterValue(item);
     setTaskAssignedTo(item.value);
-    // setOnclickFlag(false);
-    // if (e.target.value.trimStart() !== "") {
-    //   setTaskAssignedToInput(e.target.value.trimStart());
-    // } else {
-    //   setTaskAssignedToInput("");
-    //   setTaskAssignedTo(0);
-    //   setTaskAssignedName("");
-    // }
   };
 
   const checkAttendeeBox = (data, id, index) => {
@@ -509,7 +423,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-        dispatch(allAssignessList(navigate, t,false));
+    dispatch(allAssignessList(navigate, t, false));
     dispatch(getCommitteeTypes(navigate, Data, t));
     dispatch(getCommitteeMembersRole(navigate, Data, t));
   }, []);
@@ -604,22 +518,21 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + fileAttachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
+      if (totalFiles > 15) {
         setOpen({
           flag: true,
-          message: t("Not-allowed-more-than-10-files"),
+          message: t("Not-allowed-more-than-15-files"),
         });
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -633,7 +546,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           setTimeout(() => {
             setOpen({
               flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
+              message: t("File-size-should-not-be-greater-then-1-5GB"),
             });
           }, 3000);
         } else if (!sizezero) {
@@ -1780,7 +1693,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                         </Col>
                       </Row>
                       <Row className="mt-1">
-                        <Col lg={12} md={12} sm={12} className={styles["UpdateCommitteeAttachment"]}>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["UpdateCommitteeAttachment"]}
+                        >
                           <Row>
                             {fileAttachments.length > 0
                               ? fileAttachments.map((data, index) => {
@@ -1801,7 +1719,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                           id={0}
                                           name={data.DisplayAttachmentName}
                                         />
-                                   
                                       </Col>
                                     </>
                                   );

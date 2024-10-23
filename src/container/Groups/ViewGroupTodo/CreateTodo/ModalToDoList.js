@@ -1,13 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import "./ModalToDoList.css";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import Select from "react-select";
 import deleteButtonCreateMeeting from "../../../../assets/images/cancel_meeting_icon.svg";
 import InputIcon from "react-multi-date-picker/components/input_icon";
@@ -16,7 +14,6 @@ import {
   Button,
   Modal,
   Notification,
-  InputSearchFilter,
   AttachmentViewer,
 } from "../../../../components/elements";
 import {
@@ -35,19 +32,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { maxFileSize } from "../../../../commen/functions/utils";
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
-  const timePickerRef = useRef();
   const { currentTime, current_Date, dateObject, current_value } =
     get_CurrentDateTime();
   const [fileSize, setFileSize] = useState(0);
-  const [visible, setVisible] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
-  const [createTodoTime, setCreateTodoTime] = useState("");
   const [createTodoDate, setCreateTodoDate] = useState(current_Date);
 
   const state = useSelector((state) => state);
@@ -78,14 +73,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [createTaskID, setCreateTaskID] = useState(0);
 
   useEffect(() => {
-    if (currentLanguage !== undefined && currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
+    try {
+      if (currentLanguage !== undefined && currentLanguage !== null) {
+        if (currentLanguage === "en") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_en);
+        } else if (currentLanguage === "ar") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_ar);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [currentLanguage]);
 
@@ -244,22 +243,22 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(data, "uploadFilesToDouploadFilesToDo");
     let filesArray = Object.values(data.target.files);
+    let totalFiles =
+      filesArray.length + tasksAttachments.TasksAttachments.length;
     let fileSizeArr = fileSize;
-    let flag = false;
     let sizezero = true;
     let size = true;
 
-    if (tasksAttachments.TasksAttachments.length > 9) {
+    if (totalFiles > 15) {
       setOpen({
         flag: true,
-        message: t("Not-allowed-more-than-10-files"),
+        message: t("Not-allowed-more-than-15-files"),
       });
       return;
     }
     filesArray.forEach((fileData, index) => {
-      if (fileData.size > 10485760) {
+      if (fileData.size > maxFileSize) {
         size = false;
       } else if (fileData.size === 0) {
         sizezero = false;
@@ -273,7 +272,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setTimeout(() => {
           setOpen({
             flag: true,
-            message: t("File-size-should-not-be-greater-then-zero"),
+            message: t("File-size-should-not-be-greater-then-1-5GB"),
           });
         }, 3000);
       } else if (!sizezero) {

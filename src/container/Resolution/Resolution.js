@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Resolution.module.css";
 import {
   Button,
@@ -55,12 +55,10 @@ import CrossResolution from "../../assets/images/resolutions/cross_icon_resoluti
 import { updateResolutionModal } from "../../store/actions/Resolution_actions";
 import { viewResolutionModal } from "../../store/actions/Resolution_actions";
 import { validateInput } from "../../commen/functions/regex";
-
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 const Resolution = () => {
@@ -80,7 +78,6 @@ const Resolution = () => {
   const calendRef = useRef();
   const [resultresolution, setResultresolution] = useState(false);
   const [voteresolution, setVoteresolution] = useState(false);
-  const [voterID, setVoterID] = useState(0);
   const [searchIcon, setSearchIcon] = useState(false);
   const [rows, setRows] = useState([]);
   const [isSearchVoter, setSearchVoter] = useState([]);
@@ -100,28 +97,38 @@ const Resolution = () => {
   let resolutionNonVoter = localStorage.getItem("resNonVot");
 
   useEffect(() => {
-    if (resolutionVoter !== null) {
-      try {
+    try {
+      if (resolutionVoter !== null) {
         try {
-          validateStringResolutionApi(resolutionVoter, navigate, t, 1, dispatch)
-            .then((response) => {
-              dispatch(
-                getVotesDetails(
-                  navigate,
-                  response.resolutionID,
-                  t,
-                  setVoteresolution
-                )
-              );
-              localStorage.removeItem("resVot");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } catch (error) {
-          console.log(error);
-        }
-      } catch (error) {}
+          try {
+            validateStringResolutionApi(
+              resolutionVoter,
+              navigate,
+              t,
+              1,
+              dispatch
+            )
+              .then((response) => {
+                dispatch(
+                  getVotesDetails(
+                    navigate,
+                    response.resolutionID,
+                    t,
+                    setVoteresolution
+                  )
+                );
+                localStorage.removeItem("resVot");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          } catch (error) {
+            console.log(error);
+          }
+        } catch (error) {}
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [resolutionVoter]);
 
@@ -142,7 +149,6 @@ const Resolution = () => {
           .catch((error) => {
             console.log(error);
           });
-        // viewResolution(data.resolutionID)
       } catch (error) {
         console.log(error);
       }
@@ -191,14 +197,18 @@ const Resolution = () => {
   }, []);
 
   useEffect(() => {
-    if (currentLanguage !== undefined && currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
+    try {
+      if (currentLanguage !== undefined && currentLanguage !== null) {
+        if (currentLanguage === "en") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_en);
+        } else if (currentLanguage === "ar") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_ar);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [currentLanguage]);
 
@@ -301,13 +311,9 @@ const Resolution = () => {
     });
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
-      // if (moderatorPage !== null && moderatorRows !== null) {
       dispatch(getResolutions(navigate, 1, t));
-      // }
     } else if (resolutionView !== null && resolutionView === 2) {
-      // if (voterPage !== null && voterRows !== null) {
       dispatch(getVoterResolution(navigate, 1, t));
-      // }
     }
   };
 
@@ -387,7 +393,6 @@ const Resolution = () => {
             VotingDeadlineDate: "",
           };
           dispatch(getResolutions(navigate, buttonTab, t, Data.Title));
-          // setAllSearchInput("");
         } else {
           dispatch(getResolutions(navigate, buttonTab, t));
         }
@@ -403,7 +408,6 @@ const Resolution = () => {
             VotingDeadlineDate: "",
           };
           dispatch(getVoterResolution(navigate, buttonTab, t, Data.Title));
-          // setAllSearchInput("");
         } else {
           dispatch(getVoterResolution(navigate, buttonTab, t));
         }
@@ -451,7 +455,8 @@ const Resolution = () => {
         return (
           <span
             className={styles["resolution_title"]}
-            onClick={() => viewResolution(data.resolutionID)}>
+            onClick={() => viewResolution(data.resolutionID)}
+          >
             {table}
           </span>
         );
@@ -545,33 +550,28 @@ const Resolution = () => {
         if (data.resolutionStatus === "Circulated") {
           // if (votingDeadline < newDate) {
           return (
-            <Tooltip placement='bottomLeft' title={t("Result")}>
+            <Tooltip placement="bottomLeft" title={t("Result")}>
               <img
-                draggable='false'
+                draggable="false"
                 src={ResultResolutionIcon}
                 onClick={() => getResultHandle(data.resolutionID)}
                 className={styles["Result_icon"]}
-                alt=''
+                alt=""
               />
             </Tooltip>
           );
-          // } else {
-          //   return "";
-          // }
         } else if (data.resolutionStatus === "Closed") {
-          // if (votingDeadline < newDate) {
           return (
-            <Tooltip placement='bottomLeft' title={t("Result")}>
+            <Tooltip placement="bottomLeft" title={t("Result")}>
               <img
-                draggable='false'
+                draggable="false"
                 src={ResultResolutionIcon}
                 onClick={() => getResultHandle(data.resolutionID)}
                 className={styles["Result_icon"]}
-                alt=''
+                alt=""
               />
             </Tooltip>
           );
-          // }
         }
       },
     },
@@ -586,13 +586,13 @@ const Resolution = () => {
         } else if (data.resolutionStatus === "Circulated") {
           return (
             <span className={styles["Edit_Icon_moderator"]}>
-              <Tooltip placement='bottomLeft' title={t("Cancel")}>
+              <Tooltip placement="bottomLeft" title={t("Cancel")}>
                 <img
-                  draggable='false'
+                  draggable="false"
                   src={CrossResolution}
                   width={22}
                   height={22}
-                  alt=''
+                  alt=""
                   onClick={() => OpenCancelModal(data.resolutionID)}
                 />
               </Tooltip>
@@ -600,13 +600,13 @@ const Resolution = () => {
           );
         } else {
           return (
-            <Tooltip placement='bottomLeft' title={t("Edit")}>
+            <Tooltip placement="bottomLeft" title={t("Edit")}>
               <img
-                draggable='false'
+                draggable="false"
                 src={EditResolutionIcon}
                 onClick={() => handleUpdateResolutionAction(data.resolutionID)}
                 className={styles["Edit_Icon_moderator"]}
-                alt=''
+                alt=""
               />
             </Tooltip>
           );
@@ -627,7 +627,8 @@ const Resolution = () => {
         return (
           <span
             className={styles["resolution_title"]}
-            onClick={() => viewResolution(data.resolutionID)}>
+            onClick={() => viewResolution(data.resolutionID)}
+          >
             {table}
           </span>
         );
@@ -707,7 +708,7 @@ const Resolution = () => {
       width: "110px",
       render: (text, data) => {
         return (
-          <span className='d-flex justify-content-center Saved_money_Tagline '>
+          <span className="d-flex justify-content-center Saved_money_Tagline ">
             {text}
           </span>
         );
@@ -725,10 +726,10 @@ const Resolution = () => {
         if (votingDeadline < newDate) {
           return (
             <img
-              draggable='false'
+              draggable="false"
               className={styles["Result_Icon_cursor_pointer"]}
               src={ResultResolutionIcon}
-              alt=''
+              alt=""
               onClick={() => getResultHandle(data.resolutionID)}
             />
           );
@@ -751,7 +752,8 @@ const Resolution = () => {
         return (
           <span
             className={styles["resolution_title"]}
-            onClick={() => viewResolution(data.resolutionID)}>
+            onClick={() => viewResolution(data.resolutionID)}
+          >
             {table}
           </span>
         );
@@ -805,12 +807,12 @@ const Resolution = () => {
       render: (text, data) => {
         if (data.isAttachmentAvailable) {
           return (
-            <span className='d-flex justify-content-center'>
+            <span className="d-flex justify-content-center">
               <img
-                draggable='false'
-                className='text-center cursor-pointer'
+                draggable="false"
+                className="text-center cursor-pointer"
                 src={AttachmentIcon}
-                alt=''
+                alt=""
                 onClick={() => viewAttachmentHandle(data.attachments)}
               />
             </span>
@@ -830,14 +832,14 @@ const Resolution = () => {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img draggable='false' src={thumbsup} alt='' />
+                <span className="d-flex justify-content-center">
+                  <img draggable="false" src={thumbsup} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img draggable='false' src={thumbsdown} alt='' />
+                <span className="d-flex justify-content-center">
+                  <img draggable="false" src={thumbsdown} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
@@ -850,13 +852,13 @@ const Resolution = () => {
               );
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img draggable='false' src={AbstainvoterIcon} alt='' />
+                <span className="d-flex justify-content-center">
+                  <img draggable="false" src={AbstainvoterIcon} alt="" />
                 </span>
               );
             }
           } else {
-            return <p className='text-center'></p>;
+            return <p className="text-center"></p>;
           }
         }
       },
@@ -893,7 +895,8 @@ const Resolution = () => {
         return (
           <span
             className={styles["resolution_title"]}
-            onClick={() => viewResolution(data.resolutionID)}>
+            onClick={() => viewResolution(data.resolutionID)}
+          >
             {table}
           </span>
         );
@@ -949,11 +952,11 @@ const Resolution = () => {
         if (data.isAttachmentAvailable) {
           return (
             <img
-              draggable='false'
-              className='text-center cursor-pointer'
+              draggable="false"
+              className="text-center cursor-pointer"
               src={AttachmentIcon}
               onClick={() => viewAttachmentHandle(data.attachments)}
-              alt=''
+              alt=""
             />
           );
         } else {
@@ -971,27 +974,27 @@ const Resolution = () => {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img draggable='false' src={thumbsup} alt='' />
+                <span className="d-flex justify-content-center">
+                  <img draggable="false" src={thumbsup} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img draggable='false' src={thumbsdown} alt='' />
+                <span className="d-flex justify-content-center">
+                  <img draggable="false" src={thumbsdown} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
-              return <p className='text-center'></p>;
+              return <p className="text-center"></p>;
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img draggable='false' src={AbstainvoterIcon} alt='' />
+                <span className="d-flex justify-content-center">
+                  <img draggable="false" src={AbstainvoterIcon} alt="" />
                 </span>
               );
             }
           } else {
-            return <p className='text-center'></p>;
+            return <p className="text-center"></p>;
           }
         }
       },
@@ -1069,110 +1072,131 @@ const Resolution = () => {
 
   // Resolution reducer ResponseMessage
   useEffect(() => {
-    if (
-      ResolutionReducer.ResponseMessage !== "" &&
-      ResolutionReducer.ResponseMessage !== t("No-data-available") &&
-      ResolutionReducer.ResponseMessage !== undefined
-    ) {
-      setOpen({
-        flag: true,
-        message: ResolutionReducer.ResponseMessage,
-      });
-      setTimeout(() => {
+    try {
+      if (
+        ResolutionReducer.ResponseMessage !== "" &&
+        ResolutionReducer.ResponseMessage !== t("No-data-available") &&
+        ResolutionReducer.ResponseMessage !== undefined
+      ) {
         setOpen({
-          flag: false,
-          message: "",
+          flag: true,
+          message: ResolutionReducer.ResponseMessage,
         });
-      }, 4000);
-      dispatch(clearResponseMessage());
+        setTimeout(() => {
+          setOpen({
+            flag: false,
+            message: "",
+          });
+        }, 4000);
+        dispatch(clearResponseMessage());
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.ResponseMessage]);
 
   // voter resolution state manage
   useEffect(() => {
-    if (ResolutionReducer.searchVoterResolution !== null) {
-      setSearchVoter(ResolutionReducer.searchVoterResolution.resolutionTable);
-      setTotalVoterResolution(
-        ResolutionReducer.searchVoterResolution.totalRecords
-      );
-    } else {
-      setSearchVoter([]);
+    try {
+      if (ResolutionReducer.searchVoterResolution !== null) {
+        setSearchVoter(ResolutionReducer.searchVoterResolution.resolutionTable);
+        setTotalVoterResolution(
+          ResolutionReducer.searchVoterResolution.totalRecords
+        );
+      } else {
+        setSearchVoter([]);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.searchVoterResolution]);
 
   // moderator resolution state manage
   useEffect(() => {
-    if (ResolutionReducer.GetResolutions !== null) {
-      setTotalResolution(ResolutionReducer.GetResolutions.totalRecords);
-      setRows(ResolutionReducer.GetResolutions.resolutionTable);
-    } else {
-      setRows([]);
+    try {
+      if (ResolutionReducer.GetResolutions !== null) {
+        setTotalResolution(ResolutionReducer.GetResolutions.totalRecords);
+        setRows(ResolutionReducer.GetResolutions.resolutionTable);
+      } else {
+        setRows([]);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.GetResolutions]);
 
   useEffect(() => {
-    if (ResolutionReducer.mqttResolutionCreated !== null) {
-      try {
-        let getData = ResolutionReducer.mqttResolutionCreated;
-        let findIndexModerator = isSearchVoter.findIndex(
-          (data, index) =>
-            data.resolutionID === getData.resolution.pK_ResolutionID
-        );
-        if (resolutionView === 2 && (buttonTab === 1 || buttonTab === 3)) {
-          // Check if the user is a valid voter or non-voter
-          const findVoterisValid =
-            getData?.voters.find((obj) => obj.fK_UID === Number(userID)) ||
-            getData?.nonVoters.find((obj) => obj.fK_UID === Number(userID));
-          console.log(
-            findIndexModerator,
-            findVoterisValid,
-            getData,
-            "findIndexModeratorfindIndexModerator"
+    try {
+      if (ResolutionReducer.mqttResolutionCreated !== null) {
+        try {
+          let getData = ResolutionReducer.mqttResolutionCreated;
+          let findIndexModerator = isSearchVoter.findIndex(
+            (data, index) =>
+              data.resolutionID === getData.resolution.pK_ResolutionID
           );
-          if (findVoterisValid) {
-            const voterResolution = {
-              attachments: getData.attachments,
-              decision: getData.resolution.resolutionDecision,
-              decisionDate: getData.resolution.decisionAnnouncementDateTime,
-              fK_VotingStatus_ID: findVoterisValid.fK_VotingStatus_ID,
-              isAlreadyVoted: findVoterisValid.isAlreadyVoted,
-              isAttachmentAvailable: getData.resolution.isAttachmentAvailable,
-              isVoter: findVoterisValid.isVoter === true ? 1 : 0,
-              resolutionID: getData.resolution.pK_ResolutionID,
-              resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
-              resolutionTitle: getData.resolution.title,
-              voterID: findVoterisValid.pK_RV_ID,
-              votingDeadline: getData.resolution.votingDeadline,
-              votingMethod: getData.resolution.votingMethod,
-              votingStatus: findVoterisValid.status,
-            };
+          if (resolutionView === 2 && (buttonTab === 1 || buttonTab === 3)) {
+            // Check if the user is a valid voter or non-voter
+            const findVoterisValid =
+              getData?.voters.find((obj) => obj.fK_UID === Number(userID)) ||
+              getData?.nonVoters.find((obj) => obj.fK_UID === Number(userID));
+            console.log(
+              findIndexModerator,
+              findVoterisValid,
+              getData,
+              "findIndexModeratorfindIndexModerator"
+            );
+            if (findVoterisValid) {
+              const voterResolution = {
+                attachments: getData.attachments,
+                decision: getData.resolution.resolutionDecision,
+                decisionDate: getData.resolution.decisionAnnouncementDateTime,
+                fK_VotingStatus_ID: findVoterisValid.fK_VotingStatus_ID,
+                isAlreadyVoted: findVoterisValid.isAlreadyVoted,
+                isAttachmentAvailable: getData.resolution.isAttachmentAvailable,
+                isVoter: findVoterisValid.isVoter === true ? 1 : 0,
+                resolutionID: getData.resolution.pK_ResolutionID,
+                resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
+                resolutionTitle: getData.resolution.title,
+                voterID: findVoterisValid.pK_RV_ID,
+                votingDeadline: getData.resolution.votingDeadline,
+                votingMethod: getData.resolution.votingMethod,
+                votingStatus: findVoterisValid.status,
+              };
 
-            if (findIndexModerator === -1) {
-              setSearchVoter((prev) => [voterResolution, ...prev]);
-            } else {
-              setSearchVoter((prev) => {
-                const copyData = [...prev];
-                copyData.splice(findIndexModerator, 1, voterResolution);
-                return copyData;
-              });
+              if (findIndexModerator === -1) {
+                setSearchVoter((prev) => [voterResolution, ...prev]);
+              } else {
+                setSearchVoter((prev) => {
+                  const copyData = [...prev];
+                  copyData.splice(findIndexModerator, 1, voterResolution);
+                  return copyData;
+                });
+              }
             }
           }
-        }
-      } catch {}
-      dispatch(resolutionMQTTCreate(null));
+        } catch {}
+        dispatch(resolutionMQTTCreate(null));
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.mqttResolutionCreated]);
 
   useEffect(() => {
-    if (ResolutionReducer.mqttResolutionCancelled !== null) {
-      try {
-        let findCancelledResolution = isSearchVoter.filter(
-          (obj) =>
-            obj.resolutionID !==
-            ResolutionReducer.mqttResolutionCancelled.resolution.pK_ResolutionID
-        );
-        setSearchVoter(findCancelledResolution);
-      } catch {}
+    try {
+      if (ResolutionReducer.mqttResolutionCancelled !== null) {
+        try {
+          let findCancelledResolution = isSearchVoter.filter(
+            (obj) =>
+              obj.resolutionID !==
+              ResolutionReducer.mqttResolutionCancelled.resolution
+                .pK_ResolutionID
+          );
+          setSearchVoter(findCancelledResolution);
+        } catch {}
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [ResolutionReducer.mqttResolutionCancelled]);
 
@@ -1242,12 +1266,7 @@ const Resolution = () => {
       } catch {}
     }
   }, [ResolutionReducer.mqttResolutionClosed]);
-  console.log(
-    voteresolution,
-    ResolutionReducer.voteResolutionFlag,
-    "ResolutionReducerResolutionReducer"
-  );
-  console.log(isSearchVoter, "isSearchVoterisSearchVoter");
+
   return (
     <>
       <section className={styles["resolution_container"]}>
@@ -1289,14 +1308,15 @@ const Resolution = () => {
           </>
         ) : (
           <>
-            <Row className='mt-3'>
+            <Row className="mt-3">
               <Col lg={12} md={12} sm={12}>
                 <Row>
                   <Col
                     lg={7}
                     md={7}
                     sm={12}
-                    className=' d-flex justify-content-start align-items-center  gap-3 '>
+                    className=" d-flex justify-content-start align-items-center  gap-3 "
+                  >
                     <span className={styles["Resolution-heading-size"]}>
                       {t("Resolution")}
                     </span>
@@ -1309,12 +1329,12 @@ const Resolution = () => {
                       }
                       icon={
                         <img
-                          draggable='false'
+                          draggable="false"
                           src={plusbutton}
-                          height='7.6px'
-                          width='7.6px'
-                          alt=''
-                          className='align-items-center'
+                          height="7.6px"
+                          width="7.6px"
+                          alt=""
+                          className="align-items-center"
                         />
                       }
                       onClick={() => createresolution()}
@@ -1352,13 +1372,14 @@ const Resolution = () => {
                     lg={5}
                     md={5}
                     sm={12}
-                    className=' d-flex justify-content-end  align-items-center  position-relative Search-filed-resolution'>
+                    className=" d-flex justify-content-end  align-items-center  position-relative Search-filed-resolution"
+                  >
                     <span className={styles["search_input"]}>
                       <TextField
-                        width='455px'
-                        name='Title'
+                        width="455px"
+                        name="Title"
                         placeholder={t("Search")}
-                        labelclass='textFieldSearch d-none'
+                        labelclass="textFieldSearch d-none"
                         value={allSearchInput}
                         change={(e) => filterResolution(e)}
                         // onClick={handleClickSearch}
@@ -1368,9 +1389,10 @@ const Resolution = () => {
                         inputicon={
                           <>
                             <Tooltip
-                              placement='bottomLeft'
-                              title={t("Search-filters")}>
-                              <img draggable='false' src={searchicon} alt='' />
+                              placement="bottomLeft"
+                              title={t("Search-filters")}
+                            >
+                              <img draggable="false" src={searchicon} alt="" />
                             </Tooltip>
                           </>
                         }
@@ -1386,31 +1408,34 @@ const Resolution = () => {
                               sm={12}
                               className={
                                 styles["Search_Box_Main_Resolution_page"]
-                              }>
+                              }
+                            >
                               <Row>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-end'>
+                                  className="d-flex justify-content-end"
+                                >
                                   <span>
                                     <img
-                                      draggable='false'
+                                      draggable="false"
                                       src={Cross}
-                                      height='16px'
-                                      alt=''
-                                      width='16px'
+                                      height="16px"
+                                      alt=""
+                                      width="16px"
                                       onClick={closeSeachBar}
                                     />
                                   </span>
                                 </Col>
                               </Row>
-                              <Row className='mt-3 d-flex justify-content-start align-items-start '>
+                              <Row className="mt-3 d-flex justify-content-start align-items-start ">
                                 <Col
                                   lg={6}
                                   md={6}
                                   sm={6}
-                                  className='CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular '>
+                                  className="CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular "
+                                >
                                   <span>
                                     {resolutionView === 2
                                       ? t("Decision-date")
@@ -1424,19 +1449,19 @@ const Resolution = () => {
                                     format={"DD/MM/YYYY"}
                                     // value={toDoDate}
                                     minDate={moment().toDate()}
-                                    placeholder='DD/MM/YYYY'
+                                    placeholder="DD/MM/YYYY"
                                     render={
                                       <InputIcon
-                                        placeholder='DD/MM/YYYY'
-                                        className='datepicker_input'
+                                        placeholder="DD/MM/YYYY"
+                                        className="datepicker_input"
                                       />
                                     }
                                     editable={false}
-                                    className='datePickerTodoCreate2'
+                                    className="datePickerTodoCreate2"
                                     // disabled={disabled}
                                     // name={name}
                                     onOpenPickNewDate={false}
-                                    inputMode=''
+                                    inputMode=""
                                     // value={value}
                                     calendar={calendarValue}
                                     locale={localValue}
@@ -1458,7 +1483,8 @@ const Resolution = () => {
                                   lg={6}
                                   md={6}
                                   sm={6}
-                                  className='CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular'>
+                                  className="CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular"
+                                >
                                   <span>{t("Voting-deadline")}</span>
                                   <DatePicker
                                     onFocusedDateChange={
@@ -1466,17 +1492,17 @@ const Resolution = () => {
                                     }
                                     format={"DD/MM/YYYY"}
                                     minDate={moment().toDate()}
-                                    placeholder='DD/MM/YYYY'
+                                    placeholder="DD/MM/YYYY"
                                     render={
                                       <InputIcon
-                                        placeholder='DD/MM/YYYY'
-                                        className='datepicker_input'
+                                        placeholder="DD/MM/YYYY"
+                                        className="datepicker_input"
                                       />
                                     }
                                     editable={false}
-                                    className='datePickerTodoCreate2'
+                                    className="datePickerTodoCreate2"
                                     onOpenPickNewDate={false}
-                                    inputMode=''
+                                    inputMode=""
                                     calendar={calendarValue}
                                     locale={localValue}
                                     ref={calendRef}
@@ -1489,12 +1515,13 @@ const Resolution = () => {
                                   /> */}
                                 </Col>
                               </Row>
-                              <Row className='mt-3'>
+                              <Row className="mt-3">
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-end gap-3'>
+                                  className="d-flex justify-content-end gap-3"
+                                >
                                   <Button
                                     text={t("Reset")}
                                     className={
@@ -1524,7 +1551,7 @@ const Resolution = () => {
             </Row>
             {searchResultsArea ? (
               <>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Search_results"]}>
                       {t("Search-results")}
@@ -1538,9 +1565,10 @@ const Resolution = () => {
                         lg={6}
                         md={6}
                         sm={6}
-                        className='CreateMeetingReminder Atteendees-organizer-participant '>
+                        className="CreateMeetingReminder Atteendees-organizer-participant "
+                      >
                         <SelectBox
-                          name='Participant'
+                          name="Participant"
                           placeholder={t("Circulation-date")}
                         />
                       </Col>
@@ -1548,9 +1576,10 @@ const Resolution = () => {
                         lg={6}
                         md={6}
                         sm={6}
-                        className='CreateMeetingReminder Atteendees-organizer-participant'>
+                        className="CreateMeetingReminder Atteendees-organizer-participant"
+                      >
                         <SelectBox
-                          name='Participant'
+                          name="Participant"
                           placeholder={t("Voting-deadline")}
                         />
                       </Col>
@@ -1559,8 +1588,8 @@ const Resolution = () => {
                 </Row>
               </>
             ) : null}
-            <Row className='mt-3'>
-              <Col sm={12} md={12} lg={12} className='d-flex gap-2'>
+            <Row className="mt-3">
+              <Col sm={12} md={12} lg={12} className="d-flex gap-2">
                 <Button
                   className={
                     resolutionView !== null && resolutionView === 1
@@ -1582,7 +1611,7 @@ const Resolution = () => {
               </Col>
             </Row>
             {resolutionView !== null && resolutionView === 1 ? (
-              <Row className='mt-3'>
+              <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   {rows !== null && rows !== undefined && rows.length > 0 ? (
                     <>
@@ -1593,7 +1622,7 @@ const Resolution = () => {
                             ? columnsModeratorClosed
                             : columnsModerator
                         }
-                        className='Resolution_table'
+                        className="Resolution_table"
                         scroll={{ y: "53vh" }}
                         pagination={false}
                         loading={{
@@ -1611,7 +1640,8 @@ const Resolution = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className='d-flex justify-content-center my-3 pagination-groups-table'>
+                          className="d-flex justify-content-center my-3 pagination-groups-table"
+                        >
                           <CustomPagination
                             current={
                               moderatorPage !== null ? Number(moderatorPage) : 1
@@ -1654,8 +1684,9 @@ const Resolution = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className={styles["empty_Resolutions"]}>
-                        <img draggable='false' src={EmptyResolution} alt='' />
+                        className={styles["empty_Resolutions"]}
+                      >
+                        <img draggable="false" src={EmptyResolution} alt="" />
                         <h2 className={styles["NoResolutionHeading"]}>
                           {t("No-resolution-to-display")}
                         </h2>
@@ -1671,12 +1702,12 @@ const Resolution = () => {
                           }
                           icon={
                             <img
-                              draggable='false'
+                              draggable="false"
                               src={plusbutton}
-                              height='7.6px'
-                              width='7.6px'
-                              alt=''
-                              className='align-items-center'
+                              height="7.6px"
+                              width="7.6px"
+                              alt=""
+                              className="align-items-center"
                             />
                           }
                           onClick={() => createresolution()}
@@ -1687,7 +1718,7 @@ const Resolution = () => {
                 </Col>
               </Row>
             ) : resolutionView !== null && resolutionView === 2 ? (
-              <Row className='mt-3'>
+              <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   {isSearchVoter !== null &&
                   isSearchVoter !== undefined &&
@@ -1700,7 +1731,7 @@ const Resolution = () => {
                             ? columnsVotersClosed
                             : columnsvoters
                         }
-                        className='Resolution_table'
+                        className="Resolution_table"
                         scroll={{ y: "53vh" }}
                         pagination={false}
                         loading={{
@@ -1718,7 +1749,8 @@ const Resolution = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className='d-flex justify-content-center my-3 pagination-groups-table'>
+                          className="d-flex justify-content-center my-3 pagination-groups-table"
+                        >
                           <CustomPagination
                             current={voterPage !== null ? Number(voterPage) : 1}
                             total={totalVoterResolution}
@@ -1739,8 +1771,9 @@ const Resolution = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className={styles["empty_Resolutions"]}>
-                        <img draggable='false' src={EmptyResolution} alt='' />
+                        className={styles["empty_Resolutions"]}
+                      >
+                        <img draggable="false" src={EmptyResolution} alt="" />
                         <h2 className={styles["NoResolutionHeading"]}>
                           {t("No-resolution-to-display")}
                         </h2>
@@ -1756,12 +1789,12 @@ const Resolution = () => {
                           }
                           icon={
                             <img
-                              draggable='false'
+                              draggable="false"
                               src={plusbutton}
-                              height='7.6px'
-                              width='7.6px'
-                              alt=''
-                              className='align-items-center'
+                              height="7.6px"
+                              width="7.6px"
+                              alt=""
+                              className="align-items-center"
                             />
                           }
                           onClick={() => createresolution()}

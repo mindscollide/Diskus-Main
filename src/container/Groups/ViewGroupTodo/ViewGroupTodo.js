@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import {
-  ArrowCounterclockwise,
-  ChevronDown,
-  Plus,
-} from "react-bootstrap-icons";
-import { Input, Pagination, Select } from "antd";
+import { Row, Col } from "react-bootstrap";
+import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { Select } from "antd";
 import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
@@ -21,7 +17,6 @@ import "antd/dist/antd.css";
 
 import ModalToDoList from "./CreateTodo/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
-import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
 import {
   cleareMessage,
   getTodoStatus,
@@ -49,31 +44,18 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     getTodosStatus,
     socketTodoStatusData,
     PollsReducer,
-    LanguageReducer,
-    uploadReducer,
   } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isExpand, setExpand] = useState(false);
   const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
-  const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
   const [statusValues, setStatusValues] = useState([]);
-
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
-  const [searchData, setSearchData] = useState({
-    Date: "",
-    Title: "",
-    AssignedToName: "",
-    UserID: 0,
-  });
-  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
-  let todoListPageSize = localStorage.getItem("todoListRow");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -86,14 +68,18 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
   // GET TODOS STATUS
   useEffect(() => {
-    if(!todoStatus.Response?.length > 0){
-      dispatch(getTodoStatus(navigate, t));
-    }
-    if (ViewGroupID !== null) {
-      let newData = {
-        GroupID: Number(ViewGroupID),
-      };
-      dispatch(getTasksByGroupIDApi(navigate, t, newData));
+    try {
+      if (!todoStatus.Response?.length > 0) {
+        dispatch(getTodoStatus(navigate, t));
+      }
+      if (ViewGroupID !== null) {
+        let newData = {
+          GroupID: Number(ViewGroupID),
+        };
+        dispatch(getTasksByGroupIDApi(navigate, t, newData));
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, []);
 
@@ -128,29 +114,33 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       }
     } catch {}
   }, [toDoListReducer.socketTodoStatusData]);
+
   //get todolist reducer
   useEffect(() => {
-    if (
-      PollsReducer.todoGetGroupTask !== null &&
-      PollsReducer.todoGetGroupTask !== undefined
-    ) {
-      // setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
-      if (PollsReducer.todoGetGroupTask.toDoLists.length > 0) {
-        let dataToSort = [...PollsReducer.todoGetGroupTask.toDoLists];
-        const sortedTasks = dataToSort.sort((taskA, taskB) => {
-          const deadlineA = taskA?.deadlineDateTime;
-          const deadlineB = taskB?.deadlineDateTime;
+    try {
+      if (
+        PollsReducer.todoGetGroupTask !== null &&
+        PollsReducer.todoGetGroupTask !== undefined
+      ) {
+        if (PollsReducer.todoGetGroupTask.toDoLists.length > 0) {
+          let dataToSort = [...PollsReducer.todoGetGroupTask.toDoLists];
+          const sortedTasks = dataToSort.sort((taskA, taskB) => {
+            const deadlineA = taskA?.deadlineDateTime;
+            const deadlineB = taskB?.deadlineDateTime;
 
-          // Compare the deadlineDateTime values as numbers for sorting
-          return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-        });
+            // Compare the deadlineDateTime values as numbers for sorting
+            return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+          });
 
-        setRowToDo(sortedTasks);
+          setRowToDo(sortedTasks);
+        } else {
+          setRowToDo([]);
+        }
       } else {
         setRowToDo([]);
       }
-    } else {
-      setRowToDo([]);
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [PollsReducer.todoGetGroupTask]);
 
@@ -170,28 +160,36 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
   // SET STATUS VALUES
   useEffect(() => {
-    let optionsArr = [];
-    let newOptionsFilter = [];
-    let newArrStatus = [""];
+    try {
+      let optionsArr = [];
+      let newOptionsFilter = [];
+      let newArrStatus = [""];
 
-    if (todoStatus.Response !== null && todoStatus.Response !== "" && todoStatus.Response.length > 0) {
-      todoStatus.Response.map((data, index) => {
-        optionsArr.push({
-          id: data.pK_TSID,
-          status: data.status,
-        });
-        newArrStatus.push(data.status);
+      if (
+        todoStatus.Response !== null &&
+        todoStatus.Response !== "" &&
+        todoStatus.Response.length > 0
+      ) {
+        todoStatus.Response.map((data, index) => {
+          optionsArr.push({
+            id: data.pK_TSID,
+            status: data.status,
+          });
+          newArrStatus.push(data.status);
 
-        newOptionsFilter.push({
-          key: data.pK_TSID,
-          label: data.status,
+          newOptionsFilter.push({
+            key: data.pK_TSID,
+            label: data.status,
+          });
         });
-      });
+      }
+      setStatusValues(newArrStatus);
+
+      setStatusOptions(optionsArr);
+      setTableFilterOptions(newOptionsFilter);
+    } catch (error) {
+      console.log(error, "error");
     }
-    setStatusValues(newArrStatus);
-
-    setStatusOptions(optionsArr);
-    setTableFilterOptions(newOptionsFilter);
   }, [todoStatus]);
 
   // for modal create  handler
@@ -213,11 +211,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       UpdateFileList: [],
     };
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 4, setShow));
-    // let Data = {
-    //   FK_TID: record.pK_TID,
-    //   GroupID: Number(ViewGroupID),
-    // };
-    // dispatch(deleteGroupTaskApi(navigate, t, Data));
   };
 
   const columnsToDo = [
@@ -244,7 +237,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
-      // align: "left",
       render: (record, index) => {
         return (
           <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
@@ -320,7 +312,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),
-      // width: "220px",
       render: (text, record) => {
         return (
           <span className="MontserratRegular">
@@ -339,7 +330,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         {
           text: t("In-progress"),
           value: "In Progress",
-          // className: currentLanguage,
         },
         {
           text: t("Pending"),
@@ -455,25 +445,19 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   ];
 
   useEffect(() => {
-    setViewFlagToDo(false);
-    if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
-      if (modalsflag === true) {
-        setUpdateFlagToDo(true);
-        setModalsflag(false);
-      } else {
-        // setViewFlagToDo(true);
+    try {
+      setViewFlagToDo(false);
+      if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+        if (modalsflag === true) {
+          setUpdateFlagToDo(true);
+          setModalsflag(false);
+        } else {
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [toDoListReducer.ToDoDetails]);
-
-  // for search Date handler
-  const searchHandlerDate = (e) => {
-    setSearchData({
-      ...searchData,
-      Date: e.target.value,
-      UserID: parseInt(createrID),
-    });
-  };
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -484,130 +468,142 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   };
 
   useEffect(() => {
-    if (
-      toDoListReducer.ResponseMessage !== "" &&
-      toDoListReducer.ResponseMessage !== undefined &&
-      toDoListReducer.ResponseMessage !== "" &&
-      toDoListReducer.ResponseMessage !== t("No-records-found")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: toDoListReducer.ResponseMessage,
-      });
-      setTimeout(() => {
+    try {
+      if (
+        toDoListReducer.ResponseMessage !== "" &&
+        toDoListReducer.ResponseMessage !== undefined &&
+        toDoListReducer.ResponseMessage !== "" &&
+        toDoListReducer.ResponseMessage !== t("No-records-found")
+      ) {
         setOpen({
           ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: toDoListReducer.ResponseMessage,
         });
-      }, 3000);
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
 
-      dispatch(clearResponce());
-    } else if (
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== t("No-records-found")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: assignees.ResponseMessage,
-      });
-      setTimeout(() => {
+        dispatch(clearResponce());
+      } else if (
+        assignees.ResponseMessage !== "" &&
+        assignees.ResponseMessage !== "" &&
+        assignees.ResponseMessage !== t("No-records-found")
+      ) {
         setOpen({
           ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: assignees.ResponseMessage,
         });
-      }, 3000);
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
 
-      dispatch(clearResponseMessage());
-    } else {
-      dispatch(clearResponce());
-      dispatch(clearResponseMessage());
+        dispatch(clearResponseMessage());
+      } else {
+        dispatch(clearResponce());
+        dispatch(clearResponseMessage());
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
 
   useEffect(() => {
-    if (removeTodo !== 0) {
-      if (
-        getTodosStatus.UpdateTodoStatusMessage ===
-        t("The-record-has-been-updated-successfully")
-      ) {
-        let copyData = [...rowsToDo];
-        let removeDeleteTodo = copyData.filter(
-          (todoData, index) => todoData.pK_TID !== removeTodo
-        );
-        setRowToDo(removeDeleteTodo);
-        setRemoveTodo(0);
+    try {
+      if (removeTodo !== 0) {
+        if (
+          getTodosStatus.UpdateTodoStatusMessage ===
+          t("The-record-has-been-updated-successfully")
+        ) {
+          let copyData = [...rowsToDo];
+          let removeDeleteTodo = copyData.filter(
+            (todoData, index) => todoData.pK_TID !== removeTodo
+          );
+          setRowToDo(removeDeleteTodo);
+          setRemoveTodo(0);
+        }
       }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
 
   useEffect(() => {
-    if (
-      getTodosStatus.ResponseMessage !== "" &&
-      getTodosStatus.ResponseMessage !== undefined &&
-      getTodosStatus.ResponseMessage !== "" &&
-      getTodosStatus.ResponseMessage !== t("No-records-found")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: getTodosStatus.ResponseMessage,
-      });
-      setTimeout(() => {
+    try {
+      if (
+        getTodosStatus.ResponseMessage !== "" &&
+        getTodosStatus.ResponseMessage !== undefined &&
+        getTodosStatus.ResponseMessage !== "" &&
+        getTodosStatus.ResponseMessage !== t("No-records-found")
+      ) {
         setOpen({
           ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: getTodosStatus.ResponseMessage,
         });
-      }, 3000);
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
 
-      dispatch(cleareMessage());
-    } else if (
-      getTodosStatus.UpdateTodoStatusMessage !== "" &&
-      getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-      getTodosStatus.UpdateTodoStatusMessage !== "" &&
-      getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: getTodosStatus.UpdateTodoStatusMessage,
-      });
-      setTimeout(() => {
+        dispatch(cleareMessage());
+      } else if (
+        getTodosStatus.UpdateTodoStatusMessage !== "" &&
+        getTodosStatus.UpdateTodoStatusMessage !== undefined &&
+        getTodosStatus.UpdateTodoStatusMessage !== "" &&
+        getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
+      ) {
         setOpen({
           ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: getTodosStatus.UpdateTodoStatusMessage,
         });
-      }, 3000);
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
 
-      dispatch(cleareMessage());
-    } else if (
-      getTodosStatus.UpdateTodoStatus !== "" &&
-      getTodosStatus.UpdateTodoStatus !== undefined &&
-      getTodosStatus.UpdateTodoStatus !== "" &&
-      getTodosStatus.UpdateTodoStatus !== t("No-records-found")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: getTodosStatus.UpdateTodoStatus,
-      });
-      setTimeout(() => {
+        dispatch(cleareMessage());
+      } else if (
+        getTodosStatus.UpdateTodoStatus !== "" &&
+        getTodosStatus.UpdateTodoStatus !== undefined &&
+        getTodosStatus.UpdateTodoStatus !== "" &&
+        getTodosStatus.UpdateTodoStatus !== t("No-records-found")
+      ) {
         setOpen({
           ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: getTodosStatus.UpdateTodoStatus,
         });
-      }, 3000);
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
 
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
+        dispatch(cleareMessage());
+      } else {
+        dispatch(cleareMessage());
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [
     getTodosStatus.ResponseMessage,
@@ -665,10 +661,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                   className={"ToDo"}
                   rows={rowsToDo}
                   scroll={scroll}
-                  // onChange={tableTodoChange}
                   pagination={false}
                   locale={{
-                    emptyText: emptyText(), // Set your custom empty text here
+                    emptyText: emptyText(),
                   }}
                 />
               </Col>
@@ -690,7 +685,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setViewFlagToDo={setViewFlagToDo}
         />
       ) : null}
-      {/* <Notification setOpen={setOpen} open={open.open} message={open.message} /> */}
     </>
   );
 };
