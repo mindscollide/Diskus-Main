@@ -1482,6 +1482,7 @@ const AddUpdateAdvanceMeetingAgenda = (
                 dispatch(attendanceGlobalFlag(false));
                 dispatch(uploadGlobalFlag(false));
               } else if (flag === 2) {
+                console.log("end meeting chaek");
                 dispatch(
                   UpdateOrganizersMeeting(
                     false,
@@ -2152,7 +2153,7 @@ const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
           );
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", `Agenda - ${meetingTitle}` );
+          link.setAttribute("download", `Agenda - ${meetingTitle}`);
           document.body.appendChild(link);
           link.click();
           dispatch(setLoaderFalse());

@@ -23,6 +23,8 @@ import {
 } from "./NewMeetingActions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import { useContext } from "react";
+import { MeetingContext } from "../../context/MeetingContext";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
@@ -276,8 +278,10 @@ const UpdateOrganizersMeeting = (
   setEditFlag,
   setCalendarViewModal,
   dashboardFlag,
-  setViewAdvanceMeetingModal
+  setViewAdvanceMeetingModal,
+  setEndMeetingConfirmationModal
 ) => {
+  console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -320,7 +324,8 @@ const UpdateOrganizersMeeting = (
               setEditFlag,
               setCalendarViewModal,
               dashboardFlag,
-              setViewAdvanceMeetingModal
+              setViewAdvanceMeetingModal,
+              setEndMeetingConfirmationModal
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -332,6 +337,8 @@ const UpdateOrganizersMeeting = (
                   "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase()
                 )
             ) {
+              console.log("end meeting chaek");
+
               try {
                 await dispatch(
                   updateOrganizerMeetingStatus_success(
@@ -396,39 +403,9 @@ const UpdateOrganizersMeeting = (
                         setViewFlag,
                         setEdiorRole,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal
+                        setViewAdvanceMeetingModal,
+                        setEndMeetingConfirmationModal
                       )
-                    );
-                    localStorage.removeItem("folderDataRoomMeeting");
-                    setEdiorRole({ status: null, role: null });
-                    setAdvanceMeetingModalID(null);
-                    setViewAdvanceMeetingModal(false);
-                    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-                    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-                    let currentView =
-                      localStorage.getItem("MeetingCurrentView");
-                    let meetingpageRow =
-                      localStorage.getItem("MeetingPageRows");
-                    let meetingPageCurrent = parseInt(
-                      localStorage.getItem("MeetingPageCurrent")
-                    );
-                    let userID = localStorage.getItem("userID");
-                    let searchData = {
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber:
-                        meetingPageCurrent !== null
-                          ? Number(meetingPageCurrent)
-                          : 1,
-                      Length:
-                        meetingpageRow !== null ? Number(meetingpageRow) : 50,
-                      PublishedMeetings:
-                        currentView && Number(currentView) === 1 ? true : false,
-                    };
-                    await dispatch(
-                      searchNewUserMeeting(navigate, searchData, t)
                     );
                   } else {
                     let requestDataForMeetingDetails = {
@@ -491,6 +468,7 @@ const UpdateOrganizersMeeting = (
                     PublishedMeetings:
                       currentView && Number(currentView) === 1 ? true : false,
                   };
+                  console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                   setSceduleMeeting(false);
                   dispatch(scheduleMeetingPageFlag(false));
@@ -525,7 +503,7 @@ const UpdateOrganizersMeeting = (
                   };
                   dispatch(getMeetingbyGroupApi(navigate, t, searchData));
                 }
-              } catch {
+              } catch (error) {
                 console.error("error");
               }
             } else if (

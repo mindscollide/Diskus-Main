@@ -51,7 +51,8 @@ const CancelButtonModal = ({
     setEdiorRole({ status: null, role: null });
     localStorage.removeItem("folderDataRoomMeeting");
     setAdvanceMeetingModalID(null);
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
     // setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));

@@ -425,7 +425,8 @@ const SceduleMeeting = ({
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       } catch (error) {
         console.error(error, "error");
@@ -461,7 +462,8 @@ const SceduleMeeting = ({
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       } catch (error) {
         console.error(error, "error");

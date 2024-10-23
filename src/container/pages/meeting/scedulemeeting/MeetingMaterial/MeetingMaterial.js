@@ -373,7 +373,8 @@ const MeetingMaterial = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSceduleMeeting(false);
   };
 
@@ -406,6 +407,7 @@ const MeetingMaterial = ({
   };
   const handlePublish = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    console.log("end meeting chaek")
     dispatch(
       UpdateOrganizersMeeting(
         false,

@@ -11,6 +11,10 @@ import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing image
+import {
+  updateCommentMinutesGeneral,
+  updateRejectMinutesAgenda,
+} from "../utilsFunction";
 
 // Functional component for deleting a comment
 const DeleteCommentModal = ({
@@ -34,110 +38,14 @@ const DeleteCommentModal = ({
 
   const dispatch = useDispatch(); // Redux dispatch hook
 
-  const updateRejectMinutesAgenda = (
-    minutesData,
-    updateData,
-    parentMinuteID
-  ) => {
-    return minutesData.map((agenda) => {
-      // Update main minuteData
-      const updatedMinuteData = agenda.minuteData.map((minute) => {
-        if (minute.minuteID === parentMinuteID.minuteID) {
-          const updatedDeclinedReviews = minute.declinedReviews.filter(
-            (review) => {
-              return !(
-                (review.fK_WorkFlowActor_ID === 0 &&
-                  review.reason === updateData.reason) ||
-                (review.fK_WorkFlowActor_ID ===
-                  deleteCommentLocal.fK_WorkFlowActor_ID &&
-                  review.reason === deleteCommentLocal.reason)
-              );
-            }
-          );
-
-          return {
-            ...minute,
-            reason: "",
-            actorBundleStatusID: 2,
-            declinedReviews: updatedDeclinedReviews,
-          };
-        }
-        return minute;
-      });
-
-      // Update subMinutes if they exist
-      const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
-        const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
-          if (subMinute.minuteID === parentMinuteID.minuteID) {
-            const updatedDeclinedReviews = subMinute.declinedReviews.filter(
-              (review) => {
-                return !(
-                  (review.fK_WorkFlowActor_ID === 0 &&
-                    review.reason === updateData.reason) ||
-                  (review.fK_WorkFlowActor_ID ===
-                    deleteCommentLocal.fK_WorkFlowActor_ID &&
-                    review.reason === deleteCommentLocal.reason)
-                );
-              }
-            );
-
-            return {
-              ...subMinute,
-              reason: "",
-              actorBundleStatusID: 2,
-              declinedReviews: updatedDeclinedReviews,
-            };
-          }
-          return subMinute;
-        });
-        return { ...subAgenda, minuteData: updatedSubMinuteData };
-      });
-
-      return {
-        ...agenda,
-        minuteData: updatedMinuteData,
-        subMinutes: updatedSubMinutes,
-      };
-    });
-  };
-
-  const updateCommentMinutesGeneral = (
-    minutesData,
-    updateData,
-    parentMinuteID
-  ) => {
-    return minutesData.map((minute) => {
-      if (minute.minuteID === parentMinuteID.minuteID) {
-        const updatedDeclinedReviews = minute.declinedReviews.filter(
-          (review) => {
-            return !(
-              (review.fK_WorkFlowActor_ID === 0 &&
-                review.reason === updateData.reason) ||
-              (review.fK_WorkFlowActor_ID ===
-                deleteCommentLocal.fK_WorkFlowActor_ID &&
-                review.reason === deleteCommentLocal.reason)
-            );
-          }
-        );
-
-        return {
-          ...minute,
-          reason: "",
-          actorBundleStatusID: 2,
-          declinedReviews: updatedDeclinedReviews,
-        };
-      }
-      return minute;
-    });
-  };
-
   // Example usage
   const deleteComment = () => {
     if (isAgenda === false) {
       const updatedMinutesData = updateCommentMinutesGeneral(
         minutesGeneral,
         deleteCommentLocal,
-        parentMinuteID
+        parentMinuteID,
+        deleteCommentLocal
       );
       console.log("Updated minutes data:", updatedMinutesData);
       setMinutesGeneral(updatedMinutesData);
@@ -147,7 +55,8 @@ const DeleteCommentModal = ({
       const updatedMinutesData = updateRejectMinutesAgenda(
         minutesAgenda,
         deleteCommentLocal,
-        parentMinuteID
+        parentMinuteID,
+        deleteCommentLocal
       );
       console.log("Updated minutes data:", updatedMinutesData);
       setMinutesAgenda(updatedMinutesData);
@@ -168,7 +77,7 @@ const DeleteCommentModal = ({
         setShow={dispatch(deleteCommentModal)} // Set show modal action
         modalFooterClassName={"d-block"} // CSS class for modal footer
         modalHeaderClassName={"d-block"} // CSS class for modal header
-        className="DeleteCommentModal" // Additional CSS class for modal
+        className='DeleteCommentModal' // Additional CSS class for modal
         onHide={() => {
           dispatch(deleteCommentModal(false)); // Hide modal action
         }}
@@ -191,7 +100,7 @@ const DeleteCommentModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center gap-2" // CSS class for flex layout
+                className='d-flex justify-content-center gap-2' // CSS class for flex layout
               >
                 {/* Button for confirming deletion */}
                 <Button
