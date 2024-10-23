@@ -9,6 +9,7 @@ import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { maxFileSize } from "../../../../../commen/functions/utils";
 
 const DefaultDragger = ({
   index,
@@ -22,7 +23,10 @@ const DefaultDragger = ({
   console.log("ediorRoleediorRoleediorRole", editorRole);
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
-  console.log(isAgendaUpdateWhenMeetingActive,"isAgendaUpdateWhenMeetingActive")
+  console.log(
+    isAgendaUpdateWhenMeetingActive,
+    "isAgendaUpdateWhenMeetingActive"
+  );
   let currentUserID = Number(localStorage.getItem("userID"));
 
   const [open, setOpen] = useState({
@@ -55,7 +59,7 @@ const DefaultDragger = ({
       }
       if (getRowData.files.length > 0) {
         fileList.forEach((fileData, index) => {
-          if (fileData.size > 10485760) {
+          if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
             sizezero = false;
@@ -64,10 +68,14 @@ const DefaultDragger = ({
             (oldFileData) => oldFileData.displayAttachmentName === fileData.name
           );
           if (!size) {
+            console.log("size");
+
             setTimeout(() => {
+              console.log("size");
+
               setOpen({
                 flag: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
+                message: t("File-size-should-not-be-greater-then-1-5GB"),
               });
             }, 3000);
           } else if (!sizezero) {
@@ -102,7 +110,7 @@ const DefaultDragger = ({
         });
       } else {
         fileList.forEach((fileData, index) => {
-          if (fileData.size > 10485760) {
+          if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
             sizezero = false;
@@ -112,7 +120,7 @@ const DefaultDragger = ({
             setTimeout(() => {
               setOpen({
                 flag: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
+                message: t("File-size-should-not-be-greater-then-1-5GB"),
               });
             }, 3000);
           } else if (!sizezero) {
@@ -148,7 +156,7 @@ const DefaultDragger = ({
   console.log(fileForSend, "fileForSendfileForSendfileForSend");
   return (
     <>
-      <Row key={index + 5} className='mt-4 mb-2'>
+      <Row key={index + 5} className="mt-4 mb-2">
         <Col lg={12} md={12} sm={12}>
           <Dragger
             {...props}
@@ -165,28 +173,31 @@ const DefaultDragger = ({
                   !isAgendaUpdateWhenMeetingActive
                 ? true
                 : false
-            }>
+            }
+          >
             <Row>
               <Col
                 lg={5}
                 md={5}
                 sm={12}
-                className='d-flex justify-content-end align-items-center'>
+                className="d-flex justify-content-end align-items-center"
+              >
                 <img
                   draggable={false}
                   src={DrapDropIcon}
                   width={100}
                   className={styles["ClassImage"]}
-                  alt=''
+                  alt=""
                 />
               </Col>
               <Col lg={7} md={7} sm={12}>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["ant-upload-text-Meetings"]}>
                       {t("Drag-file-here")}
                     </span>
@@ -197,7 +208,8 @@ const DefaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("The-following-file-formats-are")}
                     </span>
@@ -208,7 +220,8 @@ const DefaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
                     </span>
