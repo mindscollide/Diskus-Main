@@ -9,13 +9,13 @@ const CancelConfirmationModal = ({
   handleClickDiscard,
   handleClickContinue,
 }) => {
-  const { canceConfirmationModal, setConfirmationModal } =
+  const { cancelConfirmationModal, setCancelConfirmationModal } =
     useContext(MeetingContext);
   const { t } = useTranslation();
   return (
     <CustomModal
-      show={canceConfirmationModal}
-      setShow={setConfirmationModal}
+      show={cancelConfirmationModal}
+      setShow={setCancelConfirmationModal}
       modalFooterClassName={"d-block"}
       ModalBody={
         <>
