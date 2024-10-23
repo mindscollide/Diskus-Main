@@ -1692,7 +1692,7 @@ const saveParcipantsProposeMeetingAPI = (
               dispatch(
                 saveParcipantsProposeMeetingSuccess(
                   response.data.responseResult,
-                  t("Successfully Updated Participants List")
+                  t("Successfully-updated-participants-list")
                 )
               );
               if (flag === true) {

@@ -2150,5 +2150,6 @@
   "Unsave-changes": "Unsave Changes",
   "Save-and-continue": "Save & Continue",
   "Are-you-sure-you-want-to-end-the-meeting-once-the-meeting-ends-all-the-participants-will-be-disconnected": "Are you sure you want to end the meeting? Once the meeting ends, all the participants will be disconnected.",
-  "Not-allowed-more-than-5-files": "Not allowed more than 5 files"
+  "Not-allowed-more-than-5-files": "Not allowed more than 5 files",
+  "Successfully-updated-participants-list": "Successfully updated participants list"
 }
