@@ -2239,8 +2239,8 @@ const UserSettings = () => {
                     </Row>
                     {userOptionsSettings.AllowGoogleCalenderSync !== null &&
                     userOptionsSettings.AllowGoogleCalenderSync !== false &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                    roleID !== 1 &&
+                    roleID !== 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
@@ -2278,8 +2278,8 @@ const UserSettings = () => {
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
                     userOptionsSettings.AllowMicrosoftCalenderSync !== false &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                    roleID !== 1 &&
+                    roleID !== 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}

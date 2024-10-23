@@ -22,10 +22,6 @@ import {
   clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import { useDispatch } from "react-redux";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_en from "react-date-object/locales/gregorian_en";
-import { Upload } from "antd";
 import SubUrls from "./SubUrls";
 import SubRequestContributor from "./SubRequestContributor";
 import { useEffect } from "react";
@@ -71,8 +67,6 @@ const SubAgendaMappingDragging = ({
   );
 
   const navigate = useNavigate();
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
   const dispatch = useDispatch();
   let currentUserID = localStorage.getItem("userID");
 
@@ -102,18 +96,6 @@ const SubAgendaMappingDragging = ({
     );
     setSubExpand(initialState);
   }, [rows]);
-
-  useEffect(() => {
-    if (currentLanguage !== undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
-      }
-    }
-  }, [currentLanguage]);
 
   const startVoting = (record) => {
     let Data = {
@@ -688,7 +670,7 @@ const SubAgendaMappingDragging = ({
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

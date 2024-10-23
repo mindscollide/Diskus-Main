@@ -1,7 +1,5 @@
-import React, { useState } from "react";
 import styles from "./VideoIncoming.module.css";
 import { Container, Row, Col } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
 import { Button } from "../../components/elements";
 import videoEndIcon from "../../assets/images/newElements/VideoEndIcon.png";
 import videoAvatar from "../../assets/images/newElements/VideoAvatar.png";

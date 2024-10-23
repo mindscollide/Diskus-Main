@@ -560,7 +560,7 @@ const Organization = () => {
             </Row>
             <span className={styles["bottom-line"]}></span>
             {/* New Data Started Inserting  */}
-            {roleID != 1 && roleID != 2 ? (
+            {roleID !== 1 && roleID !== 2 ? (
               <>
                 <Row className="mt-3 FontArabicRegular">
                   <Col
@@ -1313,8 +1313,8 @@ const Organization = () => {
             </Row>
             {/* only for user */}
             {organizationStates.UserAllowGoogleCalendarSynch !== null &&
-            roleID != 1 &&
-            roleID != 2 ? (
+            roleID !== 1 &&
+            roleID !== 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1348,8 +1348,8 @@ const Organization = () => {
               <></>
             )}
             {organizationStates.UserAllowGoogleCalendarSynch === true &&
-            roleID != 1 &&
-            roleID != 2 ? (
+            roleID !== 1 &&
+            roleID !== 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1387,8 +1387,8 @@ const Organization = () => {
               <></>
             )}
             {organizationStates.UserAllowMicrosoftCalendarSynch !== null &&
-            roleID != 1 &&
-            roleID != 2 ? (
+            roleID !== 1 &&
+            roleID !== 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1424,8 +1424,8 @@ const Organization = () => {
             )}
 
             {organizationStates.UserAllowMicrosoftCalendarSynch === true &&
-            roleID != 1 &&
-            roleID != 2 ? (
+            roleID !== 1 &&
+            roleID !== 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1595,7 +1595,7 @@ const Organization = () => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

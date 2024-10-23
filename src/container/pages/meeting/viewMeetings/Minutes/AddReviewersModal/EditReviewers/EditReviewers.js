@@ -2,15 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./EditReviewers.module.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import {
   AttachmentViewer,
   Checkbox,
 } from "../../../../../../../components/elements";
-import AttachmentIcon from "./../../../../../../../assets/images/AttachmentIcon.png";
 import TickIcon from "./../../../../../../../assets/images/Tick-Icon.png";
 import { useTranslation } from "react-i18next";
-import { GetAllAssigneesToDoList } from "../../../../../../../store/actions/ToDoList_action";
 
 const EditReviewers = ({
   selectMinutes,
@@ -41,14 +39,9 @@ const EditReviewers = ({
   setSelectedReviewersToEdit,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  let createrID = localStorage.getItem("userID");
+  const { MinutesReducer } = useSelector((state) => state);
 
-  const { MinutesReducer, toDoListReducer } = useSelector((state) => state);
-
-  const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(true);
 
   const [selectAll, setSelectAll] = useState(false);

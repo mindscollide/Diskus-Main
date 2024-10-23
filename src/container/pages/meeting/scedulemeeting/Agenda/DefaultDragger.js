@@ -7,7 +7,6 @@ import styles from "./Agenda.module.css";
 import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 
 import { getRandomUniqueNumber } from "./drageFunction";
-import { useSelector } from "react-redux";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
@@ -20,13 +19,8 @@ const DefaultDragger = ({
   editorRole,
 }) => {
   const { t } = useTranslation();
-  console.log("ediorRoleediorRoleediorRole", editorRole);
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
-  console.log(
-    isAgendaUpdateWhenMeetingActive,
-    "isAgendaUpdateWhenMeetingActive"
-  );
   let currentUserID = Number(localStorage.getItem("userID"));
 
   const [open, setOpen] = useState({
@@ -212,7 +206,7 @@ const DefaultDragger = ({
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

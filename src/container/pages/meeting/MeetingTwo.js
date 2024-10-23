@@ -90,10 +90,7 @@ import { useDispatch } from "react-redux";
 import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
 import { useRef } from "react";
 
-import {
-  ViewMeeting,
-  allAssignessList,
-} from "../../../store/actions/Get_List_Of_Assignees";
+import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   newTimeFormaterAsPerUTCFullDate,
@@ -321,7 +318,7 @@ const NewMeeting = () => {
         }
         // await dispatch(allAssignessList(navigate, t));
         console.log("Test is calling or not");
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
       } else {
@@ -345,7 +342,7 @@ const NewMeeting = () => {
         // await dispatch(allAssignessList(navigate, t));
         console.log("Test is calling or not");
 
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
       }
@@ -753,8 +750,8 @@ const NewMeeting = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSearchFeilds({
       ...searchFields,
       Date: "",
@@ -777,8 +774,8 @@ const NewMeeting = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
     // setSearchFeilds({
     //   ...searchFields,
     //   Date: "",
@@ -938,8 +935,8 @@ const NewMeeting = () => {
     ) {
       await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     }
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
@@ -962,8 +959,8 @@ const NewMeeting = () => {
     ) {
       await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     }
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
@@ -1324,7 +1321,6 @@ const NewMeeting = () => {
       key: "Chat",
       width: "85px",
       render: (text, record) => {
-        let isEmptyIcon = `<span className={styles["isempty"]}></span>`;
         return (
           <>
             <div className={styles["icon-wrapper"]}>
@@ -1857,8 +1853,8 @@ const NewMeeting = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSearchText("");
     setentereventIcon(false);
   };
@@ -1876,8 +1872,8 @@ const NewMeeting = () => {
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
         PublishedMeetings: Number(currentView) === 1 ? true : false,
       };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+      console.log("chek search meeting");
+      await dispatch(searchNewUserMeeting(navigate, searchData, t));
       setentereventIcon(true);
     }
   };
@@ -2179,8 +2175,8 @@ const NewMeeting = () => {
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   useEffect(() => {
@@ -2723,7 +2719,7 @@ const NewMeeting = () => {
         <Notification
           open={open.open}
           message={open.message}
-          setOpen={(status) => setOpen({ ...open, open: status.flag })}
+          setOpen={(status) => setOpen({ ...open, open: status.open })}
           severity={open.severity}
         />
         {sceduleMeeting &&

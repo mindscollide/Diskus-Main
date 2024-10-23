@@ -1085,7 +1085,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

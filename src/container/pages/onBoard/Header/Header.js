@@ -21,7 +21,7 @@ const Header = ({ searchVisible }) => {
     }
   }, []);
 
-  const { setCurrentStep, currentStep } = useTour();
+  const { currentStep } = useTour();
   const [isExpand, setExpand] = useState(false);
   const [isMeeting, setMeeting] = useState(false);
   const { setIsOpen } = useTour();

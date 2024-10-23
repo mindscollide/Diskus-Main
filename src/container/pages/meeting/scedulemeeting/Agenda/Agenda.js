@@ -1,24 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
-import { removePropertiesFromObject } from "../../../../../commen/functions/validations";
 import { Col, Row } from "react-bootstrap";
-import {
-  Button,
-  Loader,
-  Notification,
-} from "../../../../../components/elements";
+import { Button, Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Upload } from "antd";
 import {
   convertDateFieldsToUTC,
   convertUtcToGmt,
-  resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
-import line from "../../../../../assets/images/LineAgenda.svg";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
 import {
   showCancelModalAgenda,
@@ -28,7 +21,6 @@ import {
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
-  CreateUpdateMeetingDataRoomMap,
   UploadDocumentsAgendaApi,
   SaveFilesAgendaApi,
   AddUpdateAdvanceMeetingAgenda,
@@ -48,7 +40,6 @@ import ParentAgenda from "./ParentAgenda";
 import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
-import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import NextAgenda from "./NextAgenda/NextAgenda";
 import PreviousAgenda from "./PreviousAgenda/PreviousAgenda";
 import {
@@ -92,19 +83,12 @@ const Agenda = ({
 
   const [allUsersRC, setAllUsersRC] = useState([]);
 
-  const {
-    NewMeetingreducer,
-    MeetingAgendaReducer,
-    DataRoomReducer,
-    settingReducer,
-  } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
-  let meetingTitle = localStorage.getItem("MeetingTitle");
-
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
-
-  const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
   const [fileForSend, setFileForSend] = useState([]);
@@ -339,8 +323,8 @@ const Agenda = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+      console.log("chek search meeting");
+      await dispatch(searchNewUserMeeting(navigate, searchData, t));
       setSceduleMeeting(false);
       localStorage.setItem("folderDataRoomMeeting", 0);
     }
@@ -1865,7 +1849,7 @@ const Agenda = ({
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

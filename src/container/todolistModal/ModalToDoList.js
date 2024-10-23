@@ -328,12 +328,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setFileForSend((prevFiles) => [...prevFiles, fileData]);
         setFileSize(fileSizeArr);
       }
-      // Update previousFileList to current fileList
-      previousFileList = filesArray;
     });
   };
 
-  let previousFileList = [];
 
   useEffect(() => {
     if (show) {
@@ -810,7 +807,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

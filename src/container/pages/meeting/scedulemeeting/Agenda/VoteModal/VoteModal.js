@@ -43,7 +43,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     localStorage.getItem("currentAgendaVotingID")
   );
 
-
   const { NewMeetingreducer, MeetingAgendaReducer, MeetingOrganizersReducer } =
     useSelector((state) => state);
   const [addOptions, setAddOptions] = useState(false);
@@ -83,7 +82,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     { votingAnswer: "No", votingAnswerID: 2 },
   ]);
 
-  const [error, setError] = useState(false);
   const [voteModalAttrbutes, setVoteModalAttrbutes] = useState({
     voteQuestion: "",
     Answer: "",
@@ -310,7 +308,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       setCurrentAgendaDetails([]);
     }
   }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
-
 
   useEffect(() => {
     if (currentAgendaDetails.length !== 0) {
@@ -697,7 +694,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
               <Col lg={12} md={12} sm={12} className={styles["OVer_padding"]}>
                 <Row>
                   <Col lg={7} md={7} sm={7} className="d-flex gap-2">
-                    <img src={Cast} height="25.85px" width="25.85px" alt=""/>
+                    <img src={Cast} height="25.85px" width="25.85px" alt="" />
                     <span className={styles["Voter_modal_heading"]}>
                       {t("Add-vote-item")}
                     </span>
@@ -748,9 +745,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       applyClass={
-                        error
-                          ? "text-area-close-New_meeting_error"
-                          : "text-area-close-New_meeting"
+                        // error
+                        //   ? "text-area-close-New_meeting_error"
+                        //   :
+                        "text-area-close-New_meeting"
                       }
                       labelclass={"d-none"}
                       type="text"
@@ -768,9 +766,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     <Col>
                       <p
                         className={
-                          error && agendaDetails.voteQuestion === ""
-                            ? ` ${styles["errorMessage-inLogin"]} `
-                            : `${styles["errorMessage-inLogin_hidden"]}`
+                          // error && agendaDetails.voteQuestion === ""
+                          //   ? ` ${styles["errorMessage-inLogin"]} `
+                          //   :
+                          `${styles["errorMessage-inLogin_hidden"]}`
                         }
                       >
                         {t("Please-enter-vote-question")}
@@ -982,9 +981,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         <Col>
                           <p
                             className={
-                              error && voteModalAttrbutes.SelectOrganizers === 0
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
+                              // error && voteModalAttrbutes.SelectOrganizers === 0
+                              //   ? ` ${styles["errorMessage-inLogin"]} `
+                              //   :
+                              `${styles["errorMessage-inLogin_hidden"]}`
                             }
                           >
                             {t("Please-select-organizers")}
@@ -1019,9 +1019,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         <Col>
                           <p
                             className={
-                              error && voteModalAttrbutes.SelectOptions === 0
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
+                              // error && voteModalAttrbutes.SelectOptions === 0
+                              //   ? ` ${styles["errorMessage-inLogin"]} `
+                              //   :
+                              `${styles["errorMessage-inLogin_hidden"]}`
                             }
                           >
                             {t("Please-select-any-one-option")}
@@ -1080,7 +1081,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </section>

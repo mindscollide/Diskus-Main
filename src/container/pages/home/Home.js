@@ -32,7 +32,6 @@ import {
   HideNotificationTodo,
   SearchTodoListApi,
   SetSpinnersTrue,
-  ViewToDoList,
 } from "../../../store/actions/ToDoList_action";
 import { HideNotificationAuth } from "../../../store/actions/Auth_action";
 import {
@@ -71,7 +70,6 @@ const Home = () => {
   const { t } = useTranslation();
   const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
     useState(false);
-  const [totalRecordTodo, setTotalRecordTodo] = useState(0);
   //Modal Todolist State
   const [showTodo, setShowTodo] = useState(false);
   // const [viewFlag, setViewFlag] = useState(false);
@@ -88,12 +86,7 @@ const Home = () => {
     assignees,
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
-  const [notes, setNotes] = useState([]);
   const [upComingEvents, setUpComingEvents] = useState([]);
-  console.log(
-    upComingEvents,
-    "upCmingEventsupCmingEventsupCmingEventsupCmingEvents"
-  );
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -103,10 +96,7 @@ const Home = () => {
   //For Calendar
   const dispatch = useDispatch();
   const [modalNote, setModalNote] = useState(false);
-  const [updateShow, setUpdateShow] = useState(false);
   //for view modal notes
-  const [viewModalShow, setViewModalShow] = useState(false);
-  const [viewFlagToDo, setViewFlagToDo] = useState(false);
   const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
@@ -118,11 +108,6 @@ const Home = () => {
   const [dates, setDates] = useState([]);
   const [activateBlur, setActivateBlur] = useState(false);
   let Blur = localStorage.getItem("blur");
-  const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0);
-  const [upcomingMeetingCountThisWeek, setUpcomingMeetingCountThisWeek] =
-    useState(0);
-  const [todoListThisWeek, setTodoListThisWeek] = useState(0);
-  const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0);
   //ToDo Table Data
   const [rowsToDo, setRowToDo] = useState([]);
   //Get Current User ID
@@ -134,8 +119,6 @@ const Home = () => {
   const [todoViewModal, setTodoViewModal] = useState(false);
   let lang = localStorage.getItem("i18nextLng");
   const [getNoteID, setGetNoteID] = useState(0);
-  const [getTodoID, setTodoID] = useState(0);
-  const [todolistLoader, setTodoListLoader] = useState(false);
   const [show, setShow] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const [startDataUpdate, setStartDataUpdate] = useState("");
@@ -151,15 +134,6 @@ const Home = () => {
       : 1;
   let currentDate = new Date(); // Get the current date
 
-  useEffect(() => {
-    if (todoViewModal) {
-      setTodoID(0);
-      setTodoListLoader(false);
-    } else if (todoViewModal === false) {
-      setTodoID(0);
-      setTodoListLoader(false);
-    }
-  }, [todoViewModal]);
   // Add CalenderMonthsSpan months and set the day to the last day of the month
 
   useEffect(() => {
@@ -723,12 +697,7 @@ const Home = () => {
           NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
             notes.push(data);
           });
-          setNotes(notes);
-        } else {
-          setNotes([]);
         }
-      } else {
-        setNotes([]);
       }
     } catch (error) {}
   }, [NotesReducer.GetAllNotesResponse]);
@@ -757,7 +726,6 @@ const Home = () => {
             return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
           });
 
-          setTotalRecordTodo(sortedTasks.length);
           setRowToDo(sortedTasks.slice(0, 15));
         }
       }
@@ -779,7 +747,6 @@ const Home = () => {
           // Compare the deadlineDateTime values as numbers for sorting
           return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
         });
-        setTotalRecordTodo(sortedTasks.length);
         setRowToDo(sortedTasks.slice(0, 15));
       } else {
         setRowToDo([]);
@@ -788,31 +755,6 @@ const Home = () => {
       setRowToDo([]);
     }
   }, [toDoListReducer.SearchTodolist]);
-  console.log(rowsToDo, "toDoListReducertoDoListReducer");
-  const viewTodoModal = (id) => {
-    setTodoID(id);
-    let Data = { ToDoListID: id };
-    dispatch(
-      ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
-    );
-  };
-
-  useEffect(() => {
-    setMeetingCountThisWeek(meetingIdReducer.TotalMeetingCountThisWeek);
-    setUpcomingMeetingCountThisWeek(
-      meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
-    );
-  }, [
-    meetingIdReducer.TotalMeetingCountThisWeek,
-    meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
-  ]);
-
-  useEffect(() => {
-    setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
-    setTodoListAssignedThisWeek(
-      toDoListReducer.TotalNumberOfUpcommingTodoInWeek
-    );
-  }, [toDoListReducer]);
 
   useEffect(() => {
     if (Object.keys(RecentActivityData).length > 0) {
@@ -1144,7 +1086,7 @@ const Home = () => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
       {show ? (

@@ -22,8 +22,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   showAddUserModal,
-  showCrossConfirmationModal,
-  showNotifyOrganizors,
   sendRecentNotificationOrganizerModal,
   UpdateMeetingUserForOrganizers,
   showCancelModalOrganizers,
@@ -105,7 +103,6 @@ const Organizers = ({
   const [viewOrganizers, setviewOrganizers] = useState(false);
   const [flag, setFlag] = useState(2);
   const [prevFlag, setprevFlag] = useState(2);
-  const [editState, setEditState] = useState(false);
   const [isPublishedState, setIsPublishedState] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
@@ -116,8 +113,6 @@ const Organizers = ({
   const handleCancelOrganizer = () => {
     dispatch(showCancelModalOrganizers(true));
   };
-
-  const [inputValues, setInputValues] = useState({});
 
   const currentOrganizerData = {
     displayPicture: "",
@@ -144,16 +139,11 @@ const Organizers = ({
     let Data = { MeetingID: currentMeeting };
     dispatch(GetAllMeetingOrganizers(Data, navigate, t));
     return () => {
-      setInputValues({});
       setRowsData([currentOrganizerData]);
     };
   }, []);
 
   const handleInputChange = (userID, newValue) => {
-    setInputValues((prevInputValues) => ({
-      ...prevInputValues,
-      [userID]: newValue,
-    }));
     setRowsData((prevRowsData) => {
       return prevRowsData.map((row) => {
         if (row.userID === userID) {
@@ -702,7 +692,7 @@ const Organizers = ({
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
-    console.log("end meeting chaek")
+    console.log("end meeting chaek");
     dispatch(
       UpdateOrganizersMeeting(
         false,
@@ -768,13 +758,8 @@ const Organizers = ({
     setRowsData(updatedRowsData);
   };
 
-  const handleEditDone = () => {
-    setEditState(false);
-  };
-
   const handleCancelEdit = () => {
     setIsEdit(false);
-    setEditState(false);
     dispatch(meetingOrganizers([]));
     dispatch(selectedMeetingOrganizers([]));
     dispatch(saveMeetingFlag(false));
@@ -1117,7 +1102,7 @@ const Organizers = ({
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
       {NewMeetingreducer.adduserModal && (

@@ -68,7 +68,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   });
 
   //Current Date
-  const date = new Date();
   let currentDateTime = new Date();
   let changeDateFormat = moment(currentDateTime).utc();
   let convertFormation = moment(changeDateFormat).format("YYYYMMDDHHmmss");
@@ -651,7 +650,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

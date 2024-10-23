@@ -2,6 +2,7 @@
 const ESLintWebpackPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
+  eslint: null,
   webpack: {
     configure: (webpackConfig) => {
       webpackConfig.resolve.fallback = {

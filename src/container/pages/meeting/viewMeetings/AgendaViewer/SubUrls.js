@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./Agenda.module.css";
-import { useTranslation } from "react-i18next";
 
 const SubUrls = ({ subAgendaData }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");

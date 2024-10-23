@@ -18,7 +18,6 @@ import {
 } from "../../../../../store/actions/MeetingAgenda_action";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
-import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
 import VoteModal from "./VoteModal/VoteModal";
 import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
@@ -54,9 +53,6 @@ const Agenda = ({
   );
   const mainAgendaItemRemoved = useSelector(
     (state) => state.NewMeetingreducer.mainAgendaItemRemoved
-  );
-  const advancePermissionModal = useSelector(
-    (state) => state.NewMeetingreducer.advancePermissionModal
   );
   const advancePermissionConfirmation = useSelector(
     (state) => state.NewMeetingreducer.advancePermissionConfirmation
@@ -481,7 +477,6 @@ const Agenda = ({
           setRows={setRows}
         />
       )}
-      {advancePermissionModal && <AdvancePersmissionModal />}
       {advancePermissionConfirmation && <PermissionConfirmation />}
       {voteAgendaModal && (
         <VoteModal setenableVotingPage={setenableVotingPage} />
@@ -508,7 +503,7 @@ const Agenda = ({
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

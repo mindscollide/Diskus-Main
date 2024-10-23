@@ -20,7 +20,6 @@ const VerificationCodeThree = () => {
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [verifyOTP, setVerifyOTP] = useState(null);
 
   // translate Languages start
   const languages = [
@@ -57,7 +56,6 @@ const VerificationCodeThree = () => {
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
-    setVerifyOTP("");
     let Data = {
       UserID: JSON.parse(userID),
       Device: "Browser",
@@ -122,7 +120,7 @@ const VerificationCodeThree = () => {
   let newClient = Helper.socket;
 
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
       newClient.onMessageArrived = onMessageArrived;
     } else {
       let userID = localStorage.getItem("userID");
@@ -131,13 +129,6 @@ const VerificationCodeThree = () => {
       }
     }
   }, [Helper.socket]);
-
-  useEffect(() => {
-    if (Authreducer.SendTwoFacOTPResponse !== null) {
-      let OTPValue = Authreducer.SendTwoFacOTPResponse;
-      setVerifyOTP(OTPValue?.otpCode);
-    }
-  }, [Authreducer.SendTwoFacOTPResponse]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -170,7 +161,7 @@ const VerificationCodeThree = () => {
     let m = localStorage.getItem("minutes");
     window.addEventListener("beforeunload ", (e) => {
       e.preventDefault();
-      if (m != undefined && s != undefined) {
+      if (m !== undefined && s !== undefined) {
         if (s === 1) {
           setSeconds(59);
           setMinutes(m - 1);

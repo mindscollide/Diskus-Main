@@ -5,7 +5,7 @@ import AllReviewed from "./../Images/All-reviewed.png";
 import { MeetingPublishedMinutesApi } from "../../../../../../store/actions/Minutes_action"; // Importing action creator
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next"; // Importing translation hook
-import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
+import { useDispatch } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 
 // Functional component for deleting a comment

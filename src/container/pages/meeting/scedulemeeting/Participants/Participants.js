@@ -42,19 +42,16 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
-import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
 import { useEffect } from "react";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { Tooltip } from "antd";
-import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Participants = ({
   setParticipants,
   setAgenda,
-  setProposedMeetingDates,
   proposedMeetingDates,
   setSceduleMeeting,
   currentMeeting,
@@ -636,11 +633,6 @@ const Participants = ({
     ];
   }
 
-  //Proposed meeting Page Opens
-  const handleProposedmeetingDates = () => {
-    setProposedMeetingDates(true);
-  };
-
   const nextTabOrganizer = () => {
     setAgenda(true);
     setParticipants(false);
@@ -752,15 +744,6 @@ const Participants = ({
 
   return (
     <>
-      {proposedMeetingDates ? (
-        <ProposedMeetingDate
-          currentMeeting={currentMeeting}
-          setProposedMeetingDates={setProposedMeetingDates}
-          setCurrentMeetingID={setCurrentMeetingID}
-          setSceduleMeeting={setSceduleMeeting}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-        />
-      ) : (
         <>
           <Row className="mt-3">
             <Col
@@ -901,17 +884,6 @@ const Participants = ({
                     (editorRole.role === "Agenda Contributor" &&
                       isEditMeeting === true) ? (
                       <>
-                        {/* {Number(editorRole.status) ===
-                        10 ? null : checkFeatureIDAvailability(12) ? (
-                          <>
-                            <Button
-                              text={t("Propose-meeting-dates")}
-                              className={styles["Next_Organization"]}
-                              onClick={handleProposedmeetingDates}
-                            />
-                          </>
-                        ) : null} */}
-
                         <Button
                           text={t("Cancel")}
                           className={styles["Cancel_Organization"]}
@@ -940,11 +912,6 @@ const Participants = ({
                       </>
                     ) : isEditClicked ? null : (
                       <>
-                        {/* <Button
-                          text={t("Propose-meeting-dates")}
-                          className={styles["Next_Organization"]}
-                          onClick={handleProposedmeetingDates}
-                        /> */}
 
                         <Button
                           text={t("Cancel")}
@@ -1024,11 +991,11 @@ const Participants = ({
           <Notification
             open={open.open}
             message={open.message}
-            setOpen={(status) => setOpen({ ...open, open: status.flag })}
+            setOpen={(status) => setOpen({ ...open, open: status.open })}
             severity={open.severity}
           />
         </>
-      )}
+      {/* )} */}
     </>
   );
 };

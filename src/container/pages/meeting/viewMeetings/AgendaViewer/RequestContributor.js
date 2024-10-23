@@ -1,8 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
 import styles from "./Agenda.module.css";
-import { TextField } from "../../../../../components/elements";
 
 const RequestContributor = ({ data, index, setRows, rows }) => {
   return (

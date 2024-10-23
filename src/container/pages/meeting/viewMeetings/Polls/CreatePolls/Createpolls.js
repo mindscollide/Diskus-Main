@@ -103,7 +103,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
-        if (options[lastIndex].value != "") {
+        if (options[lastIndex].value !== "") {
           const randomNumber = Math.floor(Math.random() * 100) + 1;
           let newOptions = { name: randomNumber, value: "" };
           setOptions([...options, newOptions]);
@@ -810,7 +810,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
             <Notification
               open={open.open}
               message={open.message}
-              setOpen={(status) => setOpen({ ...open, open: status.flag })}
+              setOpen={(status) => setOpen({ ...open, open: status.open })}
               severity={open.severity}
             />
 

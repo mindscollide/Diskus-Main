@@ -17,11 +17,7 @@ import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../../assets/images/featherupload.svg";
 import ReactQuill, { Quill } from "react-quill";
-import Leftploygon from "../../../../../../assets/images/Polygon 3.svg";
-import file_image from "../../../../../../assets/images/file_image.svg";
 import { AccordionDetails } from "@mui/material";
-import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
-import Rightploygon from "../../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
@@ -39,10 +35,6 @@ import {
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../../DataRoom/SearchFunctionality/option";
 import FilesMappingAgendaWiseMinutes from "./FilesMappingAgendaWiseMinutes";
 import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
@@ -60,7 +52,6 @@ const AgendaWise = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const Delta = Quill.import("delta");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   const [open, setOpen] = useState({
     open: false,
@@ -88,14 +79,12 @@ const AgendaWise = ({
   const [agendaOptions, setAgendaOptions] = useState([]);
   const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [showMore, setShowMore] = useState(false);
-  const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
       id: 0,
       title: "",
     },
   });
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     let Data = {
@@ -145,7 +134,6 @@ const AgendaWise = ({
           }
         );
         setAgendaOptions(NewData);
-        setAgendaID(NewData);
       }
     } catch {}
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
@@ -186,8 +174,6 @@ const AgendaWise = ({
               minutesAttachmets: matchingItems,
             });
           }
-
-          console.log(acc, "groupedDatagroupedDatagroupedData");
 
           return acc;
         }, {});
@@ -1303,7 +1289,7 @@ const AgendaWise = ({
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </section>

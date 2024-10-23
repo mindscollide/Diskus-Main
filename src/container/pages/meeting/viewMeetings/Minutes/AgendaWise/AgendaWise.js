@@ -109,17 +109,13 @@ const AgendaWise = ({
 
   const [fileForSend, setFileForSend] = useState([]);
 
-  const [accordianExpand, setAccordianExpand] = useState(false);
 
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
 
-  const [messages, setMessages] = useState([]);
 
   const [updateData, setupdateData] = useState(null);
 
   const [agendaOptions, setAgendaOptions] = useState([]);
-
-  const [agendaID, setAgendaID] = useState([]);
 
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
@@ -160,7 +156,6 @@ const AgendaWise = ({
           }
         );
         setAgendaOptions(NewData);
-        setAgendaID(NewData);
       }
     } catch {}
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
@@ -716,7 +711,6 @@ const AgendaWise = ({
       )
     );
     return () => {
-      setMessages([]);
       setFileAttachments([]);
       setPreviousFileIDs([]);
       // dispatch(cleareAllState());
@@ -2220,7 +2214,7 @@ const AgendaWise = ({
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </section>

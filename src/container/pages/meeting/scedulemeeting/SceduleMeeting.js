@@ -692,7 +692,6 @@ const SceduleMeeting = ({
               <Participants
                 setParticipants={setParticipants}
                 setAgenda={setAgenda}
-                setProposedMeetingDates={setProposedMeetingDates}
                 proposedMeetingDates={proposedMeetingDates}
                 setSceduleMeeting={setSceduleMeeting}
                 currentMeeting={currentMeeting}

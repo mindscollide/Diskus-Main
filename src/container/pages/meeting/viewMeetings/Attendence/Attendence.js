@@ -56,8 +56,6 @@ const Attendence = ({
     (state) => state
   );
 
-  let meetingID = Number(localStorage.getItem("meetingID"));
-
   const [attendenceRows, setAttendenceRows] = useState([]);
 
   const ResponseMessage = useSelector(
@@ -446,7 +444,7 @@ const Attendence = ({
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

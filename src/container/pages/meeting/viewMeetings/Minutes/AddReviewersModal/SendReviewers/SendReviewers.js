@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./SendReviewers.module.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import {
   AttachmentViewer,
   Checkbox,
@@ -14,7 +14,6 @@ import {
 } from "../../../../../../../store/actions/Minutes_action";
 import TickIcon from "./../../../../../../../assets/images/Tick-Icon.png";
 import { useTranslation } from "react-i18next";
-import { GetAllAssigneesToDoList } from "../../../../../../../store/actions/ToDoList_action";
 import Avatar from "./../../../../../../../assets/images/avatar.png";
 import EditMinute from "./../../Images/Edit-Minute.png";
 import { findUserProfileImg } from "../functionsAddReviewers";
@@ -51,9 +50,6 @@ const SendReviewers = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  console.log("sadasdasdasd", selectReviewers);
-  let createrID = localStorage.getItem("userID");
 
   const { MinutesReducer } = useSelector((state) => state);
 

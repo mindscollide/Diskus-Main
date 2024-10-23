@@ -53,9 +53,7 @@ const Attendence = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
-  let meetingID = Number(localStorage.getItem("meetingID"));
   let userID = localStorage.getItem("userID");
-
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -351,8 +349,8 @@ const Attendence = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      console.log("chek search meeting");
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEdiorRole({ status: null, role: null });
     } else {
@@ -414,7 +412,7 @@ const Attendence = ({
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </>

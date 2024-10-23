@@ -83,7 +83,7 @@ const OnboardDashboard = () => {
   let Blur = localStorage.getItem("blur");
 
   useEffect(() => {
-    if (Blur != undefined) {
+    if (Blur !== undefined) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);
@@ -128,7 +128,6 @@ const OnboardDashboard = () => {
   }, []);
 
   //ToDo Table Data
-  const [rowsToDo, setRowToDo] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   //For Custom language datepicker
@@ -138,7 +137,7 @@ const OnboardDashboard = () => {
   let lang = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
-    if (lang != undefined) {
+    if (lang !== undefined) {
       if (lang === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -154,18 +153,6 @@ const OnboardDashboard = () => {
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
     dispatch(GetTodoListByUser(navigate, data, t));
   }, []);
-
-  //get todolist reducer
-  useEffect(() => {
-    if (
-      Object.keys(toDoListReducer.AllTodolistData).length > 0 &&
-      toDoListReducer.AllTodolistData !== undefined
-    ) {
-      setRowToDo(toDoListReducer.AllTodolistData);
-    } else {
-      setRowToDo([]);
-    }
-  }, [toDoListReducer.AllTodolistData]);
 
   const columnsToDo = [
     {
@@ -263,26 +250,6 @@ const OnboardDashboard = () => {
   useEffect(() => {
     dispatch(getNotifications(navigate, createrID, t));
   }, []);
-  const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0);
-  const [upcomingMeetingCountThisWeek, setUpcomingMeetingCountThisWeek] =
-    useState(0);
-
-  const [todoListThisWeek, setTodoListThisWeek] = useState(0);
-  const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0);
-
-  useEffect(() => {
-    setMeetingCountThisWeek(meetingIdReducer.TotalMeetingCountThisWeek);
-    setUpcomingMeetingCountThisWeek(
-      meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
-    );
-  }, [meetingIdReducer]);
-
-  useEffect(() => {
-    setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
-    setTodoListAssignedThisWeek(
-      toDoListReducer.TotalNumberOfUpcommingTodoInWeek
-    );
-  }, [toDoListReducer]);
 
   useEffect(() => {
     if (Object.keys(RecentActivityData).length > 0) {
@@ -864,7 +831,7 @@ const OnboardDashboard = () => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
       <ModalMeeting

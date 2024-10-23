@@ -27,7 +27,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const [participantUsers, setParticipantUsers] = useState("");
   const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [open, setOpen] = useState({
@@ -479,7 +478,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </section>

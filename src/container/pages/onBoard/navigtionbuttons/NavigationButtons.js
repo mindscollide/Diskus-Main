@@ -69,7 +69,7 @@ const NavigationButtons = () => {
 
   const goPrevStep = () => {
     setCurrentStep(currentStep - 1);
-    if (currentStep - 1 != 3) {
+    if (currentStep - 1 !== 3) {
       dispatch(showModalOnboard(false));
       dispatch(showModalStepsOnboard(false));
       dispatch(showIsDetailOnboard(true));

@@ -45,8 +45,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     (state) => state
   );
   const [meetingDate, setMeetingDate] = useState("");
-  const [error, setError] = useState(false);
-
   const [updatePolls, setupdatePolls] = useState({
     Title: "",
     AllowMultipleAnswers: false,
@@ -245,8 +243,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
         updatePollsApi(navigate, data, t, 2, setEditPolls, currentMeeting)
       );
     } else {
-      setError(true);
-
       if (updatePolls.Title === "") {
         showMessage(t("Title-is-required"), "error", setOpen);
       } else if (updatePolls.date === "") {
@@ -683,7 +679,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       <Notification
         open={open.open}
         message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.flag })}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
     </section>
