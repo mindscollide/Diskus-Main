@@ -622,6 +622,7 @@ const SaveMeetingDetialsNewApiFunction = (
                     PublishedMeetings:
                       currentView && Number(currentView) === 1 ? true : false,
                   };
+                  console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else {
                   let Data = {
@@ -1010,6 +1011,7 @@ const searchNewUserMeeting = (navigate, Data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          console.log("chek search meeting");
           dispatch(searchNewUserMeeting(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -3037,6 +3039,7 @@ const setProposedMeetingDateApiFunc = (
                   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
                   PublishedMeetings: false,
                 };
+                console.log("chek search meeting");
                 dispatch(searchNewUserMeeting(navigate, searchData, t));
               } else {
                 let NewData = {
@@ -3171,6 +3174,7 @@ const SetMeetingResponseApiFunc = (
                 Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
                 PublishedMeetings: false,
               };
+              console.log("chek search meeting");
               dispatch(searchNewUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
@@ -8010,7 +8014,14 @@ const endMeetingFail = (message) => {
   };
 };
 
-const endMeetingStatusApi = (navigate, t, Data, setViewFlag) => {
+const endMeetingStatusApi = (
+  navigate,
+  t,
+  Data,
+  setViewFlag,
+  setEndMeetingConfirmationModal
+) => {
+  console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
   let leaveMeetingData = {
     FK_MDID: Data.MeetingID,
@@ -8032,7 +8043,15 @@ const endMeetingStatusApi = (navigate, t, Data, setViewFlag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(endMeetingStatusApi(navigate, t, Data, setViewFlag));
+          dispatch(
+            endMeetingStatusApi(
+              navigate,
+              t,
+              Data,
+              setViewFlag,
+              setEndMeetingConfirmationModal
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -8054,27 +8073,31 @@ const endMeetingStatusApi = (navigate, t, Data, setViewFlag) => {
                   t,
                   leaveMeetingData,
                   true,
-                  setViewFlag
+                  setViewFlag,
+                  "",
+                  "",
+                  "",
+                  setEndMeetingConfirmationModal
                 )
               );
-              let currentView = localStorage.getItem("MeetingCurrentView");
-              let meetingpageRow = localStorage.getItem("MeetingPageRows");
-              let meetingPageCurrent = parseInt(
-                localStorage.getItem("MeetingPageCurrent")
-              );
-              let userID = localStorage.getItem("userID");
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber:
-                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-                PublishedMeetings:
-                  currentView && Number(currentView) === 1 ? true : false,
-              };
-              await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              // let currentView = localStorage.getItem("MeetingCurrentView");
+              // let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              // let meetingPageCurrent = parseInt(
+              //   localStorage.getItem("MeetingPageCurrent")
+              // );
+              // let userID = localStorage.getItem("userID");
+              // let searchData = {
+              //   Date: "",
+              //   Title: "",
+              //   HostName: "",
+              //   UserID: Number(userID),
+              //   PageNumber:
+              //     meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+              //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+              //   PublishedMeetings:
+              //     currentView && Number(currentView) === 1 ? true : false,
+              // };
+              // await dispatch(searchNewUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -8344,7 +8367,8 @@ const LeaveCurrentMeeting = (
   setViewFlag,
   setEdiorRole,
   setAdvanceMeetingModalID,
-  setViewAdvanceMeetingModal
+  setViewAdvanceMeetingModal,
+  setEndMeetingConfirmationModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = localStorage.getItem("userID");
@@ -8377,7 +8401,8 @@ const LeaveCurrentMeeting = (
               setViewFlag,
               setEdiorRole,
               setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal
+              setViewAdvanceMeetingModal,
+              setEndMeetingConfirmationModal
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -8389,66 +8414,81 @@ const LeaveCurrentMeeting = (
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
-              dispatch(currentMeetingStatus(0));
-              if (isQuickMeeting) {
-                dispatch(
-                  leaveMeetingQuickSuccess(
-                    response.data.responseResult,
-                    t("Successful")
-                  )
-                );
-                let searchData = {
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(userID),
-                  PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow),
-                  PublishedMeetings: true,
-                };
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
-              } else {
-                dispatch(
-                  leaveMeetingAdvancedSuccess(
-                    response.data.responseResult,
-                    t("Successful")
-                  )
-                );
-                let searchData = {
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(userID),
-                  PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow),
-                  PublishedMeetings: true,
-                };
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                localStorage.removeItem("folderDataRoomMeeting");
-                setEdiorRole({ status: null, role: null });
-                setAdvanceMeetingModalID(null);
-                setViewAdvanceMeetingModal(false);
-                dispatch(viewAdvanceMeetingPublishPageFlag(false));
-                dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-              }
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
+              try {
+                dispatch(currentMeetingStatus(0));
+                if (isQuickMeeting) {
+                  dispatch(
+                    leaveMeetingQuickSuccess(
+                      response.data.responseResult,
+                      t("Successful")
+                    )
+                  );
+                  console.log("Checking ");
+                  setEndMeetingConfirmationModal(false);
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber: Number(meetingPageCurrent),
+                    Length: Number(meetingpageRow),
+                    PublishedMeetings: true,
+                  };
+                  console.log("chek search meeting");
+                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                } else {
+                  dispatch(
+                    leaveMeetingAdvancedSuccess(
+                      response.data.responseResult,
+                      t("Successful")
+                    )
+                  );
+                  setEndMeetingConfirmationModal(false);
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber: Number(meetingPageCurrent),
+                    Length: Number(meetingpageRow),
+                    PublishedMeetings: true,
+                  };
+                  console.log("chek search meeting");
+                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  localStorage.removeItem("folderDataRoomMeeting");
+                  setEdiorRole({ status: null, role: null });
+                  setAdvanceMeetingModalID(null);
+                  if (typeof setViewAdvanceMeetingModal === "function") {
+                    setViewAdvanceMeetingModal(false);
+                  }
+                  dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                  dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+                }
 
-              localStorage.setItem("activeCall", false);
-              localStorage.setItem("isMeeting", false);
-              localStorage.setItem("meetingTitle", "");
-              localStorage.setItem("acceptedRecipientID", 0);
-              localStorage.setItem("acceptedRoomID", 0);
-              localStorage.setItem("activeRoomID", 0);
-              localStorage.setItem("meetingVideoID", 0);
-              localStorage.setItem("MicOff", true);
-              localStorage.setItem("VidOff", true);
-              let Data = {
-                RoomID: roomID,
-                UserGUID: userGUID,
-              };
-              dispatch(LeaveMeetingVideo(Data, navigate, t));
+                let Data = {
+                  RoomID: roomID,
+                  UserGUID: userGUID,
+                };
+                if (roomID !== "0" && userGUID !== null) {
+                  dispatch(normalizeVideoPanelFlag(false));
+                  dispatch(maximizeVideoPanelFlag(false));
+                  dispatch(minimizeVideoPanelFlag(false));
+
+                  localStorage.setItem("activeCall", false);
+                  localStorage.setItem("isMeeting", false);
+                  localStorage.setItem("meetingTitle", "");
+                  localStorage.setItem("acceptedRecipientID", 0);
+                  localStorage.setItem("acceptedRoomID", 0);
+                  localStorage.setItem("activeRoomID", 0);
+                  localStorage.setItem("meetingVideoID", 0);
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
+                  dispatch(LeaveMeetingVideo(Data, navigate, t));
+                }
+              } catch (error) {
+                console.log(error);
+              }
+
               setViewFlag(false);
             } else if (
               response.data.responseResult.responseMessage

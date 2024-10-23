@@ -603,7 +603,8 @@ const UnpublishedProposedMeeting = ({
                     <Button
                       text={t("Publish-meeting")}
                       className={styles["publish_meeting_btn"]}
-                      onClick={() =>
+                      onClick={() =>{
+                        console.log("end meeting chaek")
                         dispatch(
                           UpdateOrganizersMeeting(
                             false,
@@ -612,7 +613,7 @@ const UnpublishedProposedMeeting = ({
                             5,
                             apiData
                           )
-                        )
+                        )}
                       }
                     />
                   )
