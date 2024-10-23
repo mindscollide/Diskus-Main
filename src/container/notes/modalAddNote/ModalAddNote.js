@@ -176,10 +176,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     let sizezero = true;
     let size = true;
 
-    if (totalFiles > 15) {
+    if (totalFiles > 5) {
       setOpen({
         flag: true,
-        message: t("Not-allowed-more-than-15-files"),
+        message: t("Not-allowed-more-than-5-files"),
       });
       return;
     }
