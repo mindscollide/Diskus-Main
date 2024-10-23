@@ -437,6 +437,7 @@ const ReviewMinutes = () => {
       setMinutesAgendaHierarchy([]);
       setMinutesGeneral([]);
       setMinutesToReview([]);
+      dispatch(rejectCommentModal(false));
     };
   }, []); // This effect runs once after the component mounts
 
