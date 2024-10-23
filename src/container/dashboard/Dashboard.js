@@ -2327,7 +2327,7 @@ const Dashboard = () => {
             if (data.viewable) {
               setNotification({
                 notificationShow: true,
-                message: ` folder remove to you`,
+                message: `folder remove to you`,
               });
             }
             setNotificationID(id);
@@ -2340,7 +2340,7 @@ const Dashboard = () => {
             if (data.viewable) {
               setNotification({
                 notificationShow: true,
-                message: ` folder remove to you`,
+                message: `folder remove to you`,
               });
             }
             setNotificationID(id);
