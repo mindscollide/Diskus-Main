@@ -149,7 +149,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     setAttachments(copyattachments);
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: searchIndex,
+      "TasksAttachments": searchIndex,
     });
   };
 

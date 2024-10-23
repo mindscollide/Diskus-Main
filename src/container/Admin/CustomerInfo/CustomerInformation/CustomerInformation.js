@@ -429,7 +429,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
     setCustomerSection({
       ...customerSection,
-      ["FK_WorldCountryID"]: parseInt(a.pK_WorldCountryID),
+      "FK_WorldCountryID": parseInt(a.pK_WorldCountryID),
     });
   };
   const callAPI = async () => {

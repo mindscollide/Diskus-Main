@@ -639,7 +639,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       setMeetingSelectedStatusOption(slectStatus);
       setModalMeetingStates({
         ...modalMeetingStates,
-        ["Status"]: slectStatus.value.toString(),
+        "Status": slectStatus.value.toString(),
       });
     }
   };

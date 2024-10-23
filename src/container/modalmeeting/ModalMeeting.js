@@ -336,7 +336,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         let id = data.pK_MRID;
         setCreateMeeting({
           ...createMeeting,
-          ["MeetingReminderID"]: [parseInt(id)],
+          "MeetingReminderID": [parseInt(id)],
         });
       }
     });
@@ -444,7 +444,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setCreateMeeting({
         ...createMeeting,
         [name]: RemoveTimeDashes(value),
-        ["MeetingEndTime"]: RemoveTimeDashes(value),
+        "MeetingEndTime": RemoveTimeDashes(value),
       });
       setCreateMeetingTime(value);
     } else if (name === "MeetingLocation") {
@@ -727,7 +727,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               previousAdendas[editRecordIndex] = newData;
               setCreateMeeting({
                 ...createMeeting,
-                ["MeetingAgendas"]: previousAdendas,
+                "MeetingAgendas": previousAdendas,
               });
               seteditRecordIndex(null);
               seteditRecordFlag(false);
@@ -748,7 +748,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               previousAdendas[editRecordIndex] = newData;
               setCreateMeeting({
                 ...createMeeting,
-                ["MeetingAgendas"]: previousAdendas,
+                "MeetingAgendas": previousAdendas,
               });
               seteditRecordIndex(null);
               seteditRecordFlag(false);
@@ -815,7 +815,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             previousAdendas[editRecordIndex] = newData;
             setCreateMeeting({
               ...createMeeting,
-              ["MeetingAgendas"]: previousAdendas,
+              "MeetingAgendas": previousAdendas,
             });
             seteditRecordIndex(null);
             seteditRecordFlag(false);
@@ -942,7 +942,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const videoEnableButton = () => {
     setCreateMeeting({
       ...createMeeting,
-      ["IsVideoCall"]: !createMeeting.IsVideoCall,
+      "IsVideoCall": !createMeeting.IsVideoCall,
     });
   };
 
@@ -959,7 +959,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           setReminderValue(data.description);
           setCreateMeeting({
             ...createMeeting,
-            ["MeetingReminderID"]: [parseInt(data.pK_MRID)],
+            "MeetingReminderID": [parseInt(data.pK_MRID)],
           });
         }
       });
@@ -1491,7 +1491,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     searchIndex.splice(index, 1);
     setMeetingAgendaAttachments({
       ...meetingAgendaAttachments,
-      ["MeetingAgendaAttachments"]: searchIndex,
+      "MeetingAgendaAttachments": searchIndex,
     });
   };
 
@@ -1500,7 +1500,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     user1.splice(index, 1);
     addedParticipantNameList.splice(index, 1);
     setAddedParticipantNameList(addedParticipantNameList);
-    setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
+    setCreateMeeting({ ...createMeeting, "MeetingAttendees": user1 });
   };
 
   function CustomInput({ onFocus, value, onChange }) {

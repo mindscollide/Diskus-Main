@@ -744,7 +744,7 @@ const TalkChat = () => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ ["TasksAttachments"]: file });
+      setTasksAttachments({ "TasksAttachments": file });
       setUploadOptions(false);
       setUploadFileTalk(uploadedFile);
     } else if (uploadType === "image") {
@@ -810,7 +810,7 @@ const TalkChat = () => {
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: searchIndex,
+      "TasksAttachments": searchIndex,
     });
     setUploadFileTalk({});
   };
@@ -3897,7 +3897,7 @@ const TalkChat = () => {
     setFile("");
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: [],
+      "TasksAttachments": [],
     });
     setUploadFileTalk({});
     if (inputRef.current) {

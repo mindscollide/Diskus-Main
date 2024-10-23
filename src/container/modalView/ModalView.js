@@ -169,7 +169,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       setCreateMeeting({
         ...createMeeting,
         [name]: RemoveTimeDashes(value),
-        ["MeetingEndTime"]: RemoveTimeDashes(value),
+        "MeetingEndTime": RemoveTimeDashes(value),
       });
     } else if (name === "MeetingDate") {
       setCreateMeeting({

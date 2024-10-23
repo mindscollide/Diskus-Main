@@ -549,7 +549,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ ["TasksAttachments"]: file });
+      setTasksAttachments({ "TasksAttachments": file });
       setUploadOptions(false);
       setUploadFileTalk(uploadedFile);
     } else if (uploadType === "image") {
@@ -604,14 +604,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ ["TasksAttachments"]: file });
+      setTasksAttachments({ "TasksAttachments": file });
     }
   };
 
   const deleteFilefromAttachments = (data, index) => {
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: [],
+      "TasksAttachments": [],
     });
     setUploadFileTalk({});
     setFile("");
@@ -2206,7 +2206,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setFile("");
       setTasksAttachments({
         ...tasksAttachments,
-        ["TasksAttachments"]: [],
+        "TasksAttachments": [],
       });
       setUploadFileTalk({});
       if (inputRef.current) {
@@ -2806,7 +2806,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setUploadFileTalk({});
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: [],
+      "TasksAttachments": [],
     });
     // chatMessages.current?.scrollIntoView({ behavior: "auto" });
   };

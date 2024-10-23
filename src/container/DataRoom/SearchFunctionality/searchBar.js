@@ -125,7 +125,7 @@ const SearchBarComponent = ({
 
   // this is used for input title
   const handleTitleSearch = (e) => {
-    setSearchDataFields({ ...searchDataFields, ["Title"]: e.target.value });
+    setSearchDataFields({ ...searchDataFields, "Title": e.target.value });
   };
 
   //   this handler for title enter seacrh

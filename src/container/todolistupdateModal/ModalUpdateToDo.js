@@ -104,7 +104,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       CreationDateTime: "",
       FK_TID: 0,
     });
-    setTasksAttachments({ ["TasksAttachments"]: file });
+    setTasksAttachments({ "TasksAttachments": file });
   };
 
   // To View To-Do List Data
@@ -153,7 +153,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           });
         });
 
-        setTasksAttachments({ ["TasksAttachments"]: tem });
+        setTasksAttachments({ "TasksAttachments": tem });
       }
     }
   }, [toDoListReducer.ToDoDetails]);
@@ -256,7 +256,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         CreationDateTime: "",
       });
       setTaskAssignedTo([]);
-      setTasksAttachments({ ["TasksAttachments"]: [] });
+      setTasksAttachments({ "TasksAttachments": [] });
       setTaskAssignedName([]);
     }
   };

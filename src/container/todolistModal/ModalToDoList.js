@@ -244,7 +244,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: searchIndex,
+      "TasksAttachments": searchIndex,
     });
   };
 
