@@ -131,11 +131,15 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   });
 
   const deleteFilefromAttachments = (data, index) => {
+    console.log(data, "removeFilefromAttachments");
+    console.log(index, "removeFilefromAttachments");
+
     let searchIndex = [...tasksAttachments.TasksAttachments];
     let removeFilefromAttachments = attachments.findIndex(
       (attacData, index) =>
         data.DisplayAttachmentName === attacData.DisplayAttachmentName
     );
+    console.log(removeFilefromAttachments, "removeFilefromAttachments");
     let copyattachments = [...attachments];
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
