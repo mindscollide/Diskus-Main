@@ -11,18 +11,15 @@ import hollowstar from "../../assets/images/Hollowstar.svg";
 import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
 import MinusExpand from "../../assets/images/close-accordion.svg";
 import EditIconNote from "../../assets/images/EditIconNotes.svg";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Plus } from "react-bootstrap-icons";
 import {
   AttachmentViewer,
   Button,
-  Loader,
   Notification,
 } from "../../components/elements";
-import { Accordion, AccordionSummary, Tooltip } from "@material-ui/core";
-import { AccordionDetails } from "@mui/material";
+import { Tooltip } from "@material-ui/core";
 import {
   ClearNotesResponseMessage,
   GetNotes,
@@ -40,7 +37,7 @@ const Notes = () => {
   const [updateNotesModal, setUpdateNotesModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NotesReducer, LanguageReducer } = useSelector((state) => state);
+  const { NotesReducer } = useSelector((state) => state);
   //Get Current User ID
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
@@ -48,10 +45,8 @@ const Notes = () => {
   let notesPage = JSON.parse(localStorage.getItem("notesPage"));
   let notesPagesize = localStorage.getItem("notesPageSize");
   const [totalRecords, setTotalRecords] = useState(0);
-  const [isExtend, setIsExtend] = useState(false);
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false);
-
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -65,34 +60,38 @@ const Notes = () => {
   const [isExpanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    if (notesPagesize !== null && notesPage !== null) {
-      let Data = {
-        UserID: parseInt(createrID),
-        OrganizationID: JSON.parse(OrganizationID),
-        Title: "",
-        PageNumber: JSON.parse(notesPage),
-        Length: JSON.parse(notesPagesize),
+    try {
+      if (notesPagesize !== null && notesPage !== null) {
+        let Data = {
+          UserID: parseInt(createrID),
+          OrganizationID: JSON.parse(OrganizationID),
+          Title: "",
+          PageNumber: JSON.parse(notesPage),
+          Length: JSON.parse(notesPagesize),
+        };
+        dispatch(GetNotes(navigate, Data, t));
+      } else {
+        localStorage.setItem("notesPage", 1);
+        localStorage.setItem("notesPageSize", 50);
+        let Data = {
+          UserID: parseInt(createrID),
+          OrganizationID: JSON.parse(OrganizationID),
+          Title: "",
+          PageNumber: 1,
+          Length: 50,
+        };
+        dispatch(GetNotes(navigate, Data, t));
+      }
+      setAddNotes(false);
+      setViewModalShow(false);
+      setUpdateShow(false);
+      return () => {
+        localStorage.removeItem("notesPage");
+        localStorage.removeItem("notesPageSize");
       };
-      dispatch(GetNotes(navigate, Data, t));
-    } else {
-      localStorage.setItem("notesPage", 1);
-      localStorage.setItem("notesPageSize", 50);
-      let Data = {
-        UserID: parseInt(createrID),
-        OrganizationID: JSON.parse(OrganizationID),
-        Title: "",
-        PageNumber: 1,
-        Length: 50,
-      };
-      dispatch(GetNotes(navigate, Data, t));
+    } catch (error) {
+      console.log(error, "error");
     }
-    setAddNotes(false);
-    setViewModalShow(false);
-    setUpdateShow(false);
-    return () => {
-      localStorage.removeItem("notesPage");
-      localStorage.removeItem("notesPageSize");
-    };
   }, []);
 
   // render Notes Data
@@ -200,20 +199,6 @@ const Notes = () => {
     );
   };
 
-  const ColorStarIcon = (id, index) => {
-    setStarIcon(!showStarIcon);
-  };
-
-  const toggleAcordion = (notesID) => {
-    // setExpanded((prev) => (prev === notesID ? true : false));
-    if (isExpanded === notesID) {
-      setExpanded(false);
-    } else {
-      setExpanded(notesID);
-    }
-    // setExpand(!isExpand);
-  };
-
   const handelChangeNotesPagination = async (current, pageSize) => {
     localStorage.setItem("notesPage", current);
     localStorage.setItem("notesPageSize", pageSize);
@@ -234,35 +219,32 @@ const Notes = () => {
       setExpanded(number);
     }
   };
-  useEffect(() => {
-    if (
-      NotesReducer.ResponseMessage !== "" &&
-      NotesReducer.ResponseMessage !== t("No-data-available")
-    ) {
-      setOpen({
-        open: true,
-        message: NotesReducer.ResponseMessage,
-      });
 
-      setTimeout(() => {
-        dispatch(ClearNotesResponseMessage());
+  useEffect(() => {
+    try {
+      if (
+        NotesReducer.ResponseMessage !== "" &&
+        NotesReducer.ResponseMessage !== t("No-data-available")
+      ) {
         setOpen({
-          ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: NotesReducer.ResponseMessage,
         });
-      }, 4000);
+
+        setTimeout(() => {
+          dispatch(ClearNotesResponseMessage());
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 4000);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [NotesReducer.ResponseMessage]);
 
-  // Function to convert Arabic numerals to Arabic text
-  const convertToArabicText = (number) => {
-    const arabicNumbers = "٠١٢٣٤٥٦٧٨٩";
-    const arabicText = number
-      .toString()
-      .replace(/\d/g, (d) => arabicNumbers[d]);
-    return arabicText;
-  };
   return (
     <>
       <div className={styles["notescontainer"]}>
