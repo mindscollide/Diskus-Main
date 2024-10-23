@@ -617,11 +617,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let fileSizeArr = fileSize;
 
     // Check if adding the new files exceeds the limit
-    if (currentFiles.length + filesArray.length > 15) {
+    if (currentFiles.length + filesArray.length > 10) {
       setTimeout(() => {
         setOpen({
           flag: true,
-          message: t("Not-allowed-more-than-15-files"),
+          message: t("Not-allowed-more-than-10-files"),
         });
       }, 3000);
       return;

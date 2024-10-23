@@ -250,10 +250,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let sizezero = true;
     let size = true;
 
-    if (totalFiles > 15) {
+    if (totalFiles > 10) {
       setOpen({
         flag: true,
-        message: t("Not-allowed-more-than-15-files"),
+        message: t("Not-allowed-more-than-10-files"),
       });
       return;
     }

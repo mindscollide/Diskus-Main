@@ -580,11 +580,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     let size = true;
     let sizezero = true;
 
-    if (updatedFilesForSend.length + filesArray.length > 15) {
+    if (updatedFilesForSend.length + filesArray.length > 10) {
       setTimeout(() => {
         setOpen({
           flag: true,
-          message: t("Not-allowed-more-than-15-files"),
+          message: t("Not-allowed-more-than-10-files"),
         });
       }, 3000);
       return;
