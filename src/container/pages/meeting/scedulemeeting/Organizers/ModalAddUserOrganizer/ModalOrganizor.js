@@ -33,7 +33,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
   const [membersOrganizers, setMembersOrganizers] = useState([]);
 
   const [organizersSave, setOrganizersSave] = useState([]);
-  const [inputSearchValue, setInputSearchValue] = useState("");
 
   const [selectedsearch, setSelectedsearch] = useState([]);
 
@@ -101,7 +100,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
             let check1 = newOrganizersData.committees.find(
               (data, index) => data.committeeID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
                 committeesUsers.map((cUser, index) => {
@@ -148,7 +147,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
             let check1 = membersOrganizers.find(
               (data, index) => data.UserID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
             } else {
               let check2 = newOrganizersData.organizationUsers.find(
                 (data, index) => data.userID === seledtedData.value
@@ -491,7 +490,6 @@ const ModalOrganizor = ({ currentMeeting }) => {
       const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
       setMembersOrganizers(result);
       setOrganizersSave(resultSave);
-      setInputSearchValue("");
     } catch {}
   };
 

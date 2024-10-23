@@ -94,6 +94,7 @@
     "redux-devtools-extension": "^2.13.9",
     "rsuite": "^5.33.1",
     "web-vitals": "^2.1.4",
+    "webpack-dev-server": "^5.1.0",
     "xml-js": "^1.6.11",
     "xregexp": "^5.1.1"
   },

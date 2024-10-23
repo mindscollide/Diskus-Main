@@ -10,7 +10,6 @@ import { Col, Row } from "react-bootstrap";
 import { Radio } from "antd";
 import {
   CasteVoteForAgenda,
-  GetAgendaAndVotingInfo,
 } from "../../../../../../../store/actions/MeetingAgenda_action";
 
 const CastVoteAgendaModal = () => {

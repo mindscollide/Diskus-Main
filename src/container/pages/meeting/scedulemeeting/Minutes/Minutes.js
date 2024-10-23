@@ -315,17 +315,6 @@ const Minutes = ({
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-  //Sliders For Attachments
-  //Sliders For Attachments
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   //Edit Button Function
   const handleEditFunc = async (data) => {
@@ -689,37 +678,6 @@ const Minutes = ({
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     }
-  };
-
-  // Pervious Button
-  const handlePreviousButton = () => {
-    if (agenda) {
-      if (
-        addAgendaWiseFields.Description.value.trimStart() !== "" ||
-        addAgendaWiseFiles.length !== 0 ||
-        agendaOptionvalue.value !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(1);
-      } else {
-        setMinutes(false);
-        setMeetingMaterial(true);
-      }
-    } else if (general) {
-      if (
-        addNoteFields.Description.value.trimStart() !== "" ||
-        fileAttachments.length !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(1);
-      } else {
-        setMinutes(false);
-        setMeetingMaterial(true);
-      }
-    }
-    // setMinutes(false);
-    // setMeetingMaterial(true);
-    // dispatch(showPreviousConfirmationModal(true));
   };
 
   const handleNextButton = () => {
@@ -1250,18 +1208,7 @@ const Minutes = ({
               md={12}
               sm={12}
               className="d-flex justify-content-end gap-2"
-            >
-              {/* <Button
-                text={t("Previous")}
-                className={styles["Previous_Button"]}
-                onClick={handlePreviousButton}
-              />
-              <Button
-                text={t("Next")}
-                onClick={handleNextButton}
-                className={styles["Button_General"]}
-              /> */}
-            </Col>
+            ></Col>
           </Row>
         </>
       ) : null}
@@ -1285,12 +1232,6 @@ const Minutes = ({
               onClick={handleInvitetoCollaborate}
             />
           ) : null}
-          {/* <Button
-            text={t("Previous")}
-            className={styles["Previous_button_Minutes"]}
-            onClick={handlePreviousButton}
-            // onClick={handleUNsaveChangesModal}
-          /> */}
           <Button
             text={t("Next")}
             className={styles["Next_button_Minutes"]}

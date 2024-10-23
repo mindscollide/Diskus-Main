@@ -53,8 +53,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     date: "",
   });
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
 
   const [options, setOptions] = useState([
@@ -317,7 +315,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-                let meetingOrganizers = check1;
 
                 if (newarr.length > 0) {
                   newarr.map((morganizer, index) => {
@@ -374,7 +371,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-                let meetingOrganizers = check1;
 
                 if (newarr.length > 0) {
                   newarr.map((morganizer, index) => {
@@ -655,8 +651,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                       className="datePickerTodoCreate2"
                       onOpenPickNewDate={true}
                       inputMode=""
-                      calendar={calendarValue}
-                      locale={localValue}
+                      calendar={gregorian}
+                      locale={gregorian_en}
                       ref={calendRef}
                       onFocusedDateChange={(value) =>
                         changeDateStartHandler(value)

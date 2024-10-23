@@ -12,17 +12,13 @@ import {
 } from "../../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { Chart } from "react-google-charts";
-import profile from "../../../../../../../assets/images/newprofile.png";
-import down from "../../../../../../../assets/images/arrdown.png";
 import { showviewVotesAgenda } from "../../../../../../../store/actions/NewMeetingActions";
-import { ViewAgendaVotingResults } from "../../../../../../../store/actions/MeetingAgenda_action";
 import { Progress } from "antd";
 const ViewVoteModal = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
@@ -121,6 +117,7 @@ const ViewVoteModal = () => {
                   height="22px"
                   width="22px"
                   className={styles["Image"]}
+                  alt=""
                 />
               ))}
             </Col>

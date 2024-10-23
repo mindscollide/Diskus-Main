@@ -48,8 +48,6 @@ const SendNotificationOrganizer = ({ currentMeeting }) => {
     Array(initialMembersOrganizers.length).fill(true)
   );
 
-  const [allOrganizersAccept, setAllOrganizersAccept] = useState(true);
-
   const handleCrossIcon = () => {
     dispatch(sendRecentNotificationOrganizerModal(false));
   };

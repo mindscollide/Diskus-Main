@@ -45,7 +45,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     (state) => state
   );
   const [meetingDate, setMeetingDate] = useState("");
-  const [error, setError] = useState(false);
 
   const [updatePolls, setupdatePolls] = useState({
     Title: "",
@@ -53,9 +52,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     date: "",
     PollID: 0,
   });
-  //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
   const [memberSelect, setmemberSelect] = useState([]);
   const [checkForPollStatus, setCheckForPollStatus] = useState(false);
@@ -249,8 +245,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
         updatePollsApi(navigate, data, t, 2, setEditPolls, currentMeeting)
       );
     } else {
-      setError(true);
-
       if (updatePolls.Title === "") {
         showMessage(t("Title-is-required"), "error", setOpen);
       } else if (updatePolls.date === "") {
@@ -517,8 +511,8 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                 className="datePickerTodoCreate2"
                 onOpenPickNewDate={true}
                 inputMode=""
-                calendar={calendarValue}
-                locale={localValue}
+                calendar={gregorian}
+                locale={gregorian_en}
                 ref={calendRef}
                 onFocusedDateChange={(value) =>
                   changeDateStartHandlerUpdatePolls(value)

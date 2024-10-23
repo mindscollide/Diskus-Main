@@ -1,4 +1,3 @@
-// craco.config.js
 const ESLintWebpackPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
@@ -8,7 +7,6 @@ module.exports = {
       webpackConfig.resolve.fallback = {
         ...webpackConfig.resolve.fallback,
         stream: require.resolve('stream-browserify'),
-        // Add other fallbacks if needed
       };
 
       // Add ESLint plugin
@@ -21,4 +19,5 @@ module.exports = {
       return webpackConfig;
     },
   },
+  devServer: {}, // You can omit this if you don't have specific middleware
 };

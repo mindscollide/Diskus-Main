@@ -5,7 +5,6 @@ import emptyContributorState from "../../../../../assets/images/emptyStateContri
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
-import RspvIcon from "../../../../../assets/images/rspvGreen.svg";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
 import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
@@ -613,7 +612,7 @@ const AgendaContributers = ({
 
   const handleNextButton = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
-    console.log("end meeting chaek")
+    console.log("end meeting chaek");
     dispatch(
       UpdateOrganizersMeeting(
         false,
