@@ -17,7 +17,6 @@ import Createpolls from "../GroupPolls/CreatePolls/CreateGrouppolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import { showUnsavedPollsMeeting } from "../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
-import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
@@ -46,7 +45,6 @@ const GroupViewPolls = ({ groupStatus }) => {
   const [viewUnnPublished, setViewUnPublished] = useState(false);
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [afterViewPolls, setafterViewPolls] = useState(false);
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -506,138 +504,132 @@ const GroupViewPolls = ({ groupStatus }) => {
 
   return (
     <>
-      {afterViewPolls ? (
-        <AfterViewPolls />
-      ) : (
-        <>
-          <section>
-            {createpoll ? (
-              <Createpolls setCreatepoll={setCreatepoll} />
-            ) : votePolls ? (
-              <CastVotePollsMeeting setvotePolls={setvotePolls} />
-            ) : editPolls ? (
-              <EditPollsMeeting setEditPolls={setEditPolls} />
-            ) : viewUnnPublished ? (
-              <ViewPollsUnPublished setViewUnPublished={setViewUnPublished} />
-            ) : viewPublishedPoll ? (
-              <ViewPollsPublishedScreen
-                setViewPublishedPoll={setViewPublishedPoll}
-              />
-            ) : (
-              <>
-                <Row className="mt-4">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end "
-                  >
-                    {groupStatus === 3 && (
-                      <Button
-                        text={t("Create-polls")}
-                        icon={<img draggable={false} src={addmore} alt="" />}
-                        className={styles["Create_polls_Button"]}
-                        onClick={handleCreatepolls}
-                      />
-                    )}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    {pollsRows.length > 0 ? (
-                      <>
-                        <section className={styles["MaintainingHeight"]}>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <Table
-                                column={PollsColoumn}
-                                rows={pollsRows}
-                                scroll={{ y: "40vh" }}
-                                pagination={false}
-                                className="Polling_table"
-                              />
-                            </Col>
-                          </Row>
-                        </section>
-                      </>
-                    ) : (
-                      <>
-                        <Row className="mt-3">
-                          <Col
-                            lg={12}
-                            ms={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <img
-                              draggable={false}
-                              src={emtystate}
-                              height="230px"
-                              width="293.93px"
-                              alt=""
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["EmptyState_heading"]}>
-                              {t("No-polls")}
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["EmptyState_subHeading"]}>
-                              {t(
-                                "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                              )}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    )}
-                  </Col>
-                </Row>
-                {pollsRows.length > 0 && (
-                  <Row>
-                    <Col sm={12} md={12} lg={12}>
+      <section>
+        {createpoll ? (
+          <Createpolls setCreatepoll={setCreatepoll} />
+        ) : votePolls ? (
+          <CastVotePollsMeeting setvotePolls={setvotePolls} />
+        ) : editPolls ? (
+          <EditPollsMeeting setEditPolls={setEditPolls} />
+        ) : viewUnnPublished ? (
+          <ViewPollsUnPublished setViewUnPublished={setViewUnPublished} />
+        ) : viewPublishedPoll ? (
+          <ViewPollsPublishedScreen
+            setViewPublishedPoll={setViewPublishedPoll}
+          />
+        ) : (
+          <>
+            <Row className="mt-4">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end "
+              >
+                {groupStatus === 3 && (
+                  <Button
+                    text={t("Create-polls")}
+                    icon={<img draggable={false} src={addmore} alt="" />}
+                    className={styles["Create_polls_Button"]}
+                    onClick={handleCreatepolls}
+                  />
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                {pollsRows.length > 0 ? (
+                  <>
+                    <section className={styles["MaintainingHeight"]}>
                       <Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className="pagination-groups-table d-flex justify-content-center my-3"
-                        >
-                          <CustomPagination
-                            pageSizeOptionsValues={["30", "50", "100", "200"]}
-                            current={pageNumber}
-                            pageSize={pageSize}
-                            total={totalRecords}
-                            showSizer={totalRecords >= 9 ? true : false}
-                            className={styles["PaginationStyle-Resolution"]}
-                            onChange={handleChangePagination}
+                        <Col lg={12} md={12} sm={12}>
+                          <Table
+                            column={PollsColoumn}
+                            rows={pollsRows}
+                            scroll={{ y: "40vh" }}
+                            pagination={false}
+                            className="Polling_table"
                           />
                         </Col>
                       </Row>
+                    </section>
+                  </>
+                ) : (
+                  <>
+                    <Row className="mt-3">
+                      <Col
+                        lg={12}
+                        ms={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <img
+                          draggable={false}
+                          src={emtystate}
+                          height="230px"
+                          width="293.93px"
+                          alt=""
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <span className={styles["EmptyState_heading"]}>
+                          {t("No-polls")}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <span className={styles["EmptyState_subHeading"]}>
+                          {t(
+                            "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                          )}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                )}
+              </Col>
+            </Row>
+            {pollsRows.length > 0 && (
+              <Row>
+                <Col sm={12} md={12} lg={12}>
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="pagination-groups-table d-flex justify-content-center my-3"
+                    >
+                      <CustomPagination
+                        pageSizeOptionsValues={["30", "50", "100", "200"]}
+                        current={pageNumber}
+                        pageSize={pageSize}
+                        total={totalRecords}
+                        showSizer={totalRecords >= 9 ? true : false}
+                        className={styles["PaginationStyle-Resolution"]}
+                        onChange={handleChangePagination}
+                      />
                     </Col>
                   </Row>
-                )}
-              </>
+                </Col>
+              </Row>
             )}
-            {NewMeetingreducer.cancelPolls && <CancelPolls />}
-          </section>
-        </>
-      )}
+          </>
+        )}
+        {NewMeetingreducer.cancelPolls && <CancelPolls />}
+      </section>
     </>
   );
 };

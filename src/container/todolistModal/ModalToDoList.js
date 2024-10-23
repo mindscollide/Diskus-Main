@@ -44,7 +44,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     get_CurrentDateTime();
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
-  const [createTodoTime, setCreateTodoTime] = useState("");
   const [createTodoDate, setCreateTodoDate] = useState(current_Date);
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
@@ -107,14 +106,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
   //task Asignees
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
 
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
   console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedTo");
 
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
-  const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
   const [createTaskID, setCreateTaskID] = useState(0);
 
   //Upload File States
@@ -122,24 +119,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     TasksAttachments: [],
   });
   //Uploaded  objects
-  const [uploadObjects, setUploadObjects] = useState([]);
-  const [isUploadComplete, setIsUploadComplete] = useState(false);
-  console.log({ task, toDoDate, createTodoDate }, "tasktasktasktasktasktask");
-  useEffect(() => {
-    try {
-      if (
-        toDoListReducer.todoDocumentsUpload !== null &&
-        toDoListReducer.todoDocumentsUpload !== undefined &&
-        toDoListReducer.todoDocumentsUpload.length > 0
-      ) {
-        let uploadedFilesData = toDoListReducer.todoDocumentsUpload;
-        setUploadObjects(uploadedFilesData);
-        setIsUploadComplete(true);
-      }
-    } catch (error) {
-      console.log("todoListReducer", error);
-    }
-  }, [toDoListReducer.todoDocumentsUpload]);
 
   //To Set task Creater ID
   useEffect(() => {
@@ -372,7 +351,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       setTasksAttachments({ TasksAttachments: [] });
       setTaskAssignedName([]);
       setAssignees([]);
-      setTaskAssignedToInput("");
     }
   }, [show]);
 
@@ -380,7 +358,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     if (taskAssignedName.length > 1) {
       showMessage(t("Only-one-assignee-allow"), "error", setOpen);
     } else {
-      setTaskAssigneeLength(false);
     }
   }, [taskAssignedName.length]);
 

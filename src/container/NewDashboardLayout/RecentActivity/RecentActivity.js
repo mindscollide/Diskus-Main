@@ -4,8 +4,7 @@ import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import { ResultMessage } from "../../../components/elements";
 import TodoMessageIcon1 from "../../../assets/images/DashboardNewTodo.svg";
-import TimeAgo from "timeago-react";
-import { forRecentActivity } from "../../../commen/functions/date_formater";
+import { forRecentActivity, timePassed } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getNotifications } from "../../../store/actions/GetUserNotification";
@@ -94,13 +93,9 @@ const RecentActivity = () => {
                   {recentActivityData.notificationTypes.description}
                 </div>
                 <p className="d-flex justify-content-end  me-1">
-                  {
-                    <TimeAgo
-                      datetime={forRecentActivity(
+                  {timePassed(forRecentActivity(
                         recentActivityData.creationDateTime
-                      )}
-                      locale="en"
-                    />
+                      ))
                   }
                 </p>
               </>

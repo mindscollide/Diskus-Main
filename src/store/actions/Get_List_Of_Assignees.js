@@ -67,7 +67,7 @@ const clearResponseMessage = () => {
   };
 };
 
-const allAssignessList = (navigate, t, loader ) => {
+const allAssignessList = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
@@ -266,19 +266,6 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
 const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
-  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"));
-  let meetingPageCurrent = JSON.parse(
-    localStorage.getItem("MeetingPageCurrent")
-  );
-
-  let Data = {
-    Date: "",
-    Title: "",
-    HostName: "",
-    UserID: JSON.parse(createrID),
-    PageNumber: meetingPageCurrent,
-    Length: meetingpageRow,
-  };
   return async (dispatch) => {
     dispatch(ScheculeMeetingInit());
     let form = new FormData();
@@ -359,7 +346,6 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
               await dispatch(
                 ScheduleMeetingFail(t("No-record-has-been-updated"))
               );
-              await dispatch(searchUserMeeting(navigate, Data, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -368,15 +354,12 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
                 )
             ) {
               await dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
-              await dispatch(searchUserMeeting(navigate, Data, t));
             }
           } else {
             dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
-            await dispatch(searchUserMeeting(navigate, Data, t));
           }
         } else {
           dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
-          await dispatch(searchUserMeeting(navigate, Data, t));
         }
       })
       .catch(async (response) => {
@@ -708,7 +691,6 @@ const StartMeeting = (navigate, object, t, searchData) => {
                   t("The-meeting-has-been-started")
                 )
               );
-              await dispatch(searchUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

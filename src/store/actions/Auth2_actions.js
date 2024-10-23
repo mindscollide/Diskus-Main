@@ -1,7 +1,6 @@
 import {
   authenticationApi,
   getAdminURLs,
-  userLogOutAuthURL,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 
@@ -16,36 +15,26 @@ import {
   changepassword,
   OrganizationPackageReselection,
   passswordUpdationOnForgetPassword,
-  UserLogout,
   GetInvoiceHTMLByOrganizatonID,
   DownloadInvoiceRM,
   ValidateEncryptedStringForOTPEmailLinkRM,
 } from "../../commen/apis/Api_config";
-import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
 import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
-import Helper from "../../commen/functions/history_logout";
 import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
 import { LoginFlowRoutes, signUpFlowRoutes } from "./UserManagementActions";
-import {
-  showCreateAddtionalUsersModal,
-  showUpgradeNowModal,
-} from "./UserMangementModalActions";
+import { showUpgradeNowModal } from "./UserMangementModalActions";
 import {
   checkFeatureIDAvailability,
-  checkFeatureIDRoutes,
   clearLocalStorageAtloginresponce,
   getFormData,
   handleLoginResponse,
-  savePackageFeatureIDs,
 } from "../../commen/functions/utils";
 import {
   USERPASSWORDVERIFICATION,
   USERSPASSWORDCREATION,
 } from "../../commen/functions/responce_message";
-import { GetAllMeetingTypesNewFunction } from "./NewMeetingActions";
-
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -269,9 +258,6 @@ const validationEmailFail = (message) => {
 };
 
 const validationEmailAction = (email, navigate, t) => {
-  var min = 10000;
-  var max = 90000;
-  var id = min + Math.random() * (max - min);
   let token = JSON.parse(localStorage.getItem("token"));
   let data = { UserEmail: email, Device: "Browser", DeviceID: "1" };
   return (dispatch) => {
@@ -546,15 +532,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
         navigate,
         t
       );
-
-      // dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
-      // await dispatch(
-      //   getPackageExpiryDetail(
-      //     navigate,
-      //     response.data.responseResult.organizationID,
-      //     t
-      //   )
-      // );
       let packageFeatureIDs = [];
       switch (responseMessage.toLowerCase()) {
         case USERPASSWORDVERIFICATION.VERIFICATION_01:
@@ -1835,14 +1812,6 @@ const createPasswordFail = (message) => {
 const createPasswordAction = (value, navigate, t) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
-  let RSVP = localStorage.getItem("RSVP");
-  let dataroomValue = localStorage.getItem("DataRoomEmail");
-  let MeetingStr = localStorage.getItem("meetingStr");
-  let MeetinUpd = localStorage.getItem("meetingUpd");
-  let MeetingMin = localStorage.getItem("meetingMin");
-  let Meetingprop = localStorage.getItem("meetingprop");
-  let AgCont = localStorage.getItem("AgCont");
-  let AdOrg = localStorage.getItem("AdOrg");
   return async (dispatch) => {
     dispatch(createPasswordInit());
     const formData = getFormData(data, userPasswordCreation);
@@ -3576,7 +3545,6 @@ const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
               dispatch(LoginFlowRoutes(3));
               const currentUrl = window.location.href;
               const baseUrl = currentUrl.split("?")[0];
-              const hashPart = currentUrl.split("#")[1];
               const newUrl = `${baseUrl}`;
               window.history.replaceState({}, "", newUrl);
             } else if (

@@ -191,7 +191,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
-      allAssignees !== []
+      Object.keys(allAssignees).length > 0
     ) {
       return allAssignees
         .filter((item) => {

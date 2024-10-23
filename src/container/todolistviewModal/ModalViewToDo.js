@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ModalViewToDo.css";
-import { LoadingOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
 import Form from "react-bootstrap/Form";
@@ -14,10 +13,7 @@ import {
   Button,
   AttachmentViewer,
 } from "./../../components/elements";
-import {
-  newTimeFormaterAsPerUTCFullDate,
-  RemoveTimeDashes,
-} from "./../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTCFullDate } from "./../../commen/functions/date_formater";
 import { Row, Col } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
@@ -31,7 +27,6 @@ import {
   emptyCommentState,
   postComments,
 } from "../../store/actions/Post_AssigneeComments";
-import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
@@ -84,12 +79,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //task Asignees
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
   const [todoCreator, setTodoCreator] = useState(null);
-  const [taskAssignedName, setTaskAssignedName] = useState([]);
-  const [assigeeDetails, setAssigneeDetails] = useState(null);
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
   const [assgineeComments, setAssgieeComments] = useState("");
   const [deleteCommentsId, setDeleteCommentsId] = useState(0);
-  console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedToTaskAssignedTo");
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -169,9 +161,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
             assigneeinfo.push(data);
           }
         });
-        setAssigneeDetails(assigneeinfo);
         setTaskAssignedTo(assigneedetails);
-        setTaskAssignedName(tem);
       }
       let todoCreator = toDoListReducer.ToDoDetails.taskCreator;
       setTodoCreator(todoCreator);
@@ -310,7 +300,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       });
       setTaskAssignedTo([]);
       setTasksAttachments({ ["TasksAttachments"]: [] });
-      setTaskAssignedName([]);
       setTaskAssigneeComments([]);
       setAssgieeComments("");
       setDeleteCommentsId([]);

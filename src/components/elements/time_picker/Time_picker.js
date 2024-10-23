@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import "./Time_picker.css";
-import { TimePicker, Typography } from "antd";
+import { TimePicker } from "antd";
 import moment from "moment";
 import { ConfigProvider } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";

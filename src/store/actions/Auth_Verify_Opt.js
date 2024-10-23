@@ -6,7 +6,6 @@ import {
   resendOTPForgotPassword,
 } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
-import { message } from "antd";
 
 const verifyoptinit = () => {
   return {
@@ -106,7 +105,7 @@ const ResendOTP = (t, verificationData, setSeconds, setMinutes) => {
             dispatch(
               resendOTPSuccess(response.data.responseResult, newMessage)
             );
-            return setSeconds(60), setMinutes(4);
+            return setSeconds(60),setMinutes(4);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_GenerateOTP_02"

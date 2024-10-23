@@ -1,5 +1,4 @@
 import * as actions from "../action_types";
-import Helper from "../../commen/functions/history_logout";
 import { BroadcastChannel } from "broadcast-channel";
 import { UserLogout } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
@@ -96,10 +95,6 @@ const userLogOutApiFunc = (navigate, t) => {
 
 const signOut = (navigate, message, dispatch) => {
   logoutChannel.postMessage("Logout");
-  // if (Helper.socket != null) {
-  //   Helper.socket.disconnect(true);
-  // }
-  // window.location.href = window.location.origin + "/";
   dispatch(initaialStateFun())
   navigate("/");
   let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
@@ -156,7 +151,7 @@ const signOut = (navigate, message, dispatch) => {
   dispatch(LoginFlowRoutes(1));
   // navigate("/");
 
-  if (message != "") {
+  if (message !== "") {
     return {
       type: actions.SIGN_OUT,
       message: message,

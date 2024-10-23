@@ -9,7 +9,6 @@ import OrganizerViewModal from "../../../scedulemeeting/Organizers/OrganizerView
 import { ChevronDown } from "react-bootstrap-icons";
 import {
   Button,
-  Notification,
   ResultMessage,
   Table,
 } from "../../../../../../components/elements";
@@ -88,7 +87,6 @@ const UnpublishedProposedMeeting = ({
   let currentOrganizationId = localStorage.getItem("organizationID");
   let MeetingProp = localStorage.getItem("meetingprop");
 
-  let currentView = localStorage.getItem("MeetingCurrentView");
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -106,7 +104,6 @@ const UnpublishedProposedMeeting = ({
 
   const [rows, setRow] = useState([]);
   const [publishState, setPublishState] = useState(null);
-  const [organizerViewModal, setOrganizerViewModal] = useState(false);
 
   // Empty text data
   const emptyText = () => {
@@ -454,10 +451,6 @@ const UnpublishedProposedMeeting = ({
       key: "Edit",
       width: "33px",
       render: (text, record) => {
-        let apiData = {
-          MeetingID: Number(record.pK_MDID),
-          StatusID: 1,
-        };
         return (
           <>
             <Row>
@@ -922,7 +915,6 @@ const UnpublishedProposedMeeting = ({
           />
         </Col>
       </Row>
-      {organizerViewModal && <OrganizerViewModal />}
       {sceduleproposedMeeting && (
         <SceduleProposedmeeting
           setDataroomMapFolderId={setDataroomMapFolderId}

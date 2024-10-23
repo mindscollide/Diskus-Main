@@ -38,7 +38,6 @@ import {
   editFlowDeleteSavedPollsMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
-import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
@@ -69,7 +68,6 @@ const Polls = ({
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
   const [pollsRows, setPollsRows] = useState([]);
-  const [afterViewPolls, setafterViewPolls] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -573,10 +571,6 @@ const Polls = ({
   }, [NewMeetingreducer.ResponseMessage]);
 
   return (
-    <>
-      {afterViewPolls ? (
-        <AfterViewPolls />
-      ) : (
         <>
           <section>
             {createpoll ? (
@@ -764,8 +758,6 @@ const Polls = ({
             />
           </section>
         </>
-      )}
-    </>
   );
 };
 

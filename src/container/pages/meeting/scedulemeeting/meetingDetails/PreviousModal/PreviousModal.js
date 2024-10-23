@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./PreviousModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { showPreviousConfirmationModal } from "../../../../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../../../../components/elements";

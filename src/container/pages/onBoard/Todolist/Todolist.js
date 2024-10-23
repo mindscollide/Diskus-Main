@@ -5,7 +5,7 @@ import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import UserImage from "../../../../assets/images/user.png";
 import { Paperclip } from "react-bootstrap-icons";
 import Checkbox from "../../../../components/elements/check_box/Checkbox";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 
 export const TodoList = () => {
   function CustomToggle({ children, eventKey }) {

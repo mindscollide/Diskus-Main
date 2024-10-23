@@ -14,7 +14,7 @@ import {
   createTaskGroupMQTT,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 
 import ModalToDoList from "./CreateTodo/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
@@ -55,20 +55,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
-  const [searchData, setSearchData] = useState({
-    Date: "",
-    Title: "",
-    AssignedToName: "",
-    UserID: 0,
-  });
-
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
   const [statusOptions, setStatusOptions] = useState([]);
-  const [tableFilterOptions, setTableFilterOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -183,7 +175,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     setStatusValues(newArrStatus);
 
     setStatusOptions(optionsArr);
-    setTableFilterOptions(newOptionsFilter);
   }, [todoStatus]);
 
   // for modal create  handler

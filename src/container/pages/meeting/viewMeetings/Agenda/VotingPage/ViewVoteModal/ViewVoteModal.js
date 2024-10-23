@@ -167,7 +167,6 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
     },
   ];
 
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (
@@ -201,7 +200,6 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
           (result) => [result.answer, result.votes]
         )
       );
-      setLoading(false);
       setVotingResults(
         MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults
       );

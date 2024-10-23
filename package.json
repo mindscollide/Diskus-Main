@@ -93,14 +93,13 @@
     "react-time-picker": "^6.5.0",
     "redux-devtools-extension": "^2.13.9",
     "rsuite": "^5.33.1",
-    "timeago-react": "^3.0.5",
     "web-vitals": "^2.1.4",
     "xml-js": "^1.6.11",
     "xregexp": "^5.1.1"
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "GENERATE_SOURCEMAP=false craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -125,6 +124,8 @@
   "devDependencies": {
     "buffer": "^6.0.3",
     "eslint-webpack-plugin": "^4.2.0",
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0",
     "process": "^0.11.10",
     "react-app-rewired": "^2.2.1",
     "stream-browserify": "^3.0.0",

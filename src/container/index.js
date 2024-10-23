@@ -10,11 +10,9 @@ export { default as CustomMiscellaneous } from "../container/miscellaneous/Misce
 export { default as CustomSetting } from "../container/setting/Setting";
 export { default as Home } from "../container/pages/home/Home";
 export { default as OnBoard } from "../container/pages/onBoard/OnBoard";
-export { default as VideoMeeting } from "../container/pages/videoChat/VideoChat";
 export { default as ChangePassword } from "../container/Admin/ChangePassword/ChangePassword";
 export { default as DeleteOrganization } from "../container/Admin/Subscriptions/DeleteOrganization/DeleteOrganization";
 export { default as VideoScreens } from "../container/videoMultipleScreens/VideoScreens";
-export { default as VideoMultiple } from "../container/videoMultiple/VideoMultiple";
 export { default as VideoIncoming } from "../container/videoIncoming/VideoIncoming";
 export { default as VideoOutgoing } from "../container/videoOutgoing/VideoOutgoing";
 export { default as AddUser } from "../container/Admin/AllUsers/AddUser/AddUser";
@@ -35,7 +33,6 @@ export { default as PackageUpgradeDetail } from "../container/Admin/Subscription
 export { default as PackageUpgradeSelect } from "../container/Admin/Subscriptions/PackageUpgradeSelected/PackageUpgradeSelect";
 export { default as ForgotPassword } from "../container/authentication/forgot_password/Forgot_password";
 export { default as PasswordUpdateMessage } from "../container/authentication/password_update_message/Password_Update_Message";
-export { default as VideoChat } from "../container/pages/videoChat/VideoChat";
 export { default as Notes } from "../container/notes/Notes";
 export { default as CalendarPage } from "../container/calendarpage/CalendarPage";
 export { default as ForgotPasswordVerification } from "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification";

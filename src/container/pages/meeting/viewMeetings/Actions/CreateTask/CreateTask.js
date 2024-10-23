@@ -62,7 +62,6 @@ const CreateTask = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
   const [taskAttachments, setTaskAttachments] = useState([]);
-  const [onSaveView, setonSaveView] = useState(false);
   const [error, seterror] = useState(false);
 
   const [selectedTask, setSelectedTask] = useState({
@@ -643,326 +642,309 @@ const CreateTask = ({
 
   return (
     <>
-      {onSaveView ? (
-        <ViewActions />
-      ) : (
-        <>
-          <section>
+      <section>
+        <Row>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className={styles["Create_Task_main_Scroller"]}
+          >
+            <Row className="mt-1">
+              <Col lg={12} md={12} sm={12}>
+                <span className={styles["SubHeading"]}>
+                  {t("Task-title")} <span className={styles["Steric"]}>*</span>
+                </span>
+              </Col>
+            </Row>
             <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Create_Task_main_Scroller"]}
-              >
-                <Row className="mt-1">
+              <Col lg={12} md={12} sm={12}>
+                <TextField
+                  placeholder={t("Task-title")}
+                  labelclass={"d-none"}
+                  change={HandleChange}
+                  maxLength={195}
+                  name={"ActionsToTake"}
+                  value={createTaskDetails.ActionsToTake}
+                />
+                <Row>
+                  <Col>
+                    <p
+                      className={
+                        error && createTaskDetails.ActionsToTake === ""
+                          ? ` ${styles["errorMessage-inLogin"]} `
+                          : `${styles["errorMessage-inLogin_hidden"]}`
+                      }
+                    >
+                      {t("Please-enter-action-to-take")}
+                    </p>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Row className="mt-1">
+              <Col lg={5} md={5} sm={5}>
+                <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
-                      {t("Task-title")}{" "}
-                      <span className={styles["Steric"]}>*</span>
+                      {t("Assigned-to")}
+                      <span className={styles["Steric"]}> *</span>
                     </span>
                   </Col>
                 </Row>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
-                    <TextField
-                      placeholder={t("Task-title")}
-                      labelclass={"d-none"}
-                      change={HandleChange}
-                      maxLength={195}
-                      name={"ActionsToTake"}
-                      value={createTaskDetails.ActionsToTake}
+                    <Select
+                      classNamePrefix={"Polls_Meeting"}
+                      value={selectedTask.value === 0 ? null : selectedTask}
+                      options={taskMemberSelect}
+                      onChange={handleSelectMemberValue}
+                      isSearchable={false}
                     />
                     <Row>
                       <Col>
                         <p
                           className={
-                            error && createTaskDetails.ActionsToTake === ""
+                            error && createTaskDetails.AssignedTo.length === 0
                               ? ` ${styles["errorMessage-inLogin"]} `
                               : `${styles["errorMessage-inLogin_hidden"]}`
                           }
                         >
-                          {t("Please-enter-action-to-take")}
+                          {t("Please-select-assignees")}
                         </p>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-1">
-                  <Col lg={5} md={5} sm={5}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["SubHeading"]}>
-                          {t("Assigned-to")}
-                          <span className={styles["Steric"]}> *</span>
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <Select
-                          classNamePrefix={"Polls_Meeting"}
-                          value={selectedTask.value === 0 ? null : selectedTask}
-                          options={taskMemberSelect}
-                          onChange={handleSelectMemberValue}
-                          isSearchable={false}
-                        />
-                        <Row>
-                          <Col>
-                            <p
-                              className={
-                                error &&
-                                createTaskDetails.AssignedTo.length === 0
-                                  ? ` ${styles["errorMessage-inLogin"]} `
-                                  : `${styles["errorMessage-inLogin_hidden"]}`
-                              }
-                            >
-                              {t("Please-select-assignees")}
-                            </p>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col lg={5} md={5} sm={5}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["SubHeading"]}>
-                          {t("Select-agenda")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <Select
-                          value={selectAgenda}
-                          options={agendaValue}
-                          onChange={onChangeSelectAgenda}
-                          isSearchable={false}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col lg={2} md={2} sm={2}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["SubHeading"]}>
-                          {t("Due-date")}
-                          {""}
-                          <span className={styles["Steric"]}> *</span>
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Create-task"]}
-                      >
-                        <DatePicker
-                          value={agendaDueDate}
-                          format={"DD/MM/YYYY"}
-                          minDate={moment().toDate()}
-                          placeholder="DD/MM/YYYY"
-                          render={
-                            <InputIcon
-                              placeholder="DD/MM/YYYY"
-                              className="datepicker_input"
-                            />
-                          }
-                          editable={false}
-                          className="datePickerTodoCreate2"
-                          onOpenPickNewDate={true}
-                          inputMode=""
-                          calendar={calendarValue}
-                          locale={localValue}
-                          ref={calendRef}
-                          onFocusedDateChange={changeDateActionCreate}
-                          onChange={changeDateActionCreate}
-                        />
-                        <Row>
-                          <Col>
-                            <p
-                              className={
-                                error && createTaskDetails.date === ""
-                                  ? ` ${styles["errorMessage-inLogin"]} `
-                                  : `${styles["errorMessage-inLogin_hidden"]}`
-                              }
-                            >
-                              {t("Enter-date-must-action")}
-                            </p>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
+              </Col>
+              <Col lg={5} md={5} sm={5}>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
-                      {t("Description")}{" "}
+                      {t("Select-agenda")}
                     </span>
                   </Col>
                 </Row>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
-                    <TextField
-                      labelclass={"d-none"}
-                      change={HandleChange}
-                      name={"Description"}
-                      value={createTaskDetails.Description}
-                      applyClass="Polls_meeting"
-                      as={"textarea"}
-                      maxLength={2000}
-                      rows="4"
-                      placeholder={t("Description")}
+                    <Select
+                      value={selectAgenda}
+                      options={agendaValue}
+                      onChange={onChangeSelectAgenda}
+                      isSearchable={false}
                     />
                   </Col>
                 </Row>
-                <Row className="mt-2">
+              </Col>
+              <Col lg={2} md={2} sm={2}>
+                <Row>
                   <Col lg={12} md={12} sm={12}>
-                    <Dragger
-                      {...props}
-                      fileList={[]}
-                      className={
-                        styles["dragdrop_attachment_create_resolution"]
+                    <span className={styles["SubHeading"]}>
+                      {t("Due-date")}
+                      {""}
+                      <span className={styles["Steric"]}> *</span>
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Create-task"]}
+                  >
+                    <DatePicker
+                      value={agendaDueDate}
+                      format={"DD/MM/YYYY"}
+                      minDate={moment().toDate()}
+                      placeholder="DD/MM/YYYY"
+                      render={
+                        <InputIcon
+                          placeholder="DD/MM/YYYY"
+                          className="datepicker_input"
+                        />
                       }
-                    >
-                      {taskAttachments.length > 0 ? (
-                        <>
-                          <Row>
-                            <Col className={styles["Scroller_Actions_Page"]}>
-                              <Row className="ps-3">
-                                {taskAttachments.map((data, index) => {
-                                  console.log(data, "datadatadata");
-                                  return (
-                                    <>
-                                      <Col lg={2} md={2} sm={2}>
-                                        <AttachmentViewer
-                                          name={data.DisplayAttachmentName}
-                                          fk_UID={creatorID}
-                                          data={data}
-                                          id={0}
-                                          handleClickRemove={() =>
-                                            removeFileFunction(data)
-                                          }
-                                        />
-                                      </Col>
-                                    </>
-                                  );
-                                })}
-                              </Row>
-                            </Col>
-                          </Row>
-                        </>
-                      ) : (
-                        <>
-                          <Row>
-                            <Col
-                              lg={5}
-                              md={5}
-                              sm={12}
-                              className="d-flex justify-content-end align-items-center"
-                            >
-                              <img
-                                draggable={false}
-                                src={DrapDropIcon}
-                                width={100}
-                                className={styles["ClassImage"]}
-                                alt=""
-                              />
-                            </Col>
-                            <Col lg={7} md={7} sm={12}>
-                              <Row className="mt-3">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-start"
-                                >
-                                  <span
-                                    className={
-                                      styles["ant-upload-text-Meetings"]
-                                    }
-                                  >
-                                    {t("Drag-file-here")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-start"
-                                >
-                                  <span
-                                    className={
-                                      styles["Choose_file_style-Meeting"]
-                                    }
-                                  >
-                                    {t("The-following-file-formats-are")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-start"
-                                >
-                                  <span
-                                    className={
-                                      styles["Choose_file_style-Meeting"]
-                                    }
-                                  >
-                                    {t(
-                                      "Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png"
-                                    )}
-                                  </span>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        </>
-                      )}
-                    </Dragger>
+                      editable={false}
+                      className="datePickerTodoCreate2"
+                      onOpenPickNewDate={true}
+                      inputMode=""
+                      calendar={calendarValue}
+                      locale={localValue}
+                      ref={calendRef}
+                      onFocusedDateChange={changeDateActionCreate}
+                      onChange={changeDateActionCreate}
+                    />
+                    <Row>
+                      <Col>
+                        <p
+                          className={
+                            error && createTaskDetails.date === ""
+                              ? ` ${styles["errorMessage-inLogin"]} `
+                              : `${styles["errorMessage-inLogin_hidden"]}`
+                          }
+                        >
+                          {t("Enter-date-must-action")}
+                        </p>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Col>
             </Row>
-
-            <Row className="mt-3">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
-                <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Button_Polls_meeting"]}
-                  onClick={handleUnsavedModal}
-                />
-
-                <Button
-                  text={t("Save")}
-                  className={styles["Save_Button_Polls_meeting"]}
-                  onClick={actionSaveHandler}
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <span className={styles["SubHeading"]}>
+                  {t("Description")}{" "}
+                </span>
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <TextField
+                  labelclass={"d-none"}
+                  change={HandleChange}
+                  name={"Description"}
+                  value={createTaskDetails.Description}
+                  applyClass="Polls_meeting"
+                  as={"textarea"}
+                  maxLength={2000}
+                  rows="4"
+                  placeholder={t("Description")}
                 />
               </Col>
             </Row>
-            {NewMeetingreducer.unsavedActions && (
-              <UnsavedActions
-                setCreateaTask={setCreateaTask}
-                currentMeeting={currentMeeting}
-              />
-            )}
-          </section>
-        </>
-      )}
+            <Row className="mt-2">
+              <Col lg={12} md={12} sm={12}>
+                <Dragger
+                  {...props}
+                  fileList={[]}
+                  className={styles["dragdrop_attachment_create_resolution"]}
+                >
+                  {taskAttachments.length > 0 ? (
+                    <>
+                      <Row>
+                        <Col className={styles["Scroller_Actions_Page"]}>
+                          <Row className="ps-3">
+                            {taskAttachments.map((data, index) => {
+                              console.log(data, "datadatadata");
+                              return (
+                                <>
+                                  <Col lg={2} md={2} sm={2}>
+                                    <AttachmentViewer
+                                      name={data.DisplayAttachmentName}
+                                      fk_UID={creatorID}
+                                      data={data}
+                                      id={0}
+                                      handleClickRemove={() =>
+                                        removeFileFunction(data)
+                                      }
+                                    />
+                                  </Col>
+                                </>
+                              );
+                            })}
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : (
+                    <>
+                      <Row>
+                        <Col
+                          lg={5}
+                          md={5}
+                          sm={12}
+                          className="d-flex justify-content-end align-items-center"
+                        >
+                          <img
+                            draggable={false}
+                            src={DrapDropIcon}
+                            width={100}
+                            className={styles["ClassImage"]}
+                            alt=""
+                          />
+                        </Col>
+                        <Col lg={7} md={7} sm={12}>
+                          <Row className="mt-3">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-start"
+                            >
+                              <span
+                                className={styles["ant-upload-text-Meetings"]}
+                              >
+                                {t("Drag-file-here")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-start"
+                            >
+                              <span
+                                className={styles["Choose_file_style-Meeting"]}
+                              >
+                                {t("The-following-file-formats-are")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-start"
+                            >
+                              <span
+                                className={styles["Choose_file_style-Meeting"]}
+                              >
+                                {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
+                              </span>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  )}
+                </Dragger>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+
+        <Row className="mt-3">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end gap-2"
+          >
+            <Button
+              text={t("Cancel")}
+              className={styles["Cancel_Button_Polls_meeting"]}
+              onClick={handleUnsavedModal}
+            />
+
+            <Button
+              text={t("Save")}
+              className={styles["Save_Button_Polls_meeting"]}
+              onClick={actionSaveHandler}
+            />
+          </Col>
+        </Row>
+        {NewMeetingreducer.unsavedActions && (
+          <UnsavedActions
+            setCreateaTask={setCreateaTask}
+            currentMeeting={currentMeeting}
+          />
+        )}
+      </section>
+
       <Notification
         open={open.open}
         message={open.message}

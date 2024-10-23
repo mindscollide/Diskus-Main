@@ -994,3 +994,24 @@ export const DateFormatForPolls = (date) => {
   console.log(`${year}${month}${day}${hours}${minutes}${seconds}`);
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
 };
+
+export const timePassed=(dateString)=> {
+  const givenDate = new Date(dateString);
+  const currentDate = new Date();
+  
+  const diffInMs = currentDate - givenDate; // Difference in milliseconds
+  const diffInSeconds = Math.floor(diffInMs / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  if (diffInDays > 0) {
+      return `${diffInDays} day(s) ago`;
+  } else if (diffInHours > 0) {
+      return `${diffInHours} hour(s) ago`;
+  } else if (diffInMinutes > 0) {
+      return `${diffInMinutes} minute(s) ago`;
+  } else {
+      return `${diffInSeconds} second(s) ago`;
+  }
+}

@@ -3,9 +3,6 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -53,7 +50,6 @@ const ParentAgenda = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  let currentLanguage = localStorage.getItem("i18nextLng");
   let currentUserID = localStorage.getItem("userID");
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(

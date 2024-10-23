@@ -54,8 +54,8 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     PollID: 0,
   });
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
+  const calendarValue = gregorian;
+  const localValue = gregorian_en;
   const calendRef = useRef();
   const [memberSelect, setmemberSelect] = useState([]);
   const [checkForPollStatus, setCheckForPollStatus] = useState(false);

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
-import { Select } from "antd";
 import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
@@ -12,7 +11,7 @@ import {
   saveTaskDocumentsApi,
   createTaskCommitteeMQTT,
 } from "../../../store/actions/ToDoList_action";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import ModalToDoList from "./CreateTodo/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import {
@@ -29,6 +28,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { getTaskCommitteeIDApi } from "../../../store/actions/Polls_actions";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { Select } from "antd";
 
 const CreateTodoCommittee = ({ committeeStatus }) => {
   const { t } = useTranslation();
@@ -50,20 +50,12 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
   const [statusValues, setStatusValues] = useState([]);
-
-  const [searchData, setSearchData] = useState({
-    Date: "",
-    Title: "",
-    AssignedToName: "",
-    UserID: 0,
-  });
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
   const [statusOptions, setStatusOptions] = useState([]);
-  const [tableFilterOptions, setTableFilterOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -179,7 +171,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     setStatusValues(newArrStatus);
 
     setStatusOptions(optionsArr);
-    setTableFilterOptions(newOptionsFilter);
   }, [todoStatus]);
 
   // for modal create  handler

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./UserSettings.module.css";
 import { Col, Row } from "react-bootstrap";
-import { Loader, Button } from "../../../components/elements";
+import { Button } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ const UserSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { settingReducer, LanguageReducer } = useSelector((state) => state);
+  const { settingReducer } = useSelector((state) => state);
   const { UserProfileData } = settingReducer;
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
@@ -2197,6 +2197,7 @@ const UserSettings = () => {
                   draggable="false"
                   src={line}
                   className={styles["user-setting-row"]}
+                  alt=""
                 />
               </Col>
               <Col lg={3} md={3} sm={3}>

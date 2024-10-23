@@ -23,7 +23,7 @@ import {
   SearchTodoListApi,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import { Tooltip } from "antd";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";

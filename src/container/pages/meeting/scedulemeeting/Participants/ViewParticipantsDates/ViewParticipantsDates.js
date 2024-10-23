@@ -48,19 +48,12 @@ const ViewParticipantsDates = ({
     (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
 
-  const getAllProposedDates = useSelector(
-    (state) => state.NewMeetingreducer.getAllProposedDates
-  );
-
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
 
-  const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
-  const [sendProposedData, setSendProposedData] = useState([]);
   const [noneOfAbove, setNoneOfAbove] = useState([]);
-  const [apiUserID, setApiUserID] = useState("");
   const [meetingDeatils, setMeetingDeatils] = useState({
     MeetingTitle: "",
     MeetingType: "",
@@ -115,8 +108,6 @@ const ViewParticipantsDates = ({
         let uniqueDates = new Set();
         let datesarry = [];
         userWiseMeetingProposed.forEach((datesData, index) => {
-          console.log(datesData, "datesDatadatesDatadatesData");
-          setApiUserID(datesData.userID);
           if (Number(datesData.userID) === Number(currentUserId)) {
             console.log(datesData, "newDatanewDatanewData");
             datesData.selectedProposedDates.forEach((newData, index) => {
@@ -196,7 +187,6 @@ const ViewParticipantsDates = ({
           });
           setNoneOfAbove(DefaultDate);
           setPrposedData(datesarry);
-          setSendProposedData(SenddataObject);
         });
       } else {
       }
@@ -221,15 +211,7 @@ const ViewParticipantsDates = ({
     } catch (error) {}
   }, [getAllMeetingDetails]);
 
-  //Previous API for Dates that have to be Removed
-  useEffect(() => {
-    try {
-      if (getAllProposedDates !== null && getAllProposedDates !== undefined) {
-        let deadline = getAllProposedDates.deadLineDate;
-        setDeadline(deadline);
-      }
-    } catch (error) {}
-  }, [getAllProposedDates]);
+
 
   // onChange function for CheckBoxes
   const handleCheckboxChange = (clickedData) => {

@@ -19,7 +19,6 @@ import {
   showunsavedEditPollsMeetings,
 } from "../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
-import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
 import {
@@ -49,7 +48,6 @@ const Polls = ({ committeeStatus }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [afterViewPolls, setafterViewPolls] = useState(false);
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
@@ -520,10 +518,7 @@ const Polls = ({ committeeStatus }) => {
     dispatch(GetPollsByCommitteeIDapi(navigate, t, Data));
   };
   return (
-    <>
-      {afterViewPolls ? (
-        <AfterViewPolls />
-      ) : (
+   
         <>
           <section>
             {createpoll ? (
@@ -648,8 +643,6 @@ const Polls = ({ committeeStatus }) => {
             {NewMeetingreducer.cancelPolls && <CancelPolls />}
           </section>
         </>
-      )}
-    </>
   );
 };
 

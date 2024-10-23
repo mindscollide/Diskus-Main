@@ -24,7 +24,6 @@ import VoteModal from "./VoteModal/VoteModal";
 import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
 import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
 import ParentAgenda from "./ParentAgenda";
 import { onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
@@ -101,7 +100,6 @@ const Agenda = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const [rows, setRows] = useState([]);
-  console.log(rows, "rowsrowsrowsrows");
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
   useEffect(() => {
