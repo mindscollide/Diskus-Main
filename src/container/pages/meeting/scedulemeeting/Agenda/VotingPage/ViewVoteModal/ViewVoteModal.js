@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./ViewVoteModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   Loader,
@@ -18,7 +17,6 @@ const ViewVoteModal = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state

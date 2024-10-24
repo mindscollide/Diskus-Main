@@ -5,7 +5,6 @@ import { Col, Row } from "react-bootstrap";
 import { Button, Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Upload } from "antd";
 import {
   convertDateFieldsToUTC,
   convertUtcToGmt,
@@ -255,7 +254,6 @@ const Agenda = ({
   //Function For Adding Main Agendas
   const addRow = () => {
     const updatedRows = [...rows];
-    const nextID = updatedRows.length.toString();
 
     const newMainAgenda = {
       iD: getRandomUniqueNumber().toString() + "A",
@@ -290,23 +288,23 @@ const Agenda = ({
     dispatch(showImportPreviousAgendaModal(true));
   };
 
-  const handleNextAgenda = () => {
-    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
-      dispatch(nextTabAgenda(true));
-    } else {
-      setMeetingMaterial(true);
-      setAgenda(false);
-    }
-  };
+  // const handleNextAgenda = () => {
+  //   if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
+  //     dispatch(nextTabAgenda(true));
+  //   } else {
+  //     setMeetingMaterial(true);
+  //     setAgenda(false);
+  //   }
+  // };
 
-  const handlePerviousAgenda = () => {
-    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
-      dispatch(previousTabAgenda(true));
-    } else {
-      setAgenda(false);
-      setParticipants(true);
-    }
-  };
+  // const handlePerviousAgenda = () => {
+  //   if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
+  //     dispatch(previousTabAgenda(true));
+  //   } else {
+  //     setAgenda(false);
+  //     setParticipants(true);
+  //   }
+  // };
 
   const handleCancelClick = async () => {
     if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
