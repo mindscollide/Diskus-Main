@@ -30,7 +30,7 @@ const GuestJoinVideo = ({
   const [stream, setStream] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
   console.log(isWebCamEnabled, "isWebCamEnabled");
-  const [isMikeEnabled, setIsMikeEnabled] = useState(false);
+  const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [getReady, setGetReady] = useState(false);
 
@@ -40,6 +40,7 @@ const GuestJoinVideo = ({
 
   console.log({ extractMeetingId, extractMeetingTitle }, "namenamenamename");
 
+  // for set Video Web Cam on CLick
   const handleToggleWebCam = (flag) => {
     if (flag) {
       // Enable webcam
@@ -181,10 +182,10 @@ const GuestJoinVideo = ({
                           </div>
 
                           <div className="mic-vid-buttons">
-                            {isMikeEnabled ? (
-                              <img src={MicOn} />
+                            {isMicEnabled ? (
+                              <img src={MicOn} className="cursor-pointer" />
                             ) : (
-                              <img src={MicOff} />
+                              <img src={MicOff} className="cursor-pointer" />
                             )}
 
                             {isWebCamEnabled ? (

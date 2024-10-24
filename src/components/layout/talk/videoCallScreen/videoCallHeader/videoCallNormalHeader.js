@@ -220,7 +220,7 @@ const VideoCallNormalHeader = ({
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
       localStorage.setItem("isMeeting", false);
-      localStorage.setItem("meetingTitle", "");
+      // localStorage.setItem("meetingTitle", "");
       localStorage.setItem("acceptedRecipientID", 0);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);

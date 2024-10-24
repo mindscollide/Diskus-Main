@@ -104,27 +104,27 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   // const webcamStatus = sessionStorage.getItem("isWebCamEnabled") === "true";
   // console.log(webcamStatus, "webcamStatuswebcamStatus");
 
-  useEffect(() => {
-    const iframe = frameRef.current;
-    if (iframe.contentWindow !== null) {
-      console.log("Sending message...");
-      if (webcamStatus === false || webcamStatus === "false") {
-        console.log("Sending message...");
-        // setTimeout(() => {
-        iframe.contentWindow.postMessage("VidOff", "*");
-        // }, 2000);
-        console.log("Turning webcam off");
-        setIsVideoOn(true);
-      } else {
-        // setTimeout(() => {
-        iframe.contentWindow.postMessage("VidOn", "*");
-        // }, 2000);
-        console.log("Turning webcam on");
-        setIsVideoOn(false);
-      }
-    }
-    console.log("Webcam status read from sessionStorage:", webcamStatus);
-  }, []);
+  // useEffect(() => {
+  //   const iframe = frameRef.current;
+  //   if (iframe.contentWindow !== null) {
+  //     console.log("Sending message...");
+  //     if (webcamStatus === false || webcamStatus === "false") {
+  //       console.log("Sending message...");
+  //       // setTimeout(() => {
+  //       iframe.contentWindow.postMessage("VidOff", "*");
+  //       // }, 2000);
+  //       console.log("Turning webcam off");
+  //       setIsVideoOn(true);
+  //     } else {
+  //       // setTimeout(() => {
+  //       iframe.contentWindow.postMessage("VidOn", "*");
+  //       // }, 2000);
+  //       console.log("Turning webcam on");
+  //       setIsVideoOn(false);
+  //     }
+  //   }
+  //   console.log("Webcam status read from sessionStorage:", webcamStatus);
+  // }, []);
 
   const openMicStatus = (flag) => {
     const iframe = frameRef.current;
