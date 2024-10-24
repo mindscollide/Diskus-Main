@@ -287,10 +287,11 @@ const ReviewMinutes = () => {
             reason: "",
             actorBundleStatusID: 3,
             declinedReviews:
-              minute.declinedReviews.length > 0 ?
-              minute.declinedReviews.filter(
-                (userReview, index) => currentUserID !== userReview.fK_UID
-              ): [],
+              minute.declinedReviews.length > 0
+                ? minute.declinedReviews.filter(
+                    (userReview, index) => currentUserID !== userReview.fK_UID
+                  )
+                : [],
           };
         }
         return minute;
@@ -312,10 +313,11 @@ const ReviewMinutes = () => {
               reason: "",
               actorBundleStatusID: 3,
               declinedReviews:
-                subMinute.declinedReviews.length > 0 &&
-                subMinute.declinedReviews.filter(
-                  (userReview, index) => currentUserID !== userReview.fK_UID
-                ),
+                subMinute.declinedReviews.length > 0
+                  ? subMinute.declinedReviews.filter(
+                      (userReview, index) => currentUserID !== userReview.fK_UID
+                    )
+                  : [],
             };
           }
           return subMinute;
@@ -349,10 +351,11 @@ const ReviewMinutes = () => {
           reason: "",
           actorBundleStatusID: 3,
           declinedReviews:
-            minute.declinedReviews.length > 0 ?
-            minute.declinedReviews.filter(
-              (userReview, index) => currentUserID !== userReview.fK_UID
-            ): [],
+            minute.declinedReviews.length > 0
+              ? minute.declinedReviews.filter(
+                  (userReview, index) => currentUserID !== userReview.fK_UID
+                )
+              : [],
         };
       }
       console.log(minute, "acceptMinuteacceptMinute minuteminute");
@@ -667,8 +670,6 @@ const ReviewMinutes = () => {
         setMinutesToReview(minutesToReview - 1);
       }
       dispatch(rejectCommentModal(false));
-
-   
     },
     [minuteDataToReject, minuteViewFlag]
   );
