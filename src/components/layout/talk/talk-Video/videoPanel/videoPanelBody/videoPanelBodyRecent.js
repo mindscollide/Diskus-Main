@@ -31,7 +31,6 @@ import {
   leaveCallModal,
   participantPopup,
 } from "../../../../../../store/actions/VideoFeature_actions";
-import MissedRedIcon from "../../../../../../assets/images/Missed-Red-Icon.png";
 import MissedCallIcon from "../../../../../../assets/images/Missedcall-Icon.png";
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
 import IncomingIcon from "../../../../../../assets/images/Incoming-Icon.png";

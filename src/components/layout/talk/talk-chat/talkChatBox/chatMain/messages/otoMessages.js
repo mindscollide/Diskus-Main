@@ -17,9 +17,7 @@ import {
 } from "../../../../../../../commen/functions/date_formater";
 import {
   DownloadChat,
-  pushMessageData,
   pushChatData,
-  fileUploadData,
 } from "../../../../../../../store/actions/Talk_action";
 import {
   saveFlag,
@@ -28,7 +26,6 @@ import {
 } from "../../../../../../../store/actions/Talk_Feature_actions";
 import ChatFooter from "../../chatFooter/chatFooter";
 import { filesUrlTalk } from "../../../../../../../commen/apis/Api_ends_points";
-import FileImageUpload from "./../file-image-upload/file_image_upload";
 import DropDownIcon from "../../../../../../../assets/images/dropdown-icon.png";
 import DocumentIcon from "../../../../../../../assets/images/Document-Icon.png";
 import DownloadIcon from "../../../../../../../assets/images/Download-Icon.png";

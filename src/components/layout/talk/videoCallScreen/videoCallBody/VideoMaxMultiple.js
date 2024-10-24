@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./VideoMaxMultiple.css";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../components/elements";
 import img10 from "../../../../../assets/images/10.png";
 import videoAvatar from "../../../../../assets/images/newElements/VideoAvatar.png";
@@ -10,8 +9,6 @@ import MultipleAvatar2 from "../../../../../assets/images/newElements/MultipleVi
 import MultipleAvatar3 from "../../../../../assets/images/newElements/MultipleVideoAvatar-3.png";
 
 const VideoMaxMultiple = ({ show, setShow, ModalTitle }) => {
-  const { VideoChatReducer } = useSelector((state) => state);
-  const [minutes, setMinutes] = useState("");
 
   const [droidCamAudio, setDroidCamAudio] = useState(false);
   const [realCamAudio, setRealCamAudio] = useState(false);
