@@ -4,7 +4,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { ChevronLeft, ChevronRight, X } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Loader } from "../../../../components/elements";
-import PayonnerLogo from "../../../../assets/images/payoneer-logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";

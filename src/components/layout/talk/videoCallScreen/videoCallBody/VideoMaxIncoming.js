@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../../../elements";
 import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
-import videoAvatar from "../../../../../assets/images/newElements/VideoAvatar.png";
 import videoAttendIcon from "../../../../../assets/images/newElements/VideoAttendIcon.png";
 import BusyIcon from "../../../../../assets/images/newElements/BusyIcon.png";
 import {

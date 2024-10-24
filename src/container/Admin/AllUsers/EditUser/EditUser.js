@@ -3,8 +3,8 @@ import styles from "./EditUser.module.css";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
-import { useTranslation } from "react-i18next";
 import EditIcon2 from "../../../../assets/images/Edit-Icon-blck.png";
+import { useTranslation } from "react-i18next";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 import {
   countryName,

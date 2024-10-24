@@ -13,12 +13,11 @@ import ActiveNote from '../../../../../assets/images/newElements/ActiveNoteIcon.
 import SecurityIconMessasgeBox from '../../../../../assets/images/SecurityIcon-MessasgeBox.png'
 import SearchIcon from '../../../../../assets/images/Search-Icon.png'
 import MinimizeIcon from '../../../../../assets/images/newElements/MinimizeIcon.png'
-
-// import VideoCallLargeHeader from "../videoCallHeader/videoCallLargeHeader";
 import ChatNonActive from '../../../../../assets/images/newElements/ChatIconNonActive.svg'
 import NoteNonActive from '../../../../../assets/images/newElements/NoteIconNonActive.svg'
 import ActiveNote2 from '../../../../../assets/images/newElements/ActiveNote2Icon.svg'
 import Note_2NonActive from '../../../../../assets/images/newElements/Note_2NonActive.svg'
+// import VideoCallLargeHeader from "../videoCallHeader/videoCallLargeHeader";
 import './VideoMaxChatMin.css'
 import {
   videoChatOpenFlag,

@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, Container } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { Row, Col } from 'react-bootstrap'
 import {
-  videoIncomingCallFlag,
-  videoOutgoingCallFlag,
-  videoMultipleCallFlag,
   normalizeVideoPanelFlag,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -13,17 +10,10 @@ import VideoMaxModal from '../../../videoCallScreen/videoCallBody/VideoMaxModal'
 import ActiveVideo from '../../../../../../assets/images/newElements/ActiveVideoIcon.svg'
 import ActiveMic from '../../../../../../assets/images/newElements/ActiveMicIcon.svg'
 import ActiveScreenShare from '../../../../../../assets/images/newElements/ActiveScreenShareIcon.svg'
-import ActiveHandRaise from '../../../../../../assets/images/newElements/ActiveHandRaiseIcon.svg'
-import ActiveBoard from '../../../../../../assets/images/newElements/ActiveBoardIcon.svg'
-import ActiveDots from '../../../../../../assets/images/newElements/ActiveDotsIcon.svg'
 import NonActiveVideo from '../../../../../../assets/images/newElements/NonActiveVideo.svg'
 import NonActiveMic from '../../../../../../assets/images/newElements/NonActiveMic.svg'
 import NonActiveScreenShare from '../../../../../../assets/images/newElements/NonActiveScreenShare.svg'
-import NonActiveHand from '../../../../../../assets/images/newElements/NonActiveHandRaise.svg'
-import NonActiveBoard from '../../../../../../assets/images/newElements/NonActiveWhiteBoard.svg'
 import NonActiveCall from '../../../../../../assets/images/newElements/NonActiveRedCall.svg'
-import NonActiveDots from '../../../../../../assets/images/newElements/NonActiveThreeDots.svg'
-import { Button } from '../../../../../elements'
 import './VideoLargePanelFooter.css'
 
 const VideoLargePanelFooter = () => {

@@ -11,7 +11,6 @@ import {
 } from "../../../../../../../commen/functions/date_formater";
 import { groupMessages } from "../../../functions/oneToOneMessage";
 import { filesUrlTalk } from "../../../../../../../commen/apis/Api_ends_points";
-import FileImageUpload from "./../file-image-upload/file_image_upload";
 import DropDownIcon from "../../../../../../../assets/images/dropdown-icon.png";
 import DocumentIcon from "../../../../../../../assets/images/Document-Icon.png";
 import DownloadIcon from "../../../../../../../assets/images/Download-Icon.png";
@@ -31,13 +30,7 @@ const GroupMessages = () => {
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
 
-  //Current Organization
-  let currentOrganizationId = localStorage.getItem("organizationID");
-
   const [searchChatWord, setSearchChatWord] = useState("");
-
-  //Loading State
-  const [isLoading, setIsLoading] = useState(true);
 
   //Enable Chat Feature Options
   const [chatFeatureActive, setChatFeatureActive] = useState(false);
