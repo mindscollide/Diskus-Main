@@ -755,7 +755,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           </Row>
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
-                              groupMembers.forEach((renderdata, index) => {
+                              groupMembers.map((renderdata, index) => {
                                 if (renderdata.role === 2) {
                                   return (
                                     <>
@@ -887,7 +887,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           </Row>
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
-                              groupMembers.forEach((data, index) => {
+                              groupMembers.map((data, index) => {
                                 if (data.role === 1) {
                                   return (
                                     <Col lg={6} md={6} sm={6}>
@@ -975,6 +975,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                       </section>
                                     </Col>
                                   );
+                                } else {
+                                  return null;
                                 }
                               })
                             ) : (
