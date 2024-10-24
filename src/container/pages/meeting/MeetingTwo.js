@@ -284,6 +284,7 @@ const NewMeeting = () => {
         Agenda: false,
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -296,6 +297,7 @@ const NewMeeting = () => {
         setLocalValue(gregorian_ar);
       }
     }
+    
   }, [currentLanguage]);
 
   const callApi = async () => {

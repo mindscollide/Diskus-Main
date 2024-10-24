@@ -52,7 +52,7 @@ const SceduleMeeting = ({
   setDataroomMapFolderId,
   dataroomMapFolderId,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(); 
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const getALlMeetingTypes = useSelector(
