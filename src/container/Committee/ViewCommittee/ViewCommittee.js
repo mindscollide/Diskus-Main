@@ -724,7 +724,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                         src={featherupload}
                         alt=""
                         width="18.87px"
-                        alt=""
                         height="18.87px"
                         draggable="false"
                       />
