@@ -92,14 +92,17 @@ const CreateTask = ({
   });
 
   useEffect(() => {
-    let Data = {
-      MeetingID: Number(currentMeeting),
+    const callApi = async () => {
+      let Data = {
+        MeetingID: Number(currentMeeting),
+      };
+      let getMeetingData = {
+        MeetingID: Number(currentMeeting),
+      };
+      dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+      dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
     };
-    let getMeetingData = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-    dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
+    callApi();
   }, []);
 
   useEffect(() => {
