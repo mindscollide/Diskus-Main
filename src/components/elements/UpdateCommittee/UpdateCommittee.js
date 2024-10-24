@@ -63,10 +63,8 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   let creatorID = JSON.parse(localStorage.getItem("userID"));
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [taskAssignedName, setTaskAssignedName] = useState("");
   const [participantRoleName, setParticipantRoleName] = useState("Regular");
   const { t } = useTranslation();
-  const [onclickFlag, setOnclickFlag] = useState(false);
   const [committeeData, setCommitteeData] = useState({
     committeeTitle: "",
     committeeDescription: "",
@@ -189,7 +187,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             }
           });
           if (meetingAttendeesList.length > 0) {
-            meetingAttendeesList.map((data, index) => {
+            meetingAttendeesList.forEach((data, index) => {
               if (data.pK_UID === taskAssignedTo) {
                 newGroupMembers.push({
                   data,
@@ -232,8 +230,8 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         committeeMemberRolesOptions.find(
           (data, index) => data.label === participantRoleName
         );
-      attendees.map((data, index) => {
-        membersData.map((data2, index) => {
+      attendees.forEach((data, index) => {
+        membersData.forEach((data2, index) => {
           if (data === data2.FK_UID) {
             check = true;
           }
@@ -246,14 +244,14 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       } else {
         if (participantOptionsWithID !== undefined) {
           let newDataForMembers = [];
-          attendees.map((dataID, index) => {
+          attendees.forEach((dataID, index) => {
             newDataForMembers.push({
               FK_UID: dataID, //userid
               FK_CMMRID: participantOptionsWithID.id, //group member role id
               FK_CMID: 0, //group id
             });
             setMembersData([...membersData, ...newDataForMembers]);
-            meetingAttendeesList.map((data, index) => {
+            meetingAttendeesList.forEach((data, index) => {
               if (data.pK_UID === dataID) {
                 newGroupMembers.push({
                   data,
@@ -293,7 +291,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     if (CommitteeReducer.getCommitteeMembersRoles !== null) {
       let committeeMembersRoleValues = [];
       let committeeMembersRoleOptions = [];
-      CommitteeReducer.getCommitteeMembersRoles.map((data, index) => {
+      CommitteeReducer.getCommitteeMembersRoles.forEach((data, index) => {
         committeeMembersRoleOptions.push({
           label: data.role,
           id: data.committeeRoleID,
@@ -310,7 +308,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     if (CommitteeReducer.getCommitteeTypes !== null) {
       let committeeTypeValues = [];
       let committeeTypeOptions = [];
-      CommitteeReducer.getCommitteeTypes.map((data, index) => {
+      CommitteeReducer.getCommitteeTypes.forEach((data, index) => {
         committeeTypeOptions.push({
           label: data.type,
           id: data.committeeTypeId,
@@ -326,7 +324,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     if (Object.keys(GroupMembers).length > 0) {
       let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2);
 
-      if (flag2 != undefined) {
+      if (flag2 !== undefined) {
         return true;
       } else {
         return false;
@@ -433,10 +431,10 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         let newData = [];
         let committeeID = 0;
         if (committeedetails.committeMembers.length > 0) {
-          committeedetails.committeMembers.map((memberData, index) => {
+          committeedetails.committeMembers.forEach((memberData, index) => {
             committeeID = memberData.committeeID;
             if (meetingAttendeesList.length > 0) {
-              meetingAttendeesList.map((data, index) => {
+              meetingAttendeesList.forEach((data, index) => {
                 if (data.pK_UID === memberData.pK_UID) {
                   newArr.push({
                     FK_UID: memberData.pK_UID,
@@ -926,6 +924,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1053,6 +1052,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1187,6 +1187,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1321,6 +1322,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1455,6 +1457,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
