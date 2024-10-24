@@ -176,7 +176,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
             FK_TID: data.fK_TID,
           });
         });
-        setTasksAttachments({ "TasksAttachments": tem });
+        setTasksAttachments({ TasksAttachments: tem });
       }
       let assgineeeComments = toDoListReducer.ToDoDetails.taskComments;
 
@@ -298,7 +298,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         CreationDateTime: "",
       });
       setTaskAssignedTo([]);
-      setTasksAttachments({ "TasksAttachments": [] });
+      setTasksAttachments({ TasksAttachments: [] });
       setTaskAssigneeComments([]);
       setAssgieeComments("");
       setDeleteCommentsId([]);
@@ -391,7 +391,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               <Col sm={12} md={12} lg={12}>
                 {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                   <>
-                    {TaskAssignedTo.map((assgineeData, index) => {
+                    {TaskAssignedTo.forEach((assgineeData, index) => {
                       if (
                         Number(
                           toDoListReducer.ToDoDetails.taskCreator.pK_UID

@@ -10,7 +10,6 @@ export const MeetingProvider = ({ children }) => {
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
   // Meeting Details State
-  const [currentMeeting, setCurrentMeetingID] = useState(0);
   const [cancelConfirmationModal, setCancelConfirmationModal] = useState(false);
   const [endMeetingConfirmationModal, setEndMeetingConfirmationModal] =
     useState(false);
@@ -48,7 +47,8 @@ export const MeetingProvider = ({ children }) => {
         setCancelConfirmationModal,
         endMeetingConfirmationModal,
         setEndMeetingConfirmationModal,
-      }}>
+      }}
+    >
       {children}
     </MeetingContext.Provider>
   );
