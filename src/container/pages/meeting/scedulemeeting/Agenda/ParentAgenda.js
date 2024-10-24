@@ -1,28 +1,26 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { useDispatch } from "react-redux";
 import {
-  getMeetingMaterialAPI,
+  // getMeetingMaterialAPI,
   showAdvancePermissionModal,
   showMainAgendaItemRemovedModal,
-  GetAllMeetingUserApiFunc,
+  // GetAllMeetingUserApiFunc,
   showVoteAgendaModal,
   UpateMeetingStatusLockApiFunc,
   GetAllUserAgendaRightsApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
-  convertDateTimetoGMTMeetingDetail,
+  // convertDateTimetoGMTMeetingDetail,
   resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import styles from "./Agenda.module.css";
 import Cast from "../../../../../assets/images/CAST.svg";
-import profile from "../../../../../assets/images/newprofile.png";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
@@ -32,7 +30,7 @@ import desh from "../../../../../assets/images/desh.svg";
 import {
   Button,
   TextField,
-  Notification,
+  // Notification,
 } from "../../../../../components/elements";
 import Documents from "./Documents";
 import Urls from "./Urls";
@@ -49,13 +47,13 @@ import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { async } from "q";
+// import { async } from "q";
 import {
   GetAgendaAndVotingInfo,
   GetCurrentAgendaDetails,
   GetAgendaVotingDetails,
-  GetAdvanceMeetingAgendabyMeetingID,
-  clearResponseMessage,
+  // GetAdvanceMeetingAgendabyMeetingID,
+  // clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 
@@ -68,7 +66,6 @@ const ParentAgenda = ({
   agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
-  currentMeeting,
   fileForSend,
   setFileForSend,
   setAllSavedPresenters,
@@ -77,7 +74,6 @@ const ParentAgenda = ({
   setAllUsersRC,
   editorRole,
   setSelectedID,
-  className,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -89,7 +85,6 @@ const ParentAgenda = ({
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
-  const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
   const [expandSubIndex, setExpandSubIndex] = useState(0);
   const [expandIndex, setExpandIndex] = useState(-1);
@@ -98,38 +93,11 @@ const ParentAgenda = ({
   const [subExpand, setSubExpand] = useState([]);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenters, setPresenters] = useState([]);
-  const [flag, setFlag] = useState(0);
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
+  console.log(setExpand, "expandexpandexpnad");
 
-  const options = [
-    {
-      value: "chocolate",
-      label: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
-              <img
-                draggable={false}
-                src={profile}
-                width="17px"
-                height="17px"
-                className={styles["Image_class_Agenda"]}
-                alt=""
-              />
-              <span className={styles["Name_Class"]}>Oliver Davis</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
   // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index) => {
     setExpandIndex((prevIndex) => (prevIndex === index ? -1 : index));
@@ -137,7 +105,7 @@ const ParentAgenda = ({
   //Add Function To Add SubAgendas
   const addSubAjendaRows = (rowAgendaIndex) => {
     const updatedRows = [...rows];
-    const nextSubAgendaID = updatedRows[0].subAgenda.length.toString();
+    // const nextSubAgendaID = updatedRows[0].subAgenda.length.toString();
     const newSubAgenda = {
       subAgendaID: getRandomUniqueNumber().toString() + "A",
       agendaVotingID: 0,
@@ -169,9 +137,9 @@ const ParentAgenda = ({
   const openAdvancePermissionModal = async (id, flag) => {
     if (editorRole.status !== 9 || editorRole.status !== "9") {
       setSelectedID(id);
-      let meetingMaterialData = {
-        MeetingID: currentMeetingIDLS,
-      };
+      // let meetingMaterialData = {
+      //   MeetingID: currentMeetingIDLS,
+      // };
       // await dispatch(
       //   getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
       // );
@@ -254,22 +222,22 @@ const ParentAgenda = ({
   };
 
   //Lock For Main Agenda Will Locks Its childs Also
-  const apllyLockOnParentAgenda = (parentIndex) => {
-    const exists = mainLock.some((item) => {
-      if (item === parentIndex) {
-        //Agenda Lock Api Applied
-        // let Data = {
-        //   AgendaID: "1223",
-        //   Islocked: true,
-        // };
-        // dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
-        return true;
-      }
-      return false;
-    });
+  // const apllyLockOnParentAgenda = (parentIndex) => {
+  //   const exists = mainLock.some((item) => {
+  //     if (item === parentIndex) {
+  //       //Agenda Lock Api Applied
+  //       // let Data = {
+  //       //   AgendaID: "1223",
+  //       //   Islocked: true,
+  //       // };
+  //       // dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
+  //       return true;
+  //     }
+  //     return false;
+  //   });
 
-    return exists;
-  };
+  //   return exists;
+  // };
 
   // StateManagement of Components
   const handleAgendaItemChange = (index, e) => {

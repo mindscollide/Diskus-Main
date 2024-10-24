@@ -1,13 +1,9 @@
 import React, { useContext, useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import {
-  TextField,
-  Notification,
-  Button,
-} from "../../../../../components/elements";
+import { TextField, Button } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
@@ -15,17 +11,14 @@ import { useTranslation } from "react-i18next";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import {
   showAgenItemsRemovedModal,
-  GetAllMeetingUserApiFunc,
   UpateMeetingStatusLockApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
-import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
-import { clearResponseMessage } from "../../../../../store/actions/MeetingAgenda_action";
+// import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
 import desh from "../../../../../assets/images/desh.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import { Radio } from "antd";
 import Key from "../../../../../assets/images/KEY.svg";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -34,7 +27,6 @@ import closedLocked from "../../../../../assets/images/CloseLocked.svg";
 import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import Lock from "../../../../../assets/images/LOCK.svg";
 import Cast from "../../../../../assets/images/CAST.svg";
-import { message, Upload } from "antd";
 import SubDocumnets from "./SubDocumnets";
 import SubUrls from "./SubUrls";
 import SubRequestContributor from "./SubRequestContributor";
@@ -53,9 +45,6 @@ const SubAgendaMappingDragging = ({
   expandSubIndex,
   subExpand,
   parentIslockedCheck,
-  subLockArry,
-  setSubLockArray,
-  agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
   setsubexpandIndex,
@@ -73,30 +62,29 @@ const SubAgendaMappingDragging = ({
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const { NewMeetingreducer } =
-    useSelector((state) => state);
-    const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
+  const { NewMeetingreducer } = useSelector((state) => state);
+  const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
-  const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails
-  );
+  // const getAllMeetingDetails = useSelector(
+  //   (state) => state.NewMeetingreducer.getAllMeetingDetails
+  // );
 
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenters, setPresenters] = useState([]);
   const dispatch = useDispatch();
-  const { Dragger } = Upload;
+  // const { Dragger } = Upload;
 
   const navigate = useNavigate();
-  function getCurrentUTCDate() {
-    const currentDate = new Date();
-    const year = currentDate.getUTCFullYear();
-    const month = String(currentDate.getUTCMonth() + 1).padStart(2, "0");
-    const day = String(currentDate.getUTCDate()).padStart(2, "0");
+  // function getCurrentUTCDate() {
+  //   const currentDate = new Date();
+  //   const year = currentDate.getUTCFullYear();
+  //   const month = String(currentDate.getUTCMonth() + 1).padStart(2, "0");
+  //   const day = String(currentDate.getUTCDate()).padStart(2, "0");
 
-    return `${year}${month}${day}`;
-  }
+  //   return `${year}${month}${day}`;
+  // }
 
   // Function to handle changes in sub-agenda title
   const handleSubAgendaTitleChange = (index, subIndex, e) => {
@@ -829,7 +817,10 @@ const SubAgendaMappingDragging = ({
                                               editorRole.role ===
                                                 "Agenda Contributor" ||
                                               editorRole.status === "9" ||
-                                              editorRole.status === 9 || (!isAgendaUpdateWhenMeetingActive && Number(editorRole.status) === 10) ? null : (
+                                              editorRole.status === 9 ||
+                                              (!isAgendaUpdateWhenMeetingActive &&
+                                                Number(editorRole.status) ===
+                                                  10) ? null : (
                                                 <img
                                                   alt=""
                                                   draggable={false}

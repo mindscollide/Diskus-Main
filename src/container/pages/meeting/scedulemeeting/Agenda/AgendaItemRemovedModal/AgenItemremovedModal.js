@@ -4,7 +4,7 @@ import { Modal, Button } from "../../../../../../components/elements";
 import { showAgenItemsRemovedModal } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 const AgenItemremovedModal = ({
   setRows,

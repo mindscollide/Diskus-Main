@@ -342,7 +342,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
         }
         try {
           let Option = [];
-          pollsDetailsData.pollOptions.map((data, index) => {
+          pollsDetailsData.pollOptions.forEach((data, index) => {
             let dataAdd = { name: index + 1, value: data.answer };
             Option.push(dataAdd);
           });

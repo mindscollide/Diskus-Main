@@ -97,11 +97,6 @@ const Participants = ({
     callApiOnComponentMount();
   }, []);
 
-  //open row icon cross modal
-  const openCrossIconModal = () => {
-    dispatch(showCrossConfirmationModal(true));
-  };
-
   //Opens Add more modal
   const openAddPartcipantModal = () => {
     setEditableSave(2);
@@ -111,7 +106,7 @@ const Participants = ({
   // handling save and next button
   const handleNextButton = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
-    console.log("end meeting chaek")
+    console.log("end meeting chaek");
     dispatch(
       UpdateOrganizersMeeting(
         false,
@@ -147,7 +142,7 @@ const Participants = ({
         NewMeetingreducer.getAllPartiicpantsRoles.participantRoles !== undefined
       ) {
         let Newdata = [];
-        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles.map(
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles.forEach(
           (data, index) => {
             Newdata.push({
               value: data.participantRoleID,
@@ -744,7 +739,125 @@ const Participants = ({
 
   return (
     <>
-        <>
+      <>
+        <Row className="mt-3">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end gap-2"
+          >
+            {((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isEditMeeting === true) ? null : isEditable || isEditClicked ? (
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Button
+                      text={t("Cancel")}
+                      className={styles["Cancel_Organization"]}
+                      onClick={handleCancelButtonForClearingParticipants}
+                    />
+
+                    <Button
+                      text={t("Save")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleSaveparticpants}
+                    />
+                  </Col>
+                </Row>
+              </>
+            ) : (
+              <>
+                <Button
+                  text={t("Edit")}
+                  className={styles["Edit_Button_Organizers"]}
+                  icon={
+                    <img
+                      draggable={false}
+                      src={EditIcon}
+                      width="11.75px"
+                      height="11.75px"
+                      alt=""
+                    />
+                  }
+                  onClick={handleEditFunction}
+                />
+
+                <Button
+                  text={t("Add-more")}
+                  icon={<img draggable={false} src={addmore} alt="" />}
+                  className={styles["AddMoreBtn"]}
+                  onClick={openAddPartcipantModal}
+                />
+              </>
+            )}
+          </Col>
+        </Row>
+        <section className={styles["height2"]}>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Table
+                column={ParticipantsColoumn}
+                scroll={{ y: rspvRows.length === 0 ? "55vh" : "42vh" }}
+                pagination={false}
+                locale={{
+                  emptyText: (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <img
+                            draggable={false}
+                            src={emptyContributorState}
+                            width="274.05px"
+                            className="cursor-pointer"
+                            alt=""
+                            height="230.96px"
+                            onClick={handleParticipantEmptyStateIntiate}
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <span className={styles["Empty_state_heading"]}>
+                            {t("No-Participant")}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <span className={styles["Empty_state_Subheading"]}>
+                            {t("There-are-no-agenda-contributors")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  ),
+                }}
+                className="Polling_table"
+                rows={rspvRows}
+              />
+            </Col>
+          </Row>
           <Row className="mt-3">
             <Col
               lg={12}
@@ -752,249 +865,130 @@ const Participants = ({
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              {((Number(editorRole.status) === 9 ||
-                Number(editorRole.status) === 8 ||
-                Number(editorRole.status) === 10) &&
-                editorRole.role === "Organizer" &&
-                isEditMeeting === true) ||
-              (editorRole.role === "Agenda Contributor" &&
-                isEditMeeting === true) ? null : isEditable || isEditClicked ? (
+              {isEditable ? (
                 <>
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                      <Button
-                        text={t("Cancel")}
-                        className={styles["Cancel_Organization"]}
-                        onClick={handleCancelButtonForClearingParticipants}
-                      />
-
-                      <Button
-                        text={t("Save")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleSaveparticpants}
-                      />
-                    </Col>
-                  </Row>
+                  <div className={styles["definedHeight"]}></div>
                 </>
               ) : (
                 <>
-                  <Button
-                    text={t("Edit")}
-                    className={styles["Edit_Button_Organizers"]}
-                    icon={
-                      <img
-                        draggable={false}
-                        src={EditIcon}
-                        width="11.75px"
-                        height="11.75px"
-                        alt=""
+                  {((Number(editorRole.status) === 9 ||
+                    Number(editorRole.status) === 8 ||
+                    Number(editorRole.status) === 10) &&
+                    editorRole.role === "Organizer" &&
+                    isEditMeeting === true) ||
+                  (editorRole.role === "Agenda Contributor" &&
+                    isEditMeeting === true) ? (
+                    <>
+                      <Button
+                        text={t("Cancel")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={handleCancelParticipants}
                       />
-                    }
-                    onClick={handleEditFunction}
-                  />
 
-                  <Button
-                    text={t("Add-more")}
-                    icon={<img draggable={false} src={addmore} alt="" />}
-                    className={styles["AddMoreBtn"]}
-                    onClick={openAddPartcipantModal}
-                  />
+                      <Button
+                        text={t("Next")}
+                        className={styles["publish_button_participant"]}
+                        onClick={nextTabOrganizer}
+                      />
+                    </>
+                  ) : Number(editorRole.status) === 1 ? (
+                    <>
+                      {" "}
+                      <Button
+                        text={t("Cancel")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={handleCancelParticipants}
+                      />
+                      <Button
+                        text={t("Next")}
+                        className={styles["publish_button_participant"]}
+                        onClick={nextTabOrganizer}
+                      />{" "}
+                    </>
+                  ) : isEditClicked ? null : (
+                    <>
+                      <Button
+                        text={t("Cancel")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={handleCancelParticipants}
+                      />
+
+                      <Button
+                        text={t("Next")}
+                        className={styles["publish_button_participant"]}
+                        onClick={nextTabOrganizer}
+                      />
+                    </>
+                  )}
+
+                  {Number(editorRole.status) === 11 ||
+                  Number(editorRole.status) === 12 ? (
+                    <Button
+                      disableBtn={
+                        Number(currentMeeting) === 0 ||
+                        isPublishedState === false
+                          ? true
+                          : false
+                      }
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  ) : isEditMeeting === true || isEditClicked ? null : (
+                    <Button
+                      disableBtn={
+                        Number(currentMeeting) === 0 ||
+                        isPublishedState === false
+                          ? true
+                          : false
+                      }
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  )}
                 </>
               )}
             </Col>
           </Row>
-          <section className={styles["height2"]}>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Table
-                  column={ParticipantsColoumn}
-                  scroll={{ y: rspvRows.length === 0 ? "55vh" : "42vh" }}
-                  pagination={false}
-                  locale={{
-                    emptyText: (
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <img
-                              draggable={false}
-                              src={emptyContributorState}
-                              width="274.05px"
-                              className="cursor-pointer"
-                              alt=""
-                              height="230.96px"
-                              onClick={handleParticipantEmptyStateIntiate}
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["Empty_state_heading"]}>
-                              {t("No-Participant")}
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["Empty_state_Subheading"]}>
-                              {t("There-are-no-agenda-contributors")}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    ),
-                  }}
-                  className="Polling_table"
-                  rows={rspvRows}
-                />
-              </Col>
-            </Row>
-            <Row className="mt-3">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
-                {isEditable ? (
-                  <>
-                    <div className={styles["definedHeight"]}></div>
-                  </>
-                ) : (
-                  <>
-                    {((Number(editorRole.status) === 9 ||
-                      Number(editorRole.status) === 8 ||
-                      Number(editorRole.status) === 10) &&
-                      editorRole.role === "Organizer" &&
-                      isEditMeeting === true) ||
-                    (editorRole.role === "Agenda Contributor" &&
-                      isEditMeeting === true) ? (
-                      <>
-                        <Button
-                          text={t("Cancel")}
-                          className={styles["Cancel_Organization"]}
-                          onClick={handleCancelParticipants}
-                        />
+        </section>
 
-                        <Button
-                          text={t("Next")}
-                          className={styles["publish_button_participant"]}
-                          onClick={nextTabOrganizer}
-                        />
-                      </>
-                    ) : Number(editorRole.status) === 1 ? (
-                      <>
-                        {" "}
-                        <Button
-                          text={t("Cancel")}
-                          className={styles["Cancel_Organization"]}
-                          onClick={handleCancelParticipants}
-                        />
-                        <Button
-                          text={t("Next")}
-                          className={styles["publish_button_participant"]}
-                          onClick={nextTabOrganizer}
-                        />{" "}
-                      </>
-                    ) : isEditClicked ? null : (
-                      <>
-
-                        <Button
-                          text={t("Cancel")}
-                          className={styles["Cancel_Organization"]}
-                          onClick={handleCancelParticipants}
-                        />
-
-                        <Button
-                          text={t("Next")}
-                          className={styles["publish_button_participant"]}
-                          onClick={nextTabOrganizer}
-                        />
-                      </>
-                    )}
-
-                    {Number(editorRole.status) === 11 ||
-                    Number(editorRole.status) === 12 ? (
-                      <Button
-                        disableBtn={
-                          Number(currentMeeting) === 0 ||
-                          isPublishedState === false
-                            ? true
-                            : false
-                        }
-                        text={t("Publish")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleNextButton}
-                      />
-                    ) : isEditMeeting === true || isEditClicked ? null : (
-                      <Button
-                        disableBtn={
-                          Number(currentMeeting) === 0 ||
-                          isPublishedState === false
-                            ? true
-                            : false
-                        }
-                        text={t("Publish")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleNextButton}
-                      />
-                    )}
-                  </>
-                )}
-              </Col>
-            </Row>
-          </section>
-
-          {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
-          {NewMeetingreducer.participantModal && (
-            <AddParticipantModal
-              setrspvRows={setrspvRows}
-              rspvRows={rspvRows}
-              currentMeeting={currentMeeting}
-            />
-          )}
-          {NewMeetingreducer.cancelPartipants && (
-            <CancelParticipants
-              setSceduleMeeting={setSceduleMeeting}
-              setrspvRows={setrspvRows}
-            />
-          )}
-          {NewMeetingreducer.nextConfirmModal && (
-            <NextModal
-              setAgenda={setAgenda}
-              setParticipants={setParticipants}
-              flag={flag}
-            />
-          )}
-
-          {NewMeetingreducer.ShowPreviousModal && (
-            <PreviousModal
-              setAgendaContributors={setAgendaContributors}
-              setParticipants={setParticipants}
-              prevFlag={prevFlag}
-            />
-          )}
-          <Notification
-            open={open.open}
-            message={open.message}
-            setOpen={(status) => setOpen({ ...open, open: status.open })}
-            severity={open.severity}
+        {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
+        {NewMeetingreducer.participantModal && (
+          <AddParticipantModal
+            setrspvRows={setrspvRows}
+            rspvRows={rspvRows}
+            currentMeeting={currentMeeting}
           />
-        </>
+        )}
+        {NewMeetingreducer.cancelPartipants && (
+          <CancelParticipants
+            setSceduleMeeting={setSceduleMeeting}
+            setrspvRows={setrspvRows}
+          />
+        )}
+        {NewMeetingreducer.nextConfirmModal && (
+          <NextModal
+            setAgenda={setAgenda}
+            setParticipants={setParticipants}
+            flag={flag}
+          />
+        )}
+
+        {NewMeetingreducer.ShowPreviousModal && (
+          <PreviousModal
+            setAgendaContributors={setAgendaContributors}
+            setParticipants={setParticipants}
+            prevFlag={prevFlag}
+          />
+        )}
+        <Notification
+          open={open.open}
+          message={open.message}
+          setOpen={(status) => setOpen({ ...open, open: status.open })}
+          severity={open.severity}
+        />
+      </>
       {/* )} */}
     </>
   );
