@@ -10,7 +10,6 @@ import {
   newTimeFormaterAsPerUTCTalkDate,
 } from "../../../../../../../commen/functions/date_formater";
 import { filesUrlTalk } from "../../../../../../../commen/apis/Api_ends_points";
-import FileImageUpload from "./../file-image-upload/file_image_upload";
 import DropDownIcon from "../../../../../../../assets/images/dropdown-icon.png";
 import DocumentIcon from "../../../../../../../assets/images/Document-Icon.png";
 import DownloadIcon from "../../../../../../../assets/images/Download-Icon.png";
@@ -19,7 +18,6 @@ import DoubleTickIcon from "../../../../../../../assets/images/DoubleTick-Icon.p
 import DoubleTickDeliveredIcon from "../../../../../../../assets/images/DoubleTickDelivered-Icon.png";
 import SingleTickIcon from "../../../../../../../assets/images/SingleTick-Icon.png";
 import TimerIcon from "../../../../../../../assets/images/Timer-Icon.png";
-import DropDownChatIcon from "../../../../../../../assets/images/dropdown-icon-chatmessage.png";
 
 const BroadCastMessages = () => {
   //Chat Message Feature

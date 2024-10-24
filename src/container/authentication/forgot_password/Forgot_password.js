@@ -11,7 +11,6 @@ import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg"
 import styles from "./ForgotPassword.module.css";
 import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
-import Cookies from "js-cookie";
 import { validateEmail } from "../../../commen/functions/validations";
 import {
   changePasswordRequest,

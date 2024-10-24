@@ -1,10 +1,9 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
-import { Button, Loader, Modal, Notification } from "../../components/elements";
+import { Button, Modal, Notification } from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
 import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
-import { Pagination } from "antd";
 import { useTranslation } from "react-i18next";
 import CreateGroup from "../../components/elements/CreateGroup/CreateGroup";
 import UpdateGroupPage from "../../components/elements/updateGroupPage/UpdateGroupPage";
@@ -18,7 +17,6 @@ import {
   clearMessagesGroup,
   getbyGroupID,
   getGroups,
-  groupLoader,
   realtimeGroupStatusResponse,
   updateGroupStatus,
   createGroupPageFlag,
