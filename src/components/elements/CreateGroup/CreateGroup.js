@@ -147,7 +147,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       GroupsReducer.getOrganizationGroupRoles.length > 0
     ) {
       let newArr = [];
-      GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
+      GroupsReducer.getOrganizationGroupRoles.forEach((data, index) => {
         newArr.push({
           label: data.role,
           id: data.groupRoleID,
@@ -161,7 +161,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     if (GroupsReducer.getOrganizationGroupTypes !== null) {
       let newArr = [];
       let newArrGroupType = [];
-      GroupsReducer.getOrganizationGroupTypes.map((data, index) => {
+      GroupsReducer.getOrganizationGroupTypes.forEach((data, index) => {
         newArr.push({
           label: data.type,
           id: data.groupTypeID,
@@ -622,7 +622,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <Form.Control
                             applyClass="form-control2"
                             ref={GroupeTitle}
-                            // className="Focuson"
                             type="text"
                             maxLength={300}
                             placeholder={t("Group-title")}
@@ -822,8 +821,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                       ]
                                                     }
                                                   >
-                                                    <a>
-                                                      {" "}
+                                                    {" "}
+                                                    <a
+                                                      href={`mailto:${renderdata.data.emailAddress}`}
+                                                    >
                                                       {
                                                         renderdata.data
                                                           .emailAddress
@@ -858,6 +859,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                       </Col>
                                     </>
                                   );
+                                } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -972,6 +975,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                       </section>
                                     </Col>
                                   );
+                                } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1202,76 +1207,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                           handleRemoveFile(index);
                                         }}
                                       />
-                                      {/* <span
-                                            className={
-                                              styles["Crossicon_Class"]
-                                            }
-                                          >
-                                            <img
-                                              src={CrossIcon}
-                                              height="12.68px"
-                                              alt=""
-                                              width="12.68px"
-                                              onClick={() =>
-                                                handleRemoveFile(index)
-                                              }
-                                            />
-                                          </span>
-                                          <section
-                                            className={styles["Outer_Box"]}
-                                          >
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <img
-                                                  src={file_image}
-                                                  width={"100%"}
-                                                  alt=""
-                                                  draggable="false"
-                                                />
-                                              </Col>
-                                            </Row>
-
-                                            <section
-                                              className={
-                                                styles["backGround_name_Icon"]
-                                              }
-                                            >
-                                              <Row className="mb-2">
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className={
-                                                    styles["IconTextClass"]
-                                                  }
-                                                >
-                                                  <img
-                                                    src={getIconSource(
-                                                      getFileExtension(
-                                                        data.DisplayAttachmentName
-                                                      )
-                                                    )}
-                                                    height="10px"
-                                                    width="10px"
-                                                    alt=""
-                                                    className={
-                                                      styles["IconPDF"]
-                                                    }
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["FileName"]
-                                                    }
-                                                    title={
-                                                      data.DisplayAttachmentName
-                                                    }
-                                                  >
-                                                    {data.DisplayAttachmentName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </section>
-                                          </section> */}
                                     </Col>
                                   </>
                                 );
@@ -1296,6 +1231,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                   src={featherupload}
                                   width="18.87px"
                                   height="18.87px"
+                                  alt=""
                                   draggable="false"
                                 />
                               </span>

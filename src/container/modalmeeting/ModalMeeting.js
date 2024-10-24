@@ -332,7 +332,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const ReminderNameHandler = (e, value) => {
     setReminderValue(value);
     let valueOfReminder = assignees.RemindersData;
-    valueOfReminder.map((data) => {
+    valueOfReminder.forEach((data) => {
       if (value === data.description) {
         let id = data.pK_MRID;
         setCreateMeeting({
@@ -669,7 +669,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     setObjMeetingAgenda(datarecord.ObjMeetingAgenda);
     let filesData = [];
     if (datarecord.MeetingAgendaAttachments.length > 0) {
-      datarecord.MeetingAgendaAttachments.map((uploadedFile) => {
+      datarecord.MeetingAgendaAttachments.forEach((uploadedFile) => {
         filesData.push({
           PK_MAAID: 0,
           DisplayAttachmentName: uploadedFile.DisplayAttachmentName,
@@ -958,7 +958,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           return data.description;
         })
       );
-      valueOfReminder.map((data, index) => {
+      valueOfReminder.forEach((data, index) => {
         if (createMeeting.MeetingReminderID === data.pK_MRID) {
           setReminderValue(data.description);
           setCreateMeeting({
@@ -1389,9 +1389,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
     }
   };
-
-  console.log(createMeeting.IsVideoCall, "IsVideoCallIsVideoCall");
-  console.log(addedParticipantNameList, "IsVideoCallIsVideoCall");
 
   // for attendies handler
   const handleSubmit = async () => {
@@ -1919,9 +1916,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       <Button
                         style={{ display: "none" }}
                         onClick={addAnOtherAgenda}
-                        className={
-                          "modal-update-addagenda" + " " + currentLanguage
-                        }
+                        className={`modal-update-addagenda ${currentLanguage}`}
                         text={
                           editRecordFlag
                             ? t("Update-agenda")
@@ -1956,7 +1951,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                             <div className="margin-top-20">
                               <Accordian
                                 AccordioonHeader={data.ObjMeetingAgenda.Title}
-                                className={"Setting" + " " + currentLanguage}
+                                className={`Setting ${currentLanguage}`}
                                 AccordioonBody={
                                   <>
                                     <Row>
@@ -2147,6 +2142,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                       UserProfilePic={atList.displayProfilePic}
                                     />
                                   );
+                                } else {
+                                  return null;
                                 }
                               })}
                             </span>
@@ -2183,6 +2180,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                       />
                                     </>
                                   );
+                                } else {
+                                  return null;
                                 }
                               })}
                             </span>

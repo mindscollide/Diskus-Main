@@ -1,10 +1,9 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
-import { Button, Loader, Modal, Notification } from "../../components/elements";
+import { Button, Modal, Notification } from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
 import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
-import { Pagination } from "antd";
 import { useTranslation } from "react-i18next";
 import CreateGroup from "../../components/elements/CreateGroup/CreateGroup";
 import UpdateGroupPage from "../../components/elements/updateGroupPage/UpdateGroupPage";
@@ -18,7 +17,6 @@ import {
   clearMessagesGroup,
   getbyGroupID,
   getGroups,
-  groupLoader,
   realtimeGroupStatusResponse,
   updateGroupStatus,
   createGroupPageFlag,
@@ -49,9 +47,7 @@ import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const Groups = () => {
   const { t } = useTranslation();
-  const { GroupsReducer, talkStateData, talkFeatureStates } = useSelector(
-    (state) => state
-  );
+  const { GroupsReducer, talkStateData } = useSelector((state) => state);
   const [modalStatusChange, setModalStatusChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
@@ -319,10 +315,6 @@ const Groups = () => {
     } else {
       showMessage(t("No-talk-group-created"), "error", setOpen);
     }
-  };
-
-  const activegroupmodal = () => {
-    setShowActivegroup(true);
   };
 
   const handleDocumentsClickTab = (data) => {
