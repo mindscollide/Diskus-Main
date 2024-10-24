@@ -1288,6 +1288,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for add Attendees handler
   const addAttendees = () => {
+    console.log("I am clicked");
     let user1 = createMeeting.MeetingAttendees;
     let List = addedParticipantNameList;
     let found = user1.find((element) => element.User.PK_UID === taskAssignedTo);
@@ -2142,8 +2143,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                       UserProfilePic={atList.displayProfilePic}
                                     />
                                   );
-                                } else {
-                                  return null;
                                 }
                               })}
                             </span>
@@ -2164,6 +2163,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           <>
                             <span>
                               {addedParticipantNameList.map((atList, index) => {
+                                console.log(atList, "atListatList");
                                 if (atList.role === 2) {
                                   return (
                                     <>
@@ -2180,8 +2180,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                       />
                                     </>
                                   );
-                                } else {
-                                  return null;
                                 }
                               })}
                             </span>

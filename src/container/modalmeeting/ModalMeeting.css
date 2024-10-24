@@ -554,8 +554,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 body[dir="rtl"] .modal-createMeeting-addagendaBtn {
   background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
-  width: 132px !important;
-  height: 46px !important;
+  padding: 12px 30px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 600 !important;
