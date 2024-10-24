@@ -13,7 +13,6 @@ import {
   activeChat,
 } from "../../../../../store/actions/Talk_action";
 import { ResultMessage, TextField } from "../../../../elements";
-import { Spin } from "antd";
 import SingleIcon from "../../../../../assets/images/Single-Icon.png";
 import DoubleTickIcon from "../../../../../assets/images/DoubleTick-Icon.png";
 import DoubleTickDeliveredIcon from "../../../../../assets/images/DoubleTickDelivered-Icon.png";

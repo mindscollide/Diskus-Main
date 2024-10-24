@@ -34,7 +34,6 @@ import {
   DeleteShout,
   UpdateShoutAll,
   OtoMessageRetryFlag,
-  InsertBulkMessages,
   DownloadChat,
 } from "../../../../store/actions/Talk_action";
 import {
@@ -51,14 +50,11 @@ import {
 } from "../../../../commen/functions/date_formater";
 import {
   TextField,
-  ChatModal,
   InputDatePicker,
   Button,
   NotificationBar,
-  UploadProgressBar,
 } from "../../../elements";
 // import Highlighter from 'react-highlight-words'
-import CustomUploadChat from "../../../elements/chat_upload/Chat-Upload";
 import Keywords from "react-keywords";
 import { Spin } from "antd";
 import SearchIcon from "../../../../assets/images/Search-Icon.png";
@@ -103,12 +99,9 @@ import {
   markStarUnstarFunction,
   groupUpdationFunction,
 } from "./oneToOneMessage";
-import { sendChatFunction } from "./sendChat";
 import { useNavigate } from "react-router-dom";
 import { filesUrlTalk } from "../../../../commen/apis/Api_ends_points";
 import PrintPage from "./printScript";
-import talkHeader from "./talkMain/talkHeader";
-import MainWindow from "./talkMain/mainChatWindow";
 
 const TalkChat = () => {
   //Use Navigate
@@ -136,16 +129,8 @@ const TalkChat = () => {
   const { talkStateData } = useSelector((state) => state);
 
   //Current Date Time in variable
-  // var currentDateTime = moment().format('YYYYMMDDHHmmss')
-  // var currentDateYesterday = moment().subtract(1, 'days').format('YYYYMMDD')
   var currentDateToday = moment().format("YYYYMMDD");
 
-  var minimumDate = moment.min().format("YYYYMMDD");
-  var maximumDate = moment.max().format("YYYYMMDD");
-
-  // var currentTime = moment().format('HHmmss')
-
-  const date = new Date();
 
   //CURRENT DATE TIME UTC
   let currentDateTime = new Date();
@@ -155,7 +140,6 @@ const TalkChat = () => {
   );
 
   let currentUtcDate = currentDateTimeUtc.slice(0, 8);
-  let currentUtcTime = currentDateTimeUtc.slice(8, 15);
 
   //YESTERDAY'S DATE
   let yesterdayDate = new Date();
