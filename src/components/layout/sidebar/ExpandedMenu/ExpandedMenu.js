@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "./ExpandedMenu.css";
-import { Row, Col, Nav, Container, Navbar, NavDropdown } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Tooltip from "../../../elements/tooltip/Tooltip";
 import { useTranslation } from "react-i18next";
-import { getDocumentsAndFolderApi } from "../../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
-import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import DataroomImage from "../../../../assets/images/sidebar_icons/Dataroom.png";
 import GroupImage from "../../../../assets/images/sidebar_icons/Group.png";
 import CommitteeImage from "../../../../assets/images/sidebar_icons/Committee.png";

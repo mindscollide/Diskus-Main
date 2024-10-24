@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Logo from "../../../assets/images/newElements/Diskus_newLogo.svg";
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Loader.module.css";
 import { useTranslation } from "react-i18next";

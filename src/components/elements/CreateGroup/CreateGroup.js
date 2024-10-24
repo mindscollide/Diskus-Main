@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import featherupload from "../../../assets/images/featherupload.svg";
-import Leftploygon from "../../../assets/images/Polygon 3.svg";
-import file_image from "../../../assets/images/file_image.svg";
-import pdfIcon from "../../../assets/images/pdf_icon.svg";
-import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import Rightploygon from "../../../assets/images/Polygon right.svg";
 import { Paper } from "@mui/material";
-import userImage from "../../../assets/images/user.png";
 import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg";
 import {
   TextField,
@@ -35,10 +29,6 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../container/DataRoom/SearchFunctionality/option";
 import { maxFileSize } from "../../../commen/functions/utils";
 import { showMessage } from "../snack_bar/utill";
 
@@ -62,7 +52,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const [fileSize, setFileSize] = useState(0);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
-  const [taskAssignedName, setTaskAssignedName] = useState("");
   const [erorbar, setErrorBar] = useState(false);
   const [fileForSend, setFileForSend] = useState([]);
   const [attendees, setAttendees] = useState([]);
@@ -79,11 +68,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const GroupeTitle = useRef(null);
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
-  const [folderID, setFolderID] = useState(0);
   const [participantRoleName, setParticipantRoleName] = useState(t("Regular"));
   const participantOptions = [t("Head"), t("Regular")];
   const [groupTypeOptions, setGroupTypeOptions] = useState([]);
-  const [participantRoles, setParticipantRoles] = useState([]);
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
   const [meetingAttendees, setMeetingAttendees] = useState([]);
@@ -166,8 +153,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
           id: data.groupRoleID,
         });
       });
-
-      setParticipantRoles([...newArr]);
     }
   }, [GroupsReducer.getOrganizationGroupRoles]);
 
@@ -584,7 +569,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   useEffect(() => {
     if (GroupsReducer.FolderID !== 0) {
-      setFolderID(GroupsReducer.FolderID);
       let folderIDCreated = GroupsReducer.FolderID;
       GroupsDocumentCallUpload(folderIDCreated);
     }
