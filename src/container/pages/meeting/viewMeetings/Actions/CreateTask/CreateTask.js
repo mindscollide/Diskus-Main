@@ -116,7 +116,7 @@ const CreateTask = ({
         let newmembersArray = [];
         if (Object.keys(createMeetingTaskData).length > 0) {
           if (createMeetingTaskData.meetingOrganizers.length > 0) {
-            createMeetingTaskData.meetingOrganizers.map(
+            createMeetingTaskData.meetingOrganizers.forEach(
               (MorganizerData, MorganizerIndex) => {
                 let MeetingOrganizerData = {
                   value: MorganizerData.userID,
@@ -191,7 +191,7 @@ const CreateTask = ({
             );
           }
           if (createMeetingTaskData.meetingAgendaContributors.length > 0) {
-            createMeetingTaskData.meetingAgendaContributors.map(
+            createMeetingTaskData.meetingAgendaContributors.forEach(
               (meetAgendaContributor, meetAgendaContributorIndex) => {
                 let MeetingAgendaContributorData = {
                   value: meetAgendaContributor.userID,
@@ -268,7 +268,7 @@ const CreateTask = ({
             );
           }
           if (createMeetingTaskData.meetingParticipants.length > 0) {
-            createMeetingTaskData.meetingParticipants.map(
+            createMeetingTaskData.meetingParticipants.forEach(
               (meetParticipants, meetParticipantsIndex) => {
                 let MeetingParticipantsData = {
                   value: meetParticipants.userID,

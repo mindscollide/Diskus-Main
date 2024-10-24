@@ -1,9 +1,18 @@
 {
-  "MeetingID": 3920,
-  "SendResponsebyDate": "20241018",
-  "ProposedDates": [
-    { "ProposedDate": "20241018", "StartTime": "090000", "EndTime": "100000" },
-    { "ProposedDate": "20241019", "StartTime": "090000", "EndTime": "100000" },
-    { "ProposedDate": "20241020", "StartTime": "110000", "EndTime": "130000" }
+  "GroupDetails": {
+    "CreatorID": 1351,
+    "PK_GRID": 560,
+    "title": "warning removed  updated ",
+    "Description": "testing the removing warning  updated ",
+    "FK_GRTID": 3,
+    "FK_GRSID": 1,
+    "IsTalk": true,
+    "OrganizationID": 561
+  },
+  "GroupMembers": [
+    { "FK_UID": 1352, "FK_GRMRID": 1, "FK_GRID": 560 },
+    { "FK_UID": 1379, "FK_GRMRID": 1, "FK_GRID": 560 },
+    { "FK_UID": 1380, "FK_GRMRID": 2, "FK_GRID": 560 },
+    { "FK_UID": 1381, "FK_GRMRID": 2, "FK_GRID": 560 }
   ]
 }

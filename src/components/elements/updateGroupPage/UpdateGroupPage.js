@@ -3,7 +3,6 @@ import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import featherupload from "../../../assets/images/featherupload.svg";
 import { Paper } from "@mui/material";
-
 import {
   TextField,
   Button,
@@ -52,7 +51,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const [fileSize, setFileSize] = useState(0);
   const [folderID, setFolderID] = useState(0);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [taskAssignedName, setTaskAssignedName] = useState("");
   const [attendees, setAttendees] = useState([]);
   const [GroupDetails, setGroupDetails] = useState({
     Title: "",
@@ -64,7 +62,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     GroupStatusID: 0,
   });
 
-  const [onclickFlag, setOnclickFlag] = useState(false);
   const [membersData, setMembersData] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
@@ -131,7 +128,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       } else {
         if (foundIndex === -1) {
           let roleID;
-          participantRoles.map((data, index) => {
+          participantRoles.forEach((data, index) => {
             if (data.label === participantRoleName) {
               roleID = data.id;
               newMeetingAttendees.push({
@@ -147,7 +144,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             });
           });
           if (meetingAttendeesList.length > 0) {
-            meetingAttendeesList.map((data, index) => {
+            meetingAttendeesList.forEach((data, index) => {
               if (data.pK_UID === taskAssignedTo) {
                 newGroupMembers.push({
                   data,
@@ -181,8 +178,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         participantOptionsWithIDs.find(
           (data, index) => data.label === participantRoleName
         );
-      attendees.map((data) => {
-        membersData.map((data2) => {
+      attendees.forEach((data) => {
+        membersData.forEach((data2) => {
           if (data === data2.FK_UID) {
             check = true;
           }
@@ -246,15 +243,18 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   };
 
   const groupTypeChangeHandler = (e, value) => {
+    console.log(value, "valuevalue");
     setGroupTypeValue(value);
     let findID = organizationGroupType.find(
       (data, index) => data.label === value
     );
     setGroupDetails({
       ...GroupDetails,
-      GroupStatusID: findID.id,
+      GroupTypeID: findID.id,
     });
   };
+
+  console.log(GroupDetails.GroupStatusID, "valuevalue");
 
   // for api reponce of list of all assignees
   useEffect(() => {
@@ -301,7 +301,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupsReducer.getOrganizationGroupRoles.length > 0
     ) {
       let newArr = [];
-      GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
+      GroupsReducer.getOrganizationGroupRoles.forEach((data, index) => {
         newArr.push({
           label: data.role,
           id: data.groupRoleID,
@@ -316,7 +316,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     if (GroupsReducer.getOrganizationGroupTypes !== null) {
       let newArr = [];
       let newArrGroupType = [];
-      GroupsReducer.getOrganizationGroupTypes.map((data, index) => {
+      GroupsReducer.getOrganizationGroupTypes.forEach((data, index) => {
         newArr.push({
           label: data.type,
           id: data.groupTypeID,
@@ -411,6 +411,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             },
             GroupMembers: membersData,
           };
+          console.log(Data, "valuevalue");
           dispatch(updateGroup(navigate, Data, t, setUpdateComponentpage));
         }
       }
@@ -440,14 +441,14 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       let newArr = [];
       let newData = [];
       if (groupDetails.groupMembers.length > 0) {
-        groupDetails.groupMembers.map((memberData, index) => {
+        groupDetails.groupMembers.forEach((memberData, index) => {
           newArr.push({
             FK_UID: memberData.pK_UID,
             FK_GRMRID: memberData.groupRole.groupRoleID,
             FK_GRID: memberData.groupID,
           });
           if (meetingAttendeesList.length > 0) {
-            meetingAttendeesList.map((data, index) => {
+            meetingAttendeesList.forEach((data, index) => {
               if (data.pK_UID === memberData.pK_UID) {
                 return newData.push({
                   data,
@@ -538,15 +539,36 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   // Initialize previousFileList to an empty array
   let previousFileList = [];
 
-  const handleRemoveFile = (index) => {
-    const updatedFies = [...fileAttachments];
-    updatedFies.splice(index, 1);
-    setFileAttachments(updatedFies);
+  const handleRemoveFile = (data) => {
+    console.log(data, "indexindexindex");
+    setFileAttachments((filesData) => {
+      return filesData.filter(
+        (fileData, index) =>
+          fileData.DisplayAttachmentName !== data.DisplayAttachmentName
+      );
+    });
+    setPreviousFileIDs((prevFilesData) => {
+      return prevFilesData.filter(
+        (prevdata, index) =>
+          prevdata.DisplayAttachmentName !== data.DisplayAttachmentName
+      );
+    });
+    if (Object.values(fileForSend).length > 0) {
+      setFileForSend((filesData) => {
+        return filesData.filter(
+          (fileData, index) => fileData.name !== data.DisplayAttachmentName
+        );
+      });
+    }
+    console.log(fileForSend, "fileForSendfileForSend");
+    // updatedFies.splice(index, 1);
+    // setFileAttachments(updatedFies);
 
-    const updateFileForSend = [...fileForSend];
-    updateFileForSend.splice(index, 1);
-    setFileForSend(updateFileForSend);
+    // const updateFileForSend = [...fileForSend];
+    // updateFileForSend.splice(index, 1);
+    // setFileForSend(updateFileForSend);
   };
+  console.log(fileForSend, fileAttachments, "fileForSendfileForSend");
 
   useEffect(() => {
     if (
@@ -557,7 +579,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         setFolderID(GroupsReducer.groupDocuments.folderID);
         let retirveArray = [];
         let PrevIds = [];
-        GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
+        GroupsReducer.groupDocuments.data.forEach((docsData, docsDataindex) => {
           retirveArray.push({
             pK_FileID: docsData.pK_FileID,
             DisplayAttachmentName: docsData.displayFileName,
@@ -899,6 +921,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                       </section>
                                     </Col>
                                   );
+                                } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1023,6 +1047,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                       </section>
                                     </Col>
                                   );
+                                } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1192,7 +1218,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                 className="mt-2 "
                                               >
                                                 <Checkbox
-                                                  // checked={false}
                                                   checked={
                                                     attendees.includes(
                                                       attendeelist.pK_UID

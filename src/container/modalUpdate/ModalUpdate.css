@@ -241,8 +241,7 @@ body[dir="rtl"] .modal-update-meeting {
 body[dir="rtl"] .modal-update-addagenda {
   background: #6172d6 !important;
   border: none !important;
-  width: 140px !important;
-  height: 46px !important;
+  padding: 12px 30px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 500 !important;

@@ -97,7 +97,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
-        if (options[lastIndex].value != "") {
+        if (options[lastIndex].value !== "") {
           const randomNumber = Math.floor(Math.random() * 100) + 1;
           let newOptions = { name: randomNumber, value: "" };
           setOptions([...options, newOptions]);
@@ -215,7 +215,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
     try {
       if (Object.keys(selectedsearch).length > 0) {
         try {
-          selectedsearch.map((seledtedData, index) => {
+          selectedsearch.forEach((seledtedData, index) => {
             if (seledtedData.type === 1) {
               let check1 = getUserDetails.find(
                 (data) => data.pK_UID === seledtedData.value
@@ -225,7 +225,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                 newarr.push(check1);
 
                 if (newarr.length > 0) {
-                  newarr.map((morganizer) => {
+                  newarr.forEach((morganizer) => {
                     let check2 = newarr.find(
                       (data) => data.UserID === morganizer.pK_UID
                     );
@@ -265,17 +265,17 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
     let users = [];
     let optionsListData = [];
     if (
-      pollsData.date != "" &&
-      pollsData.Title != "" &&
+      pollsData.date !== "" &&
+      pollsData.Title !== "" &&
       Object.keys(members).length > 0 &&
       Object.keys(options).length >= 2 &&
       allValuesNotEmpty
     ) {
-      members.map((userdata, index) => {
+      members.forEach((userdata, index) => {
         users.push(userdata.userID);
       });
-      options.map((optionData, index) => {
-        if (optionData.value != "") {
+      options.forEach((optionData, index) => {
+        if (optionData.value !== "") {
           optionsListData.push(optionData.value);
         }
       });

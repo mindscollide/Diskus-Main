@@ -169,7 +169,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       setCreateMeeting({
         ...createMeeting,
         [name]: RemoveTimeDashes(value),
-        "MeetingEndTime": RemoveTimeDashes(value),
+        MeetingEndTime: RemoveTimeDashes(value),
       });
     } else if (name === "MeetingDate") {
       setCreateMeeting({
@@ -214,9 +214,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           assignees.ViewMeetingDetails.meetingDetails.pK_MDID
         );
         let StatusCheck = assignees.ViewMeetingDetails.meetingStatus.pK_MSID;
-        let Data2 = {
-          VideoCallURL: currentMeetingVideoURL,
-        };
+
         if (check) {
         }
         setIsVideo(check);
@@ -323,9 +321,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               setAddedParticipantNameList(List);
             }
           }
-          if (viewData.externalMeetingAttendees != undefined) {
+          if (viewData.externalMeetingAttendees !== undefined) {
             if (viewData.externalMeetingAttendees.length > 0) {
-              viewData.externalMeetingAttendees.map(
+              viewData.externalMeetingAttendees.forEach(
                 (externalMeetingAttendeesMeetingdata, index) => {
                   List.push({
                     name: externalMeetingAttendeesMeetingdata.emailAddress,
@@ -342,7 +340,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         } catch (error) {}
 
         try {
-          viewData.meetingAgendas.map((atchmenData, index) => {
+          viewData.meetingAgendas.forEach((atchmenData, index) => {
             let opData = {
               Title: atchmenData.objMeetingAgenda.title,
               PresenterName: atchmenData.objMeetingAgenda.presenterName,
@@ -351,7 +349,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             };
             let file = [];
             if (atchmenData.meetingAgendaAttachments !== null) {
-              atchmenData.meetingAgendaAttachments.map(
+              atchmenData.meetingAgendaAttachments.forEach(
                 (atchmenDataaa, index) => {
                   file.push({
                     PK_MAAID: atchmenDataaa.pK_MAAID,
@@ -379,7 +377,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           });
         } catch (error) {}
         try {
-          viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
+          viewData.minutesOfMeeting.forEach((minutesOfMeetingData, index) => {
             minutesOfMeeting.push({
               PK_MOMID: minutesOfMeetingData.pK_MOMID,
               Description: minutesOfMeetingData.description,
@@ -529,7 +527,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           }
           if (viewData.externalMeetingAttendees !== undefined) {
             if (viewData.externalMeetingAttendees.length > 0) {
-              viewData.externalMeetingAttendees.map(
+              viewData.externalMeetingAttendees.forEach(
                 (externalMeetingAttendeesMeetingdata, index) => {
                   List.push({
                     name: externalMeetingAttendeesMeetingdata.emailAddress,
@@ -546,7 +544,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         } catch (error) {}
 
         try {
-          calendarMeetingData.meetingAgendas.map((atchmenData, index) => {
+          calendarMeetingData.meetingAgendas.forEach((atchmenData, index) => {
             let opData = {
               Title: atchmenData.objMeetingAgenda.title,
               PresenterName: atchmenData.objMeetingAgenda.presenterName,
@@ -555,7 +553,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             };
             let file = [];
             if (atchmenData.meetingAgendaAttachments !== null) {
-              atchmenData.meetingAgendaAttachments.map(
+              atchmenData.meetingAgendaAttachments.forEach(
                 (atchmenDataaa, index) => {
                   file.push({
                     PK_MAAID: atchmenDataaa.pK_MAAID,
@@ -583,7 +581,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           });
         } catch (error) {}
         try {
-          calendarMeetingData.minutesOfMeeting.map(
+          calendarMeetingData.minutesOfMeeting.forEach(
             (minutesOfMeetingData, index) => {
               minutesOfMeeting.push({
                 PK_MOMID: minutesOfMeetingData.pK_MOMID,
@@ -598,7 +596,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           //  Block of code to handle errors
         }
         try {
-          calendarMeetingData.externalMeetingAttendees.map(
+          calendarMeetingData.externalMeetingAttendees.forEach(
             (externalMeetingAttendeesData, index) => {
               externalMeetingAttendiesList.push({
                 PK_EMAID: externalMeetingAttendeesData.pK_EMAID,
@@ -717,7 +715,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   // for  list of all assignees  drop down
   useEffect(() => {
     try {
-      if (addedParticipantNameList != undefined) {
+      if (addedParticipantNameList !== undefined) {
         if (addedParticipantNameList.length > 0) {
         }
       }
@@ -890,7 +888,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           modalBodyClassName="modalMeetingViewBody"
           modalFooterClassName="modalMeetingViewFooter"
           modalHeaderClassName="modalMeetingViewHeader"
-          // ModalTitle={"Modal Header"}
           ModalBody={
             <>
               <Row>
@@ -911,7 +908,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   md={3}
                   sm={2}
                   xs={12}
-                  className={"AgendaShowBtn" + " " + currentLanguage}
+                  className={`AgendaShowBtn ${currentLanguage}`}
                 >
                   <Button
                     className={
@@ -930,7 +927,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   md={3}
                   sm={2}
                   xs={12}
-                  className={" AttendeeShowBtn" + " " + currentLanguage}
+                  className={`AttendeeShowBtn ${currentLanguage}`}
                 >
                   <Button
                     className={
@@ -950,7 +947,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     md={2}
                     sm={2}
                     xs={12}
-                    className={" minutes-upper-btn" + " " + currentLanguage}
+                    className={`minutes-upper-btn ${currentLanguage}`}
                   >
                     <Button
                       className={
@@ -971,7 +968,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   md={2}
                   sm={2}
                   xs={12}
-                  className={" DataRoomShowBtn" + " " + currentLanguage}
+                  className={`DataRoomShowBtn ${currentLanguage}`}
                 >
                   <Button
                     className={
@@ -1175,18 +1172,20 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       {addedParticipantNameList ? (
                         <>
                           <span>
-                            {addedParticipantNameList.map((atList, index) => {
-                              if (atList.role === 1 || atList.role === 3) {
-                                return (
-                                  <EmployeeCard
-                                    employeeName={atList.name}
-                                    employeeDesignation={atList.designation}
-                                    cardIcon={<Check2 />}
-                                    UserProfilePic={atList.displayProfilePic}
-                                  />
-                                );
+                            {addedParticipantNameList.forEach(
+                              (atList, index) => {
+                                if (atList.role === 1 || atList.role === 3) {
+                                  return (
+                                    <EmployeeCard
+                                      employeeName={atList.name}
+                                      employeeDesignation={atList.designation}
+                                      cardIcon={<Check2 />}
+                                      UserProfilePic={atList.displayProfilePic}
+                                    />
+                                  );
+                                }
                               }
-                            })}
+                            )}
                           </span>
                         </>
                       ) : null}
@@ -1213,18 +1212,20 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       {addedParticipantNameList ? (
                         <>
                           <span>
-                            {addedParticipantNameList.map((atList, index) => {
-                              if (atList.role === 2) {
-                                return (
-                                  <EmployeeCard
-                                    employeeName={atList.name}
-                                    employeeDesignation={atList.designation}
-                                    cardIcon={<Check2 />}
-                                    UserProfilePic={atList.displayProfilePic}
-                                  />
-                                );
+                            {addedParticipantNameList.forEach(
+                              (atList, index) => {
+                                if (atList.role === 2) {
+                                  return (
+                                    <EmployeeCard
+                                      employeeName={atList.name}
+                                      employeeDesignation={atList.designation}
+                                      cardIcon={<Check2 />}
+                                      UserProfilePic={atList.displayProfilePic}
+                                    />
+                                  );
+                                }
                               }
-                            })}
+                            )}
                           </span>
                         </>
                       ) : null}
@@ -1369,9 +1370,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                               allMeetingDetails.meetingDetails.pK_MDID
                             )
                           }
-                          className={
-                            "  end-meeting-btn_view" + " " + currentLanguage
-                          }
+                          className={`end-meeting-btn_view ${currentLanguage}`}
                           text={t("Leave-meeting")}
                         />
                       ) : null}
