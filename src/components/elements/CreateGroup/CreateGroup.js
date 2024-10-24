@@ -1031,7 +1031,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               lg={10}
                               md={10}
                               sm={10}
-                              className="group-select-field  CreateMeetingReminder   "
+                              className="group-select-field  CreateMeetingReminder"
                             >
                               <SelectBox
                                 name="Participant"

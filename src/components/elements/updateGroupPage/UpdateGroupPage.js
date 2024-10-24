@@ -243,15 +243,18 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   };
 
   const groupTypeChangeHandler = (e, value) => {
+    console.log(value, "valuevalue");
     setGroupTypeValue(value);
     let findID = organizationGroupType.find(
       (data, index) => data.label === value
     );
     setGroupDetails({
       ...GroupDetails,
-      GroupStatusID: findID.id,
+      GroupTypeID: findID.id,
     });
   };
+
+  console.log(GroupDetails.GroupStatusID, "valuevalue");
 
   // for api reponce of list of all assignees
   useEffect(() => {
@@ -408,6 +411,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             },
             GroupMembers: membersData,
           };
+          console.log(Data, "valuevalue");
           dispatch(updateGroup(navigate, Data, t, setUpdateComponentpage));
         }
       }
@@ -535,15 +539,36 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   // Initialize previousFileList to an empty array
   let previousFileList = [];
 
-  const handleRemoveFile = (index) => {
-    const updatedFies = [...fileAttachments];
-    updatedFies.splice(index, 1);
-    setFileAttachments(updatedFies);
+  const handleRemoveFile = (data) => {
+    console.log(data, "indexindexindex");
+    setFileAttachments((filesData) => {
+      return filesData.filter(
+        (fileData, index) =>
+          fileData.DisplayAttachmentName !== data.DisplayAttachmentName
+      );
+    });
+    setPreviousFileIDs((prevFilesData) => {
+      return prevFilesData.filter(
+        (prevdata, index) =>
+          prevdata.DisplayAttachmentName !== data.DisplayAttachmentName
+      );
+    });
+    if (Object.values(fileForSend).length > 0) {
+      setFileForSend((filesData) => {
+        return filesData.filter(
+          (fileData, index) => fileData.name !== data.DisplayAttachmentName
+        );
+      });
+    }
+    console.log(fileForSend, "fileForSendfileForSend");
+    // updatedFies.splice(index, 1);
+    // setFileAttachments(updatedFies);
 
-    const updateFileForSend = [...fileForSend];
-    updateFileForSend.splice(index, 1);
-    setFileForSend(updateFileForSend);
+    // const updateFileForSend = [...fileForSend];
+    // updateFileForSend.splice(index, 1);
+    // setFileForSend(updateFileForSend);
   };
+  console.log(fileForSend, fileAttachments, "fileForSendfileForSend");
 
   useEffect(() => {
     if (
