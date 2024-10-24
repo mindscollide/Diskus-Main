@@ -139,7 +139,7 @@ const NavigationButtons = () => {
               onClick={() => navigate("/Diskus")}
               className="d-flex justify-content-center mt-2"
             >
-              <h3 className={"tour-skip_demo" + " " + currentLanguage}>
+              <h3 className={`tour-skip_demo ${currentLanguage}`}>
                 {t("Skip-demo")}
               </h3>
             </Col>

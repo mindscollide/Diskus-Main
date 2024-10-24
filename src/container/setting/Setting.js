@@ -67,10 +67,7 @@ const Organization = () => {
   });
 
   const roleID = localStorage.getItem("roleID");
-  const { loaded, clientId } = useGoogleLogin({
-    clientId:
-      "509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com",
-  });
+
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
 
   useEffect(() => {

@@ -52,14 +52,7 @@ const OnboardDashboard = () => {
   //For Localization
   const { t } = useTranslation();
   const state = useSelector((state) => state);
-  const {
-    settingReducer,
-    calendarReducer,
-    toDoListReducer,
-    meetingIdReducer,
-    auth,
-    Authreducer,
-  } = state;
+  const { settingReducer, calendarReducer, auth, Authreducer } = state;
   const { RecentActivityData } = settingReducer;
 
   const [open, setOpen] = useState({
@@ -95,7 +88,7 @@ const OnboardDashboard = () => {
     console.log("Data", Data);
     let newList = [];
     if (Object.keys(Data).length > 0) {
-      Data.map((cData) => {
+      Data.forEach((cData) => {
         newList.push({
           meetingDate: cData.meetingDate,
         });
@@ -106,7 +99,7 @@ const OnboardDashboard = () => {
 
   useEffect(() => {
     var temp = [];
-    calenderData.map((cal) => {
+    calenderData.forEach((cal) => {
       var year = moment(cal.meetingDate).format("YYYY");
       var month = moment(cal.meetingDate).format("MM");
       var day = moment(cal.meetingDate).format("DD");
