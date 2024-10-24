@@ -21,7 +21,6 @@ import {
 } from "../../../store/actions/GetTodos";
 import "../../pages/todolist/Todolist.css";
 import { useTranslation } from "react-i18next";
-import { ar } from "date-fns/locale";
 import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
