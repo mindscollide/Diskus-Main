@@ -2115,36 +2115,45 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         {addedParticipantNameList ? (
                           <>
                             <span>
-                              {addedParticipantNameList.map((atList, index) => {
-                                if (atList.role === 1) {
-                                  return (
-                                    <EmployeeCard
-                                      employeeName={atList.name}
-                                      employeeDesignation={atList.designation}
-                                      organizer={
-                                        atList.role === 1 ? true : false
-                                      }
-                                      UserProfilePic={atList.displayProfilePic}
-                                      IconOnClick={() =>
-                                        atList.role !== 3
-                                          ? handleDeleteAttendee(atList, index)
-                                          : null
-                                      }
-                                    />
-                                  );
-                                } else if (atList.role === 3) {
-                                  return (
-                                    <EmployeeCard
-                                      employeeName={atList.name}
-                                      employeeDesignation={atList.designation}
-                                      organizer={
-                                        atList.role === 3 ? false : true
-                                      }
-                                      UserProfilePic={atList.displayProfilePic}
-                                    />
-                                  );
+                              {addedParticipantNameList.forEach(
+                                (atList, index) => {
+                                  if (atList.role === 1) {
+                                    return (
+                                      <EmployeeCard
+                                        employeeName={atList.name}
+                                        employeeDesignation={atList.designation}
+                                        organizer={
+                                          atList.role === 1 ? true : false
+                                        }
+                                        UserProfilePic={
+                                          atList.displayProfilePic
+                                        }
+                                        IconOnClick={() =>
+                                          atList.role !== 3
+                                            ? handleDeleteAttendee(
+                                                atList,
+                                                index
+                                              )
+                                            : null
+                                        }
+                                      />
+                                    );
+                                  } else if (atList.role === 3) {
+                                    return (
+                                      <EmployeeCard
+                                        employeeName={atList.name}
+                                        employeeDesignation={atList.designation}
+                                        organizer={
+                                          atList.role === 3 ? false : true
+                                        }
+                                        UserProfilePic={
+                                          atList.displayProfilePic
+                                        }
+                                      />
+                                    );
+                                  }
                                 }
-                              })}
+                              )}
                             </span>
                           </>
                         ) : null}
@@ -2162,26 +2171,29 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         {addedParticipantNameList ? (
                           <>
                             <span>
-                              {addedParticipantNameList.map((atList, index) => {
-                                console.log(atList, "atListatList");
-                                if (atList.role === 2) {
-                                  return (
-                                    <>
-                                      <EmployeeCard
-                                        employeeName={atList.name}
-                                        employeeDesignation={atList.designation}
-                                        organizer={true}
-                                        IconOnClick={() =>
-                                          handleDeleteAttendee(atList, index)
-                                        }
-                                        UserProfilePic={
-                                          atList.displayProfilePic
-                                        }
-                                      />
-                                    </>
-                                  );
+                              {addedParticipantNameList.forEach(
+                                (atList, index) => {
+                                  if (atList.role === 2) {
+                                    return (
+                                      <>
+                                        <EmployeeCard
+                                          employeeName={atList.name}
+                                          employeeDesignation={
+                                            atList.designation
+                                          }
+                                          organizer={true}
+                                          IconOnClick={() =>
+                                            handleDeleteAttendee(atList, index)
+                                          }
+                                          UserProfilePic={
+                                            atList.displayProfilePic
+                                          }
+                                        />
+                                      </>
+                                    );
+                                  }
                                 }
-                              })}
+                              )}
                             </span>
                           </>
                         ) : null}
