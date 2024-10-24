@@ -119,7 +119,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
- 
+
   //To Set task Creater ID
   useEffect(() => {
     try {
@@ -244,7 +244,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
-      "TasksAttachments": searchIndex,
+      TasksAttachments: searchIndex,
     });
   };
 
@@ -288,8 +288,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let sizezero = true;
     let size = true;
 
-    if (totalFiles > 15) {
-      showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+    if (totalFiles > 10) {
+      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -330,7 +330,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       }
     });
   };
-
 
   useEffect(() => {
     if (show) {

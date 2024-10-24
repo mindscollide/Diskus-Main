@@ -53,13 +53,8 @@ const Actions = ({
   setPolls,
   currentMeeting,
   editorRole,
-  setMinutes,
-  setEditMeeting,
   isEditMeeting,
   dataroomMapFolderId,
-  setMeetingMaterial,
-  setDataroomMapFolderId,
-  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

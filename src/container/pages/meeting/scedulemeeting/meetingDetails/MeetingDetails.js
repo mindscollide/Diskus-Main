@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./MeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
@@ -56,6 +56,7 @@ import {
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const MeetingDetails = ({
   setorganizers,
@@ -70,6 +71,7 @@ const MeetingDetails = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { setGoBackCancelModal } = useContext(MeetingContext);
   const nextConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.nextConfirmModal
   );
@@ -1913,7 +1915,7 @@ const MeetingDetails = ({
           <Button
             text={t("Cancel")}
             className={styles["Published"]}
-            onClick={handleCancelMeetingButton}
+            onClick={() => setGoBackCancelModal(true)}
           />
           {(Number(editorRole.status) === 9 ||
             Number(editorRole.status) === 8 ||
@@ -1959,13 +1961,12 @@ const MeetingDetails = ({
         </Col>
       </Row>
 
-      {cancelModalMeetingDetails && (
-        <CancelButtonModal
-          setSceduleMeeting={setSceduleMeeting}
-          setMeetingDetails={setMeetingDetails}
-          setRows={setRows}
-        />
-      )}
+      <CancelButtonModal
+        setSceduleMeeting={setSceduleMeeting}
+        setMeetingDetails={setMeetingDetails}
+        setRows={setRows}
+        flag={true}
+      />
       {nextConfirmModal && (
         <NextModal
           setmeetingDetails={setmeetingDetails}

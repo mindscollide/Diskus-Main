@@ -869,8 +869,8 @@ const ScheduleNewResolution = () => {
       let sizezero = true;
       let size = true;
 
-      if (totalFiles > 15) {
-        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+      if (totalFiles > 10) {
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 

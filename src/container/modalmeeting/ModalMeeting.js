@@ -37,6 +37,7 @@ import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar
 import {
   FileUploadToDo,
   ResetAllFilesUpload,
+  uploaddocumentloader,
 } from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
@@ -336,7 +337,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         let id = data.pK_MRID;
         setCreateMeeting({
           ...createMeeting,
-          "MeetingReminderID": [parseInt(id)],
+          MeetingReminderID: [parseInt(id)],
         });
       }
     });
@@ -444,7 +445,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setCreateMeeting({
         ...createMeeting,
         [name]: RemoveTimeDashes(value),
-        "MeetingEndTime": RemoveTimeDashes(value),
+        MeetingEndTime: RemoveTimeDashes(value),
       });
       setCreateMeetingTime(value);
     } else if (name === "MeetingLocation") {
@@ -553,8 +554,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     let size = true;
     let sizezero = true;
 
-    if (updatedFilesForSend.length + filesArray.length > 15) {
-      showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+    if (updatedFilesForSend.length + filesArray.length > 10) {
+      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
 
@@ -706,7 +707,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               const uploadPromises = fileForSend.map((newData) => {
                 // Return the promise from FileUploadToDo
                 return dispatch(
-                  FileUploadToDo(navigate, newData, t, newfile, 1)
+                  FileUploadToDo(navigate, newData, t, newfile, 3)
                 );
               });
               // Wait for all uploadPromises to resolve
@@ -727,7 +728,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               previousAdendas[editRecordIndex] = newData;
               setCreateMeeting({
                 ...createMeeting,
-                "MeetingAgendas": previousAdendas,
+                MeetingAgendas: previousAdendas,
               });
               seteditRecordIndex(null);
               seteditRecordFlag(false);
@@ -739,6 +740,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               setObjMeetingAgenda(defaultMeetingAgenda);
               setFileForSend([]);
               setAttachments([]);
+              dispatch(uploaddocumentloader(false));
             } else {
               let newData = {
                 ObjMeetingAgenda: objMeetingAgenda,
@@ -748,7 +750,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               previousAdendas[editRecordIndex] = newData;
               setCreateMeeting({
                 ...createMeeting,
-                "MeetingAgendas": previousAdendas,
+                MeetingAgendas: previousAdendas,
               });
               seteditRecordIndex(null);
               seteditRecordFlag(false);
@@ -771,7 +773,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             let newfile = [];
             const uploadPromises = fileForSend.map((newData) => {
               // Return the promise from FileUploadToDo
-              return dispatch(FileUploadToDo(navigate, newData, t, newfile, 1));
+              return dispatch(FileUploadToDo(navigate, newData, t, newfile, 3));
             });
             // Wait for all uploadPromises to resolve
             await Promise.all(uploadPromises);
@@ -806,6 +808,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             setAttachments([]);
             setFileForSend([]);
             setForUpdateAttachent([]);
+            dispatch(uploaddocumentloader(false));
           } else {
             let newData = {
               ObjMeetingAgenda: objMeetingAgenda,
@@ -815,7 +818,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             previousAdendas[editRecordIndex] = newData;
             setCreateMeeting({
               ...createMeeting,
-              "MeetingAgendas": previousAdendas,
+              MeetingAgendas: previousAdendas,
             });
             seteditRecordIndex(null);
             seteditRecordFlag(false);
@@ -849,7 +852,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
           const uploadPromises = fileForSend.map((newData) => {
             // Return the promise from FileUploadToDo
-            return dispatch(FileUploadToDo(navigate, newData, t, newfile, 1));
+            return dispatch(FileUploadToDo(navigate, newData, t, newfile, 3));
           });
           // Wait for all uploadPromises to resolve
           await Promise.all(uploadPromises);
@@ -872,6 +875,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             ...createMeeting,
             MeetingAgendas: previousAdendas,
           });
+          dispatch(uploaddocumentloader(false));
         } else {
           setModalField(false);
           let previousAdendas = [...createMeeting.MeetingAgendas];
@@ -942,7 +946,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const videoEnableButton = () => {
     setCreateMeeting({
       ...createMeeting,
-      "IsVideoCall": !createMeeting.IsVideoCall,
+      IsVideoCall: !createMeeting.IsVideoCall,
     });
   };
 
@@ -959,7 +963,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           setReminderValue(data.description);
           setCreateMeeting({
             ...createMeeting,
-            "MeetingReminderID": [parseInt(data.pK_MRID)],
+            MeetingReminderID: [parseInt(data.pK_MRID)],
           });
         }
       });
@@ -1392,7 +1396,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // for attendies handler
   const handleSubmit = async () => {
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
-        showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
+      showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
       return;
     }
     let finalDateTime = createConvert(
@@ -1491,7 +1495,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     searchIndex.splice(index, 1);
     setMeetingAgendaAttachments({
       ...meetingAgendaAttachments,
-      "MeetingAgendaAttachments": searchIndex,
+      MeetingAgendaAttachments: searchIndex,
     });
   };
 
@@ -1500,7 +1504,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     user1.splice(index, 1);
     addedParticipantNameList.splice(index, 1);
     setAddedParticipantNameList(addedParticipantNameList);
-    setCreateMeeting({ ...createMeeting, "MeetingAttendees": user1 });
+    setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
   };
 
   function CustomInput({ onFocus, value, onChange }) {

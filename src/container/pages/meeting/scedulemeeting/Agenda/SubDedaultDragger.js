@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../../../../commen/functions/utils";
 
 const SubDedaultDragger = ({
   setRows,
@@ -54,7 +55,7 @@ const SubDedaultDragger = ({
       }
       if (getRowData.subfiles.length > 0) {
         fileList.forEach((fileData, index) => {
-          if (fileData.size > 10485760) {
+          if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
             sizezero = false;
@@ -64,7 +65,7 @@ const SubDedaultDragger = ({
           );
           if (!size) {
             showMessage(
-              t("File-size-should-not-be-greater-then-zero"),
+              t("File-size-should-not-be-greater-then-1-5GB"),
               "error",
               setOpen
             );
@@ -90,7 +91,7 @@ const SubDedaultDragger = ({
         });
       } else {
         fileList.forEach((fileData, index) => {
-          if (fileData.size > 10485760) {
+          if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
             sizezero = false;
@@ -98,7 +99,7 @@ const SubDedaultDragger = ({
 
           if (!size) {
             showMessage(
-              t("File-size-should-not-be-greater-then-zero"),
+              t("File-size-should-not-be-greater-then-1-5GB"),
               "error",
               setOpen
             );

@@ -21,6 +21,7 @@ const RejectCommentModal = ({
   setMinutesToReview,
   minutesToReview,
   currentUserID,
+  handleClickRejectButton
 }) => {
   const { t } = useTranslation(); // Initializing translation function
 
@@ -97,7 +98,7 @@ const RejectCommentModal = ({
         setShow={dispatch(rejectCommentModal)} // Dispatching action to set modal state
         modalFooterClassName={"d-block"} // Custom CSS class for modal footer
         modalHeaderClassName={"d-block"} // Custom CSS class for modal header
-        className="SelectAgendaModal" // Additional CSS classes for modal
+        className='SelectAgendaModal' // Additional CSS classes for modal
         onHide={() => {
           dispatch(rejectCommentModal(false)); // Dispatching action to hide modal
         }}
@@ -106,7 +107,7 @@ const RejectCommentModal = ({
           // JSX for modal title
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className="position-relative">
+              <Col lg={12} md={12} sm={12} className='position-relative'>
                 <p className={styles["RejectCommentTitle"]}>
                   {t("Leave-a-comment")} {/* Translation for title */}
                 </p>
@@ -114,7 +115,7 @@ const RejectCommentModal = ({
                   onClick={() => dispatch(rejectCommentModal(false))}
                   className={styles["image-close"]} // Styling for close icon
                   src={CrossIcon} // Image for close icon
-                  alt=""
+                  alt=''
                 />
               </Col>
             </Row>
@@ -124,9 +125,9 @@ const RejectCommentModal = ({
           // JSX for modal body
           <>
             <TextArea
-              name="textField-RejectComment"
+              name='textField-RejectComment'
               className={styles["textField-RejectComment"]} // Styling for text area
-              type="text"
+              type='text'
               placeholder={t("Write-a-reason")} // Translation for placeholder
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)} // Update text area value if typed directly
@@ -148,15 +149,14 @@ const RejectCommentModal = ({
         ModalFooter={
           // JSX for modal footer
           <>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
-                  onClick={RejectButton}
+                  onClick={() => handleClickRejectButton(commentText)}
                   text={t("Reject")} // Translation for button text
                   className={styles["Reject_Comment_Modal"]} // Styling for reject button
                   disableBtn={commentText === ""}

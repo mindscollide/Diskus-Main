@@ -9,6 +9,7 @@ import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../../../../commen/functions/utils";
 
 const DefaultDragger = ({
   index,
@@ -51,7 +52,7 @@ const DefaultDragger = ({
       }
       if (getRowData.files.length > 0) {
         fileList.forEach((fileData, index) => {
-          if (fileData.size > 10485760) {
+          if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
             sizezero = false;
@@ -61,7 +62,7 @@ const DefaultDragger = ({
           );
           if (!size) {
             showMessage(
-              t("File-size-should-not-be-greater-then-zero"),
+              t("File-size-should-not-be-greater-then-1-5GB"),
               "error",
               setOpen
             );
@@ -87,15 +88,14 @@ const DefaultDragger = ({
         });
       } else {
         fileList.forEach((fileData, index) => {
-          if (fileData.size > 10485760) {
+          if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
             sizezero = false;
           }
-
           if (!size) {
             showMessage(
-              t("File-size-should-not-be-greater-then-zero"),
+              t("File-size-should-not-be-greater-then-1-5GB"),
               "error",
               setOpen
             );
