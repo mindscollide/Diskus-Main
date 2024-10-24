@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Container, Row, Col } from "react-bootstrap";
-import { TextField, Loader, Modal, Button } from "../../../../../elements";
+import { TextField, Modal, Button } from "../../../../../elements";
 import "./videoPanelBody.css";
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
-import { Spin, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { LoaderPanel } from "../../../../../elements";
 import { Checkbox } from "antd";
 import {

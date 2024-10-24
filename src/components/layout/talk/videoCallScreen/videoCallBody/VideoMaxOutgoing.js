@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./VideoMaxOutgoing.css";
-import { Container, Row, Col } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "../../../../elements";
-import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
-import videoAvatar from "../../../../../assets/images/newElements/VideoAvatar.png";
+import { Row, Col } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { videoOutgoingCallFlag } from "../../../../../store/actions/VideoFeature_actions";
 
 const VideoOutgoing = () => {

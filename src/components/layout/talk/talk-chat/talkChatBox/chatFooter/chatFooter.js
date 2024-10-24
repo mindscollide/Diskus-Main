@@ -8,7 +8,6 @@ import {
   InsertOTOMessages,
   InsertPrivateGroupMessages,
   InsertBroadcastMessages,
-  pushMessageData,
   pushChatData,
   fileUploadData,
 } from "../../../../../../store/actions/Talk_action";

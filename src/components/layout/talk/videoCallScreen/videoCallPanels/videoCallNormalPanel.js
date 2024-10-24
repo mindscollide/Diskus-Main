@@ -17,9 +17,6 @@ import {
   generateURLCaller,
   generateURLParticipant,
 } from "../../../../../commen/functions/urlVideoCalls";
-import LayoutIconPurple from "../../../../../assets/images/Layout-Icon-Purple.svg";
-import LayoutIconSelected from "../../../../../assets/images/Layout-Icon-Selected-with-shape.svg";
-import LayoutIconWhite from "../../../../../assets/images/Layout-Icon-White.svg";
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
 import { generateRandomGuest } from "../../../../../commen/functions/urlVideoCalls";
 
