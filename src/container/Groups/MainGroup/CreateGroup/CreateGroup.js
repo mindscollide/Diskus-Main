@@ -64,10 +64,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     GroupStatusID: 0,
     GroupMembers: [],
   });
-  console.log(
-    createGroupDetails,
-    "createGroupDetailscreateGroupDetailscreateGroupDetails"
-  );
+
   const GroupeTitle = useRef(null);
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
@@ -90,11 +87,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     name: "",
   });
 
-  // for Participant id's
-  const participantOptionsWithIDs = [
-    { label: t("Head"), id: 2 },
-    { label: t("Regular"), id: 1 },
-  ];
   useEffect(() => {
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     GroupeTitle.current.focus();
