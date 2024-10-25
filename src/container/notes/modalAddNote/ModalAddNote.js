@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import {
   Button,
   Modal,
@@ -10,7 +10,7 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.snow.css";
 import styles from "./ModalAddNote.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   FileUploadToDo,
   uploaddocumentloader,
@@ -37,7 +37,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const dispatch = useDispatch();
   const NoteTitle = useRef(null);
   const editorRef = useRef(null);
-  const Delta = Quill.import("delta");
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");

@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Modal,
-  Notification,
-  AttachmentViewer,
-} from "../../../components/elements";
+import { Button, Modal, AttachmentViewer } from "../../../components/elements";
 import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
 import { Row, Col, Container } from "react-bootstrap";
