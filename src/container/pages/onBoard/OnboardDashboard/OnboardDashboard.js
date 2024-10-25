@@ -63,14 +63,14 @@ const OnboardDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
-  const [setRecentActivityData] = useState([]);
+  const [recentActivityData, setRecentActivityData] = useState([]);
 
   let date = new Date();
   let getCurrentDate = moment(date).format("DD");
   console.log("date", getCurrentDate);
   let format = "YYYYMMDD";
 
-  const [setDates] = useState([]);
+  const [dates, setDates] = useState([]);
   const [activateBlur, setActivateBlur] = useState(false);
 
   let Blur = localStorage.getItem("blur");
