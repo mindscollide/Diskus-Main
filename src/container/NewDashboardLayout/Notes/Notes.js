@@ -16,7 +16,8 @@ import {
   getNotes_Init,
 } from "../../../store/actions/Notes_actions";
 import ModalViewNote from "../../notes/modalViewNote/ModalViewNote";
-import { Col, Row, Tooltip } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
+import { Tooltip } from "antd";
 import {
   _justShowDateformat,
   _justShowDay,

@@ -615,12 +615,12 @@ const ManageUsers = () => {
         >
           <span className="position-relative">
             <TextField
-              width={"502px"}
+              // width={"502px"}
               placeholder={t("Search")}
               name={"SearchVal"}
               value={manangeUserSearch.searchValue}
               onKeyDown={handleKeyDownSearchManageUsers}
-              applyClass={"PollingSearchInput"}
+              // applyClass={"PollingSearchInput"}
               labelclass="d-none"
               change={handleSeachFieldManageUsers}
               inputicon={

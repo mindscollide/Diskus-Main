@@ -156,7 +156,7 @@ const SignUpOrganizationUM = () => {
   const handleSelect = (country) => {
     setSelected(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-      return obj.primary == country;
+      return obj.primary === country;
     });
     setSignUpDetails({
       ...signUpDetails,
@@ -754,27 +754,27 @@ const SignUpOrganizationUM = () => {
     ) {
       let PackageID = localStorage.getItem("PackageID");
       let tenureOfSuscriptionID = localStorage.getItem("TenureOfSuscriptionID");
-      let data = {
-        SelectedPackageID: JSON.parse(PackageID),
-        TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
-        Organization: {
-          OrganizationName: signUpDetails.CompanyName.value,
-          FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
-          ContactPersonName: signUpDetails.FullName.value,
-          ContactPersonEmail: signUpDetails.Email.value,
-          ContactPersonNumber: signUpDetails.PhoneNumber.value,
-          FK_NumberWorldCountryID: JSON.parse(signUpDetails.CountryName.value),
-          CustomerReferenceNumber: "",
-          PersonalNumber: signUpDetails.PhoneNumber.value,
-          OrganizationAddress1: signUpDetails.Address1.value,
-          OrganizationAddress2: signUpDetails.Address2.value,
-          City: signUpDetails.City.value,
-          StateProvince: signUpDetails.State.value,
-          PostalCode: signUpDetails.PostalCode.value,
-          FK_SubscriptionStatusID: 0,
-          FK_CCID: signUpDetails.FK_CCID,
-        },
-      };
+      // let data = {
+      //   SelectedPackageID: JSON.parse(PackageID),
+      //   TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
+      //   Organization: {
+      //     OrganizationName: signUpDetails.CompanyName.value,
+      //     FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+      //     ContactPersonName: signUpDetails.FullName.value,
+      //     ContactPersonEmail: signUpDetails.Email.value,
+      //     ContactPersonNumber: signUpDetails.PhoneNumber.value,
+      //     FK_NumberWorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+      //     CustomerReferenceNumber: "",
+      //     PersonalNumber: signUpDetails.PhoneNumber.value,
+      //     OrganizationAddress1: signUpDetails.Address1.value,
+      //     OrganizationAddress2: signUpDetails.Address2.value,
+      //     City: signUpDetails.City.value,
+      //     StateProvince: signUpDetails.State.value,
+      //     PostalCode: signUpDetails.PostalCode.value,
+      //     FK_SubscriptionStatusID: 0,
+      //     FK_CCID: signUpDetails.FK_CCID,
+      //   },
+      // };
       //   dispatch(createOrganization(data, navigate, t));
       setAgainCall(false);
     } else {

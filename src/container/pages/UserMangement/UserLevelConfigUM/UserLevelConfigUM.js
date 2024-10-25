@@ -37,10 +37,7 @@ const UserLevelConfigUM = () => {
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
-  const { loaded, clientId } = useGoogleLogin({
-    clientId:
-      "103867674074-tllj4s4mt4c5t15omf2t0s92097622jv.apps.googleusercontent.com",
-  });
+
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
     Is2FAEnabled: false,
@@ -328,21 +325,18 @@ const UserLevelConfigUM = () => {
   // };
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
-    const value = e.target.checked;
+    // const value = e.target.checked;
     // if (value) {
     //   // signInMicrowSoft(value);
     // } else {
     //   try {
     //     // Initiate the logout process
     //     await instance.logoutPopup();
-
     //     // Check if the user is still authenticated after logout
     //     const isAuthenticated = !!instance.getAllAccounts().length;
-
     //     if (!isAuthenticated) {
     //       setAuthMicrosoftAccessToken("");
     //       setAuthMicrosoftRefreshToken("");
-
     //       setUserOptionsSettings({
     //         ...userOptionsSettings,
     //         AllowMicrosoftCalenderSync: value,
