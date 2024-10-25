@@ -137,7 +137,7 @@ const Notes = () => {
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
+          NotesReducer.GetAllNotesResponse.getNotes.forEach((data) => {
             notes.push({
               date: data.date,
               description: data.description,
