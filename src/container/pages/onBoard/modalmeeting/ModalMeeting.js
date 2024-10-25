@@ -36,6 +36,7 @@ const ModalMeeting = ({ ModalTitle }) => {
   const { OnBoardModal } = state;
   const { setCurrentStep } = useTour();
   const [checked, setChecked] = useState(true);
+  console.log(setChecked, "checkedchecked");
 
   let meetingDateTime =
     TimeHHMMFormat("010101") + ", " + moment("20220505").format("Do MMM, YYYY");

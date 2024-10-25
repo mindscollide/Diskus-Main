@@ -19,7 +19,7 @@ const Header = ({ searchVisible }) => {
     } else {
       document.body.style.overflow = "auto";
     }
-  }, []);
+  }, [location.pathname]);
 
   const { currentStep } = useTour();
   const [isExpand, setExpand] = useState(false);
@@ -31,7 +31,7 @@ const Header = ({ searchVisible }) => {
   useEffect(() => {
     console.log(location);
     console.log(isMeeting);
-    location.pathname == "/onboard" ? setMeeting(true) : setMeeting(false);
+    location.pathname === "/onboard" ? setMeeting(true) : setMeeting(false);
     setIsOpen(true);
   }, [location]);
 

@@ -695,11 +695,10 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                     <span className={styles["create_resolution_dragger"]}>
                       <img
                         src={featherupload}
-                        alt=''
-                        width='18.87px'
-                        alt=''
-                        height='18.87px'
-                        draggable='false'
+                        alt=""
+                        width="18.87px"
+                        height="18.87px"
+                        draggable="false"
                       />
                     </span>
                   </p>

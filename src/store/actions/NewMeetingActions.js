@@ -6118,7 +6118,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               );
               setDataroomMapFolderId(response.data.responseResult.folderID);
               let newarry = [];
-              members.map((data, index) => {
+              members.forEach((data, index) => {
                 newarry.push(data.userID);
               });
               let Data = {
@@ -6174,7 +6174,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               );
               setDataroomMapFolderId(response.data.responseResult.folderID);
               let newarry = [];
-              members.map((data, index) => {
+              members.forEach((data, index) => {
                 newarry.push(data.userID);
               });
               let Data = {
@@ -8351,6 +8351,7 @@ const LeaveCurrentMeeting = (
             ) {
               try {
                 dispatch(currentMeetingStatus(0));
+
                 if (isQuickMeeting) {
                   dispatch(
                     leaveMeetingQuickSuccess(
@@ -8359,7 +8360,9 @@ const LeaveCurrentMeeting = (
                     )
                   );
                   console.log("Checking ");
-                  setEndMeetingConfirmationModal(false);
+                  if (typeof setEndMeetingConfirmationModal === "function") {
+                    setEndMeetingConfirmationModal(false);
+                  }
                   let searchData = {
                     Date: "",
                     Title: "",
@@ -8378,7 +8381,9 @@ const LeaveCurrentMeeting = (
                       t("Successful")
                     )
                   );
-                  setEndMeetingConfirmationModal(false);
+                  if (typeof setEndMeetingConfirmationModal === "function") {
+                    setEndMeetingConfirmationModal(false);
+                  }
                   let searchData = {
                     Date: "",
                     Title: "",

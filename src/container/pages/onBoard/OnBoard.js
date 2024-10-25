@@ -113,7 +113,7 @@ const OnBoard = () => {
     <>
       <TourProvider
         onClickMask={({ currentStep, steps, setIsOpen }) => {
-          if (currentStep === steps.length < 0) {
+          if (currentStep === steps.length && steps.length < 0) {
             setIsOpen(false);
           }
         }}

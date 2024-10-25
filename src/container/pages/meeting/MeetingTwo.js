@@ -174,21 +174,6 @@ const NewMeeting = () => {
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
 
-  // let meetingtypeFilter = [];
-  // let byDefault = {
-  //   value: "0",
-  //   text: t("Quick-meeting"),
-  // };
-  // meetingtypeFilter?.push(byDefault);
-  // getALlMeetingTypes?.meetingTypes?.forEach((data, index) => {
-  //   meetingtypeFilter?.push({
-  //     text: data?.type,
-  //     value: String(data?.pK_MTID),
-  //   });
-  // });
-
-  //       setMeetingTypeFilter(meetingtypeFilter);
-
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
@@ -251,11 +236,6 @@ const NewMeeting = () => {
   const [responseByDate, setResponseByDate] = useState("");
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [radioValue, setRadioValue] = useState(1);
-  // const [editorRole, setEdiorRole] = useState({
-  //   status: null,
-  //   role: null,
-  //   isPrimaryOrganizer: false,
-  // });
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -318,11 +298,9 @@ const NewMeeting = () => {
         ) {
           await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         }
-        // await dispatch(allAssignessList(navigate, t));
         console.log("Test is calling or not");
         console.log("chek search meeting");
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        // localStorage.setItem("MeetingCurrentView", 1);
       } else {
         let searchData = {
           Date: "",
@@ -333,20 +311,17 @@ const NewMeeting = () => {
           Length: 30,
           PublishedMeetings: MeetingProp !== null ? false : true,
         };
-        // localStorage.setItem("MeetingPageRows", 30);
-        // localStorage.setItem("MeetingPageCurrent", 1);
+
         if (
           getALlMeetingTypes.length === 0 &&
           Object.keys(getALlMeetingTypes).length === 0
         ) {
           await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
         }
-        // await dispatch(allAssignessList(navigate, t));
         console.log("Test is calling or not");
 
         console.log("chek search meeting");
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        // localStorage.setItem("MeetingCurrentView", 1);
       }
     } catch (error) {}
   };
@@ -416,14 +391,6 @@ const NewMeeting = () => {
             dispatch(viewProposeOrganizerMeetingPageFlag(false));
             dispatch(proposeNewMeetingPageFlag(false));
             localStorage.setItem("currentMeetingID", meetingID);
-            // dispatch(
-            //   GetAllUserChats(
-            //     navigate,
-            //     parseInt(currentUserId),
-            //     parseInt(currentOrganizationId),
-            //     t
-            //   )
-            // );
           }
         };
         fetchData();
@@ -694,12 +661,6 @@ const NewMeeting = () => {
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
-      // setRow([]);
-      // setEdiorRole({
-      //   status: null,
-      //   role: null,
-      //   isPrimaryOrganizer: false,
-      // });
     };
   }, []);
 
@@ -778,13 +739,7 @@ const NewMeeting = () => {
     };
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
-    // setSearchFeilds({
-    //   ...searchFields,
-    //   Date: "",
-    //   DateView: "",
-    //   MeetingTitle: "",
-    //   OrganizerName: "",
-    // });
+
     setSearchMeeting(false);
     setentereventIcon(true);
   };
@@ -969,87 +924,91 @@ const NewMeeting = () => {
   };
 
   const handleViewMeeting = async (id, isQuickMeeting, status) => {
-    if (status === "10" || status === 10) {
-      if (isQuickMeeting) {
-        let joinMeetingData = {
-          FK_MDID: id,
-          DateTime: getCurrentDateTimeUTC(),
-        };
+    try {
+      if (status === "10" || status === 10) {
+        if (isQuickMeeting) {
+          let joinMeetingData = {
+            FK_MDID: id,
+            DateTime: getCurrentDateTimeUTC(),
+          };
 
-        dispatch(
-          JoinCurrentMeeting(
-            isQuickMeeting,
-            navigate,
-            t,
-            joinMeetingData,
-            setViewFlag,
-            setEditFlag,
-            setSceduleMeeting,
-            1,
-            setAdvanceMeetingModalID,
-            setViewAdvanceMeetingModal
-          )
-        );
+          dispatch(
+            JoinCurrentMeeting(
+              isQuickMeeting,
+              navigate,
+              t,
+              joinMeetingData,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              1,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
+          );
+        } else {
+          let joinMeetingData = {
+            FK_MDID: id,
+            DateTime: getCurrentDateTimeUTC(),
+          };
+
+          dispatch(
+            JoinCurrentMeeting(
+              isQuickMeeting,
+              navigate,
+              t,
+              joinMeetingData,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              1,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
+          );
+
+          // dispatch(
+          //   GetAllUserChats(
+          //     navigate,
+          //     parseInt(currentUserId),
+          //     parseInt(currentOrganizationId),
+          //     t
+          //   )
+          // );
+        }
       } else {
-        let joinMeetingData = {
-          FK_MDID: id,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-
-        dispatch(
-          JoinCurrentMeeting(
-            isQuickMeeting,
-            navigate,
-            t,
-            joinMeetingData,
-            setViewFlag,
-            setEditFlag,
-            setSceduleMeeting,
-            1,
-            setAdvanceMeetingModalID,
-            setViewAdvanceMeetingModal
-          )
-        );
-
-        // dispatch(
-        //   GetAllUserChats(
-        //     navigate,
-        //     parseInt(currentUserId),
-        //     parseInt(currentOrganizationId),
-        //     t
-        //   )
-        // );
+        if (isQuickMeeting) {
+          let Data = { MeetingID: id };
+          await dispatch(
+            ViewMeeting(
+              navigate,
+              Data,
+              t,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              1
+            )
+          );
+          // setViewFlag(true);
+        } else {
+          setAdvanceMeetingModalID(id);
+          setViewAdvanceMeetingModal(true);
+          dispatch(viewAdvanceMeetingPublishPageFlag(true));
+          dispatch(scheduleMeetingPageFlag(false));
+          localStorage.setItem("currentMeetingID", id);
+          // dispatch(
+          //   GetAllUserChats(
+          //     navigate,
+          //     parseInt(currentUserId),
+          //     parseInt(currentOrganizationId),
+          //     t
+          //   )
+          // );
+        }
       }
-    } else {
-      if (isQuickMeeting) {
-        let Data = { MeetingID: id };
-        await dispatch(
-          ViewMeeting(
-            navigate,
-            Data,
-            t,
-            setViewFlag,
-            setEditFlag,
-            setSceduleMeeting,
-            1
-          )
-        );
-        // setViewFlag(true);
-      } else {
-        setAdvanceMeetingModalID(id);
-        setViewAdvanceMeetingModal(true);
-        dispatch(viewAdvanceMeetingPublishPageFlag(true));
-        dispatch(scheduleMeetingPageFlag(false));
-        localStorage.setItem("currentMeetingID", id);
-        // dispatch(
-        //   GetAllUserChats(
-        //     navigate,
-        //     parseInt(currentUserId),
-        //     parseInt(currentOrganizationId),
-        //     t
-        //   )
-        // );
-      }
+    } catch (error) {
+      console.log(error, "errorerrorerror");
     }
   };
 
@@ -1220,10 +1179,6 @@ const NewMeeting = () => {
           text: t("Active"),
           value: "10",
         },
-        // {
-        //   text: t("Start"),
-        //   value: "2",
-        // },
         {
           text: t("Upcoming"),
           value: "1",
@@ -1444,8 +1399,6 @@ const NewMeeting = () => {
               (record.isQuickMeeting === true &&
                 record.pK_MDID === isButtonShown?.meetingID &&
                 isButtonShown?.showButton)
-              // &&
-              // minutesDifference > 0
             ) {
               return (
                 <Button
@@ -2033,7 +1986,6 @@ const NewMeeting = () => {
         setTotalRecords(searchMeetings.totalRecords);
         setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
         if (Object.keys(searchMeetings.meetings).length > 0) {
-          // });
           // Create a deep copy of the meetings array
           let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
             ...meeting,
@@ -2105,6 +2057,7 @@ const NewMeeting = () => {
     NewMeetingreducer.mqttMeetingPrAdded,
     NewMeetingreducer.mqtMeetingPrRemoved,
   ]);
+
   useEffect(() => {
     if (
       NewMeetingreducer.mqttMeetingAcRemoved !== null &&
@@ -2641,6 +2594,7 @@ const NewMeeting = () => {
 
     dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData]);
+
   useEffect(() => {
     if (NewMeetingreducer.meetingReminderNotification !== null) {
       try {
@@ -2690,10 +2644,6 @@ const NewMeeting = () => {
       }
     }
   }, [NewMeetingreducer.meetingReminderNotification]);
-  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
-  console.log(rows, "meetingDetailsMqttmeetingDetailsMqttmeetingDetailsMqtt");
-  console.log(startMeetingData, "updatedRowsDataupdatedRowsData");
-
   return (
     <>
       <section className={styles["NewMeeting_container"]}>

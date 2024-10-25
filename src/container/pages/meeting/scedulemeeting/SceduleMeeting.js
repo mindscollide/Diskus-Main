@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import styles from "./SceduleMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -420,8 +419,8 @@ const SceduleMeeting = ({
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+          console.log("chek search meeting");
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       } catch (error) {
         console.error(error, "error");
@@ -457,8 +456,8 @@ const SceduleMeeting = ({
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+          console.log("chek search meeting");
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       } catch (error) {
         console.error(error, "error");

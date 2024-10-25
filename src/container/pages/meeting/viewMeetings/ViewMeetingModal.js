@@ -80,7 +80,6 @@ const ViewMeetingModal = ({
   let userID = localStorage.getItem("userID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let isMinutePublished = localStorage.getItem("isMinutePublished");
-  console.log(typeof isMinutePublished, "isMinutePublishedisMinutePublished");
   let meetingTitle = localStorage.getItem("meetingTitle");
 
   const dispatch = useDispatch();

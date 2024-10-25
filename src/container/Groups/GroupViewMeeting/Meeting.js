@@ -20,7 +20,6 @@ import { useTranslation } from "react-i18next";
 import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
 import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
-
 import {
   getMeetingbyGroupApi,
   meetingNotConductedMQTT,
@@ -429,8 +428,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
                       onClick={() => {
-    console.log("end meeting chaek")
-    dispatch(
+                        console.log("end meeting chaek");
+                        dispatch(
                           UpdateOrganizersMeeting(
                             true,
                             navigate,
@@ -671,7 +670,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         MeetingStatusSocket,
         "MeetingStatusSocketMeetingStatusSocket"
       );
-      let meetingStatusID = MeetingStatusSocket.meetingStatusID;
       if (
         MeetingStatusSocket.message
           .toLowerCase()

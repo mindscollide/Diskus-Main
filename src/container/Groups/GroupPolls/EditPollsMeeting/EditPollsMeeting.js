@@ -346,7 +346,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         }
         try {
           let Option = [];
-          pollsDetailsData.pollOptions.map((data, index) => {
+          pollsDetailsData.pollOptions.forEach((data, index) => {
             let dataAdd = { name: index + 1, value: data.answer };
             Option.push(dataAdd);
           });
@@ -402,9 +402,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                             <Col lg={12} md={12} sm={12}>
                               <span className="position-relative">
                                 <TextField
-                                  placeholder={
-                                    "Option" + " " + parseInt(index + 1) + "*"
-                                  }
+                                  placeholder={`Option ${parseInt(index) + 1}*`}
                                   applyClass={"PollingCreateModal"}
                                   labelclass="d-none"
                                   name={data.name}
@@ -421,9 +419,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                             <Col lg={12} md={12} sm={12}>
                               <span className="position-relative">
                                 <TextField
-                                  placeholder={
-                                    "Option" + " " + parseInt(index + 1) + "*"
-                                  }
+                                  placeholder={`Option ${parseInt(index) + 1}*`}
                                   applyClass={"PollingCreateModal"}
                                   labelclass="d-none"
                                   name={data.name}

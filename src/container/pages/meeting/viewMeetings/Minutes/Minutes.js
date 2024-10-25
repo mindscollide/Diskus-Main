@@ -1771,14 +1771,13 @@ const Minutes = ({
               {isMinutePublishable === true ||
               (editorRole.role === "Organizer" &&
                 Number(editorRole.status) === 9 &&
-                deadLineDate <= currentDateOnly &&
-                (minutesData.length > 0 || minutesDataAgenda !== null)) ||
+                deadLineDate &&
+                deadLineDate <= currentDateOnly) ||
               (Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer" &&
+                deadLineDate &&
                 deadLineDate <= currentDateOnly &&
-                isMinutePublishable === true &&
-                (minutesData.length > 0 || minutesDataAgenda !== null) &&
-                MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null) ? (
+                isMinutePublishable === true) ? (
                 <Button
                   text={t("Publish-minutes")}
                   className={styles["PublishMinutes"]}

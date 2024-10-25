@@ -117,7 +117,7 @@ const AgendaWise = ({
           AgendaWiseAgendaListReducer.AllAgendas,
           "agendaListagendaList"
         );
-        AgendaWiseAgendaListReducer.AllAgendas.agendaList.map(
+        AgendaWiseAgendaListReducer.AllAgendas.agendaList.forEach(
           (agenda, index) => {
             console.log(agenda, "agendaListagendaList");
             NewData.push({
@@ -125,7 +125,7 @@ const AgendaWise = ({
               label: agenda.title,
             });
 
-            agenda.subAgenda.map((subajendaData, index) => {
+            agenda.subAgenda.forEach((subajendaData, index) => {
               NewData.push({
                 value: subajendaData.subAgendaID,
                 label: subajendaData.subTitle,
@@ -600,16 +600,18 @@ const AgendaWise = ({
       ) {
         let files = [];
         let prevData = [];
-        NewMeetingreducer.RetriveAgendaWiseDocuments.data.map((data, index) => {
-          files.push({
-            DisplayAttachmentName: data.displayFileName,
-            fileID: data.pK_FileID,
-          });
-          prevData.push({
-            pK_FileID: data.pK_FileID,
-            DisplayAttachmentName: data.displayFileName,
-          });
-        });
+        NewMeetingreducer.RetriveAgendaWiseDocuments.data.forEach(
+          (data, index) => {
+            files.push({
+              DisplayAttachmentName: data.displayFileName,
+              fileID: data.pK_FileID,
+            });
+            prevData.push({
+              pK_FileID: data.pK_FileID,
+              DisplayAttachmentName: data.displayFileName,
+            });
+          }
+        );
         setFileAttachments(files);
         setPreviousFileIDs(prevData);
       }
@@ -696,7 +698,7 @@ const AgendaWise = ({
 
   const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
     let minutesID = 0;
-    AgendaWiseData.items.map((id, index) => {
+    AgendaWiseData.items.forEach((id, index) => {
       minutesID = Number(id.minuteID);
     });
 

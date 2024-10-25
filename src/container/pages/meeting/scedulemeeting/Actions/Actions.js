@@ -34,7 +34,7 @@ import {
   saveMeetingActionsDocuments,
 } from "../../../../../store/actions/Action_Meeting";
 import CancelActions from "./CancelActions/CancelActions";
-import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
+// import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 import ModalViewToDo from "../../../../todolistviewModal/ModalViewToDo";
 import {
@@ -148,7 +148,7 @@ const Actions = ({
       todoStatus.Response !== "" &&
       todoStatus.Response?.length > 0
     ) {
-      todoStatus.Response.map((data, index) => {
+      todoStatus.Response.forEach((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,

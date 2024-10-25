@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./Agenda.module.css";
-import { useNavigate } from "react-router-dom";
-import { getAllAgendaContributorApi } from "../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";

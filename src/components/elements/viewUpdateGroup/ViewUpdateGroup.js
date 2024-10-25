@@ -182,17 +182,19 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
           setFolderID(GroupsReducer.groupDocuments.folderID);
           let retirveArray = [];
           let PrevIds = [];
-          GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
-            retirveArray.push({
-              pK_FileID: docsData.pK_FileID,
-              DisplayAttachmentName: docsData.displayFileName,
-              fk_UserID: docsData.fK_UserID,
-            });
-            PrevIds.push({
-              pK_FileID: docsData.pK_FileID,
-              DisplayAttachmentName: docsData.displayFileName,
-            });
-          });
+          GroupsReducer.groupDocuments.data.forEach(
+            (docsData, docsDataindex) => {
+              retirveArray.push({
+                pK_FileID: docsData.pK_FileID,
+                DisplayAttachmentName: docsData.displayFileName,
+                fk_UserID: docsData.fK_UserID,
+              });
+              PrevIds.push({
+                pK_FileID: docsData.pK_FileID,
+                DisplayAttachmentName: docsData.displayFileName,
+              });
+            }
+          );
           setPreviousFileIDs(PrevIds);
           setFileAttachments(retirveArray);
         } else {

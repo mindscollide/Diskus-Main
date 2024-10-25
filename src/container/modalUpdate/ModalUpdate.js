@@ -39,7 +39,6 @@ import {
   cleareAssigneesState,
   CancelMeeting,
 } from "../../store/actions/Get_List_Of_Assignees";
-import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
@@ -456,7 +455,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     try {
       setReminderValue(value);
       let valueOfReminder = assignees.RemindersData;
-      valueOfReminder.map((data, index) => {
+      valueOfReminder.forEach((data, index) => {
         if (value === data.description) {
           let id = data.pK_MRID;
           setCreateMeeting({
@@ -848,7 +847,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let user = participantOptionsWithIDs;
     if (user !== undefined) {
       if (participantOptionsWithIDs.length > 0) {
-        participantOptionsWithIDs.map((data) => {
+        participantOptionsWithIDs.forEach((data) => {
           if (data.label === value) {
             let newData = {
               User: {
@@ -880,7 +879,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   useEffect(() => {
     let valueOfReminder = assignees.RemindersData;
-    valueOfReminder.map((data) => {
+    valueOfReminder.forEach((data) => {
       if (createMeeting.MeetingReminderID === data.pK_MRID) {
         setReminderValue(data.description);
         setCreateMeeting({
@@ -1126,12 +1125,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setMinutesOftheMeatingStatus(false);
           setEndMeetingStatus(false);
         }
-        viewData.meetingReminders.map((rdata) => {
+        viewData.meetingReminders.forEach((rdata) => {
           let pkid = rdata.pK_MRID;
           reminder.push(pkid);
         });
         let valueOfReminder = assignees.RemindersData;
-        valueOfReminder.map((data) => {
+        valueOfReminder.forEach((data) => {
           if (data.pK_MRID === reminder[0]) {
             setReminderValue(data.description);
           }
@@ -1170,7 +1169,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           }
           if (viewData.externalMeetingAttendees !== undefined) {
             if (viewData.externalMeetingAttendees.length > 0) {
-              viewData.externalMeetingAttendees.map(
+              viewData.externalMeetingAttendees.forEach(
                 (externalMeetingAttendeesMeetingdata) => {
                   List.push({
                     name: externalMeetingAttendeesMeetingdata.emailAddress,
@@ -1186,7 +1185,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setAddedParticipantNameList(List);
         } catch (error) {}
         try {
-          viewData.meetingAgendas.map((atchmenData, index) => {
+          viewData.meetingAgendas.forEach((atchmenData, index) => {
             let opData = {
               PK_MAID: atchmenData.objMeetingAgenda.pK_MAID,
               Title: atchmenData.objMeetingAgenda.title,
@@ -1196,7 +1195,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             };
             let file = [];
             if (atchmenData.meetingAgendaAttachments !== null) {
-              atchmenData.meetingAgendaAttachments.map(
+              atchmenData.meetingAgendaAttachments.forEach(
                 (atchmenDataaa, index) => {
                   file.push({
                     PK_MAAID: atchmenDataaa.pK_MAAID,
@@ -1216,7 +1215,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
         } catch (error) {}
         try {
-          viewData.minutesOfMeeting.map((minutesOfMeetingData) => {
+          viewData.minutesOfMeeting.forEach((minutesOfMeetingData) => {
             minutesOfMeetings.push({
               PK_MOMID: minutesOfMeetingData.pK_MOMID,
               Description: minutesOfMeetingData.description,
@@ -1229,7 +1228,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           //  Block of code to handle errors
         }
         try {
-          viewData.externalMeetingAttendees.map(
+          viewData.externalMeetingAttendees.forEach(
             (externalMeetingAttendeesData) => {
               externalMeetingAttendiesList.push({
                 PK_EMAID: externalMeetingAttendeesData.pK_EMAID,
@@ -1328,13 +1327,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       ...meetingAgendaAttachments,
       MeetingAgendaAttachments: datarecord.MeetingAgendaAttachments,
     });
-  };
-
-  //On Click Of Dropdown Value
-  const onSearch = (name, id) => {
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
   };
 
   useEffect(() => {
@@ -1494,7 +1486,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           },
         });
         if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.map((data) => {
+          meetingAttendeesList.forEach((data) => {
             if (data.pK_UID === taskAssignedTo) {
               List.push({
                 name: data.name,
@@ -1548,8 +1540,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       }
     }
   };
-  console.log(createMeeting.IsVideoCall, "createMeetingcreateMeeting");
-  console.log(addedParticipantNameList, "createMeetingcreateMeeting");
+
   // for attendies handler
   const handleSubmit = async () => {
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
@@ -1922,32 +1913,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setCancelMeetingModal(true);
     }
   };
-
-  // const deleteAttachmentfromAgenda = (attachmentdata, index) => {
-  //   let meetingAgendas = meetingAgendaAttachments.MeetingAgendaAttachments;
-  //   console.log(meetingAgendas, "meetingAgendasmeetingAgendas");
-  //   console.log(attachmentdata, "meetingAgendasmeetingAgendas");
-  //   console.log(index, "meetingAgendasmeetingAgendas");
-  //   // let newArray = {};
-
-  //   // if (attachmentdata.PK_MAAID > 0) {
-  //   //   newArray = {
-  //   //     CreationDateTime: attachmentdata.CreationDateTime,
-  //   //     DisplayAttachmentName: "",
-  //   //     FK_MAID: attachmentdata.FK_MAID,
-  //   //     OriginalAttachmentName: "",
-  //   //     PK_MAAID: attachmentdata.PK_MAAID,
-  //   //   };
-  //   //   meetingAgendas[index] = newArray;
-  //   // } else {
-  //   //   meetingAgendas.splice(index, 1);
-  //   // }
-
-  //   // setMeetingAgendaAttachments({
-  //   //   ...meetingAgendaAttachments,
-  //   //   ["MeetingAgendaAttachments"]: meetingAgendas,
-  //   // });
-  // };
 
   const deleteAttachmentfromAgenda = (attachmentdata, index) => {
     setMeetingAgendaAttachments({
@@ -2482,9 +2447,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         <Button
                           style={{ display: "none" }}
                           onClick={addAnOtherAgenda}
-                          className={
-                            "modal-update-addagenda" + " " + currentLanguage
-                          }
+                          className={`modal-update-addagenda ${currentLanguage}`}
                           text={
                             editRecordFlag
                               ? t("Update-agenda")
@@ -2705,6 +2668,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                       }
                                     />
                                   );
+                                } else {
+                                  return null;
                                 }
                               })}
                             </span>
@@ -2744,6 +2709,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                       }
                                     />
                                   );
+                                } else {
+                                  return null;
                                 }
                               })}
                             </span>
@@ -2902,9 +2869,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       <Button
                         disableBtn={endMeetingStatus}
                         onClick={addAnOtherAgenda}
-                        className={
-                          " modal-update-addagenda" + " " + currentLanguage
-                        }
+                        className={`modal-update-addagenda ${currentLanguage}`}
                         text={
                           editRecordFlag
                             ? t("Update-agenda")

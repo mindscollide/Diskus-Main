@@ -47,9 +47,7 @@ import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const Groups = () => {
   const { t } = useTranslation();
-  const { GroupsReducer, talkStateData, talkFeatureStates } = useSelector(
-    (state) => state
-  );
+  const { GroupsReducer, talkStateData } = useSelector((state) => state);
   const [modalStatusChange, setModalStatusChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
@@ -317,10 +315,6 @@ const Groups = () => {
     } else {
       showMessage(t("No-talk-group-created"), "error", setOpen);
     }
-  };
-
-  const activegroupmodal = () => {
-    setShowActivegroup(true);
   };
 
   const handleDocumentsClickTab = (data) => {
