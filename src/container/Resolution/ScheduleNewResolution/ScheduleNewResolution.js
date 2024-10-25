@@ -971,7 +971,7 @@ const ScheduleNewResolution = () => {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.map((a) => {
+          newOrganizersData.groups.forEach((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -1004,7 +1004,7 @@ const ScheduleNewResolution = () => {
           });
         }
         if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.map((a) => {
+          newOrganizersData.committees.forEach((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -1037,7 +1037,7 @@ const ScheduleNewResolution = () => {
           });
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.map((a) => {
+          newOrganizersData.organizationUsers.forEach((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -1131,7 +1131,7 @@ const ScheduleNewResolution = () => {
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
       let newArr = [];
-      ResolutionReducer.GetAllVotingMethods.map((data) => {
+      ResolutionReducer.GetAllVotingMethods.forEach((data) => {
         newArr.push({
           value: data.pK_ResolutionVotingMethodID,
           label: data.votingMethod,
