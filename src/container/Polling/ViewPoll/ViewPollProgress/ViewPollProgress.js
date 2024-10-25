@@ -46,17 +46,17 @@ const ViewPollProgress = () => {
       let newOption = [];
 
       if (Object.keys(pollParticipants).length > 0) {
-        pollParticipants.map((data, index) => {
+        pollParticipants.forEach((data, index) => {
           memberpollsprogressView.push(data);
         });
       }
 
       if (pollSelectedAnswers.length > 0) {
-        pollOptions.map((newdata, index) => {
+        pollOptions.forEach((newdata, index) => {
           let find = pollSelectedAnswers.find(
             (data, index) => data.pollAnswerID === newdata.pollAnswerID
           );
-          if (find != undefined) {
+          if (find !== undefined) {
             let changeOptionData = {
               answer: newdata.answer,
               pollAnswerID: newdata.pollAnswerID,
@@ -78,7 +78,7 @@ const ViewPollProgress = () => {
         });
         setPollsOption(newOption);
       } else {
-        pollOptions.map((newdata, index) => {
+        pollOptions.forEach((newdata, index) => {
           let changeOptionData = {
             answer: newdata.answer,
             pollAnswerID: newdata.pollAnswerID,

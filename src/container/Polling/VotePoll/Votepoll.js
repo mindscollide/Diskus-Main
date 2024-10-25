@@ -73,7 +73,7 @@ const Votepoll = () => {
       });
     } else {
       const findID = viewProgressPollsDetails.answer.indexOf(name);
-      if (findID != -1) {
+      if (findID !== -1) {
         array.splice(findID, 1);
         setViewProgressPollsDetails({
           ...viewProgressPollsDetails,
@@ -94,7 +94,7 @@ const Votepoll = () => {
 
   const handleForCheck = (value) => {
     let findID = viewProgressPollsDetails.answer.find((data) => data === value);
-    if (findID != undefined) {
+    if (findID !== undefined) {
       return true;
     } else {
       return false;
