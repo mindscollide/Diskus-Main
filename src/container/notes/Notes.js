@@ -53,6 +53,7 @@ const Notes = () => {
     message: "",
     severity: "error",
   });
+
   // for modal Update notes
   const [updateShow, setUpdateShow] = useState(false);
   const [notes, setNotes] = useState([]);
@@ -257,6 +258,7 @@ const Notes = () => {
               notes.map((data, index) => {
                 return (
                   <CustomAccordion
+                    key={data.pK_NotesID || index}
                     StartField={data.title}
                     isExpand={isExpanded}
                     notesID={data.pK_NotesID}
