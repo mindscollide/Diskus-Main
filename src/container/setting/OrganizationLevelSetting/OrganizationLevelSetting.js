@@ -125,7 +125,7 @@ const OrganizationLevelSetting = () => {
     let TimeZone = settingReducer.TimeZone;
     if (TimeZone !== undefined && TimeZone !== null) {
       let newData = [];
-      TimeZone.map((data, index) => {
+      TimeZone.forEach((data, index) => {
         newData.push({
           label: data.gmtOffset
             ? data.countryName +

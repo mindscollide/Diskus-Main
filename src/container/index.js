@@ -48,8 +48,7 @@ export { default as OrganizationLevelSetting } from "../container/setting/Organi
 export { default as EmptyState } from "../container/Admin/Subscriptions/PackageDetail/EmptyStatePage/EmptyState";
 export { default as VideoPanelMaximize } from "../components/layout/talk/videoCallScreen/videoCallPanels/videoCallMaximizePanel";
 export { default as RSVP } from "../container/pages/meeting/RSVP";
-export { default as loginSuccess } from "../container/CalenderSyncLoginOutPages/CalenderLoginSuccess";
-export { default as logoutsuccess } from "../container/CalenderSyncLoginOutPages/CalenderLogout";
+
 export { default as MinutesFlow } from "../container/MinutesNewFlow/Main";
 export { default as Reports } from "../container/Admin/Reports/Reports";
 export { default as ManageUsers } from "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers";

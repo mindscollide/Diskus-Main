@@ -75,9 +75,9 @@ const MeetingDetails = ({
   const nextConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.nextConfirmModal
   );
-  const cancelModalMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
-  );
+  // const cancelModalMeetingDetails = useSelector(
+  //   (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+  // );
   const getmeetingURL = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
   );
@@ -852,9 +852,9 @@ const MeetingDetails = ({
   }, [getmeetingURL]);
 
   //funciton cancel button
-  const handleCancelMeetingButton = () => {
-    dispatch(showCancelModalmeetingDeitals(true));
-  };
+  // const handleCancelMeetingButton = () => {
+  //   dispatch(showCancelModalmeetingDeitals(true));
+  // };
 
   //Meeting Type Drop Down Data
   useEffect(() => {
@@ -918,7 +918,7 @@ const MeetingDetails = ({
         recurring.meetingRecurrances !== undefined
       ) {
         let Newdata = [];
-        recurring.meetingRecurrances.map((data, index) => {
+        recurring.meetingRecurrances.forEach((data, index) => {
           Newdata.push({
             value: data.recurranceID,
             label: data.recurrance,

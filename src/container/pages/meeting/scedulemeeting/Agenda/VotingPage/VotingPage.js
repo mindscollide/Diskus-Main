@@ -5,8 +5,6 @@ import { Button } from "../../../../../../components/elements";
 import dropmdownblack from "../../../../../../assets/images/whitedown.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import {
   showCastVoteAgendaModal,
   showviewVotesAgenda,

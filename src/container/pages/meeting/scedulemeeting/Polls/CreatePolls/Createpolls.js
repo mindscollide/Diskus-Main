@@ -173,7 +173,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
       let newmembersArray = [];
       if (Object.keys(pollMeetingData).length > 0) {
         if (pollMeetingData.meetingOrganizers.length > 0) {
-          pollMeetingData.meetingOrganizers.map(
+          pollMeetingData.meetingOrganizers.forEach(
             (MorganizerData, MorganizerIndex) => {
               let MeetingOrganizerData = {
                 value: MorganizerData.userID,
@@ -210,7 +210,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           );
         }
         if (pollMeetingData.meetingAgendaContributors.length > 0) {
-          pollMeetingData.meetingAgendaContributors.map(
+          pollMeetingData.meetingAgendaContributors.forEach(
             (meetAgendaContributor, meetAgendaContributorIndex) => {
               let MeetingAgendaContributorData = {
                 value: meetAgendaContributor.userID,
@@ -247,7 +247,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           );
         }
         if (pollMeetingData.meetingParticipants.length > 0) {
-          pollMeetingData.meetingParticipants.map(
+          pollMeetingData.meetingParticipants.forEach(
             (meetParticipants, meetParticipantsIndex) => {
               let MeetingParticipantsData = {
                 value: meetParticipants.userID,
@@ -306,7 +306,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     try {
       if (Object.keys(selectedsearch).length > 0) {
         try {
-          selectedsearch.map((seledtedData, index) => {
+          selectedsearch.forEach((seledtedData, index) => {
             if (seledtedData.type === 1) {
               let check1 = pollsData.meetingOrganizers.find(
                 (data, index) => data.userID === seledtedData.value
@@ -315,9 +315,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-
                 if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
+                  newarr.forEach((morganizer, index) => {
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );
@@ -343,10 +342,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-                let meetingOrganizers = check1;
-
                 if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
+                  newarr.forEach((morganizer, index) => {
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );
@@ -371,9 +368,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-
                 if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
+                  newarr.forEach((morganizer, index) => {
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );

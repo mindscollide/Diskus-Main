@@ -51,7 +51,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
     let tem = [...membersParticipants];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData, index) => {
+        selectedsearch.forEach((seledtedData, index) => {
           if (seledtedData.type === 1) {
             let check1 = newOrganizersData.groups.find(
               (data, index) => data.groupID === seledtedData.value
@@ -188,7 +188,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.map((a, index) => {
+          newOrganizersData.groups.forEach((a, index) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -221,7 +221,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
           });
         }
         if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.map((a, index) => {
+          newOrganizersData.committees.forEach((a, index) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -254,7 +254,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
           });
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.map((a, index) => {
+          newOrganizersData.organizationUsers.forEach((a, index) => {
             let newData = {
               value: a.userID,
               name: a.userName,

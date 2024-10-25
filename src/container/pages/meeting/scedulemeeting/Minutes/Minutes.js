@@ -351,7 +351,7 @@ const Minutes = ({
       ) {
         let files = [];
         let prevData = [];
-        generalMinutesDocument.data.map((data, index) => {
+        generalMinutesDocument.data.forEach((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
