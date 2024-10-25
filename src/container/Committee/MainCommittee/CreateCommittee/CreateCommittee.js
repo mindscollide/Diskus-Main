@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@mui/material";
-import featherupload from "../../../assets/images/featherupload.svg";
-import CrossIcon from "../../../assets/images/CrossIcon.svg";
+import featherupload from "../../../../assets/images/featherupload.svg";
+import CrossIcon from "../../../../assets/images/CrossIcon.svg";
 import { Upload } from "antd";
 import Select from "react-select";
 import {
@@ -13,7 +13,7 @@ import {
   SelectBox,
   Notification,
   AttachmentViewer,
-} from "./../../../components/elements";
+} from "./../../../../components/elements";
 import styles from "./CreateCommittee.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -22,19 +22,15 @@ import {
   getCommitteeTypes,
   saveFilesCommitteesApi,
   uploadDocumentsCommitteesApi,
-} from "../../../store/actions/Committee_actions";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+} from "../../../../store/actions/Committee_actions";
+import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
-import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+import ConfirmationModal from "../../../../components/elements/confirmationModal/ConfirmationModal";
 import { Spin } from "antd";
-import { saveCommitteeDocumentsApi } from "../../../store/actions/Committee_actions";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../container/DataRoom/SearchFunctionality/option";
-import { showMessage } from "../snack_bar/utill";
+import { saveCommitteeDocumentsApi } from "../../../../store/actions/Committee_actions";
 
-import { maxFileSize } from "../../../commen/functions/utils";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../../../commen/functions/utils";
 const CreateCommittee = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
   const navigate = useNavigate();
@@ -61,15 +57,25 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     name: "",
   });
 
-  const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
-    useState([]);
-  const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
-    []
-  );
+
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
+
+  // Committee Members Roles
+  const [committeeMembersRolesVal, setCommitteeMembersRolesVal] = useState({
+    label: "",
+    value: 0,
+  });
+  const [committeeMembersRolesOptions, setCommitteeMembersRolesOptions] =
+    useState([]);
+
+  // Committee Type Value
+  const [committeeTypesVal, setCommitteeTypesVal] = useState({
+    label: "",
+    value: 0,
+  });
+  const [newCommitteeTypeOptions, setNewCommitteeTypeOptions] = useState([]);
   const CommitteeTitle = useRef(null);
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState("Regular");
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let creatorID = JSON.parse(localStorage.getItem("userID"));
@@ -112,18 +118,14 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   useEffect(() => {
     try {
       if (CommitteeReducer.getCommitteeMembersRoles !== null) {
-        let committeeMembersRoleValues = [];
         let committeeMembersRoleOptions = [];
         CommitteeReducer.getCommitteeMembersRoles.forEach((data, index) => {
           committeeMembersRoleOptions.push({
             label: data.role,
-            id: data.committeeRoleID,
+            value: data.committeeRoleID,
           });
-          committeeMembersRoleValues.push(data.role);
         });
-
-        setCommitteeMemberRolesOptions(committeeMembersRoleOptions);
-        setCommitteeMemberRolesValues(committeeMembersRoleValues);
+        setCommitteeMembersRolesOptions(committeeMembersRoleOptions);
       }
     } catch (error) {
       console.log(error, "error");
@@ -139,12 +141,10 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         CommitteeReducer.getCommitteeTypes.forEach((data, index) => {
           committeeTypeOptions.push({
             label: data.type,
-            id: data.committeeTypeId,
+            value: data.committeeTypeId,
           });
-          committeeTypeValues.push(data.type);
         });
-        setCommitteeTypesOptions(committeeTypeOptions);
-        setCommitteeTypesValues(committeeTypeValues);
+        setNewCommitteeTypeOptions(committeeTypeOptions);
       }
     } catch (error) {
       console.log(error, "error");
@@ -201,13 +201,16 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
 
   // change handler changeHandlerCommitteeMemberRole
-  const changeHandlerCommitteeMemberRole = (e, value) => {
-    setParticipantRoleName(value);
+  const changeHandlerCommitteeMemberRole = (event) => {
+    setCommitteeMembersRolesVal(event);
   };
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
     let newMeetingAttendees = [...meetingAttendees];
     let newGroupMembers = [...groupMembers];
+    let findRegularRole = committeeMembersRolesOptions.find(
+      (roleOpt) => roleOpt.label === "Regular"
+    );
     if (taskAssignedTo !== 0 && attendees.length > 0) {
       showMessage(
         t("You-can-add-data-only-from-one-form-option-at-a-time"),
@@ -216,7 +219,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       );
       setAttendees([]);
       setTaskAssignedTo(0);
-      setParticipantRoleName("Regular");
+      setCommitteeMembersRolesVal(findRegularRole);
+
       setTaskAssignedToInput("");
       setPresenterValue({
         label: "",
@@ -227,30 +231,27 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       var foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
-      if (participantRoleName !== "") {
+      if (committeeMembersRolesVal.value !== 0) {
         if (foundIndex === -1) {
-          let roleID;
-          committeeMemberRolesOptions.forEach((data, index) => {
-            if (data.label === participantRoleName) {
-              roleID = data.id;
-              newMeetingAttendees.push({
-                FK_UID: taskAssignedTo, //userid
-                FK_CMMRID: data.id, //group member role id
-                FK_CMID: 0, //group id
-              });
-              setMeetingAttendees(newMeetingAttendees);
-            }
-            setCreateCommitteeDetails({
-              ...createCommitteeDetails,
-              CommitteeMembers: newMeetingAttendees,
-            });
+
+          newMeetingAttendees.push({
+            FK_UID: taskAssignedTo, //userid
+            FK_CMMRID: committeeMembersRolesVal.value, //group member role id
+            FK_CMID: 0, //group id
           });
+          setMeetingAttendees(newMeetingAttendees);
+
+          setCreateCommitteeDetails({
+            ...createCommitteeDetails,
+            CommitteeMembers: newMeetingAttendees,
+          });
+
           if (meetingAttendeesList.length > 0) {
             meetingAttendeesList.forEach((data, index) => {
               if (data.pK_UID === taskAssignedTo) {
                 newGroupMembers.push({
                   data,
-                  role: roleID,
+                  role: committeeMembersRolesVal.value,
                 });
                 setGroupMembers(newGroupMembers);
               }
@@ -258,7 +259,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           }
           setAttendees([]);
           setTaskAssignedTo(0);
-          setParticipantRoleName("Regular");
+          setCommitteeMembersRolesVal(findRegularRole);
+
           setTaskAssignedToInput("");
           setPresenterValue({
             label: "",
@@ -269,7 +271,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           showMessage(t("User-already-exist"), "error", setOpen);
           setAttendees([]);
           setTaskAssignedTo(0);
-          setParticipantRoleName("Regular");
+          setCommitteeMembersRolesVal(findRegularRole);
+
           setTaskAssignedToInput("");
           setPresenterValue({
             label: "",
@@ -286,11 +289,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       }
     } else if (attendees.length > 0) {
       let check = false;
-      let participantOptionsWithID =
-        committeeMemberRolesOptions &&
-        committeeMemberRolesOptions.find(
-          (data, index) => data.label === participantRoleName
-        );
+
       attendees.forEach((data, index) => {
         newMeetingAttendees.forEach((data2, index) => {
           if (data === data2.FK_UID) {
@@ -301,18 +300,19 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       if (check === true) {
         showMessage(t("User-already-exist"), "error", setOpen);
         setAttendees([]);
-        setParticipantRoleName("Regular");
+        setCommitteeMembersRolesVal(findRegularRole);
+
         setPresenterValue({
           label: "",
           value: 0,
           name: "",
         });
       } else {
-        if (participantOptionsWithID !== undefined) {
+        if (committeeMembersRolesVal.value !== 0) {
           attendees.forEach((dataID, index) => {
             newMeetingAttendees.push({
               FK_UID: dataID, //userid
-              FK_CMMRID: participantOptionsWithID.id, //group member role id
+              FK_CMMRID: committeeMembersRolesVal.value, //group member role id
               FK_CMID: 0, //group id
             });
             setMeetingAttendees(newMeetingAttendees);
@@ -320,7 +320,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
               if (data.pK_UID === dataID) {
                 newGroupMembers.push({
                   data,
-                  role: participantOptionsWithID.id,
+                  role: committeeMembersRolesVal.value,
                 });
                 setGroupMembers(newGroupMembers);
               }
@@ -331,8 +331,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             });
             setAttendees([]);
             setTaskAssignedTo(0);
-            setParticipantRoleName("Regular");
-            setTaskAssignedToInput("");
+            setCommitteeMembersRolesVal(findRegularRole);
             setPresenterValue({
               label: "",
               value: 0,
@@ -351,8 +350,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       showMessage(t("Please-select-atleast-one-members"), "error", setOpen);
       setAttendees([]);
       setTaskAssignedTo(0);
-      setParticipantRoleName("Regular");
-      setTaskAssignedToInput("");
+      setCommitteeMembersRolesVal(findRegularRole);
       setPresenterValue({
         label: "",
         value: 0,
@@ -404,14 +402,13 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
+                    className='d-flex gap-2 align-items-center'>
                     <img
                       src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                      alt=''
                     />
                     <span>{user.name}</span>
                   </Col>
@@ -620,20 +617,19 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   return (
     <>
-      <section className=" color-5a5a5a">
-        <Row className="mt-3">
+      <section className=' color-5a5a5a'>
+        <Row className='mt-3'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-start "
-          >
+            className='d-flex justify-content-start '>
             <span className={styles["Create-Committee-Heading"]}>
               {t("Create-new-committee")}
             </span>
           </Col>
         </Row>
-        <Row className="mt-2">
+        <Row className='mt-2'>
           <Col lg={12} md={12} sm={12}>
             <Paper className={styles["Create-Committee-paper"]}>
               <Row>
@@ -643,26 +639,26 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <span
-                            className={styles["details-class-Create-Committee"]}
-                          >
+                            className={
+                              styles["details-class-Create-Committee"]
+                            }>
                             {t("Details")}
                           </span>
                         </Col>
                       </Row>
 
-                      <Row className="mt-4">
+                      <Row className='mt-4'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="create-committee-fields CreateMeetingInput"
-                        >
+                          className='create-committee-fields CreateMeetingInput'>
                           <Form.Control
                             ref={CommitteeTitle}
-                            type="text"
+                            type='text'
                             placeholder={t("Committee-title-Committee")}
                             required={true}
-                            name="committeetitle"
+                            name='committeetitle'
                             className={styles["create_committee_title"]}
                             maxLength={300}
                             value={createCommitteeDetails.CommitteesTitle}
@@ -678,8 +674,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               createCommitteeDetails.CommitteesTitle === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
-                            }
-                          >
+                            }>
                             {t("Committee-title-is-required")}
                           </p>
                         </Col>
@@ -689,18 +684,17 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput Saved_money_Tagline "
-                        >
+                          className='CreateMeetingInput Saved_money_Tagline '>
                           <TextField
-                            applyClass="text-area-create-group"
-                            type="text"
+                            applyClass='text-area-create-group'
+                            type='text'
                             as={"textarea"}
                             maxLength={500}
                             value={createCommitteeDetails.CommitteesDescription}
-                            rows="4"
+                            rows='4'
                             placeholder={t("Group-Description")}
                             required={true}
-                            name="committeedescription"
+                            name='committeedescription'
                             change={onChangeFunc}
                           />
                         </Col>
@@ -714,51 +708,45 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
-                            }
-                          >
+                            }>
                             {t("Committee-description-is-required")}
                           </p>
                         </Col>
                       </Row>
-                      <Row className="mt-1">
+                      <Row className='mt-1'>
                         <Col
                           lg={6}
                           md={6}
                           sm={6}
-                          className={styles["CheckAlignment"]}
-                        >
+                          className={styles["CheckAlignment"]}>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox Saved_money_Tagline"
-                            >
+                              className='UpdateCheckbox Saved_money_Tagline'>
                               <Checkbox
-                                className="SearchCheckbox "
-                                name="IsChat"
+                                className='SearchCheckbox '
+                                name='IsChat'
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 label2={t("Create-talk-group")}
                                 checked={createCommitteeDetails.ISTalkChatGroup}
                                 onChange={CheckBoxHandler}
-                                classNameDiv="checkboxParentClass"
-                              ></Checkbox>
+                                classNameDiv='checkboxParentClass'></Checkbox>
                             </Col>
                           </Row>
                         </Col>
                         <Col lg={1} md={1} sm={1}></Col>
-                        <Col
-                          lg={5}
-                          md={5}
-                          sm={5}
-                          className="commmittee-type-select-field CreateMeetingReminder Saved_money_Tagline"
-                        >
-                          <SelectBox
-                            name="Participant"
+                        <Col lg={5} md={5} sm={5}>
+                          <Select
+                            options={newCommitteeTypeOptions}
+                            value={
+                              committeeTypesVal.value !== 0
+                                ? committeeTypeValue
+                                : null
+                            }
                             placeholder={t("Committee-type-committee")}
-                            option={committeeTypesValues}
-                            value={committeeTypeValue}
-                            change={CommitteeTypeChangeHandler}
+                            onChange={CommitteeTypeChangeHandler}
                           />
                         </Col>
                       </Row>
@@ -770,8 +758,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               erorbar && committeeTypeValue === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
-                            }
-                          >
+                            }>
                             {t("Committee-type-is-required")}
                           </p>
                         </Col>
@@ -782,36 +769,38 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["scroll-bar-createCommittee"]}
-                        >
-                          <Row className="mt-1">
+                          className={styles["scroll-bar-createCommittee"]}>
+                          <Row className='mt-1'>
                             <Col lg={12} md={12} sm={12}>
                               <span
                                 className={
                                   styles["Create-Committee-Head-Heading"]
-                                }
-                              >
+                                }>
                                 {t("Executive-member")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
                                 if (data.role === 2) {
                                   return (
-                                    <Col lg={6} md={6} sm={6} className="my-2">
+                                    <Col
+                                      lg={6}
+                                      md={6}
+                                      sm={6}
+                                      className='my-2'
+                                      key={data}>
                                       <section
-                                        className={styles["Outer_Border-Line"]}
-                                      >
+                                        className={styles["Outer_Border-Line"]}>
                                         <Row>
                                           <Col lg={3} md={3} sm={12}>
                                             <img
                                               src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
                                               width={50}
                                               height={50}
-                                              alt=""
-                                              draggable="false"
+                                              alt=''
+                                              draggable='false'
                                             />
                                           </Col>
                                           <Col
@@ -822,17 +811,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               styles[
                                                 "group-head-info-Create-Committee"
                                               ]
-                                            }
-                                          >
-                                            <Row className="mt-1">
+                                            }>
+                                            <Row className='mt-1'>
                                               <Col lg={12} md={12} sm={12}>
                                                 <span
                                                   className={
                                                     styles[
                                                       "name-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.name}
                                                 </span>
                                               </Col>
@@ -844,8 +831,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "Designation-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.designation}
                                                 </span>
                                               </Col>
@@ -857,8 +843,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "email-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   <a>
                                                     {data.data.emailAddress}
                                                   </a>
@@ -870,19 +855,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             lg={2}
                                             md={2}
                                             sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
+                                            className='mt-0  d-flex justify-content-center'>
                                             <img
                                               src={CrossIcon}
                                               width={18}
-                                              className="cursor-pointer"
+                                              className='cursor-pointer'
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
                                                 )
                                               }
-                                              draggable="false"
-                                              alt=""
+                                              draggable='false'
+                                              alt=''
                                             />
                                           </Col>
                                         </Row>
@@ -899,41 +883,43 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={styles["No-member"]}
-                                >
+                                  className={styles["No-member"]}>
                                   {t("No-member-selected")}
                                 </Col>
                               </>
                             )}
                           </Row>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} md={12} sm={12}>
                               <span
                                 className={
                                   styles["members-create-Committee-page"]
-                                }
-                              >
+                                }>
                                 {t("Regular-members")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
                                 if (data.role === 1) {
                                   return (
-                                    <Col lg={6} md={6} sm={6} className="mt-2">
+                                    <Col
+                                      lg={6}
+                                      md={6}
+                                      sm={6}
+                                      className='mt-2'
+                                      key={data}>
                                       <section
-                                        className={styles["Outer_Border-Line"]}
-                                      >
+                                        className={styles["Outer_Border-Line"]}>
                                         <Row>
                                           <Col lg={3} md={3} sm={12}>
                                             <img
                                               src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
                                               width={50}
                                               height={50}
-                                              alt=""
-                                              draggable="false"
+                                              alt=''
+                                              draggable='false'
                                             />
                                           </Col>
                                           <Col
@@ -944,17 +930,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               styles[
                                                 "group-head-info-Create-Committee"
                                               ]
-                                            }
-                                          >
-                                            <Row className="mt-1">
+                                            }>
+                                            <Row className='mt-1'>
                                               <Col lg={12} md={12} sm={12}>
                                                 <span
                                                   className={
                                                     styles[
                                                       "name-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.name}
                                                 </span>
                                               </Col>
@@ -966,8 +950,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "Designation-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.designation}
                                                 </span>
                                               </Col>
@@ -979,8 +962,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "email-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   <a>
                                                     {data.data.emailAddress}
                                                   </a>
@@ -992,19 +974,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             lg={2}
                                             md={2}
                                             sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
+                                            className='mt-0  d-flex justify-content-center'>
                                             <img
                                               src={CrossIcon}
                                               width={18}
-                                              className="cursor-pointer"
+                                              className='cursor-pointer'
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
                                                 )
                                               }
-                                              draggable="false"
-                                              alt=""
+                                              draggable='false'
+                                              alt=''
                                             />
                                           </Col>
                                         </Row>
@@ -1021,42 +1002,44 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={styles["No-member"]}
-                                >
+                                  className={styles["No-member"]}>
                                   {t("No-member-selected")}
                                 </Col>
                               </>
                             )}
                           </Row>
                           {/* Chair Person Member */}
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} md={12} sm={12}>
                               <span
                                 className={
                                   styles["members-create-Committee-page"]
-                                }
-                              >
+                                }>
                                 {t("Chair-person-members")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
                                 if (data.role === 3) {
                                   return (
-                                    <Col lg={6} md={6} sm={6} className="my-2">
+                                    <Col
+                                      lg={6}
+                                      md={6}
+                                      sm={6}
+                                      className='my-2'
+                                      key={data}>
                                       <section
-                                        className={styles["Outer_Border-Line"]}
-                                      >
+                                        className={styles["Outer_Border-Line"]}>
                                         <Row>
                                           <Col lg={3} md={3} sm={12}>
                                             <img
                                               src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
                                               width={50}
                                               height={50}
-                                              alt=""
-                                              draggable="false"
+                                              alt=''
+                                              draggable='false'
                                             />
                                           </Col>
                                           <Col
@@ -1067,17 +1050,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               styles[
                                                 "group-head-info-Create-Committee"
                                               ]
-                                            }
-                                          >
-                                            <Row className="mt-1">
+                                            }>
+                                            <Row className='mt-1'>
                                               <Col lg={12} md={12} sm={12}>
                                                 <span
                                                   className={
                                                     styles[
                                                       "name-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.name}
                                                 </span>
                                               </Col>
@@ -1089,8 +1070,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "Designation-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.designation}
                                                 </span>
                                               </Col>
@@ -1102,8 +1082,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "email-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   <a>
                                                     {data.data.emailAddress}
                                                   </a>
@@ -1115,19 +1094,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             lg={2}
                                             md={2}
                                             sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
+                                            className='mt-0  d-flex justify-content-center'>
                                             <img
                                               src={CrossIcon}
                                               width={18}
-                                              className="cursor-pointer"
+                                              className='cursor-pointer'
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
                                                 )
                                               }
-                                              alt=""
-                                              draggable="false"
+                                              alt=''
+                                              draggable='false'
                                             />
                                           </Col>
                                         </Row>
@@ -1144,42 +1122,39 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={styles["No-member"]}
-                                >
+                                  className={styles["No-member"]}>
                                   {t("No-member-selected")}
                                 </Col>
                               </>
                             )}
                           </Row>
                           {/* Vice Chair Person Member */}
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} md={12} sm={12}>
                               <span
                                 className={
                                   styles["members-create-Committee-page"]
-                                }
-                              >
+                                }>
                                 {t("Vice-chair-person-members")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
                                 if (data.role === 4) {
                                   return (
-                                    <Col lg={6} md={6} sm={6} className="my-2">
+                                    <Col lg={6} md={6} sm={6} className='my-2'>
                                       <section
-                                        className={styles["Outer_Border-Line"]}
-                                      >
+                                        className={styles["Outer_Border-Line"]}>
                                         <Row>
                                           <Col lg={3} md={3} sm={12}>
                                             <img
                                               src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
                                               width={50}
                                               height={50}
-                                              alt=""
-                                              draggable="false"
+                                              alt=''
+                                              draggable='false'
                                             />
                                           </Col>
                                           <Col
@@ -1190,17 +1165,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               styles[
                                                 "group-head-info-Create-Committee"
                                               ]
-                                            }
-                                          >
-                                            <Row className="mt-1">
+                                            }>
+                                            <Row className='mt-1'>
                                               <Col lg={12} md={12} sm={12}>
                                                 <span
                                                   className={
                                                     styles[
                                                       "name-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.name}
                                                 </span>
                                               </Col>
@@ -1212,8 +1185,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "Designation-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.designation}
                                                 </span>
                                               </Col>
@@ -1225,8 +1197,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "email-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   <a>
                                                     {data.data.emailAddress}
                                                   </a>
@@ -1238,19 +1209,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             lg={2}
                                             md={2}
                                             sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
+                                            className='mt-0  d-flex justify-content-center'>
                                             <img
                                               src={CrossIcon}
                                               width={18}
-                                              className="cursor-pointer"
+                                              className='cursor-pointer'
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
                                                 )
                                               }
-                                              alt=""
-                                              draggable="false"
+                                              alt=''
+                                              draggable='false'
                                             />
                                           </Col>
                                         </Row>
@@ -1267,42 +1237,39 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={styles["No-member"]}
-                                >
+                                  className={styles["No-member"]}>
                                   {t("No-member-selected")}
                                 </Col>
                               </>
                             )}
                           </Row>
                           {/* Secretary */}
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} md={12} sm={12}>
                               <span
                                 className={
                                   styles["members-create-Committee-page"]
-                                }
-                              >
+                                }>
                                 {t("Secretary")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
                                 if (data.role === 5) {
                                   return (
-                                    <Col lg={6} md={6} sm={6} className="my-2">
+                                    <Col lg={6} md={6} sm={6} className='my-2'>
                                       <section
-                                        className={styles["Outer_Border-Line"]}
-                                      >
+                                        className={styles["Outer_Border-Line"]}>
                                         <Row>
                                           <Col lg={3} md={3} sm={12}>
                                             <img
                                               src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
                                               width={50}
                                               height={50}
-                                              alt=""
-                                              draggable="false"
+                                              alt=''
+                                              draggable='false'
                                             />
                                           </Col>
                                           <Col
@@ -1313,17 +1280,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               styles[
                                                 "group-head-info-Create-Committee"
                                               ]
-                                            }
-                                          >
-                                            <Row className="mt-1">
+                                            }>
+                                            <Row className='mt-1'>
                                               <Col lg={12} md={12} sm={12}>
                                                 <span
                                                   className={
                                                     styles[
                                                       "name-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.name}
                                                 </span>
                                               </Col>
@@ -1335,8 +1300,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "Designation-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.designation}
                                                 </span>
                                               </Col>
@@ -1348,8 +1312,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "email-create-Committee"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   <a>
                                                     {data.data.emailAddress}
                                                   </a>
@@ -1361,19 +1324,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             lg={2}
                                             md={2}
                                             sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
+                                            className='mt-0  d-flex justify-content-center'>
                                             <img
                                               src={CrossIcon}
                                               width={18}
-                                              className="cursor-pointer"
+                                              className='cursor-pointer'
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
                                                 )
                                               }
-                                              alt=""
-                                              draggable="false"
+                                              alt=''
+                                              draggable='false'
                                             />
                                           </Col>
                                         </Row>
@@ -1390,8 +1352,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={styles["No-member"]}
-                                >
+                                  className={styles["No-member"]}>
                                   {t("No-member-selected")}
                                 </Col>
                               </>
@@ -1410,8 +1371,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               <span
                                 className={
                                   styles["Addmembers-class-Create-Committee"]
-                                }
-                              >
+                                }>
                                 {t("Add-members") + "*"}
                               </span>
                             </Col>
@@ -1421,8 +1381,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               md={12}
                               lg={12}
                               sm={12}
-                              className="create-committee-fields InputSearchForCreateCommittee"
-                            >
+                              className='create-committee-fields InputSearchForCreateCommittee'>
                               <Select
                                 options={allPresenters}
                                 maxMenuHeight={140}
@@ -1438,27 +1397,24 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             </Col>
                           </Row>
 
-                          <Row className="mt-3">
-                            <Col
-                              lg={10}
-                              md={10}
-                              sm={10}
-                              className="committee-select-fields CreateMeetingReminder   "
-                            >
-                              <SelectBox
-                                name="Participant"
+                          <Row className='mt-3'>
+                            <Col lg={10} md={10} sm={10}>
+                              <Select
+                                options={committeeMembersRolesOptions}
+                                value={
+                                  committeeMembersRolesVal.value !== 0
+                                    ? committeeMembersRolesVal
+                                    : null
+                                }
                                 placeholder={t("Type")}
-                                option={committeeMemberRolesValues}
-                                value={participantRoleName}
-                                change={changeHandlerCommitteeMemberRole}
+                                onChange={changeHandlerCommitteeMemberRole}
                               />
                             </Col>
                             <Col
                               lg={2}
                               md={2}
                               sm={2}
-                              className="d-flex justify-content-end"
-                            >
+                              className='d-flex justify-content-end'>
                               <Button
                                 className={styles["ADD-Committee-btn"]}
                                 text={t("Add")}
@@ -1475,8 +1431,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               sm={12}
                               className={
                                 styles["scrollbar-addmember-createcommittee"]
-                              }
-                            >
+                              }>
                               {meetingAttendeesList.length > 0 ? (
                                 meetingAttendeesList.map(
                                   (attendeelist, index) => {
@@ -1486,17 +1441,16 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                           lg={6}
                                           md={6}
                                           sm={6}
-                                          className="mt-4"
-                                          key={index}
-                                        >
-                                          <Row className="d-flex gap-2">
+                                          className='mt-4'
+                                          key={index}>
+                                          <Row className='d-flex gap-2'>
                                             <Col lg={2} md={2} sm={12}>
                                               <img
                                                 src={`data:image/jpeg;base64,${attendeelist?.displayProfilePictureName}`}
                                                 width={50}
                                                 height={50}
-                                                alt=""
-                                                draggable="false"
+                                                alt=''
+                                                draggable='false'
                                               />
                                             </Col>
                                             <Col
@@ -1507,17 +1461,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 styles[
                                                   "group-head-info-Add-Members-Create-Committee"
                                                 ]
-                                              }
-                                            >
-                                              <Row className="mt-1">
+                                              }>
+                                              <Row className='mt-1'>
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
                                                     className={
                                                       styles[
                                                         "name-create-Committee"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     {attendeelist.name}
                                                   </span>
                                                 </Col>
@@ -1529,8 +1481,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                       styles[
                                                         "Designation-create-Committee"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     {attendeelist.designation}
                                                   </span>
                                                 </Col>
@@ -1542,8 +1493,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                       styles[
                                                         "email-create-Committee"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     <a>
                                                       {
                                                         attendeelist.emailAddress
@@ -1557,8 +1507,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               lg={2}
                                               md={2}
                                               sm={12}
-                                              className="mt-2 "
-                                            >
+                                              className='mt-2 '>
                                               <Checkbox
                                                 // checked={rememberEmail}
                                                 checked={
@@ -1568,7 +1517,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     ? true
                                                     : false
                                                 }
-                                                classNameDiv=""
+                                                classNameDiv=''
                                                 onChange={() =>
                                                   checkAttendeeBox(
                                                     attendeelist,
@@ -1597,7 +1546,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           {/* at this point it is ending  */}
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Attachments_Heading"]}>
                             {"Attachment"}
@@ -1605,7 +1554,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                         </Col>
                       </Row>
                       <section className={styles["files_View"]}>
-                        <Row className="mt-1">
+                        <Row className='mt-1'>
                           {fileAttachments.length > 0
                             ? fileAttachments.map((data, index) => {
                                 return (
@@ -1627,25 +1576,23 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             : null}
                         </Row>
                       </section>
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col lg={12} md={12} sm={12}>
                           <Dragger
                             fileList={[]}
                             {...props}
                             className={
                               styles["dragdrop_attachment_create_resolution"]
-                            }
-                          >
-                            <p className="ant-upload-drag-icon">
+                            }>
+                            <p className='ant-upload-drag-icon'>
                               <span
-                                className={styles["create_resolution_dragger"]}
-                              >
+                                className={styles["create_resolution_dragger"]}>
                                 <img
                                   src={featherupload}
-                                  width="18.87px"
-                                  alt=""
-                                  height="18.87px"
-                                  draggable="false"
+                                  width='18.87px'
+                                  alt=''
+                                  height='18.87px'
+                                  draggable='false'
                                 />
                               </span>
                             </p>
@@ -1666,8 +1613,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-end gap-3 mt-4"
-                        >
+                          className='d-flex justify-content-end gap-3 mt-4'>
                           <Button
                             className={styles["Cancell-CreateCommittee-btn"]}
                             text={t("Cancel")}

@@ -3,7 +3,7 @@ import {
   AttachmentViewer,
   Button,
   Notification,
-} from "../../../components/elements";
+} from "../../../../components/elements";
 import styles from "./ViewCommittee.module.css";
 import { Upload } from "antd";
 import { useDispatch } from "react-redux";
@@ -14,15 +14,15 @@ import {
   saveCommitteeDocumentsApi,
   saveFilesCommitteesApi,
   uploadDocumentsCommitteesApi,
-} from "../../../store/actions/Committee_actions";
+} from "../../../../store/actions/Committee_actions";
 import { Col, Row } from "react-bootstrap";
-import featherupload from "../../../assets/images/featherupload.svg";
-import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import featherupload from "../../../../assets/images/featherupload.svg";
+import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import {
   fileFormatforSignatureFlow,
   maxFileSize,
-} from "../../../commen/functions/utils";
+} from "../../../../commen/functions/utils";
 const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const { Dragger } = Upload;
   const dispatch = useDispatch();

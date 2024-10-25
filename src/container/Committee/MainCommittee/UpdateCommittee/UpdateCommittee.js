@@ -9,12 +9,12 @@ import {
   SelectBox,
   Notification,
   AttachmentViewer,
-} from "./../../../components/elements";
+} from "../../../../components/elements";
 import styles from "./UpdateCommittee.module.css";
-import CrossIcon from "../../../assets/images/CrossIcon.svg";
+import CrossIcon from "../../../../assets/images/CrossIcon.svg";
 import { useSelector, useDispatch } from "react-redux";
-import featherupload from "../../../assets/images/featherupload.svg";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import featherupload from "../../../../assets/images/featherupload.svg";
+import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import Select from "react-select";
 import {
   getCommitteeMembersRole,
@@ -23,12 +23,12 @@ import {
   saveFilesCommitteesApi,
   updateCommittee,
   uploadDocumentsCommitteesApi,
-} from "../../../store/actions/Committee_actions";
+} from "../../../../store/actions/Committee_actions";
 import { useNavigate } from "react-router-dom";
-import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+import ConfirmationModal from "../../../../components/elements/confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
-import { showMessage } from "../snack_bar/utill";
-import { maxFileSize } from "../../../commen/functions/utils";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { maxFileSize } from "../../../../commen/functions/utils";
 
 const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
