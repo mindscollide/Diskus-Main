@@ -310,10 +310,11 @@ const ReviewMinutes = () => {
               reason: "",
               actorBundleStatusID: 3,
               declinedReviews:
-                subMinute.declinedReviews.length > 0 &&
-                subMinute.declinedReviews.filter(
-                  (userReview, index) => currentUserID !== userReview.fK_UID
-                ),
+                subMinute.declinedReviews.length > 0
+                  ? subMinute.declinedReviews.filter(
+                      (userReview, index) => currentUserID !== userReview.fK_UID
+                    )
+                  : [],
             };
           }
           return subMinute;
