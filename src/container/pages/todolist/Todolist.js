@@ -211,7 +211,7 @@ const TodoList = () => {
         todoStatus.Response !== "" &&
         todoStatus.Response.length > 0
       ) {
-        todoStatus.Response.map((data, index) => {
+        todoStatus.Response.forEach((data, index) => {
           optionsArr.push({
             id: data.pK_TSID,
             status: data.status,
