@@ -3,15 +3,15 @@ import { Col, Row } from "react-bootstrap";
 import styles from "./ViewGrouppage.module.css";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@mui/material";
-import Polls from "../../../container/Groups/GroupPolls/GroupViewPolls";
-import ViewGroupTodo from "../../../container/Groups/ViewGroupTodo/ViewGroupTodo";
-import ViewUpdateGroup from "../viewUpdateGroup/ViewUpdateGroup";
-import { getbyGroupID } from "../../../store/actions/Groups_actions";
-import { Button } from "./../../../components/elements";
+import Polls from "../../GroupPolls/GroupViewPolls";
+import ViewGroupTodo from "../../ViewGroupTodo/ViewGroupTodo";
+import ViewUpdateGroup from "../ViewGroup/ViewUpdateGroup";
+import { getbyGroupID } from "../../../../store/actions/Groups_actions";
+import { Button } from "./../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { XLg } from "react-bootstrap-icons";
-import GroupMeeting from "../../../container/Groups/GroupViewMeeting/Meeting";
+import GroupMeeting from "../../GroupViewMeeting/Meeting";
 
 const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const { t } = useTranslation();

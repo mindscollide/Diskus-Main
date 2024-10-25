@@ -132,8 +132,6 @@ export const router = createHashRouter(
             path=""
             element={
               <RouteWrapperUser name="">
-                {/* <Home /> */}
-
                 <NewDashobard />
               </RouteWrapperUser>
             }
@@ -150,7 +148,6 @@ export const router = createHashRouter(
             path="home"
             element={
               <RouteWrapperUser name="home">
-                {/* <Home /> */}
                 <NewDashobard />
               </RouteWrapperUser>
             }
