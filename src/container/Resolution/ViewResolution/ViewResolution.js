@@ -26,7 +26,6 @@ const ViewResolution = ({ setViewresolution }) => {
   const navigate = useNavigate();
   const [voterVeiwResolution, setVoterVeiwResolution] = useState(true);
   const [nonVoterVeiwResolution, setNonVoterViewResolution] = useState(false);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [resolutionData, setResolutionData] = useState(null);
 
   const voterButtonForViewResolution = () => {

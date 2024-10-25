@@ -9,7 +9,7 @@ import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg
 import Abstain from "../../assets/images/Abstain.svg";
 import Tie from "../../assets/images/Tie.svg";
 import { Chart } from "react-google-charts";
-import { Button, Notification } from "./../../components/elements";
+import { Button } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./VotingPage.module.css";
 import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";

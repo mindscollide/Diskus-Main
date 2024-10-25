@@ -53,7 +53,7 @@ const Notes = () => {
     message: "",
     severity: "error",
   });
-
+  const [showStarIcon, setStarIcon] = useState(false);
   // for modal Update notes
   const [updateShow, setUpdateShow] = useState(false);
   const [notes, setNotes] = useState([]);
@@ -111,7 +111,7 @@ const Notes = () => {
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.forEach((data) => {
+          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
             notes.push({
               date: data.date,
               description: data.description,
@@ -137,7 +137,7 @@ const Notes = () => {
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.forEach((data) => {
+          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
             notes.push({
               date: data.date,
               description: data.description,
@@ -258,7 +258,6 @@ const Notes = () => {
               notes.map((data, index) => {
                 return (
                   <CustomAccordion
-                    key={data.pK_NotesID || index}
                     StartField={data.title}
                     isExpand={isExpanded}
                     notesID={data.pK_NotesID}

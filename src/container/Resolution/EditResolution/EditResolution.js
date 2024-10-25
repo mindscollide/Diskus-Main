@@ -41,10 +41,13 @@ import {
 } from "../../../store/actions/Resolution_actions";
 import moment from "moment";
 import {
+  convertIntoDateObject,
   createConvert,
   editResolutionDate,
   editResolutionTime,
   editResolutionTimeView,
+  forRecentActivity,
+  multiDatePickerDateChangIntoUTC,
   removeDashesFromDate,
   RemoveTimeDashes,
   utcConvertintoGMT,
@@ -58,6 +61,7 @@ import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../commen/functions/utils";
+import { CirclePicker } from "react-color";
 const EditResolution = ({ setCancelresolution }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -142,25 +146,22 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
-    time: new Date(),
-    dateValue: "",
-    timeCirculationforView: "",
+    time: "",
   });
 
   const [votingDateTime, setVotingDateTime] = useState({
     date: "",
-    time: new Date(),
-    dateValue: "",
-    timeVotingforView: "",
+    time: "",
   });
 
   const [decisionDateTime, setDecisionDateTime] = useState({
     date: "",
-    time: new Date(),
-    dateValue: "",
-    timeDecisionforView: "",
+    time: "",
   });
-
+  console.log(
+    { circulationDateTime, votingDateTime, decisionDateTime },
+    "circulationDateTimecirculationDateTimecirculationDateTime"
+  );
   const [ReminderFrequncyValue, setReminderFrequencyValue] = useState({
     label: "",
     value: 0,
@@ -790,27 +791,33 @@ const EditResolution = ({ setCancelresolution }) => {
             editResolutionData.FK_ResolutionVotingMethodID,
           Title: editResolutionData.Title,
           NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: createConvert(
-            removeDashesFromDate(circulationDateTime.date) +
-              RemoveTimeDashes(circulationDateTime.time)
-          ),
-          DeadlineDateTime: createConvert(
-            removeDashesFromDate(votingDateTime.date) +
-              RemoveTimeDashes(votingDateTime.time)
-          ),
+          CirculationDateTime: `${multiDatePickerDateChangIntoUTC(
+            circulationDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            circulationDateTime.time
+          ).slice(8, 14)}`,
+          DeadlineDateTime: `${multiDatePickerDateChangIntoUTC(
+            votingDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            votingDateTime.time
+          ).slice(8, 14)}`,
+
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
-          DecisionAnnouncementDateTime: createConvert(
-            removeDashesFromDate(decisionDateTime.date) +
-              RemoveTimeDashes(decisionDateTime.time)
-          ),
+          DecisionAnnouncementDateTime: `${multiDatePickerDateChangIntoUTC(
+            decisionDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            decisionDateTime.time
+          ).slice(8, 14)}`,
+
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
+      console.log(Data, "DataDataDataDataDataData");
       dispatch(createResolution(navigate, Data, voters, t));
     } else {
       setsendStatus(2);
@@ -821,27 +828,32 @@ const EditResolution = ({ setCancelresolution }) => {
             editResolutionData.FK_ResolutionVotingMethodID,
           Title: editResolutionData.Title,
           NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: createConvert(
-            removeDashesFromDate(circulationDateTime.date) +
-              RemoveTimeDashes(circulationDateTime.time)
-          ),
-          DeadlineDateTime: createConvert(
-            removeDashesFromDate(votingDateTime.date) +
-              RemoveTimeDashes(votingDateTime.time)
-          ),
+          CirculationDateTime: `${multiDatePickerDateChangIntoUTC(
+            circulationDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            circulationDateTime.time
+          ).slice(8, 14)}`,
+          DeadlineDateTime: `${multiDatePickerDateChangIntoUTC(
+            votingDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            votingDateTime.time
+          ).slice(8, 14)}`,
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
-          DecisionAnnouncementDateTime: createConvert(
-            removeDashesFromDate(decisionDateTime.date) +
-              RemoveTimeDashes(decisionDateTime.time)
-          ),
+          DecisionAnnouncementDateTime: `${multiDatePickerDateChangIntoUTC(
+            decisionDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            decisionDateTime.time
+          ).slice(8, 14)} `,
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
+      console.log(Data, "DataDataDataDataDataData");
+
       dispatch(createResolution(navigate, Data, voters, t));
     }
   };
@@ -856,27 +868,31 @@ const EditResolution = ({ setCancelresolution }) => {
             editResolutionData.FK_ResolutionVotingMethodID,
           Title: editResolutionData.Title,
           NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: createConvert(
-            removeDashesFromDate(circulationDateTime.date) +
-              RemoveTimeDashes(circulationDateTime.time)
-          ),
-          DeadlineDateTime: createConvert(
-            removeDashesFromDate(votingDateTime.date) +
-              RemoveTimeDashes(votingDateTime.time)
-          ),
+          CirculationDateTime: `${multiDatePickerDateChangIntoUTC(
+            circulationDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            circulationDateTime.time
+          ).slice(8, 14)}`,
+          DeadlineDateTime: `${multiDatePickerDateChangIntoUTC(
+            votingDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            votingDateTime.time
+          ).slice(8, 14)}`,
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
-          DecisionAnnouncementDateTime: createConvert(
-            removeDashesFromDate(decisionDateTime.date) +
-              RemoveTimeDashes(decisionDateTime.time)
-          ),
+          DecisionAnnouncementDateTime: `${multiDatePickerDateChangIntoUTC(
+            decisionDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            decisionDateTime.time
+          ).slice(8, 14)}`,
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
+      console.log(Data, "DataDataDataDataData");
       dispatch(createResolution(navigate, Data, voters, t));
     } else {
       setsendStatus(1);
@@ -887,27 +903,32 @@ const EditResolution = ({ setCancelresolution }) => {
             editResolutionData.FK_ResolutionVotingMethodID,
           Title: editResolutionData.Title,
           NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: createConvert(
-            removeDashesFromDate(circulationDateTime.date) +
-              RemoveTimeDashes(circulationDateTime.time)
-          ),
-          DeadlineDateTime: createConvert(
-            removeDashesFromDate(votingDateTime.date) +
-              RemoveTimeDashes(votingDateTime.time)
-          ),
+          CirculationDateTime: `${multiDatePickerDateChangIntoUTC(
+            circulationDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            circulationDateTime.time
+          ).slice(8, 14)}`,
+          DeadlineDateTime: `${multiDatePickerDateChangIntoUTC(
+            votingDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            votingDateTime.time
+          ).slice(8, 14)}`,
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
-          DecisionAnnouncementDateTime: createConvert(
-            removeDashesFromDate(decisionDateTime.date) +
-              RemoveTimeDashes(decisionDateTime.time)
-          ),
+          DecisionAnnouncementDateTime: `${multiDatePickerDateChangIntoUTC(
+            decisionDateTime.date
+          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+            decisionDateTime.time
+          ).slice(8, 14)}`,
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
+      console.log(Data, "DataDataDataDataData");
+
       dispatch(createResolution(navigate, Data, voters, t));
     }
   };
@@ -1078,7 +1099,7 @@ const EditResolution = ({ setCancelresolution }) => {
         (data) =>
           data.value === resolutionData.fK_ResolutionReminderFrequency_ID
       )
-      .map((reminderData) => {
+      .forEach((reminderData) => {
         setReminderFrequencyValue({
           label: reminderData.label,
           value: reminderData.value,
@@ -1088,37 +1109,28 @@ const EditResolution = ({ setCancelresolution }) => {
       .filter(
         (data) => data.value === resolutionData.fK_ResolutionVotingMethodID
       )
-      .map((methodData) => {
+      .forEach((methodData) => {
         setVotingMethodValue({
           label: methodData.label,
           value: methodData.value,
         });
       });
     setCirculationDateTime({
-      date: editResolutionDate(resolutionData.circulationDateTime),
-      time: editResolutionTime(resolutionData.circulationDateTime),
-      dateValue: moment(
-        utcConvertintoGMT(resolutionData.circulationDateTime)
-      ).format("DD/MM/YYYY"),
+      date: convertIntoDateObject(resolutionData.circulationDateTime),
+      time: convertIntoDateObject(resolutionData.circulationDateTime),
     });
     setVotingDateTime({
-      date: editResolutionDate(resolutionData?.votingDeadline),
-      time: editResolutionTime(resolutionData?.votingDeadline),
-      dateValue: moment(
-        utcConvertintoGMT(resolutionData?.votingDeadline)
-      ).format("DD/MM/YYYY"),
+      date: convertIntoDateObject(resolutionData?.votingDeadline),
+      time: convertIntoDateObject(resolutionData?.votingDeadline),
     });
     setDecisionDateTime({
-      date: editResolutionDate(resolutionData.decisionAnnouncementDateTime),
-      time: editResolutionTime(resolutionData.decisionAnnouncementDateTime),
-      dateValue: moment(
-        utcConvertintoGMT(resolutionData.decisionAnnouncementDateTime)
-      ).format("DD/MM/YYYY"),
+      date: convertIntoDateObject(resolutionData.decisionAnnouncementDateTime),
+      time: convertIntoDateObject(resolutionData.decisionAnnouncementDateTime),
     });
     if (attachmentsResolution.length > 0) {
       let atCH = [];
       let newData = [];
-      attachmentsResolution.map((data) => {
+      attachmentsResolution.forEach((data) => {
         atCH.push({
           DisplayAttachmentName: data.DisplayAttachmentName,
           OriginalAttachmentName: data.OriginalAttachmentName,
@@ -1137,10 +1149,10 @@ const EditResolution = ({ setCancelresolution }) => {
     if (votersResolutionMembers.length > 0) {
       let viewVoter = [];
       let sendVoter = [];
-      votersResolutionMembers.map((voterMember) => {
+      votersResolutionMembers.forEach((voterMember) => {
         meetingAttendeesList
           .filter((assigneeData) => assigneeData.pK_UID === voterMember.fK_UID)
-          .map((data) => {
+          .forEach((data) => {
             sendVoter.push({
               FK_UID: data.pK_UID,
               FK_VotingStatus_ID: 3,
@@ -1156,10 +1168,10 @@ const EditResolution = ({ setCancelresolution }) => {
     if (nonVotersResolutionMembers.length > 0) {
       let viewVoter = [];
       let sendVoter = [];
-      nonVotersResolutionMembers.map((voterMember) => {
+      nonVotersResolutionMembers.forEach((voterMember) => {
         meetingAttendeesList
           .filter((assigneeData) => assigneeData.pK_UID === voterMember.fK_UID)
-          .map((data) => {
+          .forEach((data) => {
             sendVoter.push({
               FK_UID: data.pK_UID,
               FK_VotingStatus_ID: 3,
@@ -1183,7 +1195,7 @@ const EditResolution = ({ setCancelresolution }) => {
         let usersData = [];
         if (Object.keys(newOrganizersData).length > 0) {
           if (Object.keys(newOrganizersData.groups).length > 0) {
-            newOrganizersData.groups.map((a, index) => {
+            newOrganizersData.groups.forEach((a, index) => {
               let newData = {
                 value: a.groupID,
                 name: a.groupName,
@@ -1216,7 +1228,7 @@ const EditResolution = ({ setCancelresolution }) => {
             });
           }
           if (Object.keys(newOrganizersData.committees).length > 0) {
-            newOrganizersData.committees.map((a, index) => {
+            newOrganizersData.committees.forEach((a, index) => {
               let newData = {
                 value: a.committeeID,
                 name: a.committeeName,
@@ -1249,7 +1261,7 @@ const EditResolution = ({ setCancelresolution }) => {
             });
           }
           if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-            newOrganizersData.organizationUsers.map((a, index) => {
+            newOrganizersData.organizationUsers.forEach((a, index) => {
               let newData = {
                 value: a.userID,
                 name: a.userName,
@@ -1300,7 +1312,7 @@ const EditResolution = ({ setCancelresolution }) => {
     try {
       if (ResolutionReducer.GetAllVotingMethods !== null) {
         let newArr = [];
-        ResolutionReducer.GetAllVotingMethods.map((data, index) => {
+        ResolutionReducer.GetAllVotingMethods.forEach((data, index) => {
           newArr.push({
             value: data.pK_ResolutionVotingMethodID,
             label: data.votingMethod,
@@ -1351,7 +1363,7 @@ const EditResolution = ({ setCancelresolution }) => {
             (data) =>
               data.value === resolutionData.fK_ResolutionReminderFrequency_ID
           )
-          .map((reminderData) => {
+          .forEach((reminderData) => {
             setReminderFrequencyValue({
               label: reminderData.label,
               value: reminderData.value,
@@ -1361,41 +1373,27 @@ const EditResolution = ({ setCancelresolution }) => {
           .filter(
             (data) => data.value === resolutionData.fK_ResolutionVotingMethodID
           )
-          .map((methodData) => {
+          .forEach((methodData) => {
             setVotingMethodValue({
               label: methodData.label,
               value: methodData.value,
             });
           });
         setCirculationDateTime({
-          date: editResolutionDate(resolutionData.circulationDateTime),
-          time: editResolutionTime(resolutionData.circulationDateTime),
-          timeCirculationforView: editResolutionTimeView(
-            resolutionData.circulationDateTime
-          ),
-          dateValue: moment(
-            utcConvertintoGMT(resolutionData.circulationDateTime)
-          ).format("DD/MM/YYYY"),
+          date: convertIntoDateObject(resolutionData.circulationDateTime),
+          time: convertIntoDateObject(resolutionData.circulationDateTime),
         });
         setVotingDateTime({
-          date: editResolutionDate(resolutionData?.votingDeadline),
-          time: editResolutionTime(resolutionData?.votingDeadline),
-          timeVotingforView: editResolutionTimeView(
-            resolutionData?.votingDeadline
-          ),
-          dateValue: moment(
-            utcConvertintoGMT(resolutionData.votingDeadline)
-          ).format("DD/MM/YYYY"),
+          date: convertIntoDateObject(resolutionData?.votingDeadline),
+          time: convertIntoDateObject(resolutionData?.votingDeadline),
         });
         setDecisionDateTime({
-          date: editResolutionDate(resolutionData.decisionAnnouncementDateTime),
-          time: editResolutionTime(resolutionData.decisionAnnouncementDateTime),
-          timeDecisionforView: editResolutionTimeView(
+          date: convertIntoDateObject(
             resolutionData.decisionAnnouncementDateTime
           ),
-          dateValue: moment(
-            utcConvertintoGMT(resolutionData.decisionAnnouncementDateTime)
-          ).format("DD/MM/YYYY"),
+          time: convertIntoDateObject(
+            resolutionData.decisionAnnouncementDateTime
+          ),
         });
         if (attachmentsResolution.length > 0) {
           let atCH = [];
@@ -1445,7 +1443,7 @@ const EditResolution = ({ setCancelresolution }) => {
           let nVtr = [];
           let nVtrVie = [];
 
-          nonVotersResolutionMembers.map((voterMember, index) => {
+          nonVotersResolutionMembers.forEach((voterMember, index) => {
             usersList
               .filter(
                 (assigneeData, index) =>
@@ -1470,90 +1468,68 @@ const EditResolution = ({ setCancelresolution }) => {
   }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
 
   const circulationDateChangeHandler = (date) => {
-    let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let meetingDateSaveFormat = new Date(date);
     setCirculationDateTime({
       ...circulationDateTime,
       date: meetingDateSaveFormat,
-      dateValue: meetingDateValueFormat,
     });
   };
 
   const votingDateChangeHandler = (date) => {
-    let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let meetingDateSaveFormat = new Date(date);
 
     setVotingDateTime({
       ...votingDateTime,
       date: meetingDateSaveFormat,
-      dateValue: meetingDateValueFormat,
     });
   };
 
   const decisionChangeHandler = (date) => {
-    let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let meetingDateSaveFormat = new Date(date);
     setDecisionDateTime({
       ...decisionDateTime,
       date: meetingDateSaveFormat,
-      dateValue: meetingDateValueFormat,
     });
   };
 
   //Circulation Time
   const handleCirculationTimeChange = (date) => {
-    if (date instanceof Date && !isNaN(date)) {
-      const hours = ("0" + date.getHours()).slice(-2);
-      const minutes = ("0" + date.getMinutes()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours}:${minutes}`;
-
+    let newData = new Date(date);
+    console.log(newData, "newDatanewData");
+    if (newData instanceof Date && !isNaN(newData)) {
       setCirculationDateTime({
         ...circulationDateTime,
-        time: formattedTime,
-        timeCirculationforView: date,
+        time: newData,
       });
     } else {
     }
   };
+  console.log({ circulationDateTime }, "votingDateTime");
 
   //Voting Time
   const handleVotingTimeChange = (date) => {
-    if (date instanceof Date && !isNaN(date)) {
-      const hours = ("0" + date.getHours()).slice(-2);
-      const minutes = ("0" + date.getMinutes()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours}:${minutes}`;
-
+    let newData = new Date(date);
+    if (newData instanceof Date && !isNaN(newData)) {
       setVotingDateTime({
         ...votingDateTime,
-        time: formattedTime,
-        timeVotingforView: date,
+        time: newData,
       });
     } else {
     }
   };
-
+  console.log({ votingDateTime }, "votingDateTime");
   //Decisions Time
   const handleDecisionTimeChange = (date) => {
     let newData = new Date(date);
     if (newData instanceof Date && !isNaN(newData)) {
-      const hours = ("0" + newData.getHours()).slice(-2);
-      const minutes = ("0" + newData.getMinutes()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours}:${minutes}`;
-
       setDecisionDateTime({
         ...decisionDateTime,
-        time: formattedTime,
-        timeDecisionforView: date,
+        time: newData,
       });
     } else {
     }
   };
+  console.log({ decisionDateTime }, "votingDateTime");
 
   //Custom Input For Time selectors
   function CustomInput({ onFocus, value, onChange }) {
@@ -1768,7 +1744,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                   }
                                   inputMode=""
                                   name="circulation"
-                                  value={circulationDateTime.dateValue}
+                                  value={circulationDateTime.date}
                                   calendar={calendarValue}
                                   locale={localValue}
                                   onFocusedDateChange={
@@ -1808,15 +1784,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                 format="hh:mm A"
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
-                                selected={
-                                  circulationDateTime.timeCirculationforView
-                                }
-                                value={
-                                  circulationDateTime.timeCirculationforView
-                                }
-                                onChange={(date) =>
-                                  handleCirculationTimeChange(date)
-                                }
+                                value={circulationDateTime.time}
+                                onChange={handleCirculationTimeChange}
                               />
                               <Row>
                                 <Col>
@@ -1878,7 +1847,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                   }
                                   inputMode=""
                                   name="voting"
-                                  value={votingDateTime.dateValue}
+                                  value={votingDateTime.date}
                                   calendar={calendarValue}
                                   locale={localValue}
                                   onFocusedDateChange={votingDateChangeHandler}
@@ -1916,11 +1885,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                 editable={false}
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
-                                selected={votingDateTime.timeVotingforView}
-                                value={votingDateTime.timeVotingforView}
-                                onChange={(date) =>
-                                  handleVotingTimeChange(date)
-                                }
+                                value={votingDateTime.time}
+                                onChange={handleVotingTimeChange}
                               />
                               <Row>
                                 <Col>
@@ -1983,7 +1949,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                   }
                                   inputMode=""
                                   name="decision"
-                                  value={decisionDateTime.dateValue}
+                                  value={decisionDateTime.date}
                                   calendar={calendarValue}
                                   locale={localValue}
                                   onFocusedDateChange={decisionChangeHandler}
@@ -2023,8 +1989,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                 editable={false}
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
-                                selected={decisionDateTime.timeDecisionforView}
-                                value={decisionDateTime.timeDecisionforView}
+                                // selected={decisionDateTime.timeDecisionforView}
+                                value={decisionDateTime.time}
                                 onChange={(date) =>
                                   handleDecisionTimeChange(date)
                                 }

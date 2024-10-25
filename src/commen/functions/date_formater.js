@@ -323,7 +323,6 @@ export const resolutionResultTable = (dateTime) => {
 
   let convertTime = new Date(fullDateYear);
 
-
   return convertTime;
 };
 
@@ -991,10 +990,10 @@ export const DateFormatForPolls = (date) => {
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
 };
 
-export const timePassed=(dateString)=> {
+export const timePassed = (dateString) => {
   const givenDate = new Date(dateString);
   const currentDate = new Date();
-  
+
   const diffInMs = currentDate - givenDate; // Difference in milliseconds
   const diffInSeconds = Math.floor(diffInMs / 1000);
   const diffInMinutes = Math.floor(diffInSeconds / 60);
@@ -1002,12 +1001,30 @@ export const timePassed=(dateString)=> {
   const diffInDays = Math.floor(diffInHours / 24);
 
   if (diffInDays > 0) {
-      return `${diffInDays} day(s) ago`;
+    return `${diffInDays} day(s) ago`;
   } else if (diffInHours > 0) {
-      return `${diffInHours} hour(s) ago`;
+    return `${diffInHours} hour(s) ago`;
   } else if (diffInMinutes > 0) {
-      return `${diffInMinutes} minute(s) ago`;
+    return `${diffInMinutes} minute(s) ago`;
   } else {
-      return `${diffInSeconds} second(s) ago`;
+    return `${diffInSeconds} second(s) ago`;
   }
-}
+};
+
+export const convertIntoDateObject = (dateTime) => {
+  let fullDateYear =
+    dateTime.slice(0, 4) +
+    "-" +
+    dateTime.slice(4, 6) +
+    "-" +
+    dateTime.slice(6, 8) +
+    "T" +
+    dateTime.slice(8, 10) +
+    ":" +
+    dateTime.slice(10, 12) +
+    ":" +
+    dateTime.slice(12, 14) +
+    ".000Z";
+  let _dateTime = new Date(fullDateYear);
+  return _dateTime;
+};
