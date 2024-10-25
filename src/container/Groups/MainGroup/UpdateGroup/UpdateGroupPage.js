@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import featherupload from "../../../assets/images/featherupload.svg";
+import featherupload from "../../../../assets/images/featherupload.svg";
 import { Paper } from "@mui/material";
 import {
   TextField,
@@ -10,9 +10,9 @@ import {
   SelectBox,
   Notification,
   AttachmentViewer,
-} from "./../../../components/elements";
+} from "./../../../../components/elements";
 import styles from "./UpadateGroup.module.css";
-import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
+import CrossIcon from "../../../../assets/images/cancel_meeting_icon.svg";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,13 +22,13 @@ import {
   saveFilesGroupsApi,
   updateGroup,
   uploadDocumentsGroupsApi,
-} from "../../../store/actions/Groups_actions";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+} from "../../../../store/actions/Groups_actions";
+import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
-import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
-import { maxFileSize } from "../../../commen/functions/utils";
-import { showMessage } from "../snack_bar/utill";
+import { maxFileSize } from "../../../../commen/functions/utils";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import ConfirmationModal from "../../../../components/elements/confirmationModal/ConfirmationModal";
 
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
@@ -79,6 +79,17 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     label: "",
     name: "",
   });
+
+  const [groupMembersRolesVal, setGroupMembersRolesVal] = useState({
+    label: "",
+    value: 0,
+  });
+  const [groupMembersRolesOptions, setGroupMembersRolesOptions] = useState([]);
+  const [groupTypesVal, setGroupTypesVal] = useState({
+    label: "",
+    value: 0,
+  });
+  const [newGroupTypeOptions, setNewGroupTypeOptions] = useState([]);
 
   // for Participant id's
   const participantOptionsWithIDs = [
@@ -300,31 +311,30 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupsReducer.getOrganizationGroupRoles !== null &&
       GroupsReducer.getOrganizationGroupRoles.length > 0
     ) {
-      let newArr = [];
+      let newRoles = [];
       GroupsReducer.getOrganizationGroupRoles.forEach((data, index) => {
-        newArr.push({
+        newRoles.push({
+          value: data.groupRoleID,
           label: data.role,
-          id: data.groupRoleID,
         });
       });
-      setParticipantRoles([...newArr]);
+      setGroupMembersRolesOptions(newRoles);
     }
   }, [GroupsReducer.getOrganizationGroupRoles]);
+
 
   // for api response of list group Types
   useEffect(() => {
     if (GroupsReducer.getOrganizationGroupTypes !== null) {
-      let newArr = [];
-      let newArrGroupType = [];
+      let newArrGroupType1 = [];
+
       GroupsReducer.getOrganizationGroupTypes.forEach((data, index) => {
-        newArr.push({
+        newArrGroupType1.push({
+          value: data.groupTypeID,
           label: data.type,
-          id: data.groupTypeID,
         });
-        newArrGroupType.push(data.type);
       });
-      setGroupTypeOptions([...newArrGroupType]);
-      setOrganizationGroupType([...newArr]);
+      setNewGroupTypeOptions(newArrGroupType1);
     }
   }, [GroupsReducer.getOrganizationGroupTypes]);
 

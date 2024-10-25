@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import featherupload from "../../../assets/images/featherupload.svg";
+import featherupload from "../../../../assets/images/featherupload.svg";
 import { Paper } from "@mui/material";
-import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg";
+import deleteButtonCreateMeeting from "../../../../assets/images/cancel_meeting_icon.svg";
 import {
   TextField,
   Button,
@@ -11,7 +11,7 @@ import {
   SelectBox,
   Notification,
   AttachmentViewer,
-} from "./../../../components/elements";
+} from "./../../../../components/elements";
 import styles from "./CreateGroup.module.css";
 import Select from "react-select";
 
@@ -23,14 +23,14 @@ import {
   getOrganizationGroupTypes,
   saveFilesGroupsApi,
   uploadDocumentsGroupsApi,
-} from "../../../store/actions/Groups_actions";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+} from "../../../../store/actions/Groups_actions";
+import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+import ConfirmationModal from "../../../../components/elements/confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
-import { maxFileSize } from "../../../commen/functions/utils";
-import { showMessage } from "../snack_bar/utill";
+import { maxFileSize } from "../../../../commen/functions/utils";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const CreateGroup = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
@@ -64,15 +64,24 @@ const CreateGroup = ({ setCreategrouppage }) => {
     GroupStatusID: 0,
     GroupMembers: [],
   });
-
+  console.log(
+    createGroupDetails,
+    "createGroupDetailscreateGroupDetailscreateGroupDetails"
+  );
   const GroupeTitle = useRef(null);
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState(t("Regular"));
-  const participantOptions = [t("Head"), t("Regular")];
-  const [groupTypeOptions, setGroupTypeOptions] = useState([]);
-  const [groupTypeValue, setGroupTypeValue] = useState("");
-  const [organizationGroupType, setOrganizationGroupType] = useState([]);
+  const [groupMembersRolesVal, setGroupMembersRolesVal] = useState({
+    label: "",
+    value: 0,
+  });
+  const [groupMembersRolesOptions, setGroupMembersRolesOptions] = useState([]);
+  const [groupTypesVal, setGroupTypesVal] = useState({
+    label: "",
+    value: 0,
+  });
+  const [newGroupTypeOptions, setNewGroupTypeOptions] = useState([]);
+
   const [meetingAttendees, setMeetingAttendees] = useState([]);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenterValue, setPresenterValue] = useState({
@@ -98,8 +107,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
   }, []);
 
   // for attendies Role handler
-  const assigntRoleAttendies = (e, value) => {
-    setParticipantRoleName(value);
+  const assigntRoleAttendies = (selectRole) => {
+    setGroupMembersRolesVal(selectRole);
   };
 
   // for api reponce of list of all assignees
@@ -117,14 +126,13 @@ const CreateGroup = ({ setCreategrouppage }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
+                    className='d-flex gap-2 align-items-center'>
                     <img
                       src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                      alt=''
                     />
                     <span>{user.name}</span>
                   </Col>
@@ -146,30 +154,29 @@ const CreateGroup = ({ setCreategrouppage }) => {
       GroupsReducer.getOrganizationGroupRoles !== null &&
       GroupsReducer.getOrganizationGroupRoles.length > 0
     ) {
-      let newArr = [];
+      let newRoles = [];
       GroupsReducer.getOrganizationGroupRoles.forEach((data, index) => {
-        newArr.push({
+        newRoles.push({
+          value: data.groupRoleID,
           label: data.role,
-          id: data.groupRoleID,
         });
       });
+      setGroupMembersRolesOptions(newRoles);
     }
   }, [GroupsReducer.getOrganizationGroupRoles]);
 
   // for api response of list group Types
   useEffect(() => {
     if (GroupsReducer.getOrganizationGroupTypes !== null) {
-      let newArr = [];
-      let newArrGroupType = [];
+      let newArrGroupType1 = [];
+
       GroupsReducer.getOrganizationGroupTypes.forEach((data, index) => {
-        newArr.push({
+        newArrGroupType1.push({
+          value: data.groupTypeID,
           label: data.type,
-          id: data.groupTypeID,
         });
-        newArrGroupType.push(data.type);
       });
-      setGroupTypeOptions([...newArrGroupType]);
-      setOrganizationGroupType([...newArr]);
+      setNewGroupTypeOptions(newArrGroupType1);
     }
   }, [GroupsReducer.getOrganizationGroupTypes]);
 
@@ -191,15 +198,16 @@ const CreateGroup = ({ setCreategrouppage }) => {
     // Create new copies of state variables to avoid state mutations
     const newMeetingAttendees = [...meetingAttendees];
     const newGroupMembers = [...groupMembers];
-
-    // Check if there's a selected user and a role
+    let findRegularState = groupMembersRolesOptions.find((data, index) => data.label === "Regular")
+    console.log(findRegularState, "findRegularStatefindRegularState")
+    // Check if there's  a selected user and a role
     if (taskAssignedTo !== 0 && attendees.length > 0) {
       showMessage(
         t("You-can-add-data-from-only-one-form-option-at-a-time"),
         "error",
         setOpen
       );
-    } else if (!participantRoleName) {
+    } else if (groupMembersRolesVal.value === 0) {
       showMessage(
         t("Please-select-a-group-member-type-as-well"),
         "error",
@@ -211,15 +219,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
       );
 
       if (foundIndex === -1) {
-        // Find the role ID based on the selected role name
-        const roleID = participantOptionsWithIDs.find(
-          (data) => data.label === participantRoleName
-        )?.id;
-
         // Add the new attendee to the meeting attendees list
         newMeetingAttendees.push({
           FK_UID: taskAssignedTo,
-          FK_GRMRID: roleID,
+          FK_GRMRID: groupMembersRolesVal.value,
           FK_GRID: 0,
         });
 
@@ -234,7 +237,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         const selectedUser = meetingAttendeesList.find(
           (data) => data.pK_UID === taskAssignedTo
         );
-        const role = roleID ? roleID : 0;
+        const role = groupMembersRolesVal.value;
         newGroupMembers.push({ data: selectedUser, role });
 
         // Update the group members list
@@ -242,7 +245,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
         // Clear input fields and reset state
         setTaskAssignedTo(0);
-        setParticipantRoleName("");
         setTaskAssignedToInput("");
         setAttendees([]);
         setPresenterValue({
@@ -253,15 +255,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
       } else {
         showMessage(t("User-already-exists"), "error", setOpen);
         setTaskAssignedTo(0);
-        setParticipantRoleName("");
         setTaskAssignedToInput("");
         setAttendees([]);
       }
     } else if (attendees.length > 0) {
       let check = false;
-      const participantOptionsWithID = participantOptionsWithIDs.find(
-        (data) => data.label === participantRoleName
-      );
 
       groupMembers.forEach((data) => {
         attendees.forEach((data2) => {
@@ -275,25 +273,24 @@ const CreateGroup = ({ setCreategrouppage }) => {
         showMessage(t("User-already-exists"), "error", setOpen);
         setAttendees([]);
         setTaskAssignedTo(0);
-        setParticipantRoleName("");
         setTaskAssignedToInput("");
         setPresenterValue({
           value: 0,
           label: "",
           name: "",
         });
-      } else if (participantOptionsWithID !== undefined) {
+      } else if (groupMembersRolesVal.value !== 0) {
         attendees.forEach((dataID) => {
           newMeetingAttendees.push({
             FK_UID: dataID,
-            FK_GRMRID: participantOptionsWithID.id,
+            FK_GRMRID: groupMembersRolesVal.value,
             FK_GRID: 0,
           });
 
           const selectedUser = meetingAttendeesList.find(
             (data) => data.pK_UID === dataID
           );
-          const role = participantOptionsWithID.id;
+          const role = groupMembersRolesVal.value;
           newGroupMembers.push({ data: selectedUser, role });
         });
 
@@ -312,7 +309,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
           label: "",
           name: "",
         });
-        setParticipantRoleName("");
       } else {
         showMessage(
           t("Please-select-a-group-member-type-as-well"),
@@ -320,14 +316,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
           setOpen
         );
         setTaskAssignedTo(0);
-        setParticipantRoleName("");
         setTaskAssignedToInput("");
         setAttendees([]);
       }
     } else {
       showMessage(t("Please-select-at-least-one-member"), "error", setOpen);
       setTaskAssignedTo(0);
-      setParticipantRoleName("");
       setTaskAssignedToInput("");
       setAttendees([]);
       setPresenterValue({
@@ -339,16 +333,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
 
   // Group type Change Handler
-  const groupTypeChangeHandler = (e, value) => {
-    setGroupTypeValue(value);
-
-    let findID = organizationGroupType.find(
-      (data, index) => data.label === value
-    );
+  const groupTypeChangeHandler = (selectValue) => {
+    setGroupTypesVal(selectValue);
 
     setCreateGroupDetails({
       ...createGroupDetails,
-      GroupTypeID: findID.id,
+      GroupTypeID: selectValue.value,
     });
   };
   //Input Field Assignee Change
@@ -585,20 +575,19 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   return (
     <>
-      <section className=" color-5a5a5a">
-        <Row className="mt-3">
+      <section className=' color-5a5a5a'>
+        <Row className='mt-3'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-start "
-          >
+            className='d-flex justify-content-start '>
             <span className={styles["Create-Group-Heading"]}>
               {t("Create-new-group")}
             </span>
           </Col>
         </Row>
-        <Row className="mt-2">
+        <Row className='mt-2'>
           <Col lg={12} md={12} sm={12}>
             <Paper className={styles["Create-Group-paper"]}>
               <Row>
@@ -612,23 +601,22 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="Group_input_field "
-                        >
+                          className='Group_input_field '>
                           <Form.Control
-                            applyClass="form-control2"
+                            applyClass='form-control2'
                             ref={GroupeTitle}
-                            type="text"
+                            type='text'
                             maxLength={300}
                             placeholder={t("Group-title")}
                             required={true}
                             value={createGroupDetails.Title}
                             onChange={onChangeFunc}
-                            name="tasktitle"
+                            name='tasktitle'
                           />
                         </Col>
                       </Row>
@@ -639,8 +627,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               erorbar && createGroupDetails.Title === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
-                            }
-                          >
+                            }>
                             {t("Group-title-is-required")}
                           </p>
                         </Col>
@@ -650,19 +637,18 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="Group_input_field CreateMeetingInput "
-                        >
+                          className='Group_input_field CreateMeetingInput '>
                           <TextField
-                            applyClass="text-area-create-group"
-                            type="text"
+                            applyClass='text-area-create-group'
+                            type='text'
                             as={"textarea"}
-                            rows="8"
+                            rows='8'
                             value={createGroupDetails.Description}
                             maxLength={500}
                             placeholder={t("Group-Description")}
                             required={true}
                             change={onChangeFunc}
-                            name="groupdescription"
+                            name='groupdescription'
                           />
                         </Col>
                       </Row>
@@ -673,64 +659,56 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               erorbar && createGroupDetails.Description === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
-                            }
-                          >
+                            }>
                             {t("Group-description-is-required")}
                           </p>
                         </Col>
                       </Row>
-                      <Row className="mt-1">
+                      <Row className='mt-1'>
                         <Col
                           lg={6}
                           md={6}
                           sm={6}
-                          className={styles["CheckBoxalign"]}
-                        >
+                          className={styles["CheckBoxalign"]}>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox Saved_money_Tagline"
-                            >
+                              className='UpdateCheckbox Saved_money_Tagline'>
                               <Checkbox
-                                className="SearchCheckbox "
-                                name="IsChat"
+                                className='SearchCheckbox '
+                                name='IsChat'
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 label2={t("Create-talk-group")}
                                 checked={createGroupDetails.isGroupChat}
                                 onChange={CheckBoxHandler}
-                                classNameDiv="checkboxParentClass"
-                              ></Checkbox>
+                                classNameDiv='checkboxParentClass'></Checkbox>
                             </Col>
                           </Row>
                         </Col>
                         <Col lg={1} md={1} sm={1}></Col>
-                        <Col
-                          lg={5}
-                          md={5}
-                          sm={5}
-                          className="group-type-select-field m-0 CreateMeetingReminder"
-                        >
-                          <SelectBox
-                            name="grouptype"
-                            placeholder={t("Group-Type-Group")}
-                            option={groupTypeOptions}
-                            change={groupTypeChangeHandler}
-                            value={groupTypeValue}
+                        <Col lg={5} md={5} sm={5}>
+                          <Select
+                            options={newGroupTypeOptions}
+                            onChange={groupTypeChangeHandler}
+                            value={
+                              groupTypesVal.value !== 0 ? groupTypesVal : null
+                            }
+                            placeholder={t("Select-group-type")}
                           />
                         </Col>
                         <Row>
                           <Col
-                            className={styles["create-grouperror-type-heading"]}
-                          >
+                            className={
+                              styles["create-grouperror-type-heading"]
+                            }>
                             <p
                               className={
-                                erorbar && groupTypeValue === ""
+                                erorbar && groupTypesVal.value === 0
                                   ? styles["errorMessage"]
                                   : styles["errorMessage_hidden"]
-                              }
-                            >
+                              }>
                               {t("Group-type-is-required")}
                             </p>
                           </Col>
@@ -742,18 +720,16 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["scroll-bar-creategroup"]}
-                        >
-                          <Row className="mt-1">
+                          className={styles["scroll-bar-creategroup"]}>
+                          <Row className='mt-1'>
                             <Col lg={12} md={12} sm={12}>
                               <span
-                                className={styles["Create-group-Head-Heading"]}
-                              >
+                                className={styles["Create-group-Head-Heading"]}>
                                 {t("Group-head")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             {groupMembers.length > 0 ? (
                               groupMembers.map((renderdata, index) => {
                                 if (renderdata.role === 2) {
@@ -763,16 +739,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                         <section
                                           className={
                                             styles["Outer_Border-Line"]
-                                          }
-                                        >
+                                          }>
                                           <Row>
                                             <Col lg={3} md={3} sm={12}>
                                               <img
                                                 src={`data:image/jpeg;base64,${renderdata.data.displayProfilePictureName}`}
                                                 width={50}
-                                                alt=""
+                                                alt=''
                                                 height={50}
-                                                draggable="false"
+                                                draggable='false'
                                               />
                                             </Col>
                                             <Col
@@ -781,17 +756,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                               sm={7}
                                               className={
                                                 styles["group-head-info"]
-                                              }
-                                            >
-                                              <Row className="mt-1">
+                                              }>
+                                              <Row className='mt-1'>
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
                                                     className={
                                                       styles[
                                                         "name-create-group"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     {renderdata.data.name}
                                                   </span>
                                                 </Col>
@@ -803,8 +776,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                       styles[
                                                         "Designation-create-group"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     {
                                                       renderdata.data
                                                         .designation
@@ -819,12 +791,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                       styles[
                                                         "email-create-group"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     {" "}
                                                     <a
-                                                      href={`mailto:${renderdata.data.emailAddress}`}
-                                                    >
+                                                      href={`mailto:${renderdata.data.emailAddress}`}>
                                                       {
                                                         renderdata.data
                                                           .emailAddress
@@ -838,20 +808,19 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                               lg={2}
                                               md={2}
                                               sm={2}
-                                              className="d-flex align-items-center"
-                                            >
+                                              className='d-flex align-items-center'>
                                               <img
                                                 src={deleteButtonCreateMeeting}
-                                                className="cursor-pointer"
+                                                className='cursor-pointer'
                                                 width={20}
                                                 height={20}
-                                                alt=""
+                                                alt=''
                                                 onClick={() =>
                                                   removeMemberHandler(
                                                     renderdata.data.pK_UID
                                                   )
                                                 }
-                                                draggable="false"
+                                                draggable='false'
                                               />
                                             </Col>
                                           </Row>
@@ -869,39 +838,36 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={styles["no-members-found"]}
-                                >
+                                  className={styles["no-members-found"]}>
                                   {t("No-group-heads-found")}
                                 </Col>
                               </>
                             )}
                           </Row>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} md={12} sm={12}>
                               <span
-                                className={styles["members-create-group-page"]}
-                              >
+                                className={styles["members-create-group-page"]}>
                                 {t("Members")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
+                          <Row className='mt-2'>
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
                                 if (data.role === 1) {
                                   return (
                                     <Col lg={6} md={6} sm={6}>
                                       <section
-                                        className={styles["Outer_Border-Line"]}
-                                      >
+                                        className={styles["Outer_Border-Line"]}>
                                         <Row>
                                           <Col lg={3} md={3} sm={12}>
                                             <img
                                               src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
                                               width={50}
-                                              alt=""
+                                              alt=''
                                               height={50}
-                                              draggable="false"
+                                              draggable='false'
                                             />
                                           </Col>
                                           <Col
@@ -910,15 +876,13 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             sm={7}
                                             className={
                                               styles["group-head-info"]
-                                            }
-                                          >
-                                            <Row className="mt-1">
+                                            }>
+                                            <Row className='mt-1'>
                                               <Col lg={12} md={12} sm={12}>
                                                 <span
                                                   className={
                                                     styles["name-create-group"]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.name}
                                                 </span>
                                               </Col>
@@ -930,8 +894,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                     styles[
                                                       "Designation-create-group"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {data.data.designation}
                                                 </span>
                                               </Col>
@@ -941,8 +904,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 <span
                                                   className={
                                                     styles["email-create-group"]
-                                                  }
-                                                >
+                                                  }>
                                                   <a>
                                                     {" "}
                                                     {data.data.emailAddress}
@@ -955,20 +917,19 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             lg={2}
                                             md={2}
                                             sm={2}
-                                            className="d-flex align-items-center"
-                                          >
+                                            className='d-flex align-items-center'>
                                             <img
-                                              alt=""
+                                              alt=''
                                               src={deleteButtonCreateMeeting}
                                               width={20}
-                                              className="cursor-pointer"
+                                              className='cursor-pointer'
                                               height={20}
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
                                                 )
                                               }
-                                              draggable="false"
+                                              draggable='false'
                                             />
                                           </Col>
                                         </Row>
@@ -984,8 +945,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className={styles["no-members-found"]}
-                              >
+                                className={styles["no-members-found"]}>
                                 {t("No-group-memebers-found")}
                               </Col>
                             )}
@@ -1010,8 +970,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               md={12}
                               lg={12}
                               sm={12}
-                              className="group-fields"
-                            >
+                              className='group-fields'>
                               <Select
                                 options={allPresenters}
                                 maxMenuHeight={140}
@@ -1026,27 +985,24 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               />
                             </Col>
                           </Row>
-                          <Row className="mt-4">
-                            <Col
-                              lg={10}
-                              md={10}
-                              sm={10}
-                              className="group-select-field  CreateMeetingReminder"
-                            >
-                              <SelectBox
-                                name="Participant"
+                          <Row className='mt-4'>
+                            <Col lg={10} md={10} sm={10}>
+                              <Select
+                                options={groupMembersRolesOptions}
+                                onChange={assigntRoleAttendies}
+                                value={
+                                  groupMembersRolesVal.value !== 0
+                                    ? groupMembersRolesVal
+                                    : null
+                                }
                                 placeholder={t("Type")}
-                                option={participantOptions}
-                                value={participantRoleName}
-                                change={assigntRoleAttendies}
                               />
                             </Col>
                             <Col
                               lg={2}
                               md={2}
                               sm={2}
-                              className=" d-flex justify-content-end"
-                            >
+                              className=' d-flex justify-content-end'>
                               <Button
                                 className={styles["ADD-Group-btn"]}
                                 text={t("Add")}
@@ -1062,8 +1018,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               sm={12}
                               className={
                                 styles["scrollbar-addmember-creategroup"]
-                              }
-                            >
+                              }>
                               {meetingAttendeesList.length > 0
                                 ? meetingAttendeesList.map(
                                     (attendeelist, index) => {
@@ -1073,16 +1028,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             lg={6}
                                             md={6}
                                             sm={6}
-                                            className="mt-3"
-                                          >
-                                            <Row className="d-flex gap-2">
+                                            className='mt-3'>
+                                            <Row className='d-flex gap-2'>
                                               <Col lg={2} md={2} sm={12}>
                                                 <img
                                                   src={`data:image/jpeg;base64,${attendeelist.displayProfilePictureName}`}
                                                   width={50}
                                                   height={50}
-                                                  alt=""
-                                                  draggable="false"
+                                                  alt=''
+                                                  draggable='false'
                                                 />
                                               </Col>
 
@@ -1094,17 +1048,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                   styles[
                                                     "group-head-info-Add-Members"
                                                   ]
-                                                }
-                                              >
-                                                <Row className="mt-1">
+                                                }>
+                                                <Row className='mt-1'>
                                                   <Col lg={12} md={12} sm={12}>
                                                     <span
                                                       className={
                                                         styles[
                                                           "name-create-group"
                                                         ]
-                                                      }
-                                                    >
+                                                      }>
                                                       {attendeelist.name}
                                                     </span>
                                                   </Col>
@@ -1116,8 +1068,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                         styles[
                                                           "Designation-create-group"
                                                         ]
-                                                      }
-                                                    >
+                                                      }>
                                                       {attendeelist.designation}
                                                     </span>
                                                   </Col>
@@ -1129,8 +1080,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                         styles[
                                                           "email-create-group"
                                                         ]
-                                                      }
-                                                    >
+                                                      }>
                                                       <a>
                                                         {
                                                           attendeelist.emailAddress
@@ -1144,8 +1094,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 lg={2}
                                                 md={2}
                                                 sm={12}
-                                                className="mt-2 "
-                                              >
+                                                className='mt-2 '>
                                                 <Checkbox
                                                   checked={
                                                     attendees.includes(
@@ -1154,7 +1103,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                       ? true
                                                       : false
                                                   }
-                                                  classNameDiv=""
+                                                  classNameDiv=''
                                                   onChange={() =>
                                                     checkAttendeeBox(
                                                       attendeelist,
@@ -1179,7 +1128,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           {/* at this point it is ending  */}
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Attachments_Heading"]}>
                             {"Attachment"}
@@ -1214,25 +1163,23 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             : null}
                         </Row>
                       </section>
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col lg={12} md={12} sm={12}>
                           <Dragger
                             fileList={[]}
                             {...props}
                             className={
                               styles["dragdrop_attachment_create_resolution"]
-                            }
-                          >
-                            <p className="ant-upload-drag-icon">
+                            }>
+                            <p className='ant-upload-drag-icon'>
                               <span
-                                className={styles["create_resolution_dragger"]}
-                              >
+                                className={styles["create_resolution_dragger"]}>
                                 <img
                                   src={featherupload}
-                                  width="18.87px"
-                                  height="18.87px"
-                                  alt=""
-                                  draggable="false"
+                                  width='18.87px'
+                                  height='18.87px'
+                                  alt=''
+                                  draggable='false'
                                 />
                               </span>
                             </p>
@@ -1253,8 +1200,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-end gap-3 mt-4"
-                        >
+                          className='d-flex justify-content-end gap-3 mt-4'>
                           <Button
                             className={styles["Cancell-CreateGroup-btn"]}
                             text={t("Cancel")}
