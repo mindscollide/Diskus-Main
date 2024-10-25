@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import {
   utcConvertintoGMT,
@@ -29,7 +29,6 @@ import {
   getAllPendingApprovalsStatsApi,
 } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
-import ProgressStats from "../../../components/elements/progressStats/ProgressStats";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -328,17 +327,37 @@ const PendingApproval = () => {
                       <div className={styles["progressWrapper"]}>
                         <Row>
                           <Col lg={6} md={6} sm={12}>
-                            <div className="d-flex positionRelative">
-                              {/* Progress bars with different colors and percentages */}
-                              <ProgressStats
-                                FirstColor="#6172D6"
-                                firstValue={progress.reviewedPercentage}
-                                thirdValue={progress.expiredPercentage}
-                                thirdColor="#F16B6B"
-                                secondColor="#ffc300"
-                                secondValue={progress.pendingPercentage}
+                            <ProgressBar
+                              style={{
+                                height: "30px",
+                                borderRadius: "20px",
+                              }}
+                            >
+                              <ProgressBar
+                                style={{
+                                  backgroundColor: "#6172D6",
+                                }}
+                                label={`${progress.reviewedPercentage}%`}
+                                now={progress.reviewedPercentage}
+                                key={1}
                               />
-                            </div>
+                              <ProgressBar
+                                style={{
+                                  backgroundColor: "#ffc300",
+                                }}
+                                label={`${progress.pendingPercentage}%`}
+                                now={progress.pendingPercentage}
+                                key={2}
+                              />
+                              <ProgressBar
+                                style={{
+                                  backgroundColor: "#F16B6B",
+                                }}
+                                label={`${progress.expiredPercentage}%`}
+                                now={progress.expiredPercentage}
+                                key={3}
+                              />
+                            </ProgressBar>
                           </Col>
                           <Col lg={6} md={6} sm={12} className="d-flex">
                             <span className={styles["line"]} />
