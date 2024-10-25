@@ -40,7 +40,7 @@ const PollDetails = () => {
 
         // for options
         if (Object.keys(pollOptions).length > 0) {
-          pollOptions.map((data, index) => {
+          pollOptions.forEach((data, index) => {
             Options.push(data);
           });
           setVotePollDetailsOptions(Options);

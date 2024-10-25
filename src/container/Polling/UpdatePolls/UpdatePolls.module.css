@@ -113,18 +113,18 @@ body[dir="rtl"] .Add_another_field {
 
 .polling_Options_backGround {
   background: #f16b6b !important;
-  position: absolute !important;
+  display: block !important;
+  position: absolute;
   width: auto !important;
-  right: 10px !important;
-  left: auto !important;
+  right: 0;
   margin-top: 0 !important;
-  top: 0 !important;
+  top: 0;
   height: 100%;
   z-index: 1;
-  display: flex !important;
+  display: flex;
   justify-content: center;
   border-top-right-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important ;
   align-items: center;
 }
 
@@ -139,20 +139,16 @@ body[dir="rtl"] .polling_Options_backGround {
   margin-top: 0 !important;
   top: 0 !important;
   border-top-left-radius: 4px !important;
-  border-bottom-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important ;
   border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important ;
   height: 100% !important;
   align-items: start !important;
 }
 
-body[dir="rtl"] .Cross-icon-Create_poll {
+.Cross-icon-Create_poll {
   padding: 5px 5px !important;
   margin-top: 4px !important;
-  cursor: pointer !important;
-}
-
-body[dir="ltr"] .Cross-icon-Create_poll {
   cursor: pointer !important;
 }
 
@@ -346,23 +342,23 @@ body[dir="rtl"] .Card_border2 {
 }
 
 .Add_another_options {
-  padding: 12px 30px !important;
+  height: 39px !important;
   background: #fff !important;
   color: #d4d4d4 !important;
   width: 100%;
   font-size: 12px !important;
-  border: 1px dashed #e1e1e1;
+  border: 1px dashed #a2a2a2 !important;
 }
 
 .Add_another_options:active,
 .Add_another_options:hover,
 .Add_another_options:focus,
 .Add_another_options:focus-visible {
-  padding: 12px 30px !important;
+  height: 39px !important;
   background: #fff !important;
   color: #d4d4d4 !important;
   width: 100% !important;
-  border: 1px dashed #e1e1e1 !important;
+  border: 1px dashed #a2a2a2 !important;
   font-size: 12px !important;
 }
 
