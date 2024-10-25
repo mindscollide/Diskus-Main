@@ -21,9 +21,7 @@ import {
   SignatureandPendingApprovalDateTIme,
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
-import { set } from "lodash";
 import InfiniteScroll from "react-infinite-scroll-component";
-import ProgressStats from "../../../../components/elements/progressStats/ProgressStats";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const ReviewSignature = () => {
   const { t } = useTranslation();
@@ -328,42 +326,37 @@ const ReviewSignature = () => {
           <div className={styles["progressWrapper"]}>
             <Row>
               <Col lg={6} md={6} sm={12}>
-                <div className="d-flex  position-relative">
-                  {/* Progress bars with different colors and percentages */}
-                  <ProgressStats
-                    FirstColor="#55ce5c"
-                    firstValue={approvalStats.signedPercentage}
-                    thirdValue={approvalStats.declinedPercentage}
-                    thirdColor="#F16B6B"
-                    secondColor="#ffc300"
-                    secondValue={approvalStats.pendingPercentage}
+                <ProgressBar
+                  style={{
+                    height: "30px",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <ProgressBar
+                    style={{
+                      backgroundColor: "#55ce5c",
+                    }}
+                    label={`${approvalStats.signedPercentage}%`}
+                    now={approvalStats.signedPercentage}
+                    key={1}
                   />
-
-                  {/* {approvalStats.declined > 0 && (
-                    <ProgressBar
-                      width={approvalStats.declinedPercentage}
-                      color="#F16B6B"
-                      indexValue="0"
-                      percentageValue={`${approvalStats.declinedPercentage}%`}
-                    />
-                  )}
-                  {approvalStats.pending > 0 && (
-                    <ProgressBar
-                      width={approvalStats.pendingPercentage}
-                      color="#FFC300"
-                      indexValue="1"
-                      percentageValue={`${approvalStats.pendingPercentage}%`}
-                    />
-                  )}
-                  {approvalStats.signed > 0 && (
-                    <ProgressBar
-                      width={approvalStats.signedPercentage}
-                      color="#55CE5C"
-                      indexValue="2"
-                      percentageValue={`${approvalStats.signedPercentage}%`}
-                    />
-                  )} */}
-                </div>
+                  <ProgressBar
+                    style={{
+                      backgroundColor: "#ffc300",
+                    }}
+                    label={`${approvalStats.pendingPercentage}%`}
+                    now={approvalStats.pendingPercentage}
+                    key={2}
+                  />
+                  <ProgressBar
+                    style={{
+                      backgroundColor: "#F16B6B",
+                    }}
+                    label={`${approvalStats.declinedPercentage}%`}
+                    now={approvalStats.declinedPercentage}
+                    key={3}
+                  />
+                </ProgressBar>
               </Col>
               <Col lg={6} md={6} sm={12} className="d-flex">
                 <span className={styles["line"]} />
