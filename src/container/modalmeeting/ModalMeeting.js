@@ -2143,6 +2143,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                       UserProfilePic={atList.displayProfilePic}
                                     />
                                   );
+                                } else {
+                                  return null;
                                 }
                               })}
                             </span>
@@ -2163,7 +2165,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           <>
                             <span>
                               {addedParticipantNameList.map((atList, index) => {
-                                console.log(atList, "atListatList");
                                 if (atList.role === 2) {
                                   return (
                                     <>
@@ -2180,6 +2181,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                       />
                                     </>
                                   );
+                                } else {
+                                  return null;
                                 }
                               })}
                             </span>

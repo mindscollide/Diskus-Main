@@ -43,7 +43,6 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     (state) => state
   );
   const [meetingDate, setMeetingDate] = useState("");
-  const [error, setError] = useState(false);
 
   const [updatePolls, setupdatePolls] = useState({
     Title: "",
@@ -90,7 +89,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
-        if (options[lastIndex].value != "") {
+        if (options[lastIndex].value !== "") {
           const randomNumber = Math.floor(Math.random() * 100) + 1;
           let newOptions = { name: randomNumber, value: "" };
           setOptions([...options, newOptions]);
@@ -242,8 +241,6 @@ const EditPollsMeeting = ({ setEditPolls }) => {
 
       dispatch(updatePollsApi(navigate, data, t, 3, setEditPolls));
     } else {
-      setError(true);
-
       if (updatePolls.Title === "") {
         showMessage(t("Title-is-required"), "error", setOpen);
       } else if (updatePolls.date === "") {
@@ -338,7 +335,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       }
       try {
         let Option = [];
-        pollsDetailsData.pollOptions.map((data, index) => {
+        pollsDetailsData.pollOptions.forEach((data, index) => {
           let dataAdd = { name: index + 1, value: data.answer };
           Option.push(dataAdd);
         });
@@ -400,9 +397,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                             <Col lg={12} md={12} sm={12}>
                               <span className="position-relative">
                                 <TextField
-                                  placeholder={
-                                    "Option" + " " + parseInt(index + 1)
-                                  }
+                                  placeholder={`Option ${parseInt(index) + 1}*`}
                                   applyClass={"PollingCreateModal"}
                                   labelclass="d-none"
                                   name={data.name}
@@ -419,9 +414,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                             <Col lg={12} md={12} sm={12}>
                               <span className="position-relative">
                                 <TextField
-                                  placeholder={
-                                    "Option" + " " + parseInt(index + 1)
-                                  }
+                                  placeholder={`Option ${parseInt(index) + 1}*`}
                                   applyClass={"PollingCreateModal"}
                                   labelclass="d-none"
                                   name={data.name}

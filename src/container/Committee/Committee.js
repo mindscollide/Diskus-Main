@@ -491,12 +491,7 @@ const Committee = () => {
               </Col>
             </Row>
             <Row className="mt-4">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                // className={styles["Committee-Main_Scrollbar"]}
-              >
+              <Col lg={12} md={12} sm={12}>
                 <Row
                   className={`${"d-flex text-center committees_box   color-5a5a5a m-0 p-0  mt-1"} ${
                     styles["committess_box"]

@@ -468,8 +468,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
                       onClick={() => {
-    console.log("end meeting chaek")
-    dispatch(
+                        console.log("end meeting chaek");
+                        dispatch(
                           UpdateOrganizersMeeting(
                             true,
                             navigate,

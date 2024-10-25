@@ -408,7 +408,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     if (Object.keys(GroupMembers).length > 0) {
       let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
 
-      if (flag2 != undefined) {
+      if (flag2 !== undefined) {
         return true;
       } else {
         return false;

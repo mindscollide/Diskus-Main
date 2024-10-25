@@ -922,70 +922,91 @@ const NewMeeting = () => {
   };
 
   const handleViewMeeting = async (id, isQuickMeeting, status) => {
-    if (status === "10" || status === 10) {
-      if (isQuickMeeting) {
-        let joinMeetingData = {
-          FK_MDID: id,
-          DateTime: getCurrentDateTimeUTC(),
-        };
+    try {
+      if (status === "10" || status === 10) {
+        if (isQuickMeeting) {
+          let joinMeetingData = {
+            FK_MDID: id,
+            DateTime: getCurrentDateTimeUTC(),
+          };
 
-        dispatch(
-          JoinCurrentMeeting(
-            isQuickMeeting,
-            navigate,
-            t,
-            joinMeetingData,
-            setViewFlag,
-            setEditFlag,
-            setSceduleMeeting,
-            1,
-            setAdvanceMeetingModalID,
-            setViewAdvanceMeetingModal
-          )
-        );
-      } else {
-        let joinMeetingData = {
-          FK_MDID: id,
-          DateTime: getCurrentDateTimeUTC(),
-        };
+          dispatch(
+            JoinCurrentMeeting(
+              isQuickMeeting,
+              navigate,
+              t,
+              joinMeetingData,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              1,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
+          );
+        } else {
+          let joinMeetingData = {
+            FK_MDID: id,
+            DateTime: getCurrentDateTimeUTC(),
+          };
 
-        dispatch(
-          JoinCurrentMeeting(
-            isQuickMeeting,
-            navigate,
-            t,
-            joinMeetingData,
-            setViewFlag,
-            setEditFlag,
-            setSceduleMeeting,
-            1,
-            setAdvanceMeetingModalID,
-            setViewAdvanceMeetingModal
-          )
-        );
-      }
-    } else {
-      if (isQuickMeeting) {
-        let Data = { MeetingID: id };
-        await dispatch(
-          ViewMeeting(
-            navigate,
-            Data,
-            t,
-            setViewFlag,
-            setEditFlag,
-            setSceduleMeeting,
-            1
-          )
-        );
-        // setViewFlag(true);
+          dispatch(
+            JoinCurrentMeeting(
+              isQuickMeeting,
+              navigate,
+              t,
+              joinMeetingData,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              1,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
+          );
+
+          // dispatch(
+          //   GetAllUserChats(
+          //     navigate,
+          //     parseInt(currentUserId),
+          //     parseInt(currentOrganizationId),
+          //     t
+          //   )
+          // );
+        }
       } else {
-        setAdvanceMeetingModalID(id);
-        setViewAdvanceMeetingModal(true);
-        dispatch(viewAdvanceMeetingPublishPageFlag(true));
-        dispatch(scheduleMeetingPageFlag(false));
-        localStorage.setItem("currentMeetingID", id);
+        if (isQuickMeeting) {
+          let Data = { MeetingID: id };
+          await dispatch(
+            ViewMeeting(
+              navigate,
+              Data,
+              t,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              1
+            )
+          );
+          // setViewFlag(true);
+        } else {
+          setAdvanceMeetingModalID(id);
+          setViewAdvanceMeetingModal(true);
+          dispatch(viewAdvanceMeetingPublishPageFlag(true));
+          dispatch(scheduleMeetingPageFlag(false));
+          localStorage.setItem("currentMeetingID", id);
+          // dispatch(
+          //   GetAllUserChats(
+          //     navigate,
+          //     parseInt(currentUserId),
+          //     parseInt(currentOrganizationId),
+          //     t
+          //   )
+          // );
+        }
       }
+    } catch (error) {
+      console.log(error, "errorerrorerror");
     }
   };
 
@@ -1133,6 +1154,7 @@ const NewMeeting = () => {
                 record.isMinutePublished
               );
               localStorage.setItem("meetingTitle", record.title);
+              // setIsOrganisers(isOrganiser);
             }}
           >
             {text}
@@ -2620,7 +2642,6 @@ const NewMeeting = () => {
       }
     }
   }, [NewMeetingreducer.meetingReminderNotification]);
-
   return (
     <>
       <section className={styles["NewMeeting_container"]}>

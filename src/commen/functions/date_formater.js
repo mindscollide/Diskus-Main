@@ -82,7 +82,6 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
 };
 
 export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
-  console.log(dateTime, "formatetDateTimeformatetDateTime");
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -324,7 +323,6 @@ export const resolutionResultTable = (dateTime) => {
 
   let convertTime = new Date(fullDateYear);
 
-  console.log(convertTime, "convertTimeconvertTime");
 
   return convertTime;
 };
@@ -857,7 +855,6 @@ export const formattedString = (dateString) => {
 };
 
 export const newDateFormatterForMinutesPendingApproval = (dateTime) => {
-  console.log(dateTime, "newDateFormatterForMinutesPendingApproval");
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -991,7 +988,6 @@ export const DateFormatForPolls = (date) => {
   const hours = String(now.getUTCHours()).padStart(2, "0");
   const minutes = String(now.getUTCMinutes()).padStart(2, "0");
   const seconds = String(now.getUTCSeconds()).padStart(2, "0");
-  console.log(`${year}${month}${day}${hours}${minutes}${seconds}`);
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
 };
 

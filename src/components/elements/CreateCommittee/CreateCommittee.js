@@ -66,7 +66,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
     []
   );
-  const [onclickFlag, setOnclickFlag] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const CommitteeTitle = useRef(null);
   // for   select participant Role Name
@@ -115,7 +114,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       if (CommitteeReducer.getCommitteeMembersRoles !== null) {
         let committeeMembersRoleValues = [];
         let committeeMembersRoleOptions = [];
-        CommitteeReducer.getCommitteeMembersRoles.map((data, index) => {
+        CommitteeReducer.getCommitteeMembersRoles.forEach((data, index) => {
           committeeMembersRoleOptions.push({
             label: data.role,
             id: data.committeeRoleID,
@@ -137,7 +136,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       if (CommitteeReducer.getCommitteeTypes !== null) {
         let committeeTypeValues = [];
         let committeeTypeOptions = [];
-        CommitteeReducer.getCommitteeTypes.map((data, index) => {
+        CommitteeReducer.getCommitteeTypes.forEach((data, index) => {
           committeeTypeOptions.push({
             label: data.type,
             id: data.committeeTypeId,
@@ -231,7 +230,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       if (participantRoleName !== "") {
         if (foundIndex === -1) {
           let roleID;
-          committeeMemberRolesOptions.map((data, index) => {
+          committeeMemberRolesOptions.forEach((data, index) => {
             if (data.label === participantRoleName) {
               roleID = data.id;
               newMeetingAttendees.push({
@@ -891,6 +890,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1012,6 +1012,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1134,6 +1135,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1256,6 +1258,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
@@ -1378,6 +1381,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                     </Col>
                                   );
                                 } else {
+                                  return null;
                                 }
                               })
                             ) : (
