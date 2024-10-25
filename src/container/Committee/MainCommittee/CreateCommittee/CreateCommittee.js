@@ -40,13 +40,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [groupMembers, setGroupMembers] = useState([]);
   const [erorbar, setErrorBar] = useState(false);
   const [attendees, setAttendees] = useState([]);
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [taskAssignedName, setTaskAssignedName] = useState("");
   const [meetingAttendees, setMeetingAttendees] = useState([]);
-  const [committeeTypeValue, setCommitteeTypeValue] = useState("");
-  const [committeeTypesOptions, setCommitteeTypesOptions] = useState([]);
-  const [committeeTypesValues, setCommitteeTypesValues] = useState([]);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
@@ -56,8 +51,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     label: "",
     name: "",
   });
-
-
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
 
   // Committee Members Roles
@@ -152,17 +145,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   }, [CommitteeReducer.getCommitteeTypes]);
 
   // Group type Change Handler
-  const CommitteeTypeChangeHandler = (e, value) => {
-    setCommitteeTypeValue(value);
-    let findID = committeeTypesOptions.find(
-      (data, index) => data.label === value
-    );
+  const CommitteeTypeChangeHandler = (event) => {
+
+    setCommitteeTypesVal(event)
     setCreateCommitteeDetails({
       ...createCommitteeDetails,
-      CommitteeType: findID.id,
+      CommitteeType: event.value,
     });
   };
-
+  console.log(committeeTypesVal, "committeeTypesValcommitteeTypesVal")
   // onChange Function for set input values in state
   const onChangeFunc = (e) => {
     let name = e.target.name;
@@ -221,7 +212,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setTaskAssignedTo(0);
       setCommitteeMembersRolesVal(findRegularRole);
 
-      setTaskAssignedToInput("");
       setPresenterValue({
         label: "",
         value: 0,
@@ -261,7 +251,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           setTaskAssignedTo(0);
           setCommitteeMembersRolesVal(findRegularRole);
 
-          setTaskAssignedToInput("");
           setPresenterValue({
             label: "",
             value: 0,
@@ -273,7 +262,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           setTaskAssignedTo(0);
           setCommitteeMembersRolesVal(findRegularRole);
 
-          setTaskAssignedToInput("");
           setPresenterValue({
             label: "",
             value: 0,
@@ -647,7 +635,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                         </Col>
                       </Row>
 
-                      <Row className='mt-4'>
+                      <Row className='mt-2'>
                         <Col
                           lg={12}
                           md={12}
@@ -713,7 +701,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           </p>
                         </Col>
                       </Row>
-                      <Row className='mt-1'>
+                      <Row className='mt-2'>
                         <Col
                           lg={6}
                           md={6}
@@ -742,7 +730,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             options={newCommitteeTypeOptions}
                             value={
                               committeeTypesVal.value !== 0
-                                ? committeeTypeValue
+                                ? committeeTypesVal
                                 : null
                             }
                             placeholder={t("Committee-type-committee")}
@@ -755,7 +743,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                         <Col className={styles["Committee_error_coloumn"]}>
                           <p
                             className={
-                              erorbar && committeeTypeValue === ""
+                              erorbar && committeeTypesVal.value === 0
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
                             }>
