@@ -656,7 +656,9 @@ const ModalOrganizor = ({ currentMeeting }) => {
                                             src={CrossIcon}
                                             width="14px"
                                             height="14px"
-                                            onClick={cancellAnyUser}
+                                            onClick={() =>
+                                              cancellAnyUser(index)
+                                            }
                                             draggable="false"
                                             style={{ cursor: "pointer" }}
                                             alt=""
