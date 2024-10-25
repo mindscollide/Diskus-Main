@@ -1495,7 +1495,7 @@ const EditResolution = ({ setCancelresolution }) => {
   //Circulation Time
   const handleCirculationTimeChange = (date) => {
     let newData = new Date(date);
-    console.log(newData, "newDatanewData");
+
     if (newData instanceof Date && !isNaN(newData)) {
       setCirculationDateTime({
         ...circulationDateTime,
@@ -1504,7 +1504,6 @@ const EditResolution = ({ setCancelresolution }) => {
     } else {
     }
   };
-  console.log({ circulationDateTime }, "votingDateTime");
 
   //Voting Time
   const handleVotingTimeChange = (date) => {
@@ -1517,7 +1516,6 @@ const EditResolution = ({ setCancelresolution }) => {
     } else {
     }
   };
-  console.log({ votingDateTime }, "votingDateTime");
   //Decisions Time
   const handleDecisionTimeChange = (date) => {
     let newData = new Date(date);

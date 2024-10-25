@@ -464,7 +464,7 @@ export const multiDatePickerDateChangIntoUTC = (date) => {
   const minutes = String(date.getUTCMinutes()).padStart(2, "0");
   const seconds = String(date.getUTCSeconds()).padStart(2, "0");
   const utcFormatted = `${year}${month}${day}${hour}${minutes}${seconds}`;
-
+  console.log(utcFormatted, "utcFormattedutcFormattedutcFormatted");
   return utcFormatted;
 };
 
