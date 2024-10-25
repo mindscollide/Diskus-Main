@@ -134,7 +134,7 @@ const CreatePolling = () => {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
         if (Object.keys(pollsData.groups).length > 0) {
-          pollsData.groups.map((a) => {
+          pollsData.groups.forEach((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -167,7 +167,7 @@ const CreatePolling = () => {
           });
         }
         if (Object.keys(pollsData.committees).length > 0) {
-          pollsData.committees.map((a) => {
+          pollsData.committees.forEach((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -201,7 +201,7 @@ const CreatePolling = () => {
           });
         }
         if (Object.keys(pollsData.organizationUsers).length > 0) {
-          pollsData.organizationUsers.map((a) => {
+          pollsData.organizationUsers.forEach((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -252,7 +252,7 @@ const CreatePolling = () => {
     let tem = [...members];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData) => {
+        selectedsearch.forEach((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
               (data) => data.groupID === seledtedData.value
@@ -260,7 +260,7 @@ const CreatePolling = () => {
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser) => {
+                groupUsers.forEach((gUser) => {
                   let check2 = members.find(
                     (data) => data.UserID === gUser.userID
                   );
@@ -280,14 +280,14 @@ const CreatePolling = () => {
             let check1 = pollsData.committees.find(
               (data) => data.committeeID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser) => {
+                committeesUsers.forEach((cUser) => {
                   let check2 = members.find(
                     (data) => data.UserID === cUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: cUser.userName,
@@ -303,7 +303,7 @@ const CreatePolling = () => {
             let check1 = members.find(
               (data) => data.UserID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
                 (data) => data.userID === seledtedData.value
@@ -460,6 +460,7 @@ const CreatePolling = () => {
   };
 
   const cancellAnyUser = (index) => {
+    console.log(index, "indexindexindexindex");
     let removeData = [...members];
     removeData.splice(index, 1);
     setMembers(removeData);
@@ -753,21 +754,27 @@ const CreatePolling = () => {
                               <Button
                                 text={
                                   <>
-                                    <Row>
+                                    <Row className="mt-1">
                                       <Col
                                         lg={12}
                                         md={12}
                                         sm={12}
-                                        className={styles["ClassAddButton"]}
+                                        className="d-flex gap-2"
                                       >
                                         <img
+                                          draggable={false}
                                           src={plusFaddes}
+                                          alt=""
                                           width="15.87px"
                                           height="15.87px"
-                                          alt=""
-                                          draggable="false"
                                         />
-                                        <span>{t("Add-another-field")}</span>
+                                        <span
+                                          className={
+                                            styles["Add_Button_Heading"]
+                                          }
+                                        >
+                                          {t("Add-another-field")}
+                                        </span>
                                       </Col>
                                     </Row>
                                   </>
@@ -867,7 +874,7 @@ const CreatePolling = () => {
                           className={styles["Scroller_For_CreatePollModal2"]}
                         >
                           <Row>
-                            {members.map((data) => {
+                            {members.map((data, index) => {
                               return (
                                 <Col lg={6} md={6} sm={12} className="mt-2">
                                   <Row>
@@ -897,7 +904,9 @@ const CreatePolling = () => {
                                             src={CrossIcon}
                                             width="14px"
                                             height="14px"
-                                            onClick={cancellAnyUser}
+                                            onClick={() =>
+                                              cancellAnyUser(index)
+                                            }
                                             alt=""
                                             draggable="false"
                                             style={{ cursor: "pointer" }}

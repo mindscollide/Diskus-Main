@@ -8,7 +8,6 @@ import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setviewpollModal } from "../../../store/actions/Polls_actions";
-import moment from "moment";
 import { newTimeFormaterAsPerUTCTalkDate } from "../../../commen/functions/date_formater";
 
 const ViewPoll = () => {
@@ -37,7 +36,7 @@ const ViewPoll = () => {
     if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
       let users = [];
       if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
-        PollsReducer.Allpolls.poll.pollParticipants.map((data) => {
+        PollsReducer.Allpolls.poll.pollParticipants.forEach((data) => {
           users.push({
             emailAddress: data.emailAddress,
             userName: data.userName,

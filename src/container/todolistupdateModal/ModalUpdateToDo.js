@@ -104,7 +104,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       CreationDateTime: "",
       FK_TID: 0,
     });
-    setTasksAttachments({ "TasksAttachments": file });
+    setTasksAttachments({ TasksAttachments: file });
   };
 
   // To View To-Do List Data
@@ -122,7 +122,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         PK_TID: viewData.pK_TID,
       });
       if (viewData.taskAssignedTo !== undefined) {
-        viewData.taskAssignedTo.map((data, index) => {
+        viewData.taskAssignedTo.forEach((data, index) => {
           if (data.pK_UID === TaskAssignedTo) {
           }
         });
@@ -131,7 +131,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       if (listOfAssignees !== undefined) {
         let tem = [];
         let temid = [];
-        listOfAssignees.map((data, index) => {
+        listOfAssignees.forEach((data, index) => {
           tem.push(data.name);
           temid.push(data.pK_UID);
         });
@@ -143,7 +143,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       let filesUploaded = toDoListReducer.ToDoDetails.taskAttachments;
       if (filesUploaded !== undefined) {
         let tem = [];
-        filesUploaded.map((data, index) => {
+        filesUploaded.forEach((data, index) => {
           tem.push({
             PK_TAID: data.pK_TAID,
             DisplayAttachmentName: data.displayAttachmentName,
@@ -153,7 +153,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           });
         });
 
-        setTasksAttachments({ "TasksAttachments": tem });
+        setTasksAttachments({ TasksAttachments: tem });
       }
     }
   }, [toDoListReducer.ToDoDetails]);
@@ -256,7 +256,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         CreationDateTime: "",
       });
       setTaskAssignedTo([]);
-      setTasksAttachments({ "TasksAttachments": [] });
+      setTasksAttachments({ TasksAttachments: [] });
       setTaskAssignedName([]);
     }
   };

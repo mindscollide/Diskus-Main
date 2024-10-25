@@ -86,7 +86,7 @@ const UpdatePolls = () => {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
         if (Object.keys(pollsData.groups).length > 0) {
-          pollsData.groups.map((a) => {
+          pollsData.groups.forEach((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -119,7 +119,7 @@ const UpdatePolls = () => {
           });
         }
         if (Object.keys(pollsData.committees).length > 0) {
-          pollsData.committees.map((a) => {
+          pollsData.committees.forEach((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -152,7 +152,7 @@ const UpdatePolls = () => {
           });
         }
         if (Object.keys(pollsData.organizationUsers).length > 0) {
-          pollsData.organizationUsers.map((a) => {
+          pollsData.organizationUsers.forEach((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -192,11 +192,11 @@ const UpdatePolls = () => {
     }
   }, [PollsReducer.gellAllCommittesandGroups]);
   useEffect(() => {
-    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
+    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls !== undefined) {
       let pollsDetails = PollsReducer.Allpolls;
       if (Object.keys(PollsReducer.Allpolls).length > 0) {
         let members = [];
-        PollsReducer.Allpolls.poll.pollParticipants.map((data) => {
+        PollsReducer.Allpolls.poll.pollParticipants.forEach((data) => {
           members.push({
             userName: data.userName,
             userID: data.userID,
@@ -223,7 +223,7 @@ const UpdatePolls = () => {
         });
         try {
           let Option = [];
-          PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
+          PollsReducer.Allpolls.poll.pollOptions.forEach((data, index) => {
             let dataAdd = { name: index + 1, value: data.answer };
             Option.push(dataAdd);
           });
@@ -241,19 +241,19 @@ const UpdatePolls = () => {
     let tem = [...pollmembers];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData) => {
+        selectedsearch.forEach((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
               (data) => data.groupID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser) => {
+                groupUsers.forEach((gUser) => {
                   let check2 = pollmembers.find(
                     (data) => data.UserID === gUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: gUser.userName,
@@ -269,14 +269,14 @@ const UpdatePolls = () => {
             let check1 = pollsData.committees.find(
               (data) => data.committeeID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser) => {
+                committeesUsers.forEach((cUser) => {
                   let check2 = pollmembers.find(
                     (data) => data.UserID === cUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: cUser.userName,
@@ -292,12 +292,12 @@ const UpdatePolls = () => {
             let check1 = pollmembers.find(
               (data) => data.UserID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
                 (data) => data.userID === seledtedData.value
               );
-              if (check2 != undefined) {
+              if (check2 !== undefined) {
                 let newUser = {
                   userName: check2.userName,
                   userID: check2.userID,
@@ -326,7 +326,7 @@ const UpdatePolls = () => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
-        if (options[lastIndex].value != "") {
+        if (options[lastIndex].value !== "") {
           const randomNumber = Math.floor(Math.random() * 100) + 1;
           let newOptions = { name: randomNumber, value: "" };
           setOptions([...options, newOptions]);
@@ -710,7 +710,7 @@ const UpdatePolls = () => {
                               options.map((list, index) => {
                                 return (
                                   <>
-                                    {list.value != "" ? (
+                                    {list.value !== "" ? (
                                       <span
                                         key={index}
                                         className={`${styles["BOx_for_yes"]} d-flex`}
@@ -802,11 +802,10 @@ const UpdatePolls = () => {
                                                 }
                                                 inputicon={
                                                   <img
-                                                    draggable="false"
                                                     src={WhiteCrossIcon}
                                                     width="31.76px"
-                                                    height="31.76px"
                                                     alt=""
+                                                    height="31.76px"
                                                     onClick={() =>
                                                       HandleCancelFunction(
                                                         index
@@ -817,6 +816,7 @@ const UpdatePolls = () => {
                                                         "Cross-icon-Create_poll"
                                                       ]
                                                     }
+                                                    draggable="false"
                                                   />
                                                 }
                                                 iconclassname={
@@ -839,21 +839,25 @@ const UpdatePolls = () => {
                                   <Button
                                     text={
                                       <>
-                                        <Row>
+                                        <Row className="mt-1">
                                           <Col
                                             lg={12}
                                             md={12}
                                             sm={12}
-                                            className={styles["ClassAddButton"]}
+                                            className="d-flex gap-2"
                                           >
                                             <img
+                                              draggable={false}
                                               src={plusFaddes}
+                                              alt=""
                                               width="15.87px"
                                               height="15.87px"
-                                              alt=""
-                                              draggable="false"
                                             />
-                                            <span>
+                                            <span
+                                              className={
+                                                styles["Add_Button_Heading"]
+                                              }
+                                            >
                                               {t("Add-another-field")}
                                             </span>
                                           </Col>
@@ -967,7 +971,6 @@ const UpdatePolls = () => {
                         >
                           <Row>
                             {pollmembers.map((data, index) => {
-                              console.log(data, "pollmemberspollmembers");
                               return (
                                 <Col
                                   key={index}
@@ -1007,7 +1010,9 @@ const UpdatePolls = () => {
                                               alt=""
                                               width="14px"
                                               height="14px"
-                                              onClick={cancellAnyUser}
+                                              onClick={() =>
+                                                cancellAnyUser(index)
+                                              }
                                               draggable="false"
                                               style={{ cursor: "pointer" }}
                                             />
