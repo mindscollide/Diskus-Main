@@ -423,7 +423,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
-          newfiles.map((data) => {
+          newfiles.forEach((data) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
@@ -460,7 +460,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
           let copData = [...tasksAttachments.TasksAttachments];
-          copData.map((data, index) => {
+          copData.forEach((data, index) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,

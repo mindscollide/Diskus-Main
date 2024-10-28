@@ -42,7 +42,7 @@ const NewDashobard = () => {
   }, [lang]);
 
   useEffect(() => {
-    if (Blur != undefined) {
+    if (Blur !== null) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);
