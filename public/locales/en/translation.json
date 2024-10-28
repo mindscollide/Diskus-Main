@@ -1333,7 +1333,7 @@
   "NEW_MEETING_CREATION": "You have been added as a [Place holder] Role in a new Meeting. Refer to Meeting List for details",
   "NEW_COMMENT_DELETION": "[User] has deleted its commented from Task [Task Title]. Refer to Task List for details",
   "NEW_COMMENT_CREATION": "[User] has commented on Task [Task Title]. Refer to Task List for details",
-  "NEW_TODO_CREATION": "New Task [Task Title] has been assigned to you. Refer to Task List fordetails",
+  "NEW_TODO_CREATION": "New Task [Task Title] has been assigned to you. Refer to Task List for details",
   "TDOD_STATUS_EDITED": "Task [Task Title] has been updated. Refer to Task List for details",
   "TDOD_STATUS_DELETED": "Task [Task Title] has been deleted. Refer to Task List for details",
   "NEW_COMMITTEE_CREATION": "You have been added as a member in Committee [Committe Title]",

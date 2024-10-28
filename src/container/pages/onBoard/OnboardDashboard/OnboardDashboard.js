@@ -76,7 +76,7 @@ const OnboardDashboard = () => {
   let Blur = localStorage.getItem("blur");
 
   useEffect(() => {
-    if (Blur !== undefined) {
+    if (Blur !== null) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);

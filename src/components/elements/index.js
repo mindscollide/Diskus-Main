@@ -7,7 +7,6 @@ import TableToDo from "./tableToDo/table-to-do";
 import CustomTableToDoDashboard from "./tableTodoDashboard/table-todo-dashboard";
 import uploadButton from "./upload/uploadButton";
 import Notification from "./snack_bar";
-import SelectBox from "./select_dropdown/Select_dropdown";
 import Modal from "./modal/Modal";
 import ButtonGroup from "./GroupedButtons/Grouped_buttons";
 import Accordian from "./accordian/Accordian";
@@ -71,7 +70,6 @@ export {
   Loader,
   ResultMessage,
   NotificationBar,
-  SelectBox,
   Checkbox,
   Accordian,
   TimePickers,
