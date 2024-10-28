@@ -35,7 +35,7 @@ const PasswordUpdateMessage = () => {
                   xs={12}
                   className="verification-box border"
                 >
-                  <Paper>
+                  <span className="PasswordUpdateMessege">
                     <Row>
                       <Col lg={12} md={12} xs={12}>
                         <Image src={logo} fluid />
@@ -67,7 +67,7 @@ const PasswordUpdateMessage = () => {
                         />
                       </Col>
                     </Row>
-                  </Paper>
+                  </span>
                 </Col>
               </Row>
             </Col>
