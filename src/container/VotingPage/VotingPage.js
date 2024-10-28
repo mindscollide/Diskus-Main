@@ -3,7 +3,6 @@ import { Col, Row } from "react-bootstrap";
 import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
 import result from "../../assets/images/result.svg";
-import { Paper } from "@mui/material";
 import Clock from "../../assets/images/Clock.svg";
 import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg";
 import Abstain from "../../assets/images/Abstain.svg";
