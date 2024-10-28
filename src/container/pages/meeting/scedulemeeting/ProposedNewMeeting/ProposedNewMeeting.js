@@ -921,9 +921,7 @@ const ProposedNewMeeting = ({
   const handleClickAddParticipants = () => {
     let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
     console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
-
     let tem = [...membersParticipants];
-
     if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
         if (userData.type === 1) {
@@ -940,17 +938,16 @@ const ProposedNewMeeting = ({
                     Number(groupFilter.userID) !== Number(userID)
                 )
                 .forEach((gUser, index) => {
-                  let check2 = tem.find(
-                    (data, index) => data.userID === gUser.userID
+                  let check2 = membersParticipants.find(
+                    (data, index) => data.UserID === gUser.userID
                   );
-                  if (check2 === undefined) {
+                  if (check2 !== undefined) {
+                  } else {
                     let newUser = {
                       userName: gUser.userName,
                       userID: gUser.userID,
-                      userProfilePicture: {
-                        displayProfilePictureName:
-                          gUser.profilePicture.displayProfilePictureName,
-                      },
+                      displayPicture:
+                        gUser.profilePicture.displayProfilePictureName,
                       email: gUser.emailAddress,
                       IsPrimaryOrganizer: false,
                       IsOrganizerNotified: false,
@@ -972,6 +969,7 @@ const ProposedNewMeeting = ({
           let check1 = newOrganizersData.committees.find(
             (data, index) => data.committeeID === userData.value
           );
+
           if (check1 !== undefined) {
             let committeesUsers = check1.committeeUsers;
             if (Object.keys(committeesUsers).length > 0) {
@@ -981,17 +979,16 @@ const ProposedNewMeeting = ({
                     Number(filterData.userID) !== Number(userID)
                 )
                 .forEach((cUser, index) => {
-                  let check2 = tem.find(
-                    (data, index) => data.userID === cUser.userID
+                  let check2 = membersParticipants.find(
+                    (data, index) => data.UserID === cUser.userID
                   );
-                  if (check2 === undefined) {
+                  if (check2 !== undefined) {
+                  } else {
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
-                      userProfilePicture: {
-                        displayProfilePictureName:
-                          cUser.profilePicture.displayProfilePictureName,
-                      },
+                      displayPicture:
+                        cUser.profilePicture.displayProfilePictureName,
                       email: cUser.emailAddress,
                       IsPrimaryOrganizer: false,
                       IsOrganizerNotified: false,
@@ -1010,10 +1007,12 @@ const ProposedNewMeeting = ({
           }
         } else if (userData.type === 3) {
           // User Search
-          let check1 = tem.find(
-            (data, index) => data.userID === userData.value
+          let check1 = membersParticipants.find(
+            (data, index) => data.UserID === userData.value
           );
-          if (check1 === undefined) {
+
+          if (check1 !== undefined) {
+          } else {
             let check2 = newOrganizersData.organizationUsers.find(
               (data, index) => data.userID === userData.value
             );
@@ -1021,10 +1020,7 @@ const ProposedNewMeeting = ({
               let newUser = {
                 userName: check2.userName,
                 userID: check2.userID,
-                userProfilePicture: {
-                  displayProfilePictureName:
-                    check2.profilePicture.displayProfilePictureName,
-                },
+                displayPicture: check2.profilePicture.displayProfilePictureName,
                 email: check2.emailAddress,
                 IsPrimaryOrganizer: false,
                 IsOrganizerNotified: false,
@@ -1040,17 +1036,11 @@ const ProposedNewMeeting = ({
             }
           }
         }
+        const uniqueData = new Set(tem.map(JSON.stringify));
+        const result = Array.from(uniqueData).map(JSON.parse);
+        setMembersParticipants(result);
+        setParticipantUsers([]);
       });
-
-      // Remove duplicates
-      const uniqueData = new Set(tem.map(JSON.stringify));
-      const result = Array.from(uniqueData).map(JSON.parse);
-
-      // Set the appropriate state based on isProposedMeetEdit
-
-      setMembersParticipants(result);
-
-      setParticipantUsers([]);
     }
   };
 

@@ -23,7 +23,6 @@ import LoaderPanel from "../elements/loader/LoaderPanel";
 import LoaderPanelVideoScreen from "../elements/loader/LoaderScreenPanel";
 import Calendar from "../elements/calendar/Calendar";
 import ResultMessage from "./resultmessage/ResultMessage";
-import SelectDropdownforObject from "./select_dropdown_for_Object/Select_Dropdown_for_Object";
 import InputSearchFilter from "./input_search_filter/input-search-filter";
 import EmployeeCard from "./cardsEmployees/cards-employees";
 import CustomOnboardModal from "./onboardModal/onboardModal";
@@ -77,7 +76,6 @@ export {
   Collapse,
   ButtonGroup,
   SearchInput,
-  SelectDropdownforObject,
   InputSearchFilter,
   EmployeeCard,
   TableToDo,

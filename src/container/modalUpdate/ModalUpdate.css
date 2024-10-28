@@ -721,3 +721,22 @@ body[dir="rtl"] .isMinutes-Update-btn {
   font-weight: 600 !important;
   cursor: pointer !important;
 }
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+  font-weight: 600;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-weight: 600;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
