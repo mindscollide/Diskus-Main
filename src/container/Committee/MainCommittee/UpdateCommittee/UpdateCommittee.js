@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@mui/material";
 import {
   TextField,
   Button,

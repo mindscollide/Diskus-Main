@@ -1,11 +1,10 @@
 import React from "react";
 import styles from "./upload.module.css";
-import { Box } from "@mui/material";
 import AttachmentIcon from "../../../assets/images/Attachment_Icon.svg";
 
 const CustomUpload = ({ change, onClick, multiple, disable }) => {
   return (
-    <Box display="flex">
+    <div display="flex">
       <input
         className={styles.uploadText}
         id="contained-button-file"
@@ -27,7 +26,7 @@ const CustomUpload = ({ change, onClick, multiple, disable }) => {
           draggable="false"
         ></img>
       </label>
-    </Box>
+    </div>
   );
 };
 
