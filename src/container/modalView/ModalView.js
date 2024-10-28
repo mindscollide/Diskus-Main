@@ -90,6 +90,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
+  console.log(addedParticipantNameList, "addedParticipantNameList");
   const [startMeetingStatus, setStartMeetingStatus] = useState(false);
   const [isOrganizer, setOrganizer] = useState(false);
   const [isParticipant, setIsParticipant] = useState(false);
@@ -1172,20 +1173,19 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       {addedParticipantNameList ? (
                         <>
                           <span>
-                            {addedParticipantNameList.forEach(
-                              (atList, index) => {
-                                if (atList.role === 1 || atList.role === 3) {
-                                  return (
-                                    <EmployeeCard
-                                      employeeName={atList.name}
-                                      employeeDesignation={atList.designation}
-                                      cardIcon={<Check2 />}
-                                      UserProfilePic={atList.displayProfilePic}
-                                    />
-                                  );
-                                }
+                            {addedParticipantNameList.map((atList, index) => {
+                              console.log(atList.name, "dtatadtatad");
+                              if (atList.role === 1 || atList.role === 3) {
+                                return (
+                                  <EmployeeCard
+                                    employeeName={atList.name}
+                                    employeeDesignation={atList.designation}
+                                    cardIcon={<Check2 />}
+                                    UserProfilePic={atList.displayProfilePic}
+                                  />
+                                );
                               }
-                            )}
+                            })}
                           </span>
                         </>
                       ) : null}
@@ -1212,20 +1212,18 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       {addedParticipantNameList ? (
                         <>
                           <span>
-                            {addedParticipantNameList.forEach(
-                              (atList, index) => {
-                                if (atList.role === 2) {
-                                  return (
-                                    <EmployeeCard
-                                      employeeName={atList.name}
-                                      employeeDesignation={atList.designation}
-                                      cardIcon={<Check2 />}
-                                      UserProfilePic={atList.displayProfilePic}
-                                    />
-                                  );
-                                }
+                            {addedParticipantNameList.map((atList, index) => {
+                              if (atList.role === 2) {
+                                return (
+                                  <EmployeeCard
+                                    employeeName={atList.name}
+                                    employeeDesignation={atList.designation}
+                                    cardIcon={<Check2 />}
+                                    UserProfilePic={atList.displayProfilePic}
+                                  />
+                                );
                               }
-                            )}
+                            })}
                           </span>
                         </>
                       ) : null}

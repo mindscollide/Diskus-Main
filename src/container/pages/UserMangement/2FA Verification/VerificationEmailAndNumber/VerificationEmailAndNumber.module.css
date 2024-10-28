@@ -89,9 +89,9 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
 /* Start */
 
 .OTP_auth_paper {
-  padding: 40px 30px;
+  padding: 40px 20px;
   border: 1px solid #e1e1e1;
-  max-width: 330px;
+  /* max-width: 330px; */
   border-radius: 8px !important;
   border: 1px solid #e1e1e1 !important;
   --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
