@@ -346,7 +346,6 @@ const Dashboard = () => {
               if (
                 Number(meetingVideoID) === Number(data.payload.meeting.pK_MDID)
               ) {
-        
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -2322,7 +2321,7 @@ const Dashboard = () => {
   ]);
 
   useEffect(() => {
-    if (Blur !== undefined && Blur !== null) {
+    if (Blur !== null) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);

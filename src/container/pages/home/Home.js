@@ -253,7 +253,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (Blur !== undefined) {
+    if (Blur !== null) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);
