@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
-import { Paper } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import styles from "./EditResolution.module.css";
-import DatePicker, { DateObject } from "react-multi-date-picker";
+import DatePicker from "react-multi-date-picker";
 import { useDispatch, useSelector } from "react-redux";
 import featherupload from "../../../assets/images/featherupload.svg";
 import GroupIcon from "../../../assets/images/GroupSetting.svg";
@@ -1554,7 +1553,7 @@ const EditResolution = ({ setCancelresolution }) => {
               </Col>
             </Row>
 
-            <Paper className={styles["Create_new_resolution_paper"]}>
+            <span className={styles["Create_new_resolution_paper"]}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -2546,7 +2545,7 @@ const EditResolution = ({ setCancelresolution }) => {
                   </Row>
                 </Col>
               </Row>
-            </Paper>
+            </span>
           </Col>
         </Row>
       </section>

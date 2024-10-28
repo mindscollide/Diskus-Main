@@ -185,7 +185,7 @@ const DeviceFor2FAVerify = () => {
                 sm={12}
                 className="d-flex justify-content-center align-items-center min-vh-100"
               >
-                <Paper
+                <span
                   className={styles["Send_Email_Realme_sendmailwithdevice"]}
                 >
                   <Col
@@ -359,7 +359,7 @@ const DeviceFor2FAVerify = () => {
                       <Link onClick={handleGoBack}>{t("Go-back")}</Link>
                     </Col>
                   </Row>
-                </Paper>
+                </span>
               </Col>
             </Row>
           </Col>

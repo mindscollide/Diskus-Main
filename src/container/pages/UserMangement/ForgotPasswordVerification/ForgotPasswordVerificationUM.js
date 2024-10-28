@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import {
-  Paper,
   Button,
   Notification,
   Loader,
@@ -173,7 +172,7 @@ const ForgotPasswordVerificationUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper
+            <span
               className={
                 styles["Forgot_password_Verification_loginbox_auth_paper"]
               }
@@ -297,7 +296,7 @@ const ForgotPasswordVerificationUM = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col
             lg={8}

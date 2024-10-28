@@ -16,7 +16,7 @@ import {
 } from "../../../store/actions/Minutes_action"; // Importing Page Change State
 import { useDispatch } from "react-redux"; // Importing Redux hook
 import { useNavigate } from "react-router-dom"; // Importing navigation hook
-import { Button, Paper, TableToDo } from "../../../components/elements"; // Importing custom components
+import { Button, TableToDo } from "../../../components/elements"; // Importing custom components
 import { ChevronDown } from "react-bootstrap-icons"; //Bootstrap Icon
 import DescendIcon from "./../Images/SorterIconDescend.png";
 import AscendIcon from "./../Images/SorterIconAscend.png";
@@ -285,7 +285,7 @@ const PendingApproval = () => {
           </span>
         </Col>
       </Row>
-      <Paper className={styles["pendingApprovalPaper"]}>
+      <span className={styles["pendingApprovalPaper"]}>
         {/* Paper component for styling */}
         <Container>
           <Row>
@@ -442,7 +442,7 @@ const PendingApproval = () => {
             <ReviewSignature />
           )}
         </Container>
-      </Paper>
+      </span>
     </section>
   );
 };

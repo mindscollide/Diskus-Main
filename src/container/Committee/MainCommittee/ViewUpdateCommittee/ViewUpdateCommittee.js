@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
-import { Paper } from "@mui/material";
 import { Button } from "./../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -71,7 +70,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
             </span>
           </Col>
         </Row>
-        <Paper className={styles["View-Committee-paper"]}>
+        <span className={styles["View-Committee-paper"]}>
           <Row>
             <Col
               sm={12}
@@ -141,7 +140,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
               <CommitteeMeetingTab committeeStatus={committeeStatus} />
             </>
           ) : null}
-        </Paper>
+        </span>
       </section>
     </>
   );

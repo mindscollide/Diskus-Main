@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
-  Paper,
   Notification,
   Loader,
   VerificationInputField,
@@ -190,7 +189,7 @@ const ForgotPasswordVerification = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper
+            <span
               className={
                 styles["Forgot_password_Verification_loginbox_auth_paper"]
               }
@@ -314,7 +313,7 @@ const ForgotPasswordVerification = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col
             lg={8}

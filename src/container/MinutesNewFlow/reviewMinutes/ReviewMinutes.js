@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"; // Importing translation hook
 import styles from "./ReviewMinutes.module.css"; // Importing CSS module
 import { useDispatch } from "react-redux"; // Importing Redux hook
 import { useNavigate } from "react-router-dom"; // Importing navigation hook
-import { Paper, Button, AttachmentViewer } from "../../../components/elements";
+import { Button, AttachmentViewer } from "../../../components/elements";
 import {
   reviewMinutesPage,
   pendingApprovalPage,
@@ -677,7 +677,7 @@ const ReviewMinutes = () => {
           </span>
         </Col>
       </Row>
-      <Paper className={styles["pendingApprovalPaper"]}>
+      <span className={styles["pendingApprovalPaper"]}>
         {/* Paper component for styling */}
         <div className={styles["main-wrapper"]}>
           <Row className="py-3 mx-50">
@@ -3687,7 +3687,7 @@ const ReviewMinutes = () => {
             </Col>
           </Row>
         </div>
-      </Paper>
+      </span>
       {MinutesReducer.rejectCommentModal ? (
         <RejectCommentModal
           handleClickRejectButton={handleClickRejectMinuteBtn}

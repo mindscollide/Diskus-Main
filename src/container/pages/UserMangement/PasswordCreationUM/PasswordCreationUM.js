@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./PasswordCreationUM.module.css";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { Button, Paper, Loader } from "../../../../components/elements";
+import { Button, Loader } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import { useSelector } from "react-redux";
@@ -175,7 +175,7 @@ const PasswordCreationUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center mx-auto min-vh-100"
           >
-            <Paper className={styles["createpassword_auth_paper"]}>
+            <span className={styles["createpassword_auth_paper"]}>
               <Col sm={12} lg={12} md={12} className={styles["EmailVerifyBox"]}>
                 <Row>
                   <Col
@@ -344,7 +344,7 @@ const PasswordCreationUM = () => {
                   </Row>
                 </Form>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col
             lg={8}

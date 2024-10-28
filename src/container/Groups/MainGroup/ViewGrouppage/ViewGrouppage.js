@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ViewGrouppage.module.css";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@mui/material";
 import Polls from "../../GroupPolls/GroupViewPolls";
 import ViewGroupTodo from "../../ViewGroupTodo/ViewGroupTodo";
 import ViewUpdateGroup from "../ViewGroup/ViewUpdateGroup";
@@ -61,7 +60,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
             </span>
           </Col>
         </Row>
-        <Paper className={styles["View-group-paper"]}>
+        <span className={styles["View-group-paper"]}>
           <Row>
             <Col
               sm={12}
@@ -129,7 +128,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
           ) : currentViewGroup === 4 ? (
             <GroupMeeting groupStatus={groupStatus} />
           ) : null}
-        </Paper>
+        </span>
       </section>
     </>
   );

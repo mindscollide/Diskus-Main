@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import {
-  Button,
-  Paper,
-  Notification,
-  Loader,
-} from "./../../../components/elements";
+import { Button, Notification, Loader } from "./../../../components/elements";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
 import styles from "./ForgotPassword.module.css";
@@ -83,7 +78,7 @@ const ForgotPassword = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["Forgotpasswordloginbox_auth_paper"]}>
+            <span className={styles["Forgotpasswordloginbox_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
@@ -179,7 +174,7 @@ const ForgotPassword = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col
             lg={8}

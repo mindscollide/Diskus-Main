@@ -10,7 +10,6 @@ import LanguageSelector from "../../../../components/elements/languageSelector/L
 import {
   Button,
   Checkbox,
-  Paper,
   Notification,
   Loader,
 } from "../../../../components/elements";
@@ -229,7 +228,7 @@ const PasswordVerification = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["loginbox_auth"]}>
+            <span className={styles["loginbox_auth"]}>
               <Col sm={12} lg={12} md={12} className={styles["EmailVerifyBox"]}>
                 <Row>
                   <Col
@@ -357,7 +356,7 @@ const PasswordVerification = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col
             lg={8}

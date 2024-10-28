@@ -4,7 +4,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import {
   Button,
   Notification,
-  Paper,
   Table,
   TextField,
 } from "../../../components/elements";
@@ -844,7 +843,7 @@ const Reports = () => {
           </Col>
         </Row>
         <Row>
-          <Paper className={styles["user-login-history-table-paper"]}>
+          <span className={styles["user-login-history-table-paper"]}>
             <InfiniteScroll
               dataLength={loginHistoyRows.length}
               next={handleScroll}
@@ -880,7 +879,7 @@ const Reports = () => {
                 }}
               />
             </InfiniteScroll>
-          </Paper>
+          </span>
         </Row>
       </Container>
       <Notification

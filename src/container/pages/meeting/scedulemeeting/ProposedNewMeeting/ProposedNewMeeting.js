@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import styles from "./ProposedNewMeeting.module.css";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
-import { Paper } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import plusFaddes from "../../../../../assets/images/SVGBlackPlusIcon.svg";
@@ -1066,7 +1065,7 @@ const ProposedNewMeeting = ({
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <Paper className={styles["ProposedNewMeetingPaper"]}>
+          <span className={styles["ProposedNewMeetingPaper"]}>
             <Row>
               <Col lg={5} md={5} sm={5}>
                 <Row>
@@ -1655,7 +1654,7 @@ const ProposedNewMeeting = ({
                 </Row>
               </Col>
             </Row>
-          </Paper>
+          </span>
         </Col>
       </Row>
       <Notification

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import featherupload from "../../../../assets/images/featherupload.svg";
-import { Paper } from "@mui/material";
 import deleteButtonCreateMeeting from "../../../../assets/images/cancel_meeting_icon.svg";
 import {
   TextField,
@@ -13,7 +12,6 @@ import {
 } from "./../../../../components/elements";
 import styles from "./CreateGroup.module.css";
 import Select from "react-select";
-
 import { useSelector, useDispatch } from "react-redux";
 import {
   SaveGroupsDocumentsApiFunc,
@@ -584,7 +582,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         </Row>
         <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
-            <Paper className={styles["Create-Group-paper"]}>
+            <span className={styles["Create-Group-paper"]}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -1249,7 +1247,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                   </Row>
                 </Col>
               </Row>
-            </Paper>
+            </span>
           </Col>
         </Row>
       </section>

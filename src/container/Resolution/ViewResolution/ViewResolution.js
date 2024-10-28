@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./ViewResolution.module.css";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import {
   AttachmentViewer,
@@ -74,7 +73,7 @@ const ViewResolution = ({ setViewresolution }) => {
         </Col>
       </Row>
 
-      <Paper className={styles["View_resolution_paper"]}>
+      <span className={styles["View_resolution_paper"]}>
         <Row>
           <Col
             lg={12}
@@ -400,7 +399,7 @@ const ViewResolution = ({ setViewresolution }) => {
             </Row>
           </Col>
         </Row>
-      </Paper>
+      </span>
     </section>
   );
 };
