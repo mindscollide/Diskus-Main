@@ -90,23 +90,21 @@ const CreateFromScratch = () => {
   const modules = {
     toolbar: {
       container: [
-        {
-          size: ["12px", "16px", "18px"],
-        },
-        { font: ["impact", "courier", "comic", "Montserrat"] },
-        { bold: {} },
-        { italic: {} },
-        { underline: {} },
-
-        { color: [] },
-        { background: [] },
-        { align: [] },
-        { list: "ordered" },
-        { list: "bullet" },
+        [{ header: [2, 3, 4, false] }],
+        [{ font: ["impact", "courier", "comic", "Montserrat"] }],
+        ["bold", "italic", "underline", "blockquote"],
+        [{ color: [] }],
+        [
+          { list: "ordered" },
+          { list: "bullet" },
+        ],
       ],
-      handlers: {},
+      handlers: { },
     },
-  };
+    clipboard: {
+      matchVisual: true,
+    },
+  }
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText != "") {
