@@ -128,6 +128,7 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { editorRole, setEdiorRole } = useContext(MeetingContext);
+  console.log(editorRole, "editdatadatadata");
   const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
     (state) => state
   );
@@ -183,6 +184,7 @@ const NewMeeting = () => {
 
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
+  console.log(isMeetingTypeFilter, "isMeetingTypeFilterisMeetingTypeFilter");
 
   const [boarddeckOptions, setBoarddeckOptions] = useState({
     selectall: false,
@@ -1124,6 +1126,7 @@ const NewMeeting = () => {
       ellipsis: true,
       width: "115px",
       render: (text, record) => {
+        console.log(text, "ashashkdgahsgashdgh");
         return (
           <span
             className={styles["meetingTitle"]}
@@ -1250,7 +1253,7 @@ const NewMeeting = () => {
       align: "center",
       ellipsis: true,
       filters: isMeetingTypeFilter,
-      defaultFilteredValue: defaultFiltersValues || null,
+      defaultFilteredValue: isMeetingTypeFilter.value || null,
       filterResetToDefaultFilteredValue: true,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />

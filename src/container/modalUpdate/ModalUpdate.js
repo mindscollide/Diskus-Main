@@ -393,6 +393,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
+    console.log(newData, "newDatanewDatanewData");
     await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
     await setObjMeetingAgenda({
       PK_MAID: 0,
