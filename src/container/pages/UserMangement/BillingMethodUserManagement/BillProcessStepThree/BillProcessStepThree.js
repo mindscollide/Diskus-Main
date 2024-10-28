@@ -113,7 +113,7 @@ const BillProcessStepThree = () => {
       key: "name",
       ellipses: true,
       align: "center",
-      render: (record) => {
+      render: (text, record) => {
         const { name } = calculateTotalsBillingStepper(getAllPakagesData);
 
         if (record?.isTotalRow) {
@@ -121,7 +121,7 @@ const BillProcessStepThree = () => {
         } else {
           return (
             <>
-              <span className={styles["Tableheading"]}>{record.name}</span>;
+              <span className={styles["Tableheading"]}>{record?.name}</span>;
             </>
           );
         }
@@ -159,11 +159,11 @@ const BillProcessStepThree = () => {
       key: "headCount",
       ellipses: true,
       align: "center",
-      render: (record) => {
+      render: (text, record) => {
         return (
           <>
             <span className={styles["ChargesPerLicesense"]}>
-              {record.headCount}
+              {record?.headCount}
             </span>
           </>
         );
@@ -184,7 +184,7 @@ const BillProcessStepThree = () => {
       align: "center",
       ellipses: true,
       width: 100,
-      render: (record) => {
+      render: (text, record) => {
         const { Yearlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
         if (record?.isTotalRow) {
@@ -217,7 +217,7 @@ const BillProcessStepThree = () => {
       align: "center",
       ellipses: true,
       width: 100,
-      render: (record) => {
+      render: (text, record) => {
         const { Monthlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
         if (record?.isTotalRow) {
@@ -249,7 +249,7 @@ const BillProcessStepThree = () => {
       align: "center",
       ellipses: true,
       width: 100,
-      render: (record) => {
+      render: (text, record) => {
         const { Quaterlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
         if (record?.isTotalRow) {

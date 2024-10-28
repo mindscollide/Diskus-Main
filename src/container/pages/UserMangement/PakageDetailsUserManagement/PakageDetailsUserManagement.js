@@ -137,11 +137,10 @@ const PakageDetailsUserManagement = () => {
       dataIndex: "name",
       key: "name",
       align: "center",
-      render: (response) => {
+      render: (text, response) => {
         const { name } = calculateTotals(tableData);
 
-        console.log("check error k", response);
-        if (response?.isTotalRow) {
+        if (response.isTotalRow) {
           return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
         } else {
           return (
@@ -166,15 +165,14 @@ const PakageDetailsUserManagement = () => {
       width: 100,
       align: "center",
       render: (text, row) => {
+        console.log(row, "checkccheckcheckhcek");
         // Check if 'price' is available and greater than zero before rendering it
-        if (row?.isTotalRow) {
+        if (row.isTotalRow) {
           return;
         } else {
           return (
             <>
-              <span className={styles["ChargesPerLicesense"]}>
-                {row?.price}
-              </span>
+              <span className={styles["ChargesPerLicesense"]}>{row.price}</span>
             </>
           );
         }
@@ -193,13 +191,13 @@ const PakageDetailsUserManagement = () => {
       dataIndex: "Numberoflicenses",
       key: "Numberoflicenses",
       align: "center",
-      render: (row) => {
+      render: (text, row) => {
         const { Numberoflicenses } = calculateTotals(tableData);
 
-        if (row?.shouldDisplayTextField) {
+        if (row.shouldDisplayTextField) {
           return;
         } else {
-          if (row?.isTotalRow) {
+          if (row.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
                 {Numberoflicenses}
@@ -211,7 +209,7 @@ const PakageDetailsUserManagement = () => {
 
               // Update state with numeric value
               const newData = tableData.map((item) => {
-                return item?.pK_PackageID === row?.pK_PackageID
+                return item.pK_PackageID === row.pK_PackageID
                   ? { ...item, licenseCount: numericValue }
                   : item;
               });
@@ -226,7 +224,7 @@ const PakageDetailsUserManagement = () => {
                     applyClass="PakageDetails"
                     name="noofLisence"
                     maxLength={3}
-                    value={row?.licenseCount}
+                    value={row.licenseCount}
                     change={(e) => handleChange(e.target.value)}
                   />
                 </Col>
@@ -249,11 +247,13 @@ const PakageDetailsUserManagement = () => {
       key: "MonthCharges",
       width: 100,
       align: "center",
-      render: (row) => {
+      render: (text, row) => {
         const { MonthCharges } = calculateTotals(tableData);
-        const monthlyCharges =
-          row?.price && row?.licenseCount ? row?.price * row?.licenseCount : 0;
-        if (row?.shouldDisplayTextField) {
+        console.log(MonthCharges, "pricepricepriceprice");
+        // apply nullish operator for code exploiting it will show 0 when value get null or undefined
+        const monthlyCharges = (row.price ?? 0) * (row.licenseCount ?? 0);
+        console.log(monthlyCharges, "monthlyChargesmonthlyCharges");
+        if (row.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -265,7 +265,7 @@ const PakageDetailsUserManagement = () => {
                       ? t("Upgrade-now")
                       : t("Pay-now")
                   }
-                  disableBtn={MonthCharges === 0 ? true : false}
+                  disableBtn={MonthCharges === 0}
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(2)}
                 />
@@ -273,23 +273,15 @@ const PakageDetailsUserManagement = () => {
             </>
           );
         } else {
-          if (row?.isTotalRow) {
-            return (
-              <span className={styles["ChargesPerLicesense"]}>
-                {MonthCharges}
-              </span>
-            );
-          } else {
-            return (
-              <>
-                <>
-                  <span className={styles["ChargesPerLicesense"]}>
-                    {monthlyCharges}
-                  </span>
-                </>
-              </>
-            );
-          }
+          return row.isTotalRow ? (
+            <span className={styles["ChargesPerLicesense"]}>
+              {MonthCharges}
+            </span>
+          ) : (
+            <span className={styles["ChargesPerLicesense"]}>
+              {monthlyCharges}
+            </span>
+          );
         }
       },
     },
@@ -306,14 +298,11 @@ const PakageDetailsUserManagement = () => {
       key: "Quarterlycharges",
       align: "center",
       width: 100,
-      render: (row) => {
+      render: (text, row) => {
         const { Quarterlycharges } = calculateTotals(tableData);
-
-        const quarterlyCharges =
-          row?.price && row?.licenseCount
-            ? row?.price * row?.licenseCount * 3
-            : 0;
-        if (row?.shouldDisplayTextField) {
+        // apply nullish operator for code exploiting it will show 0 when value get null or undefined
+        const quarterlyCharges = (row.price ?? 0) * (row.licenseCount ?? 0) * 3;
+        if (row.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -325,7 +314,7 @@ const PakageDetailsUserManagement = () => {
                       ? t("Upgrade-now")
                       : t("Pay-now")
                   }
-                  disableBtn={Quarterlycharges === 0 ? true : false}
+                  disableBtn={Quarterlycharges === 0}
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(3)}
                 />
@@ -333,21 +322,15 @@ const PakageDetailsUserManagement = () => {
             </>
           );
         } else {
-          if (row?.isTotalRow) {
-            return (
-              <span className={styles["ChargesPerLicesense"]}>
-                {Quarterlycharges}
-              </span>
-            );
-          } else {
-            return (
-              <>
-                <span className={styles["ChargesPerLicesense"]}>
-                  {quarterlyCharges}
-                </span>
-              </>
-            );
-          }
+          return row.isTotalRow ? (
+            <span className={styles["ChargesPerLicesense"]}>
+              {Quarterlycharges}
+            </span>
+          ) : (
+            <span className={styles["ChargesPerLicesense"]}>
+              {quarterlyCharges}
+            </span>
+          );
         }
       },
     },
@@ -364,14 +347,13 @@ const PakageDetailsUserManagement = () => {
       key: "YearlychargesTotal",
       align: "center",
       width: 100,
-      render: (row) => {
+      render: (text, row) => {
         const { YearlychargesTotal } = calculateTotals(tableData);
 
-        const YearlyCharges =
-          row?.price && row?.licenseCount
-            ? row?.price * row?.licenseCount * 12
-            : 0;
-        if (row?.shouldDisplayTextField) {
+        // apply nullish operator for code exploiting it will show 0 when value get null or undefined
+        const YearlyCharges = (row.price ?? 0) * (row.licenseCount ?? 0) * 12;
+
+        if (row.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -384,28 +366,22 @@ const PakageDetailsUserManagement = () => {
                       : t("Pay-now")
                   }
                   className={styles["PayNowButtons"]}
-                  disableBtn={YearlychargesTotal === 0 ? true : false}
+                  disableBtn={YearlychargesTotal === 0}
                   onClick={() => handlePayNowClick(1)}
                 />
               </span>
             </>
           );
         } else {
-          if (row?.isTotalRow) {
-            return (
-              <span className={styles["ChargesPerLicesense"]}>
-                {YearlychargesTotal}
-              </span>
-            );
-          } else {
-            return (
-              <>
-                <span className={styles["ChargesPerLicesense"]}>
-                  {YearlyCharges}
-                </span>
-              </>
-            );
-          }
+          return row.isTotalRow ? (
+            <span className={styles["ChargesPerLicesense"]}>
+              {YearlychargesTotal}
+            </span>
+          ) : (
+            <span className={styles["ChargesPerLicesense"]}>
+              {YearlyCharges}
+            </span>
+          );
         }
       },
     },
