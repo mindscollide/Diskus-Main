@@ -13,7 +13,6 @@ import {
   TextField,
   Button,
   Modal,
-  SelectBox,
   Accordian,
   EmployeeCard,
   Notification,

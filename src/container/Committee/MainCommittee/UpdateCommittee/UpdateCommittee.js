@@ -6,7 +6,6 @@ import {
   TextField,
   Button,
   Checkbox,
-  SelectBox,
   Notification,
   AttachmentViewer,
 } from "../../../../components/elements";

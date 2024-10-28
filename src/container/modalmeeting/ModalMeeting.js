@@ -18,7 +18,6 @@ import {
   Button,
   Modal,
   Checkbox,
-  SelectBox,
   Accordian,
   EmployeeCard,
   Notification,

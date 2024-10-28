@@ -5,7 +5,6 @@ import {
   TextField,
   TableToDo,
   Notification,
-  SelectBox,
 } from "../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import searchicon from "../../assets/images/searchicon.svg";
@@ -1509,45 +1508,7 @@ const Resolution = () => {
                 </Row>
               </Col>
             </Row>
-            {searchResultsArea ? (
-              <>
-                <Row className="mt-3">
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Search_results"]}>
-                      {t("Search-results")}
-                    </span>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg={3} md={3} sm={3}>
-                    <Row>
-                      <Col
-                        lg={6}
-                        md={6}
-                        sm={6}
-                        className="CreateMeetingReminder Atteendees-organizer-participant "
-                      >
-                        <SelectBox
-                          name="Participant"
-                          placeholder={t("Circulation-date")}
-                        />
-                      </Col>
-                      <Col
-                        lg={6}
-                        md={6}
-                        sm={6}
-                        className="CreateMeetingReminder Atteendees-organizer-participant"
-                      >
-                        <SelectBox
-                          name="Participant"
-                          placeholder={t("Voting-deadline")}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </>
-            ) : null}
+         
             <Row className="mt-3">
               <Col sm={12} md={12} lg={12} className="d-flex gap-2">
                 <Button

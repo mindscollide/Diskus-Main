@@ -85,8 +85,8 @@ body[dir="rtl"] button.skipButtons-onboard_forscreen1.btn.btn-primary svg {
   transform: rotate(180deg);
 }
 
-body[dir="rtl"]
+/* body[dir="rtl"]
   .MuiPaper-root.finalwelcomescreen.MuiPaper-elevation0.MuiPaper-rounded
   svg {
   transform: rotate(180deg);
-}
+} */
