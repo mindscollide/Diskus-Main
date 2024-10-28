@@ -20,6 +20,14 @@ section.emptyScreen-height {
   border: 1px solid #e1e1e1;
   height: 80vh;
   overflow: hidden auto;
+  border-radius: 8px !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
 }
 
 .pendingApprovalPaper::-webkit-scrollbar {

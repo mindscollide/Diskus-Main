@@ -2,7 +2,6 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Newprofile from "../../../assets/images/newprofile.png";
-import { Paper } from "@mui/material";
 import {
   TextField,
   Button,
@@ -41,7 +40,7 @@ const UpdateCommittee = () => {
             </Row>
             <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
-                <Paper className={styles["Update-Committee-paper"]}>
+                <span className={styles["Update-Committee-paper"]}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <Row>
@@ -1375,7 +1374,7 @@ const UpdateCommittee = () => {
                       </Row>
                     </Col>
                   </Row>
-                </Paper>
+                </span>
               </Col>
             </Row>
           </Container>

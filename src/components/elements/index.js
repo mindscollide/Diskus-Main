@@ -6,8 +6,7 @@ import Table from "./table/Table";
 import TableToDo from "./tableToDo/table-to-do";
 import CustomTableToDoDashboard from "./tableTodoDashboard/table-todo-dashboard";
 import uploadButton from "./upload/uploadButton";
-import  Notification  from "./snack_bar";
-import SelectBox from "./select_dropdown/Select_dropdown";
+import Notification from "./snack_bar";
 import Modal from "./modal/Modal";
 import ButtonGroup from "./GroupedButtons/Grouped_buttons";
 import Accordian from "./accordian/Accordian";
@@ -15,7 +14,6 @@ import Radio from "./radio/Radio";
 import Checkbox from "./check_box/Checkbox";
 import TimePickers from "./time_picker/Time_picker";
 import Collapse from "./collapse/Collapse";
-import Paper from "./paper/Paper";
 import SearchInput from "./search/search";
 import Welcome from "./welcomescreen/Welcome";
 import Switch from "./switch_button/Switch";
@@ -72,14 +70,12 @@ export {
   Loader,
   ResultMessage,
   NotificationBar,
-  SelectBox,
   Checkbox,
   Accordian,
   TimePickers,
   Radio,
   Collapse,
   ButtonGroup,
-  Paper,
   SearchInput,
   SelectDropdownforObject,
   InputSearchFilter,

@@ -20,7 +20,6 @@ import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
 import Recentadded_emptyIcon from "../../assets/images/Recentadded_emptyIcon.png";
 import plus from "../../assets/images/Icon feather-folder.svg";
 import fileupload from "../../assets/images/Group 2891.svg";
-import { Paper } from "@mui/material";
 import styles from "./DataRoom.module.css";
 import {
   Button,
@@ -3404,7 +3403,7 @@ const DataRoom = () => {
                 md={detailView ? 8 : 12}
                 sm={detailView ? 8 : 12}
               >
-                <Paper className={styles["Data_room_paper"]}>
+                <span className={styles["Data_room_paper"]}>
                   {searchTabOpen ? (
                     <SearchComponent
                       setSearchDataFields={setSearchDataFields}
@@ -3867,7 +3866,7 @@ const DataRoom = () => {
                       )}
                     </>
                   )}
-                </Paper>
+                </span>
               </Col>
               {detailView && (
                 <Col lg={4} md={4} sm={4}>

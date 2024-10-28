@@ -11,12 +11,17 @@ const FinalWelcomeScreen = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   let userName = localStorage.getItem("name");
+
+  const handleClickNavigate = () => {
+    document.body.style.overflow = ""
+    navigate("/Diskus")
+  }
   return (
     <Container data-tut="finalwelcome-screen">
       <Row>
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
-          <Paper className="finalwelcomescreen">
+          <section className={styles["finalwelcomescreen"]}>
             <Row className="mx-4">
               <Col sm={12} className="d-flex justify-content-start">
                 <h3 className="fs-3 my-3">
@@ -43,13 +48,13 @@ const FinalWelcomeScreen = () => {
                       fontSize={38}
                       color="white"
                       cursor="pointer"
-                      onClick={() => navigate("/Diskus")}
+                      onClick={handleClickNavigate}
                     />
                   </Col>
                 </Row>
               </Col>
             </Row>
-          </Paper>
+          </section>
         </Col>
       </Row>
     </Container>

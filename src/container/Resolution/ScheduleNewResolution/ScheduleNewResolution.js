@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
-import { Paper } from "@mui/material";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -1267,7 +1266,7 @@ const ScheduleNewResolution = () => {
                 </span>
               </Col>
             </Row>
-            <Paper className={styles["Create_new_resolution_paper"]}>
+            <span className={styles["Create_new_resolution_paper"]}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -2168,7 +2167,7 @@ const ScheduleNewResolution = () => {
                   </Row>
                 </Col>
               </Row>
-            </Paper>
+            </span>
           </Col>
         </Row>
       </section>

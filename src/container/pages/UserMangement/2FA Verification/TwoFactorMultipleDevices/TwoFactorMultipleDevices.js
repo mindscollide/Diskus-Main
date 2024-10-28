@@ -21,7 +21,6 @@ import Cookies from "js-cookie";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import {
   Button,
-  Paper,
   Notification,
   Loader,
 } from "../../../../../components/elements";
@@ -197,7 +196,7 @@ const TwoFactorMultipleDevices = () => {
                 sm={12}
                 className="d-flex justify-content-center align-items-center min-vh-100"
               >
-                <Paper className={styles["Send_Email_multipleDevice"]}>
+                <span className={styles["Send_Email_multipleDevice"]}>
                   <Col
                     sm={12}
                     lg={12}
@@ -410,7 +409,7 @@ const TwoFactorMultipleDevices = () => {
                       </span>
                     </Col>
                   </Row>
-                </Paper>
+                </span>
               </Col>
             </Row>
           </Col>

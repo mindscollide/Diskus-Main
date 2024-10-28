@@ -143,7 +143,7 @@ const ResultResolution = ({ setResultresolution }) => {
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <Paper className={styles["Result_page_paper"]}>
+          <span className={styles["Result_page_paper"]}>
             <Row>
               <Col lg={5} md={5} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
@@ -411,7 +411,7 @@ const ResultResolution = ({ setResultresolution }) => {
                 </Row>
               </Col>
             </Row>
-          </Paper>
+          </span>
         </Col>
       </Row>
     </section>

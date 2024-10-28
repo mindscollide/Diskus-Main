@@ -1911,16 +1911,6 @@ tr.ant-table-row.ant-table-row-level-0:has(
   border-bottom: 1px solid #036ab2 !important;
 }
 
-.finalwelcomescreen {
-  padding: 20px 0;
-  /* background-color: #2097d6 !important; */
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  width: 550px !important;
-}
-
-body[dir="rtl"] .finalwelcomescreen {
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
-}
 
 .onBoardTable > .ant-table-pagination.ant-pagination {
   display: none !important;

@@ -42,7 +42,6 @@ import {
   ResultMessage,
   Notification,
 } from "../../../components/elements";
-import { Paper } from "@mui/material";
 import { Col, Dropdown, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -277,7 +276,6 @@ const NewMeeting = () => {
         setLocalValue(gregorian_ar);
       }
     }
-    
   }, [currentLanguage]);
 
   const callApi = async () => {
@@ -2962,7 +2960,7 @@ const NewMeeting = () => {
             </Row>
             <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
-                <Paper className={styles["PaperStylesMeetingTwoPage"]}>
+                <span className={styles["PaperStylesMeetingTwoPage"]}>
                   <Row>
                     <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                       <Button
@@ -3088,7 +3086,7 @@ const NewMeeting = () => {
                       </Row>
                     </>
                   ) : null}
-                </Paper>
+                </span>
               </Col>
             </Row>
           </>

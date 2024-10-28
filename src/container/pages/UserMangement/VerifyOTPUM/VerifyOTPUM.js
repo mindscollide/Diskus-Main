@@ -9,7 +9,6 @@ import LanguageSelector from "../../../../components/elements/languageSelector/L
 import { Col, Container, Row } from "react-bootstrap";
 import {
   Button,
-  Paper,
   VerificationInputField,
   Loader,
 } from "../../../../components/elements";
@@ -171,7 +170,7 @@ const VerifyOTPUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["OTP_auth_paper"]}>
+            <span className={styles["OTP_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
@@ -276,7 +275,7 @@ const VerifyOTPUM = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col
             lg={8}

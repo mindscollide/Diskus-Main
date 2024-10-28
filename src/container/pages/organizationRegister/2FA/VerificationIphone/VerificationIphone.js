@@ -1,4 +1,4 @@
-import { Button, Paper, Loader } from "../../../../../components/elements";
+import { Button, Loader } from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import "./VerificationIphone.css";
@@ -134,7 +134,7 @@ const VerificationIphone = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className="loginbox_auth_paperForiphone">
+            <span className="loginbox_auth_paperForiphone">
               <Col
                 sm={12}
                 lg={12}
@@ -247,7 +247,7 @@ const VerificationIphone = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
             <Row>

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
-  Paper,
   Checkbox,
   Notification,
   Loader,
@@ -196,7 +195,7 @@ const SignInUserManagement = () => {
             </Row>
             <Row>
               <Col lg={4} md={4} sm={12} className={styles["SignInEmailBox"]}>
-                <Paper className={styles["EmailVerifyBox"]}>
+                <span className={styles["EmailVerifyBox"]}>
                   <Col sm={12} lg={12} md={12}>
                     <Row>
                       <Col
@@ -297,7 +296,7 @@ const SignInUserManagement = () => {
                       </Col>
                     </Row>
                   </Col>
-                </Paper>
+                </span>
               </Col>
               <Col
                 lg={8}

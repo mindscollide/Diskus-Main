@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./SceduleMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@mui/material";
 import { Button } from "../../../../components/elements";
 import MeetingDetails from "./meetingDetails/MeetingDetails";
 import Organizers from "./Organizers/Organizers";
@@ -51,7 +50,7 @@ const SceduleMeeting = ({
   setDataroomMapFolderId,
   dataroomMapFolderId,
 }) => {
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const getALlMeetingTypes = useSelector(
@@ -482,7 +481,7 @@ const SceduleMeeting = ({
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12} className="mb-4">
-          <Paper className={styles["Scedule_meeting_paper"]}>
+          <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
@@ -796,7 +795,7 @@ const SceduleMeeting = ({
                 setEdiorRole={setEdiorRole}
               />
             )}
-          </Paper>
+          </span>
         </Col>
       </Row>
     </section>

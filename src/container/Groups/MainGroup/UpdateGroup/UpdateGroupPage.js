@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import featherupload from "../../../../assets/images/featherupload.svg";
-import { Paper } from "@mui/material";
 import {
   TextField,
   Button,
   Checkbox,
-  SelectBox,
   Notification,
   AttachmentViewer,
 } from "./../../../../components/elements";
@@ -270,13 +268,14 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex gap-2 align-items-center'>
+                    className="d-flex gap-2 align-items-center"
+                  >
                     <img
                       src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                      height='16.45px'
-                      width='18.32px'
-                      draggable='false'
-                      alt=''
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
                     />
                     <span>{user.name}</span>
                   </Col>
@@ -644,21 +643,22 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
   return (
     <>
-      <section className=' color-5a5a5a'>
-        <Row className='mt-3'>
+      <section className=" color-5a5a5a">
+        <Row className="mt-3">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className='d-flex justify-content-start '>
+            className="d-flex justify-content-start "
+          >
             <span className={styles["Create-Group-Heading"]}>
               {t("Update-group")}
             </span>
           </Col>
         </Row>
-        <Row className='mt-2'>
+        <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
-            <Paper className={styles["Update-Group-paper"]}>
+            <span className={styles["Update-Group-paper"]}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -676,14 +676,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className='group-fields CreateMeetingInput'>
+                          className="group-fields CreateMeetingInput"
+                        >
                           <TextField
-                            applyClass='form-control2'
-                            type='text'
+                            applyClass="form-control2"
+                            type="text"
                             placeholder={t("Task-title")}
                             maxLength={300}
                             required={true}
-                            name='tasktitle'
+                            name="tasktitle"
                             change={onChangeFunc}
                             value={GroupDetails.Title}
                           />
@@ -696,7 +697,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               erorbar && GroupDetails.Title === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
-                            }>
+                            }
+                          >
                             {t("Group-title-is-required")}
                           </p>
                         </Col>
@@ -706,13 +708,14 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className='CreateMeetingInput Saved_money_Tagline'>
+                          className="CreateMeetingInput Saved_money_Tagline"
+                        >
                           <TextField
-                            applyClass='text-area-create-group'
-                            type='text'
+                            applyClass="text-area-create-group"
+                            type="text"
                             as={"textarea"}
-                            rows='4'
-                            name='groupdescription'
+                            rows="4"
+                            name="groupdescription"
                             maxLength={500}
                             change={onChangeFunc}
                             placeholder={t("Description")}
@@ -728,27 +731,30 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               erorbar && GroupDetails.Description === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
-                            }>
+                            }
+                          >
                             {t("Group-description-is-required")}
                           </p>
                         </Col>
                       </Row>
 
-                      <Row className='mt-1'>
+                      <Row className="mt-1">
                         <Col
                           lg={6}
                           md={6}
                           sm={6}
-                          className={styles["Checkbox"]}>
+                          className={styles["Checkbox"]}
+                        >
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='Update-committee-Checkbox Saved_money_Tagline'>
+                              className="Update-committee-Checkbox Saved_money_Tagline"
+                            >
                               <Checkbox
-                                className='SearchCheckbox '
-                                name='IsChat'
+                                className="SearchCheckbox "
+                                name="IsChat"
                                 disabled={
                                   GroupsReducer?.getGroupByGroupIdResponse
                                     ?.isTalk
@@ -759,7 +765,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 label2={t("Create-talk-group")}
                                 onChange={CheckBoxHandler}
                                 checked={GroupDetails.isGroupChat}
-                                classNameDiv='checkboxParentClass'></Checkbox>
+                                classNameDiv="checkboxParentClass"
+                              ></Checkbox>
                             </Col>
                           </Row>
                         </Col>
@@ -775,13 +782,14 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           />
                         </Col>
                         <Row>
-                          <Col className='d-flex justify-content-end'>
+                          <Col className="d-flex justify-content-end">
                             <p
                               className={
                                 erorbar && groupTypeValue === ""
                                   ? styles["errorMessage"]
                                   : styles["errorMessage_hidden"]
-                              }>
+                              }
+                            >
                               {t("Group-type-is-required")}
                             </p>
                           </Col>
@@ -793,33 +801,36 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["scroll-bar-creategroup"]}>
-                          <Row className='mt-1'>
+                          className={styles["scroll-bar-creategroup"]}
+                        >
+                          <Row className="mt-1">
                             <Col lg={12} md={12} sm={12}>
                               <span
-                                className={styles["Create-group-Head-Heading"]}>
+                                className={styles["Create-group-Head-Heading"]}
+                              >
                                 {t("Group-head")}
                               </span>
                             </Col>
                           </Row>
 
                           {/* Group Heads */}
-                          <Row className='mt-2'>
+                          <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
                                 if (data.role === 2) {
                                   return (
                                     <Col lg={6} md={6} sm={6}>
                                       <section
-                                        className={styles["Outer_Border-Line"]}>
+                                        className={styles["Outer_Border-Line"]}
+                                      >
                                         <Row>
                                           <Col lg={3} md={3} sm={12}>
                                             <img
                                               src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
                                               width={50}
                                               height={50}
-                                              alt=''
-                                              draggable='false'
+                                              alt=""
+                                              draggable="false"
                                             />
                                           </Col>
                                           <Col
@@ -828,13 +839,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className={
                                               styles["group-head-info"]
-                                            }>
+                                            }
+                                          >
                                             <Row>
                                               <Col
                                                 lg={12}
                                                 md={12}
                                                 sm={12}
-                                                className='mt-1'>
+                                                className="mt-1"
+                                              >
                                                 <Row>
                                                   <Col lg={12} md={12} sm={12}>
                                                     <span
@@ -842,7 +855,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                         styles[
                                                           "name-create-group"
                                                         ]
-                                                      }>
+                                                      }
+                                                    >
                                                       {data.data.name}
                                                     </span>
                                                   </Col>
@@ -854,7 +868,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                         styles[
                                                           "Designation-create-group"
                                                         ]
-                                                      }>
+                                                      }
+                                                    >
                                                       {data.data.designation}
                                                     </span>
                                                   </Col>
@@ -866,7 +881,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                         styles[
                                                           "email-create-group"
                                                         ]
-                                                      }>
+                                                      }
+                                                    >
                                                       <a>
                                                         {data.data.emailAddress}
                                                       </a>
@@ -881,18 +897,19 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                               lg={2}
                                               md={2}
                                               sm={12}
-                                              className='mt-0  d-flex justify-content-center'>
+                                              className="mt-0  d-flex justify-content-center"
+                                            >
                                               <img
                                                 src={CrossIcon}
-                                                className='cursor-pointer'
-                                                alt=''
+                                                className="cursor-pointer"
+                                                alt=""
                                                 width={18}
                                                 onClick={() =>
                                                   removeMemberHandler(
                                                     data.data.pK_UID
                                                   )
                                                 }
-                                                draggable='false'
+                                                draggable="false"
                                               />
                                             </Col>
                                           </>
@@ -909,36 +926,39 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className={styles["no-member"]}>
+                                className={styles["no-member"]}
+                              >
                                 {t("No-group-heads-found")}
                               </Col>
                             )}
                           </Row>
 
-                          <Row className='mt-3'>
+                          <Row className="mt-3">
                             <Col lg={12} md={12} sm={12}>
                               <span
-                                className={styles["members-create-group-page"]}>
+                                className={styles["members-create-group-page"]}
+                              >
                                 {t("Members")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className='mt-2'>
+                          <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data) => {
                                 if (data.role === 1) {
                                   return (
                                     <Col lg={6} md={6} sm={6}>
                                       <section
-                                        className={styles["Outer_Border-Line"]}>
+                                        className={styles["Outer_Border-Line"]}
+                                      >
                                         <Row>
                                           <Col lg={3} md={3} sm={12}>
                                             <img
                                               src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
                                               width={50}
                                               height={50}
-                                              alt=''
-                                              draggable='false'
+                                              alt=""
+                                              draggable="false"
                                             />
                                           </Col>
                                           <Col
@@ -947,13 +967,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className={
                                               styles["group-head-info"]
-                                            }>
+                                            }
+                                          >
                                             <Row>
                                               <Col
                                                 lg={12}
                                                 md={12}
                                                 sm={12}
-                                                className='mt-1'>
+                                                className="mt-1"
+                                              >
                                                 <Row>
                                                   <Col lg={12} md={12} sm={12}>
                                                     <span
@@ -961,7 +983,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                         styles[
                                                           "name-create-group"
                                                         ]
-                                                      }>
+                                                      }
+                                                    >
                                                       {data.data.name}
                                                     </span>
                                                   </Col>
@@ -973,7 +996,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                         styles[
                                                           "Designation-create-group"
                                                         ]
-                                                      }>
+                                                      }
+                                                    >
                                                       {data.data.designation}
                                                     </span>
                                                   </Col>
@@ -985,7 +1009,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                         styles[
                                                           "email-create-group"
                                                         ]
-                                                      }>
+                                                      }
+                                                    >
                                                       <a>
                                                         {data.data.emailAddress}
                                                       </a>
@@ -999,18 +1024,19 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             lg={2}
                                             md={2}
                                             sm={12}
-                                            className='mt-0  d-flex justify-content-center'>
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
                                             <img
                                               src={CrossIcon}
                                               width={18}
-                                              alt=''
-                                              className='cursor-pointer'
+                                              alt=""
+                                              className="cursor-pointer"
                                               onClick={() =>
                                                 removeMemberHandler(
                                                   data.data.pK_UID
                                                 )
                                               }
-                                              draggable='false'
+                                              draggable="false"
                                             />
                                           </Col>
                                         </Row>
@@ -1026,7 +1052,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className={styles["no-member"]}>
+                                className={styles["no-member"]}
+                              >
                                 {t("No-group-memebers-found")}
                               </Col>
                             )}
@@ -1050,7 +1077,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               md={12}
                               lg={12}
                               sm={12}
-                              className='group-fields'>
+                              className="group-fields"
+                            >
                               <Select
                                 options={allPresenters}
                                 maxMenuHeight={140}
@@ -1065,13 +1093,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               />
                             </Col>
                           </Row>
-                          <Row className='mt-3'>
-                            <Col
-                              lg={10}
-                              md={10}
-                              sm={10}
-                             >
-                           <Select
+                          <Row className="mt-3">
+                            <Col lg={10} md={10} sm={10}>
+                              <Select
                                 options={groupMembersRolesOptions}
                                 onChange={assigntRoleAttendies}
                                 value={
@@ -1086,7 +1110,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               lg={2}
                               md={2}
                               sm={2}
-                              className=' d-flex justify-content-end  '>
+                              className=" d-flex justify-content-end  "
+                            >
                               <Button
                                 className={styles["ADD-Group-btn"]}
                                 text={t("Add")}
@@ -1102,7 +1127,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               sm={12}
                               className={
                                 styles["scrollbar-addmember-creategroup"]
-                              }>
+                              }
+                            >
                               {meetingAttendeesList.length > 0
                                 ? meetingAttendeesList.map(
                                     (attendeelist, index) => {
@@ -1112,15 +1138,16 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             lg={6}
                                             md={6}
                                             sm={6}
-                                            className='mt-3'>
-                                            <Row className='d-flex gap-2 '>
+                                            className="mt-3"
+                                          >
+                                            <Row className="d-flex gap-2 ">
                                               <Col lg={2} md={2} sm={12}>
                                                 <img
-                                                  alt=''
+                                                  alt=""
                                                   src={`data:image/jpeg;base64,${attendeelist.displayProfilePictureName}`}
                                                   width={50}
                                                   height={50}
-                                                  draggable='false'
+                                                  draggable="false"
                                                 />
                                               </Col>
 
@@ -1132,15 +1159,17 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                   styles[
                                                     "group-head-info-Add-Members"
                                                   ]
-                                                }>
-                                                <Row className='mt-1'>
+                                                }
+                                              >
+                                                <Row className="mt-1">
                                                   <Col lg={12} md={12} sm={12}>
                                                     <span
                                                       className={
                                                         styles[
                                                           "name-create-group"
                                                         ]
-                                                      }>
+                                                      }
+                                                    >
                                                       {attendeelist.name}
                                                     </span>
                                                   </Col>
@@ -1152,7 +1181,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                         styles[
                                                           "Designation-create-group"
                                                         ]
-                                                      }>
+                                                      }
+                                                    >
                                                       {attendeelist.designation}
                                                     </span>
                                                   </Col>
@@ -1164,7 +1194,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                         styles[
                                                           "email-create-group"
                                                         ]
-                                                      }>
+                                                      }
+                                                    >
                                                       <a>
                                                         {
                                                           attendeelist.emailAddress
@@ -1178,7 +1209,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                 lg={2}
                                                 md={2}
                                                 sm={12}
-                                                className='mt-2 '>
+                                                className="mt-2 "
+                                              >
                                                 <Checkbox
                                                   checked={
                                                     attendees.includes(
@@ -1187,7 +1219,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                       ? true
                                                       : false
                                                   }
-                                                  classNameDiv=''
+                                                  classNameDiv=""
                                                   onChange={() =>
                                                     checkAttendeeBox(
                                                       attendeelist,
@@ -1212,7 +1244,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           {/* at this point it is ending  */}
                         </Col>
                       </Row>
-                      <Row className='mt-3'>
+                      <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Attachments_Heading"]}>
                             {"Attachment"}
@@ -1220,7 +1252,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                         </Col>
                       </Row>
                       <section className={styles["UpdateGroupAttachments"]}>
-                        <Row className='mt-1'>
+                        <Row className="mt-1">
                           {fileAttachments.length > 0
                             ? fileAttachments.map((data, index) => {
                                 return (
@@ -1242,23 +1274,25 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             : null}
                         </Row>
                       </section>
-                      <Row className='mt-2'>
+                      <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <Dragger
                             fileList={[]}
                             {...props}
                             className={
                               styles["dragdrop_attachment_create_resolution"]
-                            }>
-                            <p className='ant-upload-drag-icon'>
+                            }
+                          >
+                            <p className="ant-upload-drag-icon">
                               <span
-                                className={styles["create_resolution_dragger"]}>
+                                className={styles["create_resolution_dragger"]}
+                              >
                                 <img
                                   src={featherupload}
-                                  width='18.87px'
-                                  height='18.87px'
-                                  alt=''
-                                  draggable='false'
+                                  width="18.87px"
+                                  height="18.87px"
+                                  alt=""
+                                  draggable="false"
                                 />
                               </span>
                             </p>
@@ -1279,7 +1313,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-end gap-3 mt-4'>
+                          className="d-flex justify-content-end gap-3 mt-4"
+                        >
                           <Button
                             className={styles["Cancell-UpgradeGroup-btn"]}
                             text={t("Cancel")}
@@ -1296,7 +1331,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                   </Row>
                 </Col>
               </Row>
-            </Paper>
+            </span>
           </Col>
         </Row>
       </section>

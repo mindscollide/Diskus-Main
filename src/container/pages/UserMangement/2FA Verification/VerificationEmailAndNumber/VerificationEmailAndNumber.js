@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import {
   Button,
-  Paper,
   VerificationInputField,
   Notification,
   Loader,
@@ -238,7 +237,7 @@ const VerificationEmailAndNumber = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["OTP_auth_paper"]}>
+            <span className={styles["OTP_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
@@ -352,7 +351,7 @@ const VerificationEmailAndNumber = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
             <Row>

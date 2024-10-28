@@ -88,7 +88,7 @@ const ForgotPasswordUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["Forgotpasswordloginbox_auth_paper"]}>
+            <span className={styles["Forgotpasswordloginbox_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
@@ -184,7 +184,7 @@ const ForgotPasswordUM = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col
             lg={8}

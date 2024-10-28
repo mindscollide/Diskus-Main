@@ -32,7 +32,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
     <Container fluid>
       <Row className="mt-5">
         <Col lg={12} md={12} sm={12}>
-          <Paper className={styles["ViewAttachment_paper"]}>
+          <span className={styles["ViewAttachment_paper"]}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["View_attachment_heading"]}>
@@ -89,7 +89,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                 />
               </Col>
             </Row>
-          </Paper>
+          </span>
         </Col>
       </Row>
     </Container>

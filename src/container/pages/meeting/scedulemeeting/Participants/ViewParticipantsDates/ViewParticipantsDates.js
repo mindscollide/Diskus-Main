@@ -9,7 +9,6 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Paper } from "@mui/material";
 import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,
@@ -211,8 +210,6 @@ const ViewParticipantsDates = ({
     } catch (error) {}
   }, [getAllMeetingDetails]);
 
-
-
   // onChange function for CheckBoxes
   const handleCheckboxChange = (clickedData) => {
     // Clone the prposedData array to avoid mutating the state directly
@@ -316,8 +313,8 @@ const ViewParticipantsDates = ({
       Length: 50,
       PublishedMeetings: false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     setViewProposeDatePoll(false);
     dispatch(viewProposeDateMeetingPageFlag(false));
@@ -339,7 +336,7 @@ const ViewParticipantsDates = ({
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <Paper className={styles["Paper_styling"]}>
+          <span className={styles["Paper_styling"]}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_prposed_meeting"]}>
@@ -501,7 +498,7 @@ const ViewParticipantsDates = ({
                 />
               </Col>
             </Row>
-          </Paper>
+          </span>
         </Col>
       </Row>
       <Notification

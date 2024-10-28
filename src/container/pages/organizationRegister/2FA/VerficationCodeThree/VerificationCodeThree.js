@@ -1,4 +1,4 @@
-import { Button, Paper, Loader } from "../../../../../components/elements";
+import { Button, Loader } from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Col, Container, Row } from "react-bootstrap";
@@ -195,7 +195,7 @@ const VerificationCodeThree = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className="loginbox_auth_paper_for_openyourrealmextra">
+            <span className="loginbox_auth_paper_for_openyourrealmextra">
               <Col
                 sm={12}
                 lg={12}
@@ -300,7 +300,7 @@ const VerificationCodeThree = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
 
           <Col md={7} lg={7} sm={12} className="">

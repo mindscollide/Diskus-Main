@@ -3,7 +3,7 @@ import styles from "./TwoFactorVerifyUM.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import { Button, Paper, Loader } from "../../../../components/elements";
+import { Button, Loader } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import img5 from "../../../../assets/images/5.png";
 import img10 from "../../../../assets/images/10.png";
@@ -115,7 +115,7 @@ const TwoFactorVerifyUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["Two_fac_auth_paper"]}>
+            <span className={styles["Two_fac_auth_paper"]}>
               <Row>
                 <Col
                   sm={12}
@@ -266,7 +266,7 @@ const TwoFactorVerifyUM = () => {
                   </span>
                 </Col>
               </Row>
-            </Paper>
+            </span>
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
             <Row>

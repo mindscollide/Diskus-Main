@@ -6,7 +6,6 @@ import {
   Table,
   TextField,
   Notification,
-  Paper,
 } from "../../components/elements";
 import { Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
@@ -924,7 +923,7 @@ const Polling = () => {
                 rows={rows}
               />
             ) : (
-              <Paper className={styles["Poll_emptyState"]}>
+              <span className={styles["Poll_emptyState"]}>
                 <Row>
                   <Col
                     sm={12}
@@ -963,7 +962,7 @@ const Polling = () => {
                     />
                   </Col>
                 </Row>
-              </Paper>
+              </span>
             )}
           </Col>
         </Row>

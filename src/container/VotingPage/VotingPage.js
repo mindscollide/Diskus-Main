@@ -146,7 +146,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
 
         <Row className="mt-4">
           <Col lg={12} md={12} sm={12}>
-            <Paper className={styles["VotingPage_paper"]}>
+            <span className={styles["VotingPage_paper"]}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -535,7 +535,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                   </Row>
                 </Col>
               </Row>
-            </Paper>
+            </span>
           </Col>
         </Row>
       </section>

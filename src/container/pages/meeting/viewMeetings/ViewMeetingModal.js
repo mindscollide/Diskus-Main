@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@mui/material";
 import { Button } from "../../../../components/elements";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
@@ -289,7 +288,7 @@ const ViewMeetingModal = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       } catch (error) {
         console.error(error, "error");
@@ -320,7 +319,7 @@ const ViewMeetingModal = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       } catch (error) {
         console.error(error, "error");
@@ -384,8 +383,8 @@ const ViewMeetingModal = ({
   }, [meetingIdReducer.MeetingStatusEnded]);
   return (
     <>
-      <section className='position-relative'>
-        <Row className='mt-2'>
+      <section className="position-relative">
+        <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
@@ -393,10 +392,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
-            <Paper className={styles["Scedule_meeting_paper"]}>
+          <Col lg={12} md={12} sm={12} className="mb-4">
+            <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -464,7 +463,8 @@ const ViewMeetingModal = ({
                     onClick={showMeetingMaterial}
                   />
                   <>
-                    {Number(editorRole.status) === 9 && isMinutePublished === "true" ? (
+                    {Number(editorRole.status) === 9 &&
+                    isMinutePublished === "true" ? (
                       <Button
                         text={t("Minutes")}
                         className={
@@ -716,7 +716,7 @@ const ViewMeetingModal = ({
                   )}
                 </>
               )}
-            </Paper>
+            </span>
           </Col>
         </Row>
       </section>
