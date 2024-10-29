@@ -17,8 +17,9 @@ const RequestContributor = ({
 }) => {
   const { t } = useTranslation();
 
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const getAllAgendaContributors = useSelector(
+    (state) => state.NewMeetingreducer.getAllAgendaContributors
+  );
   const [agendaContributors, setAgendaContributors] = useState([]);
 
   // Function to handle changes in main agenda additional text field Main Request Contributor Note
@@ -56,15 +57,15 @@ const RequestContributor = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.getAllAgendaContributors !== undefined &&
-      NewMeetingreducer.getAllAgendaContributors !== null &&
-      NewMeetingreducer.getAllAgendaContributors.length !== 0
+      getAllAgendaContributors !== undefined &&
+      getAllAgendaContributors !== null &&
+      getAllAgendaContributors.length !== 0
     ) {
-      setAgendaContributors(NewMeetingreducer.getAllAgendaContributors);
+      setAgendaContributors(getAllAgendaContributors);
     } else {
       setAgendaContributors([]);
     }
-  }, [NewMeetingreducer.getAllAgendaContributors]);
+  }, [getAllAgendaContributors]);
 
   const handleSelectChange = (index, value) => {
     console.log(value, "valuevaluevalue");
@@ -130,8 +131,6 @@ const RequestContributor = ({
   //     </>
   //   ),
   // }));
-
-  console.log("New Meeting Reducer", NewMeetingreducer);
 
   return (
     <>

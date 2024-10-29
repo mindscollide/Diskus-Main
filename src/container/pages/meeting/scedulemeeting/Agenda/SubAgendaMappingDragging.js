@@ -62,9 +62,10 @@ const SubAgendaMappingDragging = ({
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const { NewMeetingreducer } = useSelector((state) => state);
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
-
+  const getMeetingusers = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingusers
+  );
   // const getAllMeetingDetails = useSelector(
   //   (state) => state.NewMeetingreducer.getAllMeetingDetails
   // );
@@ -357,20 +358,18 @@ const SubAgendaMappingDragging = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.getMeetingusers !== undefined &&
-      NewMeetingreducer.getMeetingusers !== null &&
-      NewMeetingreducer.getMeetingusers.length !== 0
+      getMeetingusers !== undefined &&
+      getMeetingusers !== null &&
+      getMeetingusers.length !== 0
     ) {
       const newData = {
-        meetingOrganizers: NewMeetingreducer.getMeetingusers.meetingOrganizers,
-        meetingParticipants:
-          NewMeetingreducer.getMeetingusers.meetingParticipants,
-        meetingAgendaContributors:
-          NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
+        meetingOrganizers: getMeetingusers.meetingOrganizers,
+        meetingParticipants: getMeetingusers.meetingParticipants,
+        meetingAgendaContributors: getMeetingusers.meetingAgendaContributors,
       };
       setAllPresenters(newData);
     }
-  }, [NewMeetingreducer?.getMeetingusers]);
+  }, [getMeetingusers]);
 
   useEffect(() => {
     if (allPresenters.lenth > 0 || Object.keys(allPresenters).length > 0) {
