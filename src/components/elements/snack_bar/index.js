@@ -18,7 +18,8 @@ const Notification = React.memo(({ open, setOpen }) => {
     info: <InfoCircleOutlined style={{ color: "#1890ff" }} />,
     warning: <WarningOutlined style={{ color: "#faad14" }} />,
   };
-
+  console.log(open, "openopen");
+  console.log(message, "openopen");
   useEffect(() => {
     if (isOpen) {
       notification.open({
@@ -26,7 +27,7 @@ const Notification = React.memo(({ open, setOpen }) => {
         icon: icons[severity] || icons.info,
         placement: "topRight",
         onClose: () => setOpen((prev) => ({ ...prev, open: false })),
-        duration: null,
+        duration: 3,
         closeIcon: <CloseOutlined />,
         className: "snackBar_new",
         style: {

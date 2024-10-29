@@ -1508,7 +1508,7 @@ const Resolution = () => {
                 </Row>
               </Col>
             </Row>
-         
+
             <Row className="mt-3">
               <Col sm={12} md={12} lg={12} className="d-flex gap-2">
                 <Button
@@ -1722,12 +1722,7 @@ const Resolution = () => {
         setCancelresolution={setCancelResolutionModal}
         Id={resolutionIDForCancel}
       />
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

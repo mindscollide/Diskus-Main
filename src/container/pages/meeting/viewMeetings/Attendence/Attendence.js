@@ -366,8 +366,8 @@ const Attendence = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      console.log("chek search meeting");
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEdiorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
@@ -441,12 +441,7 @@ const Attendence = ({
         />
       )}
 
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

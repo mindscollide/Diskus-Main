@@ -803,12 +803,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           }
         />
       </Container>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

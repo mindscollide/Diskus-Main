@@ -532,8 +532,8 @@ const Polls = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     setEdiorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
@@ -575,188 +575,182 @@ const Polls = ({
   }, [NewMeetingreducer.ResponseMessage]);
 
   return (
-   
-        <>
-          <section>
-            {createpoll ? (
-              <Createpolls
-                setCreatepoll={setCreatepoll}
-                currentMeeting={currentMeeting}
-              />
-            ) : votePolls ? (
-              <CastVotePollsMeeting
-                setvotePolls={setvotePolls}
-                currentMeeting={currentMeeting}
-              />
-            ) : editPolls ? (
-              <EditPollsMeeting
-                setEditPolls={setEditPolls}
-                currentMeeting={currentMeeting}
-              />
-            ) : viewPublishedPoll ? (
-              <ViewPollsPublishedScreen
-                setViewPublishedPoll={setViewPublishedPoll}
-                currentMeeting={currentMeeting}
-              />
-            ) : unPublished ? (
-              <ViewPollsUnPublished
-                setUnPublished={setUnPublished}
-                currentMeeting={currentMeeting}
-              />
-            ) : (
-              <>
-                {Number(editorRole.status) === 10 &&
-                (editorRole.role === "Organizer" ||
-                  editorRole.role === "Agenda Contributor" ||
-                  editorRole?.role === "Participant") ? (
-                  <Row className="mt-4">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-end "
-                    >
-                      <Button
-                        text={t("Create-polls")}
-                        icon={<img draggable={false} src={addmore} alt="" />}
-                        className={styles["Create_polls_Button"]}
-                        onClick={handleCreatepolls}
-                      />
-                    </Col>
-                  </Row>
-                ) : null}
+    <>
+      <section>
+        {createpoll ? (
+          <Createpolls
+            setCreatepoll={setCreatepoll}
+            currentMeeting={currentMeeting}
+          />
+        ) : votePolls ? (
+          <CastVotePollsMeeting
+            setvotePolls={setvotePolls}
+            currentMeeting={currentMeeting}
+          />
+        ) : editPolls ? (
+          <EditPollsMeeting
+            setEditPolls={setEditPolls}
+            currentMeeting={currentMeeting}
+          />
+        ) : viewPublishedPoll ? (
+          <ViewPollsPublishedScreen
+            setViewPublishedPoll={setViewPublishedPoll}
+            currentMeeting={currentMeeting}
+          />
+        ) : unPublished ? (
+          <ViewPollsUnPublished
+            setUnPublished={setUnPublished}
+            currentMeeting={currentMeeting}
+          />
+        ) : (
+          <>
+            {Number(editorRole.status) === 10 &&
+            (editorRole.role === "Organizer" ||
+              editorRole.role === "Agenda Contributor" ||
+              editorRole?.role === "Participant") ? (
+              <Row className="mt-4">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-end "
+                >
+                  <Button
+                    text={t("Create-polls")}
+                    icon={<img draggable={false} src={addmore} alt="" />}
+                    className={styles["Create_polls_Button"]}
+                    onClick={handleCreatepolls}
+                  />
+                </Col>
+              </Row>
+            ) : null}
 
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    {pollsRows.length > 0 ? (
-                      <>
-                        <section className={styles["MaintainingHeight"]}>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <Table
-                                column={PollsColoumn}
-                                rows={pollsRows}
-                                scroll={{ y: "40vh" }}
-                                pagination={false}
-                                className="Polling_table"
-                              />
-                            </Col>
-                          </Row>
-                        </section>
-                      </>
-                    ) : (
-                      <>
-                        <Row className="mt-3">
-                          <Col
-                            lg={12}
-                            ms={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <img
-                              draggable={false}
-                              src={emtystate}
-                              height="230px"
-                              width="293.93px"
-                              alt=""
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["EmptyState_heading"]}>
-                              {t("No-polls")}
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["EmptyState_subHeading"]}>
-                              {t(
-                                "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                              )}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    )}
-                  </Col>
-                </Row>
-                {pollsRows.length > 0 && (
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className="pagination-groups-table d-flex justify-content-center my-3"
-                    >
-                      <CustomPagination
-                        pageSizeOptionsValues={["30", "50", "100", "200"]}
-                        current={pageNumber}
-                        pageSize={pageSize}
-                        total={totalRecords}
-                        showSizer={totalRecords >= 9 ? true : false}
-                        className={styles["PaginationStyle-Resolution"]}
-                        onChange={handleChangePagination}
-                      />
-                    </Col>
-                  </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                {pollsRows.length > 0 ? (
+                  <>
+                    <section className={styles["MaintainingHeight"]}>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Table
+                            column={PollsColoumn}
+                            rows={pollsRows}
+                            scroll={{ y: "40vh" }}
+                            pagination={false}
+                            className="Polling_table"
+                          />
+                        </Col>
+                      </Row>
+                    </section>
+                  </>
+                ) : (
+                  <>
+                    <Row className="mt-3">
+                      <Col
+                        lg={12}
+                        ms={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <img
+                          draggable={false}
+                          src={emtystate}
+                          height="230px"
+                          width="293.93px"
+                          alt=""
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <span className={styles["EmptyState_heading"]}>
+                          {t("No-polls")}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <span className={styles["EmptyState_subHeading"]}>
+                          {t(
+                            "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                          )}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
                 )}
-                <Row className="mt-5">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end gap-2"
-                  >
-                    <Button
-                      text={t("Cancel")}
-                      className={styles["Cancel_Button_Polls_meeting"]}
-                      onClick={handleCancelPolls}
-                    />
+              </Col>
+            </Row>
+            {pollsRows.length > 0 && (
+              <Row>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="pagination-groups-table d-flex justify-content-center my-3"
+                >
+                  <CustomPagination
+                    pageSizeOptionsValues={["30", "50", "100", "200"]}
+                    current={pageNumber}
+                    pageSize={pageSize}
+                    total={totalRecords}
+                    showSizer={totalRecords >= 9 ? true : false}
+                    className={styles["PaginationStyle-Resolution"]}
+                    onChange={handleChangePagination}
+                  />
+                </Col>
+              </Row>
+            )}
+            <Row className="mt-5">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Button_Polls_meeting"]}
+                  onClick={handleCancelPolls}
+                />
 
-                    {Number(editorRole.status) === 10 &&
-                    editorRole.role === "Organizer" ? (
-                      <Button
-                        text={t("Next")}
-                        className={styles["Save_Button_Polls_meeting"]}
-                        onClick={navigatetoAttendance}
-                      />
-                    ) : null}
-                  </Col>
-                </Row>
-              </>
-            )}
+                {Number(editorRole.status) === 10 &&
+                editorRole.role === "Organizer" ? (
+                  <Button
+                    text={t("Next")}
+                    className={styles["Save_Button_Polls_meeting"]}
+                    onClick={navigatetoAttendance}
+                  />
+                ) : null}
+              </Col>
+            </Row>
+          </>
+        )}
 
-            {NewMeetingreducer.cancelPolls && (
-              <CancelPolls
-                setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-              />
-            )}
-            {NewMeetingreducer.deletPollsMeeting && (
-              <DeletePollConfirmModal
-                currentMeeting={currentMeeting}
-                pollID={pollID}
-              />
-            )}
-            <Notification
-              open={open.open}
-              message={open.message}
-              setOpen={(status) => setOpen({ ...open, open: status.open })}
-              severity={open.severity}
-            />
-          </section>
-        </>
+        {NewMeetingreducer.cancelPolls && (
+          <CancelPolls
+            setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          />
+        )}
+        {NewMeetingreducer.deletPollsMeeting && (
+          <DeletePollConfirmModal
+            currentMeeting={currentMeeting}
+            pollID={pollID}
+          />
+        )}
+        <Notification open={open} setOpen={setOpen} />
+      </section>
+    </>
   );
 };
 

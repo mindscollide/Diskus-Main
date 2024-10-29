@@ -120,8 +120,8 @@ const Agenda = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -500,12 +500,7 @@ const Agenda = ({
           setMinutes={setMinutes}
         />
       )}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

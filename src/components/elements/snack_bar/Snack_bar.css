@@ -17,6 +17,8 @@
   color: #fff !important;
   margin-top: 1px !important;
   font-family: "Montserrat" !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
   white-space: nowrap !important;
 }
 .ant-notification-notice-icon span svg {
@@ -41,6 +43,6 @@ body[dir="rtl"]
 }
 
 body[dir="rtl"] .ant-notification.ant-notification-topRight {
-  left: 0 !important;
+  left: 10px !important;
   right: auto !important;
 }

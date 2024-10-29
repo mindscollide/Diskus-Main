@@ -313,12 +313,6 @@ const SignupProcessUserManagement = () => {
       {SignupComponent}
 
       <Notification open={open} setOpen={setOpen} />
-      {/* <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      /> */}
     </>
   );
 };
