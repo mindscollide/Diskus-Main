@@ -35,7 +35,22 @@ const GroupViewPolls = ({ groupStatus }) => {
   const navigate = useNavigate();
   console.log(groupStatus, "groupStatusgroupStatusgroupStatus");
 
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const cancelPolls = useSelector(
+    (state) => state.NewMeetingreducer.cancelPolls
+  );
+  const getPollByGroupID = useSelector(
+    (state) => state.PollsReducer.getPollByGroupID
+  );
+  const newPollGroups = useSelector(
+    (state) => state.PollsReducer.newPollGroups
+  );
+  const pollingSocket = useSelector(
+    (state) => state.PollsReducer.pollingSocket
+  );
+  const newPollDelete = useSelector(
+    (state) => state.PollsReducer.newPollDelete
+  );
+
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -63,12 +78,9 @@ const GroupViewPolls = ({ groupStatus }) => {
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.getPollByGroupID !== undefined &&
-        PollsReducer.getPollByGroupID !== null
-      ) {
-        setTotalRecords(PollsReducer.getPollByGroupID.totalRecords);
-        let pollsData = PollsReducer.getPollByGroupID.polls;
+      if (getPollByGroupID !== undefined && getPollByGroupID !== null) {
+        setTotalRecords(getPollByGroupID.totalRecords);
+        let pollsData = getPollByGroupID.polls;
         let newPollsArray = [];
         pollsData.forEach((data, index) => {
           newPollsArray.push(data);
@@ -79,13 +91,13 @@ const GroupViewPolls = ({ groupStatus }) => {
         setPollsRows([]);
       }
     } catch {}
-  }, [PollsReducer.getPollByGroupID]);
+  }, [getPollByGroupID]);
 
   // MQTT Response of Polls for Groups
   useEffect(() => {
     try {
-      if (PollsReducer.newPollGroups !== null) {
-        let PollData = PollsReducer.newPollGroups;
+      if (newPollGroups !== null) {
+        let PollData = newPollGroups;
         if (Number(PollData.groupID) === Number(ViewGroupID)) {
           setPollsRows([PollData.polls, ...pollsRows]);
         }
@@ -94,15 +106,11 @@ const GroupViewPolls = ({ groupStatus }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollGroups]);
+  }, [newPollGroups]);
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.pollingSocket &&
-        Object.keys(PollsReducer.pollingSocket).length > 0
-      ) {
-        const { pollingSocket } = PollsReducer;
+      if (pollingSocket && Object.keys(pollingSocket).length > 0) {
         const { polls } = pollingSocket;
 
         let updatedRows = [...pollsRows];
@@ -126,12 +134,12 @@ const GroupViewPolls = ({ groupStatus }) => {
     } catch (error) {
       console.log(error, "errorerror");
     }
-  }, [PollsReducer.pollingSocket]);
+  }, [pollingSocket]);
 
   useEffect(() => {
     try {
-      if (PollsReducer.newPollDelete !== null) {
-        const polls = PollsReducer.newPollDelete;
+      if (newPollDelete !== null) {
+        const polls = newPollDelete;
 
         setPollsRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
@@ -144,7 +152,7 @@ const GroupViewPolls = ({ groupStatus }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollDelete]);
+  }, [newPollDelete]);
 
   const handleEditBtn = (record) => {
     let data = {
@@ -628,7 +636,7 @@ const GroupViewPolls = ({ groupStatus }) => {
             )}
           </>
         )}
-        {NewMeetingreducer.cancelPolls && <CancelPolls />}
+        {cancelPolls && <CancelPolls />}
       </section>
     </>
   );

@@ -639,7 +639,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       setMeetingSelectedStatusOption(slectStatus);
       setModalMeetingStates({
         ...modalMeetingStates,
-        "Status": slectStatus.value.toString(),
+        Status: slectStatus.value.toString(),
       });
     }
   };
@@ -1200,12 +1200,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       ) : (rows.length < 0 && rows.length === 0) || LanguageReducer.Loading ? (
         <Loader />
       ) : null}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

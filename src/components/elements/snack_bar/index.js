@@ -1,56 +1,53 @@
-import React from "react";
-import PropTypes from "prop-types"; // For prop type validation
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { notification } from "antd";
+import {
+  CheckCircleOutlined,
+  ExclamationCircleOutlined,
+  InfoCircleOutlined,
+  WarningOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
 import "./Snack_bar.css";
-import { ExclamationDiamond, CheckCircle, XLg } from "react-bootstrap-icons";
 
-const Notification = React.memo(
-  ({ setOpen, open, message, severity = "success" }) => {
-    const handleClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-      setOpen(false);
-    };
+const Notification = React.memo(({ open, setOpen }) => {
+  const { open: isOpen, message, severity = "info" } = open;
+  const icons = {
+    success: <CheckCircleOutlined style={{ color: "#4CAF50" }} />,
+    error: <ExclamationCircleOutlined style={{ color: "#f5222d" }} />,
+    info: <InfoCircleOutlined style={{ color: "#1890ff" }} />,
+    warning: <WarningOutlined style={{ color: "#faad14" }} />,
+  };
+  console.log(open, "openopen");
+  console.log(message, "openopen");
+  useEffect(() => {
+    if (isOpen) {
+      notification.open({
+        message,
+        icon: icons[severity] || icons.info,
+        placement: "topRight",
+        onClose: () => setOpen((prev) => ({ ...prev, open: false })),
+        duration: 3,
+        closeIcon: <CloseOutlined />,
+        className: "snackBar_new",
+        style: {
+          backgroundColor: severity === "error" ? "#f5222d" : "#6172d6",
+          color: "#fff",
+        },
+      });
+    }
+  }, [isOpen, message, severity, setOpen]);
 
-    return (
-      <Snackbar
-        open={open}
-        className={
-          severity === "success" ? "success_snackbar" : "error_snackbar"
-        }
-        // classNamse={severity === "success"? "success_snackbar": "error_snackbar"}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <MuiAlert
-          elevation={6}
-          action={<XLg fontSize={18} />}
-          icon={
-            severity === "success" ? <CheckCircle /> : <ExclamationDiamond />
-          }
-          style={{ alignItems: "center" }}
-          sx={{
-            width: "100%",
-            backgroundColor: severity === "success" ? "#6172d6" : "#ce0000",
-          }} // Customize background colors
-          variant="filled"
-        >
-          {message}
-        </MuiAlert>
-      </Snackbar>
-    );
-  }
-);
+  return null;
+});
 
-// Prop type validation
 Notification.propTypes = {
+  open: PropTypes.shape({
+    open: PropTypes.bool.isRequired,
+    message: PropTypes.string.isRequired,
+    severity: PropTypes.oneOf(["success", "error", "info", "warning"]),
+  }).isRequired,
   setOpen: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  message: PropTypes.string.isRequired,
-  severity: PropTypes.oneOf(["success", "error", "info", "warning"]), // Allow specific severity types
 };
 
 export default Notification;

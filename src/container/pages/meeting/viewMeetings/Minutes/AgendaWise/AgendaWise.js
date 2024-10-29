@@ -109,9 +109,7 @@ const AgendaWise = ({
 
   const [fileForSend, setFileForSend] = useState([]);
 
-
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
-
 
   const [updateData, setupdateData] = useState(null);
 
@@ -2211,12 +2209,7 @@ const AgendaWise = ({
         />
       ) : null}
 
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };

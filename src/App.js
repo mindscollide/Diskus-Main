@@ -36,10 +36,7 @@ const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const dispatch = useDispatch();
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
-  console.log(
-    SessionExpireResponseMessage,
-    "SessionExpireResponseMessageSessionExpireResponseMessage"
-  );
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -134,12 +131,7 @@ const App = () => {
             updateVersion={updateVersion}
           />
         )}
-        <Notification
-          open={open.open}
-          message={open.message}
-          setOpen={(status) => setOpen({ ...open, open: status.open })}
-          severity={open.severity}
-        />
+        <Notification open={open} setOpen={setOpen} />
       </Suspense>
     </>
   );

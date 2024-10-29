@@ -149,7 +149,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   );
   const getCurrentDateforMeeting = getCurrentDate();
   // for Participant options
-  const participantOptions = [t("Organizer"), t("Participant")];
   const [meetingDate, setMeetingDate] = useState(
     getCurrentDateforMeeting.DateGMT
   );
@@ -2387,12 +2386,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           }
         />
       </Container>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

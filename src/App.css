@@ -1911,7 +1911,6 @@ tr.ant-table-row.ant-table-row-level-0:has(
   border-bottom: 1px solid #036ab2 !important;
 }
 
-
 .onBoardTable > .ant-table-pagination.ant-pagination {
   display: none !important;
   background-color: aquamarine !important;
@@ -4231,48 +4230,7 @@ svg.MuiSvgIcon-root .ant-notification-hook-holder:before {
   border-bottom-left-radius: 4px !important;
 }
 
-.ant-notification-notice.ant-notification-notice-info.ant-notification-notice-closable {
-  border-radius: 4px !important;
-  width: 550px !important;
-  height: 81px !important;
-  z-index: 999999999999 !important;
-}
-
-.ant-notification-notice-icon {
-  position: absolute !important;
-  margin-left: 8px !important;
-  font-size: 24px !important;
-  line-height: 24px !important;
-  margin-top: 23px !important;
-}
-
-span.ant-notification-notice-icon img {
-  width: 38px !important;
-  margin-top: -3px !important;
-  margin-left: 17px !important;
-}
-
-.ant-notification-notice-with-icon .ant-notification-notice-description {
-  margin-left: 48px !important;
-  font-size: 14px !important;
-  display: none !important;
-}
-
-.ant-notification-notice-with-icon .ant-notification-notice-message {
-  width: 100% !important;
-  margin-left: 80px !important;
-  padding-right: 110px !important;
-  height: 81px !important;
-  margin-top: -16px !important;
-  margin-bottom: 0 !important;
-  display: flex !important;
-  font-size: 14px !important;
-  align-items: center !important;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-body[dir="rtl"] .ant-table-wrapper.ToDo {
+.ant-notification-notice-message body[dir="rtl"] .ant-table-wrapper.ToDo {
   padding-left: 10px;
   padding-right: 0px;
 }

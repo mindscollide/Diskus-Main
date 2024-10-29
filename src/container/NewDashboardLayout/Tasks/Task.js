@@ -16,7 +16,15 @@ import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { Table } from "antd";
 const Task = () => {
   const { t } = useTranslation();
-  const { toDoListReducer } = useSelector((state) => state);
+  const getDashboardTaskData = useSelector(
+    (state) => state.toDoListReducer.getDashboardTaskData
+  );
+  const SocketTodoActivityData = useSelector(
+    (state) => state.toDoListReducer.SocketTodoActivityData
+  );
+  const socketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let creatorID = Number(localStorage.getItem("userID"));
@@ -109,8 +117,8 @@ const Task = () => {
   ];
 
   useEffect(() => {
-    if (toDoListReducer.getDashboardTaskData) {
-      const { toDoLists, totalRecords } = toDoListReducer.getDashboardTaskData;
+    if (getDashboardTaskData) {
+      const { toDoLists, totalRecords } = getDashboardTaskData;
       if (toDoLists?.length > 0) {
         setTotalDataRecords(totalRecords);
         let dataToSort = [...toDoLists];
@@ -128,24 +136,21 @@ const Task = () => {
     } else {
       setRowToDo([]);
     }
-  }, [toDoListReducer.getDashboardTaskData]);
+  }, [getDashboardTaskData]);
 
   // Add Tasks from MQTT
   useEffect(() => {
     try {
       if (
-        toDoListReducer.SocketTodoActivityData !== null &&
-        toDoListReducer.SocketTodoActivityData !== undefined
+        SocketTodoActivityData !== null &&
+        SocketTodoActivityData !== undefined
       ) {
         if (
-          toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
-          toDoListReducer.SocketTodoActivityData.groupID === -1 &&
-          toDoListReducer.SocketTodoActivityData.meetingID === -1
+          SocketTodoActivityData.comitteeID === -1 &&
+          SocketTodoActivityData.groupID === -1 &&
+          SocketTodoActivityData.meetingID === -1
         ) {
-          let dataToSort = [
-            toDoListReducer.SocketTodoActivityData.todoList,
-            ...rowsToDo,
-          ];
+          let dataToSort = [SocketTodoActivityData.todoList, ...rowsToDo];
 
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
@@ -159,13 +164,13 @@ const Task = () => {
         }
       }
     } catch (error) {}
-  }, [toDoListReducer.SocketTodoActivityData]);
+  }, [SocketTodoActivityData]);
 
   // Update MQTT Status
   useEffect(() => {
     try {
-      if (toDoListReducer.socketTodoStatusData !== null) {
-        let payloadData = toDoListReducer.socketTodoStatusData;
+      if (socketTodoStatusData !== null) {
+        let payloadData = socketTodoStatusData;
         if (payloadData.todoStatusID === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -204,7 +209,7 @@ const Task = () => {
         }
       }
     } catch {}
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [socketTodoStatusData]);
 
   useEffect(() => {
     if (todoViewModal) {

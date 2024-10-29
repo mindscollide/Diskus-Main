@@ -18,7 +18,7 @@ import { castVoteApi } from "../../../../../store/actions/Polls_actions";
 
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
-  const { PollsReducer } = useSelector((state) => state);
+  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   let userID = localStorage.getItem("userID");
   const [open, setOpen] = useState({
     open: false,
@@ -88,11 +88,8 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
   };
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollData = PollsReducer.Allpolls.poll;
+      if (Allpolls !== null && Allpolls !== undefined) {
+        let pollData = Allpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -114,7 +111,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         }
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [Allpolls]);
 
   const handleCancelButton = () => {
     setvotePolls(false);
@@ -315,12 +312,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           </Col>
         </Row>
       </section>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

@@ -1691,12 +1691,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         cancelBtnClick={() => setCloseConfirmationBox(false)}
         setShowModal={setCloseConfirmationBox}
       />
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

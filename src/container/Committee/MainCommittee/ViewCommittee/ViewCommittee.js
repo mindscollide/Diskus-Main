@@ -29,7 +29,12 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [fileAttachments, setFileAttachments] = useState([]);
-  const { CommitteeReducer } = useSelector((state) => state);
+  const getCommitteeByCommitteeID = useSelector(
+    (state) => state.CommitteeReducer.getCommitteeByCommitteeID
+  );
+  const reteriveCommitteeDocuments = useSelector(
+    (state) => state.CommitteeReducer.reteriveCommitteeDocuments
+  );
   const [folderID, setFolderId] = useState(0);
   const [filesSending, setFilesSending] = useState([]);
   const [fileSize, setFileSize] = useState(0);
@@ -139,11 +144,11 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   useEffect(() => {
     try {
       if (
-        CommitteeReducer.getCommitteeByCommitteeID !== null &&
-        CommitteeReducer.getCommitteeByCommitteeID !== undefined
+        getCommitteeByCommitteeID !== null &&
+        getCommitteeByCommitteeID !== undefined
       ) {
         try {
-          let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
+          let committeedetails = getCommitteeByCommitteeID;
           setCommitteeData({
             committeeTitle: committeedetails.committeeTitle,
             committeeDescription: committeedetails.committeeDescription,
@@ -161,7 +166,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [CommitteeReducer.getCommitteeByCommitteeID]);
+  }, [getCommitteeByCommitteeID]);
 
   const props = {
     name: "file",
@@ -234,13 +239,12 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   useEffect(() => {
     try {
       if (
-        CommitteeReducer.reteriveCommitteeDocuments !== null &&
-        CommitteeReducer.reteriveCommitteeDocuments !== undefined
+        reteriveCommitteeDocuments !== null &&
+        reteriveCommitteeDocuments !== undefined
       ) {
-        if (CommitteeReducer.reteriveCommitteeDocuments.data.length > 0) {
-          let newfolderID =
-            CommitteeReducer.reteriveCommitteeDocuments.folderID;
-          let filesArr = CommitteeReducer.reteriveCommitteeDocuments.data;
+        if (reteriveCommitteeDocuments.data.length > 0) {
+          let newfolderID = reteriveCommitteeDocuments.folderID;
+          let filesArr = reteriveCommitteeDocuments.data;
           let newArr = [];
           let fileSend = [];
           setFolderId(newfolderID);
@@ -268,7 +272,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
         setFolderId(0);
       }
     } catch {}
-  }, [CommitteeReducer.reteriveCommitteeDocuments]);
+  }, [reteriveCommitteeDocuments]);
 
   return (
     <>
@@ -786,12 +790,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
           </Col>
         </Row>
       </section>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

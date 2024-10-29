@@ -18,8 +18,9 @@ const SubRequestContributor = ({
 }) => {
   const { t } = useTranslation();
 
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const getAllAgendaContributors = useSelector(
+    (state) => state.NewMeetingreducer.getAllAgendaContributors
+  );
   const [agendaContributors, setAgendaContributors] = useState([]);
 
   // Function to handle changes in sub-agenda additional Request Contributor Enter Note Radio text field
@@ -48,15 +49,15 @@ const SubRequestContributor = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.getAllAgendaContributors !== undefined &&
-      NewMeetingreducer.getAllAgendaContributors !== null &&
-      NewMeetingreducer.getAllAgendaContributors.length !== 0
+      getAllAgendaContributors !== undefined &&
+      getAllAgendaContributors !== null &&
+      getAllAgendaContributors.length !== 0
     ) {
-      setAgendaContributors(NewMeetingreducer.getAllAgendaContributors);
+      setAgendaContributors(getAllAgendaContributors);
     } else {
       setAgendaContributors([]);
     }
-  }, [NewMeetingreducer.getAllAgendaContributors]);
+  }, [getAllAgendaContributors]);
 
   const handleSelectChange = (index, subIndex, value) => {
     console.log(value, "valuevaluevalue");
@@ -126,8 +127,6 @@ const SubRequestContributor = ({
   //     </>
   //   ),
   // }));
-
-  console.log("New Meeting Reducer", NewMeetingreducer);
 
   return (
     <>

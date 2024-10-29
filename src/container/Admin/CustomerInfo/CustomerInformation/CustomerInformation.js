@@ -429,7 +429,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
     setCustomerSection({
       ...customerSection,
-      "FK_WorldCountryID": parseInt(a.pK_WorldCountryID),
+      FK_WorldCountryID: parseInt(a.pK_WorldCountryID),
     });
   };
   const callAPI = async () => {
@@ -1082,12 +1082,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         />
       </Container>
       {adminReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

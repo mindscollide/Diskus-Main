@@ -189,6 +189,10 @@ const SignupProcessUserManagement = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.EmailValidationResponseMessage !== "") {
+      console.log(
+        Authreducer.EmailValidationResponseMessage,
+        "EmailValidationResponseMessage"
+      );
       showMessage(
         Authreducer.EmailValidationResponseMessage,
         "success",
@@ -307,12 +311,8 @@ const SignupProcessUserManagement = () => {
   return (
     <>
       {SignupComponent}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

@@ -812,12 +812,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                 />
               </Col>
             </Row>
-            <Notification
-              open={open.open}
-              message={open.message}
-              setOpen={(status) => setOpen({ ...open, open: status.open })}
-              severity={open.severity}
-            />
+            <Notification open={open} setOpen={setOpen} />
 
             {NewMeetingreducer.unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />

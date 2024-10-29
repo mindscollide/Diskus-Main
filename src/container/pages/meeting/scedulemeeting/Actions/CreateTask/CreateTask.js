@@ -47,8 +47,15 @@ const CreateTask = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { Dragger } = Upload;
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+
+  const getMeetingusers = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingusers
+  );
+  const unsavedActions = useSelector(
+    (state) => state.NewMeetingreducer.unsavedActions
+  );
+  const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
+    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
   );
   //Notification State
   const [open, setOpen] = useState({
@@ -334,7 +341,7 @@ const CreateTask = ({
   }, [createTaskID]);
 
   useEffect(() => {
-    let createMeetingTaskData = NewMeetingreducer.getMeetingusers;
+    let createMeetingTaskData = getMeetingusers;
     if (createMeetingTaskData !== undefined && createMeetingTaskData !== null) {
       let newmembersArray = [];
       if (Object.keys(createMeetingTaskData).length > 0) {
@@ -569,37 +576,35 @@ const CreateTask = ({
     } else {
       setTaskMemberSelect([]);
     }
-  }, [NewMeetingreducer.getMeetingusers]);
+  }, [getMeetingusers]);
 
   // useEffect for agenda Dropdown
   useEffect(() => {
     if (
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData &&
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList
+      GetAdvanceMeetingAgendabyMeetingIDData &&
+      GetAdvanceMeetingAgendabyMeetingIDData.agendaList
     ) {
       let tempAgenda = [];
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.forEach(
-        (agenda) => {
-          // Adding main agenda from agendaList
-          tempAgenda.push({
-            label: agenda.title,
-            value: agenda.id,
-          });
+      GetAdvanceMeetingAgendabyMeetingIDData.agendaList.forEach((agenda) => {
+        // Adding main agenda from agendaList
+        tempAgenda.push({
+          label: agenda.title,
+          value: agenda.id,
+        });
 
-          // Adding subAgenda titles
-          if (agenda.subAgenda && agenda.subAgenda.length > 0) {
-            agenda.subAgenda.forEach((subAgenda) => {
-              tempAgenda.push({
-                label: subAgenda.subTitle,
-                value: subAgenda.subAgendaID,
-              });
+        // Adding subAgenda titles
+        if (agenda.subAgenda && agenda.subAgenda.length > 0) {
+          agenda.subAgenda.forEach((subAgenda) => {
+            tempAgenda.push({
+              label: subAgenda.subTitle,
+              value: subAgenda.subAgendaID,
             });
-          }
+          });
         }
-      );
+      });
       setAgendaValue(tempAgenda);
     }
-  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
+  }, [GetAdvanceMeetingAgendabyMeetingIDData]);
 
   const onChangeSelectAgenda = (e) => {
     setcreateTaskDetails({
@@ -918,19 +923,14 @@ const CreateTask = ({
             />
           </Col>
         </Row>
-        {NewMeetingreducer.unsavedActions && (
+        {unsavedActions && (
           <UnsavedActions
             setCreateaTask={setCreateaTask}
             currentMeeting={currentMeeting}
           />
         )}
       </section>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

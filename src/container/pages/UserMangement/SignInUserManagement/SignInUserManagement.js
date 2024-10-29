@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -60,6 +60,8 @@ const SignInUserManagement = () => {
     message: "",
     severity: "error",
   });
+
+  console.log(open.message, "messagemessage");
 
   //OnChange For Email
   const emailChangeHandler = (e) => {
@@ -155,6 +157,10 @@ const SignInUserManagement = () => {
 
   useEffect(() => {
     if (adminReducer.DeleteOrganizationResponseMessage !== "") {
+      console.log(
+        adminReducer.DeleteOrganizationResponseMessage,
+        "DeleteOrganizationResponseMessage"
+      );
       showMessage(
         adminReducer.DeleteOrganizationResponseMessage,
         "error",
@@ -162,7 +168,7 @@ const SignInUserManagement = () => {
       );
       dispatch(cleareMessage());
     }
-  }, [adminReducer.DeleteOrganizationResponseMessage]);
+  }, [adminReducer.DeleteOrganizationResponseMessage, setOpen]);
 
   return (
     <>
@@ -327,12 +333,7 @@ const SignInUserManagement = () => {
                 </Col>
               </Col>
             </Row>
-            <Notification
-              open={open.open}
-              message={open.message}
-              setOpen={(status) => setOpen({ ...open, open: status.open })}
-              severity={open.severity}
-            />
+            <Notification open={open} setOpen={setOpen} />
             {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
           </>
         )}

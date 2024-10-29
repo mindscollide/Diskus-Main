@@ -115,8 +115,8 @@ const Participants = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     setParticipants(false);
     localStorage.removeItem("folderDataRoomMeeting");
 
@@ -366,12 +366,7 @@ const Participants = ({
             setMeetingDetails={setParticipants}
           />
         )}
-        <Notification
-          open={open.open}
-          message={open.message}
-          setOpen={(status) => setOpen({ ...open, open: status.open })}
-          severity={open.severity}
-        />
+        <Notification open={open} setOpen={setOpen} />
       </section>
       {NewMeetingreducer.LoadingParticipants && <Loader />}
     </>

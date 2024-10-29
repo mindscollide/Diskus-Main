@@ -42,7 +42,28 @@ const ReviewMinutes = () => {
   let currentUserName = localStorage.getItem("name");
 
   const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
+  const currentMeetingMinutesToReviewData = useSelector(
+    (state) => state.MinutesReducer.currentMeetingMinutesToReviewData
+  );
+  const GetMinutesForReviewerByMeetingIdData = useSelector(
+    (state) => state.MinutesReducer.GetMinutesForReviewerByMeetingIdData
+  );
+  const CurrentUserPicture = useSelector(
+    (state) => state.MinutesReducer.CurrentUserPicture
+  );
 
+  const RejectCommentModal = useSelector(
+    (state) => state.MinutesReducer.rejectCommentModal
+  );
+  const EditCommentModal = useSelector(
+    (state) => state.MinutesReducer.editCommentModal
+  );
+  const DeleteCommentModal = useSelector(
+    (state) => state.MinutesReducer.deleteCommentModal
+  );
+  const AcceptCommentModal = useSelector(
+    (state) => state.MinutesReducer.acceptCommentModal
+  );
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -164,7 +185,7 @@ const ReviewMinutes = () => {
 
     let Data = {
       WorkFlowID: workflowID,
-      MeetingID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
+      MeetingID: currentMeetingMinutesToReviewData?.meetingID,
       ActorMinuteReviews,
     };
 
@@ -444,10 +465,10 @@ const ReviewMinutes = () => {
   useEffect(() => {
     try {
       let allAgendaWiseDocs = {
-        MDID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
+        MDID: currentMeetingMinutesToReviewData?.meetingID,
       };
       let Data = {
-        MeetingID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
+        MeetingID: currentMeetingMinutesToReviewData?.meetingID,
       };
       dispatch(
         AllDocumentsForAgendaWiseMinutesApiFunc(navigate, allAgendaWiseDocs, t)
@@ -463,7 +484,7 @@ const ReviewMinutes = () => {
 
   useEffect(() => {
     try {
-      const reducerData = MinutesReducer.GetMinutesForReviewerByMeetingIdData;
+      const reducerData = GetMinutesForReviewerByMeetingIdData;
       if (reducerData !== null) {
         const { agendaHierarchyList, agendaMinutes, generalMinutes } =
           reducerData;
@@ -544,7 +565,7 @@ const ReviewMinutes = () => {
     } catch (error) {
       console.error("Error transforming data", error);
     }
-  }, [MinutesReducer.GetMinutesForReviewerByMeetingIdData]);
+  }, [GetMinutesForReviewerByMeetingIdData]);
 
   function filterEmptyReasons(state) {
     // Iterate through the main state
@@ -622,7 +643,7 @@ const ReviewMinutes = () => {
             userID: currentUserID,
             orignalProfilePictureName: "",
             displayProfilePictureName:
-              MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
+              CurrentUserPicture?.displayProfilePictureName,
           },
         };
         // there should be a for general minute
@@ -645,7 +666,7 @@ const ReviewMinutes = () => {
             userID: currentUserID,
             orignalProfilePictureName: "",
             displayProfilePictureName:
-              MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
+              CurrentUserPicture?.displayProfilePictureName,
           },
         };
         // there should be for subAgenda Minute
@@ -673,7 +694,7 @@ const ReviewMinutes = () => {
       <Row className="my-3 d-flex align-items-center">
         <Col sm={12} md={12} lg={12}>
           <span className={styles["pendingApprovalHeading"]}>
-            {MinutesReducer.currentMeetingMinutesToReviewData.title}
+            {currentMeetingMinutesToReviewData.title}
           </span>
         </Col>
       </Row>
@@ -3688,7 +3709,7 @@ const ReviewMinutes = () => {
           </Row>
         </div>
       </span>
-      {MinutesReducer.rejectCommentModal ? (
+      {RejectCommentModal ? (
         <RejectCommentModal
           handleClickRejectButton={handleClickRejectMinuteBtn}
           // minuteDataToReject={minuteDataToReject}
@@ -3701,7 +3722,7 @@ const ReviewMinutes = () => {
           // deleteCommentLocal={deleteCommentLocal}
         />
       ) : null}
-      {MinutesReducer.editCommentModal ? (
+      {EditCommentModal ? (
         <EditCommentModal
           minutesAgenda={minutesAgenda}
           setMinutesAgenda={setMinutesAgenda}
@@ -3716,7 +3737,7 @@ const ReviewMinutes = () => {
           isAgenda={isAgenda}
         />
       ) : null}
-      {MinutesReducer.deleteCommentModal ? (
+      {DeleteCommentModal ? (
         <DeleteCommentModal
           minutesAgenda={minutesAgenda}
           setMinutesAgenda={setMinutesAgenda}
@@ -3735,7 +3756,7 @@ const ReviewMinutes = () => {
           setMinutesToReview={setMinutesToReview}
         />
       ) : null}
-      {MinutesReducer.acceptCommentModal ? (
+      {AcceptCommentModal ? (
         <AcceptCommentModal
           minutesAgenda={minutesAgenda}
           setMinutesAgenda={setMinutesAgenda}

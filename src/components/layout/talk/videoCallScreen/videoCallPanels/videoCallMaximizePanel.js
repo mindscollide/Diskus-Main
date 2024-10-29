@@ -1,38 +1,45 @@
-import { Row, Col, Container } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
-import VideoCallLargeHeader from '../videoCallHeader/videoCallLargeHeader'
-import VideoLargeBody from '../videoCallBody/VideoLargeBody'
-import VideoMaxIncoming from '../videoCallBody/VideoMaxIncoming'
-import VideoMaxOutgoing from '../videoCallBody/VideoMaxOutgoing'
-import VideoMaxMultiple from '../videoCallBody/VideoMaxMultiple'
-import VideoMaxChatMin from '../videoCallBody/VideoMaxChatMin'
-import VideoLargePanelFooter from '../../talk-Video/videoPanel/videoLargePanelFooter/VideoLargePanelFooter'
-import './videoCallMaximizePanel.css'
+import { Row, Col, Container } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import VideoCallLargeHeader from "../videoCallHeader/videoCallLargeHeader";
+import VideoLargeBody from "../videoCallBody/VideoLargeBody";
+import VideoMaxIncoming from "../videoCallBody/VideoMaxIncoming";
+import VideoMaxOutgoing from "../videoCallBody/VideoMaxOutgoing";
+import VideoMaxMultiple from "../videoCallBody/VideoMaxMultiple";
+import VideoMaxChatMin from "../videoCallBody/VideoMaxChatMin";
+import VideoLargePanelFooter from "../../talk-Video/videoPanel/videoLargePanelFooter/VideoLargePanelFooter";
+import "./videoCallMaximizePanel.css";
 
 const VideoPanelMaximize = () => {
-  const { videoFeatureReducer } = useSelector((state) => state)
-
+  const VideoIncomingCallFlag = useSelector(
+    (state) => state.videoFeatureReducer.VideoIncomingCallFlag
+  );
+  const VideoOutgoingCallFlag = useSelector(
+    (state) => state.videoFeatureReducer.VideoOutgoingCallFlag
+  );
+  const VideoMultipleCallFlag = useSelector(
+    (state) => state.videoFeatureReducer.VideoMultipleCallFlag
+  );
   return (
     <>
       <div className="max-video-panel">
         <Row>
           <Col lg={12} md={12} sm={12}>
             <VideoCallLargeHeader />
-            {videoFeatureReducer.VideoIncomingCallFlag === false &&
-            videoFeatureReducer.VideoOutgoingCallFlag === false &&
-            videoFeatureReducer.VideoMultipleCallFlag === false ? (
+            {VideoIncomingCallFlag === false &&
+            VideoOutgoingCallFlag === false &&
+            VideoMultipleCallFlag === false ? (
               <VideoLargeBody />
-            ) : videoFeatureReducer.VideoIncomingCallFlag === true &&
-              videoFeatureReducer.VideoOutgoingCallFlag === false &&
-              videoFeatureReducer.VideoMultipleCallFlag === false ? (
+            ) : VideoIncomingCallFlag === true &&
+              VideoOutgoingCallFlag === false &&
+              VideoMultipleCallFlag === false ? (
               <VideoMaxIncoming />
-            ) : videoFeatureReducer.VideoIncomingCallFlag === false &&
-              videoFeatureReducer.VideoOutgoingCallFlag === true &&
-              videoFeatureReducer.VideoMultipleCallFlag === false ? (
+            ) : VideoIncomingCallFlag === false &&
+              VideoOutgoingCallFlag === true &&
+              VideoMultipleCallFlag === false ? (
               <VideoMaxOutgoing />
-            ) : videoFeatureReducer.VideoIncomingCallFlag === false &&
-              videoFeatureReducer.VideoOutgoingCallFlag === false &&
-              videoFeatureReducer.VideoMultipleCallFlag === true ? (
+            ) : VideoIncomingCallFlag === false &&
+              VideoOutgoingCallFlag === false &&
+              VideoMultipleCallFlag === true ? (
               <VideoMaxMultiple />
             ) : null}
             {/* <VideoLargePanelFooter /> */}
@@ -41,7 +48,7 @@ const VideoPanelMaximize = () => {
         </Row>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default VideoPanelMaximize
+export default VideoPanelMaximize;

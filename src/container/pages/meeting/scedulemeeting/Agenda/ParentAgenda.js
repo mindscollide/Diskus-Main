@@ -77,8 +77,15 @@ const ParentAgenda = ({
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
+  );
+  const getMeetingusers = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingusers
+  );
+  const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
+    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
   );
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
@@ -325,14 +332,13 @@ const ParentAgenda = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.getAllMeetingDetails !== null &&
-      NewMeetingreducer.getAllMeetingDetails !== undefined &&
-      NewMeetingreducer.getAllMeetingDetails.length !== 0 &&
-      Object.keys(NewMeetingreducer.getAllMeetingDetails) !== 0
+      getAllMeetingDetails !== null &&
+      getAllMeetingDetails !== undefined &&
+      getAllMeetingDetails.length !== 0 &&
+      Object.keys(getAllMeetingDetails) !== 0
     ) {
       const updatedAgendaItems = [...rows];
-      let advanceMeetingDetails =
-        NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+      let advanceMeetingDetails = getAllMeetingDetails.advanceMeetingDetails;
       let meetingStartTime =
         advanceMeetingDetails.meetingDates[0].meetingDate +
         advanceMeetingDetails.meetingDates[0].startTime;
@@ -344,7 +350,7 @@ const ParentAgenda = ({
         resolutionResultTable(meetingStartTime);
       setRows(updatedAgendaItems);
     }
-  }, [NewMeetingreducer.getAllMeetingDetails]);
+  }, [getAllMeetingDetails]);
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -360,20 +366,18 @@ const ParentAgenda = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.getMeetingusers !== undefined &&
-      NewMeetingreducer.getMeetingusers !== null &&
-      NewMeetingreducer.getMeetingusers.length !== 0
+      getMeetingusers !== undefined &&
+      getMeetingusers !== null &&
+      getMeetingusers.length !== 0
     ) {
       const newData = {
-        meetingOrganizers: NewMeetingreducer.getMeetingusers.meetingOrganizers,
-        meetingParticipants:
-          NewMeetingreducer.getMeetingusers.meetingParticipants,
-        meetingAgendaContributors:
-          NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
+        meetingOrganizers: getMeetingusers.meetingOrganizers,
+        meetingParticipants: getMeetingusers.meetingParticipants,
+        meetingAgendaContributors: getMeetingusers.meetingAgendaContributors,
       };
       setAllPresenters(newData);
     }
-  }, [NewMeetingreducer?.getMeetingusers]);
+  }, [getMeetingusers]);
 
   useEffect(() => {
     if (allPresenters.lenth > 0 || Object.keys(allPresenters).length > 0) {
@@ -421,13 +425,10 @@ const ParentAgenda = ({
     }
     const updatedAgendaItems = [...rows];
     if (
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null &&
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
-        undefined &&
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length ===
-        0 &&
-      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData)
-        .length === 0
+      GetAdvanceMeetingAgendabyMeetingIDData === null &&
+      GetAdvanceMeetingAgendabyMeetingIDData === undefined &&
+      GetAdvanceMeetingAgendabyMeetingIDData.length === 0 &&
+      Object.keys(GetAdvanceMeetingAgendabyMeetingIDData).length === 0
     ) {
       console.log("updated Rows ROWS ROWS");
       updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
