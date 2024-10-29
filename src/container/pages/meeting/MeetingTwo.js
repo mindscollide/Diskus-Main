@@ -145,21 +145,73 @@ const NewMeeting = () => {
   const GroupMeetingMQTT = useSelector(
     (state) => state.meetingIdReducer.GroupMeetingMQTT
   );
-  const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
-    (state) => state.NewMeetingreducer
-  );
-
-  const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage
-  );
-  const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes
-  );
-
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
 
+  const scheduleMeetingsPageFlag = useSelector(
+    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+  );
+  const mqtMeetingPrRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqtMeetingPrRemoved
+  );
+  const mqttMeetingPrAdded = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingPrAdded
+  );
+  const getALlMeetingTypes = useSelector(
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const CalendarDashboardEventData = useSelector(
+    (state) => state.NewMeetingreducer.CalendarDashboardEventData
+  );
+  const searchMeetings = useSelector(
+    (state) => state.NewMeetingreducer.searchMeetings
+  );
+  const endForAllMeeting = useSelector(
+    (state) => state.NewMeetingreducer.endForAllMeeting
+  );
+  const endMeetingModal = useSelector(
+    (state) => state.NewMeetingreducer.endMeetingModal
+  );
+  const mqttMeetingAcRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
+  );
+  const meetingStatusPublishedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
+  );
+  const CurrentMeetingURL = useSelector(
+    (state) => state.NewMeetingreducer.CurrentMeetingURL
+  );
+  const meetingStatusNotConductedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
+  );
+  const meetingReminderNotification = useSelector(
+    (state) => state.NewMeetingreducer.meetingReminderNotification
+  );
+  const viewProposeDatesMeetingPageFlag = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
+  );
+  const viewAdvanceMeetingsPublishPageFlag = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+  );
+  const viewAdvanceMeetingsUnpublishPageFlag = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
+  );
+  const viewProposeOrganizersMeetingPageFlag = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
+  );
+  const boardDeckModalData = useSelector(
+    (state) => state.NewMeetingreducer.boardDeckModalData
+  );
+  const boardDeckEmailModal = useSelector(
+    (state) => state.NewMeetingreducer.boardDeckEmailModal
+  );
+  const boarddeckShareModal = useSelector(
+    (state) => state.NewMeetingreducer.boarddeckShareModal
+  );
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
   let AdOrg = localStorage.getItem("AdOrg");
@@ -657,8 +709,8 @@ const NewMeeting = () => {
   //  Call all search meetings api
   useEffect(() => {
     if (
-      NewMeetingreducer.CalendarDashboardEventData === null ||
-      NewMeetingreducer.CalendarDashboardEventData === undefined
+      CalendarDashboardEventData === null ||
+      CalendarDashboardEventData === undefined
     ) {
       callApi();
     }
@@ -1855,11 +1907,11 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (
-      NewMeetingreducer.CalendarDashboardEventData !== null &&
-      NewMeetingreducer.CalendarDashboardEventData !== undefined
+      CalendarDashboardEventData !== null &&
+      CalendarDashboardEventData !== undefined
     ) {
       try {
-        let dashboardEventData = NewMeetingreducer.CalendarDashboardEventData;
+        let dashboardEventData = CalendarDashboardEventData;
 
         let startMeetingRequest = {
           MeetingID: Number(dashboardEventData.pK_MDID),
@@ -1991,7 +2043,7 @@ const NewMeeting = () => {
         dispatch(dashboardCalendarEvent(null));
       }
     }
-  }, [NewMeetingreducer.CalendarDashboardEventData]);
+  }, [CalendarDashboardEventData]);
 
   useEffect(() => {
     try {
@@ -2020,8 +2072,8 @@ const NewMeeting = () => {
   }, [searchMeetings]);
 
   useEffect(() => {
-    if (NewMeetingreducer.mqttMeetingPrAdded !== null) {
-      let meetingData = NewMeetingreducer.mqttMeetingPrAdded;
+    if (mqttMeetingPrAdded !== null) {
+      let meetingData = mqttMeetingPrAdded;
       let newData = {
         dateOfMeeting: meetingData?.dateOfMeeting,
         host: meetingData?.host,
@@ -2053,9 +2105,9 @@ const NewMeeting = () => {
       setRow([newData, ...rows]);
       dispatch(meetingParticipantAdded(null));
     }
-    if (NewMeetingreducer.mqtMeetingPrRemoved !== null) {
+    if (mqtMeetingPrRemoved !== null) {
       try {
-        let meetingID = NewMeetingreducer.mqtMeetingPrRemoved.meetingID;
+        let meetingID = mqtMeetingPrRemoved.meetingID;
         setRow((isRowData) => {
           return isRowData.filter((newData, index) => {
             return Number(newData.pK_MDID) !== Number(meetingID);
@@ -2066,17 +2118,11 @@ const NewMeeting = () => {
         console.log(error);
       }
     }
-  }, [
-    NewMeetingreducer.mqttMeetingPrAdded,
-    NewMeetingreducer.mqtMeetingPrRemoved,
-  ]);
+  }, [mqttMeetingPrAdded, mqtMeetingPrRemoved]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.mqttMeetingAcRemoved !== null &&
-      NewMeetingreducer.mqttMeetingAcRemoved !== undefined
-    ) {
-      let meetingData = NewMeetingreducer.mqttMeetingAcRemoved;
+    if (mqttMeetingAcRemoved !== null && mqttMeetingAcRemoved !== undefined) {
+      let meetingData = mqttMeetingAcRemoved;
       try {
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
@@ -2085,7 +2131,7 @@ const NewMeeting = () => {
         setRow(updatedRows);
       } catch {}
     }
-  }, [NewMeetingreducer.mqttMeetingAcRemoved]);
+  }, [mqttMeetingAcRemoved]);
 
   useEffect(() => {
     try {
@@ -2149,11 +2195,11 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (
-      NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
-      NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
+      meetingStatusPublishedMqttData !== null &&
+      meetingStatusPublishedMqttData !== undefined
     ) {
       const callMQTT = async () => {
-        let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+        let meetingData = meetingStatusPublishedMqttData;
         try {
           const indexToUpdate = rows.findIndex(
             (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
@@ -2174,7 +2220,7 @@ const NewMeeting = () => {
 
       callMQTT();
     }
-  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+  }, [meetingStatusPublishedMqttData]);
 
   useEffect(() => {
     if (MeetingStatusSocket !== null && MeetingStatusSocket !== undefined) {
@@ -2252,11 +2298,11 @@ const NewMeeting = () => {
         );
         let roomId;
         if (
-          NewMeetingreducer.CurrentMeetingURL !== "" &&
-          NewMeetingreducer.CurrentMeetingURL !== null &&
-          NewMeetingreducer.CurrentMeetingURL !== undefined
+          CurrentMeetingURL !== "" &&
+          CurrentMeetingURL !== null &&
+          CurrentMeetingURL !== undefined
         ) {
-          let url = NewMeetingreducer.CurrentMeetingURL;
+          let url = CurrentMeetingURL;
           let urlObject = new URL(url);
           let searchParams = new URLSearchParams(urlObject.search);
           roomId = Number(searchParams.get("RoomID"));
@@ -2308,7 +2354,7 @@ const NewMeeting = () => {
     } catch (eror) {
       console.log(eror);
     }
-  }, [MeetingStatusEnded, NewMeetingreducer.CurrentMeetingURL]);
+  }, [MeetingStatusEnded, CurrentMeetingURL]);
 
   useEffect(() => {
     if (allMeetingsSocketData !== null && allMeetingsSocketData !== undefined) {
@@ -2551,12 +2597,12 @@ const NewMeeting = () => {
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.meetingStatusNotConductedMqttData !== null &&
-        NewMeetingreducer.meetingStatusNotConductedMqttData !== undefined &&
-        NewMeetingreducer.meetingStatusNotConductedMqttData.length !== 0
+        meetingStatusNotConductedMqttData !== null &&
+        meetingStatusNotConductedMqttData !== undefined &&
+        meetingStatusNotConductedMqttData.length !== 0
       ) {
         let meetingDetailsMqtt =
-          NewMeetingreducer.meetingStatusNotConductedMqttData.meetingDetails;
+          meetingStatusNotConductedMqttData.meetingDetails;
 
         setRow((rowsData) => {
           // Find the index of the row that matches the condition
@@ -2589,13 +2635,12 @@ const NewMeeting = () => {
     }
 
     dispatch(meetingNotConductedMQTT(null));
-  }, [NewMeetingreducer.meetingStatusNotConductedMqttData]);
+  }, [meetingStatusNotConductedMqttData]);
 
   useEffect(() => {
-    if (NewMeetingreducer.meetingReminderNotification !== null) {
+    if (meetingReminderNotification !== null) {
       try {
-        const meetingData =
-          NewMeetingreducer.meetingReminderNotification.meetingDetails;
+        const meetingData = meetingReminderNotification.meetingDetails;
         console.log(meetingData, "meetingDetailsmeetingDetails");
         setRow((rowsData) => {
           // Find the index of the row that matches the condition
@@ -2639,7 +2684,7 @@ const NewMeeting = () => {
         console.log(error);
       }
     }
-  }, [NewMeetingreducer.meetingReminderNotification]);
+  }, [meetingReminderNotification]);
   return (
     <>
       <section className={styles["NewMeeting_container"]}>
@@ -2665,8 +2710,7 @@ const NewMeeting = () => {
           />
         ) : null}
         <Notification open={open} setOpen={setOpen} />
-        {sceduleMeeting &&
-        NewMeetingreducer.scheduleMeetingPageFlag === true ? (
+        {sceduleMeeting && scheduleMeetingsPageFlag === true ? (
           <SceduleMeeting
             setSceduleMeeting={setSceduleMeeting}
             setCurrentMeetingID={setCurrentMeetingID}
@@ -2678,8 +2722,7 @@ const NewMeeting = () => {
             setDataroomMapFolderId={setDataroomMapFolderId}
             dataroomMapFolderId={dataroomMapFolderId}
           />
-        ) : viewProposeDatePoll &&
-          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ? (
+        ) : viewProposeDatePoll && viewProposeDatesMeetingPageFlag === true ? (
           <ViewParticipantsDates
             setViewProposeDatePoll={setViewProposeDatePoll}
             responseByDate={responseByDate}
@@ -2688,7 +2731,7 @@ const NewMeeting = () => {
             setDataroomMapFolderId={setDataroomMapFolderId}
           />
         ) : viewAdvanceMeetingModal &&
-          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ? (
+          viewAdvanceMeetingsPublishPageFlag === true ? (
           <ViewMeetingModal
             advanceMeetingModalID={advanceMeetingModalID}
             setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
@@ -2703,7 +2746,7 @@ const NewMeeting = () => {
             videoTalk={videoTalk}
           />
         ) : viewAdvanceMeetingModalUnpublish &&
-          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ? (
+          viewAdvanceMeetingsUnpublishPageFlag === true ? (
           <ViewMeetingModal
             advanceMeetingModalID={advanceMeetingModalID}
             setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
@@ -2717,7 +2760,7 @@ const NewMeeting = () => {
             videoTalk={videoTalk}
           />
         ) : viewProposeOrganizerPoll &&
-          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ? (
+          viewProposeOrganizersMeetingPageFlag === true ? (
           <OrganizerViewModal
             setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
             currentMeeting={currentMeetingID}
@@ -3086,7 +3129,7 @@ const NewMeeting = () => {
         )}
       </section>
 
-      {NewMeetingreducer.boardDeckModalData && (
+      {boardDeckModalData && (
         <BoardDeckModal
           boardDeckMeetingID={boardDeckMeetingID}
           boarddeckOptions={boarddeckOptions}
@@ -3094,13 +3137,13 @@ const NewMeeting = () => {
           editorRole={editorRole}
         />
       )}
-      {NewMeetingreducer.boarddeckShareModal && (
+      {boarddeckShareModal && (
         <ShareModalBoarddeck
           radioValue={radioValue}
           setRadioValue={setRadioValue}
         />
       )}
-      {NewMeetingreducer.boardDeckEmailModal && (
+      {boardDeckEmailModal && (
         <BoardDeckSendEmail
           boardDeckMeetingTitle={boardDeckMeetingTitle}
           boardDeckMeetingID={boardDeckMeetingID}
