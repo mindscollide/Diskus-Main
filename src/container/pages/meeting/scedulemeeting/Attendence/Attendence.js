@@ -41,7 +41,6 @@ const Attendence = ({
   const navigate = useNavigate();
 
   //reducer call from Attendance_Reducers
-  const {} = useSelector((state) => state);
   const ResponseMessage = useSelector(
     (state) => state.attendanceMeetingReducer.ResponseMessage
   );
