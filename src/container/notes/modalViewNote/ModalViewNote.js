@@ -37,41 +37,34 @@ const ModalViewNote = ({
     username: "",
   });
   //For Localization
-  const { NotesReducer } = useSelector((state) => state);
+  const GetNotesByNotesId = useSelector(
+    (state) => state.NotesReducer.GetNotesByNotesId
+  );
   const [isUpdateNote, setIsUpdateNote] = useState(true);
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (
-      NotesReducer.GetNotesByNotesId !== null &&
-      NotesReducer.GetNotesByNotesId !== undefined
-    ) {
-      var html = NotesReducer.GetNotesByNotesId.description.outerHTML;
-      console.log("NotesReducer", html);
-      var data = { html: html };
-      console.log("NotesReducer", data);
-      var newdescription = JSON.stringify(data);
-      console.log("NotesReducer", newdescription);
+    if (GetNotesByNotesId !== null && GetNotesByNotesId !== undefined) {
       setNotesData({
-        date: NotesReducer.GetNotesByNotesId.date,
-        description: NotesReducer.GetNotesByNotesId.description,
-        fK_NotesStatus: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
-        fK_OrganizationID: NotesReducer.GetNotesByNotesId.fK_OrganizationID,
-        fK_UserID: NotesReducer.GetNotesByNotesId.fK_UserID,
-        isAttachment: NotesReducer.GetNotesByNotesId.isAttachment,
-        isStarred: NotesReducer.GetNotesByNotesId.isStarred,
-        modifiedDate: NotesReducer.GetNotesByNotesId.modifiedDate,
-        modifiedTime: NotesReducer.GetNotesByNotesId.modifiedTime,
-        notesAttachments: NotesReducer.GetNotesByNotesId.notesAttachments,
-        notesStatus: NotesReducer.GetNotesByNotesId.notesStatus,
-        organizationName: NotesReducer.GetNotesByNotesId.organizationName,
-        pK_NotesID: NotesReducer.GetNotesByNotesId.pK_NotesID,
-        time: NotesReducer.GetNotesByNotesId.time,
-        title: NotesReducer.GetNotesByNotesId.title,
-        username: NotesReducer.GetNotesByNotesId.username,
+        date: GetNotesByNotesId.date,
+        description: GetNotesByNotesId.description,
+        fK_NotesStatus: GetNotesByNotesId.fK_NotesStatus,
+        fK_OrganizationID: GetNotesByNotesId.fK_OrganizationID,
+        fK_UserID: GetNotesByNotesId.fK_UserID,
+        isAttachment: GetNotesByNotesId.isAttachment,
+        isStarred: GetNotesByNotesId.isStarred,
+        modifiedDate: GetNotesByNotesId.modifiedDate,
+        modifiedTime: GetNotesByNotesId.modifiedTime,
+        notesAttachments: GetNotesByNotesId.notesAttachments,
+        notesStatus: GetNotesByNotesId.notesStatus,
+        organizationName: GetNotesByNotesId.organizationName,
+        pK_NotesID: GetNotesByNotesId.pK_NotesID,
+        time: GetNotesByNotesId.time,
+        title: GetNotesByNotesId.title,
+        username: GetNotesByNotesId.username,
       });
     }
-  }, [NotesReducer.GetNotesByNotesId]);
+  }, [GetNotesByNotesId]);
 
   const handleCloseViewModal = () => {
     if (flag) {

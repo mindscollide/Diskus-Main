@@ -10,8 +10,9 @@ import { showUnsavedPollsMeeting } from "../../../../../store/actions/NewMeeting
 const UnsavedPollsMeeting = ({ setCreatepoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const unsavedPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.unsavedPollsMeeting
+  );
   const handleNOFunctionality = () => {
     dispatch(showUnsavedPollsMeeting(false));
   };
@@ -23,7 +24,7 @@ const UnsavedPollsMeeting = ({ setCreatepoll }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.unsavedPollsMeeting}
+        show={unsavedPollsMeeting}
         setShow={dispatch(showUnsavedPollsMeeting)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

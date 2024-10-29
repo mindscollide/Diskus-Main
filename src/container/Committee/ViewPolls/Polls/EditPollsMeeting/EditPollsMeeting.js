@@ -39,8 +39,12 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
-    (state) => state
+  const unsavedEditPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.unsavedEditPollsMeeting
+  );
+  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
+  const getCommitteeByCommitteeID = useSelector(
+    (state) => state.CommitteeReducer.getCommitteeByCommitteeID
   );
   const [meetingDate, setMeetingDate] = useState("");
 
@@ -154,9 +158,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   };
 
   const handleAddUsers = () => {
-    let getUserDetails = [
-      ...CommitteeReducer.getCommitteeByCommitteeID.committeMembers,
-    ];
+    let getUserDetails = [...getCommitteeByCommitteeID.committeMembers];
     let tem = [...members];
     let newarr = [];
     try {
@@ -259,12 +261,11 @@ const EditPollsMeeting = ({ setEditPolls }) => {
 
   useEffect(() => {
     if (
-      CommitteeReducer.getCommitteeByCommitteeID !== null &&
-      CommitteeReducer.getCommitteeByCommitteeID !== undefined
+      getCommitteeByCommitteeID !== null &&
+      getCommitteeByCommitteeID !== undefined
     ) {
       let newArr = [];
-      let getUserDetails =
-        CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
+      let getUserDetails = getCommitteeByCommitteeID.committeMembers;
       getUserDetails.forEach((data, index) => {
         newArr.push({
           value: data.pK_UID,
@@ -299,11 +300,11 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       });
       setmemberSelect(newArr);
     }
-  }, [CommitteeReducer.getCommitteeByCommitteeID]);
+  }, [getCommitteeByCommitteeID]);
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollsDetailsData = PollsReducer.Allpolls.poll;
+    if (Allpolls !== null && Allpolls !== undefined) {
+      let pollsDetailsData = Allpolls.poll;
       let pollMembers = [];
       let newDateGmt = pollsDetailsData.pollDetails.dueDate;
       setupdatePolls({
@@ -342,7 +343,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         setOptions(Option);
       } catch {}
     }
-  }, [PollsReducer.Allpolls]);
+  }, [Allpolls]);
 
   const customFilter = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
@@ -652,7 +653,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           />
         </Col>
       </Row>
-      {NewMeetingreducer.unsavedEditPollsMeeting && (
+      {unsavedEditPollsMeeting && (
         <UnsavedEditPollsMeeting setEditPolls={setEditPolls} />
       )}
     </section>

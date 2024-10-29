@@ -4,7 +4,10 @@ import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import { ResultMessage } from "../../../components/elements";
 import TodoMessageIcon1 from "../../../assets/images/DashboardNewTodo.svg";
-import { forRecentActivity, timePassed } from "../../../commen/functions/date_formater";
+import {
+  forRecentActivity,
+  timePassed,
+} from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getNotifications } from "../../../store/actions/GetUserNotification";
@@ -13,6 +16,14 @@ import DemoIcon from "../../../assets/images/Recent Activity Icons/Task/Added In
 
 const RecentActivity = () => {
   const { settingReducer } = useSelector((state) => state);
+  const RecentActivityData = useSelector(
+    (state) => state.settingReducer.RecentActivityData
+  );
+  const SocketRecentActivityData = useSelector(
+    (state) => state.settingReducer.SocketRecentActivityData
+  );
+  const Spinner = useSelector((state) => state.settingReducer.Spinner);
+
   const [recentActivityData, setRecentActivityData] = useState([]);
   let createrID = localStorage.getItem("userID");
   const navigate = useNavigate();
@@ -22,23 +33,20 @@ const RecentActivity = () => {
     dispatch(getNotifications(navigate, Number(createrID), t));
   }, []);
   useEffect(() => {
-    if (Object.keys(settingReducer.RecentActivityData).length > 0) {
-      setRecentActivityData(settingReducer.RecentActivityData);
+    if (Object.keys(RecentActivityData).length > 0) {
+      setRecentActivityData(RecentActivityData);
     }
-  }, [settingReducer.RecentActivityData]);
+  }, [RecentActivityData]);
 
   useEffect(() => {
     if (
-      settingReducer.SocketRecentActivityData !== null &&
-      settingReducer.SocketRecentActivityData !== undefined &&
-      Object.keys(settingReducer.SocketRecentActivityData).length > 0
+      SocketRecentActivityData !== null &&
+      SocketRecentActivityData !== undefined &&
+      Object.keys(SocketRecentActivityData).length > 0
     ) {
-      setRecentActivityData([
-        settingReducer.SocketRecentActivityData,
-        ...recentActivityData,
-      ]);
+      setRecentActivityData([SocketRecentActivityData, ...recentActivityData]);
     }
-  }, [settingReducer.SocketRecentActivityData]);
+  }, [SocketRecentActivityData]);
 
   return (
     <>
@@ -46,7 +54,7 @@ const RecentActivity = () => {
       <span className={styles["RecentActivity_Title"]}>Recent Activity</span>
       <div className={styles["RecentAcitivy_newDashboard"]}>
         {" "}
-        {settingReducer.Spinner === true ? (
+        {Spinner === true ? (
           <>
             <section className="d-flex justify-content-center align-items-center">
               <Spin />
@@ -93,10 +101,9 @@ const RecentActivity = () => {
                   {recentActivityData.notificationTypes.description}
                 </div>
                 <p className="d-flex justify-content-end  me-1">
-                  {timePassed(forRecentActivity(
-                        recentActivityData.creationDateTime
-                      ))
-                  }
+                  {timePassed(
+                    forRecentActivity(recentActivityData.creationDateTime)
+                  )}
                 </p>
               </>
             );

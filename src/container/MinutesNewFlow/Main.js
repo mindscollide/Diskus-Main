@@ -13,8 +13,15 @@ const MinutesFlow = () => {
   const { t } = useTranslation(); // Translation hook
   const dispatch = useDispatch(); // Redux hook
 
-  const { MinutesReducer } = useSelector((state) => state);
-
+  const ResponseMessage = useSelector(
+    (state) => state.MinutesReducer.ResponseMessage
+  );
+  const showPendingApprovalsPage = useSelector(
+    (state) => state.MinutesReducer.showPendingApprovalsPage
+  );
+  const showReviewMinutesPage = useSelector(
+    (state) => state.MinutesReducer.showReviewMinutesPage
+  );
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -23,25 +30,25 @@ const MinutesFlow = () => {
 
   useEffect(() => {
     if (
-      MinutesReducer.ResponseMessage !== t("No-record-found") &&
-      MinutesReducer.ResponseMessage !== t("No-records-found") &&
-      MinutesReducer.ResponseMessage !== "" &&
-      MinutesReducer.ResponseMessage !== t("No-record-found") &&
-      MinutesReducer.ResponseMessage !== t("List-updated-successfully") &&
-      MinutesReducer.ResponseMessage !== t("No-data-available")
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found") &&
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("List-updated-successfully") &&
+      ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(MinutesReducer.ResponseMessage, "sucess", setOpen);
+      showMessage(ResponseMessage, "sucess", setOpen);
       dispatch(CleareMessegeMinutes());
     } else {
       dispatch(CleareMessegeMinutes());
     }
-  }, [MinutesReducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <>
-      {MinutesReducer.showPendingApprovalsPage === true ? (
+      {showPendingApprovalsPage === true ? (
         <PendingApproval />
-      ) : MinutesReducer.showReviewMinutesPage === true ? (
+      ) : showReviewMinutesPage === true ? (
         <ReviewMinutes />
       ) : null}
 

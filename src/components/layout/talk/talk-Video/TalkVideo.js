@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import VideoPanel from './videoPanel/videoPanel'
+import React from "react";
+import { useSelector } from "react-redux";
+import VideoPanel from "./videoPanel/videoPanel";
 
 const TalkVideo = () => {
-  const { videoFeatureReducer } = useSelector((state) => state)
+  const VideoChatPanel = useSelector(
+    (state) => state.videoFeatureReducer.VideoChatPanel
+  );
+  return <>{VideoChatPanel === true ? <VideoPanel /> : null}</>;
+};
 
-  return (
-    <>{videoFeatureReducer.VideoChatPanel === true ? <VideoPanel /> : null}</>
-  )
-}
-
-export default TalkVideo
+export default TalkVideo;

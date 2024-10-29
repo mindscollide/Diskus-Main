@@ -41,8 +41,13 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer, GroupsReducer } = useSelector(
-    (state) => state
+
+  const unsavedEditPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.unsavedEditPollsMeeting
+  );
+  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
+  const getGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse
   );
   const [meetingDate, setMeetingDate] = useState("");
   const [error, setError] = useState(false);
@@ -151,9 +156,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   };
 
   const handleAddUsers = () => {
-    let getUserDetails = [
-      ...GroupsReducer.getGroupByGroupIdResponse.groupMembers,
-    ];
+    let getUserDetails = [...getGroupByGroupIdResponse.groupMembers];
     let tem = [...members];
     let newarr = [];
     try {
@@ -266,11 +269,11 @@ const EditPollsMeeting = ({ setEditPolls }) => {
 
   useEffect(() => {
     if (
-      GroupsReducer.getGroupByGroupIdResponse !== null &&
-      GroupsReducer.getGroupByGroupIdResponse !== undefined
+      getGroupByGroupIdResponse !== null &&
+      getGroupByGroupIdResponse !== undefined
     ) {
       let newArr = [];
-      let getUserDetails = GroupsReducer.getGroupByGroupIdResponse.groupMembers;
+      let getUserDetails = getGroupByGroupIdResponse.groupMembers;
       getUserDetails.forEach((data) => {
         newArr.push({
           value: data.pK_UID,
@@ -305,15 +308,12 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       });
       setmemberSelect(newArr);
     }
-  }, [GroupsReducer.getGroupByGroupIdResponse]);
+  }, [getGroupByGroupIdResponse]);
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollsDetailsData = PollsReducer.Allpolls.poll;
+      if (Allpolls !== null && Allpolls !== undefined) {
+        let pollsDetailsData = Allpolls.poll;
         let pollMembers = [];
         let newDateGmt = pollsDetailsData.pollDetails.dueDate;
         setupdatePolls({
@@ -354,7 +354,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         } catch {}
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [Allpolls]);
 
   return (
     <section>
@@ -657,7 +657,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           />
         </Col>
       </Row>
-      {NewMeetingreducer.unsavedEditPollsMeeting && (
+      {unsavedEditPollsMeeting && (
         <UnsavedEditPollsMeeting setEditPolls={setEditPolls} />
       )}
       <Notification

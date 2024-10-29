@@ -20,7 +20,19 @@ import {
 } from "../../../store/actions/GetMeetingUserId";
 
 const Events = () => {
-  const { meetingIdReducer } = useSelector((state) => state);
+  const UpcomingEventsData = useSelector(
+    (state) => state.meetingIdReducer.UpcomingEventsData
+  );
+  const MeetingStatusSocket = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusSocket
+  );
+  const MeetingStatusEnded = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusEnded
+  );
+  const Spinner = useSelector(
+    (state) => state.meetingIdReducer.Spinner
+  );
+  
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   const [upComingEvents, setUpComingEvents] = useState([]);
@@ -38,23 +50,21 @@ const Events = () => {
   useEffect(() => {
     try {
       if (
-        meetingIdReducer.UpcomingEventsData.length > 0 &&
-        meetingIdReducer.UpcomingEventsData !== null &&
-        meetingIdReducer.UpcomingEventsData !== undefined
+        UpcomingEventsData.length > 0 &&
+        UpcomingEventsData !== null &&
+        UpcomingEventsData !== undefined
       ) {
         // Create a new array with updated objects without mutating the original state
-        const updatedUpcomingEvents = meetingIdReducer.UpcomingEventsData.map(
-          (event) => {
-            // Assuming statusID is within each event object
-            return {
-              ...event, // Spread the properties of the original event object
-              meetingDetails: {
-                ...event.meetingDetails, // Spread the properties of meetingDetails
-                statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
-              },
-            };
-          }
-        );
+        const updatedUpcomingEvents = UpcomingEventsData.map((event) => {
+          // Assuming statusID is within each event object
+          return {
+            ...event, // Spread the properties of the original event object
+            meetingDetails: {
+              ...event.meetingDetails, // Spread the properties of meetingDetails
+              statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
+            },
+          };
+        });
 
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
@@ -64,16 +74,16 @@ const Events = () => {
     } catch (error) {
       // Log any errors for debugging
     }
-  }, [meetingIdReducer.UpcomingEventsData]);
+  }, [UpcomingEventsData]);
 
   useEffect(() => {
-    if (meetingIdReducer.MeetingStatusSocket !== null) {
+    if (MeetingStatusSocket !== null) {
       if (
-        meetingIdReducer.MeetingStatusSocket.message
+        MeetingStatusSocket.message
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
       ) {
-        let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
+        let meetingID = MeetingStatusSocket.meetingID;
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
             (meetingData) =>
@@ -89,11 +99,11 @@ const Events = () => {
           })
         );
       } else if (
-        meetingIdReducer.MeetingStatusSocket.message
+        MeetingStatusSocket.message
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
       ) {
-        let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
+        let meetingID = MeetingStatusSocket.meeting.pK_MDID;
 
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
@@ -110,7 +120,7 @@ const Events = () => {
 
       dispatch(getMeetingStatusfromSocket(null));
     }
-  }, [meetingIdReducer.MeetingStatusSocket]);
+  }, [MeetingStatusSocket]);
 
   const meetingDashboardCalendarEvent = (data) => {
     // Create a shallow copy of the data object to prevent mutation
@@ -501,9 +511,9 @@ const Events = () => {
   };
   useEffect(() => {
     try {
-      if (meetingIdReducer.MeetingStatusEnded !== null) {
+      if (MeetingStatusEnded !== null) {
         try {
-          let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
+          let meetingID = MeetingStatusEnded?.meeting?.pK_MDID;
           setUpComingEvents((upcomingeventData) => {
             return upcomingeventData.filter((meetingData) => {
               return (
@@ -520,11 +530,11 @@ const Events = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [meetingIdReducer.MeetingStatusEnded]);
+  }, [MeetingStatusEnded]);
 
   return (
     <>
-      {meetingIdReducer.Spinner === true ? (
+      {Spinner === true ? (
         <Spin />
       ) : (
         <>

@@ -10,11 +10,13 @@ import { Col, Row } from "react-bootstrap";
 const NewEndLeaveMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const endForAllMeeting = useSelector(
+    (state) => state.NewMeetingreducer.endForAllMeeting
+  );
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.endForAllMeeting}
+        show={endForAllMeeting}
         setShow={dispatch(showEndMeetingForAll)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
