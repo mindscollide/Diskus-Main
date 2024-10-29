@@ -791,7 +791,8 @@ const Resolution = () => {
       title: t("Voting-method"),
       dataIndex: "votingMethod",
       key: "votingMethod",
-      width: "131px",
+      width: "145px",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
         return <span className={styles["voterCountStyle"]}>{text}</span>;
@@ -801,7 +802,7 @@ const Resolution = () => {
       title: t("Attachment"),
       dataIndex: "Attachment",
       key: "Attachment",
-      width: "104px",
+      width: "125px",
       text: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {

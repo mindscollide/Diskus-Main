@@ -591,9 +591,15 @@ const SubAgendaMappingDragging = ({
                                                         editorRole.role !==
                                                           "Organizer" ? (
                                                         <Button
-                                                          text={t(
-                                                            "Cast-your-vote"
-                                                          )}
+                                                          text={
+                                                            data?.hasAlreadyVoted
+                                                              ? t(
+                                                                  "View-your-vote"
+                                                                )
+                                                              : t(
+                                                                  "Cast-your-vote"
+                                                                )
+                                                          }
                                                           className={
                                                             styles[
                                                               "CastYourVoteButton"

@@ -191,6 +191,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   display: block;
   text-overflow: ellipsis;
   overflow: hidden;
+  text-align: center;
 }
 
 .votedButton {

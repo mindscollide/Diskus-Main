@@ -276,7 +276,7 @@ const Notes = () => {
                     centerField={
                       <>
                         {" "}
-                        {data.isStarred ? (
+                        {/* {data.isStarred ? (
                           <Tooltip placement="bottomLeft" title={t("Starred")}>
                             <img
                               draggable="false"
@@ -305,7 +305,7 @@ const Notes = () => {
                               }
                             />
                           </Tooltip>
-                        )}
+                        )} */}
                         {data?.isAttachment ? (
                           <span>
                             <img
