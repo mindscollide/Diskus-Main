@@ -36,10 +36,7 @@ const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const dispatch = useDispatch();
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
-  console.log(
-    SessionExpireResponseMessage,
-    "SessionExpireResponseMessageSessionExpireResponseMessage"
-  );
+
   const [open, setOpen] = useState({
     open: false,
     message: "",

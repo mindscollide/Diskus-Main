@@ -36,7 +36,21 @@ const Polls = ({ committeeStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const cancelPolls = useSelector(
+    (state) => state.NewMeetingreducer.cancelPolls
+  );
+  const getPollByCommitteeID = useSelector(
+    (state) => state.PollsReducer.getPollByCommitteeID
+  );
+  const newPollCommittees = useSelector(
+    (state) => state.PollsReducer.newPollCommittees
+  );
+  const pollingSocket = useSelector(
+    (state) => state.PollsReducer.pollingSocket
+  );
+  const newPollDelete = useSelector(
+    (state) => state.PollsReducer.newPollDelete
+  );
   // Vote Cast Polls
   const [votePolls, setvotePolls] = useState(false);
   // Create Poll
@@ -189,12 +203,9 @@ const Polls = ({ committeeStatus }) => {
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.getPollByCommitteeID !== undefined &&
-        PollsReducer.getPollByCommitteeID !== null
-      ) {
-        setTotalRecords(PollsReducer.getPollByCommitteeID.totalRecords);
-        let pollsData = PollsReducer.getPollByCommitteeID.polls;
+      if (getPollByCommitteeID !== undefined && getPollByCommitteeID !== null) {
+        setTotalRecords(getPollByCommitteeID.totalRecords);
+        let pollsData = getPollByCommitteeID.polls;
         let newPollsArray = [];
         pollsData.forEach((data, index) => {
           newPollsArray.push(data);
@@ -204,13 +215,13 @@ const Polls = ({ committeeStatus }) => {
         setPollsRows([]);
       }
     } catch {}
-  }, [PollsReducer.getPollByCommitteeID]);
+  }, [getPollByCommitteeID]);
 
   // MQTT Response of Polls for Committees
   useEffect(() => {
     try {
-      if (PollsReducer.newPollCommittees !== null) {
-        let PollData = PollsReducer.newPollCommittees;
+      if (newPollCommittees !== null) {
+        let PollData = newPollCommittees;
         console.log("New Poll Added", PollData);
         if (Number(PollData.committeeID) === Number(ViewCommitteeID)) {
           setPollsRows([PollData.polls, ...pollsRows]);
@@ -220,15 +231,11 @@ const Polls = ({ committeeStatus }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollCommittees]);
+  }, [newPollCommittees]);
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.pollingSocket &&
-        Object.keys(PollsReducer.pollingSocket).length > 0
-      ) {
-        const { pollingSocket } = PollsReducer;
+      if (pollingSocket && Object.keys(pollingSocket).length > 0) {
         const { polls } = pollingSocket;
 
         let updatedRows = [...pollsRows];
@@ -252,12 +259,12 @@ const Polls = ({ committeeStatus }) => {
     } catch (error) {
       console.log(error, "errorerror");
     }
-  }, [PollsReducer.pollingSocket]);
+  }, [pollingSocket]);
 
   useEffect(() => {
     try {
-      if (PollsReducer.newPollDelete !== null) {
-        const polls = PollsReducer.newPollDelete;
+      if (newPollDelete !== null) {
+        const polls = newPollDelete;
 
         setPollsRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
@@ -270,7 +277,7 @@ const Polls = ({ committeeStatus }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollDelete]);
+  }, [newPollDelete]);
 
   const PollsColoumn = [
     {
@@ -638,7 +645,7 @@ const Polls = ({ committeeStatus }) => {
             )}
           </>
         )}
-        {NewMeetingreducer.cancelPolls && <CancelPolls />}
+        {cancelPolls && <CancelPolls />}
       </section>
     </>
   );

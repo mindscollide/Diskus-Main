@@ -38,7 +38,7 @@ const SearchBarComponent = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { assignees } = useSelector((state) => state);
+  const user = useSelector((state) => state.assignees.user);
   const searchBarRef = useRef();
   const calendRef = useRef();
   const [searchbarsearchoptions, setSearchbarsearchoptions] = useState(false);
@@ -114,18 +114,18 @@ const SearchBarComponent = ({
   //this is user list
   useEffect(() => {
     try {
-      if (assignees.user) {
-        const filteredApiResponse = assignees.user.filter(
+      if (user) {
+        const filteredApiResponse = user.filter(
           (user) => !userID.includes(user.pK_UID)
         );
         setAssignessList(filteredApiResponse);
       }
     } catch {}
-  }, [assignees.user]);
+  }, [user]);
 
   // this is used for input title
   const handleTitleSearch = (e) => {
-    setSearchDataFields({ ...searchDataFields, "Title": e.target.value });
+    setSearchDataFields({ ...searchDataFields, Title: e.target.value });
   };
 
   //   this handler for title enter seacrh

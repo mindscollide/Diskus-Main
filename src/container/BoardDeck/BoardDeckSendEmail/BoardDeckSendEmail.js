@@ -43,10 +43,12 @@ const BoardDeckSendEmail = ({
 
   const OrganizationID = localStorage.getItem("organizationID");
 
-  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
+  const boardDeckEmailModal = useSelector(
+    (state) => state.NewMeetingreducer.boardDeckEmailModal
   );
-
+  const AllUserCommitteesGroupsData = useSelector(
+    (state) => state.MeetingOrganizersReducer.AllUserCommitteesGroupsData
+  );
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [tags, setTags] = useState([]);
@@ -169,8 +171,7 @@ const BoardDeckSendEmail = ({
     }
   };
   useEffect(() => {
-    let newOrganizersData =
-      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+    let newOrganizersData = AllUserCommitteesGroupsData;
     if (newOrganizersData !== null && newOrganizersData !== undefined) {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
@@ -214,12 +215,12 @@ const BoardDeckSendEmail = ({
         setDropdowndata([]);
       }
     }
-  }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
+  }, [AllUserCommitteesGroupsData]);
 
   return (
     <Container>
       <Modal
-        show={NewMeetingreducer.boardDeckEmailModal}
+        show={boardDeckEmailModal}
         setShow={dispatch(boardDeckEmailModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

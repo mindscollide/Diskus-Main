@@ -36,7 +36,14 @@ const PendingApproval = () => {
   const dispatch = useDispatch(); // Redux hook
   const navigate = useNavigate(); // Navigation hook
 
-  const { MinutesReducer } = useSelector((state) => state);
+  const GetMinuteReviewPendingApprovalsByReviewerIdData = useSelector(
+    (state) =>
+      state.MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData
+  );
+  const GetMinuteReviewPendingApprovalsStatsByReviewerIdData = useSelector(
+    (state) =>
+      state.MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
+  );
 
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -240,38 +247,31 @@ const PendingApproval = () => {
 
   useEffect(() => {
     if (
-      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData !== null &&
-      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData !==
-        undefined &&
-      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData.length !==
-        0
+      GetMinuteReviewPendingApprovalsByReviewerIdData !== null &&
+      GetMinuteReviewPendingApprovalsByReviewerIdData !== undefined &&
+      GetMinuteReviewPendingApprovalsByReviewerIdData.length !== 0
     ) {
       let reducerDataRow =
-        MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData
-          .pendingReviews;
+        GetMinuteReviewPendingApprovalsByReviewerIdData.pendingReviews;
       setRowsPendingApproval(reducerDataRow);
     } else {
       setRowsPendingApproval([]);
     }
-  }, [MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData]);
+  }, [GetMinuteReviewPendingApprovalsByReviewerIdData]);
 
   useEffect(() => {
     if (
-      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData !==
-        null &&
-      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData !==
-        undefined &&
-      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
-        .length !== 0
+      GetMinuteReviewPendingApprovalsStatsByReviewerIdData !== null &&
+      GetMinuteReviewPendingApprovalsStatsByReviewerIdData !== undefined &&
+      GetMinuteReviewPendingApprovalsStatsByReviewerIdData.length !== 0
     ) {
       let reducerData =
-        MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
-          .data;
+        GetMinuteReviewPendingApprovalsStatsByReviewerIdData.data;
       setProgress(reducerData);
     } else {
       setProgress([]);
     }
-  }, [MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData]);
+  }, [GetMinuteReviewPendingApprovalsStatsByReviewerIdData]);
 
   return (
     <section className={styles["pendingApprovalContainer"]}>

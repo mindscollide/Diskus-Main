@@ -39,7 +39,12 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, GroupsReducer } = useSelector((state) => state);
+  const unsavedPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.unsavedPollsMeeting
+  );
+  const getGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse
+  );
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -158,13 +163,12 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   };
   useEffect(() => {
     if (
-      GroupsReducer.getGroupByGroupIdResponse !== null &&
-      GroupsReducer.getGroupByGroupIdResponse !== undefined
+      getGroupByGroupIdResponse !== null &&
+      getGroupByGroupIdResponse !== undefined
     ) {
       try {
         let newArr = [];
-        let getUserDetails =
-          GroupsReducer.getGroupByGroupIdResponse.groupMembers;
+        let getUserDetails = getGroupByGroupIdResponse.groupMembers;
         getUserDetails.forEach((data, index) => {
           newArr.push({
             value: data.pK_UID,
@@ -200,7 +204,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
         setmemberSelect(newArr);
       } catch (error) {}
     }
-  }, [GroupsReducer.getGroupByGroupIdResponse]);
+  }, [getGroupByGroupIdResponse]);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -208,7 +212,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   };
 
   const handleAddUsers = () => {
-    let getUserDetails = GroupsReducer.getGroupByGroupIdResponse.groupMembers;
+    let getUserDetails = getGroupByGroupIdResponse.groupMembers;
 
     let tem = [...members];
     let newarr = [];
@@ -659,7 +663,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
               severity={open.severity}
             />
 
-            {NewMeetingreducer.unsavedPollsMeeting && (
+            {unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
             )}
           </section>

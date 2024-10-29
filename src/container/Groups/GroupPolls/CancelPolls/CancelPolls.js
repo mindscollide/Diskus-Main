@@ -10,8 +10,9 @@ import { Button, Col, Row } from "react-bootstrap";
 const CancelPolls = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const cancelPolls = useSelector(
+    (state) => state.NewMeetingreducer.cancelPolls
+  );
   const handleNOFunctionality = () => {
     dispatch(showCancelPolls(false));
   };
@@ -23,7 +24,7 @@ const CancelPolls = ({ setSceduleMeeting }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelPolls}
+        show={cancelPolls}
         setShow={dispatch(showCancelPolls)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

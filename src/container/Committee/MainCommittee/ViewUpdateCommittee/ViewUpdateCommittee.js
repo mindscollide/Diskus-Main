@@ -16,7 +16,9 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [committeeStatus, setCommitteeStatus] = useState(null);
-  const { CommitteeReducer } = useSelector((state) => state);
+  const getCommitteeByCommitteeID = useSelector(
+    (state) => state.CommitteeReducer.getCommitteeByCommitteeID
+  );
   const dispatch = useDispatch();
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [currentView, setCurrentView] = useState(
@@ -47,18 +49,17 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   useEffect(() => {
     try {
       if (
-        CommitteeReducer.getCommitteeByCommitteeID !== null &&
-        CommitteeReducer.getCommitteeByCommitteeID !== undefined
+        getCommitteeByCommitteeID !== null &&
+        getCommitteeByCommitteeID !== undefined
       ) {
         let committeeStatusID =
-          CommitteeReducer.getCommitteeByCommitteeID.committeeStatus
-            .committeeStatusID;
+          getCommitteeByCommitteeID.committeeStatus.committeeStatusID;
         setCommitteeStatus(committeeStatusID);
       } else {
         setCommitteeStatus(null);
       }
     } catch {}
-  }, [CommitteeReducer.getCommitteeByCommitteeID]);
+  }, [getCommitteeByCommitteeID]);
 
   return (
     <>
