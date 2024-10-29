@@ -123,7 +123,7 @@ const VerificationIphone = () => {
     <>
       <Container fluid className="auth_container">
         <Row className="position-relative">
-          <Col className="languageSelector">
+          <Col className="languageSelectors">
             <LanguageSelector />
           </Col>
         </Row>
@@ -249,14 +249,13 @@ const VerificationIphone = () => {
               </Col>
             </span>
           </Col>
-          <Col md={7} lg={7} sm={12} className="p-0">
+          <Col md={7} lg={7} sm={12} className="">
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
                   draggable="false"
                   src={img2}
                   alt="auth_icon"
-                  width="380px"
                   className="phone-image"
                 />
               </Col>

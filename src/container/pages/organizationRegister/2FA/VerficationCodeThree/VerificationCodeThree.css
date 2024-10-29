@@ -12,7 +12,47 @@
   transform: rotate(-66deg);
 }
 .VerificationCodeThree {
+  position: relative;
   overflow: hidden;
+}
+
+.languageSelectors {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelectors {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.phone-image {
+  position: absolute;
+  top: 130px;
+  right: -200px;
+  z-index: 1;
+  user-select: none;
+  width: 22.125rem;
+}
+
+body[dir="rtl"] .phone-image {
+  position: absolute;
+  top: 19%;
+  right: 255px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .SubHeadingVerificationCodeThree {

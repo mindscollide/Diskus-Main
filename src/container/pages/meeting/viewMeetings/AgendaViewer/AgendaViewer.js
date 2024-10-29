@@ -38,7 +38,7 @@ import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Mee
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ParentAgenda from "./ParentAgenda";
 import AllFilesModal from "./AllFilesModal/AllFilesModal";
-import ExportAgendaModal from "./ExportAgendaModal/ExportAgendaModal";
+// import ExportAgendaModal from "./ExportAgendaModal/ExportAgendaModal";
 import FullScreenAgendaModal from "./FullScreenAgendaModal/FullScreenAgendaModal";
 import ParticipantInfoModal from "./ParticipantInfoModal/ParticipantInfoModal";
 import PrintExportAgendaModal from "./PrintExportAgendaModal/PrintExportAgendaModal";
@@ -143,7 +143,7 @@ const AgendaViewer = ({
   const [emptyStateRows, setEmptyStateRows] = useState(false);
   const [fullScreenView, setFullScreenView] = useState(true);
   const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
-  const [exportAgendaView, setExportAgendaView] = useState(false);
+  // const [exportAgendaView, setExportAgendaView] = useState(false);
   const [printAgendaView, setPrintAgendaView] = useState(false);
   const [shareEmailView, setShareEmailView] = useState(false);
   const [showMoreFilesView, setShowMoreFilesView] = useState(false);
@@ -868,9 +868,9 @@ const AgendaViewer = ({
           setPrintAgendaView={setPrintAgendaView}
         />
       ) : null}
-      {exportAgendaView ? (
+      {/* {exportAgendaView ? (
         <ExportAgendaModal setExportAgendaView={setExportAgendaView} />
-      ) : null}
+      ) : null} */}
       {printAgendaView ? (
         <PrintExportAgendaModal
           setPrintAgendaView={setPrintAgendaView}

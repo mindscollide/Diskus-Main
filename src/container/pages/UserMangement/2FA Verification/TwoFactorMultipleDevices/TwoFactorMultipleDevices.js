@@ -278,6 +278,7 @@ const TwoFactorMultipleDevices = () => {
                                 }
                               >
                                 {t("Send-notification-on-device")}
+                                {currentDevice[0]?.DeviceName}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>

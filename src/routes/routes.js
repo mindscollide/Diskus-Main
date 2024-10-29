@@ -11,7 +11,6 @@ import {
   NotFound,
   OnBoard,
   TodoList,
-  Invoice,
   PaymentHistory,
   PayOutstanding,
   Summary,
@@ -388,14 +387,7 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-          <Route
-            path="Invoice"
-            element={
-              <RouteWrapperAdmin name="Invoice">
-                <Invoice />
-              </RouteWrapperAdmin>
-            }
-          />
+
           <Route
             path="PayOutstanding"
             element={
@@ -428,14 +420,7 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-          <Route
-            path="Organization"
-            element={
-              <RouteWrapperAdmin name="Organization">
-                <OrganizationLevelSetting />
-              </RouteWrapperAdmin>
-            }
-          />
+
           <Route
             path="OrganizationlevelConfigUM"
             element={

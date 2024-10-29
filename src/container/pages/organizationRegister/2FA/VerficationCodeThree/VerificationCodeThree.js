@@ -184,7 +184,7 @@ const VerificationCodeThree = () => {
     <>
       <Container fluid className="VerificationCodeThree">
         <Row className="position-relative">
-          <Col className="languageSelector">
+          <Col className="languageSelectors">
             <LanguageSelector />
           </Col>
         </Row>
@@ -311,8 +311,7 @@ const VerificationCodeThree = () => {
                   src={img9}
                   alt="auth_icon"
                   className="phone-image"
-                  width="320px"
-                  height="417px"
+                  height="500px"
                 />
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">

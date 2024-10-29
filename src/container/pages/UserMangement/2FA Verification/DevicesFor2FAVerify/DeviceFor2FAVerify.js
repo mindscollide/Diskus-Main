@@ -157,6 +157,11 @@ const DeviceFor2FAVerify = () => {
     }
   }, [Authreducer.AuthenticateAFAResponse]);
 
+  console.log(
+    Authreducer.AuthenticateAFAResponse,
+    "AuthreducerAuthenticateAFAResponse"
+  );
+
   let newClient = Helper.socket;
   useEffect(() => {
     if (newClient != null && newClient != "" && newClient != undefined) {
