@@ -149,7 +149,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   );
   const getCurrentDateforMeeting = getCurrentDate();
   // for Participant options
-  const participantOptions = [t("Organizer"), t("Participant")];
   const [meetingDate, setMeetingDate] = useState(
     getCurrentDateforMeeting.DateGMT
   );

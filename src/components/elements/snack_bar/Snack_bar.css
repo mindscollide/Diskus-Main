@@ -1,13 +1,46 @@
-.snackbarText {
-    font-family: "Montserrat" !important;
+/* new Class */
+.ant-notification-notice.snackBar_new.ant-notification-notice-closable {
+  width: auto !important;
+  color: #fff !important;
+  padding: 10px 22px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  border-radius: 4px !important;
 }
-.alertClass {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.ant-notification-notice-close span svg {
+  color: #fff !important;
 }
-.MuiSnackbar-root.MuiSnackbar-anchorOriginTopRight {
-    z-index: 99999999999 !important;
-    position: fixed;
-    top: 50px;
+.ant-notification-notice-message {
+  color: #fff !important;
+  margin-top: 1px !important;
+  font-family: "Montserrat" !important;
+  white-space: nowrap !important;
+}
+.ant-notification-notice-icon span svg {
+  color: #fff !important;
+  font-size: 22px !important;
+}
+
+a.ant-notification-notice-close {
+  top: 12px !important;
+}
+
+body[dir="rtl"] a.ant-notification-notice-close {
+  left: 10px !important;
+  right: auto !important;
+  top: 14px !important;
+}
+
+body[dir="rtl"]
+  .ant-notification-notice-closable
+  .ant-notification-notice-message {
+  padding-right: 33px !important;
+}
+
+body[dir="rtl"] .ant-notification.ant-notification-topRight {
+  left: 0 !important;
+  right: auto !important;
 }
