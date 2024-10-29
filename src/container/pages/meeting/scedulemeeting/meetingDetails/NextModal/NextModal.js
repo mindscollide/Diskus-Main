@@ -26,7 +26,9 @@ const NextModal = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const nextConfirmModal = useSelector(
+    (state) => state.NewMeetingreducer.nextConfirmModal
+  );
   const handleNOFunctionality = () => {
     dispatch(ShowNextConfirmationModal(false));
   };
@@ -65,7 +67,7 @@ const NextModal = ({
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.nextConfirmModal}
+        show={nextConfirmModal}
         setShow={dispatch(ShowNextConfirmationModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
