@@ -36,7 +36,12 @@ const CancelButtonModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let navigateLocation = localStorage.getItem("navigateLocation");
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const UploadGlobalFlags = useSelector(
+    (state) => state.NewMeetingreducer.uploadGlobalFlag
+  );
+  const cancelModalMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+  );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
@@ -47,7 +52,7 @@ const CancelButtonModal = () => {
   };
 
   const handleYesFunctionality = async (event) => {
-    if (NewMeetingreducer.uploadGlobalFlag === true) {
+    if (UploadGlobalFlags === true) {
       dispatch(showCancelModalmeetingDeitals(false));
       dispatch(scheduleMeetingPageFlag(false));
       dispatch(viewProposeDateMeetingPageFlag(false));
@@ -127,7 +132,7 @@ const CancelButtonModal = () => {
   };
 
   const handleUploadFile = async ({ file }) => {
-    if (NewMeetingreducer.uploadGlobalFlag === true) {
+    if (UploadGlobalFlags === true) {
       dispatch(showCancelModalmeetingDeitals(false));
       dispatch(scheduleMeetingPageFlag(false));
       dispatch(viewProposeDateMeetingPageFlag(false));
@@ -206,7 +211,7 @@ const CancelButtonModal = () => {
       {" "}
       <section>
         <Modal
-          show={NewMeetingreducer.cancelModalMeetingDetails}
+          show={cancelModalMeetingDetails}
           setShow={dispatch(showCancelModalmeetingDeitals)}
           modalHeaderClassName={"d-block"}
           modalFooterClassName={"d-block"}
@@ -255,7 +260,7 @@ const CancelButtonModal = () => {
                     className={styles["Yes_unsave_File_Upload"]}
                     onClick={handleNOFunctionality}
                   />
-                  {NewMeetingreducer.uploadGlobalFlag === true ? (
+                  {UploadGlobalFlags === true ? (
                     <UploadTextField
                       title={t("Yes")}
                       handleFileUploadRequest={handleUploadFile}

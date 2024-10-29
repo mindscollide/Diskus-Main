@@ -128,10 +128,23 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { editorRole, setEdiorRole } = useContext(MeetingContext);
-  const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
-    (state) => state
+  const { NewMeetingreducer } = useSelector((state) => state);
+  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
+  const MeetingStatusSocket = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusSocket
   );
-
+  const MeetingStatusEnded = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusEnded
+  );
+  const allMeetingsSocketData = useSelector(
+    (state) => state.meetingIdReducer.allMeetingsSocketData
+  );
+  const CommitteeMeetingMQTT = useSelector(
+    (state) => state.meetingIdReducer.CommitteeMeetingMQTT
+  );
+  const GroupMeetingMQTT = useSelector(
+    (state) => state.meetingIdReducer.GroupMeetingMQTT
+  );
   const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
     (state) => state.NewMeetingreducer
   );
@@ -850,7 +863,7 @@ const NewMeeting = () => {
           t
         )
       );
-      let allChatMessages = talkStateData.AllUserChats.AllUserChatsData;
+      let allChatMessages = AllUserChats.AllUserChatsData;
       if (
         allChatMessages !== null &&
         allChatMessages !== undefined &&
@@ -2162,18 +2175,14 @@ const NewMeeting = () => {
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
   useEffect(() => {
-    if (
-      meetingIdReducer.MeetingStatusSocket !== null &&
-      meetingIdReducer.MeetingStatusSocket !== undefined
-    ) {
+    if (MeetingStatusSocket !== null && MeetingStatusSocket !== undefined) {
       if (
-        meetingIdReducer.MeetingStatusSocket.message
+        MeetingStatusSocket.message
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
       ) {
-        let meetingStatusID =
-          meetingIdReducer.MeetingStatusSocket.meeting.status;
-        let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
+        let meetingStatusID = MeetingStatusSocket.meeting.status;
+        let meetingID = MeetingStatusSocket.meeting.pK_MDID;
         try {
           setRow((rowsData) => {
             return rowsData.map((item) => {
@@ -2199,13 +2208,12 @@ const NewMeeting = () => {
           );
         }
       } else if (
-        meetingIdReducer.MeetingStatusSocket.message
+        MeetingStatusSocket.message
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
       ) {
-        let meetingStatusID =
-          meetingIdReducer.MeetingStatusSocket?.meetingStatusID;
-        let meetingID = meetingIdReducer.MeetingStatusSocket?.meetingID;
+        let meetingStatusID = MeetingStatusSocket?.meetingStatusID;
+        let meetingID = MeetingStatusSocket?.meetingID;
         try {
           setRow((rowsData) => {
             return rowsData.map((item) => {
@@ -2227,16 +2235,16 @@ const NewMeeting = () => {
         } catch {}
       }
     }
-  }, [meetingIdReducer.MeetingStatusSocket]);
+  }, [MeetingStatusSocket]);
 
   useEffect(() => {
     try {
       if (
-        meetingIdReducer.MeetingStatusEnded !== null &&
-        meetingIdReducer.MeetingStatusEnded !== undefined &&
-        meetingIdReducer.MeetingStatusEnded.length !== 0
+        MeetingStatusEnded !== null &&
+        MeetingStatusEnded !== undefined &&
+        MeetingStatusEnded.length !== 0
       ) {
-        let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+        let endMeetingData = MeetingStatusEnded.meeting;
         const indexToUpdate = rows.findIndex(
           (obj) => obj.pK_MDID === endMeetingData.pK_MDID
         );
@@ -2298,20 +2306,14 @@ const NewMeeting = () => {
     } catch (eror) {
       console.log(eror);
     }
-  }, [
-    meetingIdReducer.MeetingStatusEnded,
-    NewMeetingreducer.CurrentMeetingURL,
-  ]);
+  }, [MeetingStatusEnded, NewMeetingreducer.CurrentMeetingURL]);
 
   useEffect(() => {
-    if (
-      meetingIdReducer.allMeetingsSocketData !== null &&
-      meetingIdReducer.allMeetingsSocketData !== undefined
-    ) {
+    if (allMeetingsSocketData !== null && allMeetingsSocketData !== undefined) {
       try {
         const updateMeeting = async () => {
-          let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
-          let meetingData = meetingIdReducer.allMeetingsSocketData;
+          let meetingID = allMeetingsSocketData.pK_MDID;
+          let meetingData = allMeetingsSocketData;
           let newMeetingData = await mqttMeetingData(meetingData, 1);
           setRow((rowsData) => {
             return rowsData.map((item) => {
@@ -2328,15 +2330,12 @@ const NewMeeting = () => {
         console.log(error, "error");
       }
     }
-  }, [meetingIdReducer.allMeetingsSocketData]);
+  }, [allMeetingsSocketData]);
 
   useEffect(() => {
-    if (
-      meetingIdReducer.CommitteeMeetingMQTT !== null &&
-      meetingIdReducer.CommitteeMeetingMQTT !== undefined
-    ) {
-      let meetingID = meetingIdReducer.CommitteeMeetingMQTT.meeting.pK_MDID;
-      let meetingData = meetingIdReducer.CommitteeMeetingMQTT.meeting;
+    if (CommitteeMeetingMQTT !== null && CommitteeMeetingMQTT !== undefined) {
+      let meetingID = CommitteeMeetingMQTT.meeting.pK_MDID;
+      let meetingData = CommitteeMeetingMQTT.meeting;
       setRow((rowsData) => {
         return rowsData.map((item) => {
           if (item.pK_MDID === meetingID) {
@@ -2347,16 +2346,13 @@ const NewMeeting = () => {
         });
       });
     }
-  }, [meetingIdReducer.CommitteeMeetingMQTT]);
+  }, [CommitteeMeetingMQTT]);
 
   useEffect(() => {
     try {
-      if (
-        meetingIdReducer.GroupMeetingMQTT !== null &&
-        meetingIdReducer.GroupMeetingMQTT !== undefined
-      ) {
-        let meetingID = meetingIdReducer.GroupMeetingMQTT.meeting.pK_MDID;
-        let meetingData = meetingIdReducer.GroupMeetingMQTT.meeting;
+      if (GroupMeetingMQTT !== null && GroupMeetingMQTT !== undefined) {
+        let meetingID = GroupMeetingMQTT.meeting.pK_MDID;
+        let meetingData = GroupMeetingMQTT.meeting;
         setRow((rowsData) => {
           return rowsData.map((item) => {
             if (item.pK_MDID === meetingID) {
@@ -2370,7 +2366,7 @@ const NewMeeting = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [meetingIdReducer.GroupMeetingMQTT]);
+  }, [GroupMeetingMQTT]);
 
   useEffect(() => {
     try {
