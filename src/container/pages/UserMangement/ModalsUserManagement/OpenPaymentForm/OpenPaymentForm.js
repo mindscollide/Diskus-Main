@@ -10,18 +10,29 @@ import { openPaymentProcessModal } from "../../../../../store/actions/UserMangem
 const OpenPaymentForm = () => {
   const dispatch = useDispatch();
   const [sourceLink, setSourceLink] = useState(null);
-  const { UserManagementModals, UserMangementReducer } = useSelector(
-    (state) => state
+
+  const UserManagementModalspaymentProcessModalData = useSelector(
+    (state) => state.UserManagementModals.paymentProcessModal
+  );
+
+  const UserMangementReducerpaymentInitiateDataData = useSelector(
+    (state) => state.UserMangementReducer.paymentInitiateData
+  );
+
+  const UserManagementModalsLoadingData = useSelector(
+    (state) => state.UserManagementModals.Loading
   );
 
   useEffect(() => {
     try {
-      if (UserMangementReducer.paymentInitiateData !== null) {
-        let apiResponse = UserMangementReducer.paymentInitiateData;
+      if (UserMangementReducerpaymentInitiateDataData !== null) {
+        let apiResponse = UserMangementReducerpaymentInitiateDataData;
         setSourceLink(apiResponse.paymentRedirectionLink);
       }
-    } catch {}
-  }, [UserMangementReducer.paymentInitiateData]);
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [UserMangementReducerpaymentInitiateDataData]);
 
   const onCloseModal = () => {
     dispatch(openPaymentProcessModal(false));
@@ -31,7 +42,7 @@ const OpenPaymentForm = () => {
     <>
       <Container>
         <Modal
-          show={UserManagementModals.paymentProcessModal}
+          show={UserManagementModalspaymentProcessModalData}
           setShow={dispatch(openPaymentProcessModal)}
           size="lg"
           onHide={onCloseModal}
@@ -50,7 +61,7 @@ const OpenPaymentForm = () => {
           }
         />
       </Container>
-      {UserManagementModals.Loading ? <Loader /> : null}
+      {UserManagementModalsLoadingData ? <Loader /> : null}
     </>
   );
 };

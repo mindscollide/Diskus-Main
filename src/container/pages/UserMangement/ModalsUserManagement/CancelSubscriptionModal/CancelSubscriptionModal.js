@@ -16,6 +16,10 @@ const CancelSubscriptionModal = () => {
 
   const { UserManagementModals } = useSelector((state) => state);
 
+  const UserManagementModalscancelSubscriptionModalData = useSelector(
+    (state) => state.UserManagementModals.cancelSubscriptionModal
+  );
+
   const handleyesButton = () => {
     dispatch(showCancelSubscriptionModal(false));
     dispatch(showReasonForLeavingModal(true));
@@ -28,7 +32,7 @@ const CancelSubscriptionModal = () => {
   return (
     <section>
       <Modal
-        show={UserManagementModals.cancelSubscriptionModal}
+        show={UserManagementModalscancelSubscriptionModalData}
         setShow={dispatch(showCancelSubscriptionModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

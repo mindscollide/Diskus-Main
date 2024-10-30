@@ -29,8 +29,20 @@ const PakageDetailsUserManagement = () => {
   const trialPage = localStorage.getItem("isTrial");
   let changePacakgeFlag = localStorage.getItem("changePacakgeFlag");
 
-  const { UserMangementReducer, LanguageReducer } = useSelector(
-    (state) => state
+  const UserMangementReducergetAllUserTypePackagesData = useSelector(
+    (state) => state.UserMangementReducer.getAllUserTypePackagesData
+  );
+
+  const UserMangementReducergetAllSelectedPakagesData = useSelector(
+    (state) => state.UserMangementReducer.getAllSelectedPakagesData
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
   );
 
   //States
@@ -56,7 +68,7 @@ const PakageDetailsUserManagement = () => {
 
   useEffect(() => {
     try {
-      const pakageDetails = UserMangementReducer.getAllUserTypePackagesData;
+      const pakageDetails = UserMangementReducergetAllUserTypePackagesData;
 
       // Check if the package details object and its packages array exist and are not empty
       if (
@@ -80,13 +92,13 @@ const PakageDetailsUserManagement = () => {
       // Log any errors that occur
       console.log(error, "error");
     }
-  }, [UserMangementReducer.getAllUserTypePackagesData]);
+  }, [UserMangementReducergetAllUserTypePackagesData]);
 
   //Fetching User headcounts data and set in the table
   useEffect(() => {
-    if (UserMangementReducer.getAllSelectedPakagesData) {
+    if (UserMangementReducergetAllSelectedPakagesData) {
       const { organizationSubscription } =
-        UserMangementReducer.getAllSelectedPakagesData;
+        UserMangementReducergetAllSelectedPakagesData;
 
       if (
         organizationSubscription &&
@@ -109,7 +121,7 @@ const PakageDetailsUserManagement = () => {
         );
       }
     }
-  }, [UserMangementReducer.getAllSelectedPakagesData]);
+  }, [UserMangementReducergetAllSelectedPakagesData]);
 
   // translate Languages start
   const languages = [
@@ -599,7 +611,7 @@ const PakageDetailsUserManagement = () => {
           </>
         ) : null}
       </>
-      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+      {UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
         <Loader />
       ) : null}
     </Container>

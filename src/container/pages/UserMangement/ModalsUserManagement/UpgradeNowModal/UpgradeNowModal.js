@@ -16,7 +16,11 @@ const UpgradeNowModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { UserManagementModals } = useSelector((state) => state);
+
+  const UserManagementModalsUpgradeNowModalData = useSelector(
+    (state) => state.UserManagementModals.UpgradeNowModal
+  );
+
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
     "TrialExpireSelectPac"
   );
@@ -60,7 +64,7 @@ const UpgradeNowModal = () => {
   return (
     <section>
       <Modal
-        show={UserManagementModals.UpgradeNowModal}
+        show={UserManagementModalsUpgradeNowModalData}
         setShow={dispatch(showUpgradeNowModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

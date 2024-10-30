@@ -29,7 +29,9 @@ const PasswordCreationUM = () => {
 
   const passwordRef = useRef();
 
-  const { UserManagementModals } = useSelector((state) => state);
+  const UserManagementModalscreateAdditionalModalsData = useSelector(
+    (state) => state.UserManagementModals.createAdditionalModals
+  );
 
   const [errorBar, setErrorBar] = useState(false);
   const [remeberPassword, SetRememberPassword] = useState(false);
@@ -373,7 +375,7 @@ const PasswordCreationUM = () => {
       </Container>
 
       {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      {UserManagementModals.createAdditionalModals && (
+      {UserManagementModalscreateAdditionalModalsData && (
         <CreateAddtionalUsersModal />
       )}
     </>

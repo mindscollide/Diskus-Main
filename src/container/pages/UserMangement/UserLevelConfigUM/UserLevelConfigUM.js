@@ -27,7 +27,11 @@ const UserLevelConfigUM = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { settingReducer } = useSelector((state) => state);
+
+  const settingReducerUserProfileData = useSelector(
+    (state) => state.settingReducer.UserProfileData
+  );
+
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);
@@ -699,7 +703,7 @@ const UserLevelConfigUM = () => {
       }
       setSignUpCodeToken("");
     } else {
-      if (settingReducer.UserProfileData.userAllowGoogleCalendarSynch) {
+      if (settingReducerUserProfileData.userAllowGoogleCalendarSynch) {
         if (userOptionsSettings.AllowGoogleCalenderSync) {
           await dispatch(
             updateUserSettingFunc(

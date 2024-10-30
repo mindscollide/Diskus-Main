@@ -13,13 +13,17 @@ const SuccessfullyUpdateModal = () => {
 
   const { UserManagementModals } = useSelector((state) => state);
 
+  const UserManagementModalssuccessfullyUpdatedData = useSelector(
+    (state) => state.UserManagementModals.successfullyUpdated
+  );
+
   const handleOkButton = () => {
     dispatch(showSucessfullyUpdatedModal(false));
   };
   return (
     <section>
       <Modal
-        show={UserManagementModals.successfullyUpdated}
+        show={UserManagementModalssuccessfullyUpdatedData}
         setShow={dispatch(showSucessfullyUpdatedModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

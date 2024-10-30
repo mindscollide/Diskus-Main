@@ -29,12 +29,33 @@ import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const SignUpOrganizationUM = () => {
   const { t } = useTranslation();
 
-  const {
-    countryNamesReducer,
-    adminReducer,
-    LanguageReducer,
-    UserMangementReducer,
-  } = useSelector((state) => state);
+  const countryNamesReducerCountryNamesData = useSelector(
+    (state) => state.countryNamesReducer.CountryNamesData
+  );
+
+  const adminReducerOrganisationCheckData = useSelector(
+    (state) => state.adminReducer.OrganisationCheck
+  );
+
+  const adminReducerEmailCheckData = useSelector(
+    (state) => state.adminReducer.EmailCheck
+  );
+
+  const adminReducerOrganizationCheckSpinnerData = useSelector(
+    (state) => state.adminReducer.OrganizationCheckSpinner
+  );
+
+  const adminReducerEmailCheckSpinnerData = useSelector(
+    (state) => state.adminReducer.EmailCheckSpinner
+  );
+
+  const LanguageReducerLoaderData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
 
   const location = useLocation();
 
@@ -428,8 +449,8 @@ const SignUpOrganizationUM = () => {
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
           if (
-            adminReducer.OrganisationCheck !== false &&
-            adminReducer.EmailCheck !== false
+            adminReducerOrganisationCheckData !== false &&
+            adminReducerEmailCheckData !== false
           ) {
             let PackageID = localStorage.getItem("PackageID");
             let tenureOfSuscriptionID = localStorage.getItem(
@@ -580,8 +601,8 @@ const SignUpOrganizationUM = () => {
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
           if (
-            adminReducer.OrganisationCheck !== false &&
-            adminReducer.EmailCheck !== false
+            adminReducerOrganisationCheckData !== false &&
+            adminReducerEmailCheckData !== false
           ) {
             let data = {
               TenureOfSubscriptionID: Number(
@@ -749,47 +770,27 @@ const SignUpOrganizationUM = () => {
   useEffect(() => {
     if (
       againCall &&
-      adminReducer.OrganisationCheck &&
-      adminReducer.EmailCheck
+      adminReducerOrganisationCheckData &&
+      adminReducerEmailCheckData
     ) {
-      let PackageID = localStorage.getItem("PackageID");
-      let tenureOfSuscriptionID = localStorage.getItem("TenureOfSuscriptionID");
-      // let data = {
-      //   SelectedPackageID: JSON.parse(PackageID),
-      //   TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
-      //   Organization: {
-      //     OrganizationName: signUpDetails.CompanyName.value,
-      //     FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
-      //     ContactPersonName: signUpDetails.FullName.value,
-      //     ContactPersonEmail: signUpDetails.Email.value,
-      //     ContactPersonNumber: signUpDetails.PhoneNumber.value,
-      //     FK_NumberWorldCountryID: JSON.parse(signUpDetails.CountryName.value),
-      //     CustomerReferenceNumber: "",
-      //     PersonalNumber: signUpDetails.PhoneNumber.value,
-      //     OrganizationAddress1: signUpDetails.Address1.value,
-      //     OrganizationAddress2: signUpDetails.Address2.value,
-      //     City: signUpDetails.City.value,
-      //     StateProvince: signUpDetails.State.value,
-      //     PostalCode: signUpDetails.PostalCode.value,
-      //     FK_SubscriptionStatusID: 0,
-      //     FK_CCID: signUpDetails.FK_CCID,
-      //   },
-      // };
-      //   dispatch(createOrganization(data, navigate, t));
       setAgainCall(false);
     } else {
       setAgainCall(false);
     }
-  }, [againCall, adminReducer.OrganisationCheck, adminReducer.EmailCheck]);
+  }, [
+    againCall,
+    adminReducerOrganisationCheckData,
+    adminReducerEmailCheckData,
+  ]);
 
   useEffect(() => {
     if (
-      countryNamesReducer.CountryNamesData !== null &&
-      countryNamesReducer.CountryNamesData !== undefined
+      countryNamesReducerCountryNamesData !== null &&
+      countryNamesReducerCountryNamesData !== undefined
     ) {
-      setCountryNames(countryNamesReducer.CountryNamesData);
+      setCountryNames(countryNamesReducerCountryNamesData);
     }
-  }, [countryNamesReducer.CountryNamesData]);
+  }, [countryNamesReducerCountryNamesData]);
 
   const onClickLink = () => {
     if (isFreeTrail === true) {
@@ -888,7 +889,7 @@ const SignUpOrganizationUM = () => {
                       </Row>
                     </Col>
                     <Col sm={12} md={1} lg={1}>
-                      {adminReducer.OrganizationCheckSpinner ? (
+                      {adminReducerOrganizationCheckSpinnerData ? (
                         <Spinner
                           className={styles["checkOrganiationSpinner"]}
                         />
@@ -1090,7 +1091,7 @@ const SignUpOrganizationUM = () => {
                       </Row>
                     </Col>
                     <Col sm={12} md={1} lg={1} className="position-relative">
-                      {adminReducer.EmailCheckSpinner ? (
+                      {adminReducerEmailCheckSpinnerData ? (
                         <Spinner className={styles["checkEmailSpinner"]} />
                       ) : null}
                       {isEmailUnique && (
@@ -1201,7 +1202,7 @@ const SignUpOrganizationUM = () => {
             />
           </Col>
         </Row>{" "}
-        {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+        {UserMangementReducerLoadingData || LanguageReducerLoaderData ? (
           <Loader />
         ) : null}{" "}
       </Container>

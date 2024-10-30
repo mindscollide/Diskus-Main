@@ -9,7 +9,6 @@ import {
   regexOnlyCharacters,
   regexOnlyNumbers,
 } from "../../../../../commen/functions/regex";
-import { useSelector } from "react-redux";
 
 const BillProcessStepTwo = ({
   billingAddress,

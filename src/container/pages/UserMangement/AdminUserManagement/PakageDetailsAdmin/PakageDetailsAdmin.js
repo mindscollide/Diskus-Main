@@ -14,7 +14,17 @@ const PakageDetailsAdmin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { UserMangementReducer } = useSelector((state) => state);
+
+  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
+    useSelector(
+      (state) =>
+        state.UserMangementReducer
+          .organizationSelectedPakagesByOrganizationIDData
+    );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
 
   // organizationSubscriptions
   const [packageDetails, setPackageDetails] = useState({
@@ -82,7 +92,7 @@ const PakageDetailsAdmin = () => {
 
   useEffect(() => {
     let detailPackages =
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
     if (detailPackages !== null && detailPackages !== undefined) {
       detailPackages.organizationSubscriptions?.map((subscription) => {
         console.log(subscription, "subscriptionsubscription");
@@ -96,12 +106,11 @@ const PakageDetailsAdmin = () => {
         }));
       });
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   // table data in which Package details should be shown
   const organizationPackages =
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-      ?.organizationSubscriptions;
+    UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions;
 
   let Data = [];
 
@@ -134,7 +143,7 @@ const PakageDetailsAdmin = () => {
   let totalLicenses = 0;
   let totalYearlyCharges = 0;
 
-  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
+  UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
     (packageses) => {
       packageses.organizationSelectedPackages.map((totals) => {
         let totalofLicences = totals.headCount;
@@ -162,9 +171,9 @@ const PakageDetailsAdmin = () => {
   };
 
   const upgradeOnclickHandler = () => {
-    if (UserMangementReducer.organizationSelectedPakagesByOrganizationIDData) {
+    if (UserMangementReducerorganizationSelectedPakagesByOrganizationIDData) {
       const organizationSelectedVariable =
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
+        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
           (subscription) => subscription.organizationSelectedPackages
         );
       console.log(organizationSelectedVariable, "organizationSelectedVariable");
@@ -301,7 +310,7 @@ const PakageDetailsAdmin = () => {
           </Card>
         </Col>
       </Row>
-      {UserMangementReducer.Loading ? <Loader /> : null}
+      {UserMangementReducerLoadingData ? <Loader /> : null}
     </Container>
   );
 };

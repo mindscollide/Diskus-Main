@@ -26,8 +26,20 @@ const ForgotPasswordVerificationUM = () => {
 
   const { t } = useTranslation();
 
-  const { auth, Authreducer, LanguageReducer, UserMangementReducer } =
-    useSelector((state) => state);
+  const authLoadingData = useSelector((state) => state.auth.Loading);
+
+  const AuthreducerLoadingData = useSelector(
+    (state) => state.Authreducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
   const [key, setKey] = useState(1);
   const [open, setOpen] = useState({
     open: false,
@@ -323,11 +335,11 @@ const ForgotPasswordVerificationUM = () => {
           </Col>
         </Row>
       </Container>
-      {auth.Loading || LanguageReducer.Loading ? (
+      {authLoadingData || LanguageReducerLoadingData ? (
         <Loader />
-      ) : Authreducer.Loading || LanguageReducer.Loading ? (
+      ) : AuthreducerLoadingData || LanguageReducerLoadingData ? (
         <Loader />
-      ) : UserMangementReducer.Loading || LanguageReducer.Loading ? (
+      ) : UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
         <Loader />
       ) : null}
       <Notification open={open} setOpen={setOpen} />

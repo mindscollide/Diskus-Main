@@ -6,7 +6,6 @@ import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_n
 import LanguageSelector from "./../../../../components/elements/languageSelector/Language-selector";
 import {
   Button,
-  Paper,
   Notification,
   Loader,
 } from "./../../../../components/elements";
@@ -24,9 +23,11 @@ const ForgotPasswordUM = () => {
 
   const { t } = useTranslation();
 
-  const state = useSelector((state) => state);
+  const authLoadingData = useSelector((state) => state.auth.Loading);
 
-  const { auth, LanguageReducer } = state;
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
 
   //States for Forgot Password Screen
   const [email, setEmail] = useState("");
@@ -211,7 +212,7 @@ const ForgotPasswordUM = () => {
           </Col>
         </Row>
       </Container>
-      {auth.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {authLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

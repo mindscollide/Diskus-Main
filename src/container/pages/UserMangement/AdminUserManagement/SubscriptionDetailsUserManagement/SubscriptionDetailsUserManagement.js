@@ -22,7 +22,16 @@ const SubscriptionDetailsUserManagement = () => {
 
   const dispatch = useDispatch();
 
-  const { UserMangementReducer } = useSelector((state) => state);
+  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
+    useSelector(
+      (state) =>
+        state.UserMangementReducer
+          .organizationSelectedPakagesByOrganizationIDData
+    );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
 
   //Subscription Details Table Data
   const [subscriptionDetails, setSubscriptionDetails] = useState([]);
@@ -46,14 +55,14 @@ const SubscriptionDetailsUserManagement = () => {
   useEffect(() => {
     try {
       const data =
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
       if (data) {
         setSubscriptionDetails(data.organizationSubscriptions);
       }
     } catch (error) {
       console.log("error", error);
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   // Calculate total essential licenses count
   const totalEssentialLicenses = subscriptionDetails.reduce((total, record) => {
@@ -555,7 +564,7 @@ const SubscriptionDetailsUserManagement = () => {
           />
         </Col>
       </Row>
-      {UserMangementReducer.Loading ? <Loader /> : null}
+      {UserMangementReducerLoadingData ? <Loader /> : null}
     </Container>
   );
 };

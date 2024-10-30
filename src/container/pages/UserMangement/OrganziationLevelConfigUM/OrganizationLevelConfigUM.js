@@ -32,7 +32,14 @@ const OrganizationLevelConfigUM = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { settingReducer } = useSelector((state) => state);
+
+  const settingReducerTimeZoneData = useSelector(
+    (state) => state.settingReducer.TimeZone
+  );
+
+  const settingReducerGetOrganizationLevelSettingResponseData = useSelector(
+    (state) => state.settingReducer.GetOrganizationLevelSettingResponse
+  );
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);
@@ -126,7 +133,7 @@ const OrganizationLevelConfigUM = () => {
   }, []);
 
   useEffect(() => {
-    let TimeZone = settingReducer.TimeZone;
+    let TimeZone = settingReducerTimeZoneData;
     if (TimeZone !== undefined && TimeZone !== null) {
       let newData = [];
       TimeZone.map((data, index) => {
@@ -145,19 +152,19 @@ const OrganizationLevelConfigUM = () => {
       });
       setTimeZone(newData);
     }
-  }, [settingReducer.TimeZone]);
+  }, [settingReducerTimeZoneData]);
 
   useEffect(() => {
     if (
-      settingReducer.GetOrganizationLevelSettingResponse !== null &&
-      settingReducer.GetOrganizationLevelSettingResponse !== undefined
+      settingReducerGetOrganizationLevelSettingResponseData !== null &&
+      settingReducerGetOrganizationLevelSettingResponseData !== undefined
     ) {
       if (
-        Object.keys(settingReducer.GetOrganizationLevelSettingResponse).length >
-        0
+        Object.keys(settingReducerGetOrganizationLevelSettingResponseData)
+          .length > 0
       ) {
         let organizationSettings =
-          settingReducer.GetOrganizationLevelSettingResponse;
+          settingReducerGetOrganizationLevelSettingResponseData;
         setOrganizationSetting({
           Is2FAEnabled: organizationSettings.is2FAEnabled,
           EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
@@ -290,7 +297,7 @@ const OrganizationLevelConfigUM = () => {
         setTimeZoneValue(timeZoneCode);
       }
     }
-  }, [settingReducer.GetOrganizationLevelSettingResponse]);
+  }, [settingReducerGetOrganizationLevelSettingResponseData]);
 
   const openSecurityTab = () => {
     setSecuritystate(true);

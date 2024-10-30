@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 import { regexOnlyCharacters } from "../../../../../commen/functions/regex";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 const EditUserModal = ({ editModalData }) => {
-  console.log(editModalData, "editModalDataeditModalData");
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -32,8 +31,12 @@ const EditUserModal = ({ editModalData }) => {
 
   console.log(typeof isTrialCheck, "isTrialCheck");
 
-  const { UserManagementModals, UserMangementReducer } = useSelector(
-    (state) => state
+  const UserManagementModalseditUserModalData = useSelector(
+    (state) => state.UserManagementModals.editUserModal
+  );
+
+  const UserMangementReducergetOrganizationUserStatsGraphData = useSelector(
+    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
   );
 
   let organizationID = localStorage.getItem("organizationID");
@@ -146,11 +149,12 @@ const EditUserModal = ({ editModalData }) => {
   // package assigned option dropdown useEffect it will disable option when packageAllotedUsers greater then headCount
   useEffect(() => {
     if (
-      UserMangementReducer.getOrganizationUserStatsGraph &&
-      Object.keys(UserMangementReducer.getOrganizationUserStatsGraph).length > 0
+      UserMangementReducergetOrganizationUserStatsGraphData &&
+      Object.keys(UserMangementReducergetOrganizationUserStatsGraphData)
+        .length > 0
     ) {
       let temp = [];
-      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.map(
+      UserMangementReducergetOrganizationUserStatsGraphData.selectedPackageDetails.forEach(
         (data) => {
           temp.push({
             value: data.pK_PackageID,
@@ -161,11 +165,10 @@ const EditUserModal = ({ editModalData }) => {
       );
       setPackageAssignedOption(temp);
     }
-  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
+  }, [UserMangementReducergetOrganizationUserStatsGraphData]);
 
   // Handler for when an option is selected.
   const handleSelectChange = async (selectedOption) => {
-    console.log(selectedOption, "selectedOptionselectedOption");
     setUserStatus(selectedOption);
     setUserStatusID(selectedOption.value);
   };
@@ -179,7 +182,6 @@ const EditUserModal = ({ editModalData }) => {
   const handleUpdateModal = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log({ name, value }, "handleChangeSearchBoxValues");
 
     if (name === "Name" && value !== "") {
       let valueName = regexOnlyCharacters(value);
@@ -319,7 +321,7 @@ const EditUserModal = ({ editModalData }) => {
   return (
     <section>
       <Modal
-        show={UserManagementModals.editUserModal}
+        show={UserManagementModalseditUserModalData}
         setShow={dispatch(showEditUserModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

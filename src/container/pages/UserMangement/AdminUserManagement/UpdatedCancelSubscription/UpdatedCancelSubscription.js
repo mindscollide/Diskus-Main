@@ -18,7 +18,16 @@ const UpdatedCancelSubscription = () => {
 
   const dispatch = useDispatch();
 
-  const { UserMangementReducer } = useSelector((state) => state);
+  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
+    useSelector(
+      (state) =>
+        state.UserMangementReducer
+          .organizationSelectedPakagesByOrganizationIDData
+    );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
 
   //Cancel Subscription Table Data
   const [cancelSubscription, setCancelSubscription] = useState([]);
@@ -42,14 +51,14 @@ const UpdatedCancelSubscription = () => {
   useEffect(() => {
     try {
       const data =
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
       if (data) {
         setCancelSubscription(data.organizationSubscriptions);
       }
     } catch (error) {
       console.log("error", error);
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   // Calculate total essential licenses count
   const totalEssentialLicenses = cancelSubscription.reduce((total, record) => {
@@ -543,7 +552,7 @@ const UpdatedCancelSubscription = () => {
           />
         </Col>
       </Row>
-      {UserMangementReducer.Loading ? <Loader /> : null}
+      {UserMangementReducerLoadingData ? <Loader /> : null}
     </Container>
   );
 };

@@ -32,7 +32,33 @@ const PasswordVerification = () => {
 
   const passwordRef = useRef();
 
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  const AuthreducerVerifyOTPEmailResponseMessageData = useSelector(
+    (state) => state.Authreducer.VerifyOTPEmailResponseMessage
+  );
+
+  const AuthreducerOrganizationCreateResponseMessageData = useSelector(
+    (state) => state.Authreducer.OrganizationCreateResponseMessage
+  );
+
+  const AuthreducerCreatePasswordResponseMessageData = useSelector(
+    (state) => state.Authreducer.CreatePasswordResponseMessage
+  );
+
+  const AuthreducerGetSelectedPackageResponseMessageData = useSelector(
+    (state) => state.Authreducer.GetSelectedPackageResponseMessage
+  );
+
+  const AuthreducerEmailValidationResponseMessageData = useSelector(
+    (state) => state.Authreducer.EmailValidationResponseMessage
+  );
+
+  const AuthreducerLoadingData = useSelector(
+    (state) => state.Authreducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
 
   //States for Password Verification Screen
   const [password, setPassword] = useState("");
@@ -127,46 +153,46 @@ const PasswordVerification = () => {
   //Messeges UseEffect
   useEffect(() => {
     if (
-      Authreducer.VerifyOTPEmailResponseMessage != "" &&
-      Authreducer.VerifyOTPEmailResponseMessage != undefined
+      AuthreducerVerifyOTPEmailResponseMessageData !== "" &&
+      AuthreducerVerifyOTPEmailResponseMessageData !== undefined
     ) {
       showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
+        AuthreducerVerifyOTPEmailResponseMessageData,
         "success",
         setOpen
       );
       dispatch(cleareMessage());
     } else if (
-      Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage != t("2fa-enabled") &&
-      Authreducer.OrganizationCreateResponseMessage != undefined
+      AuthreducerOrganizationCreateResponseMessageData !== "" &&
+      AuthreducerOrganizationCreateResponseMessageData !== t("2fa-enabled") &&
+      AuthreducerOrganizationCreateResponseMessageData !== undefined
     ) {
       showMessage(
-        Authreducer.OrganizationCreateResponseMessage,
+        AuthreducerOrganizationCreateResponseMessageData,
         "success",
         setOpen
       );
       dispatch(cleareMessage());
     } else if (
-      Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage != t("2fa-enabled") &&
-      Authreducer.CreatePasswordResponseMessage != undefined &&
-      Authreducer.CreatePasswordResponseMessage !==
+      AuthreducerCreatePasswordResponseMessageData !== "" &&
+      AuthreducerCreatePasswordResponseMessageData !== t("2fa-enabled") &&
+      AuthreducerCreatePasswordResponseMessageData !== undefined &&
+      AuthreducerCreatePasswordResponseMessageData !==
         t("The-user-is-not-an-admin-user")
     ) {
       showMessage(
-        Authreducer.CreatePasswordResponseMessage,
+        AuthreducerCreatePasswordResponseMessageData,
         "success",
         setOpen
       );
       dispatch(cleareMessage());
     } else if (
-      Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage != t("2fa-enabled") &&
-      Authreducer.GetSelectedPackageResponseMessage != undefined
+      AuthreducerGetSelectedPackageResponseMessageData !== "" &&
+      AuthreducerGetSelectedPackageResponseMessageData !== t("2fa-enabled") &&
+      AuthreducerGetSelectedPackageResponseMessageData !== undefined
     ) {
       showMessage(
-        Authreducer.GetSelectedPackageResponseMessage,
+        AuthreducerGetSelectedPackageResponseMessageData,
         "success",
         setOpen
       );
@@ -175,11 +201,11 @@ const PasswordVerification = () => {
       dispatch(cleareMessage());
     }
   }, [
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
+    AuthreducerVerifyOTPEmailResponseMessageData,
+    AuthreducerOrganizationCreateResponseMessageData,
+    AuthreducerCreatePasswordResponseMessageData,
+    AuthreducerEmailValidationResponseMessageData,
+    AuthreducerGetSelectedPackageResponseMessageData,
   ]);
 
   //Handle Goback functionality
@@ -384,7 +410,7 @@ const PasswordVerification = () => {
         </Row>
       </Container>
       <Notification open={open} setOpen={setOpen} />
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
     </>
   );
 };

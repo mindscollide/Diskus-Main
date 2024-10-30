@@ -40,7 +40,14 @@ const DowngradeSubscription = () => {
 
   const { UserMangementReducer } = useSelector((state) => state);
 
-  console.log(UserMangementReducer.Loading, "UserMangementReducer");
+  const UserMangementReducergetOrganizationWalletData = useSelector(
+    (state) => state.UserMangementReducer.getOrganizationWallet
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
   //Data States
   const [downgradeSubsData, setDowngradeSubsData] = useState([]);
   const [textFieldValues, setTextFieldValues] = useState({});
@@ -96,12 +103,12 @@ const DowngradeSubscription = () => {
   useEffect(() => {
     try {
       if (
-        UserMangementReducer.getOrganizationWallet !== null &&
-        UserMangementReducer.getOrganizationWallet !== undefined
+        UserMangementReducergetOrganizationWalletData !== null &&
+        UserMangementReducergetOrganizationWalletData !== undefined
       ) {
         setWalletData({
           walletamount:
-            UserMangementReducer.getOrganizationWallet.organizationWallet
+            UserMangementReducergetOrganizationWalletData.organizationWallet
               .walletAmount,
         });
       }
@@ -546,7 +553,7 @@ const DowngradeSubscription = () => {
             />
           </Col>
         </Row>
-        {UserMangementReducer.Loading ? <Loader /> : null}
+        {UserMangementReducerLoadingData ? <Loader /> : null}
       </section>
     </>
   );

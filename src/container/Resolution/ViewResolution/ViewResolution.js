@@ -20,7 +20,11 @@ import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
   const currentLanguage = localStorage.getItem("i18nextLng");
-  const { ResolutionReducer } = useSelector((state) => state);
+
+  const getResolutionByIdData = useSelector(
+    (state) => state.ResolutionReducer.getResolutionbyID
+  );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [voterVeiwResolution, setVoterVeiwResolution] = useState(true);
@@ -46,13 +50,13 @@ const ViewResolution = ({ setViewresolution }) => {
 
   useEffect(() => {
     try {
-      if (ResolutionReducer.getResolutionbyID !== null) {
-        setResolutionData(ResolutionReducer.getResolutionbyID);
+      if (getResolutionByIdData !== null) {
+        setResolutionData(getResolutionByIdData);
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [ResolutionReducer.getResolutionbyID]);
+  }, [getResolutionByIdData]);
 
   const handleLinkClick = (data, extension) => {
     if (fileFormatforSignatureFlow.includes(extension)) {

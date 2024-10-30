@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -36,13 +36,24 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
-  const {
-    Authreducer,
-    adminReducer,
-    LanguageReducer,
-    UserMangementReducer,
-    UserManagementModals,
-  } = useSelector((state) => state);
+  const { UserMangementReducer } = useSelector((state) => state);
+
+  const AuthreducerLoadingData = useSelector(
+    (state) => state.Authreducer.Loading
+  );
+
+  const adminReducerDeleteOrganizationResponseMessageData = useSelector(
+    (state) => state.adminReducer.DeleteOrganizationResponseMessage
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
+
+  const UserManagementModalsmobileAppPopUpData = useSelector(
+    (state) => state.UserManagementModals.mobileAppPopUp
+  );
+
   const currentUrl = window.location.href;
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
@@ -156,19 +167,19 @@ const SignInUserManagement = () => {
   }, []);
 
   useEffect(() => {
-    if (adminReducer.DeleteOrganizationResponseMessage !== "") {
+    if (adminReducerDeleteOrganizationResponseMessageData !== "") {
       console.log(
-        adminReducer.DeleteOrganizationResponseMessage,
+        adminReducerDeleteOrganizationResponseMessageData,
         "DeleteOrganizationResponseMessage"
       );
       showMessage(
-        adminReducer.DeleteOrganizationResponseMessage,
+        adminReducerDeleteOrganizationResponseMessageData,
         "error",
         setOpen
       );
       dispatch(cleareMessage());
     }
-  }, [adminReducer.DeleteOrganizationResponseMessage, setOpen]);
+  }, [adminReducerDeleteOrganizationResponseMessageData, setOpen]);
 
   return (
     <>
@@ -334,14 +345,16 @@ const SignInUserManagement = () => {
               </Col>
             </Row>
             <Notification open={open} setOpen={setOpen} />
-            {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+            {AuthreducerLoadingData || LanguageReducerLoadingData ? (
+              <Loader />
+            ) : null}
           </>
         )}
       </Container>
       {getpayemntString && getpayemntString !== "" && UserMangementReducer && (
         <Loader />
       )}
-      {UserManagementModals.mobileAppPopUp && <MobileAppPopUpModal />}
+      {UserManagementModalsmobileAppPopUpData && <MobileAppPopUpModal />}
     </>
   );
 };

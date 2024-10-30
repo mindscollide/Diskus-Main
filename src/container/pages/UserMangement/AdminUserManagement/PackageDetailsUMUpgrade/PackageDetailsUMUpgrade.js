@@ -26,6 +26,18 @@ const PakageDetailsUMUpgrade = () => {
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
   );
+
+  const UserMangementReducergetAllUserTypePackagesData = useSelector(
+    (state) => state.UserMangementReducer.getAllUserTypePackagesData
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
   //States
   const [tableData, setTableData] = useState([]);
   const [packageTableData, setPackageTableData] = useState([]);
@@ -79,21 +91,21 @@ const PakageDetailsUMUpgrade = () => {
   //Fetching the data for pakage selection
   useEffect(() => {
     try {
-      const pakageDetails = UserMangementReducer.getAllUserTypePackagesData;
+      const pakageDetails = UserMangementReducergetAllUserTypePackagesData;
       if (
         pakageDetails &&
         pakageDetails.packages &&
         pakageDetails.packages.length > 0
       ) {
         setPackageDetail(
-          UserMangementReducer.getAllUserTypePackagesData.packages
+          UserMangementReducergetAllUserTypePackagesData.packages
         );
-        setTableData(UserMangementReducer.getAllUserTypePackagesData.packages);
+        setTableData(UserMangementReducergetAllUserTypePackagesData.packages);
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [UserMangementReducer.getAllUserTypePackagesData]);
+  }, [UserMangementReducergetAllUserTypePackagesData]);
 
   // translate Languages start
   const languages = [
@@ -624,7 +636,7 @@ const PakageDetailsUMUpgrade = () => {
           </span>
         </Col>
       </Row>
-      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+      {UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
         <Loader />
       ) : null}
     </Container>

@@ -47,6 +47,14 @@ const CreateAddtionalUsersModal = () => {
     (state) => state
   );
 
+  const UserManagementModalscreateAdditionalModalsData = useSelector(
+    (state) => state.UserManagementModals.createAdditionalModals
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
   //States
   const [members, setMembers] = useState([]);
   const [createAddionalUsers, setCreateAddionalUsers] = useState({
@@ -237,7 +245,7 @@ const CreateAddtionalUsersModal = () => {
   return (
     <section>
       <Modal
-        show={UserManagementModals.createAdditionalModals}
+        show={UserManagementModalscreateAdditionalModalsData}
         setShow={dispatch(showCreateAddtionalUsersModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
@@ -498,7 +506,7 @@ const CreateAddtionalUsersModal = () => {
                 </Col>
               </Row>
             </section>{" "}
-            {UserMangementReducer.Loading ? <Loader /> : null}
+            {UserMangementReducerLoadingData ? <Loader /> : null}
           </>
         }
       />

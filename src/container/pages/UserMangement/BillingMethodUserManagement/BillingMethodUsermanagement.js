@@ -21,12 +21,21 @@ const BillingMethodUsermanagement = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {
-    UserManagementModals,
-    countryNamesReducer,
-    UserMangementReducer,
-    LanguageReducer,
-  } = useSelector((state) => state);
+  const UserManagementModalsthanksForPaymentModalData = useSelector(
+    (state) => state.UserManagementModals.thanksForPaymentModal
+  );
+
+  const countryNamesReducerCountryNamesDataData = useSelector(
+    (state) => state.countryNamesReducer.CountryNamesData
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
 
   let OrganizationSubscriptionID = localStorage.getItem(
     "organizationSubscriptionID"
@@ -267,13 +276,12 @@ const BillingMethodUsermanagement = () => {
   // to get country Names from Billing Step Two
   useEffect(() => {
     if (
-      countryNamesReducer.CountryNamesData !== null &&
-      countryNamesReducer.CountryNamesData !== undefined
+      countryNamesReducerCountryNamesDataData !== null &&
+      countryNamesReducerCountryNamesDataData !== undefined
     ) {
-      console.log(countryNamesReducer.CountryNamesData, "countryOnSelect");
-      setCountryNames(countryNamesReducer.CountryNamesData);
+      setCountryNames(countryNamesReducerCountryNamesDataData);
     }
-  }, [countryNamesReducer.CountryNamesData]);
+  }, [countryNamesReducerCountryNamesDataData]);
 
   //Flag Selector
   const countryOnSelect = (code) => {
@@ -439,8 +447,8 @@ const BillingMethodUsermanagement = () => {
         </Col>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
-      {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
-      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+      {UserManagementModalsthanksForPaymentModalData && <ThankForPayment />}
+      {UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
         <Loader />
       ) : null}
     </Container>
