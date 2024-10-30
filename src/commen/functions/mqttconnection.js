@@ -20,7 +20,7 @@ export const mqttConnection = (subscribeID) => {
 
   newClient.onConnectionLost = (responseObject) => {
     console.log("Connection lost:", responseObject.errorMessage);
-    setTimeout(() => mqttConnection(subscribeID), 3000); // Reconnect after 3 seconds
+    setTimeout(() => mqttConnection(subscribeID), 6000); // Reconnect after 3 seconds
   };
 
   // newClient.onMessageArrived = onMessageArrived;
