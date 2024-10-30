@@ -25,8 +25,12 @@ const CreateFromScratch = () => {
   const [editable, setEditable] = useState(false);
   const [createFromSratch, setCreateFromSratch] = useState(false);
   const [editableIndex, setEditableIndex] = useState(0);
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const unsavedModalScratch = useSelector(
+    (state) => state.NewMeetingreducer.unsavedModalScratch
+  );
+  const UnsavedButtonCreateScratch = useSelector(
+    (state) => state.NewMeetingreducer.UnsavedButtonCreateScratch
+  );
   const [showScratchFiles, setShowScratchFiles] = useState([
     {
       id: 0,
@@ -94,17 +98,14 @@ const CreateFromScratch = () => {
         [{ font: ["impact", "courier", "comic", "Montserrat"] }],
         ["bold", "italic", "underline", "blockquote"],
         [{ color: [] }],
-        [
-          { list: "ordered" },
-          { list: "bullet" },
-        ],
+        [{ list: "ordered" }, { list: "bullet" }],
       ],
-      handlers: { },
+      handlers: {},
     },
     clipboard: {
       matchVisual: true,
     },
-  }
+  };
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText != "") {
@@ -415,10 +416,8 @@ const CreateFromScratch = () => {
         </>
       ) : null}
 
-      {NewMeetingreducer.unsavedModalScratch && (
-        <UndavedModalScratch setEditable={setEditable} />
-      )}
-      {NewMeetingreducer.UnsavedButtonCreateScratch && (
+      {unsavedModalScratch && <UndavedModalScratch setEditable={setEditable} />}
+      {UnsavedButtonCreateScratch && (
         <UnsavedCreateScratch setCreateFromSratch={setCreateFromSratch} />
       )}
     </section>

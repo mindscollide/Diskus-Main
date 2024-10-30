@@ -63,7 +63,28 @@ const Polls = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const getPollsMeetingID = useSelector(
+    (state) => state.NewMeetingreducer.getPollsMeetingID
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const cancelPolls = useSelector(
+    (state) => state.NewMeetingreducer.cancelPolls
+  );
+  const editFlowDeletePollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.editFlowDeletePollsMeeting
+  );
+  const newPollMeeting = useSelector(
+    (state) => state.PollsReducer.newPollMeeting
+  );
+  const pollingSocket = useSelector(
+    (state) => state.PollsReducer.pollingSocket
+  );
+  const newPollDelete = useSelector(
+    (state) => state.PollsReducer.newPollDelete
+  );
+
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -128,12 +149,9 @@ const Polls = ({
   };
   useEffect(() => {
     try {
-      if (
-        NewMeetingreducer.getPollsMeetingID !== undefined &&
-        NewMeetingreducer.getPollsMeetingID !== null
-      ) {
-        let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
-        setTotalRecords(NewMeetingreducer.getPollsMeetingID.totalRecords);
+      if (getPollsMeetingID !== undefined && getPollsMeetingID !== null) {
+        let pollsData = getPollsMeetingID.polls;
+        setTotalRecords(getPollsMeetingID.totalRecords);
 
         let newPollsArray = [];
         pollsData.forEach((data, index) => {
@@ -145,13 +163,13 @@ const Polls = ({
         setTotalRecords(0);
       }
     } catch {}
-  }, [NewMeetingreducer.getPollsMeetingID]);
+  }, [getPollsMeetingID]);
 
   // MQTT Response of Polls for Meeting
   useEffect(() => {
     try {
-      if (PollsReducer.newPollMeeting !== null) {
-        let PollData = PollsReducer.newPollMeeting;
+      if (newPollMeeting !== null) {
+        let PollData = newPollMeeting;
         if (Number(PollData.meetingID) === Number(currentMeeting)) {
           setPollsRows([PollData.polls, ...pollsRows]);
         }
@@ -160,15 +178,11 @@ const Polls = ({
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollMeeting]);
+  }, [newPollMeeting]);
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.pollingSocket &&
-        Object.keys(PollsReducer.pollingSocket).length > 0
-      ) {
-        const { pollingSocket } = PollsReducer;
+      if (pollingSocket && Object.keys(pollingSocket).length > 0) {
         const { polls } = pollingSocket;
 
         let updatedRows = [...pollsRows];
@@ -192,12 +206,12 @@ const Polls = ({
     } catch (error) {
       console.log(error, "errorerror");
     }
-  }, [PollsReducer.pollingSocket]);
+  }, [pollingSocket]);
 
   useEffect(() => {
     try {
-      if (PollsReducer.newPollDelete !== null) {
-        const polls = PollsReducer.newPollDelete;
+      if (newPollDelete !== null) {
+        const polls = newPollDelete;
 
         setPollsRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
@@ -210,7 +224,7 @@ const Polls = ({
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollDelete]);
+  }, [newPollDelete]);
 
   const handleClickTitle = (record) => {
     let data = {
@@ -559,16 +573,16 @@ const Polls = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("Record-not-found") &&
-      NewMeetingreducer.ResponseMessage !== ""
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("Record-not-found") &&
+      ResponseMessage !== ""
     ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "error", setOpen);
+      showMessage(ResponseMessage, "error", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <>
@@ -741,10 +755,8 @@ const Polls = ({
           </>
         )}
 
-        {NewMeetingreducer.cancelPolls && (
-          <CancelPolls setSceduleMeeting={setSceduleMeeting} />
-        )}
-        {NewMeetingreducer.editFlowDeletePollsMeeting && (
+        {cancelPolls && <CancelPolls setSceduleMeeting={setSceduleMeeting} />}
+        {editFlowDeletePollsMeeting && (
           <EditDeletePollConfirm
             pollID={pollID}
             currentMeeting={currentMeeting}
