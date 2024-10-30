@@ -80,7 +80,13 @@ const ViewMeetingDetails = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, talkStateData } = useSelector((state) => state);
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
@@ -280,12 +286,8 @@ const ViewMeetingDetails = ({
   //Fetching All Saved Data
   useEffect(() => {
     try {
-      if (
-        NewMeetingreducer.getAllMeetingDetails !== null &&
-        NewMeetingreducer.getAllMeetingDetails !== undefined
-      ) {
-        let MeetingData =
-          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+      if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
+        let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
         localStorage.setItem("meetingTitle", MeetingData.meetingTitle);
         localStorage.setItem(
           "isMinutePublished",
@@ -295,7 +297,6 @@ const ViewMeetingDetails = ({
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
         let getmeetingStatus = MeetingData.meetingStatus.status;
-        console.log("meetingStatus", NewMeetingreducer);
         console.log("meetingStatus", getmeetingStatus);
         setMeetingStatus(Number(getmeetingStatus));
         let getmeetingType = MeetingData.meetingType;
@@ -373,7 +374,7 @@ const ViewMeetingDetails = ({
         setRows(newDateTimeData);
       }
     } catch {}
-  }, [NewMeetingreducer.getAllMeetingDetails]);
+  }, [getAllMeetingDetails]);
 
   const leaveCallHost = () => {
     let Data = {
@@ -480,8 +481,7 @@ const ViewMeetingDetails = ({
   };
 
   const copyToClipboardd = () => {
-    let MeetingData =
-      NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+    let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
     if (MeetingData.isVideo === true) {
       let Data2 = {
         VideoCallURL: currentMeetingVideoURL,
@@ -503,9 +503,9 @@ const ViewMeetingDetails = ({
   const groupChatInitiation = (data) => {
     if (
       data.TalkGroupID !== 0 &&
-      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-      talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+      AllUserChats.AllUserChatsData !== undefined &&
+      AllUserChats.AllUserChatsData !== null &&
+      AllUserChats.AllUserChatsData.length !== 0
     ) {
       dispatch(createShoutAllScreen(false));
       dispatch(addNewChatScreen(false));
@@ -527,8 +527,7 @@ const ViewMeetingDetails = ({
       dispatch(GetGroupMessages(navigate, chatGroupData, t));
       dispatch(GetAllUsers(navigate, parseInt(userID), currentOrganization, t));
 
-      let allChatMessages =
-        talkStateData.AllUserChats.AllUserChatsData.allMessages;
+      let allChatMessages = AllUserChats.AllUserChatsData.allMessages;
       const foundRecord = allChatMessages.find(
         (item) => item.id === data.TalkGroupID
       );
@@ -541,20 +540,18 @@ const ViewMeetingDetails = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== undefined
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-data-available") &&
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== undefined
     ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
-
-  console.log("talkStateDatatalkStateData", talkStateData);
+  }, [ResponseMessage]);
 
   const handleClickEndMeeting = useCallback(async () => {
     let endMeetingRequest = {

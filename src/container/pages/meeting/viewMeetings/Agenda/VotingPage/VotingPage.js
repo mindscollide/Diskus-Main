@@ -15,8 +15,9 @@ import {
 const VotingPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const viewVotesAgenda = useSelector(
+    (state) => state.NewMeetingreducer.viewVotesAgenda
+  );
   const EnableViewVoteModal = () => {
     dispatch(showviewVotesAgenda(true));
   };
@@ -80,7 +81,7 @@ const VotingPage = () => {
           <Button text={t("Next")} className={styles["Next_button"]} />
         </Col>
       </Row>
-      {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
+      {viewVotesAgenda && <ViewVoteModal />}
     </section>
   );
 };

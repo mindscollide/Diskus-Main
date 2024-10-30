@@ -10,8 +10,9 @@ import { Button, Modal } from "../../../../../../components/elements";
 const CancelAgenda = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const cancelAgenda = useSelector(
+    (state) => state.NewMeetingreducer.cancelAgenda
+  );
   const handleNOFunctionality = () => {
     dispatch(showCancelModalAgenda(false));
   };
@@ -23,7 +24,7 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelAgenda}
+        show={cancelAgenda}
         setShow={dispatch(showCancelModalAgenda)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

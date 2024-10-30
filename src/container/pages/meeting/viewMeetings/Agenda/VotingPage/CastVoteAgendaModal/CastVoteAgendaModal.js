@@ -14,10 +14,15 @@ const CastVoteAgendaModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+  const castVoteAgendaPage = useSelector(
+    (state) => state.NewMeetingreducer.castVoteAgendaPage
   );
-
+  const AgendaVotingInfoData = useSelector(
+    (state) => state.MeetingAgendaReducer.AgendaVotingInfoData
+  );
+  const GetCurrentAgendaDetails = useSelector(
+    (state) => state.MeetingAgendaReducer.GetCurrentAgendaDetails
+  );
   let currentUserID = Number(localStorage.getItem("userID"));
 
   const [castVoteData, setCastVoteData] = useState([]);
@@ -28,17 +33,15 @@ const CastVoteAgendaModal = () => {
 
   useEffect(() => {
     if (
-      MeetingAgendaReducer.AgendaVotingInfoData !== undefined &&
-      MeetingAgendaReducer.AgendaVotingInfoData !== null &&
-      MeetingAgendaReducer.AgendaVotingInfoData.length !== 0
+      AgendaVotingInfoData !== undefined &&
+      AgendaVotingInfoData !== null &&
+      AgendaVotingInfoData.length !== 0
     ) {
-      setCastVoteData(MeetingAgendaReducer.AgendaVotingInfoData);
-      const selectedAnswerObject =
-        MeetingAgendaReducer.AgendaVotingInfoData.votingAnswers.find(
-          (answer) =>
-            answer.votingAnswerID ===
-            MeetingAgendaReducer.AgendaVotingInfoData.selectedAnswerID
-        );
+      setCastVoteData(AgendaVotingInfoData);
+      const selectedAnswerObject = AgendaVotingInfoData.votingAnswers.find(
+        (answer) =>
+          answer.votingAnswerID === AgendaVotingInfoData.selectedAnswerID
+      );
       if (selectedAnswerObject) {
         setSelectedAnswer(selectedAnswerObject);
       } else {
@@ -47,19 +50,19 @@ const CastVoteAgendaModal = () => {
     } else {
       setCastVoteData([]);
     }
-  }, [MeetingAgendaReducer.AgendaVotingInfoData]);
+  }, [AgendaVotingInfoData]);
 
   useEffect(() => {
     if (
-      MeetingAgendaReducer.GetCurrentAgendaDetails !== null &&
-      MeetingAgendaReducer.GetCurrentAgendaDetails !== undefined &&
-      MeetingAgendaReducer.GetCurrentAgendaDetails.length !== 0
+      GetCurrentAgendaDetails !== null &&
+      GetCurrentAgendaDetails !== undefined &&
+      GetCurrentAgendaDetails.length !== 0
     ) {
-      setCurrentAgendaDetails(MeetingAgendaReducer.GetCurrentAgendaDetails);
+      setCurrentAgendaDetails(GetCurrentAgendaDetails);
     } else {
       setCurrentAgendaDetails([]);
     }
-  }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
+  }, [GetCurrentAgendaDetails]);
 
   const handleRadioChange = (e) => {
     const selectedAnswerID = e.target.value;
@@ -92,7 +95,7 @@ const CastVoteAgendaModal = () => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.castVoteAgendaPage}
+        show={castVoteAgendaPage}
         setShow={dispatch(showCastVoteAgendaModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

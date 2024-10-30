@@ -72,7 +72,10 @@ const ProposedNewMeeting = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const gellAllCommittesandGroups = useSelector(
+    (state) => state.PollsReducer.gellAllCommittesandGroups
+  );
+
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
@@ -81,6 +84,9 @@ const ProposedNewMeeting = ({
   );
   const getAllProposedDatesEditFlow = useSelector(
     (state) => state.NewMeetingreducer.getAllProposedDates
+  );
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
 
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -119,12 +125,8 @@ const ProposedNewMeeting = ({
   //Now Working on Edit Flow Proposed new  Meeting
   useEffect(() => {
     try {
-      if (
-        NewMeetingreducer.getAllMeetingDetails !== null &&
-        NewMeetingreducer.getAllMeetingDetails !== undefined
-      ) {
-        const EditFlowData =
-          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+      if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
+        const EditFlowData = getAllMeetingDetails.advanceMeetingDetails;
         console.log(EditFlowData, "EditFlowData");
         if (isProposedMeetEdit) {
           setEditmeetingTypeDetails({
@@ -153,7 +155,7 @@ const ProposedNewMeeting = ({
     } catch (error) {
       console.log(error, "error");
     }
-  }, [NewMeetingreducer.getAllMeetingDetails, isProposedMeetEdit]);
+  }, [getAllMeetingDetails, isProposedMeetEdit]);
 
   //Getting All the Participants for edit flow
   useEffect(() => {
@@ -262,7 +264,7 @@ const ProposedNewMeeting = ({
 
   //Getting All Groups And Committees and users data from polls api
   useEffect(() => {
-    let newParticpantData = PollsReducer.gellAllCommittesandGroups;
+    let newParticpantData = gellAllCommittesandGroups;
     try {
       if (newParticpantData !== null && newParticpantData !== undefined) {
         let temp = [];
@@ -393,7 +395,7 @@ const ProposedNewMeeting = ({
       console.error("Error processing participant data:", error);
     }
   }, [
-    PollsReducer.gellAllCommittesandGroups,
+    gellAllCommittesandGroups,
     isProposedMeetEdit,
     membersParticipants,
     userID,
@@ -919,7 +921,7 @@ const ProposedNewMeeting = ({
 
   //Click Function for adding the participants
   const handleClickAddParticipants = () => {
-    let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
+    let newOrganizersData = gellAllCommittesandGroups;
     console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
 
     let tem = [...membersParticipants];

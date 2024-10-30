@@ -47,8 +47,14 @@ const CreateTask = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { Dragger } = Upload;
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+  const getMeetingusers = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingusers
+  );
+  const unsavedActions = useSelector(
+    (state) => state.NewMeetingreducer.unsavedActions
+  );
+  const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
+    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
   );
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -108,7 +114,7 @@ const CreateTask = ({
 
   useEffect(() => {
     try {
-      let createMeetingTaskData = NewMeetingreducer.getMeetingusers;
+      let createMeetingTaskData = getMeetingusers;
       if (
         createMeetingTaskData !== undefined &&
         createMeetingTaskData !== null
@@ -351,7 +357,7 @@ const CreateTask = ({
     } catch (error) {
       console.log(error, "error");
     }
-  }, [NewMeetingreducer.getMeetingusers]);
+  }, [getMeetingusers]);
 
   useEffect(() => {
     try {
@@ -600,32 +606,30 @@ const CreateTask = ({
   // useEffect for agenda Dropdown
   useEffect(() => {
     if (
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData &&
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList
+      GetAdvanceMeetingAgendabyMeetingIDData &&
+      GetAdvanceMeetingAgendabyMeetingIDData.agendaList
     ) {
       let tempAgenda = [];
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.forEach(
-        (agenda) => {
-          // Adding main agenda from agendaList
-          tempAgenda.push({
-            label: agenda.title,
-            value: agenda.id,
-          });
+      GetAdvanceMeetingAgendabyMeetingIDData.agendaList.forEach((agenda) => {
+        // Adding main agenda from agendaList
+        tempAgenda.push({
+          label: agenda.title,
+          value: agenda.id,
+        });
 
-          // Adding subAgenda titles
-          if (agenda.subAgenda && agenda.subAgenda.length > 0) {
-            agenda.subAgenda.forEach((subAgenda) => {
-              tempAgenda.push({
-                label: subAgenda.subTitle,
-                value: subAgenda.subAgendaID,
-              });
+        // Adding subAgenda titles
+        if (agenda.subAgenda && agenda.subAgenda.length > 0) {
+          agenda.subAgenda.forEach((subAgenda) => {
+            tempAgenda.push({
+              label: subAgenda.subTitle,
+              value: subAgenda.subAgendaID,
             });
-          }
+          });
         }
-      );
+      });
       setAgendaValue(tempAgenda);
     }
-  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
+  }, [GetAdvanceMeetingAgendabyMeetingIDData]);
 
   const onChangeSelectAgenda = (e) => {
     setcreateTaskDetails({
@@ -946,7 +950,7 @@ const CreateTask = ({
             />
           </Col>
         </Row>
-        {NewMeetingreducer.unsavedActions && (
+        {unsavedActions && (
           <UnsavedActions
             setCreateaTask={setCreateaTask}
             currentMeeting={currentMeeting}

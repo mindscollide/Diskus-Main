@@ -40,7 +40,16 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const getMeetingusers = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingusers
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const unsavedPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.unsavedPollsMeeting
+  );
+
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -168,7 +177,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   }, []);
 
   useEffect(() => {
-    let pollMeetingData = NewMeetingreducer.getMeetingusers;
+    let pollMeetingData = getMeetingusers;
     if (pollMeetingData !== undefined && pollMeetingData !== null) {
       let newmembersArray = [];
       if (Object.keys(pollMeetingData).length > 0) {
@@ -291,7 +300,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     } else {
       setmemberSelect([]);
     }
-  }, [NewMeetingreducer.getMeetingusers]);
+  }, [getMeetingusers]);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -299,7 +308,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   };
 
   const handleAddUsers = () => {
-    let pollsData = NewMeetingreducer.getMeetingusers;
+    let pollsData = getMeetingusers;
 
     let tem = [...members];
     let newarr = [];
@@ -470,16 +479,16 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+      ResponseMessage !== "" &&
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found")
     ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <>
@@ -814,7 +823,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
             </Row>
             <Notification open={open} setOpen={setOpen} />
 
-            {NewMeetingreducer.unsavedPollsMeeting && (
+            {unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
             )}
           </section>

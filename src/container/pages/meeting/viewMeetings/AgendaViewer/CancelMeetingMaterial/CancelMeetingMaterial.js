@@ -19,8 +19,9 @@ const CancelMeetingMaterial = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const cancelMeetingMaterial = useSelector(
+    (state) => state.NewMeetingreducer.cancelMeetingMaterial
+  );
   const handleNOFunctionality = () => {
     dispatch(showCancelMeetingMaterial(false));
   };
@@ -38,7 +39,7 @@ const CancelMeetingMaterial = ({
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelMeetingMaterial}
+        show={cancelMeetingMaterial}
         setShow={dispatch(showCancelMeetingMaterial)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

@@ -9,7 +9,9 @@ import { Col, Row } from "react-bootstrap";
 const CancelActions = ({ setSceduleMeeting, setViewAdvanceMeetingModal }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const cancelActions = useSelector(
+    (state) => state.NewMeetingreducer.cancelActions
+  );
 
   const handleNOFunctionality = () => {
     dispatch(showCancelActions(false));
@@ -22,7 +24,7 @@ const CancelActions = ({ setSceduleMeeting, setViewAdvanceMeetingModal }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelActions}
+        show={cancelActions}
         setShow={dispatch(showCancelActions)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

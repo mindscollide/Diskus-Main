@@ -52,16 +52,17 @@ const Attendence = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
   const [useCase, setUseCase] = useState(0);
   //reducer call from Attendance_Reducers
-  const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
-    (state) => state
+  const attendanceConfirmationModal = useSelector(
+    (state) => state.NewMeetingreducer.attendanceConfirmationModal
   );
-
-  const [attendenceRows, setAttendenceRows] = useState([]);
 
   const ResponseMessage = useSelector(
     (state) => state.attendanceMeetingReducer.ResponseMessage
   );
-
+  const attendanceMeetings = useSelector(
+    (state) => state.attendanceMeetingReducer.attendanceMeetings
+  );
+  const [attendenceRows, setAttendenceRows] = useState([]);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -265,15 +266,15 @@ const Attendence = ({
   // for rendering data in table
   useEffect(() => {
     if (
-      attendanceMeetingReducer.attendanceMeetings !== null &&
-      attendanceMeetingReducer.attendanceMeetings !== undefined &&
-      attendanceMeetingReducer.attendanceMeetings.length > 0
+      attendanceMeetings !== null &&
+      attendanceMeetings !== undefined &&
+      attendanceMeetings.length > 0
     ) {
-      setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
+      setAttendenceRows(attendanceMeetings);
     } else {
       setAttendenceRows([]);
     }
-  }, [attendanceMeetingReducer.attendanceMeetings]);
+  }, [attendanceMeetings]);
 
   // dispatch Api in useEffect
   useEffect(() => {
@@ -334,21 +335,18 @@ const Attendence = ({
   // This is how I can revert Data without Hitting an API
   const revertHandler = () => {
     if (
-      attendanceMeetingReducer.attendanceMeetings !== null &&
-      attendanceMeetingReducer.attendanceMeetings !== undefined &&
-      attendanceMeetingReducer.attendanceMeetings.length > 0
+      attendanceMeetings !== null &&
+      attendanceMeetings !== undefined &&
+      attendanceMeetings.length > 0
     ) {
-      setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
+      setAttendenceRows(attendanceMeetings);
     } else {
       setAttendenceRows([]);
     }
   };
 
   const handleCancelBtn = () => {
-    let ReducerAttendeceData = deepEqual(
-      attendanceMeetingReducer.attendanceMeetings,
-      attendenceRows
-    );
+    let ReducerAttendeceData = deepEqual(attendanceMeetings, attendenceRows);
     if (ReducerAttendeceData) {
       setViewAdvanceMeetingModal(false);
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -432,7 +430,7 @@ const Attendence = ({
         />
       )}
 
-      {NewMeetingreducer.attendanceConfirmationModal && (
+      {attendanceConfirmationModal && (
         <ModalCancelAttendance
           setAttendance={setAttendance}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
