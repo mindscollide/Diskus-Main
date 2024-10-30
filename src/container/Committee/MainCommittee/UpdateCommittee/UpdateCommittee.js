@@ -30,7 +30,27 @@ import { maxFileSize } from "../../../../commen/functions/utils";
 
 const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
-  const { CommitteeReducer, assignees } = useSelector((state) => state);
+  const CommitteeReducergetCommitteeMembersRoles = useSelector(
+    (state) => state.CommitteeReducer.getCommitteeMembersRoles
+  );
+
+  const CommitteeReducergetCommitteeTypes = useSelector(
+    (state) => state.CommitteeReducer.getCommitteeTypes
+  );
+
+  const CommitteeReducercreateUpdateCommitteeDataroom = useSelector(
+    (state) => state.CommitteeReducer.createUpdateCommitteeDataroom
+  );
+
+  const CommitteeReducergetCommitteeByCommitteeID = useSelector(
+    (state) => state.CommitteeReducer.getCommitteeByCommitteeID
+  );
+
+  const CommitteeReducerreteriveCommitteeDocuments = useSelector(
+    (state) => state.CommitteeReducer.reteriveCommitteeDocuments
+  );
+
+  const assigneesuser = useSelector((state) => state.assignees.user);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -283,9 +303,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   // for api response of list group roles
   useEffect(() => {
     try {
-      if (CommitteeReducer.getCommitteeMembersRoles !== null) {
+      if (CommitteeReducergetCommitteeMembersRoles !== null) {
         let committeeMembersRoleOptions = [];
-        CommitteeReducer.getCommitteeMembersRoles.forEach((data, index) => {
+        CommitteeReducergetCommitteeMembersRoles.forEach((data, index) => {
           committeeMembersRoleOptions.push({
             label: data.role,
             value: data.committeeRoleID,
@@ -296,14 +316,14 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [CommitteeReducer.getCommitteeMembersRoles]);
+  }, [CommitteeReducergetCommitteeMembersRoles]);
 
   // for api response of list group Types
   useEffect(() => {
     try {
-      if (CommitteeReducer.getCommitteeTypes !== null) {
+      if (CommitteeReducergetCommitteeTypes !== null) {
         let committeeTypeOptions = [];
-        CommitteeReducer.getCommitteeTypes.forEach((data, index) => {
+        CommitteeReducergetCommitteeTypes.forEach((data, index) => {
           committeeTypeOptions.push({
             label: data.type,
             value: data.committeeTypeId,
@@ -314,7 +334,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [CommitteeReducer.getCommitteeTypes]);
+  }, [CommitteeReducergetCommitteeTypes]);
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
@@ -370,10 +390,10 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
-      if (Object.keys(assignees.user).length > 0) {
+      if (Object.keys(assigneesuser).length > 0) {
         let newData = [];
-        setMeetingAttendeesList(assignees.user);
-        assignees.user.forEach((user, index) => {
+        setMeetingAttendeesList(assigneesuser);
+        assigneesuser.forEach((user, index) => {
           newData.push({
             label: (
               <>
@@ -403,7 +423,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         setAllPresenters(newData);
       }
     } catch (error) {}
-  }, [assignees.user]);
+  }, [assigneesuser]);
 
   // dispatch apis for committee types and committee member roles
   useEffect(() => {
@@ -419,10 +439,10 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   useEffect(() => {
     try {
       if (
-        CommitteeReducer.getCommitteeByCommitteeID !== null &&
-        CommitteeReducer.getCommitteeByCommitteeID !== undefined
+        CommitteeReducergetCommitteeByCommitteeID !== null &&
+        CommitteeReducergetCommitteeByCommitteeID !== undefined
       ) {
-        let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
+        let committeedetails = CommitteeReducergetCommitteeByCommitteeID;
         let newArr = [];
         let newData = [];
         let committeeID = 0;
@@ -468,16 +488,16 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         "error in getting data in update committee getCommitteeByCommitteeID"
       );
     }
-  }, [CommitteeReducer.getCommitteeByCommitteeID, meetingAttendeesList]);
+  }, [CommitteeReducergetCommitteeByCommitteeID, meetingAttendeesList]);
 
   useEffect(() => {
     if (
-      CommitteeReducer.reteriveCommitteeDocuments !== null &&
-      CommitteeReducer.reteriveCommitteeDocuments !== undefined
+      CommitteeReducerreteriveCommitteeDocuments !== null &&
+      CommitteeReducerreteriveCommitteeDocuments !== undefined
     ) {
-      if (CommitteeReducer.reteriveCommitteeDocuments.data.length > 0) {
-        let newfolderID = CommitteeReducer.reteriveCommitteeDocuments.folderID;
-        let filesArr = CommitteeReducer.reteriveCommitteeDocuments.data;
+      if (CommitteeReducerreteriveCommitteeDocuments.data.length > 0) {
+        let newfolderID = CommitteeReducerreteriveCommitteeDocuments.folderID;
+        let filesArr = CommitteeReducerreteriveCommitteeDocuments.data;
         let newArr = [];
         let fileSend = [];
         setFolderId(newfolderID);
@@ -496,7 +516,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         setFilesSending(fileSend);
       }
     }
-  }, [CommitteeReducer.reteriveCommitteeDocuments]);
+  }, [CommitteeReducerreteriveCommitteeDocuments]);
 
   const props = {
     name: "file",
@@ -618,11 +638,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   };
 
   useEffect(() => {
-    if (CommitteeReducer.createUpdateCommitteeDataroom !== 0) {
-      let folderIdCreated = CommitteeReducer.createUpdateCommitteeDataroom;
+    if (CommitteeReducercreateUpdateCommitteeDataroom !== 0) {
+      let folderIdCreated = CommitteeReducercreateUpdateCommitteeDataroom;
       documentsUploadCall(folderIdCreated);
     }
-  }, [CommitteeReducer.createUpdateCommitteeDataroom]);
+  }, [CommitteeReducercreateUpdateCommitteeDataroom]);
 
   const filterFunc = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
@@ -750,8 +770,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                 className="SearchCheckbox "
                                 name="IsChat"
                                 disabled={
-                                  CommitteeReducer?.getCommitteeByCommitteeID
-                                    ?.isTalkChatGroup
+                                  CommitteeReducergetCommitteeByCommitteeID?.isTalkChatGroup
                                     ? true
                                     : false
                                 }

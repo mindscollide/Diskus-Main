@@ -32,7 +32,20 @@ import { maxFileSize } from "../../../../commen/functions/utils";
 const CreateCommittee = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
   const navigate = useNavigate();
-  const { assignees, CommitteeReducer } = useSelector((state) => state);
+
+  const CommitteeReducergetCommitteeMembersRoles = useSelector(
+    (state) => state.CommitteeReducer.getCommitteeMembersRoles
+  );
+
+  const CommitteeReducergetCommitteeTypes = useSelector(
+    (state) => state.CommitteeReducer.getCommitteeTypes
+  );
+
+  const CommitteeReducercreateUpdateCommitteeDataroom = useSelector(
+    (state) => state.CommitteeReducer.createUpdateCommitteeDataroom
+  );
+
+  const assigneesuser = useSelector((state) => state.assignees.user);
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
@@ -108,9 +121,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   // for api response of list group roles
   useEffect(() => {
     try {
-      if (CommitteeReducer.getCommitteeMembersRoles !== null) {
+      if (CommitteeReducergetCommitteeMembersRoles !== null) {
         let committeeMembersRoleOptions = [];
-        CommitteeReducer.getCommitteeMembersRoles.forEach((data, index) => {
+        CommitteeReducergetCommitteeMembersRoles.forEach((data, index) => {
           committeeMembersRoleOptions.push({
             label: data.role,
             value: data.committeeRoleID,
@@ -121,15 +134,14 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [CommitteeReducer.getCommitteeMembersRoles]);
+  }, [CommitteeReducergetCommitteeMembersRoles]);
 
   // for api response of list group Types
   useEffect(() => {
     try {
-      if (CommitteeReducer.getCommitteeTypes !== null) {
-        let committeeTypeValues = [];
+      if (CommitteeReducergetCommitteeTypes !== null) {
         let committeeTypeOptions = [];
-        CommitteeReducer.getCommitteeTypes.forEach((data, index) => {
+        CommitteeReducergetCommitteeTypes.forEach((data, index) => {
           committeeTypeOptions.push({
             label: data.type,
             value: data.committeeTypeId,
@@ -140,7 +152,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [CommitteeReducer.getCommitteeTypes]);
+  }, [CommitteeReducergetCommitteeTypes]);
 
   // Group type Change Handler
   const CommitteeTypeChangeHandler = (event) => {
@@ -374,10 +386,10 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
-      if (Object.keys(assignees.user).length > 0) {
+      if (Object.keys(assigneesuser).length > 0) {
         let newData = [];
-        setMeetingAttendeesList(assignees.user);
-        assignees.user.forEach((user, index) => {
+        setMeetingAttendeesList(assigneesuser);
+        assigneesuser.forEach((user, index) => {
           newData.push({
             label: (
               <>
@@ -407,7 +419,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setAllPresenters(newData);
       }
     } catch (error) {}
-  }, [assignees.user]);
+  }, [assigneesuser]);
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
@@ -491,14 +503,14 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   useEffect(() => {
     try {
-      if (CommitteeReducer.createUpdateCommitteeDataroom !== 0) {
-        let folderIdCreated = CommitteeReducer.createUpdateCommitteeDataroom;
+      if (CommitteeReducercreateUpdateCommitteeDataroom !== 0) {
+        let folderIdCreated = CommitteeReducercreateUpdateCommitteeDataroom;
         documentsUploadCall(folderIdCreated);
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [CommitteeReducer.createUpdateCommitteeDataroom]);
+  }, [CommitteeReducercreateUpdateCommitteeDataroom]);
 
   // set Meeting Attendees By default creator
   useEffect(() => {
