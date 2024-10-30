@@ -354,7 +354,7 @@ const Groups = () => {
       GroupsReducer.ResponseMessage !== "" &&
       GroupsReducer.ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(GroupsReducer.ResponseMessage, "error", setOpen);
+      showMessage(GroupsReducer.ResponseMessage, "success", setOpen);
       dispatch(clearMessagesGroup());
     } else {
       dispatch(clearMessagesGroup());
