@@ -26,6 +26,18 @@ const DeviceFor2FAVerify = () => {
 
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
 
+  const AuthreducerAuthenticateAFAResponse = useSelector(
+    (state) => state.Authreducer.AuthenticateAFAResponse
+  );
+
+  const AuthreducerLoadingData = useSelector(
+    (state) => state.Authreducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
+
   const [xtrazoom, setXtrazoom] = useState(false);
   const [codeemail, setCodeemail] = useState(false);
   const [codesms, setCodesms] = useState(false);
@@ -126,11 +138,11 @@ const DeviceFor2FAVerify = () => {
 
   useEffect(() => {
     if (
-      Authreducer.AuthenticateAFAResponse !== null &&
-      Authreducer.AuthenticateAFAResponse !== undefined
+      AuthreducerAuthenticateAFAResponse !== null &&
+      AuthreducerAuthenticateAFAResponse !== undefined
     ) {
-      if (Authreducer.AuthenticateAFAResponse.userDevices.length > 0) {
-        let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices;
+      if (AuthreducerAuthenticateAFAResponse.userDevices.length > 0) {
+        let DeviceDetail = AuthreducerAuthenticateAFAResponse.userDevices;
         let data = {
           DeviceName: DeviceDetail[0].deviceName,
           UserDeviceID: DeviceDetail[0].pK_UDID,
@@ -155,16 +167,11 @@ const DeviceFor2FAVerify = () => {
         });
       }
     }
-  }, [Authreducer.AuthenticateAFAResponse]);
-
-  console.log(
-    Authreducer.AuthenticateAFAResponse,
-    "AuthreducerAuthenticateAFAResponse"
-  );
+  }, [AuthreducerAuthenticateAFAResponse]);
 
   let newClient = Helper.socket;
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient != null && newClient !== "" && newClient !== undefined) {
     } else {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
@@ -390,7 +397,7 @@ const DeviceFor2FAVerify = () => {
           </Col>
         </Row>
       </Container>{" "}
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
     </>
   );
 };

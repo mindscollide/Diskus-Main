@@ -31,6 +31,25 @@ const CancelSubscriptionAdmin = () => {
     (state) => state
   );
 
+  const UserManagementModalscancelSubscriptionModal = useSelector(
+    (state) => state.UserManagementModals.cancelSubscriptionModal
+  );
+
+  const UserManagementModalreasonForleavingModal = useSelector(
+    (state) => state.UserManagementModals.reasonForleavingModal
+  );
+
+  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
+    useSelector(
+      (state) =>
+        state.UserMangementReducer
+          .organizationSelectedPakagesByOrganizationIDData
+    );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
   // state for passing SubscriptionStatusID
   const [completionContract, setCompletionContract] = useState(false);
 
@@ -56,7 +75,7 @@ const CancelSubscriptionAdmin = () => {
 
   useEffect(() => {
     let cancelPackage =
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
     if (cancelPackage !== null && cancelPackage !== undefined) {
       cancelPackage.organizationSubscriptions?.map((subscription) => {
         setCancelSubsDetail((prevState) => ({
@@ -69,7 +88,7 @@ const CancelSubscriptionAdmin = () => {
         }));
       });
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   //Extracting the PakageDetials Data
 
@@ -143,8 +162,7 @@ const CancelSubscriptionAdmin = () => {
 
   // col data in package details
   const organizationPackages =
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-      ?.organizationSubscriptions;
+    UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions;
 
   let Data = [];
 
@@ -177,7 +195,7 @@ const CancelSubscriptionAdmin = () => {
   let totalLicenses = 0;
   let totalYearlyCharges = 0;
 
-  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
+  UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
     (packageses) => {
       packageses.organizationSelectedPackages.map((totals) => {
         let totalofLicences = totals.headCount;
@@ -190,7 +208,7 @@ const CancelSubscriptionAdmin = () => {
 
   // for ServiceManager.CancelOrganizationsSubscription pass as a request data
   const subscriptionID =
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
+    UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
       (SubsID) => SubsID.pK_OrganizationsSubscriptionID
     );
 
@@ -335,16 +353,16 @@ const CancelSubscriptionAdmin = () => {
         </Col>
       </Row>
 
-      {UserManagementModals.cancelSubscriptionModal && (
+      {UserManagementModalscancelSubscriptionModal && (
         <CancelSubscriptionModal />
       )}
-      {UserManagementModals.reasonForleavingModal && (
+      {UserManagementModalreasonForleavingModal && (
         <ReasonForCancelSubs
           completionContract={completionContract}
           subscriptionID={subscriptionID}
         />
       )}
-      {UserMangementReducer.Loading ? <Loader /> : null}
+      {UserMangementReducerLoadingData ? <Loader /> : null}
     </Container>
   );
 };

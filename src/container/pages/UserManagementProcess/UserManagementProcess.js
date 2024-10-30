@@ -36,7 +36,25 @@ const UserManagementProcess = () => {
   const currentUrl = window.location.href.split("?verifyOTPaction=")[1];
   let userManagementRoute = Number(localStorage.getItem("LoginFlowPageRoute"));
 
-  const { UserMangementReducer, Authreducer } = useSelector((state) => state);
+  const UserMangementReducerdefaultRoutingValue = useSelector(
+    (state) => state.UserMangementReducer.defaultRoutingValue
+  );
+
+  const AuthreducerEmailValidationResponseMessage = useSelector(
+    (state) => state.Authreducer.EmailValidationResponseMessage
+  );
+
+  const AuthreducerEnterPasswordResponseMessage = useSelector(
+    (state) => state.Authreducer.EnterPasswordResponseMessage
+  );
+
+  const AuthreducerVerifyOTPEmailResponseMessage = useSelector(
+    (state) => state.Authreducer?.VerifyOTPEmailResponseMessage
+  );
+
+  const AuthreducerAuthenticateAFAResponseMessage = useSelector(
+    (state) => state.Authreducer?.AuthenticateAFAResponseMessage
+  );
 
   //state to show snackbar
   const [open, setOpen] = useState({
@@ -74,9 +92,9 @@ const UserManagementProcess = () => {
   }, [currentUrl]);
 
   useEffect(() => {
-    if (UserMangementReducer.defaultRoutingValue) {
+    if (UserMangementReducerdefaultRoutingValue) {
     }
-  }, [UserMangementReducer.defaultRoutingValue]);
+  }, [UserMangementReducerdefaultRoutingValue]);
 
   useEffect(() => {
     if (userManagementRoute !== null) {
@@ -89,32 +107,32 @@ const UserManagementProcess = () => {
 
   useEffect(() => {
     if (
-      Authreducer.EmailValidationResponseMessage != "" &&
-      Authreducer.EmailValidationResponseMessage !=
+      AuthreducerEmailValidationResponseMessage !== "" &&
+      AuthreducerEmailValidationResponseMessage !==
         t("Users-password-is-created")
     ) {
       console.log("error error");
       showMessage(
-        Authreducer.EmailValidationResponseMessage,
+        AuthreducerEmailValidationResponseMessage,
         "success",
         setOpen
       );
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EnterPasswordResponseMessage != "" &&
-      Authreducer.EnterPasswordResponseMessage != t("2fa-enabled") &&
-      Authreducer.EnterPasswordResponseMessage != undefined &&
-      Authreducer.EnterPasswordResponseMessage !=
+      AuthreducerEnterPasswordResponseMessage !== "" &&
+      AuthreducerEnterPasswordResponseMessage !== t("2fa-enabled") &&
+      AuthreducerEnterPasswordResponseMessage !== undefined &&
+      AuthreducerEnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(Authreducer.EnterPasswordResponseMessage, "success", setOpen);
+      showMessage(AuthreducerEnterPasswordResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
   }, [
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.EnterPasswordResponseMessage,
+    AuthreducerEmailValidationResponseMessage,
+    AuthreducerEnterPasswordResponseMessage,
   ]);
 
   //MQTT
@@ -178,27 +196,23 @@ const UserManagementProcess = () => {
   //User Password Verification After forget password
   useEffect(() => {
     if (
-      Authreducer?.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer?.VerifyOTPEmailResponseMessage !== undefined
+      AuthreducerVerifyOTPEmailResponseMessage !== "" &&
+      AuthreducerVerifyOTPEmailResponseMessage !== undefined
     ) {
-      showMessage(
-        Authreducer?.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(AuthreducerVerifyOTPEmailResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
-  }, [Authreducer?.VerifyOTPEmailResponseMessage]);
+  }, [AuthreducerVerifyOTPEmailResponseMessage]);
 
   useEffect(() => {
     if (
-      Authreducer?.AuthenticateAFAResponseMessage != "" &&
-      Authreducer?.AuthenticateAFAResponseMessage != undefined
+      AuthreducerAuthenticateAFAResponseMessage !== "" &&
+      AuthreducerAuthenticateAFAResponseMessage !== undefined
     ) {
       showMessage(
-        Authreducer?.AuthenticateAFAResponseMessage,
+        AuthreducerAuthenticateAFAResponseMessage,
         "success",
         setOpen
       );
@@ -207,44 +221,44 @@ const UserManagementProcess = () => {
     } else {
       dispatch(cleareMessage());
     }
-  }, [Authreducer?.AuthenticateAFAResponseMessage]);
+  }, [AuthreducerAuthenticateAFAResponseMessage]);
 
   let componentToRender;
   console.log(
-    UserMangementReducer.defaultRoutingValue,
+    UserMangementReducerdefaultRoutingValue,
     { storedStep, userManagementRoute },
     "storedStepstoredStep"
   );
 
-  if (UserMangementReducer.defaultRoutingValue === 1 && storedStep === 1) {
+  if (UserMangementReducerdefaultRoutingValue === 1 && storedStep === 1) {
     componentToRender = <SignInComponent />;
-  } else if (UserMangementReducer.defaultRoutingValue === 2) {
+  } else if (UserMangementReducerdefaultRoutingValue === 2) {
     componentToRender = <PasswordVerification />;
-  } else if (UserMangementReducer.defaultRoutingValue === 3) {
+  } else if (UserMangementReducerdefaultRoutingValue === 3) {
     componentToRender = <VerifyOTPUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 4) {
+  } else if (UserMangementReducerdefaultRoutingValue === 4) {
     componentToRender = <TwoFactorVerifyUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 5) {
+  } else if (UserMangementReducerdefaultRoutingValue === 5) {
     componentToRender = <TapOptions />;
-  } else if (UserMangementReducer.defaultRoutingValue === 6) {
+  } else if (UserMangementReducerdefaultRoutingValue === 6) {
     componentToRender = <VerificationEmailAndNumber />;
-  } else if (UserMangementReducer.defaultRoutingValue === 7) {
+  } else if (UserMangementReducerdefaultRoutingValue === 7) {
     componentToRender = <VerifyDeniedUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 8) {
+  } else if (UserMangementReducerdefaultRoutingValue === 8) {
     componentToRender = <DeviceFor2FAVerify />;
-  } else if (UserMangementReducer.defaultRoutingValue === 9) {
+  } else if (UserMangementReducerdefaultRoutingValue === 9) {
     componentToRender = <SignUpOrganizationUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 10) {
+  } else if (UserMangementReducerdefaultRoutingValue === 10) {
     componentToRender = <ForgotPasswordUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 11) {
+  } else if (UserMangementReducerdefaultRoutingValue === 11) {
     componentToRender = <PasswordCreationUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 12) {
+  } else if (UserMangementReducerdefaultRoutingValue === 12) {
     componentToRender = <ForgotPasswordVerificationUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 13) {
+  } else if (UserMangementReducerdefaultRoutingValue === 13) {
     componentToRender = <TwoFactorMultipleDevices />;
-  } else if (UserMangementReducer.defaultRoutingValue === 14) {
+  } else if (UserMangementReducerdefaultRoutingValue === 14) {
     componentToRender = <VerificationCodeThree />;
-  } else if (UserMangementReducer.defaultRoutingValue === 15) {
+  } else if (UserMangementReducerdefaultRoutingValue === 15) {
     componentToRender = <VerificationIphone />;
   } else {
     componentToRender = null;

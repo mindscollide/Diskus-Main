@@ -34,7 +34,23 @@ const VerificationEmailAndNumber = () => {
   const navigate = useNavigate();
 
   const [value, setValue] = useState(null);
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+
+  const AuthreducerAuthenticateAFAResponse = useSelector(
+    (state) => state.Authreducer.AuthenticateAFAResponse
+  );
+
+  const AuthreducerSendTwoFacOTPResponseMessage = useSelector(
+    (state) => state.Authreducer.SendTwoFacOTPResponseMessage
+  );
+
+  const AuthreducerLoadingData = useSelector(
+    (state) => state.Authreducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
+
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [worldCountryIDS, setWorldCountryIDS] = useState("");
@@ -113,32 +129,30 @@ const VerificationEmailAndNumber = () => {
   };
 
   useEffect(() => {
-    if (Authreducer.AuthenticateAFAResponse !== null) {
+    if (AuthreducerAuthenticateAFAResponse !== null) {
       localStorage.setItem(
         "email",
-        Authreducer.AuthenticateAFAResponse.emailAddress
+        AuthreducerAuthenticateAFAResponse.emailAddress
       );
       localStorage.setItem(
         "phoneNumber",
-        Authreducer.AuthenticateAFAResponse.mobileNumber
+        AuthreducerAuthenticateAFAResponse.mobileNumber
       );
       localStorage.setItem(
         "worldCountryID",
-        Authreducer.AuthenticateAFAResponse.worldCountryID
+        AuthreducerAuthenticateAFAResponse.worldCountryID
       );
     }
-  }, [Authreducer.AuthenticateAFAResponse]);
+  }, [AuthreducerAuthenticateAFAResponse]);
 
   useEffect(() => {
-    if (
-      Authreducer.SendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")
-    ) {
-      showMessage(Authreducer.SendTwoFacOTPResponseMessage, "success", setOpen);
+    if (AuthreducerSendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")) {
+      showMessage(AuthreducerSendTwoFacOTPResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
-  }, [Authreducer.SendTwoFacOTPResponseMessage]);
+  }, [AuthreducerSendTwoFacOTPResponseMessage]);
 
   useEffect(() => {
     let value = localStorage.getItem("value");
@@ -375,7 +389,7 @@ const VerificationEmailAndNumber = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
       <Notification open={open} setOpen={setOpen} />
     </div>
   );

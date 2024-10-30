@@ -6,7 +6,9 @@ import { Progress } from "antd";
 import { Button } from "../../../../../../components/elements";
 
 const ViewVotesScreen = ({ setviewVotes }) => {
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducerviewVotes = useSelector(
+    (state) => state.PollsReducer.viewVotes
+  );
   const [pollTitle, setPollTitle] = useState("");
   const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
     []
@@ -14,11 +16,8 @@ const ViewVotesScreen = ({ setviewVotes }) => {
   const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
 
   useEffect(() => {
-    if (
-      PollsReducer.viewVotes !== null &&
-      PollsReducer.viewVotes !== undefined
-    ) {
-      let vieVotePollDetails = PollsReducer.viewVotes;
+    if (PollsReducerviewVotes !== null && PollsReducerviewVotes !== undefined) {
+      let vieVotePollDetails = PollsReducerviewVotes;
       let pollOptions = vieVotePollDetails.pollOptions;
       let pollAttendies = vieVotePollDetails.pollParticipants;
       let Options = [];
@@ -26,7 +25,6 @@ const ViewVotesScreen = ({ setviewVotes }) => {
 
       if (vieVotePollDetails !== undefined && vieVotePollDetails !== null) {
         if (Object.keys(vieVotePollDetails).length > 0) {
-
           // for poll Title
           setPollTitle(vieVotePollDetails.pollDetails.pollTitle);
 
@@ -47,7 +45,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
       setPollAttendiesOpptionsVise([]);
       setVotePollDetailsOptions([]);
     }
-  }, [PollsReducer.viewVotes]);
+  }, [PollsReducerviewVotes]);
 
   const handleViewVotesScreen = () => {
     setviewVotes(false);

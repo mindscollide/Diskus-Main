@@ -25,6 +25,14 @@ const TwoFactorVerifyUM = () => {
   const { t } = useTranslation();
 
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
+
+  const AuthreducerLoadingData = useSelector(
+    (state) => state.Authreducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
   const [sendCodeEmailPhone, setSendCodeEmailPhone] = useState(false);
   const [sendCodeEmail, setSendCodeEmail] = useState(false);
 
@@ -290,7 +298,7 @@ const TwoFactorVerifyUM = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
     </>
   );
 };

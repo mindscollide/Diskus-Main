@@ -8,7 +8,10 @@ import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 const ViewPollsUnPublished = ({ setUnPublished }) => {
   const { t } = useTranslation();
-  const { PollsReducer } = useSelector((state) => state);
+
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
 
   const [pollParticipants, setPollParticipants] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
@@ -26,11 +29,8 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
   };
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollData = PollsReducer.Allpolls.poll;
+      if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
+        let pollData = PollsReducerAllpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -52,7 +52,7 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
         }
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
   return (
     <section>
       <Row>

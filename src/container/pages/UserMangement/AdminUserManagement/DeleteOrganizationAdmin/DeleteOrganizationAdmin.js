@@ -10,6 +10,10 @@ const DeleteOrganizationAdmin = () => {
 
   const { UserMangementReducer } = useSelector((state) => state);
 
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
   return (
     <Container>
       <Row>
@@ -106,7 +110,7 @@ const DeleteOrganizationAdmin = () => {
           </Row>
         </Col>
       </Row>
-      {UserMangementReducer.Loading ? <Loader /> : null}
+      {UserMangementReducerLoadingData ? <Loader /> : null}
     </Container>
   );
 };

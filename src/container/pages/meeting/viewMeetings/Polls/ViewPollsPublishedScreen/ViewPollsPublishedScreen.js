@@ -16,7 +16,10 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
+
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
   const [viewVotes, setviewVotes] = useState(false);
 
   const [pollParticipants, setPollParticipants] = useState([]);
@@ -32,11 +35,8 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollData = PollsReducer.Allpolls.poll;
+      if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
+        let pollData = PollsReducerAllpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -58,7 +58,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
         }
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
   const handleCancelButton = () => {
     setViewPublishedPoll(false);

@@ -30,6 +30,21 @@ const AddUsers = () => {
 
   const { UserMangementReducer } = useSelector((state) => state);
 
+  const UserMangementReducergetOrganizationUserStatsGraph = useSelector(
+    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
+  );
+
+  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
+    useSelector(
+      (state) =>
+        state.UserMangementReducer
+          .organizationSelectedPakagesByOrganizationIDData
+    );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
   let organizationID = localStorage.getItem("organizationID");
   let organizationNames = localStorage.getItem("organizatioName");
 
@@ -107,14 +122,13 @@ const AddUsers = () => {
   useEffect(() => {
     try {
       if (
-        UserMangementReducer.getOrganizationUserStatsGraph &&
-        Object.keys(UserMangementReducer.getOrganizationUserStatsGraph).length >
+        UserMangementReducergetOrganizationUserStatsGraph &&
+        Object.keys(UserMangementReducergetOrganizationUserStatsGraph).length >
           0
       ) {
         let UserCount = 0;
         const userStats =
-          UserMangementReducer.getOrganizationUserStatsGraph
-            .selectedPackageDetails;
+          UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails;
 
         userStats.forEach((data) => {
           console.log(data, "UserCountUserCount");
@@ -126,21 +140,21 @@ const AddUsers = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
+  }, [UserMangementReducergetOrganizationUserStatsGraph]);
 
   //Data from  GetOrganizationSelectedPackagesByOrganizationID
   useEffect(() => {
     if (
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
+      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData &&
       Object.keys(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData
       ).length > 0
     ) {
       setWorldCountryID(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData
           .organization.fK_NumberWorldCountryID
       );
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
+      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
         (data) => {
           data.organizationSelectedPackages?.map((packageData) => {
             console.log(
@@ -152,7 +166,7 @@ const AddUsers = () => {
         }
       );
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   //Handle Change For TextFields
   const handleAddUsersFreeTrial = (e) => {
@@ -537,7 +551,7 @@ const AddUsers = () => {
           )}
         </Col>
       </Row>
-      {UserMangementReducer.Loading ? <Loader /> : null}
+      {UserMangementReducerLoadingData ? <Loader /> : null}
     </Container>
   );
 };

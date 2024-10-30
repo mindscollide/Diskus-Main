@@ -29,6 +29,18 @@ import { showMessage } from "../../../../../components/elements/snack_bar/utill"
 const TwoFactorMultipleDevices = () => {
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
 
+  const AuthreducerAuthenticateAFAResponse = useSelector(
+    (state) => state.Authreducer.AuthenticateAFAResponse
+  );
+
+  const AuthreducerLoadingData = useSelector(
+    (state) => state.Authreducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
+
   const { t } = useTranslation();
 
   const navigate = useNavigate();
@@ -127,13 +139,13 @@ const TwoFactorMultipleDevices = () => {
 
   useEffect(() => {
     if (
-      Authreducer.AuthenticateAFAResponse !== null &&
-      Authreducer.AuthenticateAFAResponse !== undefined
+      AuthreducerAuthenticateAFAResponse !== null &&
+      AuthreducerAuthenticateAFAResponse !== undefined
     ) {
-      if (Authreducer.AuthenticateAFAResponse.userDevices.length > 0) {
-        let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices;
+      if (AuthreducerAuthenticateAFAResponse.userDevices.length > 0) {
+        let DeviceDetail = AuthreducerAuthenticateAFAResponse.userDevices;
         let Devices = [];
-        DeviceDetail.map((data) => {
+        DeviceDetail.forEach((data) => {
           Devices.push({
             DeviceName: data.deviceName,
             UserDeviceID: data.pK_UDID,
@@ -143,7 +155,7 @@ const TwoFactorMultipleDevices = () => {
         setCurrentDevice(Devices);
       }
     }
-  }, [Authreducer.AuthenticateAFAResponse]);
+  }, [AuthreducerAuthenticateAFAResponse]);
 
   useEffect(() => {
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
@@ -438,7 +450,7 @@ const TwoFactorMultipleDevices = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
       <Notification open={open} setOpen={setOpen} />
     </>
   );
