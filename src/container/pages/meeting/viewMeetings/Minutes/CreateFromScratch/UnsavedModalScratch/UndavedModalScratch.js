@@ -10,8 +10,9 @@ import { Modal, Button } from "../../../../../../../components/elements";
 const UndavedModalScratch = ({ setEditable }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const unsavedModalScratch = useSelector(
+    (state) => state.NewMeetingreducer.unsavedModalScratch
+  );
   const handleYesFunctionality = () => {
     dispatch(showUnsavedCreateFromScratch(false));
     setEditable(false);
@@ -20,7 +21,7 @@ const UndavedModalScratch = ({ setEditable }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.unsavedModalScratch}
+        show={unsavedModalScratch}
         setShow={dispatch(showUnsavedCreateFromScratch)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

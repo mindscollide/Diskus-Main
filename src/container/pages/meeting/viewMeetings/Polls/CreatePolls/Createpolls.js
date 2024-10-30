@@ -42,7 +42,16 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const ResponseMessagePoll = useSelector(
+    (state) => state.PollsReducer.ResponseMessage
+  );
+  const getMeetingusers = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingusers
+  );
+  const unsavedPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.unsavedPollsMeeting
+  );
+
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -171,7 +180,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   }, []);
 
   useEffect(() => {
-    let pollMeetingData = NewMeetingreducer.getMeetingusers;
+    let pollMeetingData = getMeetingusers;
     if (pollMeetingData !== undefined && pollMeetingData !== null) {
       let newmembersArray = [];
       if (Object.keys(pollMeetingData).length > 0) {
@@ -288,7 +297,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     } else {
       setmemberSelect([]);
     }
-  }, [NewMeetingreducer.getMeetingusers]);
+  }, [getMeetingusers]);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -296,7 +305,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   };
 
   const handleAddUsers = () => {
-    let pollsData = NewMeetingreducer.getMeetingusers;
+    let pollsData = getMeetingusers;
     let tem = [...members];
     let newarr = [];
     try {
@@ -455,17 +464,17 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
 
   useEffect(() => {
     if (
-      PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("No-data-available") &&
-      PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("No-record-found")
+      ResponseMessagePoll !== "" &&
+      ResponseMessagePoll !== t("No-data-available") &&
+      ResponseMessagePoll !== "" &&
+      ResponseMessagePoll !== t("No-record-found")
     ) {
-      showMessage(PollsReducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessagePoll, "success", setOpen);
       dispatch(clearPollsMesseges());
     } else {
       dispatch(clearPollsMesseges());
     }
-  }, [PollsReducer.ResponseMessage]);
+  }, [ResponseMessagePoll]);
 
   const customFilter = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
@@ -809,7 +818,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
             </Row>
             <Notification open={open} setOpen={setOpen} />
 
-            {NewMeetingreducer.unsavedPollsMeeting && (
+            {unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
             )}
           </section>

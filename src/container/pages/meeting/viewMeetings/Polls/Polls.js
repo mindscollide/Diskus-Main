@@ -57,7 +57,30 @@ const Polls = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const getPollsMeetingID = useSelector(
+    (state) => state.NewMeetingreducer.getPollsMeetingID
+  );
+  const ResponseMessageMeeting = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const cancelPolls = useSelector(
+    (state) => state.NewMeetingreducer.cancelPolls
+  );
+  const deletPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.deletPollsMeeting
+  );
+  const newPollMeeting = useSelector(
+    (state) => state.PollsReducer.newPollMeeting
+  );
+  const pollingSocket = useSelector(
+    (state) => state.PollsReducer.pollingSocket
+  );
+  const newPollDelete = useSelector(
+    (state) => state.PollsReducer.newPollDelete
+  );
+  const ResponseMessagePoll = useSelector(
+    (state) => state.PollsReducer.ResponseMessage
+  );
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -191,13 +214,10 @@ const Polls = ({
 
   useEffect(() => {
     try {
-      if (
-        NewMeetingreducer.getPollsMeetingID !== undefined &&
-        NewMeetingreducer.getPollsMeetingID !== null
-      ) {
-        if (NewMeetingreducer.getPollsMeetingID.polls.length > 0) {
-          let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
-          setTotalRecords(NewMeetingreducer.getPollsMeetingID.totalRecords);
+      if (getPollsMeetingID !== undefined && getPollsMeetingID !== null) {
+        if (getPollsMeetingID.polls.length > 0) {
+          let pollsData = getPollsMeetingID.polls;
+          setTotalRecords(getPollsMeetingID.totalRecords);
           let newPollsArray = [];
           pollsData.forEach((data, index) => {
             console.log(data, "datadatadatadata");
@@ -211,13 +231,13 @@ const Polls = ({
         setPollsRows([]);
       }
     } catch {}
-  }, [NewMeetingreducer.getPollsMeetingID]);
+  }, [getPollsMeetingID]);
 
   // MQTT Response of Polls for Meeting
   useEffect(() => {
     try {
-      if (PollsReducer.newPollMeeting !== null) {
-        let PollData = PollsReducer.newPollMeeting;
+      if (newPollMeeting !== null) {
+        let PollData = newPollMeeting;
         if (Number(PollData.meetingID) === Number(currentMeeting)) {
           setPollsRows([PollData.polls, ...pollsRows]);
         }
@@ -226,15 +246,11 @@ const Polls = ({
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollMeeting]);
+  }, [newPollMeeting]);
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.pollingSocket &&
-        Object.keys(PollsReducer.pollingSocket).length > 0
-      ) {
-        const { pollingSocket } = PollsReducer;
+      if (pollingSocket && Object.keys(pollingSocket).length > 0) {
         const { polls } = pollingSocket;
 
         let updatedRows = [...pollsRows];
@@ -258,12 +274,12 @@ const Polls = ({
     } catch (error) {
       console.log(error, "errorerror");
     }
-  }, [PollsReducer.pollingSocket]);
+  }, [pollingSocket]);
 
   useEffect(() => {
     try {
-      if (PollsReducer.newPollDelete !== null) {
-        const polls = PollsReducer.newPollDelete;
+      if (newPollDelete !== null) {
+        const polls = newPollDelete;
 
         setPollsRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
@@ -275,7 +291,7 @@ const Polls = ({
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollDelete]);
+  }, [newPollDelete]);
 
   const voteCastModal = (record) => {
     let data = {
@@ -547,32 +563,33 @@ const Polls = ({
 
   useEffect(() => {
     if (
-      PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("No-data-available") &&
-      PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("No-records-found") &&
-      PollsReducer.ResponseMessage !== t("No-record-found")
+      ResponseMessagePoll !== "" &&
+      ResponseMessagePoll !== t("No-data-available") &&
+      ResponseMessagePoll !== "" &&
+      ResponseMessagePoll !== t("No-records-found") &&
+      ResponseMessagePoll !== t("No-record-found")
     ) {
-      showMessage(PollsReducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessagePoll, "success", setOpen);
       dispatch(clearPollsMesseges());
     } else {
       dispatch(clearPollsMesseges());
     }
-  }, [PollsReducer.ResponseMessage]);
+  }, [ResponseMessagePoll]);
+
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+      ResponseMessageMeeting !== "" &&
+      ResponseMessageMeeting !== t("No-data-available") &&
+      ResponseMessageMeeting !== "" &&
+      ResponseMessageMeeting !== t("No-records-found") &&
+      ResponseMessageMeeting !== t("No-record-found")
     ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageMeeting, "success", setOpen);
       dispatch(clearResponseNewMeetingReducerMessage());
     } else {
       dispatch(clearResponseNewMeetingReducerMessage());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessageMeeting]);
 
   return (
     <>
@@ -737,12 +754,12 @@ const Polls = ({
           </>
         )}
 
-        {NewMeetingreducer.cancelPolls && (
+        {cancelPolls && (
           <CancelPolls
             setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
           />
         )}
-        {NewMeetingreducer.deletPollsMeeting && (
+        {deletPollsMeeting && (
           <DeletePollConfirmModal
             currentMeeting={currentMeeting}
             pollID={pollID}

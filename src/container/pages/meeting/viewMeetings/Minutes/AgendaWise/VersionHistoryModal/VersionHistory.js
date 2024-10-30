@@ -15,6 +15,7 @@ const VersionHistory = ({ setShowVersionHistory }) => {
   const { GetMinutesVersionHistorywithCommentsData } = useSelector(
     (state) => state.MinutesReducer
   );
+
   const [newVersionHistoryData, setNewVersionHistoryData] = useState({
     mainVersionHistory: null,
     minuteVersionHistory: [],

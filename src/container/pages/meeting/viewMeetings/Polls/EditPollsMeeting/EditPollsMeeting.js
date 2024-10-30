@@ -41,8 +41,18 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
 
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer, GroupsReducer } = useSelector(
-    (state) => state
+  const getMeetingusers = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingusers
+  );
+  const unsavedEditPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.unsavedEditPollsMeeting
+  );
+  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
+  const ResponseMessage = useSelector(
+    (state) => state.PollsReducer.ResponseMessage
+  );
+  const getGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse
   );
   const [meetingDate, setMeetingDate] = useState("");
   const [updatePolls, setupdatePolls] = useState({
@@ -156,7 +166,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   };
 
   const handleAddUsers = () => {
-    let getUserDetails = [...NewMeetingreducer.getMeetingusers];
+    let getUserDetails = [...getMeetingusers];
     let tem = [...members];
     let newarr = [];
     try {
@@ -261,11 +271,11 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
 
   useEffect(() => {
     if (
-      GroupsReducer.getGroupByGroupIdResponse !== null &&
-      GroupsReducer.getGroupByGroupIdResponse !== undefined
+      getGroupByGroupIdResponse !== null &&
+      getGroupByGroupIdResponse !== undefined
     ) {
       let newArr = [];
-      let getUserDetails = GroupsReducer.getGroupByGroupIdResponse.groupMembers;
+      let getUserDetails = getGroupByGroupIdResponse.groupMembers;
       getUserDetails.forEach((data, index) => {
         newArr.push({
           value: data.pK_UID,
@@ -300,7 +310,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       });
       setmemberSelect(newArr);
     }
-  }, [GroupsReducer.getGroupByGroupIdResponse]);
+  }, [getGroupByGroupIdResponse]);
 
   const customFilter = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
@@ -312,11 +322,8 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollsDetailsData = PollsReducer.Allpolls.poll;
+      if (Allpolls !== null && Allpolls !== undefined) {
+        let pollsDetailsData = Allpolls.poll;
         let pollMembers = [];
         let newDateGmt = pollsDetailsData.pollDetails.dueDate;
         setupdatePolls({
@@ -357,21 +364,21 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
         } catch {}
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [Allpolls]);
 
   useEffect(() => {
     if (
-      PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("No-data-available") &&
-      PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("No-record-found")
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-data-available") &&
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found")
     ) {
-      showMessage(PollsReducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessage, "success", setOpen);
       dispatch(clearPollsMesseges());
     } else {
       dispatch(clearPollsMesseges());
     }
-  }, [PollsReducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <section>
@@ -672,7 +679,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
           />
         </Col>
       </Row>
-      {NewMeetingreducer.unsavedEditPollsMeeting && (
+      {unsavedEditPollsMeeting && (
         <UnsavedEditPollsMeeting setEditPolls={setEditPolls} />
       )}
 

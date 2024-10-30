@@ -22,8 +22,12 @@ const CreateFromScratch = () => {
   const [editable, setEditable] = useState(false);
   const [createFromSratch, setCreateFromSratch] = useState(false);
   const [editableIndex, setEditableIndex] = useState(0);
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const UnsavedButtonCreateScratch = useSelector(
+    (state) => state.NewMeetingreducer.UnsavedButtonCreateScratch
+  );
+  const unsavedModalScratch = useSelector(
+    (state) => state.NewMeetingreducer.unsavedModalScratch
+  );
   const [showScratchFiles, setShowScratchFiles] = useState([
     {
       id: 0,
@@ -385,10 +389,8 @@ const CreateFromScratch = () => {
         </>
       ) : null}
 
-      {NewMeetingreducer.unsavedModalScratch && (
-        <UndavedModalScratch setEditable={setEditable} />
-      )}
-      {NewMeetingreducer.UnsavedButtonCreateScratch && (
+      {unsavedModalScratch && <UndavedModalScratch setEditable={setEditable} />}
+      {UnsavedButtonCreateScratch && (
         <UnsavedCreateScratch setCreateFromSratch={setCreateFromSratch} />
       )}
     </section>
