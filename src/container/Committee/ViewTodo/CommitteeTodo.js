@@ -34,13 +34,41 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const state = useSelector((state) => state);
-  const {
-    toDoListReducer,
-    todoStatus,
-    assignees,
-    getTodosStatus,
-    PollsReducer,
-  } = state;
+  const { todoStatus } = state;
+
+  const toDoListReducersocketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
+
+  const toDoListReducercreateTaskCommittee = useSelector(
+    (state) => state.toDoListReducer.createTaskCommittee
+  );
+
+  const assigneesResponseMessage = useSelector(
+    (state) => state.assignees.ResponseMessage
+  );
+
+  const getTodosStatusUpdateTodoStatusMessage = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+  );
+
+  const getTodosStatusResponseMessage = useSelector(
+    (state) => state.getTodosStatus.ResponseMessage
+  );
+
+  const getTodosStatusUpdateTodoStatus = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatus
+  );
+
+  const PollsReducergetTodoCommitteeTask = useSelector(
+    (state) => state.PollsReducer.getTodoCommitteeTask
+  );
+
+  const PollsReducerResponseMessage = useSelector(
+    (state) => state.PollsReducer.ResponseMessage
+  );
+
+  const todoStatusResponse = useSelector((state) => state.todoStatus.Response);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [rowsToDo, setRowToDo] = useState([]);
@@ -63,7 +91,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   // GET TODOS STATUS
   useEffect(() => {
     try {
-      if (!todoStatus.Response?.length > 0) {
+      if (!todoStatusResponse?.length > 0) {
         dispatch(getTodoStatus(navigate, t));
       }
 
@@ -81,8 +109,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   // Remove task from mqtt response
   useEffect(() => {
     try {
-      if (toDoListReducer.socketTodoStatusData !== null) {
-        let payloadData = toDoListReducer.socketTodoStatusData;
+      if (toDoListReducersocketTodoStatusData !== null) {
+        let payloadData = toDoListReducersocketTodoStatusData;
         if (payloadData.todoStatusID === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -108,17 +136,17 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         }
       }
     } catch {}
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [toDoListReducersocketTodoStatusData]);
 
   //get todolist reducer
   useEffect(() => {
     try {
       if (
-        PollsReducer.getTodoCommitteeTask !== null &&
-        PollsReducer.getTodoCommitteeTask !== undefined
+        PollsReducergetTodoCommitteeTask !== null &&
+        PollsReducergetTodoCommitteeTask !== undefined
       ) {
-        if (PollsReducer.getTodoCommitteeTask.toDoLists.length > 0) {
-          let dataToSort = [...PollsReducer.getTodoCommitteeTask.toDoLists];
+        if (PollsReducergetTodoCommitteeTask.toDoLists.length > 0) {
+          let dataToSort = [...PollsReducergetTodoCommitteeTask.toDoLists];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -137,12 +165,12 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [PollsReducer.getTodoCommitteeTask]);
+  }, [PollsReducergetTodoCommitteeTask]);
 
   useEffect(() => {
     try {
-      if (toDoListReducer.createTaskCommittee !== null) {
-        let taskData = toDoListReducer.createTaskCommittee;
+      if (toDoListReducercreateTaskCommittee !== null) {
+        let taskData = toDoListReducercreateTaskCommittee;
         if (Number(taskData.comitteeID) === Number(ViewCommitteeID)) {
           setRowToDo([...rowsToDo, taskData.todoList]);
         }
@@ -151,7 +179,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }
-  }, [toDoListReducer.createTaskCommittee]);
+  }, [toDoListReducercreateTaskCommittee]);
 
   // SET STATUS VALUES
   useEffect(() => {
@@ -161,11 +189,11 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       let newArrStatus = [""];
 
       if (
-        todoStatus.Response !== null &&
-        todoStatus.Response !== "" &&
-        todoStatus.Response?.length > 0
+        todoStatusResponse !== null &&
+        todoStatusResponse !== "" &&
+        todoStatusResponse?.length > 0
       ) {
-        todoStatus.Response.forEach((data, index) => {
+        todoStatusResponse.forEach((data, index) => {
           optionsArr.push({
             id: data.pK_TSID,
             status: data.status,
@@ -444,24 +472,24 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   useEffect(() => {
     try {
       if (
-        PollsReducer.ResponseMessage !== "" &&
-        PollsReducer.ResponseMessage !== undefined &&
-        PollsReducer.ResponseMessage !== "" &&
-        PollsReducer.ResponseMessage !== t("No-records-found")
+        PollsReducerResponseMessage !== "" &&
+        PollsReducerResponseMessage !== undefined &&
+        PollsReducerResponseMessage !== "" &&
+        PollsReducerResponseMessage !== t("No-records-found")
       ) {
-        showMessage(PollsReducer.ResponseMessage, "success", setOpen);
+        showMessage(PollsReducerResponseMessage, "success", setOpen);
         dispatch(clearResponce());
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [PollsReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [PollsReducerResponseMessage, assigneesResponseMessage]);
 
   useEffect(() => {
     try {
       if (removeTodo !== 0) {
         if (
-          getTodosStatus.UpdateTodoStatusMessage ===
+          getTodosStatusUpdateTodoStatusMessage ===
           t("The-record-has-been-updated-successfully")
         ) {
           let copyData = [...rowsToDo];
@@ -475,33 +503,33 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
+  }, [getTodosStatusUpdateTodoStatusMessage, removeTodo]);
 
   useEffect(() => {
     try {
       if (
-        getTodosStatus.ResponseMessage !== "" &&
-        getTodosStatus.ResponseMessage !== undefined &&
-        getTodosStatus.ResponseMessage !== "" &&
-        getTodosStatus.ResponseMessage !== t("No-records-found")
+        getTodosStatusResponseMessage !== "" &&
+        getTodosStatusResponseMessage !== undefined &&
+        getTodosStatusResponseMessage !== "" &&
+        getTodosStatusResponseMessage !== t("No-records-found")
       ) {
-        showMessage(getTodosStatus.ResponseMessage, "success", setOpen);
+        showMessage(getTodosStatusResponseMessage, "success", setOpen);
         dispatch(cleareMessage());
       } else if (
-        getTodosStatus.UpdateTodoStatusMessage !== "" &&
-        getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-        getTodosStatus.UpdateTodoStatusMessage !== "" &&
-        getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
+        getTodosStatusUpdateTodoStatusMessage !== "" &&
+        getTodosStatusUpdateTodoStatusMessage !== undefined &&
+        getTodosStatusUpdateTodoStatusMessage !== "" &&
+        getTodosStatusUpdateTodoStatusMessage !== t("No-records-found")
       ) {
-        showMessage(getTodosStatus.UpdateTodoStatusMessage, "success", setOpen);
+        showMessage(getTodosStatusUpdateTodoStatusMessage, "success", setOpen);
         dispatch(cleareMessage());
       } else if (
-        getTodosStatus.UpdateTodoStatus !== "" &&
-        getTodosStatus.UpdateTodoStatus !== undefined &&
-        getTodosStatus.UpdateTodoStatus !== "" &&
-        getTodosStatus.UpdateTodoStatus !== t("No-records-found")
+        getTodosStatusUpdateTodoStatus !== "" &&
+        getTodosStatusUpdateTodoStatus !== undefined &&
+        getTodosStatusUpdateTodoStatus !== "" &&
+        getTodosStatusUpdateTodoStatus !== t("No-records-found")
       ) {
-        showMessage(getTodosStatus.UpdateTodoStatus, "success", setOpen);
+        showMessage(getTodosStatusUpdateTodoStatus, "success", setOpen);
         dispatch(cleareMessage());
       } else {
         dispatch(cleareMessage());
@@ -510,9 +538,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       console.log(error, "error");
     }
   }, [
-    getTodosStatus.ResponseMessage,
-    getTodosStatus.UpdateTodoStatusMessage,
-    getTodosStatus.UpdateTodoStatus,
+    getTodosStatusResponseMessage,
+    getTodosStatusUpdateTodoStatusMessage,
+    getTodosStatusUpdateTodoStatus,
   ]);
 
   const scroll = {
