@@ -15,7 +15,10 @@ import GroupMeeting from "../../GroupViewMeeting/Meeting";
 const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { GroupsReducer } = useSelector((state) => state);
+
+  const GroupsReducergetGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse
+  );
   const dispatch = useDispatch();
   const [groupStatus, setGroupStatus] = useState(null);
   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -41,15 +44,15 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
 
   useEffect(() => {
     try {
-      if (GroupsReducer.getGroupByGroupIdResponse !== null) {
+      if (GroupsReducergetGroupByGroupIdResponse !== null) {
         let groupStatus =
-          GroupsReducer.getGroupByGroupIdResponse.groupStatus.groupStatusID;
+          GroupsReducergetGroupByGroupIdResponse.groupStatus.groupStatusID;
         setGroupStatus(groupStatus);
       } else {
         setGroupStatus(null);
       }
     } catch {}
-  }, [GroupsReducer.getGroupByGroupIdResponse]);
+  }, [GroupsReducergetGroupByGroupIdResponse]);
   return (
     <>
       <section className=" color-5a5a5a">

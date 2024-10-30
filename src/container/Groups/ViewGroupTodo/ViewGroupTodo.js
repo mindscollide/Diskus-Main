@@ -38,13 +38,50 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const state = useSelector((state) => state);
-  const {
-    toDoListReducer,
-    todoStatus,
-    assignees,
-    getTodosStatus,
-    PollsReducer,
-  } = state;
+  const { todoStatus } = state;
+
+  const toDoListReducersocketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
+
+  const toDoListReducercreateTaskGroup = useSelector(
+    (state) => state.toDoListReducer.createTaskGroup
+  );
+
+  const toDoListReducerToDoDetails = useSelector(
+    (state) => state.toDoListReducer.ToDoDetails
+  );
+
+  const toDoListReducerResponseMessage = useSelector(
+    (state) => state.toDoListReducer.ResponseMessage
+  );
+
+  const todoStatusResponse = useSelector((state) => state.todoStatus.Response);
+
+  const assigneesResponseMessage = useSelector(
+    (state) => state.assignees.ResponseMessage
+  );
+
+  const assigneesgetTodosStatus = useSelector(
+    (state) => state.assignees.getTodosStatus
+  );
+
+  const assigneesUpdateTodoStatusMessage = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+  );
+
+  const getTodosStatusResponseMessage = useSelector(
+    (state) => state.getTodosStatus.ResponseMessage
+  );
+
+  const getTodoStatusUpdateTodoStatus = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatus
+  );
+
+  const PollsReducertodoGetGroupTask = useSelector(
+    (state) => state.PollsReducer.todoGetGroupTask
+  );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [rowsToDo, setRowToDo] = useState([]);
@@ -68,7 +105,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   // GET TODOS STATUS
   useEffect(() => {
     try {
-      if (!todoStatus.Response?.length > 0) {
+      if (!todoStatusResponse?.length > 0) {
         dispatch(getTodoStatus(navigate, t));
       }
       if (ViewGroupID !== null) {
@@ -85,8 +122,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   // Remove task from mqtt response
   useEffect(() => {
     try {
-      if (toDoListReducer.socketTodoStatusData !== null) {
-        let payloadData = toDoListReducer.socketTodoStatusData;
+      if (toDoListReducersocketTodoStatusData !== null) {
+        let payloadData = toDoListReducersocketTodoStatusData;
         if (payloadData.todoStatusID === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -112,17 +149,17 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         }
       }
     } catch {}
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [toDoListReducersocketTodoStatusData]);
 
   //get todolist reducer
   useEffect(() => {
     try {
       if (
-        PollsReducer.todoGetGroupTask !== null &&
-        PollsReducer.todoGetGroupTask !== undefined
+        PollsReducertodoGetGroupTask !== null &&
+        PollsReducertodoGetGroupTask !== undefined
       ) {
-        if (PollsReducer.todoGetGroupTask.toDoLists.length > 0) {
-          let dataToSort = [...PollsReducer.todoGetGroupTask.toDoLists];
+        if (PollsReducertodoGetGroupTask.toDoLists.length > 0) {
+          let dataToSort = [...PollsReducertodoGetGroupTask.toDoLists];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -141,12 +178,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [PollsReducer.todoGetGroupTask]);
+  }, [PollsReducertodoGetGroupTask]);
 
   useEffect(() => {
     try {
-      if (toDoListReducer.createTaskGroup !== null) {
-        let taskData = toDoListReducer.createTaskGroup;
+      if (toDoListReducercreateTaskGroup !== null) {
+        let taskData = toDoListReducercreateTaskGroup;
         if (Number(taskData.groupID) === Number(ViewGroupID)) {
           setRowToDo([...rowsToDo, taskData.todoList]);
         }
@@ -155,7 +192,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }
-  }, [toDoListReducer.createTaskGroup]);
+  }, [toDoListReducercreateTaskGroup]);
 
   // SET STATUS VALUES
   useEffect(() => {
@@ -165,11 +202,11 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       let newArrStatus = [""];
 
       if (
-        todoStatus.Response !== null &&
-        todoStatus.Response !== "" &&
-        todoStatus.Response.length > 0
+        todoStatusResponse !== null &&
+        todoStatusResponse !== "" &&
+        todoStatusResponse.length > 0
       ) {
-        todoStatus.Response.forEach((data, index) => {
+        todoStatusResponse.forEach((data, index) => {
           optionsArr.push({
             id: data.pK_TSID,
             status: data.status,
@@ -445,7 +482,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   useEffect(() => {
     try {
       setViewFlagToDo(false);
-      if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+      if (Object.keys(toDoListReducerToDoDetails).length > 0) {
         if (modalsflag === true) {
           setUpdateFlagToDo(true);
           setModalsflag(false);
@@ -454,7 +491,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.ToDoDetails]);
+  }, [toDoListReducerToDoDetails]);
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -467,20 +504,20 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   useEffect(() => {
     try {
       if (
-        toDoListReducer.ResponseMessage !== "" &&
-        toDoListReducer.ResponseMessage !== undefined &&
-        toDoListReducer.ResponseMessage !== "" &&
-        toDoListReducer.ResponseMessage !== t("No-records-found")
+        toDoListReducerResponseMessage !== "" &&
+        toDoListReducerResponseMessage !== undefined &&
+        toDoListReducerResponseMessage !== "" &&
+        toDoListReducerResponseMessage !== t("No-records-found")
       ) {
-        showMessage(toDoListReducer.ResponseMessage, "success", setOpen);
+        showMessage(toDoListReducerResponseMessage, "success", setOpen);
 
         dispatch(clearResponce());
       } else if (
-        assignees.ResponseMessage !== "" &&
-        assignees.ResponseMessage !== "" &&
-        assignees.ResponseMessage !== t("No-records-found")
+        assigneesResponseMessage !== "" &&
+        assigneesResponseMessage !== "" &&
+        assigneesResponseMessage !== t("No-records-found")
       ) {
-        showMessage(assignees.ResponseMessage, "success", setOpen);
+        showMessage(assigneesResponseMessage, "success", setOpen);
 
         dispatch(clearResponseMessage());
       } else {
@@ -490,13 +527,13 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [toDoListReducerResponseMessage, assigneesResponseMessage]);
 
   useEffect(() => {
     try {
       if (removeTodo !== 0) {
         if (
-          getTodosStatus.UpdateTodoStatusMessage ===
+          assigneesUpdateTodoStatusMessage ===
           t("The-record-has-been-updated-successfully")
         ) {
           let copyData = [...rowsToDo];
@@ -510,39 +547,39 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
+  }, [assigneesUpdateTodoStatusMessage, removeTodo]);
 
   useEffect(() => {
     try {
       if (
-        getTodosStatus.ResponseMessage !== "" &&
-        getTodosStatus.ResponseMessage !== undefined &&
-        getTodosStatus.ResponseMessage !== "" &&
-        getTodosStatus.ResponseMessage !== t("No-records-found")
+        getTodosStatusResponseMessage !== "" &&
+        getTodosStatusResponseMessage !== undefined &&
+        getTodosStatusResponseMessage !== "" &&
+        getTodosStatusResponseMessage !== t("No-records-found")
       ) {
         showMessage(
-          assignees.getTodosStatus.ResponseMessage,
+          assigneesgetTodosStatus.ResponseMessage,
           "success",
           setOpen
         );
 
         dispatch(cleareMessage());
       } else if (
-        getTodosStatus.UpdateTodoStatusMessage !== "" &&
-        getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-        getTodosStatus.UpdateTodoStatusMessage !== "" &&
-        getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
+        assigneesUpdateTodoStatusMessage !== "" &&
+        assigneesUpdateTodoStatusMessage !== undefined &&
+        assigneesUpdateTodoStatusMessage !== "" &&
+        assigneesUpdateTodoStatusMessage !== t("No-records-found")
       ) {
-        showMessage(getTodosStatus.UpdateTodoStatusMessage, "success", setOpen);
+        showMessage(assigneesUpdateTodoStatusMessage, "success", setOpen);
 
         dispatch(cleareMessage());
       } else if (
-        getTodosStatus.UpdateTodoStatus !== "" &&
-        getTodosStatus.UpdateTodoStatus !== undefined &&
-        getTodosStatus.UpdateTodoStatus !== "" &&
-        getTodosStatus.UpdateTodoStatus !== t("No-records-found")
+        getTodoStatusUpdateTodoStatus !== "" &&
+        getTodoStatusUpdateTodoStatus !== undefined &&
+        getTodoStatusUpdateTodoStatus !== "" &&
+        getTodoStatusUpdateTodoStatus !== t("No-records-found")
       ) {
-        showMessage(getTodosStatus.UpdateTodoStatus, "success", setOpen);
+        showMessage(getTodoStatusUpdateTodoStatus, "success", setOpen);
 
         dispatch(cleareMessage());
       } else {
@@ -552,9 +589,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       console.log(error, "error");
     }
   }, [
-    getTodosStatus.ResponseMessage,
-    getTodosStatus.UpdateTodoStatusMessage,
-    getTodosStatus.UpdateTodoStatus,
+    getTodosStatusResponseMessage,
+    assigneesUpdateTodoStatusMessage,
+    getTodoStatusUpdateTodoStatus,
   ]);
 
   const scroll = {

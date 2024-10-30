@@ -49,10 +49,18 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
 
   const { GroupsReducer } = useSelector((state) => state);
 
+  const GroupsReducergetGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse
+  );
+
+  const GroupsReducergroupDocuments = useSelector(
+    (state) => state.GroupsReducer.groupDocuments
+  );
+
   useEffect(() => {
     try {
-      if (GroupsReducer.getGroupByGroupIdResponse !== null) {
-        let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
+      if (GroupsReducergetGroupByGroupIdResponse !== null) {
+        let groupDetails = GroupsReducergetGroupByGroupIdResponse;
         let groupHeadsData = groupDetails.groupMembers.filter(
           (data, index) => data.groupRole.groupRoleID === 2
         );
@@ -175,14 +183,14 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   useEffect(() => {
     try {
       if (
-        GroupsReducer.groupDocuments !== null &&
-        GroupsReducer.groupDocuments !== undefined
+        GroupsReducergroupDocuments !== null &&
+        GroupsReducergroupDocuments !== undefined
       ) {
-        if (GroupsReducer.groupDocuments.data.length > 0) {
-          setFolderID(GroupsReducer.groupDocuments.folderID);
+        if (GroupsReducergroupDocuments.data.length > 0) {
+          setFolderID(GroupsReducergroupDocuments.folderID);
           let retirveArray = [];
           let PrevIds = [];
-          GroupsReducer.groupDocuments.data.forEach(
+          GroupsReducergroupDocuments.data.forEach(
             (docsData, docsDataindex) => {
               retirveArray.push({
                 pK_FileID: docsData.pK_FileID,
@@ -208,7 +216,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         setFolderID(0);
       }
     } catch {}
-  }, [GroupsReducer.groupDocuments]);
+  }, [GroupsReducergroupDocuments]);
 
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>

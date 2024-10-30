@@ -42,9 +42,20 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { assignees, meetingIdReducer, calendarReducer } = useSelector(
-    (state) => state
+
+  const assigneesViewMeetingDetails = useSelector(
+    (state) => state.assignees.ViewMeetingDetails
   );
+
+  const meetingIdReducerMeetingStatusEnded = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusEnded
+  );
+
+  const calendarReducereventsDetails = useSelector(
+    (state) => state.calendarReducer.eventsDetails
+  );
+
+  const assigneesuser = useSelector((state) => state.assignees.user);
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -209,12 +220,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   useEffect(() => {
     try {
-      if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
-        let check = assignees.ViewMeetingDetails.meetingDetails.isVideoCall;
+      if (Object.keys(assigneesViewMeetingDetails).length > 0) {
+        let check = assigneesViewMeetingDetails.meetingDetails.isVideoCall;
         let meetingID = Number(
-          assignees.ViewMeetingDetails.meetingDetails.pK_MDID
+          assigneesViewMeetingDetails.meetingDetails.pK_MDID
         );
-        let StatusCheck = assignees.ViewMeetingDetails.meetingStatus.pK_MSID;
+        let StatusCheck = assigneesViewMeetingDetails.meetingStatus.pK_MSID;
 
         if (check) {
         }
@@ -226,20 +237,20 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     } catch (error) {
       console.log(error, "errorerrorerrorerror");
     }
-  }, [assignees.ViewMeetingDetails]);
+  }, [assigneesViewMeetingDetails]);
 
   // for view data
   useEffect(() => {
     try {
-      if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
-        let viewData = assignees.ViewMeetingDetails;
+      if (Object.keys(assigneesViewMeetingDetails).length > 0) {
+        let viewData = assigneesViewMeetingDetails;
         let reminder = [];
         let meetingAgenAtc = [];
         let minutesOfMeeting = [];
         let externalMeetingAttendiesList = [];
         let meetingAgenAtclis = [];
-        let rightsButtons = assignees.ViewMeetingDetails.meetingAttendees;
-        let meetingStatus = assignees.ViewMeetingDetails.meetingStatus.status;
+        let rightsButtons = assigneesViewMeetingDetails.meetingAttendees;
+        let meetingStatus = assigneesViewMeetingDetails.meetingStatus.status;
         const found = rightsButtons.find(
           (element) => element.user.pK_UID === parseInt(createrID)
         );
@@ -427,17 +438,17 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           MinutesOfMeeting: minutesOfMeeting,
         });
 
-        setAllMeetingDetails(assignees.ViewMeetingDetails);
+        setAllMeetingDetails(assigneesViewMeetingDetails);
       }
     } catch (error) {}
-  }, [assignees.ViewMeetingDetails]);
+  }, [assigneesViewMeetingDetails]);
 
   useEffect(() => {
     try {
-      if (calendarReducer.eventsDetails !== null) {
+      if (calendarReducereventsDetails !== null) {
         let calendarMeetingData =
-          calendarReducer.eventsDetails.diskusCalendarEvent;
-        let viewData = calendarReducer.eventsDetails;
+          calendarReducereventsDetails.diskusCalendarEvent;
+        let viewData = calendarReducereventsDetails;
         let reminder = [];
         let meetingAgenAtc = [];
         let minutesOfMeeting = [];
@@ -637,7 +648,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setAllMeetingDetails(calendarMeetingData);
       }
     } catch (error) {}
-  }, [calendarReducer.eventsDetails]);
+  }, [calendarReducereventsDetails]);
 
   useEffect(() => {
     if (
@@ -707,11 +718,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
-      if (Object.keys(assignees.user).length > 0) {
-        setMeetingAttendeesList(assignees.user);
+      if (Object.keys(assigneesuser).length > 0) {
+        setMeetingAttendeesList(assigneesuser);
       }
     } catch (error) {}
-  }, [assignees.user]);
+  }, [assigneesuser]);
 
   // for  list of all assignees  drop down
   useEffect(() => {
@@ -725,7 +736,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   const startMeeting = async () => {
     await setViewFlag(false);
-    let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+    let meetingID = assigneesViewMeetingDetails.meetingDetails.pK_MDID;
     let Data = {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
@@ -744,7 +755,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const handleClickEndMeeting = useCallback(async () => {
-    let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+    let meetingID = assigneesViewMeetingDetails.meetingDetails.pK_MDID;
     let newData = {
       MeetingID: meetingID,
       StatusID: 9,
@@ -826,11 +837,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   useEffect(() => {
     try {
       if (
-        meetingIdReducer.MeetingStatusEnded !== null &&
-        meetingIdReducer.MeetingStatusEnded !== undefined &&
-        meetingIdReducer.MeetingStatusEnded.length !== 0
+        meetingIdReducerMeetingStatusEnded !== null &&
+        meetingIdReducerMeetingStatusEnded !== undefined &&
+        meetingIdReducerMeetingStatusEnded.length !== 0
       ) {
-        let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+        let endMeetingData = meetingIdReducerMeetingStatusEnded.meeting;
         if (
           getMeetID === endMeetingData.pK_MDID &&
           endMeetingData.status === "9"
@@ -862,7 +873,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [meetingIdReducer.MeetingStatusEnded]);
+  }, [meetingIdReducerMeetingStatusEnded]);
 
   console.log("MeetingDetailsMeetingDetails", allMeetingDetails);
 

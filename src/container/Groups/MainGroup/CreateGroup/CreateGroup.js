@@ -37,7 +37,20 @@ const CreateGroup = ({ setCreategrouppage }) => {
     message: "",
     severity: "error",
   });
-  const { assignees, GroupsReducer } = useSelector((state) => state);
+
+  const assigneesuserData = useSelector((state) => state.assignees.user);
+
+  const GroupsReducergetOrganizationGroupRoles = useSelector(
+    (state) => state.GroupsReducer.getOrganizationGroupRoles
+  );
+
+  const GroupsReducergetOrganizationGroupTypes = useSelector(
+    (state) => state.GroupsReducer.getOrganizationGroupTypes
+  );
+
+  const GroupsReducerFolderID = useSelector(
+    (state) => state.GroupsReducer.FolderID
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -103,10 +116,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
-      if (Object.keys(assignees.user).length > 0) {
+      if (Object.keys(assigneesuserData).length > 0) {
         let newData = [];
-        setMeetingAttendeesList(assignees.user);
-        assignees.user.forEach((user, index) => {
+        setMeetingAttendeesList(assigneesuserData);
+        assigneesuserData.forEach((user, index) => {
           newData.push({
             label: (
               <>
@@ -136,16 +149,16 @@ const CreateGroup = ({ setCreategrouppage }) => {
         setAllPresenters(newData);
       }
     } catch (error) {}
-  }, [assignees.user]);
+  }, [assigneesuserData]);
 
   // for api response of list group roles
   useEffect(() => {
     if (
-      GroupsReducer.getOrganizationGroupRoles !== null &&
-      GroupsReducer.getOrganizationGroupRoles.length > 0
+      GroupsReducergetOrganizationGroupRoles !== null &&
+      GroupsReducergetOrganizationGroupRoles.length > 0
     ) {
       let newRoles = [];
-      GroupsReducer.getOrganizationGroupRoles.forEach((data, index) => {
+      GroupsReducergetOrganizationGroupRoles.forEach((data, index) => {
         newRoles.push({
           value: data.groupRoleID,
           label: data.role,
@@ -153,14 +166,14 @@ const CreateGroup = ({ setCreategrouppage }) => {
       });
       setGroupMembersRolesOptions(newRoles);
     }
-  }, [GroupsReducer.getOrganizationGroupRoles]);
+  }, [GroupsReducergetOrganizationGroupRoles]);
 
   // for api response of list group Types
   useEffect(() => {
-    if (GroupsReducer.getOrganizationGroupTypes !== null) {
+    if (GroupsReducergetOrganizationGroupTypes !== null) {
       let newArrGroupType1 = [];
 
-      GroupsReducer.getOrganizationGroupTypes.forEach((data, index) => {
+      GroupsReducergetOrganizationGroupTypes.forEach((data, index) => {
         newArrGroupType1.push({
           value: data.groupTypeID,
           label: data.type,
@@ -168,7 +181,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       });
       setNewGroupTypeOptions(newArrGroupType1);
     }
-  }, [GroupsReducer.getOrganizationGroupTypes]);
+  }, [GroupsReducergetOrganizationGroupTypes]);
 
   // set Meeting Attendees By default creator
   useEffect(() => {
@@ -508,11 +521,26 @@ const CreateGroup = ({ setCreategrouppage }) => {
   // Initialize previousFileList to an empty array
   let previousFileList = [];
 
-  const handleRemoveFile = (index) => {
-    const updatedFies = [...fileAttachments];
-    updatedFies.splice(index, 1);
-    setFileAttachments(updatedFies);
+  const handleRemoveFile = (data) => {
+    console.log(data, "datadatadatadata");
+    setFileAttachments((filesData) => {
+      return filesData.filter(
+        (fileData, index) =>
+          fileData.DisplayAttachmentName !== data.DisplayAttachmentName
+      );
+    });
+
+    if (Object.values(fileForSend).length > 0) {
+      setFileForSend((filesData) => {
+        return filesData.filter(
+          (fileData, index) => fileData.name !== data.DisplayAttachmentName
+        );
+      });
+    }
   };
+
+  console.log(fileAttachments, "datadatadatadata");
+  console.log(fileForSend, "datadatadatadata");
 
   const GroupsDocumentCallUpload = async (folderID) => {
     let newFolder = [];
@@ -550,11 +578,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
 
   useEffect(() => {
-    if (GroupsReducer.FolderID !== 0) {
-      let folderIDCreated = GroupsReducer.FolderID;
+    if (GroupsReducerFolderID !== 0) {
+      let folderIDCreated = GroupsReducerFolderID;
       GroupsDocumentCallUpload(folderIDCreated);
     }
-  }, [GroupsReducer.FolderID]);
+  }, [GroupsReducerFolderID]);
 
   const filterFunc = (options, searchText) => {
     //
@@ -1180,7 +1208,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                         fk_UID={creatorID}
                                         id={0}
                                         handleClickRemove={() => {
-                                          handleRemoveFile(index);
+                                          handleRemoveFile(data);
                                         }}
                                       />
                                     </Col>

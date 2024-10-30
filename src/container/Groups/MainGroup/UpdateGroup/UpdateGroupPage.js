@@ -41,7 +41,29 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     severity: "error",
   });
   const [erorbar, setErrorBar] = useState(false);
-  const { assignees, GroupsReducer } = useSelector((state) => state);
+
+  const assigneesuserData = useSelector((state) => state.assignees.user);
+
+  const GroupsReducergetOrganizationGroupRoles = useSelector(
+    (state) => state.GroupsReducer.getOrganizationGroupRoles
+  );
+
+  const GroupsReducergetOrganizationGroupTypes = useSelector(
+    (state) => state.GroupsReducer.getOrganizationGroupTypes
+  );
+
+  const GroupsReducerFolderID = useSelector(
+    (state) => state.GroupsReducer.FolderID
+  );
+
+  const GroupsReducergetGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse
+  );
+
+  const GroupsReducergroupDocuments = useSelector(
+    (state) => state.GroupsReducer.groupDocuments
+  );
+
   const dispatch = useDispatch();
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
@@ -64,13 +86,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("");
-  const participantOptions = [t("Head"), t("Regular")];
   const userID = localStorage.getItem("userID");
-  const [groupTypeOptions, setGroupTypeOptions] = useState([]);
-  const [participantRoles, setParticipantRoles] = useState([]);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [groupTypeValue, setGroupTypeValue] = useState("");
-  const [organizationGroupType, setOrganizationGroupType] = useState([]);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenterValue, setPresenterValue] = useState({
     value: 0,
@@ -88,12 +106,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     value: 0,
   });
   const [newGroupTypeOptions, setNewGroupTypeOptions] = useState([]);
-
-  // for Participant id's
-  const participantOptionsWithIDs = [
-    { label: t("Head"), id: 2 },
-    { label: t("Regular"), id: 1 },
-  ];
 
   useEffect(() => {
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -256,10 +268,10 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
-      if (Object.keys(assignees.user).length > 0) {
+      if (Object.keys(assigneesuserData).length > 0) {
         let newData = [];
-        setMeetingAttendeesList(assignees.user);
-        assignees.user.forEach((user, index) => {
+        setMeetingAttendeesList(assigneesuserData);
+        assigneesuserData.forEach((user, index) => {
           newData.push({
             label: (
               <>
@@ -289,16 +301,16 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         setAllPresenters(newData);
       }
     } catch (error) {}
-  }, [assignees.user]);
+  }, [assigneesuserData]);
 
   // for api response of list group roles
   useEffect(() => {
     if (
-      GroupsReducer.getOrganizationGroupRoles !== null &&
-      GroupsReducer.getOrganizationGroupRoles.length > 0
+      GroupsReducergetOrganizationGroupRoles !== null &&
+      GroupsReducergetOrganizationGroupRoles.length > 0
     ) {
       let newRoles = [];
-      GroupsReducer.getOrganizationGroupRoles.forEach((data, index) => {
+      GroupsReducergetOrganizationGroupRoles.forEach((data, index) => {
         newRoles.push({
           value: data.groupRoleID,
           label: data.role,
@@ -306,14 +318,14 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       });
       setGroupMembersRolesOptions(newRoles);
     }
-  }, [GroupsReducer.getOrganizationGroupRoles]);
+  }, [GroupsReducergetOrganizationGroupRoles]);
 
   // for api response of list group Types
   useEffect(() => {
-    if (GroupsReducer.getOrganizationGroupTypes !== null) {
+    if (GroupsReducergetOrganizationGroupTypes !== null) {
       let newArrGroupType1 = [];
 
-      GroupsReducer.getOrganizationGroupTypes.forEach((data, index) => {
+      GroupsReducergetOrganizationGroupTypes.forEach((data, index) => {
         newArrGroupType1.push({
           value: data.groupTypeID,
           label: data.type,
@@ -321,7 +333,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       });
       setNewGroupTypeOptions(newArrGroupType1);
     }
-  }, [GroupsReducer.getOrganizationGroupTypes]);
+  }, [GroupsReducergetOrganizationGroupTypes]);
 
   //Input Field Assignee Change
   const onChangeSearch = (item) => {
@@ -430,8 +442,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   };
 
   useEffect(() => {
-    if (GroupsReducer.getGroupByGroupIdResponse !== null) {
-      let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
+    if (GroupsReducergetGroupByGroupIdResponse !== null) {
+      let groupDetails = GroupsReducergetGroupByGroupIdResponse;
 
       let newArr = [];
       let newData = [];
@@ -472,7 +484,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         GroupStatusID: groupDetails.groupStatus.groupStatusID,
       });
     }
-  }, [GroupsReducer.getGroupByGroupIdResponse, meetingAttendeesList]);
+  }, [GroupsReducergetGroupByGroupIdResponse, meetingAttendeesList]);
 
   const props = {
     name: "file",
@@ -560,26 +572,19 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         );
       });
     }
-    console.log(fileForSend, "fileForSendfileForSend");
-    // updatedFies.splice(index, 1);
-    // setFileAttachments(updatedFies);
-
-    // const updateFileForSend = [...fileForSend];
-    // updateFileForSend.splice(index, 1);
-    // setFileForSend(updateFileForSend);
   };
   console.log(fileForSend, fileAttachments, "fileForSendfileForSend");
 
   useEffect(() => {
     if (
-      GroupsReducer.groupDocuments !== null &&
-      GroupsReducer.groupDocuments !== undefined
+      GroupsReducergroupDocuments !== null &&
+      GroupsReducergroupDocuments !== undefined
     ) {
-      if (GroupsReducer.groupDocuments.data.length > 0) {
-        setFolderID(GroupsReducer.groupDocuments.folderID);
+      if (GroupsReducergroupDocuments.data.length > 0) {
+        setFolderID(GroupsReducergroupDocuments.folderID);
         let retirveArray = [];
         let PrevIds = [];
-        GroupsReducer.groupDocuments.data.forEach((docsData, docsDataindex) => {
+        GroupsReducergroupDocuments.data.forEach((docsData, docsDataindex) => {
           retirveArray.push({
             pK_FileID: docsData.pK_FileID,
             DisplayAttachmentName: docsData.displayFileName,
@@ -594,7 +599,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         setFileAttachments(retirveArray);
       }
     }
-  }, [GroupsReducer.groupDocuments]);
+  }, [GroupsReducergroupDocuments]);
 
   const GroupsDocumentCallUpload = async (folderID) => {
     let newfile = [...previousFileIDs];
@@ -626,12 +631,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   };
 
   useEffect(() => {
-    if (GroupsReducer.FolderID !== 0) {
-      let folderIDCreated = GroupsReducer.FolderID.folderID;
+    if (GroupsReducerFolderID !== 0) {
+      let folderIDCreated = GroupsReducerFolderID.folderID;
 
       GroupsDocumentCallUpload(folderIDCreated);
     }
-  }, [GroupsReducer.FolderID]);
+  }, [GroupsReducerFolderID]);
 
   const filterFunc = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
@@ -756,8 +761,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 className="SearchCheckbox "
                                 name="IsChat"
                                 disabled={
-                                  GroupsReducer?.getGroupByGroupIdResponse
-                                    ?.isTalk
+                                  GroupsReducergetGroupByGroupIdResponse?.isTalk
                                     ? true
                                     : false
                                 }

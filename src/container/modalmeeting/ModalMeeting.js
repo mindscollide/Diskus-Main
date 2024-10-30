@@ -61,8 +61,16 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { assignees, CommitteeReducer, GroupsReducer } = useSelector(
-    (state) => state
+
+  const assigneesRemindersData = useSelector(
+    (state) => state.assignees.RemindersData
+  );
+  const assigneesuser = useSelector((state) => state.assignees?.user);
+  const CommitteeReducergetCommitteeByCommitteeID = useSelector(
+    (state) => state.CommitteeReducer?.getCommitteeByCommitteeID
+  );
+  const GroupsReducergetGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer?.getGroupByGroupIdResponse
   );
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
@@ -951,7 +959,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   useEffect(() => {
     try {
-      let valueOfReminder = assignees.RemindersData;
+      let valueOfReminder = assigneesRemindersData;
       console.log(valueOfReminder, "valueOfRemindervalueOfReminder");
       let reminderOptions = [];
 
@@ -977,7 +985,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [assignees.RemindersData]);
+  }, [assigneesRemindersData]);
 
   // for attendies Role handler
   const assigntRoleAttendies = (event) => {
@@ -1057,9 +1065,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
-      if (Object.keys(assignees?.user).length > 0) {
+      if (Object.keys(assigneesuser).length > 0) {
         try {
-          let usersList = assignees?.user;
+          let usersList = assigneesuser;
           setMeetingAttendeesList(usersList);
           let PresenterData = [];
           let newMemberData = [];
@@ -1190,8 +1198,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [assignees.user, checkFlag]);
-  console.log(assignees, "assigneesassigneesassignees");
+  }, [assigneesuser, checkFlag]);
 
   const handleChangeAttenddes = (attendeeData) => {
     setTaskAssignedToInput({
@@ -1211,7 +1218,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       if (Number(checkFlag) === 6) {
         // Committees MembersData
         let CommitteeMembers =
-          CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
+          CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
         if (
           CommitteeMembers !== null &&
           CommitteeMembers !== undefined &&
@@ -1274,8 +1281,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
       } else if (Number(checkFlag) === 7) {
         // Group Members
-        let GroupMembers =
-          GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
+        let GroupMembers = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
         if (
           GroupMembers !== null &&
           GroupMembers !== undefined &&

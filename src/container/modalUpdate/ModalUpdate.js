@@ -62,8 +62,28 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { assignees, uploadReducer, CommitteeReducer, GroupsReducer } =
-    useSelector((state) => state);
+
+  const assigneesViewMeetingDetails = useSelector(
+    (state) => state.assignees.ViewMeetingDetails
+  );
+
+  const assigneesRemindersData = useSelector(
+    (state) => state.assignees.RemindersData
+  );
+
+  const uploadReduceruploadDocumentsList = useSelector(
+    (state) => state.uploadReducer.uploadDocumentsList
+  );
+
+  const CommitteeReducergetCommitteeByCommitteeID = useSelector(
+    (state) => state.CommitteeReducer?.getCommitteeByCommitteeID
+  );
+
+  const GroupsReducergetGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer?.getGroupByGroupIdResponse
+  );
+
+  const assigneesuser = useSelector((state) => state.assignees.user);
   let OrganizationId = localStorage.getItem("organizationID");
   const [currentStep, setCurrentStep] = useState(1);
   const [isMinutes, setIsMinutes] = useState(false);
@@ -522,7 +542,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         Description: "",
         CreationDate: recordsMinutesOfTheMeeting.CreationDate,
         CreationTime: recordsMinutesOfTheMeeting.CreationTime,
-        FK_MDID: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
+        FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else {
       showMessage(t("Please-fill-description"), "error", setOpen);
@@ -538,7 +558,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       Description: valueCheck.trimStart(),
       CreationDate: recordsMinutesOfTheMeeting.CreationDate,
       CreationTime: recordsMinutesOfTheMeeting.CreationTime,
-      FK_MDID: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
+      FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
     });
   };
 
@@ -552,19 +572,19 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         ...objMeetingAgenda,
         PK_MAID: objMeetingAgenda.PK_MAID,
         [name]: valueCheck.trimStart(),
-        FK_MDID: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
+        FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else if (name === "PresenterName") {
       setObjMeetingAgenda({
         ...objMeetingAgenda,
         [name]: valueCheck.trimStart(),
-        FK_MDID: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
+        FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else if (name === "URLs") {
       setObjMeetingAgenda({
         ...objMeetingAgenda,
         [name]: valueCheck.trimStart(),
-        FK_MDID: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
+        FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else {
     }
@@ -644,7 +664,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   };
 
   useEffect(() => {
-    let newData = uploadReducer.uploadDocumentsList;
+    let newData = uploadReduceruploadDocumentsList;
 
     let MeetingAgendaAttachment =
       meetingAgendaAttachments.MeetingAgendaAttachments;
@@ -662,7 +682,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       });
       dispatch(ResetAllFilesUpload());
     }
-  }, [uploadReducer.uploadDocumentsList]);
+  }, [uploadReduceruploadDocumentsList]);
 
   function urlPatternValidation(URL) {
     const regex = new RegExp(
@@ -859,7 +879,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   useEffect(() => {
     try {
-      let valueOfReminder = assignees.RemindersData;
+      let valueOfReminder = assigneesRemindersData;
       console.log(valueOfReminder, "valueOfRemindervalueOfReminder");
       let reminderOptions = [];
 
@@ -885,7 +905,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [assignees.RemindersData]);
+  }, [assigneesRemindersData]);
 
   // for list of all assignees
   useEffect(() => {
@@ -961,10 +981,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   // for api reponce of list of all assignees
   useEffect(() => {
-    if (Object.keys(assignees.user).length > 0) {
-      setMeetingAttendeesList(assignees.user);
+    if (Object.keys(assigneesuser).length > 0) {
+      setMeetingAttendeesList(assigneesuser);
       let PresenterData = [];
-      assignees.user.forEach((user) => {
+      assigneesuser.forEach((user) => {
         PresenterData.push({
           label: (
             <>
@@ -1053,7 +1073,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       });
       setAllPresenters(PresenterData);
     }
-  }, [assignees.user]);
+  }, [assigneesuser]);
 
   // for fetch data for edit from grid
 
@@ -1101,13 +1121,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   // for view data
   useEffect(() => {
     try {
-      if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
-        let viewData = assignees.ViewMeetingDetails;
+      if (Object.keys(assigneesViewMeetingDetails).length > 0) {
+        let viewData = assigneesViewMeetingDetails;
         let reminder = [];
         let meetingAgenAtc = [];
         let minutesOfMeetings = [];
         let externalMeetingAttendiesList = [];
-        let meetingStatus = assignees.ViewMeetingDetails.meetingStatus.status;
+        let meetingStatus = assigneesViewMeetingDetails.meetingStatus.status;
         if (meetingStatus === "2") {
           setMinutesOftheMeatingStatus(true);
           setEndMeetingStatus(true);
@@ -1261,11 +1281,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         setMinutesOfMeeting(minutesOfMeetings);
       }
     } catch (error) {}
-  }, [assignees.ViewMeetingDetails]);
+  }, [assigneesViewMeetingDetails]);
 
   const editGrid = (datarecord, dataindex) => {
     let Data;
-    assignees.user.forEach((user) => {
+    assigneesuser.forEach((user) => {
       if (user.name === datarecord.ObjMeetingAgenda.PresenterName) {
         Data = {
           label: (
@@ -1319,7 +1339,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       if (Number(checkFlag) === 6) {
         // Committees MembersData
         let CommitteeMembers =
-          CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
+          CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
         if (
           CommitteeMembers !== null &&
           CommitteeMembers !== undefined &&
@@ -1380,8 +1400,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setAllPresenters(PresenterData);
         }
       } else if (Number(checkFlag) === 7) {
-        let GroupMembers =
-          GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
+        let GroupMembers = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
         if (
           GroupMembers !== null &&
           GroupMembers !== undefined &&
@@ -1443,7 +1462,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         }
         // Group MembersData
       } else {
-        let allAssignees = assignees.user;
+        let allAssignees = assigneesuser;
         if (
           allAssignees !== undefined &&
           allAssignees !== null &&

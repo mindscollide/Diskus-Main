@@ -23,7 +23,19 @@ const ModalArchivedCommittee = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { GroupsReducer } = useSelector((state) => state);
+
+  const GroupsReducerrealtimeGroupStatus = useSelector(
+    (state) => state.GroupsReducer.realtimeGroupStatus
+  );
+
+  const GroupsReducergetAllGroupsResponse = useSelector(
+    (state) => state.GroupsReducer.getAllGroupsResponse
+  );
+
+  const GroupsReducerArcheivedGroups = useSelector(
+    (state) => state.GroupsReducer.ArcheivedGroups
+  );
+
   const [groupsArheivedData, setGroupsArheivedData] = useState([]);
   const [totalRecords, setTotalrecord] = useState(0);
   let currentGroupPage = JSON.parse(localStorage.getItem("groupsArCurrent"));
@@ -39,16 +51,17 @@ const ModalArchivedCommittee = ({
 
   useEffect(() => {
     // try{}catch{}
-    if (GroupsReducer.realtimeGroupStatus !== null) {
-      let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
+    if (GroupsReducerrealtimeGroupStatus !== null) {
+      let status = GroupsReducerrealtimeGroupStatus.groupStatusID;
 
       if (status === 2) {
-        let findGroupIndex =
-          GroupsReducer.getAllGroupsResponse.groups.findIndex((data, index) => {
-            return data.groupID === GroupsReducer.realtimeGroupStatus.groupID;
-          });
+        let findGroupIndex = GroupsReducergetAllGroupsResponse.groups.findIndex(
+          (data, index) => {
+            return data.groupID === GroupsReducerrealtimeGroupStatus.groupID;
+          }
+        );
         if (findGroupIndex !== -1) {
-          let allgroupData = GroupsReducer.getAllGroupsResponse.groups;
+          let allgroupData = GroupsReducergetAllGroupsResponse.groups;
           let copygroupData = [...allgroupData];
           copygroupData.unshift({
             groupDescription: allgroupData[findGroupIndex].groupDescription,
@@ -64,22 +77,22 @@ const ModalArchivedCommittee = ({
         setGroupsArheivedData((archGroupData) => {
           return archGroupData.filter(
             (groupData, index) =>
-              groupData.groupID !== GroupsReducer.realtimeGroupStatus.groupID
+              groupData.groupID !== GroupsReducerrealtimeGroupStatus.groupID
           );
         });
       }
     }
-  }, [GroupsReducer.realtimeGroupStatus]);
+  }, [GroupsReducerrealtimeGroupStatus]);
 
   useEffect(() => {
     if (
-      GroupsReducer.ArcheivedGroups !== null &&
-      GroupsReducer.ArcheivedGroups !== undefined
+      GroupsReducerArcheivedGroups !== null &&
+      GroupsReducerArcheivedGroups !== undefined
     ) {
       try {
-        if (GroupsReducer.ArcheivedGroups.groups.length > 0) {
-          setTotalrecord(GroupsReducer.ArcheivedGroups.totalRecords);
-          let copyData = [...GroupsReducer.ArcheivedGroups.groups];
+        if (GroupsReducerArcheivedGroups.groups.length > 0) {
+          setTotalrecord(GroupsReducerArcheivedGroups.totalRecords);
+          let copyData = [...GroupsReducerArcheivedGroups.groups];
           // Create a new copy of committeeMembers array for each committee
           const updateGroups = copyData.map((groups) => ({
             ...groups,
@@ -92,7 +105,7 @@ const ModalArchivedCommittee = ({
         }
       } catch (error) {}
     }
-  }, [GroupsReducer.ArcheivedGroups]);
+  }, [GroupsReducerArcheivedGroups]);
 
   const updateModal = async (e) => {
     setUpdateComponentpage(true);
@@ -106,7 +119,7 @@ const ModalArchivedCommittee = ({
   };
 
   const handleArrow = () => {
-    if (GroupsReducer.ArcheivedGroups.pageNumbers >= currentGroupPage + 1) {
+    if (GroupsReducerArcheivedGroups.pageNumbers >= currentGroupPage + 1) {
       let currentPage = currentGroupPage + 1;
       localStorage.setItem("groupsArCurrent", currentPage);
       dispatch(getArcheivedGroups(navigate, t, currentPage));
@@ -152,9 +165,9 @@ const ModalArchivedCommittee = ({
                       {t("Archived-groups")}
                     </p>
                   </Col>
-                  {GroupsReducer.ArcheivedGroups !== null &&
-                  GroupsReducer.ArcheivedGroups !== undefined ? (
-                    GroupsReducer.ArcheivedGroups.pageNumbers >=
+                  {GroupsReducerArcheivedGroups !== null &&
+                  GroupsReducerArcheivedGroups !== undefined ? (
+                    GroupsReducerArcheivedGroups.pageNumbers >=
                     currentGroupPage + 1 ? (
                       <Col
                         lg={1}
