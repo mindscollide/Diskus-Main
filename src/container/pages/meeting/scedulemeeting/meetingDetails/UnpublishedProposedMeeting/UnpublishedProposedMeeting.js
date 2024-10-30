@@ -99,8 +99,24 @@ const UnpublishedProposedMeeting = ({
   const allMeetingsSocketData = useSelector(
     (state) => state.meetingIdReducer.allMeetingsSocketData
   );
-
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const meetingStatusProposedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData
+  );
+  const meetingStatusPublishedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
+  );
+  const mqttMeetingAcAdded = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingAcAdded
+  );
+  const mqttMeetingAcRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
+  );
+  const mqttMeetingOrgAdded = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded
+  );
+  const mqttMeetingOrgRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved
+  );
 
   const [rows, setRow] = useState([]);
   const [publishState, setPublishState] = useState(null);
@@ -719,10 +735,10 @@ const UnpublishedProposedMeeting = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.meetingStatusProposedMqttData !== null &&
-      NewMeetingreducer.meetingStatusProposedMqttData !== undefined
+      meetingStatusProposedMqttData !== null &&
+      meetingStatusProposedMqttData !== undefined
     ) {
-      let meetingData = NewMeetingreducer.meetingStatusProposedMqttData;
+      let meetingData = meetingStatusProposedMqttData;
       const indexToUpdate = rows.findIndex(
         (obj) => obj.pK_MDID === meetingData.pK_MDID
       );
@@ -735,14 +751,14 @@ const UnpublishedProposedMeeting = ({
         setRow(updatedRows);
       }
     }
-  }, [NewMeetingreducer.meetingStatusProposedMqttData]);
+  }, [meetingStatusProposedMqttData]);
 
   useEffect(() => {
     if (
-      NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
-      NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
+      meetingStatusPublishedMqttData !== null &&
+      meetingStatusPublishedMqttData !== undefined
     ) {
-      let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+      let meetingData = meetingStatusPublishedMqttData;
       try {
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
@@ -750,16 +766,13 @@ const UnpublishedProposedMeeting = ({
         setRow(updatedRows);
       } catch {}
     }
-  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+  }, [meetingStatusPublishedMqttData]);
 
   useEffect(() => {
     try {
       const callAddAgendaContributor = async () => {
-        if (
-          NewMeetingreducer.mqttMeetingAcAdded !== null &&
-          NewMeetingreducer.mqttMeetingAcAdded !== undefined
-        ) {
-          let newObj = NewMeetingreducer.mqttMeetingAcAdded;
+        if (mqttMeetingAcAdded !== null && mqttMeetingAcAdded !== undefined) {
+          let newObj = mqttMeetingAcAdded;
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setRow([getData, ...rows]);
@@ -777,14 +790,11 @@ const UnpublishedProposedMeeting = ({
     } catch (error) {
       console.log(error);
     }
-  }, [NewMeetingreducer.mqttMeetingAcAdded]);
+  }, [mqttMeetingAcAdded]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.mqttMeetingAcRemoved !== null &&
-      NewMeetingreducer.mqttMeetingAcRemoved !== undefined
-    ) {
-      let meetingData = NewMeetingreducer.mqttMeetingAcRemoved;
+    if (mqttMeetingAcRemoved !== null && mqttMeetingAcRemoved !== undefined) {
+      let meetingData = mqttMeetingAcRemoved;
       try {
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
@@ -796,16 +806,13 @@ const UnpublishedProposedMeeting = ({
         dispatch(meetingOrganizerRemoved(null));
       } catch {}
     }
-  }, [NewMeetingreducer.mqttMeetingAcRemoved]);
+  }, [mqttMeetingAcRemoved]);
 
   useEffect(() => {
     try {
       const callAddOrganizer = async () => {
-        if (
-          NewMeetingreducer.mqttMeetingOrgAdded !== null &&
-          NewMeetingreducer.mqttMeetingOrgAdded !== undefined
-        ) {
-          let newObj = NewMeetingreducer.mqttMeetingOrgAdded;
+        if (mqttMeetingOrgAdded !== null && mqttMeetingOrgAdded !== undefined) {
+          let newObj = mqttMeetingOrgAdded;
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setRow([getData, ...rows]);
@@ -823,14 +830,11 @@ const UnpublishedProposedMeeting = ({
     } catch (error) {
       console.error(error);
     }
-  }, [NewMeetingreducer.mqttMeetingOrgAdded]);
+  }, [mqttMeetingOrgAdded]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
-      NewMeetingreducer.mqttMeetingOrgRemoved !== undefined
-    ) {
-      let meetingData = NewMeetingreducer.mqttMeetingOrgRemoved;
+    if (mqttMeetingOrgRemoved !== null && mqttMeetingOrgRemoved !== undefined) {
+      let meetingData = mqttMeetingOrgRemoved;
       try {
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
@@ -842,7 +846,7 @@ const UnpublishedProposedMeeting = ({
         dispatch(meetingOrganizerRemoved(null));
       } catch {}
     }
-  }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
+  }, [mqttMeetingOrgRemoved]);
 
   useEffect(() => {
     if (MeetingProp !== null) {
