@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import "./ModalView.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import {
@@ -41,6 +41,8 @@ import copyToClipboard from "../../hooks/useClipBoard";
 import { callRequestReceivedMQTT } from "../../store/actions/VideoMain_actions";
 import { UpdateOrganizersMeeting } from "../../store/actions/MeetingOrganizers_action";
 import { getMeetingGuestVideoMainApi } from "../../store/actions/Guest_Video";
+import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
+import { MeetingContext } from "../../context/MeetingContext";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
@@ -54,7 +56,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("acceptedRoomID"));
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-
+  const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
   const [getMeetID, setMeetID] = useState(0);
   const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
   const [isDetails, setIsDetails] = useState(true);
@@ -918,14 +920,28 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
   };
 
-  const endMeeting = async () => {
-    // await setViewFlag(false);
+  const handleClickEndMeeting = useCallback(async () => {
     let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
     let newData = {
       MeetingID: meetingID,
       StatusID: 9,
     };
-    await dispatch(endMeetingStatusApi(navigate, t, newData, setViewFlag));
+    console.log("end meeting chaek");
+    await dispatch(
+      endMeetingStatusApi(
+        navigate,
+        t,
+        newData,
+        setViewFlag,
+        setEndMeetingConfirmationModal
+      )
+    );
+  }, []);
+
+  const endMeeting = async () => {
+    setEndMeetingConfirmationModal(true);
+    // setViewFlag(false);
+    // await setViewFlag(false);
   };
   const leaveMeeting = async (id) => {
     let leaveMeetingData = {
@@ -1122,18 +1138,19 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           // setCurrentMeetingID(0);
           // setAdvanceMeetingModalID(null);
           // setDataroomMapFolderId(0);
-          let searchData = {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: currentUserID,
-            PageNumber:
-              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-            Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-            PublishedMeetings:
-              currentView && Number(currentView) === 1 ? true : false,
-          };
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          //   let searchData = {
+          //     Date: "",
+          //     Title: "",
+          //     HostName: "",
+          //     UserID: currentUserID,
+          //     PageNumber:
+          //       meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          //     Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          //     PublishedMeetings:
+          //       currentView && Number(currentView) === 1 ? true : false,
+          //   };
+          // console.log("chek search meeting")
+          // dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       }
     } catch (error) {
@@ -1631,7 +1648,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                               )
                             }
                             className={
-                              "  end-meeting-btn_view-org" + " " + currentLanguage
+                              "  end-meeting-btn_view-org" +
+                              " " +
+                              currentLanguage
                             }
                             text={t("Leave-meeting")}
                             // disableBtn={endMeetingStatus}
@@ -1674,6 +1693,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               ) : null}
             </>
           }
+        />
+        <EndMeetingConfirmationModal
+          handleClickContinue={handleClickEndMeeting}
+          handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
         />
         <Notification
           setOpen={setOpen}

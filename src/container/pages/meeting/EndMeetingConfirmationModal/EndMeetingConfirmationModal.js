@@ -9,30 +9,31 @@ const EndMeetingConfirmationModal = ({
   handleClickDiscard,
   handleClickContinue,
 }) => {
-  const { canceConfirmationModal, setConfirmationModal } =
+  const { endMeetingConfirmationModal, setEndMeetingConfirmationModal } =
     useContext(MeetingContext);
   const { t } = useTranslation();
   return (
     <CustomModal
-      show={canceConfirmationModal}
-      setShow={setConfirmationModal}
+      backdrop={true}
+      size={"md"}
+      className={styles["endMeetingModal"]}
+      show={endMeetingConfirmationModal}
+      setShow={setEndMeetingConfirmationModal}
       modalFooterClassName={"d-block"}
       ModalBody={
         <>
           <Row>
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyheading"]}>
-                {t(
-                  "Unsave-changes"
-                )}
+                {t("End-meeting")}
               </span>
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyText"]}>
                 {t(
-                  "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
+                  "Are-you-sure-you-want-to-end-the-meeting-once-the-meeting-ends-all-the-participants-will-be-disconnected"
                 )}
               </span>
             </Col>
@@ -50,13 +51,13 @@ const EndMeetingConfirmationModal = ({
               <Button
                 text={t("End-meeting")}
                 className={styles["EndMeetingBtn"]}
-                onClick={handleClickDiscard}
+                onClick={handleClickContinue}
               />
 
               <Button
                 text={t("Cancel")}
                 className={styles["CancelBtn"]}
-                onClick={handleClickContinue}
+                onClick={handleClickDiscard}
               />
             </Col>
           </Row>

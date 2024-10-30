@@ -14,13 +14,11 @@ import {
 import Select from "react-select";
 import { Upload } from "antd";
 import DrapDropIcon from "../../../../../../assets/images/DrapDropIcon.svg";
-import RedCrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import UnsavedActions from "../UnsavedActionModal/UnsavedActions";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-
 import {
   showUnsavedActionsModal,
   GetAllMeetingUserApiFunc,
@@ -29,27 +27,19 @@ import {
   uploadActionMeetingApi,
   saveTaskDocumentsAndAssigneesApi,
 } from "../../../../../../store/actions/Action_Meeting";
-
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
-import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import { convertGMTDateintoUTC } from "../../../../../../commen/functions/date_formater";
 import {
   CreateToDoList,
   saveFilesTaskApi,
 } from "../../../../../../store/actions/ToDoList_action";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../../DataRoom/SearchFunctionality/option";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import { maxFileSize } from "../../../../../../commen/functions/utils";
 const CreateTask = ({
   setCreateaTask,
   currentMeeting,
-  setActionState,
-  actionState,
   dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
@@ -136,7 +126,6 @@ const CreateTask = ({
   const actionSaveHandler = () => {
     if (
       createTaskDetails.ActionsToTake !== "" &&
-      // createTaskDetails.Description !== "" &&
       createTaskDetails.AssignedTo > 0 &&
       createTaskDetails.date !== ""
     ) {
@@ -168,22 +157,21 @@ const CreateTask = ({
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
-
+      let totalFiles = fileList.length + taskAttachments.length;
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
-      if (taskAttachments.length > 9) {
+      if (totalFiles > 15) {
         setOpen({
           flag: true,
-          message: t("Not-allowed-more-than-10-files"),
+          message: t("Not-allowed-more-than-15-files"),
         });
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > 10485760) {
+        if (fileData.size > maxFileSize) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -197,7 +185,7 @@ const CreateTask = ({
           setTimeout(() => {
             setOpen({
               flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
+              message: t("File-size-should-not-be-greater-then-1-5GB"),
             });
           }, 3000);
         } else if (!sizezero) {

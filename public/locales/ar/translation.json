@@ -2155,7 +2155,7 @@
   "The-organizer-will-allow-you-to-join-shortly": "The organizer will allow you to join shortly.",
   "Invalid-request-data-2": "Invalid Request Data",
   "No-participant": "No Participant",
-  "Your-slots-has-been-added-successfully": "Your Slots has been Added successfully",
+  "Your-slots-has-been-added-successfully": "Your slots have been added successfully.",
   "Start-time": "Start time",
   "End-time": "End time",
   "At-least-one-date-time-slot-is-mandatory": "At least one Date & Time slot is mandatory",
@@ -2165,5 +2165,8 @@
   "Not-allowed-more-than-15-files": "Not allowed more than 15 files",
   "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving": "You have unsaved changes. If you leave this page, your changes will be lost. Do you want to continue without saving?",
   "Unsave-changes": "Unsave Changes",
-  "Save-and-continue": "Save & Continue"
+  "Save-and-continue": "Save & Continue",
+  "Are-you-sure-you-want-to-end-the-meeting-once-the-meeting-ends-all-the-participants-will-be-disconnected": "Are you sure you want to end the meeting? Once the meeting ends, all the participants will be disconnected.",
+  "Not-allowed-more-than-5-files": "Not allowed more than 5 files",
+  "Successfully-updated-participants-list": "Successfully updated participants list"
 }

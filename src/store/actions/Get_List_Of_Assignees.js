@@ -234,7 +234,8 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
                   PublishedMeetings:
                     currentView && Number(currentView) === 1 ? true : false,
                 };
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
               } else if (checkFlag === 6) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -345,7 +346,8 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
                   Length: Number(meetingpageRow),
                   PublishedMeetings: true,
                 };
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
               } else if (checkFlag === 7) {
                 let ViewGroupID = localStorage.getItem("ViewGroupID");
                 let Data = {
@@ -659,7 +661,8 @@ const CancelMeeting = (navigate, object, t, value) => {
                   PublishedMeetings:
                     currentView && Number(currentView) === 1 ? true : false,
                 };
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -868,7 +871,8 @@ const EndMeeting = (navigate, object, t, searchData) => {
                 )
               );
 
-              await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

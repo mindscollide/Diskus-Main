@@ -94,17 +94,13 @@ const ViewMeetingModal = ({
   let userID = localStorage.getItem("userID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let isMinutePublished = localStorage.getItem("isMinutePublished");
-  console.log(typeof isMinutePublished, "isMinutePublishedisMinutePublished");
   let meetingTitle = localStorage.getItem("meetingTitle");
 
   const dispatch = useDispatch();
 
   const { meetingIdReducer, NewMeetingreducer } = useSelector((state) => state);
 
-  console.log(
-    meetingIdReducer.meetingDetails,
-    "meetingIdReducermeetingIdReducermeetingIdReducer"
-  );
+
   useEffect(() => {
     if (routeID !== null) {
       if (Number(routeID) === 1) {
@@ -309,6 +305,7 @@ const ViewMeetingModal = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
+        console.log("chek search meeting")
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       } catch (error) {
         console.error(error, "error");
@@ -340,6 +337,7 @@ const ViewMeetingModal = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
+        console.log("chek search meeting")
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       } catch (error) {
         console.error(error, "error");
@@ -383,18 +381,19 @@ const ViewMeetingModal = ({
         setCurrentMeetingID(0);
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        // let searchData = {
+        //   Date: "",
+        //   Title: "",
+        //   HostName: "",
+        //   UserID: Number(userID),
+        //   PageNumber:
+        //     meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        //   PublishedMeetings:
+        //     currentView && Number(currentView) === 1 ? true : false,
+        // };
+        // console.log("chek search meeting")
+        // dispatch(searchNewUserMeeting(navigate, searchData, t));
 
         localStorage.setItem("folderDataRoomMeeting", 0);
       }

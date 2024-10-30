@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next"; // Importing translation hook
@@ -62,8 +62,12 @@ const ReviewMinutes = () => {
   const [editCommentLocal, setEditCommentLocal] = useState(null);
   const [parentMinuteID, setParentMinuteID] = useState(0);
   const [isAgenda, setIsAgenda] = useState(false);
+  const [minuteViewFlag, setMinuteViewFlag] = useState(null);
   const [disableSubmit, setDisableSubmit] = useState(false);
-
+  console.log(
+    { minutesAgenda, minutesGeneral },
+    "minutesGeneralminutesGeneral"
+  );
   const divRef = useRef(null);
 
   const countActorBundleStatusID2 = (data) => {
@@ -266,14 +270,28 @@ const ReviewMinutes = () => {
   };
 
   const updateAcceptMinutes = (minutesData, rejectData) => {
+    console.log(minutesData, "minutesDataminutesData updateAcceptMinutes");
     return minutesData.map((agenda) => {
       // Update main minuteData
       const updatedMinuteData = agenda.minuteData.map((minute) => {
         if (minute.minuteID === rejectData.minuteID) {
+          console.log(
+            minute.minuteID,
+            rejectData.minuteID,
+            minute,
+            "minutesDataminutesData updateAcceptMinutes"
+          );
+
           return {
             ...minute,
             reason: "",
             actorBundleStatusID: 3,
+            declinedReviews:
+              minute.declinedReviews.length > 0
+                ? minute.declinedReviews.filter(
+                    (userReview, index) => currentUserID !== userReview.fK_UID
+                  )
+                : [],
           };
         }
         return minute;
@@ -283,10 +301,23 @@ const ReviewMinutes = () => {
       const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
         const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
           if (subMinute.minuteID === rejectData.minuteID) {
+            console.log(
+              subMinute.minuteID,
+              rejectData.minuteID,
+              subMinute,
+              "minutesDataminutesData updateAcceptMinutes"
+            );
+
             return {
               ...subMinute,
               reason: "",
               actorBundleStatusID: 3,
+              declinedReviews:
+                subMinute.declinedReviews.length > 0
+                  ? subMinute.declinedReviews.filter(
+                      (userReview, index) => currentUserID !== userReview.fK_UID
+                    )
+                  : [],
             };
           }
           return subMinute;
@@ -309,14 +340,32 @@ const ReviewMinutes = () => {
     // Update MinutesGeneral
     const updatedMinutesGeneral = minutesGeneral.map((minute) => {
       if (minute.minuteID === data.minuteID) {
+        console.log(
+          minute.minuteID,
+          data.minuteID,
+          minute,
+          "acceptMinuteacceptMinute minuteminute"
+        );
         return {
           ...minute,
           reason: "",
           actorBundleStatusID: 3,
+          declinedReviews:
+            minute.declinedReviews.length > 0
+              ? minute.declinedReviews.filter(
+                  (userReview, index) => currentUserID !== userReview.fK_UID
+                )
+              : [],
         };
       }
+      console.log(minute, "acceptMinuteacceptMinute minuteminute");
+
       return minute;
     });
+    console.log(
+      { updatedMinutesGeneral },
+      "acceptMinuteacceptMinute minuteminute"
+    );
 
     setMinutesAgenda(updatedMinutesAgenda);
     setMinutesGeneral(updatedMinutesGeneral);
@@ -338,13 +387,14 @@ const ReviewMinutes = () => {
     }
   };
 
-  const rejectGeneralComment = (data) => {
+  const rejectGeneralComment = (data, minuteflag, isAgenda) => {
     dispatch(rejectCommentModal(true));
-    // setMinuteDataToReject(
-    //   JSON.parse(JSON.stringify(data))
-    // );
+    // 0 for general
+    // 1 for Agenda Minutes
+    // 2 for Sub Agenda Minute
     setMinuteDataToReject(data);
-    // dispatch(RejectMinute(data));
+    setIsAgenda(isAgenda);
+    setMinuteViewFlag(minuteflag);
   };
 
   //Download the document
@@ -390,6 +440,7 @@ const ReviewMinutes = () => {
       setMinutesAgendaHierarchy([]);
       setMinutesGeneral([]);
       setMinutesToReview([]);
+      dispatch(rejectCommentModal(false));
     };
   }, []); // This effect runs once after the component mounts
 
@@ -541,33 +592,87 @@ const ReviewMinutes = () => {
     return state;
   }
 
-  useEffect(() => {
-    try {
-      if (minuteDataToReject) {
-        const rejectMinuteData = minuteDataToReject;
+  // useEffect(() => {
+  //   try {
+  //     if (minuteDataToReject) {
+  //       const rejectMinuteData = minuteDataToReject;
 
-        // Update MinutesAgenda
-        let updatedMinutesAgenda = updateRejectMinutes(
-          minutesAgenda,
-          rejectMinuteData
-        );
+  //       // Update MinutesAgenda
+  //       let updatedMinutesAgenda = updateRejectMinutes(
+  //         minutesAgenda,
+  //         rejectMinuteData
+  //       );
 
-        updatedMinutesAgenda = filterEmptyReasons(updatedMinutesAgenda);
+  //       updatedMinutesAgenda = filterEmptyReasons(updatedMinutesAgenda);
 
-        // Update MinutesGeneral
+  //       // Update MinutesGeneral
+  //       let updatedMinutesData = updateRejectMinutesGeneral(
+  //         minutesGeneral,
+  //         rejectMinuteData
+  //       );
+
+  //       updatedMinutesData =
+  //         filterEmptyReasonsForStateGeneral(updatedMinutesData);
+
+  //       setMinutesAgenda(updatedMinutesAgenda);
+  //       setMinutesGeneral(updatedMinutesData);
+  //     }
+  //   } catch {}
+  // }, [minuteDataToReject]);
+
+  const handleClickRejectMinuteBtn = useCallback(
+    (commentText) => {
+      if (minuteViewFlag === 0) {
+        const updatedMinuteData = {
+          ...minuteDataToReject,
+          reason: commentText,
+          actorBundleStatusID: 4,
+          userProfilePicture: {
+            userID: currentUserID,
+            orignalProfilePictureName: "",
+            displayProfilePictureName:
+              MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
+          },
+        };
+        // there should be a for general minute
         let updatedMinutesData = updateRejectMinutesGeneral(
           minutesGeneral,
-          rejectMinuteData
+          updatedMinuteData
         );
-
-        updatedMinutesData =
-          filterEmptyReasonsForStateGeneral(updatedMinutesData);
-
-        setMinutesAgenda(updatedMinutesAgenda);
+        console.log(
+          { updatedMinutesData },
+          "updatedMinutesAgendaupdatedMinutesAgenda"
+        );
         setMinutesGeneral(updatedMinutesData);
+        setMinutesToReview(minutesToReview - 1);
+      } else if (minuteViewFlag === 2 || minuteViewFlag === 1) {
+        const updatedMinuteData = {
+          ...minuteDataToReject,
+          reason: commentText,
+          actorBundleStatusID: 4,
+          userProfilePicture: {
+            userID: currentUserID,
+            orignalProfilePictureName: "",
+            displayProfilePictureName:
+              MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
+          },
+        };
+        // there should be for subAgenda Minute
+        let updatedMinutesAgenda = updateRejectMinutes(
+          minutesAgenda,
+          updatedMinuteData
+        );
+        console.log(
+          { updatedMinutesAgenda },
+          "updatedMinutesAgendaupdatedMinutesAgenda"
+        );
+        setMinutesAgenda(updatedMinutesAgenda);
+        setMinutesToReview(minutesToReview - 1);
       }
-    } catch {}
-  }, [minuteDataToReject]);
+      dispatch(rejectCommentModal(false));
+    },
+    [minuteDataToReject, minuteViewFlag]
+  );
 
   console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
@@ -790,7 +895,14 @@ const ReviewMinutes = () => {
                                                 className={
                                                   styles["Reject-comment"]
                                                 }
-                                                disableBtn={true}
+                                                // disableBtn={true}
+                                                onClick={() =>
+                                                  rejectGeneralComment(
+                                                    parentMinutedata,
+                                                    1,
+                                                    true
+                                                  )
+                                                }
                                               />
                                             ) : parentMinutedata.actorBundleStatusID ===
                                               2 ? (
@@ -799,20 +911,13 @@ const ReviewMinutes = () => {
                                                 className={
                                                   styles["Reject-comment"]
                                                 }
-                                                onClick={() => {
-                                                  dispatch(
-                                                    rejectCommentModal(true)
-                                                  );
-                                                  setMinuteDataToReject(
-                                                    parentMinutedata
-                                                  );
-
-                                                  // dispatch(
-                                                  //   RejectMinute(
-                                                  //     parentMinutedata
-                                                  //   )
-                                                  // );
-                                                }}
+                                                onClick={() =>
+                                                  rejectGeneralComment(
+                                                    parentMinutedata,
+                                                    1,
+                                                    true
+                                                  )
+                                                }
                                               />
                                             ) : parentMinutedata.actorBundleStatusID ===
                                               4 ? (
@@ -1899,7 +2004,13 @@ const ReviewMinutes = () => {
                                                             "Reject-comment"
                                                           ]
                                                         }
-                                                        disableBtn={true}
+                                                        onClick={() =>
+                                                          rejectGeneralComment(
+                                                            minuteDataSubminute,
+                                                            2,
+                                                            true
+                                                          )
+                                                        }
                                                       />
                                                     ) : minuteDataSubminute.actorBundleStatusID ===
                                                       2 ? (
@@ -1910,22 +2021,13 @@ const ReviewMinutes = () => {
                                                             "Reject-comment"
                                                           ]
                                                         }
-                                                        onClick={() => {
-                                                          dispatch(
-                                                            rejectCommentModal(
-                                                              true
-                                                            )
-                                                          );
-                                                          setMinuteDataToReject(
-                                                            minuteDataSubminute
-                                                          );
-
-                                                          // dispatch(
-                                                          //   RejectMinute(
-                                                          //     minuteDataSubminute
-                                                          //   )
-                                                          // );
-                                                        }}
+                                                        onClick={() =>
+                                                          rejectGeneralComment(
+                                                            minuteDataSubminute,
+                                                            2,
+                                                            true
+                                                          )
+                                                        }
                                                       />
                                                     ) : minuteDataSubminute.actorBundleStatusID ===
                                                       4 ? (
@@ -1937,6 +2039,8 @@ const ReviewMinutes = () => {
                                                               "Rejected-comment"
                                                             ]
                                                           }
+                                                          // onClick={() => rejectGeneralComment(minuteDataSubminute,2, true)}
+                                                          disableBtn={true}
                                                         />
                                                       </>
                                                     ) : null}
@@ -2942,19 +3046,25 @@ const ReviewMinutes = () => {
                                     <Button
                                       text={t("Reject")}
                                       className={styles["Reject-comment"]}
-                                      disableBtn={true}
+                                      // disableBtn={true}
+                                      onClick={() =>
+                                        rejectGeneralComment(data, 0, false)
+                                      }
                                     />
                                   ) : data.actorBundleStatusID === 2 ? (
                                     <Button
                                       text={t("Reject")}
                                       className={styles["Reject-comment"]}
-                                      onClick={() => rejectGeneralComment(data)}
+                                      onClick={() =>
+                                        rejectGeneralComment(data, 0, false)
+                                      }
                                     />
                                   ) : data.actorBundleStatusID === 4 ? (
                                     <>
                                       <Button
                                         text={t("Rejected")}
                                         className={styles["Rejected-comment"]}
+                                        disableBtn={true}
                                       />
                                     </>
                                   ) : null}
@@ -3568,14 +3678,15 @@ const ReviewMinutes = () => {
       </Paper>
       {MinutesReducer.rejectCommentModal ? (
         <RejectCommentModal
-          minuteDataToReject={minuteDataToReject}
-          setMinuteDataToReject={setMinuteDataToReject}
-          isAgenda={isAgenda}
-          setIsAgenda={setIsAgenda}
-          setMinutesToReview={setMinutesToReview}
-          minutesToReview={minutesToReview}
-          currentUserID={currentUserID}
-          deleteCommentLocal={deleteCommentLocal}
+          handleClickRejectButton={handleClickRejectMinuteBtn}
+          // minuteDataToReject={minuteDataToReject}
+          // setMinuteDataToReject={setMinuteDataToReject}
+          // isAgenda={isAgenda}
+          // setIsAgenda={setIsAgenda}
+          // setMinutesToReview={setMinutesToReview}
+          // minutesToReview={minutesToReview}
+          // currentUserID={currentUserID}
+          // deleteCommentLocal={deleteCommentLocal}
         />
       ) : null}
       {MinutesReducer.editCommentModal ? (

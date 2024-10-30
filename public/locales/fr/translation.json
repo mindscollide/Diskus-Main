@@ -2059,7 +2059,8 @@
   "Continue-with-browser": "Continue with browser",
   "Go-to-play-store": "Go to Play store",
   "Go-to-App-store": "Go to App store",
-  "Your-slots-has-been-added-successfully": "Your Slots has been Added successfully",
+  "Your-slots-has-been-added-successfully": "Your slots have been added successfully.",
   "At-least-one-date-time-slot-is-mandatory": "At least one Date & Time slot is mandatory",
-  "Please-add-atleast-one-participant": "Please add atleast one participant"
+  "Please-add-atleast-one-participant": "Please add atleast one participant",
+  "Not-allowed-more-than-5-files": "Not allowed more than 5 files"
 }

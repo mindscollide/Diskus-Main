@@ -280,7 +280,7 @@ const Header2 = ({ isVideo }) => {
         NewMeetingreducer.viewMeetingFlag === false
       ) {
         dispatch(showCancelModalmeetingDeitals(true));
-        localStorage.setItem("navigateLocation", "pendingApprovals");
+        localStorage.setItem("navigateLocation", "Minutes");
       } else {
         dispatch(showCancelModalmeetingDeitals(false));
         dispatch(scheduleMeetingPageFlag(false));

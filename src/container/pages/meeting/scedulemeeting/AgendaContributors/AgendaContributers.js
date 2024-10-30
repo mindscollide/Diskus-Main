@@ -639,6 +639,7 @@ const AgendaContributers = ({
     // setAgendaContributors(false);
     // setParticipants(true);
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    console.log("end meeting chaek")
     dispatch(
       UpdateOrganizersMeeting(
         false,

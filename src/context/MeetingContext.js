@@ -9,7 +9,12 @@ export const MeetingProvider = ({ children }) => {
   const { settingReducer } = useSelector((state) => state);
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
-  const [canceConfirmationModal, setConfirmationModal] = useState(false);
+  // Meeting Details State
+  const [currentMeeting, setCurrentMeetingID] = useState(0);
+  const [cancelConfirmationModal, setCancelConfirmationModal] = useState(false);
+  const [endMeetingConfirmationModal, setEndMeetingConfirmationModal] =
+    useState(false);
+  const [goBackCancelModal, setGoBackCancelModal] = useState(false);
   const [editorRole, setEdiorRole] = useState({
     status: null,
     role: null,
@@ -34,11 +39,15 @@ export const MeetingProvider = ({ children }) => {
   return (
     <MeetingContext.Provider
       value={{
+        setGoBackCancelModal,
+        goBackCancelModal,
         editorRole,
         setEdiorRole,
         isAgendaUpdateWhenMeetingActive,
-        canceConfirmationModal,
-        setConfirmationModal,
+        cancelConfirmationModal,
+        setCancelConfirmationModal,
+        endMeetingConfirmationModal,
+        setEndMeetingConfirmationModal,
       }}>
       {children}
     </MeetingContext.Provider>

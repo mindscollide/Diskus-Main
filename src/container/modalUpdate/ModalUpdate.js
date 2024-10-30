@@ -52,6 +52,7 @@ import {
   getStartTimeWithCeilFunction,
 } from "../../commen/functions/time_formatter";
 import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
+import { maxFileSize } from "../../commen/functions/utils";
 
 const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   //For Localization
@@ -620,7 +621,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setTimeout(() => {
         setOpen({
           flag: true,
-          message: t("You-can-not-upload-more-then-10-files"),
+          message: t("Not-allowed-more-than-10-files"),
         });
       }, 3000);
       return;
@@ -632,11 +633,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       let ext = uploadedFile.name.split(".").pop().toLowerCase();
 
       // Check total size after adding each file
-      if (mergeFileSizes + fileSizeinMB > 100) {
+      if (mergeFileSizes + fileSizeinMB > 15) {
         setTimeout(() => {
           setOpen({
             flag: true,
-            message: t("You-can-not-upload-more-then-100MB-files"),
+            message: t("Not-allowed-more-than-15-files"),
           });
         }, 3000);
         return;
@@ -665,13 +666,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setOpen({
             ...open,
             flag: true,
-            message: t("This-file-already-exist"),
+            message: t("File-already-exists"),
           });
-        } else if (fileSizeinMB > 10) {
+        } else if (fileSizeinMB > maxFileSize) {
           setTimeout(() => {
             setOpen({
               flag: true,
-              message: t("You-can-not-upload-more-then-10MB-file"),
+              message: t("File-size-should-not-be-greater-then-1-5GB"),
             });
           }, 3000);
         } else if (fileSizeinMB === 0) {
@@ -2130,27 +2131,39 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     }
   };
 
+  // const deleteAttachmentfromAgenda = (attachmentdata, index) => {
+  //   let meetingAgendas = meetingAgendaAttachments.MeetingAgendaAttachments;
+  //   console.log(meetingAgendas, "meetingAgendasmeetingAgendas");
+  //   console.log(attachmentdata, "meetingAgendasmeetingAgendas");
+  //   console.log(index, "meetingAgendasmeetingAgendas");
+  //   // let newArray = {};
+
+  //   // if (attachmentdata.PK_MAAID > 0) {
+  //   //   newArray = {
+  //   //     CreationDateTime: attachmentdata.CreationDateTime,
+  //   //     DisplayAttachmentName: "",
+  //   //     FK_MAID: attachmentdata.FK_MAID,
+  //   //     OriginalAttachmentName: "",
+  //   //     PK_MAAID: attachmentdata.PK_MAAID,
+  //   //   };
+  //   //   meetingAgendas[index] = newArray;
+  //   // } else {
+  //   //   meetingAgendas.splice(index, 1);
+  //   // }
+
+  //   // setMeetingAgendaAttachments({
+  //   //   ...meetingAgendaAttachments,
+  //   //   ["MeetingAgendaAttachments"]: meetingAgendas,
+  //   // });
+  // };
+
   const deleteAttachmentfromAgenda = (attachmentdata, index) => {
-    let meetingAgendas = meetingAgendaAttachments.MeetingAgendaAttachments;
-
-    let newArray = {};
-
-    if (attachmentdata.PK_MAAID > 0) {
-      newArray = {
-        CreationDateTime: attachmentdata.CreationDateTime,
-        DisplayAttachmentName: "",
-        FK_MAID: attachmentdata.FK_MAID,
-        OriginalAttachmentName: "",
-        PK_MAAID: attachmentdata.PK_MAAID,
-      };
-      meetingAgendas[index] = newArray;
-    } else {
-      meetingAgendas.splice(index, 1);
-    }
-
     setMeetingAgendaAttachments({
       ...meetingAgendaAttachments,
-      ["MeetingAgendaAttachments"]: meetingAgendas,
+      MeetingAgendaAttachments:
+        meetingAgendaAttachments.MeetingAgendaAttachments.filter(
+          (agenda) => agenda.PK_MAAID !== attachmentdata.PK_MAAID
+        ),
     });
   };
 

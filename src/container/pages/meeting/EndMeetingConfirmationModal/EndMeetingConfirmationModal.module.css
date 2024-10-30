@@ -1,11 +1,11 @@
 .modalBodyheading {
-  font-size: 18px !important;
+  font-size: 24px !important;
   color: #5a5a5a !important;
   font-weight: 600 !important;
   text-align: left;
 }
 .modalBodyText {
-  font-size: 13px !important;
+  font-size: 14px !important;
   color: #5a5a5a !important;
   font-weight: 600 !important;
 }
@@ -22,9 +22,14 @@
 .CancelBtn {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  color: #fff !important;
+  color: #5a5a5a !important;
   background: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
   font-weight: 600 !important;
+}
+.endMeetingModal {
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px);
 }
