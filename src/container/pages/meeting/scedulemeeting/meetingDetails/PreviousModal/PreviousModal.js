@@ -27,8 +27,9 @@ const PreviousModal = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const ShowPreviousModal = useSelector(
+    (state) => state.NewMeetingreducer.ShowPreviousModal
+  );
   const handleYesFunctionality = () => {
     dispatch(showPreviousConfirmationModal(false));
     if (prevFlag === 3) {
@@ -77,7 +78,7 @@ const PreviousModal = ({
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.ShowPreviousModal}
+        show={ShowPreviousModal}
         setShow={dispatch(showPreviousConfirmationModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
