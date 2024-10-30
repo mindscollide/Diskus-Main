@@ -45,8 +45,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoDate, setCreateTodoDate] = useState(current_Date);
-  const state = useSelector((state) => state);
-  const { toDoListReducer, GroupsReducer } = state;
+
+  const toDoListReducerAllAssigneesData = useSelector(
+    (state) => state.toDoListReducer.AllAssigneesData
+  );
+
+  const toDoListReducertodoDocumentsMapping = useSelector(
+    (state) => state.toDoListReducer.todoDocumentsMapping
+  );
+
+  const GroupsReducergetGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse
+  );
 
   //To Display Modal
   const dispatch = useDispatch();
@@ -158,7 +168,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //To Set task Creater ID
   useEffect(() => {
-    let data = [...toDoListReducer.AllAssigneesData];
+    let data = [...toDoListReducerAllAssigneesData];
     if (
       data !== undefined &&
       data !== null &&
@@ -170,7 +180,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       );
       setTaskAssigneeApiData(filterData);
     }
-  }, [toDoListReducer.AllAssigneesData]);
+  }, [toDoListReducerAllAssigneesData]);
 
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
@@ -330,11 +340,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   useEffect(() => {
     try {
       if (
-        GroupsReducer.getGroupByGroupIdResponse !== null &&
-        GroupsReducer.getGroupByGroupIdResponse !== undefined
+        GroupsReducergetGroupByGroupIdResponse !== null &&
+        GroupsReducergetGroupByGroupIdResponse !== undefined
       ) {
         let getUserDetails =
-          GroupsReducer.getGroupByGroupIdResponse.groupMembers;
+          GroupsReducergetGroupByGroupIdResponse.groupMembers;
         let PresenterData = [];
         getUserDetails.forEach((user, index) => {
           PresenterData.push({
@@ -394,7 +404,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setAllPresenters(PresenterData);
       }
     } catch {}
-  }, [GroupsReducer.getGroupByGroupIdResponse]);
+  }, [GroupsReducergetGroupByGroupIdResponse]);
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
@@ -507,10 +517,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   useEffect(() => {
-    if (toDoListReducer.todoDocumentsMapping !== 0) {
-      uploadTaskDocuments(toDoListReducer.todoDocumentsMapping);
+    if (toDoListReducertodoDocumentsMapping !== 0) {
+      uploadTaskDocuments(toDoListReducertodoDocumentsMapping);
     }
-  }, [toDoListReducer.todoDocumentsMapping]);
+  }, [toDoListReducertodoDocumentsMapping]);
 
   const handleDeleteAttendee = (data, index) => {
     let newDataAssignees = [...assignees];
@@ -838,12 +848,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           }
         />
       </Container>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };
