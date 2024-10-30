@@ -24,7 +24,15 @@ const EditCommentModal = ({
   const { currentMeetingMinutesToReviewData } = useSelector(
     (state) => state.MinutesReducer
   );
-
+  const minutesDetails = useSelector(
+    (state) => state.currentMeetingMinutesToReviewData.minutesDetails
+  );
+  const minuteID = useSelector(
+    (state) => state.currentMeetingMinutesToReviewData.minuteID
+  );
+  const agendaDetails = useSelector(
+    (state) => state.currentMeetingMinutesToReviewData.agendaDetails
+  );
   const cancelEditMinute = () => {
     if (confirmationEdit === false) {
       setConfirmationEdit(true);
@@ -72,8 +80,8 @@ const EditCommentModal = ({
   useEffect(() => {
     setUpdateMinutedata((prevState) => ({
       ...prevState,
-      MinuteText: currentMeetingMinutesToReviewData.minutesDetails,
-      MinuteID: currentMeetingMinutesToReviewData.minuteID,
+      MinuteText: minutesDetails,
+      MinuteID: minuteID,
     }));
   }, []);
 
@@ -86,9 +94,9 @@ const EditCommentModal = ({
         applyClass={"textField-RejectComment"} // CSS class for text area
         type="text"
         value={
-          currentMeetingMinutesToReviewData.agendaDetails !== null
-            ? // currentMeetingMinutesToReviewData.agendaDetails !== undefined
-              currentMeetingMinutesToReviewData.agendaDetails.agendaTitle
+          agendaDetails !== null
+            ? // agendaDetails !== undefined
+              agendaDetails.agendaTitle
             : t("General-minute")
         }
         placeholder={t("Write-a-comment")} // Placeholder text for text area

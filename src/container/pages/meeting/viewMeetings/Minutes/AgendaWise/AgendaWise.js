@@ -102,6 +102,31 @@ const AgendaWise = ({
 
   const { NewMeetingreducer, AgendaWiseAgendaListReducer, MinutesReducer } =
     useSelector((state) => state);
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const agendaWiseMinuteID = useSelector(
+    (state) => state.NewMeetingreducer.agendaWiseMinuteID
+  );
+  const RetriveAgendaWiseDocuments = useSelector(
+    (state) => state.NewMeetingreducer.RetriveAgendaWiseDocuments
+  );
+  const agendaWiseMinutesReducer = useSelector(
+    (state) => state.NewMeetingreducer.agendaWiseMinutesReducer
+  );
+  const getallDocumentsForAgendaWiseMinutes = useSelector(
+    (state) => state.NewMeetingreducer.getallDocumentsForAgendaWiseMinutes
+  );
+  const AllAgendas = useSelector(
+    (state) => state.AgendaWiseAgendaListReducer.AllAgendas
+  );
+  const GetMinuteReviewStatsForOrganizerByMeetingIdData = useSelector(
+    (state) =>
+      state.MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
+  );
+  const deleteMinuteAgenda = useSelector(
+    (state) => state.MinutesReducer.deleteMinuteAgenda
+  );
 
   const editorRef = useRef(null);
 
@@ -133,30 +158,25 @@ const AgendaWise = ({
 
   useEffect(() => {
     try {
-      if (
-        AgendaWiseAgendaListReducer.AllAgendas !== null &&
-        AgendaWiseAgendaListReducer.AllAgendas !== undefined
-      ) {
+      if (AllAgendas !== null && AllAgendas !== undefined) {
         let NewData = [];
-        AgendaWiseAgendaListReducer.AllAgendas.agendaList.map(
-          (agenda, index) => {
-            NewData.push({
-              value: agenda.id,
-              label: agenda.title,
-            });
+        AllAgendas.agendaList.map((agenda, index) => {
+          NewData.push({
+            value: agenda.id,
+            label: agenda.title,
+          });
 
-            agenda.subAgenda.map((subajendaData, index) => {
-              NewData.push({
-                value: subajendaData.subAgendaID,
-                label: subajendaData.subTitle,
-              });
+          agenda.subAgenda.map((subajendaData, index) => {
+            NewData.push({
+              value: subajendaData.subAgendaID,
+              label: subajendaData.subTitle,
             });
-          }
-        );
+          });
+        });
         setAgendaOptions(NewData);
       }
     } catch {}
-  }, [AgendaWiseAgendaListReducer.AllAgendas]);
+  }, [AllAgendas]);
 
   const modules = {
     toolbar: {
@@ -404,14 +424,11 @@ const AgendaWise = ({
   };
   // For getting the MinuteID
   useEffect(() => {
-    if (NewMeetingreducer.agendaWiseMinuteID !== 0) {
-      console.log(
-        NewMeetingreducer.agendaWiseMinuteID,
-        "agendaWiseMinuteIDagendaWiseMinuteID"
-      );
-      documentUploadingFunc(NewMeetingreducer.agendaWiseMinuteID);
+    if (agendaWiseMinuteID !== 0) {
+      console.log(agendaWiseMinuteID, "agendaWiseMinuteIDagendaWiseMinuteID");
+      documentUploadingFunc(agendaWiseMinuteID);
     }
-  }, [NewMeetingreducer.agendaWiseMinuteID]);
+  }, [agendaWiseMinuteID]);
 
   //Download the document
   const downloadDocument = (record) => {
@@ -535,18 +552,13 @@ const AgendaWise = ({
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== null &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments.data.length > 0
+        RetriveAgendaWiseDocuments !== null &&
+        RetriveAgendaWiseDocuments !== undefined &&
+        RetriveAgendaWiseDocuments.data.length > 0
       ) {
-        console.log(
-          NewMeetingreducer.RetriveAgendaWiseDocuments,
-          "RetriveAgendaWiseDocuments"
-        );
-
         let files = [];
         let prevData = [];
-        NewMeetingreducer.RetriveAgendaWiseDocuments.data.map((data, index) => {
+        RetriveAgendaWiseDocuments.data.map((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
@@ -560,7 +572,7 @@ const AgendaWise = ({
         setPreviousFileIDs(prevData);
       }
     } catch {}
-  }, [NewMeetingreducer.RetriveAgendaWiseDocuments]);
+  }, [RetriveAgendaWiseDocuments]);
 
   //Handle Update Button Api
   const handleUpdateFuncagendaWise = async () => {
@@ -674,20 +686,20 @@ const AgendaWise = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage.trim() !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully") &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available")
+      ResponseMessage.trim() !== "" &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found") &&
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("List-updated-successfully") &&
+      ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   useEffect(() => {
     let Data = {
@@ -785,11 +797,9 @@ const AgendaWise = ({
     return false;
   }
 
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
-
   useEffect(() => {
     try {
-      const reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
+      const reducerData = agendaWiseMinutesReducer;
       if (reducerData && Object.keys(reducerData).length > 0) {
         let transformedData = [];
 
@@ -866,10 +876,9 @@ const AgendaWise = ({
 
         transformedData.forEach((agenda) => {
           agenda.minuteData.forEach((minute) => {
-            let matchingData =
-              NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
-                (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
-              );
+            let matchingData = getallDocumentsForAgendaWiseMinutes.data.find(
+              (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+            );
             if (matchingData) {
               minute.attachments = matchingData.files || [];
             }
@@ -877,10 +886,9 @@ const AgendaWise = ({
 
           agenda.subMinutes.forEach((subAgenda) => {
             subAgenda.minuteData.forEach((minute) => {
-              let matchingData =
-                NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
-                  (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
-                );
+              let matchingData = getallDocumentsForAgendaWiseMinutes.data.find(
+                (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+              );
               if (matchingData) {
                 minute.attachments = matchingData.files || [];
               }
@@ -894,12 +902,12 @@ const AgendaWise = ({
         );
 
         if (
-          MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData &&
-          MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
+          GetMinuteReviewStatsForOrganizerByMeetingIdData &&
+          GetMinuteReviewStatsForOrganizerByMeetingIdData
             .minuteReviewStatsModelList.length > 0
         ) {
           const { minuteReviewStatsModelList } =
-            MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData;
+            GetMinuteReviewStatsForOrganizerByMeetingIdData;
 
           let newTransformedData = transformedData.map((agenda) => {
             agenda.minuteData = agenda.minuteData.map((minute) => {
@@ -943,24 +951,21 @@ const AgendaWise = ({
       setMinutesData([]);
     }
   }, [
-    NewMeetingreducer.agendaWiseMinutesReducer,
-    NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
-    MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData,
+    agendaWiseMinutesReducer,
+    getallDocumentsForAgendaWiseMinutes,
+    GetMinuteReviewStatsForOrganizerByMeetingIdData,
   ]);
 
   useEffect(() => {
     if (
-      MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !== null &&
-      MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !==
-        undefined
+      GetMinuteReviewStatsForOrganizerByMeetingIdData !== null &&
+      GetMinuteReviewStatsForOrganizerByMeetingIdData !== undefined
     ) {
-      setMinuteReviewData(
-        MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData
-      );
+      setMinuteReviewData(GetMinuteReviewStatsForOrganizerByMeetingIdData);
     } else {
       setMinuteReviewData(null);
     }
-  }, [MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData]);
+  }, [GetMinuteReviewStatsForOrganizerByMeetingIdData]);
 
   // When you click on Revision History Button then the api will hit and If minute has revison then open a modal
   const handleClickShowRevision = (data, MinuteID) => {
@@ -2184,7 +2189,7 @@ const AgendaWise = ({
         );
       })}
 
-      {MinutesReducer.deleteMinuteAgenda ? (
+      {deleteMinuteAgenda ? (
         <DeleteCommentAgenda
           advanceMeetingModalID={advanceMeetingModalID}
           setAddNoteFields={setAddNoteFields}

@@ -17,7 +17,7 @@ import { showMessage } from "../../../../../../components/elements/snack_bar/uti
 
 const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   const { t } = useTranslation();
-  const { PollsReducer } = useSelector((state) => state);
+  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   let userID = localStorage.getItem("userID");
   const [open, setOpen] = useState({
     open: false,
@@ -85,11 +85,8 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   };
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollData = PollsReducer.Allpolls.poll;
+      if (Allpolls !== null && Allpolls !== undefined) {
+        let pollData = Allpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -111,7 +108,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
         }
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [Allpolls]);
 
   const handleCancelButton = () => {
     setvotePolls(false);
