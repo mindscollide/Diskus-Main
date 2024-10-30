@@ -15,9 +15,14 @@ import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 const Organization = () => {
-  //for translation
-  const { settingReducer } = useSelector((state) => state);
-  const { UserProfileData } = settingReducer;
+  const settingReducerUserProfileData = useSelector(
+    (state) => state.settingReducer.UserProfileData
+  );
+
+  const userSettingsResponseMessagesData = useSelector(
+    (state) => state.settingReducer.UpdateUserSettingResponseMessage
+  );
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,7 +76,10 @@ const Organization = () => {
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
 
   useEffect(() => {
-    if (UserProfileData === undefined || UserProfileData === null) {
+    if (
+      settingReducerUserProfileData === undefined ||
+      settingReducerUserProfileData === null
+    ) {
       dispatch(getUserSetting(navigate, t, false));
     }
   }, []);
@@ -349,7 +357,7 @@ const Organization = () => {
   };
 
   useEffect(() => {
-    let userProfileData = settingReducer.UserProfileData;
+    let userProfileData = settingReducerUserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {
       localStorage.setItem(
         "officeEventColor",
@@ -430,10 +438,10 @@ const Organization = () => {
       };
       setOrganizationStates(settingData);
     }
-  }, [settingReducer.UserProfileData]);
+  }, [settingReducerUserProfileData]);
 
   const ResetUserConfigurationSetting = () => {
-    let userProfileData = settingReducer.UserProfileData;
+    let userProfileData = settingReducerUserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
@@ -505,19 +513,15 @@ const Organization = () => {
 
   useEffect(() => {
     if (
-      settingReducer.UpdateUserSettingResponseMessage !== "" &&
-      settingReducer.UpdateUserSettingResponseMessage !== ""
+      userSettingsResponseMessagesData !== "" &&
+      userSettingsResponseMessagesData !== ""
     ) {
-      showMessage(
-        settingReducer.UpdateUserSettingResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(userSettingsResponseMessagesData, "success", setOpen);
       dispatch(updateUserMessageCleare());
     } else {
       dispatch(updateUserMessageCleare());
     }
-  }, [settingReducer.UpdateUserSettingResponseMessage]);
+  }, [userSettingsResponseMessagesData]);
 
   return (
     <>

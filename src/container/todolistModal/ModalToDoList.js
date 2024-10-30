@@ -46,8 +46,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoDate, setCreateTodoDate] = useState(current_Date);
-  const state = useSelector((state) => state);
-  const { toDoListReducer } = state;
+
+  const toDoListReducerAllAssigneesData = useSelector(
+    (state) => state.toDoListReducer.AllAssigneesData
+  );
+
+  const toDoListReducertodoDocumentsMappingData = useSelector(
+    (state) => state.toDoListReducer.todoDocumentsMapping
+  );
 
   //To Display Modal
 
@@ -161,7 +167,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //To Set task Creater ID
   useEffect(() => {
     try {
-      let data = [...toDoListReducer.AllAssigneesData];
+      let data = [...toDoListReducerAllAssigneesData];
       if (
         data !== undefined &&
         data !== null &&
@@ -230,7 +236,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.AllAssigneesData]);
+  }, [toDoListReducerAllAssigneesData]);
 
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
@@ -484,10 +490,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   useEffect(() => {
-    if (toDoListReducer.todoDocumentsMapping !== 0) {
-      uploadTaskDocuments(toDoListReducer.todoDocumentsMapping);
+    if (toDoListReducertodoDocumentsMappingData !== 0) {
+      uploadTaskDocuments(toDoListReducertodoDocumentsMappingData);
     }
-  }, [toDoListReducer.todoDocumentsMapping]);
+  }, [toDoListReducertodoDocumentsMappingData]);
 
   const handleDeleteAttendee = (data, index) => {
     let newDataAssignees = [...assignees];

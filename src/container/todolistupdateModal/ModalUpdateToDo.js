@@ -27,8 +27,20 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   const { t } = useTranslation();
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
-  //To Display Modal
 
+  const toDoListReducerData = useSelector(
+    (state) => state.toDoListReducer.ToDoDetails
+  );
+
+  const allAssigneesData = useSelector(
+    (state) => state.toDoListReducer.AllAssigneesData
+  );
+
+  const toDoListReducerResponseMessageData = useSelector(
+    (state) => state.toDoListReducer.Message
+  );
+
+  //To Display Modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -109,8 +121,8 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
 
   // To View To-Do List Data
   useEffect(() => {
-    if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
-      let viewData = toDoListReducer.ToDoDetails;
+    if (Object.keys(toDoListReducerData).length > 0) {
+      let viewData = toDoListReducerData;
       setTask({
         ...task,
         Title: viewData.title,
@@ -127,7 +139,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           }
         });
       }
-      let listOfAssignees = toDoListReducer.ToDoDetails.taskAssignedTo;
+      let listOfAssignees = toDoListReducerData.taskAssignedTo;
       if (listOfAssignees !== undefined) {
         let tem = [];
         let temid = [];
@@ -140,7 +152,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         setTaskAssignedTo(temid);
         setTaskAssignedName(tem);
       }
-      let filesUploaded = toDoListReducer.ToDoDetails.taskAttachments;
+      let filesUploaded = toDoListReducerData.taskAttachments;
       if (filesUploaded !== undefined) {
         let tem = [];
         filesUploaded.forEach((data, index) => {
@@ -156,7 +168,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         setTasksAttachments({ TasksAttachments: tem });
       }
     }
-  }, [toDoListReducer.ToDoDetails]);
+  }, [toDoListReducerData]);
 
   //Get All Assignees API hit
   useEffect(() => {
@@ -186,7 +198,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let allAssignees = toDoListReducer.AllAssigneesData;
+    let allAssignees = allAssigneesData;
 
     if (
       allAssignees !== undefined &&
@@ -271,12 +283,13 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
 
   useEffect(() => {
     if (
-      toDoListReducer.Message === "The Record has been Updated successfully"
+      toDoListReducerResponseMessageData ===
+      "The Record has been Updated successfully"
     ) {
-      showMessage(toDoListReducer.Message, "success", setOpen);
+      showMessage(toDoListReducerResponseMessageData, "success", setOpen);
       //
     }
-  }, [toDoListReducer.Message]);
+  }, [toDoListReducerResponseMessageData]);
 
   return (
     <>

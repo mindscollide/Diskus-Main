@@ -18,7 +18,11 @@ import { updateVoteApi } from "../../store/actions/Resolution_actions";
 import { useNavigate } from "react-router-dom";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
-  const { ResolutionReducer } = useSelector((state) => state);
+
+  const VoteDetails = useSelector(
+    (state) => state.ResolutionReducer.getVoteDetailsByID
+  );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [approved, setApproved] = useState(0);
@@ -105,9 +109,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   };
   useEffect(() => {
     try {
-      if (ResolutionReducer.getVoteDetailsByID !== null) {
+      if (VoteDetails !== null) {
         try {
-          let getVoteresult = ResolutionReducer.getVoteDetailsByID;
+          let getVoteresult = VoteDetails;
           setResolutionTitle(getVoteresult.resolutionTite);
           setVotingMethod(getVoteresult.votingMethod);
           setVotingMethodId(getVoteresult.votingMethodID);
@@ -133,7 +137,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [ResolutionReducer.getVoteDetailsByID]);
+  }, [VoteDetails]);
   return (
     <>
       <section>
