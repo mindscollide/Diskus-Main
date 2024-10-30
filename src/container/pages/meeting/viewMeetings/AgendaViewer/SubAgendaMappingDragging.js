@@ -56,8 +56,9 @@ const SubAgendaMappingDragging = ({
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const { MeetingAgendaReducer } = useSelector((state) => state);
-
+  const ResponseMessage = useSelector(
+    (state) => state.MeetingAgendaReducer.ResponseMessage
+  );
   const printFlag = useSelector(
     (state) => state.MeetingAgendaReducer.PrintAgendaFlag
   );
@@ -184,7 +185,7 @@ const SubAgendaMappingDragging = ({
   };
 
   useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
+    if (ResponseMessage === t("Vote-casted-successfully")) {
       showMessage(
         t("Thank-you-for-participanting-in-voting"),
         "error",
@@ -192,7 +193,7 @@ const SubAgendaMappingDragging = ({
       );
       dispatch(clearResponseMessage(""));
     }
-  }, [MeetingAgendaReducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <>

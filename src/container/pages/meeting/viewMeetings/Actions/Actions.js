@@ -49,13 +49,26 @@ const Actions = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    NewMeetingreducer,
-    actionMeetingReducer,
-    todoStatus,
-    getTodosStatus,
-    toDoListReducer,
-  } = useSelector((state) => state);
+  const cancelActions = useSelector(
+    (state) => state.NewMeetingreducer.cancelActions
+  );
+  const removeTableModal = useSelector(
+    (state) => state.NewMeetingreducer.removeTableModal
+  );
+  const todoListMeetingTask = useSelector(
+    (state) => state.actionMeetingReducer.todoListMeetingTask
+  );
+  const Response = useSelector((state) => state.todoStatus.Response);
+  const UpdateTodoStatusMessage = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+  );
+  const socketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
+  const createTaskMeeting = useSelector(
+    (state) => state.toDoListReducer.createTaskMeeting
+  );
+
   let userID = localStorage.getItem("userID");
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPageSize, setCurrentPageSize] = useState(10);
@@ -108,12 +121,8 @@ const Actions = ({
     let newOptionsFilter = [];
     let newArrStatus = [""];
 
-    if (
-      todoStatus.Response !== null &&
-      todoStatus.Response !== "" &&
-      todoStatus.Response?.length > 0
-    ) {
-      todoStatus.Response.map((data) => {
+    if (Response !== null && Response !== "" && Response?.length > 0) {
+      Response.map((data) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
@@ -129,13 +138,13 @@ const Actions = ({
     setStatusValues(newArrStatus);
 
     setStatusOptions(optionsArr);
-  }, [todoStatus]);
+  }, [Response]);
 
   // Remove task from mqtt response
   useEffect(() => {
     try {
-      if (toDoListReducer.socketTodoStatusData !== null) {
-        let payloadData = toDoListReducer.socketTodoStatusData;
+      if (socketTodoStatusData !== null) {
+        let payloadData = socketTodoStatusData;
         if (payloadData.todoStatusID === 6) {
           setActionsRows((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -161,12 +170,12 @@ const Actions = ({
         }
       }
     } catch {}
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [socketTodoStatusData]);
 
   useEffect(() => {
     if (removeTodo !== 0) {
       if (
-        getTodosStatus.UpdateTodoStatusMessage ===
+        UpdateTodoStatusMessage ===
         t("The-record-has-been-updated-successfully")
       ) {
         let copyData = [...actionsRows];
@@ -177,7 +186,7 @@ const Actions = ({
         setRemoveTodo(0);
       }
     }
-  }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
+  }, [UpdateTodoStatusMessage, removeTodo]);
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -431,28 +440,25 @@ const Actions = ({
   useEffect(() => {
     try {
       if (
-        actionMeetingReducer.todoListMeetingTask !== null &&
-        actionMeetingReducer.todoListMeetingTask !== undefined &&
-        actionMeetingReducer.todoListMeetingTask.toDoLists.length > 0
+        todoListMeetingTask !== null &&
+        todoListMeetingTask !== undefined &&
+        todoListMeetingTask.toDoLists.length > 0
       ) {
-        console.log(
-          actionMeetingReducer.todoListMeetingTask.toDoLists,
-          "actionMeetingReducer"
-        );
-        setTotalRecords(actionMeetingReducer.todoListMeetingTask.totalRecords);
-        setActionsRows(actionMeetingReducer.todoListMeetingTask.toDoLists);
+        console.log(todoListMeetingTask.toDoLists, "actionMeetingReducer");
+        setTotalRecords(todoListMeetingTask.totalRecords);
+        setActionsRows(todoListMeetingTask.toDoLists);
       } else {
         setActionsRows([]);
         setTotalRecords(0);
       }
     } catch {}
-  }, [actionMeetingReducer.todoListMeetingTask]);
+  }, [todoListMeetingTask]);
 
   useEffect(() => {
     try {
-      if (toDoListReducer.createTaskMeeting !== null) {
-        let taskData = toDoListReducer.createTaskMeeting;
-        let taskInfo = toDoListReducer.createTaskMeeting.todoList;
+      if (createTaskMeeting !== null) {
+        let taskData = createTaskMeeting;
+        let taskInfo = createTaskMeeting.todoList;
         if (Number(taskData.meetingID) === Number(currentMeeting)) {
           let findisAlreadExist = actionsRows.findIndex(
             (data, index) => data.pK_TID === taskData.todoList.pK_TID
@@ -467,7 +473,7 @@ const Actions = ({
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }
-  }, [toDoListReducer.createTaskMeeting]);
+  }, [createTaskMeeting]);
 
   // for pagination in Create Task
   const handleForPagination = (current, pageSize) => {
@@ -496,8 +502,8 @@ const Actions = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -680,8 +686,8 @@ const Actions = ({
           setViewFlagToDo={setViewTaskModal}
         />
       )}
-      {NewMeetingreducer.removeTableModal && <RemoveTableModal />}
-      {NewMeetingreducer.cancelActions && (
+      {removeTableModal && <RemoveTableModal />}
+      {cancelActions && (
         <CancelActions setSceduleMeeting={setViewAdvanceMeetingModal} />
       )}
     </section>

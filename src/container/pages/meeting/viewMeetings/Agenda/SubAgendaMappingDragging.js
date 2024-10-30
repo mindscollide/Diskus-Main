@@ -50,8 +50,9 @@ const SubAgendaMappingDragging = ({
 }) => {
   const { t } = useTranslation();
 
-  const { MeetingAgendaReducer } = useSelector((state) => state);
-
+  const ResponseMessage = useSelector(
+    (state) => state.MeetingAgendaReducer.ResponseMessage
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let currentUserID = localStorage.getItem("userID");
@@ -173,7 +174,7 @@ const SubAgendaMappingDragging = ({
   };
 
   useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
+    if (ResponseMessage === "Vote-casted-successfully") {
       showMessage(
         t("Thank-you-for-participanting-in-voting"),
         "error",
@@ -181,7 +182,7 @@ const SubAgendaMappingDragging = ({
       );
       dispatch(clearResponseMessage(""));
     }
-  }, [MeetingAgendaReducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <>

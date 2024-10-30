@@ -9,7 +9,9 @@ import { Col, Row } from "react-bootstrap";
 const RemoveTableModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const removeTableModal = useSelector(
+    (state) => state.NewMeetingreducer.removeTableModal
+  );
 
   const handleCancelFunctionality = () => {
     dispatch(showRemovedTableModal(false));
@@ -18,7 +20,7 @@ const RemoveTableModal = () => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.removeTableModal}
+        show={removeTableModal}
         setShow={dispatch(showRemovedTableModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
