@@ -54,6 +54,8 @@ const ManageUsers = () => {
     (state) => state.UserMangementReducer.allOrganizationUsersData
   );
 
+  console.log(UserMangementReducerallOrganizationUsersData, "statestate");
+
   const UserMangementReducerResponseMessage = useSelector(
     (state) => state.UserMangementReducer.ResponseMessage
   );
@@ -174,6 +176,7 @@ const ManageUsers = () => {
         Users.organizationUsers &&
         Users.organizationUsers.length > 0
       ) {
+        console.log(Users, "UsersUsersUsersUsersUsersUsers");
         setManageUserGrid(
           UserMangementReducerallOrganizationUsersData.organizationUsers
         );
@@ -278,7 +281,7 @@ const ManageUsers = () => {
       key: "userStatus",
       align: "left",
       ellipsis: true,
-      render: (record) => {
+      render: (text, record) => {
         return (
           <>
             {(() => {
@@ -331,7 +334,7 @@ const ManageUsers = () => {
       dataIndex: "Delete",
       key: "Delete",
       align: "center",
-      render: (record) => {
+      render: (text, record) => {
         return (
           <>
             {checkFeatureIDAvailability(27) ? (
@@ -513,7 +516,6 @@ const ManageUsers = () => {
 
   // handle Edit User Modal
   const handleClickEditIcon = (record) => {
-    console.log(record, "recordrecord");
     setEditModalData(record);
     dispatch(showEditUserModal(true));
   };
