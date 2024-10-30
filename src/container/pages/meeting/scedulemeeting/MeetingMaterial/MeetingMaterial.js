@@ -57,8 +57,6 @@ const MeetingMaterial = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { NewMeetingreducer } = useSelector((state) => state);
-
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData
   );
@@ -331,8 +329,6 @@ const MeetingMaterial = ({
 
   console.log("isPublishedGlobalisPublishedGlobal", isPublishedGlobal);
 
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
-
   const handleCancelButton = async () => {
     let searchData = {
       Date: "",
@@ -344,8 +340,8 @@ const MeetingMaterial = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSceduleMeeting(false);
   };
 
@@ -367,7 +363,7 @@ const MeetingMaterial = ({
   };
   const handlePublish = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
-    console.log("end meeting chaek")
+    console.log("end meeting chaek");
     dispatch(
       UpdateOrganizersMeeting(
         false,

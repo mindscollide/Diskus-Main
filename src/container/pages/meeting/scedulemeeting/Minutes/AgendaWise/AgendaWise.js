@@ -63,10 +63,25 @@ const AgendaWise = ({
   const [organizerID, setOrganizerID] = useState(0);
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { NewMeetingreducer, AgendaWiseAgendaListReducer } = useSelector(
-    (state) => state
-  );
 
+  const agendaWiseMinutesReducer = useSelector(
+    (state) => state.NewMeetingreducer.agendaWiseMinutesReducer
+  );
+  const getallDocumentsForAgendaWiseMinutes = useSelector(
+    (state) => state.NewMeetingreducer.getallDocumentsForAgendaWiseMinutes
+  );
+  const agendaWiseMinuteID = useSelector(
+    (state) => state.NewMeetingreducer.agendaWiseMinuteID
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const RetriveAgendaWiseDocuments = useSelector(
+    (state) => state.NewMeetingreducer.RetriveAgendaWiseDocuments
+  );
+  const AllAgendas = useSelector(
+    (state) => state.AgendaWiseAgendaListReducer.AllAgendas
+  );
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
@@ -108,50 +123,39 @@ const AgendaWise = ({
 
   useEffect(() => {
     try {
-      if (
-        AgendaWiseAgendaListReducer.AllAgendas !== null &&
-        AgendaWiseAgendaListReducer.AllAgendas !== undefined
-      ) {
+      if (AllAgendas !== null && AllAgendas !== undefined) {
         let NewData = [];
-        console.log(
-          AgendaWiseAgendaListReducer.AllAgendas,
-          "agendaListagendaList"
-        );
-        AgendaWiseAgendaListReducer.AllAgendas.agendaList.forEach(
-          (agenda, index) => {
-            console.log(agenda, "agendaListagendaList");
-            NewData.push({
-              value: agenda.id,
-              label: agenda.title,
-            });
+        AllAgendas.agendaList.forEach((agenda, index) => {
+          console.log(agenda, "agendaListagendaList");
+          NewData.push({
+            value: agenda.id,
+            label: agenda.title,
+          });
 
-            agenda.subAgenda.forEach((subajendaData, index) => {
-              NewData.push({
-                value: subajendaData.subAgendaID,
-                label: subajendaData.subTitle,
-              });
+          agenda.subAgenda.forEach((subajendaData, index) => {
+            NewData.push({
+              value: subajendaData.subAgendaID,
+              label: subajendaData.subTitle,
             });
-          }
-        );
+          });
+        });
         setAgendaOptions(NewData);
       }
     } catch {}
-  }, [AgendaWiseAgendaListReducer.AllAgendas]);
+  }, [AllAgendas]);
 
   // Combined Data for both Documents and Minutes Agenda Wise
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-        NewMeetingreducer.agendaWiseMinutesReducer &&
-        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
-        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
+        agendaWiseMinutesReducer !== null &&
+        agendaWiseMinutesReducer &&
+        getallDocumentsForAgendaWiseMinutes !== null &&
+        getallDocumentsForAgendaWiseMinutes !== undefined
       ) {
-        const minutesData =
-          NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
+        const minutesData = agendaWiseMinutesReducer.agendaWiseMinutes;
 
-        const documentsData =
-          NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
+        const documentsData = getallDocumentsForAgendaWiseMinutes.data;
 
         // Grouping data based on agendaID
         const groupedData = minutesData.reduce((acc, item1) => {
@@ -191,10 +195,7 @@ const AgendaWise = ({
       // Handle any errors here
       console.error(error);
     }
-  }, [
-    NewMeetingreducer.agendaWiseMinutesReducer,
-    NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
-  ]);
+  }, [agendaWiseMinutesReducer, getallDocumentsForAgendaWiseMinutes]);
 
   // Grouping the messages by agendaID while maintaining the unique titles
   const groupedMessages = messages.reduce((acc, curr) => {
@@ -496,14 +497,11 @@ const AgendaWise = ({
   };
   // For getting the MinuteID
   useEffect(() => {
-    if (NewMeetingreducer.agendaWiseMinuteID !== 0) {
-      console.log(
-        NewMeetingreducer.agendaWiseMinuteID,
-        "agendaWiseMinuteIDagendaWiseMinuteID"
-      );
-      documentUploadingFunc(NewMeetingreducer.agendaWiseMinuteID);
+    if (agendaWiseMinuteID !== 0) {
+      console.log(agendaWiseMinuteID, "agendaWiseMinuteIDagendaWiseMinuteID");
+      documentUploadingFunc(agendaWiseMinuteID);
     }
-  }, [NewMeetingreducer.agendaWiseMinuteID]);
+  }, [agendaWiseMinuteID]);
 
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
@@ -588,29 +586,27 @@ const AgendaWise = ({
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== null &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments.data.length > 0
+        RetriveAgendaWiseDocuments !== null &&
+        RetriveAgendaWiseDocuments !== undefined &&
+        RetriveAgendaWiseDocuments.data.length > 0
       ) {
         let files = [];
         let prevData = [];
-        NewMeetingreducer.RetriveAgendaWiseDocuments.data.forEach(
-          (data, index) => {
-            files.push({
-              DisplayAttachmentName: data.displayFileName,
-              fileID: data.pK_FileID,
-            });
-            prevData.push({
-              pK_FileID: data.pK_FileID,
-              DisplayAttachmentName: data.displayFileName,
-            });
-          }
-        );
+        RetriveAgendaWiseDocuments.data.forEach((data, index) => {
+          files.push({
+            DisplayAttachmentName: data.displayFileName,
+            fileID: data.pK_FileID,
+          });
+          prevData.push({
+            pK_FileID: data.pK_FileID,
+            DisplayAttachmentName: data.displayFileName,
+          });
+        });
         setFileAttachments(files);
         setPreviousFileIDs(prevData);
       }
     } catch {}
-  }, [NewMeetingreducer.RetriveAgendaWiseDocuments]);
+  }, [RetriveAgendaWiseDocuments]);
 
   //Handle Update Button Api
   const handleUpdateFuncagendaWise = async () => {
@@ -732,19 +728,19 @@ const AgendaWise = ({
   //Handling of the Response Messege
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully") &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available")
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found") &&
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("List-updated-successfully") &&
+      ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   const toggleAcordion = (agendaID) => {
     // setExpanded((prev) => (prev === notesID ? true : false));

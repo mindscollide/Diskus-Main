@@ -10,8 +10,9 @@ import { useSelector } from "react-redux";
 const DeleteMeetingModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const deleteMeetingModal = useSelector(
+    (state) => state.NewMeetingreducer.deleteMeetingModal
+  );
   const handleCancelEvent = () => {
     dispatch(showDeleteMeetingModal(false));
   };
@@ -19,7 +20,7 @@ const DeleteMeetingModal = () => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.deleteMeetingModal}
+        show={deleteMeetingModal}
         setShow={dispatch(showDeleteMeetingModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

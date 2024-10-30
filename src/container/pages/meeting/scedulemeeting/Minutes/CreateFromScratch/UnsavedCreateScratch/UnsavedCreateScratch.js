@@ -12,8 +12,9 @@ const UnsavedCreateScratch = ({ setCreateFromSratch }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const UnsavedButtonCreateScratch = useSelector(
+    (state) => state.NewMeetingreducer.UnsavedButtonCreateScratch
+  );
   const handleYesFunctionality = () => {
     dispatch(showUnsavedForButonCreateFromScratch(false));
     setCreateFromSratch(false);
@@ -22,7 +23,7 @@ const UnsavedCreateScratch = ({ setCreateFromSratch }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.UnsavedButtonCreateScratch}
+        show={UnsavedButtonCreateScratch}
         setShow={dispatch(showUnsavedForButonCreateFromScratch)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

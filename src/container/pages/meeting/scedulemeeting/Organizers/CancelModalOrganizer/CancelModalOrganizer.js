@@ -19,7 +19,9 @@ const CancelModalOrganizer = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const cancelModalOrganizer = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalOrganizer
+  );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
@@ -52,7 +54,7 @@ const CancelModalOrganizer = ({ setSceduleMeeting }) => {
       {" "}
       <section>
         <Modal
-          show={NewMeetingreducer.cancelModalOrganizer}
+          show={cancelModalOrganizer}
           setShow={dispatch(showCancelModalOrganizers)}
           modalHeaderClassName={"d-block"}
           modalFooterClassName={"d-block"}
