@@ -36,8 +36,9 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
-  const { UserMangementReducer } = useSelector((state) => state);
-
+  const UserMangementReducerLoading = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
   const AuthreducerLoadingData = useSelector(
     (state) => state.Authreducer.Loading
   );
@@ -351,7 +352,7 @@ const SignInUserManagement = () => {
           </>
         )}
       </Container>
-      {getpayemntString && getpayemntString !== "" && UserMangementReducer && (
+      {getpayemntString && getpayemntString !== "" && UserMangementReducerLoading && (
         <Loader />
       )}
       {UserManagementModalsmobileAppPopUpData && <MobileAppPopUpModal />}
