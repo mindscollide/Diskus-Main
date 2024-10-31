@@ -31,7 +31,6 @@ export { default as PackageDetails } from "../container/Admin/Subscriptions/Pack
 export { default as PackageUpgrade } from "../container/Admin/Subscriptions/PackageUpgrade/PackageUpgrade";
 export { default as PackageUpgradeDetail } from "../container/Admin/Subscriptions/PackageUpgradeDetail/PackageUpgradeDetail";
 export { default as PackageUpgradeSelect } from "../container/Admin/Subscriptions/PackageUpgradeSelected/PackageUpgradeSelect";
-export { default as ForgotPassword } from "../container/authentication/forgot_password/Forgot_password";
 export { default as PasswordUpdateMessage } from "../container/authentication/password_update_message/Password_Update_Message";
 export { default as Notes } from "../container/notes/Notes";
 export { default as CalendarPage } from "../container/calendarpage/CalendarPage";

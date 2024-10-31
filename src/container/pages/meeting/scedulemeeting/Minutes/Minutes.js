@@ -729,20 +729,23 @@ const Minutes = ({
   };
   console.log(ResponseMessage, "ResponseMessageResponseMessage");
   useEffect(() => {
-    if (
-      ResponseMessage.trim() !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available")
-    ) {
-      // showMessage(ResponseMessage, "success", setOpen);
-      //   dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
+    try{
+      if (
+        ResponseMessage.trim() !== "" &&
+        ResponseMessage !== t("No-record-found") &&
+        ResponseMessage !== t("No-records-found") &&
+        ResponseMessage !== "" &&
+        ResponseMessage !== t("No-record-found") &&
+        ResponseMessage !== t("List-updated-successfully") &&
+        ResponseMessage !== t("No-data-available")
+      ) {
+        // showMessage(ResponseMessage, "success", setOpen);
+        //   dispatch(CleareMessegeNewMeeting());
+      } else {
+        dispatch(CleareMessegeNewMeeting());
+      }
+    }catch{}
+    
   }, [ResponseMessage]);
 
   return (
