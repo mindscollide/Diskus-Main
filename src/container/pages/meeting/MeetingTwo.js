@@ -505,10 +505,10 @@ const NewMeeting = () => {
         });
     }
   }, [AgCont]);
-
+  console.log(AdOrg,"AdOrgAdOrgAdOrg")
   useEffect(() => {
     if (AdOrg !== null) {
-      validateStringEmailApi(AgCont, navigate, t, 2, dispatch)
+      validateStringEmailApi(AdOrg, navigate, t, 2, dispatch)
         .then(async (result) => {
           // Handle the result here
 

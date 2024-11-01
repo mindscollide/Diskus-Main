@@ -2449,6 +2449,10 @@ const GetAllMeetingDetailsApiFunc = (
                 )
             ) {
               localStorage.setItem(
+                "meetingTitle",
+                response.data.responseResult.advanceMeetingDetails.meetingTitle
+              );
+              localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.advanceMeetingDetails.meetingID
               );

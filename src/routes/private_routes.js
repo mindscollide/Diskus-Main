@@ -67,9 +67,11 @@ const PrivateRoutes = () => {
       const parts = currentUrl.split("Updateagendacontributor_action=")[1];
       localStorage.setItem("UpCont", parts);
     }
+    console.log(currentUrl, "partsparts")
 
     // Action: Add Organizer
-    if (currentUrl.includes("DisKus/Meeting/?Addorganizer_action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Addorganizer_action=")) {
+      console.log(currentUrl, "partsparts")
       // Extract action parameter from URL
       const parts = currentUrl.split("Addorganizer_action=")[1];
       localStorage.setItem("AdOrg", parts);
