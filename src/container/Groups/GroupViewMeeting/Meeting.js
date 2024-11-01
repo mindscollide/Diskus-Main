@@ -93,8 +93,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  const handleViewMeeting = async (meetingID, isQuickMeeting,status) => {
-    if(Number(status) === 10) {
+  const handleViewMeeting = async (meetingID, isQuickMeeting, status) => {
+    if (Number(status) === 10) {
       let joinMeetingData = {
         FK_MDID: Number(meetingID),
         DateTime: getCurrentDateTimeUTC(),
@@ -129,7 +129,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       );
       setViewMeetingModal(true);
     }
- 
   };
   const handleEditMeeting = async (meetingID, isQuickMeeting) => {
     let Data = { MeetingID: Number(meetingID) };
@@ -506,7 +505,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+                  handleViewMeeting(
+                    record.pK_MDID,
+                    record.isQuickMeeting,
+                    record.status
+                  );
                   localStorage.setItem("meetingTitle", record.title);
                 }}
               />
@@ -518,7 +521,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   localStorage.setItem("meetingTitle", record.title);
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+                  handleViewMeeting(
+                    record.pK_MDID,
+                    record.isQuickMeeting,
+                    record.status
+                  );
                 }}
               />
             );
@@ -528,7 +535,12 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status,record.status);
+                  handleViewMeeting(
+                    record.pK_MDID,
+                    record.isQuickMeeting,
+                    record.status,
+                    record.status
+                  );
                   localStorage.setItem("meetingTitle", record.title);
                 }}
               />
@@ -692,7 +704,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
               });
             });
           } else {
-            setRow([...rows, meetingData]);
+            setRow([meetingData, ...rows]);
           }
         }
         dispatch(createGroupMeeting(null));

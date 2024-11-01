@@ -130,7 +130,9 @@ const ParentAgenda = ({
       AgendaID: record.id ? record.id : record.subAgendaID,
       AgendaVotingID: record.agendaVotingID,
     };
-    await dispatch(GetAgendaAndVotingInfo(Data, navigate, t,setRows));
+    console.log(rows, Data, "EnableCastVoteModalEnableCastVoteModal");
+    await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
+
     dispatch(showCastVoteAgendaModal(true));
     dispatch(GetCurrentAgendaDetails(record));
   };
@@ -723,7 +725,9 @@ const ParentAgenda = ({
           </Row>
         </span>
         {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
-        {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
+        {NewMeetingreducer.castVoteAgendaPage && (
+          <CastVoteAgendaModal setRows={setRows} rows={rows} />
+        )}
         {/* </div>
           )} */}
         {/* </Draggable> */}

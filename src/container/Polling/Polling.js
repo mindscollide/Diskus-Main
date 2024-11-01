@@ -85,6 +85,7 @@ const Polling = () => {
 
   let organizationID = localStorage.getItem("organizationID");
   let pollPub = localStorage.getItem("poPub");
+  let pollUpda = localStorage.getItem("poUpda")
   let userID = localStorage.getItem("userID");
   const [isTotalRecords, setTotalRecords] = useState(0);
 
@@ -176,6 +177,23 @@ const Polling = () => {
         });
     }
   }, [pollPub]);
+
+  useEffect(() => {
+    if(pollUpda !== null) {
+      validateStringPollApi(pollUpda, navigate, t, 2, dispatch)
+      .then(async (result) => {
+        localStorage.removeItem("poUpda");
+        let data = {
+          PollID: result.pollID,
+          UserID: parseInt(result.userID),
+        };
+        await dispatch(getPollsByPollIdApi(navigate, data, 4, t));
+      })
+      .catch((error) => {
+        console.log(error, "result");
+      });
+    }
+  }, [pollUpda])
 
   useEffect(() => {
     try {

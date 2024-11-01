@@ -306,7 +306,7 @@ const SubAgendaMappingDragging = ({
             subIndex < data.subAgenda.length - 1 &&
             subAgendaData.canView === false &&
             data.subAgenda[subIndex + 1].canView === true;
-          console.log("hasNextViewFalse", hasNextViewFalse);
+          console.log("hasNextViewFalse", hasNextViewFalse,subAgendaData);
           return (
             <>
               <div

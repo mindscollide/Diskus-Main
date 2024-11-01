@@ -28,6 +28,7 @@ export const localStorageManage = (
   let Meetingprop = localStorage.getItem("meetingprop");
   let MtAgUpdate = localStorage.getItem("mtAgUpdate");
   let poPub = localStorage.getItem("poPub");
+  let poUpda = localStorage.getItem("poUpda")
 
   let resolutionVoter = localStorage.getItem("resVot");
   let resolutionNonVoter = localStorage.getItem("resNonVot");
@@ -85,6 +86,9 @@ export const localStorageManage = (
     if (DataRoomEmailValue) {
       localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
     }
+    if(poUpda) {
+      localStorage.setItem("poUpda", poUpda)
+    }
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
     localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
     localStorage.setItem("rememberEmail", RememberEmailLocal);
@@ -141,6 +145,9 @@ export const localStorageManage = (
     }
     if (DataRoomEmailValue) {
       localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+    }
+    if(poUpda) {
+      localStorage.setItem("poUpda", poUpda)
     }
     localStorage.setItem("rememberEmail", RememberEmailLocal);
     localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
@@ -200,6 +207,9 @@ export const localStorageManage = (
     if (DataRoomEmailValue) {
       localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
     }
+    if(poUpda) {
+      localStorage.setItem("poUpda", poUpda)
+    }
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
     localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
     setErrorMessage("");
@@ -251,6 +261,9 @@ export const localStorageManage = (
     }
     if (DataRoomEmailValue) {
       localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+    }
+    if(poUpda) {
+      localStorage.setItem("poUpda", poUpda)
     }
     localStorage.setItem("rememberEmail", false);
     localStorage.setItem("rememberEmailValue", "");

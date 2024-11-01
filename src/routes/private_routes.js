@@ -134,11 +134,13 @@ const PrivateRoutes = () => {
     if (
       currentUrl
         .toLowerCase()
-        .includes("DisKus/polling?PollUpdate_action=".toLowerCase())
+        .includes("DisKus/polling?PollUpdated_action=".toLowerCase())
     ) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
-      localStorage.setItem("poPub", parts);
+      console.log(parts, "pollingpolling");
+
+      localStorage.setItem("poUpda", parts);
     }
 
     // Action: Resolution Reminder
