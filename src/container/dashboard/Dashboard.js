@@ -346,7 +346,7 @@ const Dashboard = () => {
                 setNotificationID(id);
               }
               if (
-                Number(meetingVideoID) === Number(data.payload.meeting.pK_MDID)
+                Number(meetingVideoID) === Number(data?.payload?.meeting?.pK_MDID)
               ) {
         
                 dispatch(normalizeVideoPanelFlag(false));
