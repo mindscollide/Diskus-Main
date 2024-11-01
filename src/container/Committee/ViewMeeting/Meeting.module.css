@@ -3,6 +3,11 @@
   color: #6172d6;
   font-size: 14px !important;
   cursor: pointer;
+  overflow: hidden !important;
+  /* width: 180px !important; */
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  display: block !important;
 }
 
 .Start-Meeting {
@@ -100,13 +105,13 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-weight: 500 !important;
-  display: flex;
+  font-weight: 600 !important;
+  display: flex !important;
   align-items: center !important;
-  gap: 5px;
-  border: none;
+  gap: 5px !important;
+  border: none !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff;
+  color: #fff !important;
 }
 
 .Create_Meeting_Button:is(:hover, :focus, :focus-visible, :active) {

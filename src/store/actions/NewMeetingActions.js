@@ -8311,6 +8311,9 @@ const LeaveCurrentMeeting = (
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let roomID = localStorage.getItem("acceptedRoomID");
   let userGUID = localStorage.getItem("userGUID");
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID")
+  let ViewGroupID = localStorage.getItem("ViewGroupID");
+
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8363,17 +8366,46 @@ const LeaveCurrentMeeting = (
                   if (typeof setEndMeetingConfirmationModal === "function") {
                     setEndMeetingConfirmationModal(false);
                   }
-                  let searchData = {
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber: Number(meetingPageCurrent),
-                    Length: Number(meetingpageRow),
-                    PublishedMeetings: true,
-                  };
-                  console.log("chek search meeting");
-                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  if(ViewCommitteeID !== null) {
+                    let userID = localStorage.getItem("userID");
+
+                    let searchData = {
+                      CommitteeID: Number(ViewCommitteeID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
+                  } else if(ViewGroupID !== null) {
+                    let searchData = {
+                      GroupID: Number(ViewGroupID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+                  } else {
+                    let searchData = {
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: Number(meetingPageCurrent),
+                      Length: Number(meetingpageRow),
+                      PublishedMeetings: true,
+                    };
+                    console.log("chek search meeting");
+                    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  }
+           
                 } else {
                   dispatch(
                     leaveMeetingAdvancedSuccess(

@@ -10,7 +10,7 @@ import { Col, Row } from "react-bootstrap";
 import { Radio } from "antd";
 import { CasteVoteForAgenda } from "../../../../../../../store/actions/MeetingAgenda_action";
 
-const CastVoteAgendaModal = () => {
+const CastVoteAgendaModal = ({ rows,setRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const CastVoteAgendaModal = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   const [currentAgendaDetails, setCurrentAgendaDetails] = useState([]);
-
+  console.log(currentAgendaDetails, "currentAgendaDetailscurrentAgendaDetails");
   useEffect(() => {
     if (
       AgendaVotingInfoData !== undefined &&
@@ -88,8 +88,8 @@ const CastVoteAgendaModal = () => {
         },
       ],
     };
-    dispatch(CasteVoteForAgenda(Data, navigate, t));
-    dispatch(showCastVoteAgendaModal(false));
+    let isMainAgenda =  currentAgendaDetails && "id" in currentAgendaDetails  ;
+    dispatch(CasteVoteForAgenda(Data, navigate, t,isMainAgenda, setRows));
   };
 
   return (
@@ -122,13 +122,12 @@ const CastVoteAgendaModal = () => {
             castVoteData !== undefined &&
             castVoteData.length !== 0
               ? castVoteData.votingAnswers.map((votingAnswerData, index) => (
-                  <Row key={index} className="mt-3">
+                  <Row key={index} className='mt-3'>
                     <Col
                       lg={1}
                       md={1}
                       sm={1}
-                      className="d-flex justify-content-center align-items-center"
-                    >
+                      className='d-flex justify-content-center align-items-center'>
                       <Radio
                         value={votingAnswerData.votingAnswerID}
                         onChange={handleRadioChange}
@@ -153,13 +152,12 @@ const CastVoteAgendaModal = () => {
                   </Row>
                 ))
               : null}
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
                   text={t("Cancel")}
                   className={styles["Cast_vote_CancelButton"]}

@@ -555,7 +555,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       <p className={styles["UpdateNote-heading"]}>
                         {t("Update-note")}
                       </p>
-                      {isStarred ? (
+                      {/* {isStarred ? (
                         <Tooltip placement="topLeft" title={t("Starred")}>
                           <img
                             draggable="false"
@@ -575,7 +575,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                             onClick={() => setIsStarrted(!isStarred)}
                           />
                         </Tooltip>
-                      )}
+                      )} */}
                     </Col>
                   </Row>
 

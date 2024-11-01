@@ -17,8 +17,12 @@ import {
 import moment from "moment";
 
 const LanguageSelector = () => {
-  const { LanguageReducer } = useSelector((state) => state);
-
+  const AllLanguagesData = useSelector(
+    (state) => state.LanguageReducer.AllLanguagesData
+  );
+  const SetLanguageData = useSelector(
+    (state) => state.LanguageReducer.SetLanguageData
+  );
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -42,9 +46,9 @@ const LanguageSelector = () => {
   useEffect(() => {
     try {
       if (
-        LanguageReducer.AllLanguagesData === null ||
-        LanguageReducer.AllLanguagesData === undefined ||
-        LanguageReducer.AllLanguagesData.length === 0
+        AllLanguagesData === null ||
+        AllLanguagesData === undefined ||
+        AllLanguagesData.length === 0
       ) {
         dispatch(getAllLanguages(navigate, t));
       }
@@ -61,11 +65,11 @@ const LanguageSelector = () => {
 
   useEffect(() => {
     if (
-      LanguageReducer.AllLanguagesData !== null &&
-      LanguageReducer.AllLanguagesData !== undefined &&
-      LanguageReducer.AllLanguagesData.length !== 0
+      AllLanguagesData !== null &&
+      AllLanguagesData !== undefined &&
+      AllLanguagesData.length !== 0
     ) {
-      const newValues = LanguageReducer.AllLanguagesData.map((langValues) => ({
+      const newValues = AllLanguagesData.map((langValues) => ({
         languageTitle:
           langValues.systemSupportedLanguageID === 1
             ? t("English")
@@ -83,28 +87,27 @@ const LanguageSelector = () => {
 
       setLanguages(newValues);
     }
-  }, [LanguageReducer.AllLanguagesData]);
+  }, [AllLanguagesData]);
 
   useEffect(() => {
     if (
-      LanguageReducer.SetLanguageData !== null &&
-      LanguageReducer.SetLanguageData !== undefined &&
-      LanguageReducer.SetLanguageData.length !== 0
+      SetLanguageData !== null &&
+      SetLanguageData !== undefined &&
+      SetLanguageData.length !== 0
     ) {
       setSelectedLanguage({
         ...selectedLanguage,
-        systemSupportedLanguageID:
-          LanguageReducer.SetLanguageData.systemSupportedLanguageID,
-        languageTitle: LanguageReducer.SetLanguageData.languageTitle,
+        systemSupportedLanguageID: SetLanguageData.systemSupportedLanguageID,
+        languageTitle: SetLanguageData.languageTitle,
         code:
-          LanguageReducer.SetLanguageData.systemSupportedLanguageID === 1
+          SetLanguageData.systemSupportedLanguageID === 1
             ? "en"
-            : LanguageReducer.SetLanguageData.systemSupportedLanguageID === 2
+            : SetLanguageData.systemSupportedLanguageID === 2
             ? "ar"
             : "",
       });
     }
-  }, [LanguageReducer.SetLanguageData]);
+  }, [SetLanguageData]);
 
   const handleChangeLocale = (lang) => {
     setLanguageDropdown(false);

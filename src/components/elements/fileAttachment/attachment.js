@@ -51,7 +51,7 @@ const AttachmentViewer = ({
             />
             <span
               className={
-                ["pdf", "doc", "docx", "xls", "xlsx"].includes(fileExtension)
+                fileExtension
                   ? styles["fileNameAttachment"]
                   : styles["fileNameAttachmentNotOpened"]
               }>

@@ -450,35 +450,74 @@ const UpdateOrganizersMeeting = (
                   setSceduleMeeting(false);
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (route === 6) {
-                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-                  let userID = localStorage.getItem("userID");
+                  if (Data.StatusID === 10) {
+                    dispatch(
+                      JoinCurrentMeeting(
+                        true,
+                        navigate,
+                        t,
+                        leaveMeetingData,
+                        setViewFlag,
+                        setEditFlag,
+                        setSceduleMeeting,
+                        1,
+                        setAdvanceMeetingModalID,
+                        setViewAdvanceMeetingModal
+                      )
+                    );
+                  } else {
+                    let ViewCommitteeID =
+                      localStorage.getItem("ViewCommitteeID");
+                    let userID = localStorage.getItem("userID");
 
-                  let searchData = {
-                    CommitteeID: Number(ViewCommitteeID),
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber: 1,
-                    Length: 50,
-                    PublishedMeetings: true,
-                  };
-                  dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
+                    let searchData = {
+                      CommitteeID: Number(ViewCommitteeID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(
+                      getMeetingByCommitteeIDApi(navigate, t, searchData)
+                    );
+                  }
+
                   // setPublishState(Data.MeetingID);
                 } else if (route === 7) {
-                  let ViewGroupID = localStorage.getItem("ViewGroupID");
-                  let userID = localStorage.getItem("userID");
-                  let searchData = {
-                    GroupID: Number(ViewGroupID),
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber: 1,
-                    Length: 50,
-                    PublishedMeetings: true,
-                  };
-                  dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+                  if(Data.StatusID === 10) {
+                    dispatch(
+                      JoinCurrentMeeting(
+                        true,
+                        navigate,
+                        t,
+                        leaveMeetingData,
+                        setViewFlag,
+                        setEditFlag,
+                        setSceduleMeeting,
+                        1,
+                        setAdvanceMeetingModalID,
+                        setViewAdvanceMeetingModal
+                      )
+                    );
+                  } else {
+                    let ViewGroupID = localStorage.getItem("ViewGroupID");
+                    let userID = localStorage.getItem("userID");
+                    let searchData = {
+                      GroupID: Number(ViewGroupID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+                  }
+                 
                 }
               } catch (error) {
                 console.error("error");

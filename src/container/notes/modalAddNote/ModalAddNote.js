@@ -363,7 +363,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       <h2 className={styles["Addnote-heading"]}>
                         {t("Add-note")}
                       </h2>
-                      {isStarrted ? (
+                      {/* {isStarrted ? (
                         <Tooltip placement="topLeft" title={t("Starred")}>
                           <img
                             draggable="false"
@@ -383,7 +383,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                             onClick={() => setIsStarrted(!isStarrted)}
                           />
                         </Tooltip>
-                      )}
+                      )} */}
                     </Col>
                   </Row>
 

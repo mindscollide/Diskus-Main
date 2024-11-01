@@ -43,6 +43,7 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
+  showCastVoteAgendaModal,
 } from "./NewMeetingActions";
 
 const clearAgendaReducerState = () => {
@@ -437,7 +438,7 @@ const casteVoteForAgenda_fail = (message) => {
     message: message,
   };
 };
-const CasteVoteForAgenda = (Data, navigate, t) => {
+const CasteVoteForAgenda = (Data, navigate, t,isMainAgenda, setRows) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(casteVoteForAgenda_init());
@@ -455,7 +456,7 @@ const CasteVoteForAgenda = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveAgendaVoting(Data, navigate, t));
+          dispatch(SaveAgendaVoting(Data, navigate, t,isMainAgenda, setRows));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -471,6 +472,45 @@ const CasteVoteForAgenda = (Data, navigate, t) => {
                   t("Vote-casted-successfully")
                 )
               );
+              dispatch(showCastVoteAgendaModal(false));
+              if(isMainAgenda) {
+                setRows((rowData) => {
+                  return rowData.map((newData) => {
+                    console.log(newData, "setDatasetDatasetData");
+                    if (String(newData.id) === String(Data.AgendaID)) {
+                      return {
+                        ...newData,
+                        hasAlreadyVoted: true,
+                      };
+                    }
+                    // Return the original item if it doesn't match the condition
+                    return newData;
+                  });
+                });
+              } else {
+                setRows((rowData) => {
+                  console.log(rowData, "setDatasetDatasetData");
+                  return rowData.map((dataItem) => {
+                    if (dataItem.subAgenda && dataItem.subAgenda.length > 0) {
+                      return {
+                        ...dataItem,
+                        subAgenda: dataItem.subAgenda.map((subAgenda) => {
+                          if (String(subAgenda.subAgendaID) === String(Data.AgendaID)) {
+                            return {
+                              ...subAgenda,
+                              hasAlreadyVoted: true
+                            };
+                          }
+                          return subAgenda;
+                        })
+                      };
+                    }
+                    // Return the original item if it doesn't match the condition
+                    return dataItem;
+                  });
+                });
+              }
+
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
