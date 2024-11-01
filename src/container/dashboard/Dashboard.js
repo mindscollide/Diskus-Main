@@ -344,7 +344,8 @@ const Dashboard = () => {
                 setNotificationID(id);
               }
               if (
-                Number(meetingVideoID) === Number(data?.payload?.meeting?.pK_MDID)
+                Number(meetingVideoID) ===
+                Number(data?.payload?.meeting?.pK_MDID)
               ) {
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(maximizeVideoPanelFlag(false));
@@ -1098,6 +1099,7 @@ const Dashboard = () => {
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
+        console.log(data.action, "actionactionactionaction");
         if (
           data.payload.message.toLowerCase() ===
           "NEW_COMMITTEE_CREATION".toLowerCase()
@@ -1202,10 +1204,14 @@ const Dashboard = () => {
         }
       }
       if (data.action.toLowerCase() === "Group".toLowerCase()) {
+        console.log(data.action, "actionactionactionaction");
         if (
           data.payload.message.toLowerCase() ===
           "NEW_GROUP_CREATION".toLowerCase()
         ) {
+          console.log(data.payload.message, "actionactionactionaction");
+          console.log(data.viewable, "actionactionactionaction");
+          console.log(data.payload, "actionactionactionaction");
           if (data.viewable) {
             setNotification({
               notificationShow: true,
