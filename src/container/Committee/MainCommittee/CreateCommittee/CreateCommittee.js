@@ -101,7 +101,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     CreatorID: 0,
     CommitteeMembers: [],
   });
-
+  const chcekFlag = false;
   useEffect(() => {
     try {
       CommitteeTitle.current.focus();
@@ -116,7 +116,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, []);
+  }, [chcekFlag]);
 
   // for api response of list group roles
   useEffect(() => {
@@ -206,6 +206,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
+    console.log("checkAttendeeBox handleAddAttendees");
     let newMeetingAttendees = [...meetingAttendees];
     let newGroupMembers = [...groupMembers];
     let findRegularRole = committeeMembersRolesOptions.find(
@@ -373,15 +374,17 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     setCreategrouppage(false);
   };
 
-  const checkAttendeeBox = (data, id, index) => {
-    if (attendees.includes(id)) {
-      setAttendees((prevFiles) =>
-        prevFiles.filter((attnedeeID) => attnedeeID !== id)
-      );
-    } else {
-      setAttendees([...attendees, id]);
-    }
+  const checkAttendeeBox = (id) => {
+    console.log("checkAttendeeBox", id);
+    setAttendees((prevAttendees) =>
+      prevAttendees.includes(id)
+        ? prevAttendees.filter((attendeeID) => attendeeID !== id)
+        : [...prevAttendees, id]
+    );
   };
+  console.log("checkAttendeeBox attendees", attendees);
+  console.log("checkAttendeeBox groupMembers", groupMembers);
+  console.log("checkAttendeeBox meetingAttendees", meetingAttendees);
 
   // for api reponce of list of all assignees
   useEffect(() => {
@@ -797,7 +800,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                       md={6}
                                       sm={6}
                                       className="my-2"
-                                      key={data}
+                                      key={data.pK_UID}
                                     >
                                       <section
                                         className={styles["Outer_Border-Line"]}
@@ -925,7 +928,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                       md={6}
                                       sm={6}
                                       className="mt-2"
-                                      key={data}
+                                      key={data.pK_UID}
                                     >
                                       <section
                                         className={styles["Outer_Border-Line"]}
@@ -1054,7 +1057,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                       md={6}
                                       sm={6}
                                       className="my-2"
-                                      key={data}
+                                      key={data.pK_UID}
                                     >
                                       <section
                                         className={styles["Outer_Border-Line"]}
@@ -1178,7 +1181,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 4) {
                                   return (
-                                    <Col lg={6} md={6} sm={6} className="my-2">
+                                    <Col lg={6} md={6} sm={6} className="my-2" key={data.pK_UID}>
                                       <section
                                         className={styles["Outer_Border-Line"]}
                                       >
@@ -1301,7 +1304,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 5) {
                                   return (
-                                    <Col lg={6} md={6} sm={6} className="my-2">
+                                    <Col lg={6} md={6} sm={6} className="my-2" key={data.pK_UID}>
                                       <section
                                         className={styles["Outer_Border-Line"]}
                                       >
@@ -1579,9 +1582,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 classNameDiv=""
                                                 onChange={() =>
                                                   checkAttendeeBox(
-                                                    attendeelist,
-                                                    attendeelist.pK_UID,
-                                                    index
+                                                    attendeelist.pK_UID
                                                   )
                                                 }
                                                 className={
