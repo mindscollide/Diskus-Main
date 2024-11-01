@@ -65,7 +65,18 @@ const ScheduleNewResolution = () => {
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const { ResolutionReducer } = useSelector((state) => state);
+  const ResolutionReducergetAllCommitteesAndGroups = useSelector(
+    (state) => state.ResolutionReducer.getAllCommitteesAndGroups
+  );
+  const ResolutionReducerupdateResolutionDataroom = useSelector(
+    (state) => state.ResolutionReducer.updateResolutionDataroom
+  );
+  const ResolutionReducerResponseMessage = useSelector(
+    (state) => state.ResolutionReducer.ResponseMessage
+  );
+  const ResolutionReducerGetAllVotingMethods = useSelector(
+    (state) => state.ResolutionReducer.GetAllVotingMethods
+  );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [isVoter, setVoter] = useState(true);
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -275,7 +286,7 @@ const ScheduleNewResolution = () => {
   };
 
   const addVoters = () => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
     let voters_Data = [...voters];
     let voters_DataView = [...votersForView];
     if (newOrganizersData !== null) {
@@ -448,7 +459,7 @@ const ScheduleNewResolution = () => {
   };
 
   const addNonVoter = () => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
 
     let nonVotersData = [...nonVoter];
     let nonVotersDataView = [...nonVoterForView];
@@ -613,7 +624,7 @@ const ScheduleNewResolution = () => {
   };
 
   const handleChangeVoter = (event) => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
@@ -643,7 +654,7 @@ const ScheduleNewResolution = () => {
   };
 
   const handleChangeNonVoter = (event) => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
@@ -965,7 +976,7 @@ const ScheduleNewResolution = () => {
   };
 
   useEffect(() => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
     if (newOrganizersData !== null && newOrganizersData !== undefined) {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
@@ -1074,7 +1085,7 @@ const ScheduleNewResolution = () => {
         setMeetingAttendeesList([]);
       }
     }
-  }, [ResolutionReducer.getAllCommitteesAndGroups]);
+  }, [ResolutionReducergetAllCommitteesAndGroups]);
 
   const documentsUploadCall = async (folderID) => {
     let newFolder = [];
@@ -1108,29 +1119,29 @@ const ScheduleNewResolution = () => {
   };
 
   useEffect(() => {
-    if (ResolutionReducer.updateResolutionDataroom !== 0) {
-      setFolderID(ResolutionReducer.updateResolutionDataroom);
-      let folderIDCreated = ResolutionReducer.updateResolutionDataroom;
+    if (ResolutionReducerupdateResolutionDataroom !== 0) {
+      setFolderID(ResolutionReducerupdateResolutionDataroom);
+      let folderIDCreated = ResolutionReducerupdateResolutionDataroom;
       documentsUploadCall(folderIDCreated);
     }
-  }, [ResolutionReducer.updateResolutionDataroom]);
+  }, [ResolutionReducerupdateResolutionDataroom]);
 
   useEffect(() => {
     if (
-      ResolutionReducer.ResponseMessage !== "" &&
-      ResolutionReducer.ResponseMessage !== undefined &&
-      ResolutionReducer.ResponseMessage !== t("No-data-available")
+      ResolutionReducerResponseMessage !== "" &&
+      ResolutionReducerResponseMessage !== undefined &&
+      ResolutionReducerResponseMessage !== t("No-data-available")
     ) {
-      showMessage(ResolutionReducer.ResponseMessage, "success", setOpen);
+      showMessage(ResolutionReducerResponseMessage, "success", setOpen);
       dispatch(clearResponseMessage());
     }
-  }, [ResolutionReducer.ResponseMessage]);
+  }, [ResolutionReducerResponseMessage]);
 
   // Get Voting Methods
   useEffect(() => {
-    if (ResolutionReducer.GetAllVotingMethods !== null) {
+    if (ResolutionReducerGetAllVotingMethods !== null) {
       let newArr = [];
-      ResolutionReducer.GetAllVotingMethods.forEach((data) => {
+      ResolutionReducerGetAllVotingMethods.forEach((data) => {
         newArr.push({
           value: data.pK_ResolutionVotingMethodID,
           label: data.votingMethod,
@@ -1138,7 +1149,7 @@ const ScheduleNewResolution = () => {
       });
       setVotingMethods(newArr);
     }
-  }, [ResolutionReducer.GetAllVotingMethods]);
+  }, [ResolutionReducerGetAllVotingMethods]);
 
   //Circulation Time
   const handleCirculationTimeChange = (date) => {

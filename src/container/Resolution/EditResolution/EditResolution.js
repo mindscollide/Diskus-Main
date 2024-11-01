@@ -66,9 +66,22 @@ const EditResolution = ({ setCancelresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { ResolutionReducer } = useSelector((state) => state);
+  const ResolutionReducergetAllCommitteesAndGroups = useSelector(
+    (state) => state.ResolutionReducer.getAllCommitteesAndGroups
+  );
+  const ResolutionReducerupdateResolutionDataroom = useSelector(
+    (state) => state.ResolutionReducer.updateResolutionDataroom
+  );
+  const ResolutionReducergetResolutionbyID = useSelector(
+    (state) => state.ResolutionReducer.getResolutionbyID
+  );
+  const ResolutionReducerGetAllVotingMethods = useSelector(
+    (state) => state.ResolutionReducer.GetAllVotingMethods
+  );
+  const ResolutionReducerResponseMessage = useSelector(
+    (state) => state.ResolutionReducer.ResponseMessage
+  );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [usersList, setUsersList] = useState([]);
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -320,7 +333,7 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const addVoters = () => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
     let voters_Data = [...voters];
     let voters_DataView = [...votersForView];
     if (newOrganizersData !== null) {
@@ -493,7 +506,7 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const addNonVoter = () => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
 
     let nonVotersData = [...nonVoter];
     let nonVotersDataView = [...nonVoterForView];
@@ -657,7 +670,7 @@ const EditResolution = ({ setCancelresolution }) => {
     setEmailValue("");
   };
   const handleChangeVoter = (event) => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
@@ -686,7 +699,7 @@ const EditResolution = ({ setCancelresolution }) => {
     }
   };
   const handleChangeNonVoter = (event) => {
-    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
@@ -996,14 +1009,14 @@ const EditResolution = ({ setCancelresolution }) => {
 
   useEffect(() => {
     try {
-      if (ResolutionReducer.updateResolutionDataroom !== 0) {
-        let folderIDCreated = ResolutionReducer.updateResolutionDataroom;
+      if (ResolutionReducerupdateResolutionDataroom !== 0) {
+        let folderIDCreated = ResolutionReducerupdateResolutionDataroom;
         documentsUploadCall(folderIDCreated);
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [ResolutionReducer.updateResolutionDataroom]);
+  }, [ResolutionReducerupdateResolutionDataroom]);
 
   const handleChangeChecker = (e, checked) => {
     setEditResolutionData({
@@ -1073,11 +1086,11 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const handleDiscardBtnFunc = () => {
     setDsicardresolution(false);
-    let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
-    let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters;
+    let resolutionData = ResolutionReducergetResolutionbyID.resolution;
+    let votersResolutionMembers = ResolutionReducergetResolutionbyID.voters;
     let nonVotersResolutionMembers =
-      ResolutionReducer.getResolutionbyID.nonVoters;
-    let attachmentsResolution = ResolutionReducer.getResolutionbyID.attachments;
+      ResolutionReducergetResolutionbyID.nonVoters;
+    let attachmentsResolution = ResolutionReducergetResolutionbyID.attachments;
     setEditResolutionData({
       FK_ResolutionStatusID: resolutionData.fK_ResolutionDecision_ID,
       FK_ResolutionVotingMethodID: resolutionData.fK_ResolutionVotingMethodID,
@@ -1187,7 +1200,7 @@ const EditResolution = ({ setCancelresolution }) => {
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
-      let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+      let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
       if (newOrganizersData !== null && newOrganizersData !== undefined) {
         console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
         let temp = [];
@@ -1305,13 +1318,13 @@ const EditResolution = ({ setCancelresolution }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [ResolutionReducer.getAllCommitteesAndGroups]);
+  }, [ResolutionReducergetAllCommitteesAndGroups]);
   // Get Voting Methods
   useEffect(() => {
     try {
-      if (ResolutionReducer.GetAllVotingMethods !== null) {
+      if (ResolutionReducerGetAllVotingMethods !== null) {
         let newArr = [];
-        ResolutionReducer.GetAllVotingMethods.forEach((data, index) => {
+        ResolutionReducerGetAllVotingMethods.forEach((data, index) => {
           newArr.push({
             value: data.pK_ResolutionVotingMethodID,
             label: data.votingMethod,
@@ -1322,25 +1335,24 @@ const EditResolution = ({ setCancelresolution }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [ResolutionReducer.GetAllVotingMethods]);
+  }, [ResolutionReducerGetAllVotingMethods]);
 
   useEffect(() => {
-    if (ResolutionReducer.ResponseMessage !== "") {
-      showMessage(ResolutionReducer.ResponseMessage, "success", setOpen);
+    if (ResolutionReducerResponseMessage !== "") {
+      showMessage(ResolutionReducerResponseMessage, "success", setOpen);
       dispatch(clearResponseMessage());
     }
-  }, [ResolutionReducer.ResponseMessage]);
+  }, [ResolutionReducerResponseMessage]);
 
   useEffect(() => {
     try {
-      if (ResolutionReducer.getResolutionbyID !== null) {
-        let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
-        let votersResolutionMembers =
-          ResolutionReducer.getResolutionbyID.voters;
+      if (ResolutionReducergetResolutionbyID !== null) {
+        let resolutionData = ResolutionReducergetResolutionbyID.resolution;
+        let votersResolutionMembers = ResolutionReducergetResolutionbyID.voters;
         let nonVotersResolutionMembers =
-          ResolutionReducer.getResolutionbyID.nonVoters;
+          ResolutionReducergetResolutionbyID.nonVoters;
         let attachmentsResolution =
-          ResolutionReducer.getResolutionbyID.attachments;
+          ResolutionReducergetResolutionbyID.attachments;
         setEditResolutionData({
           FK_ResolutionStatusID: resolutionData.fK_ResolutionStatusID,
           FK_ResolutionVotingMethodID:
@@ -1464,7 +1476,7 @@ const EditResolution = ({ setCancelresolution }) => {
         }
       }
     } catch (error) {}
-  }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
+  }, [ResolutionReducergetResolutionbyID, meetingAttendeesList]);
 
   const circulationDateChangeHandler = (date) => {
     let meetingDateSaveFormat = new Date(date);

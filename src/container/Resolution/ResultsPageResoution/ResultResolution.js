@@ -21,7 +21,9 @@ const ResultResolution = ({ setResultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ResolutionReducer } = useSelector((state) => state);
+  const ResolutionReducergetResolutionResult = useSelector(
+    (state) => state.ResolutionReducer.getResolutionResult
+  );
   let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"));
   const [resolutionTitle, setResolutionTitle] = useState("");
   const [approved, setApproved] = useState(0);
@@ -105,8 +107,8 @@ const ResultResolution = ({ setResultresolution }) => {
   };
   useEffect(() => {
     try {
-      if (ResolutionReducer.getResolutionResult !== null) {
-        let resolutionresult = ResolutionReducer.getResolutionResult;
+      if (ResolutionReducergetResolutionResult !== null) {
+        let resolutionresult = ResolutionReducergetResolutionResult;
         setApproved(resolutionresult.approvedVotes);
         setAbstain();
         setVotingMethod(resolutionresult.votingMethod);
@@ -130,7 +132,7 @@ const ResultResolution = ({ setResultresolution }) => {
         }
       }
     } catch (error) {}
-  }, [ResolutionReducer.getResolutionResult]);
+  }, [ResolutionReducergetResolutionResult]);
   return (
     <section>
       <Row className="my-2">
