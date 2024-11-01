@@ -40,7 +40,18 @@ const UpdatePolls = () => {
   const { t } = useTranslation();
   const animatedComponents = makeAnimated();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducergellAllCommittesandGroups = useSelector(
+    (state) => state.PollsReducer.gellAllCommittesandGroups
+  );
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
+  const PollsReducereditpollmodal = useSelector(
+    (state) => state.PollsReducer.editpollmodal
+  );
+  const PollsReducereditPollModalFlag = useSelector(
+    (state) => state.PollsReducer.editPollModalFlag
+  );
   const datePickerRef = useRef();
   let dateFormat = "DD/MM/YYYY";
   const [selectedsearch, setSelectedsearch] = useState([]);
@@ -80,7 +91,7 @@ const UpdatePolls = () => {
   }, [currentLanguage]);
 
   useEffect(() => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let pollsData = PollsReducergellAllCommittesandGroups;
 
     if (pollsData !== null && pollsData !== undefined) {
       let temp = [];
@@ -190,13 +201,13 @@ const UpdatePolls = () => {
         setDropdowndata([]);
       }
     }
-  }, [PollsReducer.gellAllCommittesandGroups]);
+  }, [PollsReducergellAllCommittesandGroups]);
   useEffect(() => {
-    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls !== undefined) {
-      let pollsDetails = PollsReducer.Allpolls;
-      if (Object.keys(PollsReducer.Allpolls).length > 0) {
+    if (PollsReducerAllpolls != null && PollsReducerAllpolls !== undefined) {
+      let pollsDetails = PollsReducerAllpolls;
+      if (Object.keys(PollsReducerAllpolls).length > 0) {
         let members = [];
-        PollsReducer.Allpolls.poll.pollParticipants.forEach((data) => {
+        PollsReducerAllpolls.poll.pollParticipants.forEach((data) => {
           members.push({
             userName: data.userName,
             userID: data.userID,
@@ -223,7 +234,7 @@ const UpdatePolls = () => {
         });
         try {
           let Option = [];
-          PollsReducer.Allpolls.poll.pollOptions.forEach((data, index) => {
+          PollsReducerAllpolls.poll.pollOptions.forEach((data, index) => {
             let dataAdd = { name: index + 1, value: data.answer };
             Option.push(dataAdd);
           });
@@ -231,13 +242,13 @@ const UpdatePolls = () => {
         } catch {}
       }
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   // for add user for assignes
   const handleAddUsers = () => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let pollsData = PollsReducergellAllCommittesandGroups;
     let tem = [...pollmembers];
     if (Object.keys(selectedsearch).length > 0) {
       try {
@@ -498,7 +509,7 @@ const UpdatePolls = () => {
     <>
       <Container>
         <Modal
-          show={PollsReducer.editpollmodal}
+          show={PollsReducereditpollmodal}
           setShow={dispatch(setEditpollModal)}
           modalTitleClassName={styles["ModalHeader_Update_poll"]}
           modalHeaderClassName={
@@ -640,7 +651,7 @@ const UpdatePolls = () => {
                           </span>
                         </Col>
                       </Row>
-                      {PollsReducer.editPollModalFlag ? (
+                      {PollsReducereditPollModalFlag ? (
                         <Row className="mt-2">
                           <Col
                             lg={12}
@@ -698,7 +709,7 @@ const UpdatePolls = () => {
                         </Col>
                       </Row>
 
-                      {PollsReducer.editPollModalFlag ? (
+                      {PollsReducereditPollModalFlag ? (
                         <Row className="mt-2">
                           <Col
                             className={styles["scroll-height"]}
@@ -833,7 +844,7 @@ const UpdatePolls = () => {
                                   );
                                 })
                               : null}
-                            {PollsReducer.editPollModalFlag === false ? (
+                            {PollsReducereditPollModalFlag === false ? (
                               <Row className="mt-2">
                                 <Col lg={12} md={12} sm={12}>
                                   <Button
@@ -899,7 +910,7 @@ const UpdatePolls = () => {
                             checked={UpdatePolls.AllowMultipleUser}
                             onChange={HandleCheckBox}
                             disabled={
-                              PollsReducer.editPollModalFlag ? true : false
+                              PollsReducereditPollModalFlag ? true : false
                             }
                           />
                           <p className={styles["CheckBoxTitle"]}>
@@ -908,7 +919,7 @@ const UpdatePolls = () => {
                         </Col>
                       </Row>
 
-                      {PollsReducer.editPollModalFlag === false ? (
+                      {PollsReducereditPollModalFlag === false ? (
                         <>
                           <Row>
                             {" "}
@@ -1002,7 +1013,7 @@ const UpdatePolls = () => {
                                             {data.userName}
                                           </span>
                                         </Col>
-                                        {PollsReducer.editPollModalFlag ===
+                                        {PollsReducereditPollModalFlag ===
                                         false ? (
                                           <Col sm={12} md={2} lg={2}>
                                             <img

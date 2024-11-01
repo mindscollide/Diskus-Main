@@ -41,7 +41,12 @@ const CreatePolling = () => {
   registerLocale("ar", ar);
   registerLocale("en", enGB);
   //For Custom language datepicker
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducergellAllCommittesandGroups = useSelector(
+    (state) => state.PollsReducer.gellAllCommittesandGroups
+  );
+  const PollsReducercreatePollmodal = useSelector(
+    (state) => state.PollsReducer.createPollmodal
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -129,7 +134,7 @@ const CreatePolling = () => {
   }, []);
 
   useEffect(() => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let pollsData = PollsReducergellAllCommittesandGroups;
     if (pollsData !== null && pollsData !== undefined) {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
@@ -239,7 +244,7 @@ const CreatePolling = () => {
         setDropdowndata([]);
       }
     }
-  }, [PollsReducer.gellAllCommittesandGroups]);
+  }, [PollsReducergellAllCommittesandGroups]);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -248,7 +253,7 @@ const CreatePolling = () => {
 
   // for add user for assignes
   const handleAddUsers = () => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let pollsData = PollsReducergellAllCommittesandGroups;
     let tem = [...members];
     if (Object.keys(selectedsearch).length > 0) {
       try {
@@ -489,7 +494,7 @@ const CreatePolling = () => {
     <>
       <Container>
         <Modal
-          show={PollsReducer.createPollmodal}
+          show={PollsReducercreatePollmodal}
           setShow={dispatch(setCreatePollModal)}
           modalTitleClassName={styles["ModalHeader_create_poll"]}
           modalHeaderClassName={styles["ModalRequestHeader_polling"]}
@@ -826,7 +831,7 @@ const CreatePolling = () => {
                           <Select
                             onChange={handleSelectValue}
                             isDisabled={
-                              PollsReducer.gellAllCommittesandGroups === null
+                              PollsReducergellAllCommittesandGroups === null
                                 ? true
                                 : false
                             }
