@@ -162,7 +162,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       CommitteeType: event.value,
     });
   };
-  console.log(committeeTypesVal, "committeeTypesValcommitteeTypesVal");
+
   // onChange Function for set input values in state
   const onChangeFunc = (e) => {
     let name = e.target.name;
@@ -374,15 +374,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
 
   const checkAttendeeBox = (data, id, index) => {
+    console.log(id, "ididididid");
     if (attendees.includes(id)) {
       setAttendees((prevFiles) =>
         prevFiles.filter((attnedeeID) => attnedeeID !== id)
       );
     } else {
-      setAttendees([...attendees, id]);
+      // setAttendees([...attendees, id]);
     }
   };
 
+  console.log(attendees, "attendeesattendees");
+  console.log(groupMembers, "attendeesattendees");
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
@@ -1568,7 +1571,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               className="mt-2 "
                                             >
                                               <Checkbox
-                                                // checked={rememberEmail}
                                                 checked={
                                                   attendees.includes(
                                                     attendeelist.pK_UID
