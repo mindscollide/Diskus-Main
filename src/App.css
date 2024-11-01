@@ -8244,3 +8244,7 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
   display: flex !important;
   align-items: center !important;
 }
+
+body[dir="rtl"] .MQTT_Notification .ant-notification-notice-message {
+  margin-right: 20px !important;
+}
