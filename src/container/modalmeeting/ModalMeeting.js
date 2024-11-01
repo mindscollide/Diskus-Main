@@ -1074,8 +1074,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           let userData;
 
           usersList.forEach((user, index) => {
-            console.log(user, "useruser");
-
             PresenterData.push({
               label: (
                 <>
@@ -1343,7 +1341,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               };
             }
           });
-          setAllPresenters(PresenterData);
           setAttendeesParticipant(membersData);
           setCreateMeeting({
             ...createMeeting,
@@ -1477,7 +1474,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               };
             }
           });
-          setAllPresenters(PresenterData);
           setAttendeesParticipant(membersData);
           setCreateMeeting({
             ...createMeeting,
