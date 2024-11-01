@@ -438,7 +438,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Send-reponse-by"),
       dataIndex: "responseDeadLine",
       key: "responseDeadLine",
-      width: "115px",
+      width: "125px",
       render: (text, record) => {
         return (
           <>

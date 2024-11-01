@@ -241,6 +241,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
             className={styles["meetingTitle"]}
             onClick={() => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+              localStorage.setItem("meetingTitle", record.title);
+              localStorage.setItem("videoCallURL", record.videoCallURL);
+
             }}>
             {text}
           </span>
@@ -491,6 +494,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                           )
                         );
                         localStorage.setItem("meetingTitle", record.title);
+                        localStorage.setItem("videoCallURL", record.videoCallURL);
                       }}
                     />
                   </Col>
@@ -511,6 +515,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                     record.status
                   );
                   localStorage.setItem("meetingTitle", record.title);
+                  localStorage.setItem("videoCallURL", record.videoCallURL);
                 }}
               />
             );
@@ -521,6 +526,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   localStorage.setItem("meetingTitle", record.title);
+                  localStorage.setItem("videoCallURL", record.videoCallURL);
                   handleViewMeeting(
                     record.pK_MDID,
                     record.isQuickMeeting,
@@ -542,6 +548,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                     record.status
                   );
                   localStorage.setItem("meetingTitle", record.title);
+                  localStorage.setItem("videoCallURL", record.videoCallURL);
                 }}
               />
             );
