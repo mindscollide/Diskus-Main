@@ -206,7 +206,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
-    console.log("checkAttendeeBox handleAddAttendees");
     let newMeetingAttendees = [...meetingAttendees];
     let newGroupMembers = [...groupMembers];
     let findRegularRole = committeeMembersRolesOptions.find(
@@ -375,16 +374,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
 
   const checkAttendeeBox = (id) => {
-    console.log("checkAttendeeBox", id);
     setAttendees((prevAttendees) =>
       prevAttendees.includes(id)
         ? prevAttendees.filter((attendeeID) => attendeeID !== id)
         : [...prevAttendees, id]
     );
   };
-  console.log("checkAttendeeBox attendees", attendees);
-  console.log("checkAttendeeBox groupMembers", groupMembers);
-  console.log("checkAttendeeBox meetingAttendees", meetingAttendees);
 
   // for api reponce of list of all assignees
   useEffect(() => {
