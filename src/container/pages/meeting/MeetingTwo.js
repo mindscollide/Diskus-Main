@@ -622,10 +622,12 @@ const NewMeeting = () => {
       // Meeting Update Route 4
       validateStringEmailApi(MeetinUpd, navigate, t, 4, dispatch)
         .then(async (result) => {
+
+          console.log(result,"resultresultresult")
           // Handle the result here
           if (result.isQuickMeeting === true) {
             let requestDataForMeetingDetails = {
-              MeetingID: Number(result.MeetingID),
+              MeetingID: Number(result.meetingID),
             };
             await dispatch(
               ViewMeeting(

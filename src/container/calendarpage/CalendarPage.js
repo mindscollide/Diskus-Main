@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { meetingStatusPublishedMqtt } from "../../store/actions/NewMeetingActions";
 
 const CalendarPage = () => {
   const { t } = useTranslation();
@@ -49,7 +50,9 @@ const CalendarPage = () => {
     adminReducer,
     meetingIdReducer,
     getTodosStatus,
+    NewMeetingreducer,
   } = state;
+  const MeetingPublishData = NewMeetingreducer.meetingStatusPublishedMqttData;
   const [calenderData, setCalenderDatae] = useState([]);
   const [calendarView, setCalendarView] = useState(false);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
@@ -543,7 +546,58 @@ const CalendarPage = () => {
     } else {
     }
   }, [assignees.ViewMeetingDetails]);
-
+  useEffect(() => {
+    try {
+      if (MeetingPublishData !== null) {
+        console.log(MeetingPublishData, "MeetingPublishDataMeetingPublishData");
+        let StartingTime = forMainCalendar(
+          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingStartTime
+        );
+        let EndingTime = forMainCalendar(
+          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingEndTime
+        );
+        let meetingStartTime = newTimeFormaterAsPerUTC(
+          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingStartTime
+        );
+        let findRoleID = MeetingPublishData.meetingAttendees.find(
+          (attendeeData, index) =>
+            Number(attendeeData?.fK_ParticipantRoleID) === Number(userID)
+        );
+        let diskusEventColor =
+          localStorage.getItem("diskusEventColor") !== null
+            ? localStorage.getItem("diskusEventColor")
+            : "#000";
+        let MeetingData = {
+          id: parseInt(MeetingPublishData.pK_CEID),
+          eventID: parseInt(MeetingPublishData.fK_CESID),
+          title: meetingStartTime + " - " + MeetingPublishData.title,
+          allDay: true,
+          start: new Date(StartingTime),
+          end: new Date(EndingTime),
+          border: `2px solid ${diskusEventColor}`,
+          // color: "#ffff",
+          backgroundColor: diskusEventColor,
+          calendarTypeId: Number(MeetingPublishData.fK_CETID),
+          isQuickMeeting: MeetingPublishData.isQuickMeeting,
+          statusID: Number(MeetingPublishData.statusID),
+          participantRoleID:
+            findRoleID !== undefined ? findRoleID.fK_ParticipantRoleID : 2,
+          attendeeRoleID:
+            findRoleID !== undefined
+              ? findRoleID.meetingAttendeeRole.pK_MARID
+              : 2,
+          isPrimaryOrganizer:
+            findRoleID !== undefined ? findRoleID.isPrimaryOrganizer : false,
+          meetingID: MeetingPublishData.pK_MDID,
+        };
+        setCalenderDatae([...calenderData, MeetingData]);
+        dispatch(meetingStatusPublishedMqtt(null));
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
+  }, [MeetingPublishData]);
+  console.log(calenderData, "calenderDatacalenderData");
   const handleCreateMeeting = () => {
     setMeetingModalShow(true);
   };
