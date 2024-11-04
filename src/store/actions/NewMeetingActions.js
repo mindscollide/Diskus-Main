@@ -1412,7 +1412,10 @@ const FetchMeetingURLApi = (
                 )
             ) {
               dispatch(showMeetingURLSuccess(response.data.responseResult, ""));
-              mqttConnectionGuestUser(response.data.responseResult.userGUID);
+              mqttConnectionGuestUser(
+                response.data.responseResult.userGUID,
+                dispatch
+              );
               dispatch(MeetingUrlSpinner(false));
               let meetingURL = response.data.responseResult.videoURL;
               var match = meetingURL.match(/RoomID=([^&]*)/);

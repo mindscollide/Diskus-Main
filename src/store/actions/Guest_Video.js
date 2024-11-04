@@ -282,7 +282,8 @@ const joinGuestVideoMainApi = (navigate, t, data) => {
               // dispatch(guestVideoNavigationScreen(true));
               mqttConnectionGuestUser(
                 response.data.responseResult.guestGuid,
-                response.data.responseResult.email
+                dispatch
+                // response.data.responseResult.email
               );
               sessionStorage.setItem(
                 "GuestEmail",
@@ -435,8 +436,8 @@ const admitRejectAttendeeMainApi = (
                     Name: userData.Name,
                     UID: userData.UID,
                     roomIds,
-                    isMute: false,
-                    hideVideo: false,
+                    isMute: userData.IsMuted,
+                    hideVideo: userData.HideVideo,
                     isHandRaise: false,
                   };
                 });
@@ -1092,7 +1093,18 @@ const hideUnHideVideoByHost = (response) => {
     response: response,
   };
 };
-
+const setVideoCameraGuest = (response) => {
+  return {
+    type: actions.SET_MQTT_VIDEO_CAMERA_GUEST,
+    response: response,
+  };
+};
+const setVoiceControleGuest = (response) => {
+  return {
+    type: actions.SET_MQTT_VOICE_CONTROLE_GUEST,
+    response: response,
+  };
+};
 export {
   getMeetingGuestVideoMainApi,
   validateEncryptGuestVideoMainApi,
@@ -1112,4 +1124,6 @@ export {
   hideUnhideSelfMainApi,
   muteUnMuteByHost,
   hideUnHideVideoByHost,
+  setVideoCameraGuest,
+  setVoiceControleGuest,
 };

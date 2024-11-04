@@ -235,6 +235,7 @@ const participantWaitingListBox = (response) => {
 };
 
 const participantWaitingList = (response) => {
+  console.log(response, "responseresponse");
   return {
     type: actions.PARTICIPANT_JOINT_REQUESTS,
     response: response,

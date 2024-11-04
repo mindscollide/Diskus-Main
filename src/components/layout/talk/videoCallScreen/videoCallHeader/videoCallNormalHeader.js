@@ -88,8 +88,13 @@ const VideoCallNormalHeader = ({
 
   const [participantData, setParticipantData] = useState([]);
 
+  const participantWaitingList = useSelector(
+    (state) => state.videoFeatureReducer.participantWaitingList
+  );
+
+  console.log(participantWaitingList, "participantWaitingList");
+
   const participantCounter = participantData.length;
-  console.log(participantData.length, "participantData");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
@@ -429,6 +434,8 @@ const VideoCallNormalHeader = ({
       setParticipantData([]);
     }
   }, [participantAcceptedName]);
+  console.log(participantData, "participantDataparticipantDataparticipantData");
+  useEffect(() => {}, [participantData]);
 
   // makeLeave or transfer Meeting Host API
   const makeLeaveOnClick = (usersData) => {
@@ -765,7 +772,7 @@ const VideoCallNormalHeader = ({
                                         className="handraised-participant"
                                       />
                                     )}
-                                    {usersData.hideVideo === true ? (
+                                    {usersData.hideVideo ? (
                                       <img
                                         src={VideoDisable}
                                         width="18px"
@@ -795,7 +802,7 @@ const VideoCallNormalHeader = ({
                                     md={5}
                                     sm={12}
                                   >
-                                    {usersData.isMute === true ? (
+                                    {usersData.isMute ? (
                                       <img
                                         src={MicDisabled}
                                         width={"22px"}
@@ -804,6 +811,27 @@ const VideoCallNormalHeader = ({
                                     ) : (
                                       <img src={MicOnEnabled} />
                                     )}
+
+                                    {/* {participantWaitingList.map((user) => (
+                                      <div key={user.userID}>
+                                        {user.mute === false ? (
+                                          <img
+                                            src={MicDisabled}
+                                            alt="Mic Disabled"
+                                            width="22px"
+                                            height="22px"
+                                          />
+                                        ) : (
+                                          <img
+                                            src={MicOnEnabled}
+                                            alt="Mic Enabled"
+                                            width="22px"
+                                            height="22px"
+                                          />
+                                        )}
+                                        <span>{user.name}</span>
+                                      </div>
+                                    ))} */}
                                     <Dropdown>
                                       <Dropdown.Toggle className="participant-toggle">
                                         <img src={Menu} alt="" />

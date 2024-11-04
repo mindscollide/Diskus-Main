@@ -43,6 +43,18 @@ const GuestJoinRequest = () => {
   } = GuestVideoReducer?.admitGuestUserRequestData || {};
 
   console.log(GuestVideoReducer?.admitGuestUserRequestData, "Datatatacatcas");
+  console.log(
+    name,
+    meetingID,
+    guid,
+    UserID,
+    email,
+    hideCamera,
+    raiseHand,
+    mute,
+    isGuest,
+    "Datatatacatcas"
+  );
 
   const handleAdmit = (flag) => {
     let Data = {
@@ -53,7 +65,7 @@ const GuestJoinRequest = () => {
           Name: name,
           UID: guid,
           Email: email,
-          raiseHand: raiseHand,
+          // raiseHand: raiseHand,
           UserID: UserID,
           IsMuted: mute,
           HideVideo: hideCamera,

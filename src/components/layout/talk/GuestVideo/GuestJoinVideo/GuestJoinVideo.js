@@ -10,7 +10,11 @@ import MicOn from "../../../../../assets/images/Recent Activity Icons/Video/MicO
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { joinGuestVideoMainApi } from "../../../../../store/actions/Guest_Video";
+import {
+  joinGuestVideoMainApi,
+  setVideoCameraGuest,
+  setVoiceControleGuest,
+} from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
 
 const GuestJoinVideo = ({
@@ -27,10 +31,11 @@ const GuestJoinVideo = ({
   );
   console.log(guestVideoNavigationData, "guestVideoNavigationData");
   const videoRef = useRef(null);
+  const audioRef = useRef(null);
   const [stream, setStream] = useState(null);
+  const [streamAudio, setStreamAudio] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
-  console.log(isWebCamEnabled, "isWebCamEnabled");
-  const [isMicEnabled, setIsMicEnabled] = useState(false);
+  const [isMicEnabled, setIsMicEnabled] = useState(true);
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [getReady, setGetReady] = useState(false);
 
@@ -41,47 +46,76 @@ const GuestJoinVideo = ({
   console.log({ extractMeetingId, extractMeetingTitle }, "namenamenamename");
 
   // for set Video Web Cam on CLick
-  const handleToggleWebCam = (flag) => {
-    if (flag) {
-      // Enable webcam
-      sessionStorage.setItem("isWebCamEnabled", flag);
-      const mediaDevices = navigator.mediaDevices;
+  const toggleAudio = (enable, check) => {
+    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
+    console.log(check, "updatedUrlupdatedUrlupdatedUrl");
+    dispatch(setVoiceControleGuest(!enable));
+    if (enable) {
+      sessionStorage.setItem("isMicEnabled", true);
 
-      mediaDevices
-        .getUserMedia({
-          video: true,
-          audio: true,
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((audioStream) => {
+          // Stop any existing audio tracks before starting a new one
+          if (streamAudio) {
+            streamAudio.getAudioTracks().forEach((track) => track.stop());
+          }
+
+          const newStream = new MediaStream([audioStream.getAudioTracks()[0]]);
+          setStreamAudio(newStream);
+          setIsMicEnabled(true);
         })
-        .then((stream) => {
+        .catch((error) => {
+          alert("Error accessing microphone: " + error.message);
+        });
+    } else {
+      sessionStorage.setItem("isMicEnabled", false);
+      if (streamAudio) {
+        streamAudio.getAudioTracks().forEach((track) => track.stop());
+        setStreamAudio(null); // Clear the stream from state
+      }
+      setIsMicEnabled(false); // Microphone is now disabled
+    }
+  };
+
+  // Toggle Video (Webcam)
+  const toggleVideo = (enable) => {
+    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
+    sessionStorage.setItem("enableVideo", !enable);
+    dispatch(setVideoCameraGuest(!enable));
+
+    if (enable) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((videoStream) => {
+          // Stop any existing video tracks before starting a new one
+          if (stream) {
+            stream.getVideoTracks().forEach((track) => track.stop());
+          }
+
           if (videoRef.current) {
-            // Stop any existing stream before starting a new one
-            if (stream) {
-              stream.getTracks().forEach((track) => track.stop());
-            }
-            videoRef.current.srcObject = stream;
+            videoRef.current.srcObject = videoStream;
             videoRef.current.muted = true;
             videoRef.current.play().catch((error) => {
               console.error("Error playing video:", error);
             });
           }
-          setStream(stream);
+          setStream(videoStream);
           setIsWebCamEnabled(true);
         })
         .catch((error) => {
-          alert(error.message);
+          alert("Error accessing webcam: " + error.message);
         });
     } else {
-      sessionStorage.setItem("isWebCamEnabled", flag);
-      // Disable webcam
+      sessionStorage.setItem("isWebCamEnabled", false);
       if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
+        stream.getVideoTracks().forEach((track) => track.stop());
         setStream(null); // Clear the stream from state
-        const video = videoRef.current;
-        if (video) {
-          video.srcObject = null; // Clear the video source
+        if (videoRef.current) {
+          videoRef.current.srcObject = null; // Clear the video source
         }
-        setIsWebCamEnabled(false); // Webcam is now disabled
       }
+      setIsWebCamEnabled(false); // Webcam is now disabled
     }
   };
 
@@ -98,7 +132,12 @@ const GuestJoinVideo = ({
       setGetReady(true);
       onJoinNameChange(joinName);
       sessionStorage.setItem("joinName", joinName);
-      let data = { MeetingId: extractMeetingId, GuestName: joinName };
+      let data = {
+        MeetingId: extractMeetingId,
+        GuestName: joinName,
+        IsMuted: !isMicEnabled,
+        HideVideo: !isWebCamEnabled,
+      };
       dispatch(joinGuestVideoMainApi(navigate, t, data));
     }
   };
@@ -183,21 +222,29 @@ const GuestJoinVideo = ({
 
                           <div className="mic-vid-buttons">
                             {isMicEnabled ? (
-                              <img src={MicOn} className="cursor-pointer" />
+                              <img
+                                src={MicOn}
+                                className="cursor-pointer"
+                                onClick={() => toggleAudio(false, 2)}
+                              />
                             ) : (
-                              <img src={MicOff} className="cursor-pointer" />
+                              <img
+                                src={MicOff}
+                                className="cursor-pointer"
+                                onClick={() => toggleAudio(true, 1)}
+                              />
                             )}
 
                             {isWebCamEnabled ? (
                               <img
                                 className="cursor-pointer"
-                                onClick={() => handleToggleWebCam(false)}
+                                onClick={() => toggleVideo(false)}
                                 src={VideoOn}
                               />
                             ) : (
                               <img
                                 className="cursor-pointer"
-                                onClick={() => handleToggleWebCam(true)}
+                                onClick={() => toggleVideo(true)}
                                 src={VideoOff}
                               />
                             )}

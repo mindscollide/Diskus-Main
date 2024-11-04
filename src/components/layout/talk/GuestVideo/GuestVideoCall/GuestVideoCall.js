@@ -33,6 +33,15 @@ const GuestVideoCall = () => {
   const validateData = useSelector(
     (state) => state.GuestVideoReducer.validateData
   );
+  const guestClient = useSelector(
+    (state) => state.GuestVideoReducer.guestClient
+  );
+  const videoCameraGuest = useSelector(
+    (state) => state.GuestVideoReducer.videoCameraGuest
+  );
+  const voiceControle = useSelector(
+    (state) => state.GuestVideoReducer.voiceControle
+  );
 
   const guestVideoNavigationData = useSelector(
     (state) => state.GuestVideoReducer.guestVideoNavigationData
@@ -51,77 +60,102 @@ const GuestVideoCall = () => {
   const [roomId, setRoomId] = useState("");
   console.log(roomId, "guestName");
 
-  let guestVideoClient = Helper.guestSocket;
+  function modifyUrl(url, isMute, isHideCamera, guestName) {
+    let modifiedUrl = url.replace("$ParticipantFullName$", guestName);
 
+    // Replace placeholders with actual values
+    modifiedUrl = modifiedUrl.replace("$IsMute$", isMute.toString());
+    modifiedUrl = modifiedUrl.replace(
+      "$IsHideCamera$",
+      isHideCamera.toString()
+    );
+
+    return modifiedUrl;
+  }
   useEffect(() => {
+    console.log(voiceControle, "updatedUrlupdatedUrlupdatedUrl");
+    console.log(videoCameraGuest, "updatedUrlupdatedUrlupdatedUrl");
     if (videoUrl && guestName) {
-      // Replace $ParticipantFullName with the actual guest name
-      const updatedUrl = videoUrl.replace("$ParticipantFullName$", guestName);
-      console.log(updatedUrl, "updatedUrlupdatedUrlupdatedUrl");
-      setVideoUrl(updatedUrl); // Update the video URL with the actual name
+      const modifiedUrl = modifyUrl(
+        videoUrl,
+        voiceControle,
+        videoCameraGuest,
+        guestName
+      );
+
+      console.log(modifiedUrl, "updatedUrlupdatedUrlupdatedUrl");
+      setVideoUrl(modifiedUrl); // Update the video URL with the actual name
     }
-  }, [videoUrl, guestName]);
+  }, [videoUrl, guestName, voiceControle, videoCameraGuest]);
 
   const onJoinNameChange = (name) => {
     setGuestName(name);
   };
 
   const onConnectionLost = () => {
-    setTimeout(mqttConnectionGuestUser(guestUserId), 3000);
+    setTimeout(mqttConnectionGuestUser(guestUserId, dispatch), 3000);
   };
 
   const onMessageArrived = (msg) => {
-    let data = JSON.parse(msg.payloadString);
-    console.log(data, "datadatadata");
-    if (data.action === "Meeting") {
-      if (
-        data.payload.message.toLowerCase() ===
-        "MEETING_GUEST_JOIN_RESPONSE".toLowerCase()
-      ) {
-        if (data.payload.isAccepted === true) {
-          setVideoUrl(data.payload.videoUrl);
-          setRoomId(data.payload.roomID);
-          dispatch(guestVideoNavigationScreen(2));
-        } else {
-          dispatch(guestVideoNavigationScreen(3));
+    try {
+      console.log(msg, "msgmsgmsgmsg");
+      let data = JSON.parse(msg.payloadString);
+      console.log(data, "datadatadata");
+
+      if (data.action === "Meeting") {
+        if (
+          data.payload.message.toLowerCase() ===
+          "MEETING_GUEST_JOIN_RESPONSE".toLowerCase()
+        ) {
+          if (data.payload.isAccepted === true) {
+            setVideoUrl(data.payload.videoUrl);
+            setRoomId(data.payload.roomID);
+            dispatch(guestVideoNavigationScreen(2));
+          } else {
+            dispatch(guestVideoNavigationScreen(3));
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "REMOVE_PARTICIPANT_FROM_MEETING".toLowerCase()
+        ) {
+          dispatch(guestVideoNavigationScreen(4));
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
+        ) {
+          dispatch(muteUnMuteByHost(data.payload));
+          console.log(data.payload, "guestDataGuestData");
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
+        ) {
+          dispatch(hideUnHideVideoByHost(data.payload));
+          console.log(data.payload, "guestDataGuestData");
         }
-      } else if (
-        data.payload.message.toLowerCase() ===
-        "REMOVE_PARTICIPANT_FROM_MEETING".toLowerCase()
-      ) {
-        dispatch(guestVideoNavigationScreen(4));
-      } else if (
-        data.payload.message.toLowerCase() ===
-        "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
-      ) {
-        dispatch(muteUnMuteByHost(data.payload));
-        console.log(data.payload, "guestDataGuestData");
-      } else if (
-        data.payload.message.toLowerCase() ===
-        "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
-      ) {
-        dispatch(hideUnHideVideoByHost(data.payload));
-        console.log(data.payload, "guestDataGuestData");
+        // below MQTT is imagined will replace this soon
+        else if (
+          data.payload.message.toLowerCase() ===
+          "HOST_END_VIDEO_CALL_MEETING".toLowerCase()
+        ) {
+          dispatch(guestVideoNavigationScreen(4));
+          console.log(data.payload, "guestDataGuestData");
+        }
       }
-      // below MQTT is imagined will replace this soon
-      else if (
-        data.payload.message.toLowerCase() ===
-        "HOST_END_VIDEO_CALL_MEETING".toLowerCase()
-      ) {
-        dispatch(guestVideoNavigationScreen(4));
-        console.log(data.payload, "guestDataGuestData");
-      }
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
-    if (guestVideoClient !== null) {
-      guestVideoClient.onConnectionLost = onConnectionLost;
-      guestVideoClient.onMessageArrived = onMessageArrived;
+    if (guestClient !== null) {
+      console.log(
+        guestClient,
+        "guestVideoClientguestVideoClientguestVideoClient"
+      );
+      guestClient.onConnectionLost = onConnectionLost;
+      guestClient.onMessageArrived = onMessageArrived;
     } else {
       console.log(guestUserId, "guestUserIdguestUserId");
     }
-  }, [guestVideoClient, guestUserId]);
+  }, [guestClient, guestUserId]);
 
   // get the String from API
   useEffect(() => {

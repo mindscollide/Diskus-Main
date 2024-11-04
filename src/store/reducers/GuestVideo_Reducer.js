@@ -22,6 +22,8 @@ const initialState = {
   hideUnhideSelfVideo: null,
   muteUmMuteByHost: null,
   hideunHideByHost: null,
+  videoCameraGuest: false,
+  voiceControle: false,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -299,15 +301,18 @@ const GuestVideoReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.HIDE_UNHIDE_SELF_VIDEO_FAIL: {
+    case actions.SET_MQTT_VIDEO_CAMERA_GUEST: {
       return {
         ...state,
-        Loading: false,
-        hideUnhideSelfVideo: null,
-        ResponseMessage: action.message,
+        videoCameraGuest: action.response,
       };
     }
-
+    case actions.SET_MQTT_VOICE_CONTROLE_GUEST: {
+      return {
+        ...state,
+        voiceControle: action.response,
+      };
+    }
     default:
       return { ...state };
   }
