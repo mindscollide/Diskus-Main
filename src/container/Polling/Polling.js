@@ -199,12 +199,13 @@ const Polling = () => {
     if (pollUpda !== null) {
       validateStringPollApi(pollUpda, navigate, t, 2, dispatch)
         .then(async (result) => {
-          localStorage.removeItem("poUpda");
+
           let data = {
             PollID: result.pollID,
             UserID: parseInt(result.userID),
           };
           await dispatch(getPollsByPollIdApi(navigate, data, 4, t));
+          localStorage.removeItem("poUpda");
         })
         .catch((error) => {
           console.log(error, "result");
