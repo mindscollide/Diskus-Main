@@ -130,7 +130,9 @@ const ParentAgenda = ({
       AgendaID: record.id ? record.id : record.subAgendaID,
       AgendaVotingID: record.agendaVotingID,
     };
+    console.log(rows, Data, "EnableCastVoteModalEnableCastVoteModal");
     await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
+
     dispatch(showCastVoteAgendaModal(true));
     dispatch(GetCurrentAgendaDetails(record));
   };
@@ -248,9 +250,7 @@ const ParentAgenda = ({
       attachmentID: Number(record.originalAttachmentName),
     };
     let pdfDataJson = JSON.stringify(Data);
-    if (
-      fileFormatforSignatureFlow.includes(ext)
-    ) {
+    if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
@@ -268,8 +268,7 @@ const ParentAgenda = ({
             editorRole.role === "Participant")
             ? "d-none"
             : ""
-        }
-      >
+        }>
         {/* <Draggable
           key={data.id}
           draggableId={data.id}
@@ -279,12 +278,12 @@ const ParentAgenda = ({
         {/* {(provided, snapshot) => (
             <div ref={provided.innerRef} {...provided.draggableProps}> */}
         {/* Main Agenda Items Mapping */}
-        <span className="position-relative">
-          <Row key={data.id} className="mt-4 m-0 p-0">
+        <span className='position-relative'>
+          <Row key={data.id} className='mt-4 m-0 p-0'>
             <img
               draggable={false}
               src={CollapseIcon}
-              alt=""
+              alt=''
               className={
                 expandIndex === index && expand
                   ? styles["Arrow_Expanded"]
@@ -306,11 +305,10 @@ const ParentAgenda = ({
               }
               onClick={() => {
                 handleExpandedBtn(index, true);
-              }}
-            >
+              }}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <Row key={index + 2} className="mt-4">
+                  <Row key={index + 2} className='mt-4'>
                     <Col lg={8} md={8} sm={12}>
                       <span className={styles["AgendaTitle_Heading"]}>
                         {index + 1 + ". " + data.title}
@@ -323,19 +321,18 @@ const ParentAgenda = ({
                       ) : null}
                       {/* ) : null} */}
                     </Col>
-                    <Col lg={3} md={3} sm={12} className="p-0">
+                    <Col lg={3} md={3} sm={12} className='p-0'>
                       {/* <div className={styles["agendaCreationDetail"]}> */}
-                      <Row className="m-0">
+                      <Row className='m-0'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex align-items-center justify-content-end gap-3 p-0"
-                        >
+                          className='d-flex align-items-center justify-content-end gap-3 p-0'>
                           <img
                             src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                             className={styles["Image"]}
-                            alt=""
+                            alt=''
                             draggable={false}
                           />
                           <p className={styles["agendaCreater"]}>
@@ -343,7 +340,7 @@ const ParentAgenda = ({
                           </p>
                         </Col>
                       </Row>
-                      <Row className="m-0">
+                      <Row className='m-0'>
                         <Col
                           lg={12}
                           md={12}
@@ -352,11 +349,9 @@ const ParentAgenda = ({
                             currentLanguage === "ar"
                               ? "p-0 text-start"
                               : "p-0 text-end"
-                          }
-                        >
+                          }>
                           <p
-                            className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
-                          >
+                            className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}>
                             {/* {moment(
                                     data?.startDate,
                                     "HHmmss"
@@ -428,7 +423,11 @@ const ParentAgenda = ({
                                 editorRole.role !== "Organizer" &&
                                 checkUserAuthentication(data) ? (
                                 <Button
-                                  text={t("Cast-your-vote")}
+                                  text={
+                                    data?.hasAlreadyVoted
+                                      ? t("View-your-vote")
+                                      : t("Cast-your-vote")
+                                  }
                                   className={styles["CastYourVoteButton"]}
                                   onClick={() => EnableCastVoteModal(data)}
                                 />
@@ -439,7 +438,7 @@ const ParentAgenda = ({
                       </Row>
                       {/* </div> */}
                     </Col>
-                    <Col lg={1} md={1} sm={12} className="p-0"></Col>
+                    <Col lg={1} md={1} sm={12} className='p-0'></Col>
                   </Row>
                   {expandIndex === index && expand ? (
                     <>
@@ -726,7 +725,9 @@ const ParentAgenda = ({
           </Row>
         </span>
         {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
-        {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
+        {NewMeetingreducer.castVoteAgendaPage && (
+          <CastVoteAgendaModal setRows={setRows} rows={rows} />
+        )}
         {/* </div>
           )} */}
         {/* </Draggable> */}

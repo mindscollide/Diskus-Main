@@ -85,6 +85,8 @@ const Polling = () => {
 
   let organizationID = localStorage.getItem("organizationID");
   let pollPub = localStorage.getItem("poPub");
+  let pollUpda = localStorage.getItem("poUpda");
+  let pollExpire = localStorage.getItem("pollExpire");
   let userID = localStorage.getItem("userID");
   const [isTotalRecords, setTotalRecords] = useState(0);
 
@@ -176,6 +178,39 @@ const Polling = () => {
         });
     }
   }, [pollPub]);
+  useEffect(() => {
+    if (pollExpire !== null) {
+      validateStringPollApi(pollExpire, navigate, t, 2, dispatch)
+        .then(async (result) => {
+          localStorage.removeItem("pollExpire");
+          let data = {
+            PollID: result.pollID,
+            UserID: parseInt(result.userID),
+          };
+          await dispatch(getPollsByPollIdApi(navigate, data, 4, t));
+        })
+        .catch((error) => {
+          console.log(error, "result");
+        });
+    }
+  }, [pollExpire]);
+
+  useEffect(() => {
+    if (pollUpda !== null) {
+      validateStringPollApi(pollUpda, navigate, t, 2, dispatch)
+        .then(async (result) => {
+          localStorage.removeItem("poUpda");
+          let data = {
+            PollID: result.pollID,
+            UserID: parseInt(result.userID),
+          };
+          await dispatch(getPollsByPollIdApi(navigate, data, 4, t));
+        })
+        .catch((error) => {
+          console.log(error, "result");
+        });
+    }
+  }, [pollUpda]);
 
   useEffect(() => {
     try {
@@ -835,7 +870,11 @@ const Polling = () => {
     <>
       <section className={styles["Poll_Container"]}>
         <Row className='my-3 d-flex align-items-center'>
-          <Col sm={12} md={7} lg={7} className="d-flex align-items-center gap-4">
+          <Col
+            sm={12}
+            md={7}
+            lg={7}
+            className='d-flex align-items-center gap-4'>
             <span className={styles["Poll_Container__heading"]}>
               {t("Polls")}
             </span>
@@ -858,7 +897,7 @@ const Polling = () => {
             />
           </Col>
 
-          <Col sm={12} md={5} lg={5} >
+          <Col sm={12} md={5} lg={5}>
             <span className='position-relative w-100'>
               <TextField
                 width={"100%"}

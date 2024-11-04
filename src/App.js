@@ -30,7 +30,6 @@ import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotify
 import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
-
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const dispatch = useDispatch();

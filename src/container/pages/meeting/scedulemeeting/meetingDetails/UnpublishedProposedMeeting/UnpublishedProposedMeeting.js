@@ -64,7 +64,10 @@ import { UpdateOrganizersMeeting } from "../../../../../../store/actions/Meeting
 import moment from "moment";
 import { truncateString } from "../../../../../../commen/functions/regex";
 import { Tooltip } from "antd";
-import { mqttMeetingData } from "../../../../../../hooks/meetingResponse/response";
+import {
+  getAllUnpublishedMeetingData,
+  mqttMeetingData,
+} from "../../../../../../hooks/meetingResponse/response";
 import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
 
 const UnpublishedProposedMeeting = ({
@@ -88,6 +91,7 @@ const UnpublishedProposedMeeting = ({
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");
   let MeetingProp = localStorage.getItem("meetingprop");
+  let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
 
   let currentView = localStorage.getItem("MeetingCurrentView");
   const [open, setOpen] = useState({
@@ -120,9 +124,9 @@ const UnpublishedProposedMeeting = ({
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=""
-            draggable="false"
-            className="nodata-table-icon"
+            alt=''
+            draggable='false'
+            className='nodata-table-icon'
           />
         }
         title={t("No-new-meetings")}
@@ -297,8 +301,7 @@ const UnpublishedProposedMeeting = ({
               dispatch(pollsGlobalFlag(false));
               dispatch(attendanceGlobalFlag(false));
               dispatch(uploadGlobalFlag(false));
-            }}
-          >
+            }}>
             {truncateString(text, 35)}
           </span>
         );
@@ -325,7 +328,7 @@ const UnpublishedProposedMeeting = ({
       filterResetToDefaultFilteredValue: true,
       defaultFilteredValue: ["11", "12"],
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       onFilter: (value, record) =>
         record.status.toLowerCase().includes(value.toLowerCase()),
@@ -360,7 +363,7 @@ const UnpublishedProposedMeeting = ({
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className="text-truncate d-block">
+            <span className='text-truncate d-block'>
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -390,7 +393,7 @@ const UnpublishedProposedMeeting = ({
           return (
             <>
               <Row>
-                <Col lg={12} md={12} sm={12} className="text-center">
+                <Col lg={12} md={12} sm={12} className='text-center'>
                   {value === maxValue &&
                   value === 0 &&
                   maxValue === 0 ? null : record.meetingPoll
@@ -398,10 +401,10 @@ const UnpublishedProposedMeeting = ({
                     record.meetingPoll?.totalNoOfDirectorsVoted ? (
                     <img
                       src={rspvGreenIcon}
-                      height="17.06px"
-                      width="17.06px"
-                      alt=""
-                      draggable="false"
+                      height='17.06px'
+                      width='17.06px'
+                      alt=''
+                      draggable='false'
                     />
                   ) : (
                     <>
@@ -414,8 +417,7 @@ const UnpublishedProposedMeeting = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className={"newMeetingProgressbar"}
-                        >
+                          className={"newMeetingProgressbar"}>
                           <ProgressBar
                             now={value}
                             max={maxValue}
@@ -438,12 +440,12 @@ const UnpublishedProposedMeeting = ({
       title: t("Send-reponse-by"),
       dataIndex: "responseDeadLine",
       key: "responseDeadLine",
-      width: "115px",
+      width: "125px",
       render: (text, record) => {
         return (
           <>
             {record.status === "12" ? (
-              <span className="d-flex justify-content-center">
+              <span className='d-flex justify-content-center'>
                 {changeDateStartHandler2(record.responseDeadLine)}
               </span>
             ) : (
@@ -470,17 +472,16 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex  align-items-center justify-content-center gap-4"
-              >
+                className='d-flex  align-items-center justify-content-center gap-4'>
                 {record.isAgendaContributor ? (
-                  <Tooltip placement="bottomLeft" title={t("Edit")}>
+                  <Tooltip placement='bottomLeft' title={t("Edit")}>
                     <img
                       src={EditIcon}
-                      className="cursor-pointer"
-                      width="17.03px"
-                      height="17.03px"
-                      alt=""
-                      draggable="false"
+                      className='cursor-pointer'
+                      width='17.03px'
+                      height='17.03px'
+                      alt=''
+                      draggable='false'
                       onClick={() => {
                         handleEditMeeting(
                           record.pK_MDID,
@@ -518,14 +519,14 @@ const UnpublishedProposedMeeting = ({
                   </Tooltip>
                 ) : record.isOrganizer ? (
                   <>
-                    <Tooltip placement="bottomLeft" title={t("Edit")}>
+                    <Tooltip placement='bottomLeft' title={t("Edit")}>
                       <img
                         src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.03px"
-                        height="17.03px"
-                        alt=""
-                        draggable="false"
+                        className='cursor-pointer'
+                        width='17.03px'
+                        height='17.03px'
+                        alt=''
+                        draggable='false'
                         onClick={() => {
                           handleEditMeeting(
                             record.pK_MDID,
@@ -596,8 +597,7 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex  align-items-center gap-4"
-              >
+                className='d-flex  align-items-center gap-4'>
                 {record.status === "11" ? (
                   record.isParticipant ? null : record.isAgendaContributor ? null : (
                     <Button
@@ -730,23 +730,39 @@ const UnpublishedProposedMeeting = ({
   }, [publishState]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.meetingStatusProposedMqttData !== null &&
-      NewMeetingreducer.meetingStatusProposedMqttData !== undefined
-    ) {
-      let meetingData = NewMeetingreducer.meetingStatusProposedMqttData;
-      const indexToUpdate = rows.findIndex(
-        (obj) => obj.pK_MDID === meetingData.pK_MDID
-      );
-      if (indexToUpdate !== -1) {
-        let updatedRows = [...rows];
-        updatedRows[indexToUpdate] = meetingData;
-        setRow(updatedRows);
-      } else {
-        let updatedRows = [...rows, meetingData];
-        setRow(updatedRows);
+    const updateMeetingData = async () => {
+      if (
+        NewMeetingreducer.meetingStatusProposedMqttData !== null &&
+        NewMeetingreducer.meetingStatusProposedMqttData !== undefined
+      ) {
+        let meetingData = NewMeetingreducer.meetingStatusProposedMqttData;
+        const indexToUpdate = rows.findIndex(
+          (obj) => obj.pK_MDID === meetingData.pK_MDID
+        );
+
+        // Fetching unpublished meeting data
+        let getMeetingDataArray = await getAllUnpublishedMeetingData(
+          [meetingData],
+          1
+        );
+        console.log(getMeetingDataArray, "getMeetingDataArray");
+
+        // Assuming getMeetingDataArray is an array with a single object
+        const getMeetingData = getMeetingDataArray[0];
+
+        // Check if the meeting exists in the current rows
+        if (indexToUpdate !== -1) {
+          let updatedRows = [...rows];
+          updatedRows[indexToUpdate] = getMeetingData;
+          setRow(updatedRows);
+        } else {
+          let updatedRows = [getMeetingData, ...rows];
+          setRow(updatedRows);
+        }
       }
-    }
+    };
+
+    updateMeetingData();
   }, [NewMeetingreducer.meetingStatusProposedMqttData]);
 
   useEffect(() => {
@@ -895,16 +911,59 @@ const UnpublishedProposedMeeting = ({
       callApi();
     }
   }, [MeetingProp]); // Add `dispatch` to the dependency array
+  console.log(UserMeetPropoDatPoll, "UserMeetPropoDatPollUserMeetPropoDatPollUserMeetPropoDatPoll")
+  useEffect(() => {
+    if (UserMeetPropoDatPoll !== null) {
+      try {
+        const callApi = async () => {
+          try {
+            let getApiResponse = await validateStringParticipantProposedApi(
+              UserMeetPropoDatPoll,
+              navigate,
+              t
+            )(dispatch); // Ensure you're passing dispatch here
+            console.log(getApiResponse, "getApiResponsegetApiResponsegetApiResponse")
+            if (getApiResponse) {
+              localStorage.setItem(
+                "viewProposeDatePollMeetingID",
+                getApiResponse.meetingID
+              );
+              localStorage.removeItem("UserMeetPropoDatPoll");
+              dispatch(showSceduleProposedMeeting(true));
+              setViewProposeOrganizerPoll(false);
+              dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              dispatch(meetingDetailsGlobalFlag(false));
+              dispatch(organizersGlobalFlag(false));
+              dispatch(agendaContributorsGlobalFlag(false));
+              dispatch(participantsGlobalFlag(false));
+              dispatch(agendaGlobalFlag(false));
+              dispatch(meetingMaterialGlobalFlag(false));
+              dispatch(minutesGlobalFlag(false));
+              dispatch(proposedMeetingDatesGlobalFlag(false));
+              dispatch(actionsGlobalFlag(false));
+              dispatch(pollsGlobalFlag(false));
+              dispatch(attendanceGlobalFlag(false));
+              dispatch(uploadGlobalFlag(false));
+            }
+          } catch (error) {
+            console.error("Error in API call:", error);
+          }
+        };
 
+        callApi();
+      } catch (error) {}
+    }
+  }, [UserMeetPropoDatPoll]);
+  console.log(rows, "MeetingProposedRow Data");
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12} className="w-100">
+        <Col lg={12} md={12} sm={12} className='w-100'>
           <Table
             column={MeetingColoumns}
             scroll={{ y: "54vh", x: false }}
             pagination={false}
-            className="newMeetingTable"
+            className='newMeetingTable'
             rows={rows}
             locale={{
               emptyText: emptyText(), // Set your custom empty text here

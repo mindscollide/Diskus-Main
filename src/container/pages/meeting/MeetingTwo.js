@@ -158,6 +158,8 @@ const NewMeeting = () => {
   let MeetingMin = localStorage.getItem("meetingMin");
   let MeetingProp = localStorage.getItem("meetingprop");
   let MtAgUpdate = localStorage.getItem("mtAgUpdate");
+  let meetingCanc = localStorage.getItem("meetingCanc");
+  let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   // let AdCont
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
@@ -309,7 +311,10 @@ const NewMeeting = () => {
           UserID: Number(userID),
           PageNumber: Number(meetingPageCurrent),
           Length: Number(meetingpageRow),
-          PublishedMeetings: MeetingProp !== null ? false : true,
+          PublishedMeetings:
+            MeetingProp !== null || UserMeetPropoDatPoll !== null
+              ? false
+              : true,
         };
         if (
           getALlMeetingTypes.length === 0 &&
@@ -330,7 +335,10 @@ const NewMeeting = () => {
           UserID: Number(userID),
           PageNumber: 1,
           Length: 30,
-          PublishedMeetings: MeetingProp !== null ? false : true,
+          PublishedMeetings:
+            MeetingProp !== null || UserMeetPropoDatPoll !== null
+              ? false
+              : true,
         };
         // localStorage.setItem("MeetingPageRows", 30);
         // localStorage.setItem("MeetingPageCurrent", 1);
@@ -505,10 +513,10 @@ const NewMeeting = () => {
         });
     }
   }, [AgCont]);
-
+  console.log(AdOrg, "AdOrgAdOrgAdOrg");
   useEffect(() => {
     if (AdOrg !== null) {
-      validateStringEmailApi(AgCont, navigate, t, 2, dispatch)
+      validateStringEmailApi(AdOrg, navigate, t, 2, dispatch)
         .then(async (result) => {
           // Handle the result here
 
@@ -584,16 +592,48 @@ const NewMeeting = () => {
         });
     }
   }, [MeetingStr]);
-
+  useEffect(() => {
+    if (meetingCanc !== null) {
+      try {
+        validateStringEmailApi(meetingCanc, navigate, t, 4, dispatch)
+          .then(async (result) => {
+            console.log(result, "resultresultresult");
+            // Handle the result here
+            if (result.isQuickMeeting === true) {
+              let requestDataForMeetingDetails = {
+                MeetingID: Number(result.meetingID),
+              };
+              await dispatch(
+                ViewMeeting(
+                  navigate,
+                  requestDataForMeetingDetails,
+                  t,
+                  setViewFlag,
+                  setEditFlag,
+                  "",
+                  1
+                )
+              );
+            }
+            localStorage.removeItem("meetingCanc");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            //
+          });
+      } catch (error) {}
+    }
+  }, [meetingCanc]);
   useEffect(() => {
     if (MeetinUpd !== null) {
       // Meeting Update Route 4
       validateStringEmailApi(MeetinUpd, navigate, t, 4, dispatch)
         .then(async (result) => {
+          console.log(result, "resultresultresult");
           // Handle the result here
           if (result.isQuickMeeting === true) {
             let requestDataForMeetingDetails = {
-              MeetingID: Number(result.MeetingID),
+              MeetingID: Number(result.meetingID),
             };
             await dispatch(
               ViewMeeting(
@@ -632,7 +672,7 @@ const NewMeeting = () => {
   }, [MeetinUpd]);
 
   useEffect(() => {
-    if (MeetingProp !== null) {
+    if (MeetingProp !== null || UserMeetPropoDatPoll !== null) {
       localStorage.setItem("MeetingCurrentView", 2);
       localStorage.setItem("MeetingPageRows", 30);
       localStorage.setItem("MeetingPageCurrent", 1);
@@ -641,7 +681,7 @@ const NewMeeting = () => {
       localStorage.setItem("MeetingPageRows", 30);
       localStorage.setItem("MeetingPageCurrent", 1);
     }
-  }, [MeetingProp]);
+  }, [MeetingProp, UserMeetPropoDatPoll]);
 
   useEffect(() => {
     if (MeetingMin !== null) {
@@ -975,7 +1015,7 @@ const NewMeeting = () => {
             FK_MDID: id,
             DateTime: getCurrentDateTimeUTC(),
           };
-  
+
           dispatch(
             JoinCurrentMeeting(
               isQuickMeeting,
@@ -995,7 +1035,7 @@ const NewMeeting = () => {
             FK_MDID: id,
             DateTime: getCurrentDateTimeUTC(),
           };
-  
+
           dispatch(
             JoinCurrentMeeting(
               isQuickMeeting,
@@ -1010,7 +1050,7 @@ const NewMeeting = () => {
               setViewAdvanceMeetingModal
             )
           );
-  
+
           // dispatch(
           //   GetAllUserChats(
           //     navigate,
@@ -1052,9 +1092,8 @@ const NewMeeting = () => {
         }
       }
     } catch (error) {
-      console.log(error, "errorerrorerror")
+      console.log(error, "errorerrorerror");
     }
-
   };
 
   const handleEditMeeting = async (id, isQuick, role, record) => {
@@ -2898,7 +2937,7 @@ const NewMeeting = () => {
                 className='d-flex justify-content-end align-items-center'>
                 <span className='position-relative'>
                   <TextField
-                    width={"502px"}
+                    width={"490px"}
                     placeholder={t("Search")}
                     applyClass={"meetingSearch"}
                     name={"SearchVal"}

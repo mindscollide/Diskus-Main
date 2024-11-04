@@ -344,6 +344,8 @@ const Polls = ({ committeeStatus }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
+      align: "center",
+
       width: "120px",
       filters: [
         {
@@ -384,6 +386,8 @@ const Polls = ({ committeeStatus }) => {
       title: t("Due-date"),
       dataIndex: "dueDate",
       key: "dueDate",
+      align: "center",
+
       width: "90px",
       sorter: (a, b) =>
         new Date(

@@ -154,8 +154,8 @@ const Notes = () => {
                         md={12}
                         sm={12}
                         className='d-flex gap-2 align-items-center justify-content-between'>
-                        <span className='d-flex gap-2'>
-                          {data.isStarred ? (
+                        <span >
+                          {/* {data.isStarred ? (
                             <Tooltip
                               placement='bottomLeft'
                               title={t("Starred")}>
@@ -185,7 +185,7 @@ const Notes = () => {
                                 }
                               />
                             </Tooltip>
-                          )}
+                          )} */}
                           {/* <Star /> */}
                           {data.isAttachment && (
                             <span>

@@ -2454,6 +2454,10 @@ const GetAllMeetingDetailsApiFunc = (
                 )
             ) {
               localStorage.setItem(
+                "meetingTitle",
+                response.data.responseResult.advanceMeetingDetails.meetingTitle
+              );
+              localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.advanceMeetingDetails.meetingID
               );
@@ -8381,6 +8385,9 @@ const LeaveCurrentMeeting = (
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let roomID = localStorage.getItem("acceptedRoomID");
   let userGUID = localStorage.getItem("userGUID");
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+  let ViewGroupID = localStorage.getItem("ViewGroupID");
+
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8433,17 +8440,49 @@ const LeaveCurrentMeeting = (
                   if (typeof setEndMeetingConfirmationModal === "function") {
                     setEndMeetingConfirmationModal(false);
                   }
-                  let searchData = {
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber: Number(meetingPageCurrent),
-                    Length: Number(meetingpageRow),
-                    PublishedMeetings: true,
-                  };
-                  console.log("chek search meeting");
-                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  if (ViewCommitteeID !== null) {
+                    let userID = localStorage.getItem("userID");
+
+                    let searchData = {
+                      CommitteeID: Number(ViewCommitteeID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(
+                      getMeetingByCommitteeIDApi(navigate, t, searchData)
+                    );
+                  } else if (ViewGroupID !== null) {
+                    let searchData = {
+                      GroupID: Number(ViewGroupID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+                  } else {
+                    let searchData = {
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: Number(meetingPageCurrent),
+                      Length: Number(meetingpageRow),
+                      PublishedMeetings: true,
+                    };
+                    console.log("chek search meeting");
+                    await dispatch(
+                      searchNewUserMeeting(navigate, searchData, t)
+                    );
+                  }
                 } else {
                   dispatch(
                     leaveMeetingAdvancedSuccess(
@@ -8891,8 +8930,6 @@ const validateStringParticipantProposedApi = (emailString, navigate, t) => {
         return dispatch(
           validateStringParticipantProposedApi(emailString, navigate, t)
         );
-      } else if (response.data.responseResult.isExecuted) {
-      } else {
       }
       if (response.data.responseCode === 200) {
         const responseResult = response.data.responseResult;
@@ -9143,7 +9180,7 @@ const leaveMeetingVideoFail = (message) => {
   };
 };
 
-const LeaveMeetingVideo = (Data, navigate, t) => {
+const LeaveMeetingVideo = (Data, navigate, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     // await dispatch(leaveMeetingVideoInit());
@@ -9161,7 +9198,7 @@ const LeaveMeetingVideo = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(LeaveMeetingVideo(Data, navigate, t));
+          dispatch(LeaveMeetingVideo(Data, navigate, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -9171,6 +9208,8 @@ const LeaveMeetingVideo = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
+              console.log(flag, typeof flag, "flagflagflag");
+
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
               response.data.responseResult.responseMessage
