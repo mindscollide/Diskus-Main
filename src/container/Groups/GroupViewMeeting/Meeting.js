@@ -243,7 +243,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
               localStorage.setItem("meetingTitle", record.title);
               localStorage.setItem("videoCallURL", record.videoCallURL);
-
             }}>
             {text}
           </span>
@@ -494,7 +493,10 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                           )
                         );
                         localStorage.setItem("meetingTitle", record.title);
-                        localStorage.setItem("videoCallURL", record.videoCallURL);
+                        localStorage.setItem(
+                          "videoCallURL",
+                          record.videoCallURL
+                        );
                       }}
                     />
                   </Col>
@@ -696,10 +698,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           let findIsExist = rows.findIndex(
             (data, index) => data.pK_MDID === meetingData.pK_MDID
           );
-          console.log(
-            GroupMeetingMQTT,
-            "GroupMeetingMQTTGroupMeetingMQTTGroupMeetingMQTT"
-          );
+
           if (findIsExist !== -1) {
             setRow((rowsData) => {
               return rowsData.map((newData, index) => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 const PrivateRoutes = () => {
-  const currentUrl = window.location.href;
+  const currentUrl = window.location.href.toLowerCase();
   console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
   const navigate = useNavigate();
 
@@ -9,7 +9,7 @@ const PrivateRoutes = () => {
   useEffect(() => {
     // Action: Meeting RSVP
     if (
-      currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
+      currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=".toLowerCase())
     ) {
       // Extract action parameter from URL
       const parts = currentUrl.split("?action=");
@@ -24,7 +24,7 @@ const PrivateRoutes = () => {
     }
 
     // Action: Data Room
-    if (currentUrl.includes("DisKus/dataroom?action=")) {
+    if (currentUrl.includes("DisKus/dataroom?action=".toLowerCase())) {
       // Extract action parameter from URL
       const parts = currentUrl.split("?action=");
       if (parts.length === 2) {
@@ -39,7 +39,7 @@ const PrivateRoutes = () => {
 
     // Action: Meeting Minute Collaboration
     if (
-      currentUrl.includes("DisKus/Meeting/Meetingminutecollaborate?action=")
+      currentUrl.includes("DisKus/Meeting/Meetingminutecollaborate?action=".toLowerCase())
     ) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
@@ -47,86 +47,53 @@ const PrivateRoutes = () => {
     }
 
     // Action: Meeting Proposed
-    if (currentUrl.includes("DisKus/Meeting?Meetingproposed_action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Meetingproposed_action=".toLowerCase())) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("meetingprop", parts);
     }
 
-    // Action: Add Agenda Contributor
-    if (currentUrl.includes("DisKus/Meeting?Addagendacontributor_action=")) {
-      // Extract action parameter from URL
-      const parts = currentUrl.split("Addagendacontributor_action=")[1];
-      localStorage.setItem("AgCont", parts);
-      // Add action-specific logic here if needed
-    }
-
-    // Action: Update Agenda Contributor
-    if (currentUrl.includes("DisKus/Meeting?Updateagendacontributor_action=")) {
-      // Add action-specific logic here if needed
-      const parts = currentUrl.split("Updateagendacontributor_action=")[1];
-      localStorage.setItem("UpCont", parts);
-    }
-    console.log(currentUrl, "partsparts")
-
-    // Action: Add Organizer
-    if (currentUrl.includes("DisKus/Meeting?Addorganizer_action=")) {
-      console.log(currentUrl, "partsparts")
-      // Extract action parameter from URL
-      const parts = currentUrl.split("Addorganizer_action=")[1];
-      localStorage.setItem("AdOrg", parts);
-      // Add action-specific logic here if needed
-    }
-
-    // Action: Update Organizer
-    if (currentUrl.includes("DisKus/Meeting?Updateorganizer_action=")) {
-      // Add action-specific logic here if needed
-      const parts = currentUrl.split("action=")[1];
-      localStorage.setItem("AdOrg", parts);
-    }
-
     // Action: Cancel Meeting
-    if (currentUrl.includes("DisKus/Meeting?Cancelmeeting_action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Cancelmeeting_action=".toLowerCase())) {
       // Add action-specific logic here if needed
       navigate("/Diskus/Meeting");
     }
 
     // Action: Delete Meeting
-    if (currentUrl.includes("DisKus/Meeting?Deletemeeting_action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Deletemeeting_action=".toLowerCase())) {
       // Add action-specific logic here if needed
       navigate("/Diskus/Meeting");
     }
 
     // Action: Update Meeting
-    if (currentUrl.includes("DisKus/Meeting?Updatemeeting_action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Updatemeeting_action=".toLowerCase())) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("meetingUpd", parts);
     }
 
     // Action: Start Meeting
-    if (currentUrl.includes("DisKus/Meeting?Startmeeting_action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Startmeeting_action=".toLowerCase())) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("meetingStr", parts);
     }
 
-    // Action: Poll Expire
-    if (currentUrl.includes("DisKus/polling?Pollexpire_action=")) {
-      console.log();
-      // Add action-specific logic here if needed
+    if(currentUrl.includes("DisKus/Meeting/Usermeetingproposedatespoll?action=".toLowerCase())) {
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("UserMeetPropoDatPoll", parts);
     }
+
     // Action: Poll Expire
-    if (currentUrl.includes("DisKus/groups?GroupPollExpire_action=")) {
-      // Add action-specific logic here if needed
-    }
-    // Action: Poll Expire
-    if (currentUrl.includes("DisKus/committee?CommitteePollExpire_action=")) {
+    if (currentUrl.includes("DisKus/polling?PollExpire_action=".toLowerCase())) {
+      console.log("pollExpirepollExpirepollExpire", currentUrl);
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("pollExpire", parts);
       // Add action-specific logic here if needed
     }
 
     // Action: Poll Published
-    if (currentUrl.includes("DisKus/polling?PollPublished_action=")) {
+    if (currentUrl.includes("DisKus/polling?PollPublished_action=".toLowerCase())) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("poPub", parts);
       // Add action-specific logic here if needed
@@ -146,22 +113,22 @@ const PrivateRoutes = () => {
     }
 
     // Action: Resolution Reminder
-    if (currentUrl.includes("DisKus/resolution?Resolutionreminder_action=")) {
+    if (currentUrl.includes("DisKus/resolution?Resolutionreminder_action=".toLowerCase())) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("resVot", parts);
     }
 
-    if (currentUrl.includes("DisKus/resolution?ResolutionVoter_action=")) {
+    if (currentUrl.includes("DisKus/resolution?ResolutionVoter_action=".toLowerCase())) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("resVot", parts);
     }
-    if (currentUrl.includes("DisKus/resolution?ResolutionNonVoter_action=")) {
+    if (currentUrl.includes("DisKus/resolution?ResolutionNonVoter_action=".toLowerCase())) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("resNonVot", parts);
     }
     // Action: Organization Status Enable
-    if (currentUrl.includes("DisKus/Admin/Organizationstatusenable?action=")) {
+    if (currentUrl.includes("DisKus/Admin/Organizationstatusenable?action=".toLowerCase())) {
       // Add action-specific logic here if needed
     }
 
@@ -172,14 +139,13 @@ const PrivateRoutes = () => {
       // Add action-specific logic here if needed
     }
 
-    if (currentUrl.includes("DisKus/Meeting?Activeagendaedit_action")) {
+    if (currentUrl.includes("DisKus/Meeting?Activeagendaedit_action".toLowerCase())) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("mtAgUpdate", parts);
     }
   }, [currentUrl]);
 
   let Blur = localStorage.getItem("blur");
-  let currentUserID = localStorage.getItem("userID");
   let RoleID = Number(localStorage.getItem("roleID"));
   const token =
     localStorage.getItem("token") !== undefined &&

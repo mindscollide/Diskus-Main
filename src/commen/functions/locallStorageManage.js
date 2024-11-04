@@ -1,274 +1,76 @@
 import { LoginFlowRoutes } from "../../store/actions/UserManagementActions";
 
+const setLocalStorage = (key, value) => {
+  if (value) {
+    localStorage.setItem(key, value);
+  }
+};
+
+const manageCommonLocalStorage = (loginFlowPageRoute, dispatch, dataMap) => {
+  localStorage.clear();
+  localStorage.setItem("LoginFlowPageRoute", JSON.stringify(loginFlowPageRoute));
+  dispatch(LoginFlowRoutes(loginFlowPageRoute));
+
+  Object.entries(dataMap).forEach(([key, value]) => setLocalStorage(key, value));
+};
+
 export const localStorageManage = (
   emailRef,
   dispatch,
   setErrorMessage,
   setErrorBar,
-  setRemeberEmail,
+  setRememberEmail,
   setEmail
 ) => {
   emailRef.current.focus();
-  let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
-  let RememberPasswordLocal = JSON.parse(
-    localStorage.getItem("remeberPassword")
-  );
-  let reLang = localStorage.getItem("i18nextLng");
 
-  let RSVP = localStorage.getItem("RSVP");
-  let DataRoomEmailValue = localStorage.getItem("DataRoomEmail");
-  let LoginFlowPageRoute = JSON.parse(
-    localStorage.getItem("LoginFlowPageRoute")
-  );
-  let AdOrg = localStorage.getItem("AdOrg");
-  let AgCont = localStorage.getItem("AgCont");
-  let MeetingStr = localStorage.getItem("meetingStr");
-  let MeetinUpd = localStorage.getItem("meetingUpd");
-  let MeetingMin = localStorage.getItem("meetingMin");
-  let Meetingprop = localStorage.getItem("meetingprop");
-  let MtAgUpdate = localStorage.getItem("mtAgUpdate");
-  let poPub = localStorage.getItem("poPub");
-  let poUpda = localStorage.getItem("poUpda")
+  const RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
+  const RememberPasswordLocal = JSON.parse(localStorage.getItem("remeberPassword"));
 
-  let resolutionVoter = localStorage.getItem("resVot");
-  let resolutionNonVoter = localStorage.getItem("resNonVot");
-  if (RememberEmailLocal === true && RememberPasswordLocal === true) {
-    let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
+  const commonData = {
+    i18nextLng: localStorage.getItem("i18nextLng"),
+    RSVP: localStorage.getItem("RSVP"),
+    DataRoomEmail: localStorage.getItem("DataRoomEmail"),
+    meetingStr: localStorage.getItem("meetingStr"),
+    meetingUpd: localStorage.getItem("meetingUpd"),
+    meetingMin: localStorage.getItem("meetingMin"),
+    meetingprop: localStorage.getItem("meetingprop"),
+    mtAgUpdate: localStorage.getItem("mtAgUpdate"),
+    poPub: localStorage.getItem("poPub"),
+    poUpda: localStorage.getItem("poUpda"),
+    UserMeetPropoDatPoll: localStorage.getItem("UserMeetPropoDatPoll"),
+    pollExpire: localStorage.getItem("pollExpire"),
+    AdOrg: localStorage.getItem("AdOrg"),
+    AgCont: localStorage.getItem("AgCont"),
+  };
 
-    let RememberPasswordLocalValue = localStorage.getItem(
-      "rememberPasswordValue"
-    );
+  if (RememberEmailLocal || RememberPasswordLocal) {
+    const RememberEmailLocalValue = localStorage.getItem("rememberEmailValue") || "";
+    const RememberPasswordLocalValue = localStorage.getItem("rememberPasswordValue") || "";
 
-    localStorage.clear();
-    try {
-      // if (Number(LoginFlowPageRoute) !== 1) {
-      console.log("LoginFlowRoutes", LoginFlowPageRoute);
-      localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-      dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-      // }
-    } catch {}
-    if (reLang !== undefined && reLang != null) {
-      localStorage.setItem("i18nextLng", reLang);
-    }
-    if (RSVP) {
-      localStorage.setItem("RSVP", RSVP);
-    }
-    if (MeetingStr) {
-      localStorage.setItem("meetingStr", MeetingStr);
-    }
-    if (MtAgUpdate) {
-      localStorage.setItem("mtAgUpdate", MtAgUpdate);
-    }
-    if (MeetinUpd) {
-      localStorage.setItem("meetingUpd", MeetinUpd);
-    }
-    if (Meetingprop) {
-      localStorage.setItem("meetingprop", Meetingprop);
-    }
-    if (MeetingMin) {
-      localStorage.setItem("meetingMin", MeetingMin);
-    }
-    if (resolutionVoter) {
-      localStorage.removeItem("resVot");
-    }
-    if (resolutionNonVoter) {
-      localStorage.removeItem("resNonVot");
-    }
-    if (AgCont) {
-      localStorage.setItem("AgCont", AgCont);
-    }
-    if (poPub) {
-      localStorage.setItem("poPub", poPub);
-    }
-    if (AdOrg) {
-      localStorage.setItem("AdOrg", AdOrg);
-    }
-    if (DataRoomEmailValue) {
-      localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-    }
-    if(poUpda) {
-      localStorage.setItem("poUpda", poUpda)
-    }
-    localStorage.setItem("remeberPassword", RememberPasswordLocal);
-    localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
-    localStorage.setItem("rememberEmail", RememberEmailLocal);
-    localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+    manageCommonLocalStorage(JSON.parse(localStorage.getItem("LoginFlowPageRoute")), dispatch, commonData);
+
+    setLocalStorage("rememberEmail", RememberEmailLocal);
+    setLocalStorage("rememberEmailValue", RememberEmailLocalValue);
+    setLocalStorage("remeberPassword", RememberPasswordLocal);
+    setLocalStorage("rememberPasswordValue", RememberPasswordLocalValue);
+
     setErrorMessage("");
     setErrorBar(false);
-    setRemeberEmail(RememberEmailLocal);
+    setRememberEmail(RememberEmailLocal);
     setEmail(RememberEmailLocalValue);
-  } else if (RememberEmailLocal === true) {
-    let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
-    localStorage.clear();
-    try {
-      // if (Number(LoginFlowPageRoute) !== 1) {
-      localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-      console.log("LoginFlowRoutes", LoginFlowPageRoute);
-      dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-      // }
-    } catch {}
-    if (reLang !== undefined && reLang != null) {
-      localStorage.setItem("i18nextLng", reLang);
-    }
-    if (RSVP) {
-      localStorage.setItem("RSVP", RSVP);
-    }
-    if (MeetingStr) {
-      localStorage.setItem("meetingStr", MeetingStr);
-    }
-    if (MeetinUpd) {
-      localStorage.setItem("meetingUpd", MeetinUpd);
-    }
-    if (resolutionVoter) {
-      localStorage.removeItem("resVot");
-    }
-    if (resolutionNonVoter) {
-      localStorage.removeItem("resNonVot");
-    }
-    if (Meetingprop) {
-      localStorage.setItem("meetingprop", Meetingprop);
-    }
-    if (MeetingMin) {
-      localStorage.setItem("meetingMin", MeetingMin);
-    }
-    if (MtAgUpdate) {
-      localStorage.setItem("mtAgUpdate", MtAgUpdate);
-    }
-    if (AgCont) {
-      localStorage.setItem("AgCont", AgCont);
-    }
-    if (poPub) {
-      localStorage.setItem("poPub", poPub);
-    }
-    if (AdOrg) {
-      localStorage.setItem("AdOrg", AdOrg);
-    }
-    if (DataRoomEmailValue) {
-      localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-    }
-    if(poUpda) {
-      localStorage.setItem("poUpda", poUpda)
-    }
-    localStorage.setItem("rememberEmail", RememberEmailLocal);
-    localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
-    setErrorMessage("");
-    setErrorBar(false);
-    setRemeberEmail(RememberEmailLocal);
-    setEmail(RememberEmailLocalValue);
-  } else if (RememberPasswordLocal === true) {
-    let RememberPasswordLocalValue = localStorage.getItem(
-      "rememberPasswordValue"
-    );
-    localStorage.clear();
-    try {
-      // if (Number(LoginFlowPageRoute) !== 1) {
-      localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-      console.log("LoginFlowRoutes", LoginFlowPageRoute);
-      dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-      // }
-    } catch {}
 
-    if (reLang != undefined && reLang != null) {
-      localStorage.setItem("i18nextLng", reLang);
-    }
-    if (RSVP) {
-      localStorage.setItem("RSVP", RSVP);
-    }
-    if (AgCont) {
-      localStorage.setItem("AgCont", AgCont);
-    }
-    if (MeetingStr) {
-      localStorage.setItem("meetingStr", MeetingStr);
-    }
-    if (resolutionVoter) {
-      localStorage.removeItem("resVot");
-    }
-    if (resolutionNonVoter) {
-      localStorage.removeItem("resNonVot");
-    }
-    if (MeetinUpd) {
-      localStorage.setItem("meetingUpd", MeetinUpd);
-    }
-    if (MtAgUpdate) {
-      localStorage.setItem("mtAgUpdate", MtAgUpdate);
-    }
-    if (Meetingprop) {
-      localStorage.setItem("meetingprop", Meetingprop);
-    }
-    if (MeetingMin) {
-      localStorage.setItem("meetingMin", MeetingMin);
-    }
-    if (poPub) {
-      localStorage.setItem("poPub", poPub);
-    }
-    if (AdOrg) {
-      localStorage.setItem("AdOrg", AdOrg);
-    }
-    if (DataRoomEmailValue) {
-      localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-    }
-    if(poUpda) {
-      localStorage.setItem("poUpda", poUpda)
-    }
-    localStorage.setItem("remeberPassword", RememberPasswordLocal);
-    localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
-    setErrorMessage("");
-    setErrorBar(false);
+    // Remove specific items if applicable
+    localStorage.removeItem("resVot");
+    localStorage.removeItem("resNonVot");
   } else {
-    localStorage.clear();
-    try {
-      // if (Number(LoginFlowPageRoute) !== 1) {
-      localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-      console.log("LoginFlowRoutes", LoginFlowPageRoute);
-      dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-      // }
-    } catch {}
-    if (reLang != undefined && reLang != null) {
-      localStorage.setItem("i18nextLng", reLang);
-    }
-    if (RSVP) {
-      localStorage.setItem("RSVP", RSVP);
-    }
-    if (AgCont) {
-      localStorage.setItem("AgCont", AgCont);
-    }
-    if (MeetingStr) {
-      localStorage.setItem("meetingStr", MeetingStr);
-    }
-    if (MeetinUpd) {
-      localStorage.setItem("meetingUpd", MeetinUpd);
-    }
-    if (MtAgUpdate) {
-      localStorage.setItem("mtAgUpdate", MtAgUpdate);
-    }
-    if (Meetingprop) {
-      localStorage.setItem("meetingprop", Meetingprop);
-    }
-    if (resolutionVoter) {
-      localStorage.removeItem("resVot");
-    }
-    if (resolutionNonVoter) {
-      localStorage.removeItem("resNonVot");
-    }
-    if (MeetingMin) {
-      localStorage.setItem("meetingMin", MeetingMin);
-    }
-    if (poPub) {
-      localStorage.setItem("poPub", poPub);
-    }
-    if (AdOrg) {
-      localStorage.setItem("AdOrg", AdOrg);
-    }
-    if (DataRoomEmailValue) {
-      localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-    }
-    if(poUpda) {
-      localStorage.setItem("poUpda", poUpda)
-    }
-    localStorage.setItem("rememberEmail", false);
-    localStorage.setItem("rememberEmailValue", "");
-    localStorage.setItem("remeberPassword", false);
-    localStorage.setItem("rememberPasswordValue", "");
+    manageCommonLocalStorage(JSON.parse(localStorage.getItem("LoginFlowPageRoute")), dispatch, commonData);
+
+    setLocalStorage("rememberEmail", false);
+    setLocalStorage("rememberEmailValue", "");
+    setLocalStorage("remeberPassword", false);
+    setLocalStorage("rememberPasswordValue", "");
+
     setErrorMessage("");
     setErrorBar(false);
   }
