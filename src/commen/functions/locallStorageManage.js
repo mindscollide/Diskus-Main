@@ -8,10 +8,15 @@ const setLocalStorage = (key, value) => {
 
 const manageCommonLocalStorage = (loginFlowPageRoute, dispatch, dataMap) => {
   localStorage.clear();
-  localStorage.setItem("LoginFlowPageRoute", JSON.stringify(loginFlowPageRoute));
+  localStorage.setItem(
+    "LoginFlowPageRoute",
+    JSON.stringify(loginFlowPageRoute)
+  );
   dispatch(LoginFlowRoutes(loginFlowPageRoute));
 
-  Object.entries(dataMap).forEach(([key, value]) => setLocalStorage(key, value));
+  Object.entries(dataMap).forEach(([key, value]) =>
+    setLocalStorage(key, value)
+  );
 };
 
 export const localStorageManage = (
@@ -25,7 +30,9 @@ export const localStorageManage = (
   emailRef.current.focus();
 
   const RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
-  const RememberPasswordLocal = JSON.parse(localStorage.getItem("remeberPassword"));
+  const RememberPasswordLocal = JSON.parse(
+    localStorage.getItem("remeberPassword")
+  );
 
   const commonData = {
     i18nextLng: localStorage.getItem("i18nextLng"),
@@ -42,13 +49,20 @@ export const localStorageManage = (
     pollExpire: localStorage.getItem("pollExpire"),
     AdOrg: localStorage.getItem("AdOrg"),
     AgCont: localStorage.getItem("AgCont"),
+    meetingCanc: localStorage.getItem("meetingCanc"),
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {
-    const RememberEmailLocalValue = localStorage.getItem("rememberEmailValue") || "";
-    const RememberPasswordLocalValue = localStorage.getItem("rememberPasswordValue") || "";
+    const RememberEmailLocalValue =
+      localStorage.getItem("rememberEmailValue") || "";
+    const RememberPasswordLocalValue =
+      localStorage.getItem("rememberPasswordValue") || "";
 
-    manageCommonLocalStorage(JSON.parse(localStorage.getItem("LoginFlowPageRoute")), dispatch, commonData);
+    manageCommonLocalStorage(
+      JSON.parse(localStorage.getItem("LoginFlowPageRoute")),
+      dispatch,
+      commonData
+    );
 
     setLocalStorage("rememberEmail", RememberEmailLocal);
     setLocalStorage("rememberEmailValue", RememberEmailLocalValue);
@@ -64,7 +78,11 @@ export const localStorageManage = (
     localStorage.removeItem("resVot");
     localStorage.removeItem("resNonVot");
   } else {
-    manageCommonLocalStorage(JSON.parse(localStorage.getItem("LoginFlowPageRoute")), dispatch, commonData);
+    manageCommonLocalStorage(
+      JSON.parse(localStorage.getItem("LoginFlowPageRoute")),
+      dispatch,
+      commonData
+    );
 
     setLocalStorage("rememberEmail", false);
     setLocalStorage("rememberEmailValue", "");
