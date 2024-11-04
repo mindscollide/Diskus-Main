@@ -306,7 +306,7 @@ const SubAgendaMappingDragging = ({
             subIndex < data.subAgenda.length - 1 &&
             subAgendaData.canView === false &&
             data.subAgenda[subIndex + 1].canView === true;
-          console.log("hasNextViewFalse", hasNextViewFalse);
+          console.log("hasNextViewFalse", hasNextViewFalse,subAgendaData);
           return (
             <>
               <div
@@ -591,9 +591,15 @@ const SubAgendaMappingDragging = ({
                                                         editorRole.role !==
                                                           "Organizer" ? (
                                                         <Button
-                                                          text={t(
-                                                            "Cast-your-vote"
-                                                          )}
+                                                          text={
+                                                            data?.hasAlreadyVoted
+                                                              ? t(
+                                                                  "View-your-vote"
+                                                                )
+                                                              : t(
+                                                                  "Cast-your-vote"
+                                                                )
+                                                          }
                                                           className={
                                                             styles[
                                                               "CastYourVoteButton"

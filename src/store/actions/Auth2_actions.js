@@ -521,6 +521,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
   let MeetinUpd = localStorage.getItem("meetingUpd");
   let MeetingMin = localStorage.getItem("meetingMin");
   let Meetingprop = localStorage.getItem("meetingprop");
+  let meetingCanc = localStorage.getItem("meetingCanc")
+  let mtAgUpdate = localStorage.getItem("mtAgUpdate");
+  let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
+  let pollExpire = localStorage.getItem("pollExpire");
+  let PollUpd = localStorage.getItem("poUpda");
+  let PollPublish = localStorage.getItem("poPub");
   return async (dispatch) => {
     dispatch(enterPasswordInit());
     const formData = getFormData(data, userPasswordVerify);
@@ -670,9 +676,17 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 MeetingMin !== null ||
                 Meetingprop !== null ||
                 AgCont !== null ||
-                AdOrg !== null
+                AdOrg !== null ||
+                mtAgUpdate !== null ||
+                UserMeetPropoDatPoll !== null || meetingCanc !== null
               ) {
                 navigate("/Diskus/Meeting");
+              } else if (
+                PollPublish !== null ||
+                PollUpd !== null ||
+                pollExpire !== null
+              ) {
+                navigate("/Diskus/polling");
               } else {
                 navigate("/onboard");
               }
@@ -690,9 +704,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 MeetingMin !== null ||
                 Meetingprop !== null ||
                 AgCont !== null ||
-                AdOrg !== null
+                AdOrg !== null || meetingCanc !== null
               ) {
                 navigate("/Diskus/Meeting");
+              } else if (PollPublish !== null || PollUpd !== null ||
+                pollExpire !== null) {
+                navigate("/Diskus/polling");
               } else {
                 navigate("/DisKus/");
               }
@@ -738,9 +755,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 MeetingMin !== null ||
                 Meetingprop !== null ||
                 AgCont !== null ||
-                AdOrg !== null
+                AdOrg !== null ||
+                mtAgUpdate !== null ||
+                UserMeetPropoDatPoll !== null || meetingCanc !== null
               ) {
                 navigate("/Diskus/Meeting");
+              } else if (PollPublish !== null || PollUpd !== null || pollExpire !== null) {
+                navigate("/Diskus/polling");
               } else {
                 navigate("/onboard");
               }
@@ -758,9 +779,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 MeetingMin !== null ||
                 Meetingprop !== null ||
                 AgCont !== null ||
-                AdOrg !== null
+                AdOrg !== null||
+                mtAgUpdate !== null ||
+                UserMeetPropoDatPoll !== null || meetingCanc !== null
               ) {
                 navigate("/Diskus/Meeting");
+              } else if (PollPublish !== null || PollUpd !== null || pollExpire) {
+                navigate("/Diskus/polling");
               } else {
                 navigate("/Diskus/");
               }

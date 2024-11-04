@@ -2853,7 +2853,7 @@ input#Participant::placeholder {
 }
 
 .ant-table-column-sorters {
-  float: left !important;
+  display: block !important;
 }
 
 .ant-table-column-sorter-inner {

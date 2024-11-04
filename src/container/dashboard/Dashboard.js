@@ -83,6 +83,7 @@ import {
   meetingParticipantAdded,
   LeaveMeetingVideo,
   meetingReminderNotifcation,
+  searchNewUserMeeting,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -346,9 +347,12 @@ const Dashboard = () => {
                 setNotificationID(id);
               }
               if (
-                Number(meetingVideoID) === Number(data.payload.meeting.pK_MDID)
+                Number(meetingVideoID) ===
+                Number(data?.payload?.meeting?.pK_MDID)
               ) {
-        
+                let getMeetingParticipants = data.payload.meeting.meetingAttendees.filter(
+                  (attendeeData) => attendeeData.meetingAttendeeRole.pK_MARID !== 1
+                );
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -365,8 +369,26 @@ const Dashboard = () => {
                   RoomID: currentMeetingVideoID,
                   UserGUID: userGUID,
                 };
-                dispatch(LeaveMeetingVideo(Data, navigate, t));
+                dispatch(LeaveMeetingVideo(Data, navigate, t, true));
+                if (getMeetingParticipants.length > 0) {
+                  let userID = localStorage.getItem("userID");
+                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                  let meetingPageCurrent = parseInt(
+                    localStorage.getItem("MeetingPageCurrent")
+                  );
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber: Number(meetingPageCurrent),
+                    Length: Number(meetingpageRow),
+                    PublishedMeetings: true,
+                  };
+                  dispatch(searchNewUserMeeting(navigate, searchData, t));
+                }
               }
+
               // let Data2 = {
               //   UserID: Number(createrID),
               // };
