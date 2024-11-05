@@ -34,7 +34,7 @@ import DatePicker, { DateObject } from "react-multi-date-picker";
 import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useTranslation } from "react-i18next";
-import { Tooltip } from "antd";
+import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
 import {
   Button,
   Table,
@@ -42,7 +42,8 @@ import {
   ResultMessage,
   Notification,
 } from "../../../components/elements";
-import { Col, Dropdown, Row } from "react-bootstrap";
+import ReactBootstrapDropdown from "react-bootstrap/Dropdown";
+import { Col, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
@@ -278,6 +279,7 @@ const NewMeeting = () => {
     severity: "error",
   });
   const [rows, setRow] = useState([]);
+  const [dublicatedrows, setDublicatedrows] = useState([]);
 
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
@@ -1222,6 +1224,163 @@ const NewMeeting = () => {
     );
   };
 
+  //Filteration Work Meeting
+
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "10",
+    "1",
+    "9",
+    "4",
+    "8",
+  ]);
+
+  const filters = [
+    {
+      value: "10",
+      text: t("Active"),
+    },
+    {
+      value: "1",
+      text: t("Upcoming"),
+    },
+    {
+      value: "9",
+      text: t("Ended"),
+    },
+    {
+      value: "4",
+      text: t("Cancelled"),
+    },
+    {
+      value: "8",
+      text: t("Not-conducted"),
+    },
+  ];
+
+  // Menu click handler for selecting filters
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  const handleApplyFilter = () => {
+    const filteredData = dublicatedrows.filter((item) =>
+      selectedValues.includes(item.status.toString())
+    );
+    console.log(filteredData, "dublicatedrowsdublicatedrowsdublicatedrows");
+
+    setRow(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["10", "1", "9", "4", "8"]);
+    setRow(dublicatedrows);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex  align-items-center justify-content-between p-1">
+        <Button
+          text={"Reset"}
+          className={styles["FilterResetBtn"]}
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className={styles["ResetOkBtn"]}
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
+
+  //For meeting Type
+  const [selectedMeetingTypes, setSelectedMeetingTypes] = useState(
+    isMeetingTypeFilter.map((filter) => filter.value)
+  );
+
+  console.log(selectedMeetingTypes, "selectedMeetingTypes");
+  console.log(isMeetingTypeFilter, "selectedMeetingTypes");
+
+  const [visibleMeetingType, setVisibleMeetingType] = useState(false);
+
+  // Toggle checkbox selection for each filter item
+  const handleMenuClickMeetingType = (filterValue) => {
+    setSelectedMeetingTypes((prev) =>
+      prev.includes(filterValue)
+        ? prev.filter((value) => value !== filterValue)
+        : [...prev, filterValue]
+    );
+  };
+
+  // Apply the selected filters
+  const handleApplyFilterMeetingType = () => {
+    const filteredData = dublicatedrows.filter((record) =>
+      selectedMeetingTypes.includes(record.meetingType.toString())
+    );
+    setRow(filteredData);
+    setVisibleMeetingType(false);
+  };
+
+  // Reset filters to show all meeting types
+  const resetFilterMeetingType = () => {
+    setSelectedMeetingTypes(isMeetingTypeFilter.map((filter) => filter.value));
+    setRow(dublicatedrows);
+    setVisibleMeetingType(false);
+  };
+
+  // Define the filter menu
+  const filterMenu = (
+    <Menu>
+      {isMeetingTypeFilter.map((filter) => (
+        <Menu.Item key={filter.value}>
+          <Checkbox
+            checked={selectedMeetingTypes.includes(filter.value)}
+            onChange={() => handleMenuClickMeetingType(filter.value)}
+          >
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex align-items-center justify-content-between p-1">
+        <Button
+          onClick={resetFilterMeetingType}
+          className={styles["FilterResetBtn"]}
+          text={"Reset"}
+        />
+        <Button
+          onClick={handleApplyFilterMeetingType}
+          className={styles["ResetOkBtn"]}
+          text={"Ok"}
+          disableBtn={selectedMeetingTypes.length === 0 ? true : false}
+        />
+      </div>
+    </Menu>
+  );
+
   const MeetingColoumns = [
     {
       title: <span>{t("Title")}</span>,
@@ -1279,35 +1438,23 @@ const NewMeeting = () => {
       width: "90px",
       ellipsis: true,
       align: "center",
-      filters: [
-        {
-          text: t("Active"),
-          value: "10",
-        },
-        {
-          text: t("Upcoming"),
-          value: "1",
-        },
-        {
-          text: t("Ended"),
-          value: "9",
-        },
-        {
-          text: t("Cancelled"),
-          value: "4",
-        },
-        {
-          text: t("Not-conducted"),
-          value: "8",
-        },
-      ],
-      defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
+
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
       ),
-      onFilter: (value, record) =>
-        record.status.toLowerCase().includes(value.toLowerCase()),
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
+      ),
       render: (text, record) => {
         return StatusValue(t, record.status);
       },
@@ -1356,22 +1503,27 @@ const NewMeeting = () => {
       width: "115px",
       align: "center",
       ellipsis: true,
-      filters: isMeetingTypeFilter,
-      defaultFilteredValue: isMeetingTypeFilter.value || null,
-      filterResetToDefaultFilteredValue: true,
-      filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+      filterIcon: (filtered) => (
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={() => setVisibleMeetingType(!visibleMeetingType)}
+        />
       ),
-      onFilter: (value, record) => {
-        const meetingType = Number(record.meetingType);
-        return meetingType === Number(value);
-      },
+      filterDropdown: () => (
+        <Dropdown
+          overlay={filterMenu}
+          visible={visibleMeetingType}
+          onVisibleChange={(open) => setVisibleMeetingType(open)}
+        >
+          <div />
+        </Dropdown>
+      ),
       render: (text, record) => {
         const meetingType = Number(record.meetingType);
         const matchedFilter = isMeetingTypeFilter.find(
           (data) => meetingType === Number(data.value)
         );
-        return record.isQuickMeeting === true && meetingType === 1
+        return record.isQuickMeeting && meetingType === 1
           ? t("Quick-meeting")
           : matchedFilter
           ? matchedFilter.text
@@ -2104,9 +2256,11 @@ const NewMeeting = () => {
             });
           });
           setRow(copyMeetingData);
+          setDublicatedrows(copyMeetingData);
         }
       } else {
         setRow([]);
+        setDublicatedrows([]);
       }
     } catch {}
   }, [searchMeetings]);
@@ -2833,11 +2987,13 @@ const NewMeeting = () => {
                 </span>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
-                    <Dropdown
+                    <ReactBootstrapDropdown
                       className="SceduleMeetingButton"
                       onClick={eventClickHandler}
                     >
-                      <Dropdown.Toggle title={t("Create")}>
+                      <ReactBootstrapDropdown.Toggle
+                        title={t("Schedule-a-meeting")}
+                      >
                         <Row>
                           <Col
                             lg={12}
@@ -2849,40 +3005,39 @@ const NewMeeting = () => {
                             <span> {t("Schedule-a-meeting")}</span>
                           </Col>
                         </Row>
-                      </Dropdown.Toggle>
+                      </ReactBootstrapDropdown.Toggle>
 
-                      <Dropdown.Menu>
+                      <ReactBootstrapDropdown.Menu>
                         {checkFeatureIDAvailability(1) ? (
-                          <Dropdown.Item
-                            className="dropdown-item"
+                          <ReactBootstrapDropdown.Item
+                            className={styles["dropdown-item"]}
                             onClick={CreateQuickMeeting}
                           >
                             {t("Quick-meeting")}
-                          </Dropdown.Item>
+                          </ReactBootstrapDropdown.Item>
                         ) : null}
 
                         {checkFeatureIDAvailability(9) ? (
-                          <Dropdown.Item
-                            className="dropdown-item"
+                          <ReactBootstrapDropdown.Item
+                            className={styles["dropdown-item"]}
                             onClick={openSceduleMeetingPage}
                           >
                             {t("Advance-meeting")}
-                          </Dropdown.Item>
+                          </ReactBootstrapDropdown.Item>
                         ) : null}
 
-                        {/* Proposed New Meeting */}
                         {checkFeatureIDAvailability(12) ? (
                           <>
-                            <Dropdown.Item
-                              className="dropdown-item"
+                            <ReactBootstrapDropdown.Item
+                              className={styles["dropdown-item"]}
                               onClick={openProposedNewMeetingPage}
                             >
                               {t("Propose-new-meeting")}
-                            </Dropdown.Item>
+                            </ReactBootstrapDropdown.Item>
                           </>
                         ) : null}
-                      </Dropdown.Menu>
-                    </Dropdown>
+                      </ReactBootstrapDropdown.Menu>
+                    </ReactBootstrapDropdown>
                   </Col>
                 </Row>
               </Col>

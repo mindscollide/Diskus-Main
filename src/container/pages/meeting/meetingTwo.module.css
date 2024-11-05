@@ -296,90 +296,6 @@ body[dir="rtl"] .PaginationStyle-Committee {
   width: 10px !important;
 }
 
-.Calendar_Meeting button {
-  width: 160px;
-  height: 31px;
-  font-size: calc(14px - 20%) !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  border-radius: 4px !important;
-  font-weight: 600 !important;
-  border: none !important;
-  display: flex;
-  justify-content: space-between;
-}
-
-body[dir="rtl"] .Calendar_Meeting button {
-  font-weight: 600 !important;
-}
-
-.Calendar_Meeting .dropdown-toggle.btn.btn-primary {
-  height: 31px !important;
-  font-size: calc(14px - 20%) !important;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  border-radius: 4px !important;
-  font-weight: 600 !important;
-  border: none !important;
-}
-
-.Calendar_Meeting .dropdown-menu.show {
-  padding: 0 !important;
-  width: 140px;
-  padding: 0 10px !important;
-  margin: 0 !important;
-  transform: translate(0px, 45px);
-  border-width: 0px !important;
-  border: 1px solid #e1e1e1 !important;
-  border-radius: 4px !important;
-}
-
-body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show {
-  padding: 0 !important;
-  width: 160px;
-  padding: 0 10px !important;
-  margin: 0 !important;
-  transform: translateY(0px, 45px) !important;
-  border-width: 0px !important;
-  border: 1px solid #e1e1e1 !important;
-  border-radius: 4px !important;
-}
-
-.Calendar_Meeting .dropdown-menu.show .dropdown-item {
-  padding: 10px 10px;
-  font-weight: 600 !important;
-  text-align: center;
-  font-size: 11px !important;
-}
-
-body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
-  font-weight: 600 !important;
-}
-
-.Calendar_Meeting .dropdown-menu.show .dropdown-item:nth-child(1) {
-  border-bottom: 1px solid #e1e1e1;
-}
-
-.Calendar_Meeting .dropdown-menu.show .dropdown-item:hover {
-  background: none !important;
-}
-
-.Calendar_Meeting .dropdown-toggle::after {
-  display: inline-block;
-  margin-left: 5.255em;
-  vertical-align: 0.255em;
-  content: "";
-  border-top: 0.3em solid;
-  border-right: 0.3em solid transparent;
-  border-bottom: 0;
-  border-left: 0.3em solid transparent;
-}
-
-.schedule_button {
-  font-size: calc(14px - 20%);
-  font-weight: 600 !important;
-}
-
 .DefineTableFixedheight {
   height: 60vh !important;
 }
@@ -424,4 +340,40 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
 .isemptySpace {
   width: 15px;
   height: 15px;
+}
+
+.ResetOkBtn {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.FilterResetBtn {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
 }

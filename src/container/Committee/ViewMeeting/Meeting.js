@@ -38,6 +38,7 @@ import {
   createCommitteeMeeting,
   getMeetingStatusfromSocket,
 } from "../../../store/actions/GetMeetingUserId";
+import { Checkbox, Dropdown, Menu } from "antd";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
@@ -54,6 +55,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     MeetingStatusEnded,
   } = useSelector((state) => state.meetingIdReducer);
   const [rows, setRow] = useState([]);
+  const [dublicatedrows, setDublicatedrows] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   let userID = localStorage.getItem("userID");
   const navigate = useNavigate();
@@ -85,7 +87,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
   const handleViewMeeting = async (meetingID, isQuickMeeting, status) => {
     // console.log(record, "recordrecord")
-    if(Number(status) === 10) {
+    if (Number(status) === 10) {
       let joinMeetingData = {
         FK_MDID: Number(meetingID),
         DateTime: getCurrentDateTimeUTC(),
@@ -120,7 +122,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       );
       // setEditMeetingModal(true);
     }
-  
   };
   const handleEditMeeting = async (meetingID, isQuickMeeting) => {
     let Data = { MeetingID: Number(meetingID) };
@@ -211,9 +212,11 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             } catch {}
           });
           setRow(newRowData);
+          setDublicatedrows(newRowData);
         }
       } else {
         setRow([]);
+        setDublicatedrows([]);
       }
     } catch {}
   }, [getMeetingByCommitteeID]);
@@ -226,6 +229,97 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     dispatch(downloadAttendanceReportApi(navigate, t, downloadData));
   };
 
+  //Filteration Work Meeting
+
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "10",
+    "1",
+    "9",
+    "8",
+    "4",
+  ]);
+
+  const filters = [
+    {
+      value: "10",
+      text: t("Active"),
+    },
+
+    {
+      value: "1",
+      text: t("Upcoming"),
+    },
+    {
+      value: "9",
+      text: t("Ended"),
+    },
+    {
+      value: "8",
+      text: t("Not-conducted"),
+    },
+    {
+      value: "4",
+      text: t("Cancelled"),
+    },
+  ];
+
+  // Menu click handler for selecting filters
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  const handleApplyFilter = () => {
+    const filteredData = dublicatedrows.filter((item) =>
+      selectedValues.includes(item.status.toString())
+    );
+    setRow(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["10", "1", "9", "8", "4"]);
+    setRow(dublicatedrows);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex  align-items-center justify-content-between p-1">
+        <Button
+          text={"Reset"}
+          className={"FilterResetBtn"}
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className={"ResetOkBtn"}
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
+
   const MeetingColoumns = [
     {
       title: <span>{t("Title")}</span>,
@@ -237,10 +331,15 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           <span
             className={styles["meetingTitle"]}
             onClick={() => {
-              handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+              handleViewMeeting(
+                record.pK_MDID,
+                record.isQuickMeeting,
+                record.status
+              );
               localStorage.setItem("meetingTitle", record.title);
               localStorage.setItem("videoCallURL", record.videoCallURL);
-            }}>
+            }}
+          >
             {truncateString(text, 30)}
           </span>
         );
@@ -256,36 +355,22 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       width: "50px",
       align: "center",
 
-      filters: [
-        {
-          text: t("Active"),
-          value: "10",
-        },
-
-        {
-          text: t("Upcoming"),
-          value: "1",
-        },
-        {
-          text: t("Ended"),
-          value: "9",
-        },
-        {
-          text: t("Not-conducted"),
-          value: "8",
-        },
-        {
-          text: t("Cancelled"),
-          value: "4",
-        },
-      ],
-      defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
       ),
-      onFilter: (value, record) =>
-        record.status.toLowerCase().includes(value.toLowerCase()),
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
+      ),
       render: (text, record) => {
         return StatusValue(t, record.status);
       },
@@ -345,20 +430,21 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         return (
           <>
             <Row>
-              <Col sm={12} md={12} lg={12} className='d-flex'>
+              <Col sm={12} md={12} lg={12} className="d-flex">
                 {record.isAttachment ? (
                   <span
                     className={
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }>
-                    <Tooltip placement='topRight' title={t("ClipIcon")}>
+                    }
+                  >
+                    <Tooltip placement="topRight" title={t("ClipIcon")}>
                       <img
                         src={ClipIcon}
-                        className='cursor-pointer'
-                        alt=''
-                        draggable='false'
+                        className="cursor-pointer"
+                        alt=""
+                        draggable="false"
                       />
                     </Tooltip>
                   </span>
@@ -368,7 +454,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
                 {record.isChat ? (
                   <span
@@ -378,7 +465,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                         : "margin-right-10"
                     }
                   >
-                    <Tooltip placement='topLeft' title={t("Chat")}>
+                    <Tooltip placement="topLeft" title={t("Chat")}>
                       <img
                         src={CommentIcon}
                         className="cursor-pointer"
@@ -393,7 +480,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
                 {record.isVideoCall ? (
                   <span
@@ -401,8 +489,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }>
-                    <img src={VideoIcon} alt='' draggable='false' />
+                    }
+                  >
+                    <img src={VideoIcon} alt="" draggable="false" />
                   </span>
                 ) : (
                   <span
@@ -410,17 +499,18 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
                 {record.status === "9" && isOrganiser && (
-                  <Tooltip placement='topLeft' title={t("member")}>
+                  <Tooltip placement="topLeft" title={t("member")}>
                     <img
                       src={member}
-                      className='cursor-pointer'
-                      width='17.1px'
-                      height='16.72px'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer"
+                      width="17.1px"
+                      height="16.72px"
+                      alt=""
+                      draggable="false"
                       onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
                   </Tooltip>
@@ -497,7 +587,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Button
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
@@ -519,7 +610,10 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                           )
                         );
                         localStorage.setItem("meetingTitle", record.title);
-                        localStorage.setItem("videoCallURL", record.videoCallURL);
+                        localStorage.setItem(
+                          "videoCallURL",
+                          record.videoCallURL
+                        );
                       }}
                     />
                   </Col>
@@ -534,10 +628,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+                  handleViewMeeting(
+                    record.pK_MDID,
+                    record.isQuickMeeting,
+                    record.status
+                  );
                   localStorage.setItem("meetingTitle", record.title);
                   localStorage.setItem("videoCallURL", record.videoCallURL);
-
                 }}
               />
             );
@@ -547,10 +644,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+                  handleViewMeeting(
+                    record.pK_MDID,
+                    record.isQuickMeeting,
+                    record.status
+                  );
                   localStorage.setItem("meetingTitle", record.title);
                   localStorage.setItem("videoCallURL", record.videoCallURL);
-
                 }}
               />
             );
@@ -560,10 +660,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+                  handleViewMeeting(
+                    record.pK_MDID,
+                    record.isQuickMeeting,
+                    record.status
+                  );
                   localStorage.setItem("meetingTitle", record.title);
                   localStorage.setItem("videoCallURL", record.videoCallURL);
-
                 }}
               />
             );
@@ -611,11 +714,11 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     {committeeStatus === 3 && (
                       <img
                         src={EditIcon}
-                        className='cursor-pointer'
-                        width='17.11px'
-                        height='17.11px'
-                        alt=''
-                        draggable='false'
+                        className="cursor-pointer"
+                        width="17.11px"
+                        height="17.11px"
+                        alt=""
+                        draggable="false"
                         onClick={() =>
                           handleEditMeeting(
                             record.pK_MDID,
@@ -728,9 +831,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
           />
         }
         title={t("No-new-meetings")}
@@ -855,11 +958,11 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         />
       )}
       <Row>
-        <Col sm={12} md={12} lg={12} className='d-flex justify-content-end'>
+        <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
           {committeeStatus === 3 && (
             <Button
               text={t("Create-Meeting")}
-              icon={<img draggable={false} src={addmore} alt='' />}
+              icon={<img draggable={false} src={addmore} alt="" />}
               className={styles["Create_Meeting_Button"]}
               onClick={handelCreateMeeting}
             />
@@ -873,8 +976,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             scroll={scroll}
             rows={rows}
             pagination={false}
-            size='small'
-            className='newMeetingTable'
+            size="small"
+            className="newMeetingTable"
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
             }}
@@ -883,7 +986,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 return (
                   record.meetingAgenda.length > 0 &&
                   record.meetingAgenda.map((data) => (
-                    <p className='meeting-expanded-row'>
+                    <p className="meeting-expanded-row">
                       {data.objMeetingAgenda.title}
                     </p>
                   ))
@@ -901,8 +1004,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             lg={12}
             className={
               "pagination-groups-table position-absolute bottom-20  d-flex justify-content-center"
-            }>
-            <span className='PaginationStyle-TodoList'>
+            }
+          >
+            <span className="PaginationStyle-TodoList">
               <CustomPagination
                 current={currentPage}
                 showSizer={true}

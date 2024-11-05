@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SignInComponent from "../UserMangement/SignInUserManagement/SignInUserManagement";
 import PasswordVerification from "../UserMangement/PasswordVerification/PasswordVerification";
 import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
@@ -71,8 +71,8 @@ const UserManagementProcess = () => {
   useEffect(() => {
     if (currentUrl === undefined) {
       // Retrieve current step from local storage
-        console.log("LoginFlowPageRoute");
         if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+        console.log("LoginFlowPageRoute");
         if (storedStep) {
         console.log("LoginFlowPageRoute");
         dispatch(LoginFlowRoutes(storedStep));
@@ -93,15 +93,13 @@ const UserManagementProcess = () => {
     }
   }, [currentUrl]);
 
-  useEffect(() => {
-    if (UserMangementReducerdefaultRoutingValue) {
-    }
-  }, [UserMangementReducerdefaultRoutingValue]);
 
   useEffect(() => {
-    if (userManagementRoute !== null) {
-      setStoredStep(userManagementRoute);
+    if (userManagementRoute !== null &&userManagementRoute !== 0) {
+        console.log("LoginFlowPageRoute",userManagementRoute);
+        setStoredStep(userManagementRoute);
     } else {
+        console.log("LoginFlowPageRoute");
       setStoredStep(1);
       localStorage.setItem("LoginFlowPageRoute", 1);
     }
@@ -113,7 +111,6 @@ const UserManagementProcess = () => {
       AuthreducerEmailValidationResponseMessage !==
         t("Users-password-is-created")
     ) {
-      console.log("error error");
       showMessage(
         AuthreducerEmailValidationResponseMessage,
         "success",

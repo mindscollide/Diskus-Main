@@ -40,29 +40,34 @@ const ModalViewNote = ({
   const GetNotesByNotesId = useSelector(
     (state) => state.NotesReducer.GetNotesByNotesId
   );
+
   const [isUpdateNote, setIsUpdateNote] = useState(true);
   const { t } = useTranslation();
 
   useEffect(() => {
     if (GetNotesByNotesId !== null && GetNotesByNotesId !== undefined) {
-      setNotesData({
-        date: GetNotesByNotesId.date,
-        description: GetNotesByNotesId.description,
-        fK_NotesStatus: GetNotesByNotesId.fK_NotesStatus,
-        fK_OrganizationID: GetNotesByNotesId.fK_OrganizationID,
-        fK_UserID: GetNotesByNotesId.fK_UserID,
-        isAttachment: GetNotesByNotesId.isAttachment,
-        isStarred: GetNotesByNotesId.isStarred,
-        modifiedDate: GetNotesByNotesId.modifiedDate,
-        modifiedTime: GetNotesByNotesId.modifiedTime,
-        notesAttachments: GetNotesByNotesId.notesAttachments,
-        notesStatus: GetNotesByNotesId.notesStatus,
-        organizationName: GetNotesByNotesId.organizationName,
-        pK_NotesID: GetNotesByNotesId.pK_NotesID,
-        time: GetNotesByNotesId.time,
-        title: GetNotesByNotesId.title,
-        username: GetNotesByNotesId.username,
-      });
+      try {
+        setNotesData({
+          date: GetNotesByNotesId.date,
+          description: GetNotesByNotesId.description,
+          fK_NotesStatus: GetNotesByNotesId.fK_NotesStatus,
+          fK_OrganizationID: GetNotesByNotesId.fK_OrganizationID,
+          fK_UserID: GetNotesByNotesId.fK_UserID,
+          isAttachment: GetNotesByNotesId.isAttachment,
+          isStarred: GetNotesByNotesId.isStarred,
+          modifiedDate: GetNotesByNotesId.modifiedDate,
+          modifiedTime: GetNotesByNotesId.modifiedTime,
+          notesAttachments: GetNotesByNotesId.notesAttachments,
+          notesStatus: GetNotesByNotesId.notesStatus,
+          organizationName: GetNotesByNotesId.organizationName,
+          pK_NotesID: GetNotesByNotesId.pK_NotesID,
+          time: GetNotesByNotesId.time,
+          title: GetNotesByNotesId.title,
+          username: GetNotesByNotesId.username,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [GetNotesByNotesId]);
 
@@ -81,10 +86,11 @@ const ModalViewNote = ({
           onHide={() => {
             setViewNotes(false);
           }}
-          modalHeaderClassName={`${styles["header-modal-close-btn"]} ${"d-none"}`}
+          modalHeaderClassName={`${
+            styles["header-modal-close-btn"]
+          } ${"d-none"}`}
           setShow={setViewNotes}
           ButtonTitle={ModalTitle}
-          
           centered
           modalFooterClassName={styles["modalViewNoteClass"]}
           size={isUpdateNote === true ? "md" : "md"}
@@ -127,8 +133,7 @@ const ModalViewNote = ({
                   md={12}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-start"
-                >
+                  className='d-flex justify-content-start'>
                   <p className={styles["date-updatenote"]}>
                     {t("Last-modified-On")}:{" "}
                     {_justShowDateformat(notesData.date + notesData.time)} |{" "}
@@ -137,7 +142,7 @@ const ModalViewNote = ({
                 </Col>
               </Row>
 
-              <Row className="my-2">
+              <Row className='my-2'>
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <p className={styles["modal-View-title"]}>
                     {notesData.title}
@@ -151,8 +156,7 @@ const ModalViewNote = ({
                     className={styles["modal-view-discription"]}
                     dangerouslySetInnerHTML={{
                       __html: notesData.description,
-                    }}
-                  ></p>
+                    }}></p>
                 </Col>
               </Row>
 
@@ -162,8 +166,7 @@ const ModalViewNote = ({
                   md={12}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-start"
-                >
+                  className='d-flex justify-content-start'>
                   <p className={styles["modal-update-attachment-heading"]}>
                     {t("Attachments")}
                   </p>
@@ -195,8 +198,7 @@ const ModalViewNote = ({
                   lg={12}
                   md={12}
                   xs={12}
-                  className="d-flex justify-content-end"
-                >
+                  className='d-flex justify-content-end'>
                   <Button
                     text={t("Close")}
                     className={styles["close-note-modal-btn"]}

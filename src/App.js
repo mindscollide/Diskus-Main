@@ -120,7 +120,6 @@ const App = () => {
 
   return (
     <>
-      <Suspense fallback={<Loader />}>
         {/* Define your routes here */}
         <RouterProvider router={router} />
         {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
@@ -132,7 +131,6 @@ const App = () => {
           />
         )}
         <Notification open={open} setOpen={setOpen} />
-      </Suspense>
     </>
   );
 };

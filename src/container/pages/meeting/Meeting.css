@@ -504,3 +504,21 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   align-items: center !important;
   flex-direction: column;
 }
+
+.ResetOkBtn {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}

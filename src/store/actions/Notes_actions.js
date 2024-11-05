@@ -9,6 +9,7 @@ import {
   searchNoteRequetMethod,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
+import { isFunction } from "../../commen/functions/utils";
 
 const getNotes_Init = () => {
   return {
@@ -395,22 +396,32 @@ const GetNotesByIdAPI = (
                   "Notes_NotesServiceManager_GetNotesByNotesID_01".toLowerCase()
                 )
             ) {
+              console.log(
+                response.data.responseResult.getNotes,
+                "Notes_NotesServiceManager_GetNotesByNotesID_01"
+              );
               dispatch(
                 GetNotesById_Success(response.data.responseResult.getNotes, "")
               );
               // await dispatch(GetNotes(getNotesAPI, t))
               if (no === 1) {
-                await setViewModalShow(true);
-                await setUpdateModalShow(false);
-                await setUpdateNotesModalHomePage(false);
+                (await isFunction(setViewModalShow)) && setViewModalShow(true);
+                (await isFunction(setUpdateModalShow)) &&
+                  setUpdateModalShow(false);
+                (await isFunction(setUpdateNotesModalHomePage)) &&
+                  setUpdateNotesModalHomePage(false);
               } else if (no === 3) {
-                await setUpdateNotesModalHomePage(true);
-                await setUpdateModalShow(false);
-                await setViewModalShow(false);
+                (await isFunction(setUpdateNotesModalHomePage)) &&
+                  setUpdateNotesModalHomePage(true);
+                (await isFunction(setUpdateModalShow)) &&
+                  setUpdateModalShow(false);
+                (await isFunction(setViewModalShow)) && setViewModalShow(false);
               } else {
-                await setUpdateNotesModalHomePage(false);
-                await setUpdateModalShow(true);
-                await setViewModalShow(false);
+                (await isFunction(setUpdateNotesModalHomePage)) &&
+                  setUpdateNotesModalHomePage(false);
+                (await isFunction(setUpdateModalShow)) &&
+                  setUpdateModalShow(true);
+                (await isFunction(setViewModalShow)) && setViewModalShow(false);
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -420,6 +431,7 @@ const GetNotesByIdAPI = (
                 )
             ) {
               dispatch(GetNotesById_Fail(""));
+              console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -427,18 +439,23 @@ const GetNotesByIdAPI = (
                   "Notes_NotesServiceManager_GetNotesByNotesID_03".toLowerCase()
                 )
             ) {
+              console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             } else {
+              console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             }
           } else {
+            console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
             dispatch(GetNotesById_Fail(t("Something-went-wrong")));
           }
         } else {
+          console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
           dispatch(GetNotesById_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
+        console.log(response, "Notes_NotesServiceManager_GetNotesByNotesID_01");
         dispatch(GetNotesById_Fail(t("Something-went-wrong")));
       });
   };

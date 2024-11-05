@@ -4,7 +4,6 @@ import { Col, Row, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
-
 import { ChevronDown } from "react-bootstrap-icons";
 import {
   Button,
@@ -60,7 +59,7 @@ import {
 import { UpdateOrganizersMeeting } from "../../../../../../store/actions/MeetingOrganizers_action";
 import moment from "moment";
 import { truncateString } from "../../../../../../commen/functions/regex";
-import { Tooltip } from "antd";
+import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
 import {
   getAllUnpublishedMeetingData,
   mqttMeetingData,
@@ -122,6 +121,7 @@ const UnpublishedProposedMeeting = ({
   );
 
   const [rows, setRow] = useState([]);
+  const [dublicatedrows, setDublicatedrows] = useState([]);
   const [publishState, setPublishState] = useState(null);
 
   // Empty text data
@@ -241,6 +241,79 @@ const UnpublishedProposedMeeting = ({
     return newDate;
   };
 
+  //Filteration Work Meeting
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState(["12", "11"]);
+
+  const filters = [
+    {
+      value: "12",
+      text: t("Proposed"),
+    },
+    {
+      value: "11",
+      text: t("Unpublished"),
+    },
+  ];
+
+  // Menu click handler for selecting filters
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  const handleApplyFilter = () => {
+    const filteredData = dublicatedrows.filter((item) =>
+      selectedValues.includes(item.status.toString())
+    );
+    console.log(filteredData, "filteredDatafilteredData");
+
+    setRow(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["12", "11"]);
+    setRow(dublicatedrows);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex  align-items-center justify-content-between p-1">
+        <Button
+          text={"Reset"}
+          className={"FilterResetBtn"}
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className={"ResetOkBtn"}
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
+
   const MeetingColoumns = [
     {
       title: <span>{t("Title")}</span>,
@@ -323,23 +396,23 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "status",
       key: "status",
       width: "90px",
-      filters: [
-        {
-          text: t("Proposed"),
-          value: "12",
-        },
-        {
-          text: t("Unpublished"),
-          value: "11",
-        },
-      ],
+
       filterResetToDefaultFilteredValue: true,
-      defaultFilteredValue: ["11", "12"],
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
       ),
-      onFilter: (value, record) =>
-        record.status.toLowerCase().includes(value.toLowerCase()),
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
+      ),
       render: (text, record) => {
         return StatusValue(t, record.status);
       },
@@ -695,6 +768,7 @@ const UnpublishedProposedMeeting = ({
           searchMeetings.meetings !== undefined &&
           searchMeetings.meetings.length > 0
         ) {
+          console.log(searchMeetings.meetings, "searchMeetingssearchMeetings");
           // Create a deep copy of the meetings array
           let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
             ...meeting,
@@ -707,18 +781,22 @@ const UnpublishedProposedMeeting = ({
               return agenda.objMeetingAgenda.canView === true;
             });
           });
+          console.log(copyMeetingData, "searchMeetingssearchMeetings");
 
           if (checkFeatureIDAvailability(12)) {
             setRow(copyMeetingData);
+            setDublicatedrows(copyMeetingData);
           } else {
             let filterOutPropsed = copyMeetingData.filter((data) => {
               return data.status !== "12";
             });
 
             setRow(filterOutPropsed);
+            setDublicatedrows(filterOutPropsed);
           }
         } else {
           setRow([]);
+          setDublicatedrows([]);
         }
       }
     } catch (error) {

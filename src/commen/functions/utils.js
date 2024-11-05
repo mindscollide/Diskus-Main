@@ -562,3 +562,6 @@ export function modifyGuestVideoURL(url) {
   // Return the original URL if "/GuestVideoCall" is not found
   return url;
 }
+export const isFunction = (value) => {
+  return typeof value === "function";
+};
