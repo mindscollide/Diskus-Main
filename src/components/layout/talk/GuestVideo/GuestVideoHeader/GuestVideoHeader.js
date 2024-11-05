@@ -42,7 +42,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.muteUmMuteByHost
   );
 
-  const guesthideunHideByHostData = useSelector(
+  const guesthideunHideByHostDatas = useSelector(
     (state) => state.GuestVideoReducer.hideunHideByHost
   );
 
@@ -89,20 +89,20 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     }
   }, [guestMuteUnMuteData]);
 
-  // useEffect(() => {
-  //   if (guesthideunHideByHostData !== null) {
-  //     const iframe = frameRef.current;
-  //     if (iframe.contentWindow !== null) {
-  //       if (guesthideunHideByHostData.isVideoHidden === true) {
-  //         iframe.contentWindow.postMessage("VidOff", "*");
-  //         setIsVideoOn(true);
-  //       } else {
-  //         iframe.contentWindow.postMessage("VidOn", "*");
-  //         setIsVideoOn(false);
-  //       }
-  //     }
-  //   }
-  // }, [guesthideunHideByHostData]);
+  useEffect(() => {
+    if (guesthideunHideByHostDatas !== null) {
+      const iframe = frameRef.current;
+      if (iframe.contentWindow !== null) {
+        if (guesthideunHideByHostDatas.isVideoHidden === true) {
+          iframe.contentWindow.postMessage("VidOff", "*");
+          setIsVideoOn(true);
+        } else {
+          iframe.contentWindow.postMessage("VidOn", "*");
+          setIsVideoOn(false);
+        }
+      }
+    }
+  }, [guesthideunHideByHostDatas]);
 
   // Fetch the webcam status from sessionStorage
   // const webcamStatus = sessionStorage.getItem("isWebCamEnabled") === "true";
