@@ -55,7 +55,6 @@ const TodoList = () => {
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
-  const [duplicateData, setDuplicateData] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);

@@ -4,7 +4,6 @@ import { Col, Row, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
-import OrganizerViewModal from "../../../scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
 
 import { ChevronDown } from "react-bootstrap-icons";
 import {

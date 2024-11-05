@@ -8,7 +8,6 @@ import {
   joinGuestVideo,
   admitRejectAttendee,
   raiseUnRaisedHand,
-  muteUnMuteParticipant,
   transferMeetingHost,
   removeParticipantMeeting,
   guestLeaveMeetingVideo,
@@ -23,7 +22,6 @@ import {
   participantAcceptandReject,
   participantWaitingListBox,
 } from "./VideoFeature_actions";
-import { isArray } from "lodash";
 
 const guestVideoNavigationScreen = (response) => {
   return {

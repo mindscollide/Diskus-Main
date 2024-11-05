@@ -1,4 +1,3 @@
-import { Sa } from "react-flags-select";
 import * as actions from "../action_types";
 
 const initialState = {
