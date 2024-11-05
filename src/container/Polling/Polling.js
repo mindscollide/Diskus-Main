@@ -401,7 +401,7 @@ const Polling = () => {
 
   //Filteration Work Polls
 
-  //Filteration Work Meeting
+  //Filteration Work polls
   const [visible, setVisible] = useState(false);
   const [selectedValues, setSelectedValues] = useState([
     "Published",
@@ -432,7 +432,6 @@ const Polling = () => {
         : [...prevValues, String(filterValue)]
     );
   };
-  console.log(dublicatedrows, "dublicatedrowsdublicatedrows");
   const handleApplyFilter = () => {
     const filteredData = dublicatedrows.filter((item) =>
       selectedValues.includes(item.pollStatus.status.toString())

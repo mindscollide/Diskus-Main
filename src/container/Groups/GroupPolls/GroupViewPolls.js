@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../assets/images/bin.svg";
 import { truncateString } from "../../../commen/functions/regex";
-import { Tooltip } from "antd";
+import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -55,6 +55,7 @@ const GroupViewPolls = ({ groupStatus }) => {
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
   const [pollsRows, setPollsRows] = useState([]);
+  const [dublicatedrows, setDublicatedrows] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [viewUnnPublished, setViewUnPublished] = useState(false);
@@ -87,8 +88,10 @@ const GroupViewPolls = ({ groupStatus }) => {
         });
 
         setPollsRows(newPollsArray);
+        setDublicatedrows(newPollsArray);
       } else {
         setPollsRows([]);
+        setDublicatedrows([]);
       }
     } catch {}
   }, [getPollByGroupID]);
@@ -267,6 +270,84 @@ const GroupViewPolls = ({ groupStatus }) => {
       )
     );
   };
+
+  //Filteration Work polls
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "Published",
+    "UnPublished",
+    "Expired",
+  ]);
+
+  const filters = [
+    {
+      text: t("Published"),
+      value: "Published", // Use the actual status value
+    },
+    {
+      text: t("UnPublished"),
+      value: "UnPublished", // Use the actual status value
+    },
+    {
+      text: t("Expired"),
+      value: "Expired", // Use the actual status value
+    },
+  ];
+
+  // Menu click handler for selecting filters
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+  const handleApplyFilter = () => {
+    const filteredData = dublicatedrows.filter((item) =>
+      selectedValues.includes(item.pollStatus.status.toString())
+    );
+    setPollsRows(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["Published", "UnPublished", "Expired"]);
+    setPollsRows(dublicatedrows);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex  align-items-center justify-content-between p-1">
+        <Button
+          text={"Reset"}
+          className={"FilterResetBtn"}
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className={"ResetOkBtn"}
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
   const PollsColoumn = [
     {
       title: t("Poll-title"),
@@ -290,27 +371,22 @@ const GroupViewPolls = ({ groupStatus }) => {
       dataIndex: "Status",
       key: "Status",
       width: "70px",
-      filters: [
-        {
-          text: t("Published"),
-          value: "Published", // Use the actual status value
-        },
-        {
-          text: t("UnPublished"),
-          value: "UnPublished", // Use the actual status value
-        },
-        {
-          text: t("Expired"),
-          value: "Expired", // Use the actual status value
-        },
-      ],
-      defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
       ),
-      onFilter: (value, record) =>
-        record.pollStatus.status.indexOf(value) === 0,
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
+      ),
       render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
           return (

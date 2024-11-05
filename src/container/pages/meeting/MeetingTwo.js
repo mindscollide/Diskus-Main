@@ -1266,7 +1266,7 @@ const NewMeeting = () => {
         : [...prevValues, String(filterValue)]
     );
   };
-  console.log(dublicatedrows, "dublicatedrowsdublicatedrowsdublicatedrows");
+
   const handleApplyFilter = () => {
     const filteredData = dublicatedrows.filter((item) =>
       selectedValues.includes(item.status.toString())
