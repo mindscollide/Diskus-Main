@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SignInComponent from "../UserMangement/SignInUserManagement/SignInUserManagement";
 import PasswordVerification from "../UserMangement/PasswordVerification/PasswordVerification";
 import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
@@ -71,9 +71,11 @@ const UserManagementProcess = () => {
   useEffect(() => {
     if (currentUrl === undefined) {
       // Retrieve current step from local storage
-      if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+        console.log("LoginFlowPageRoute");
+        if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
         if (storedStep) {
-          dispatch(LoginFlowRoutes(storedStep));
+        console.log("LoginFlowPageRoute");
+        dispatch(LoginFlowRoutes(storedStep));
         }
       } else {
         console.log("LoginFlowPageRoute");
@@ -91,10 +93,6 @@ const UserManagementProcess = () => {
     }
   }, [currentUrl]);
 
-  useEffect(() => {
-    if (UserMangementReducerdefaultRoutingValue) {
-    }
-  }, [UserMangementReducerdefaultRoutingValue]);
 
   useEffect(() => {
     if (userManagementRoute !== null) {

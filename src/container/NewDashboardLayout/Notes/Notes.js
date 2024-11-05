@@ -118,7 +118,7 @@ const Notes = () => {
   return (
     <>
       <div className="d-flex justify-content-start mb-2 gap-3">
-        <h1 className="noteheading color-5a5a5a ">{t("Notes")}</h1>
+        <h1 className={styles["noteheading"]}>{t("Notes")}</h1>
         {checkFeatureIDAvailability(6) && (
           <img
             src={PlusButton}

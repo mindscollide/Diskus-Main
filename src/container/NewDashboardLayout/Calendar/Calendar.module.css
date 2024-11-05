@@ -1,0 +1,4 @@
+.dashboard_calendar_empty {
+  display: grid;
+  place-items: center;
+}

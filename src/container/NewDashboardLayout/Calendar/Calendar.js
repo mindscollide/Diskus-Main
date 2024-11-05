@@ -25,6 +25,7 @@ import {
   mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import styles from "./Calendar.module.css";
 const NewCalendar = () => {
   const calendarReducer = useSelector((state) => state.calendarReducer);
   const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
@@ -205,32 +206,36 @@ const NewCalendar = () => {
   }, [lang]);
 
   const handleClickonDate = (dateSelect) => {
-    let selectDate = dateSelect.toString().split("/").join("");
-    if (calendarEvents.length > 0) {
-      const findData = calendarEvents.filter(
-        (data) =>
-          startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
-          selectDate
-      );
+    try {
+      let selectDate = dateSelect?.toString().split("/").join("");
+      if (calendarEvents.length > 0) {
+        const findData = calendarEvents.filter(
+          (data) =>
+            startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
+            selectDate
+        );
 
-      if (findData.length > 0) {
-        setEvents(findData); // Assuming findData is already an array
-        setEventsModal(true);
-        // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
-        findData.forEach((event) => {
-          if (
-            event.pK_MDID ===
-            meetingIdReducer.MeetingStatusSocket?.meeting?.pK_MDID
-          ) {
-            // Update the statusID to 10
-            event.statusID = 10;
-            // Dispatch an action to update the global state if needed
-            // dispatch(updateEventStatus(event)); // Assuming you have a proper action
-          }
-        });
-      } else {
-        showMessage("No-events-available-on-this-date", "error", setOpen);
+        if (findData.length > 0) {
+          setEvents(findData); // Assuming findData is already an array
+          setEventsModal(true);
+          // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
+          findData.forEach((event) => {
+            if (
+              event.pK_MDID ===
+              meetingIdReducer.MeetingStatusSocket?.meeting?.pK_MDID
+            ) {
+              // Update the statusID to 10
+              event.statusID = 10;
+              // Dispatch an action to update the global state if needed
+              // dispatch(updateEventStatus(event)); // Assuming you have a proper action
+            }
+          });
+        } else {
+          showMessage("No-events-available-on-this-date", "error", setOpen);
+        }
       }
+    } catch (error) {
+      console.log(error, "errorerrorerror");
     }
   };
 
@@ -477,8 +482,11 @@ const NewCalendar = () => {
 
   return (
     <>
+      {/* <section className={styles["dashboard_calendar_empty"]}>
+          <Spin />
+        </section> */}
       {calendarReducer.Spinner === true ? (
-        <section className="bg-white">
+        <section className={styles["dashboard_calendar_empty"]}>
           <Spin />
         </section>
       ) : (
@@ -496,7 +504,7 @@ const NewCalendar = () => {
             }}
             multiple={false}
             onChange={calendarClickFunction}
-            className="custom-multi-date-picker"
+            className={styles["custom-multi-date-picker"]}
             onMonthChange={handleMonthChange}
             currentDate={currentDateObject}
           />

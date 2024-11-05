@@ -133,3 +133,8 @@
   border: 1px solid #000 !important;
   border-left: none !important;
 }
+.task-title {
+  color: #5a5a5a !important;
+  font-weight: 700;
+  font-size: 20px !important;
+}

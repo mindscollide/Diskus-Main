@@ -12,7 +12,6 @@ const Loader = () => {
     (state) => state.DataRoomReducer.downloadMessage
   );
   console.log(downloadMessageIndex, "downloadMessageIndexdownloadMessageIndex");
-  const location = useLocation();
   const messages = [
     t("Securing-your-session-one-step-at-a-time"),
     t("Deploying-multiple-encryption-layers"),
@@ -38,73 +37,12 @@ const Loader = () => {
   const [randomIndex, setRandomIndex] = useState(0);
 
   useEffect(() => {
-    if (downloadMessageIndex === 1) {
-      setRandomIndex(messages[18]);
-    } else {
-      if (location.pathname === "/") {
-        setRandomIndex(messages[0]);
-      } else if (location.pathname === "/enterPassword") {
-        setRandomIndex(messages[0]);
-      } else if (location.pathname === "/DisKus/meeting") {
-        setRandomIndex(messages[1]);
-      } else if (location.pathname === "/Admin/AllMeeting") {
-        setRandomIndex(messages[1]);
-      } else if (location.pathname === "/DisKus/calendar") {
-        setRandomIndex(messages[2]);
-      } else if (location.pathname === "/DisKus/dataroom") {
-        setRandomIndex(messages[3]);
-      } else if (location.pathname === "/DisKus/Notes") {
-        setRandomIndex(messages[4]);
-      } else if (location.pathname === "/DisKus/groups") {
-        setRandomIndex(messages[5]);
-      } else if (location.pathname === "/DisKus/committee") {
-        setRandomIndex(messages[6]);
-      } else if (location.pathname === "/DisKus/resolution") {
-        setRandomIndex(messages[10]);
-      } else if (location.pathname === "/DisKus/setting") {
-        setRandomIndex(messages[12]);
-      } else if (location.pathname === "/Admin/Organization") {
-        setRandomIndex(messages[12]);
-      } else if (location.pathname === "/Admin/setting") {
-        setRandomIndex(messages[12]);
-      } else if (location.pathname === "/DisKus/faq's") {
-        setRandomIndex(messages[8]);
-      } else if (location.pathname === "/DisKus/todolist") {
-        setRandomIndex(messages[4]);
-      } else if (location.pathname === "/DisKus/polling") {
-        setRandomIndex(messages[6]);
-      } else if (location.pathname === "/Admin/") {
-        setRandomIndex(messages[13]);
-      } else if (location.pathname === "/Admin/Summary") {
-        setRandomIndex(messages[13]);
-      } else if (location.pathname === "/Admin/AddUser") {
-        setRandomIndex(messages[14]);
-      } else if (location.pathname === "/Admin/EditUser") {
-        setRandomIndex(messages[15]);
-      } else if (location.pathname === "/Admin/AllUserPage") {
-        setRandomIndex(messages[15]);
-      } else if (location.pathname === "/packageselection") {
-        setRandomIndex(messages[15]);
-      } else if (location.pathname === "/paymentForm") {
-        setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Admin/PackageDetail") {
-        setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Admin/UpgradePackage") {
-        setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Admin/UpgradePackageDetail") {
-        setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Admin/paymentform") {
-        setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Admin/CancelSub") {
-        setRandomIndex(messages[17]);
-      } else if (downloadMessageIndex === 1) {
-        setRandomIndex(messages[18]);
-      } else {
+
         const randomIdx = Math.floor(Math.random() * messages.length);
         setRandomIndex(messages[randomIdx]);
-      }
-    }
-  }, [downloadMessageIndex]);
+      
+    
+  }, []);
 
   return (
     <Container className={styles["main-container"]} data-tut="welcomescreen">
