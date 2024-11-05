@@ -1,0 +1,120 @@
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.box-positioning {
+  position: fixed;
+  bottom: 20px;
+  right: 0px;
+  z-index: 9999999999 !important;
+  animation: slideInRight 0.5s ease-out;
+}
+
+.card-ui {
+  background: #ffffff;
+  border: 1px solid #e1e1e1;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  width: 300px;
+}
+
+.card-ui-400 {
+  background: #ffffff;
+  border: 1px solid #e1e1e1;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  width: 400px;
+  height: 100px;
+}
+
+.title-alert {
+  margin-top: 1em !important;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  color: #5a5a5a;
+}
+
+.title-admit,
+.title-admit:hover,
+.title-admit:active,
+.title-admit:focus {
+  height: 39px;
+  width: 95px;
+  border: none !important;
+  background: #55ce5c !important;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.title-deny,
+.title-deny:hover,
+.title-deny:active,
+.title-deny:focus {
+  height: 39px;
+  width: 95px;
+  border: 1px solid #e1e1e1 !important;
+  background: #fff !important;
+  font-weight: 600;
+  font-size: 12px;
+  color: #5a5a5a;
+}
+
+img.handle-close {
+  width: 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.avatars {
+  display: flex;
+  margin-right: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #5a5a5a;
+  margin-left: -10px;
+  box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.text {
+  font-weight: 600;
+  font-size: 12px;
+  color: #5a5a5a;
+  width: 150px;
+  margin-bottom: 0;
+  margin-right: 10px;
+}
+
+.view-btn {
+  padding: 8px 16px;
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  border-radius: 8px;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.view-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.content-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

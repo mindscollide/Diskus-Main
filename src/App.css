@@ -8161,6 +8161,11 @@ input.CustomerInformation_formcontrol-Addressone-field_disabled__rG6HS.form-cont
   width: 100%;
 }
 
+body.guest-video-call {
+  overflow: hidden;
+  background: #fff !important;
+}
+
 .MobilePopUpModal {
   position: fixed;
   bottom: 0;

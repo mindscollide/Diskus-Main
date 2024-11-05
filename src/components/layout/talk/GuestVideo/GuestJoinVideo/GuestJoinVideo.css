@@ -1,0 +1,115 @@
+.guest-join-video-main {
+  padding: 60px 90px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+}
+
+.guest-video-inside-component {
+  min-height: 309px;
+  padding: 60px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ready-to-join {
+  font-size: 30px;
+  font-weight: 600;
+  color: #5a5a5a;
+}
+
+.waiting-room-class {
+  font-weight: 600;
+  font-size: 30px;
+  color: #6172d6;
+  margin-bottom: 1px; /* Adjust the bottom margin to reduce spacing */
+}
+
+.organizer-allow-class {
+  font-weight: 600;
+  font-size: 20px;
+  color: #5a5a5a;
+  margin-top: 0; /* Remove any top margin */
+}
+.Join-Now-Btn {
+  width: 118px;
+  height: 39px;
+  background-color: #55ce5c;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  border: none;
+}
+
+.name-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #6172d6;
+}
+
+.aesterick-name {
+  font-size: 10px;
+  font-weight: 600;
+  color: #f16b6b;
+}
+
+.video-tag-name {
+  background: #5a5a5a;
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;
+}
+
+.avatar-class {
+  height: 235px;
+  display: flex;
+  justify-content: center;
+  align-items: center !important;
+}
+
+.name-field-error {
+  height: 25px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #f16b6b;
+}
+
+.gradient-sheet {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mic-vid-buttons {
+  position: absolute;
+  bottom: 10px;
+  left: 39%;
+  display: flex;
+  gap: 10px;
+}
+
+video.video-size {
+  width: 100%;
+  object-fit: cover;
+}
+
+@keyframes ZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9); /* Start slightly smaller */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1); /* End at normal size */
+  }
+}
+
+.waiting-text-animation {
+  animation: ZoomIn 1s ease-in-out;
+}

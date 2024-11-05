@@ -358,3 +358,7 @@ body[dir="rtl"] .updateNotes_titleInput {
   font-size: 12px !important;
   font-family: "Montserrat" !important;
 }
+.waitingParticipantsSearchField::placeholder {
+  letter-spacing: 1px !important;
+  color: rgba(162, 162, 162, 1) !important;
+}

@@ -60,3 +60,5 @@ export { default as DataRoomFileAndFoldersDetailsReducer } from "./Dataroom2_red
 export { default as UserReportReducer } from "./UserReport_Reducer";
 
 export { default as SignatureWorkFlowReducer } from "./WorkFlow_reducer";
+
+export { default as GuestVideoReducer } from "./GuestVideo_Reducer";

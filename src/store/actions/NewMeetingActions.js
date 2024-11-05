@@ -90,6 +90,7 @@ import {
   generateURLParticipant,
 } from "../../commen/functions/urlVideoCalls";
 import copyToClipboard from "../../hooks/useClipBoard";
+import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 
 const boardDeckModal = (response) => {
   return {
@@ -1365,6 +1366,10 @@ const FetchMeetingURLApi = (
                 )
             ) {
               dispatch(showMeetingURLSuccess(response.data.responseResult, ""));
+              mqttConnectionGuestUser(
+                response.data.responseResult.userGUID,
+                dispatch
+              );
               dispatch(MeetingUrlSpinner(false));
               let meetingURL = response.data.responseResult.videoURL;
               var match = meetingURL.match(/RoomID=([^&]*)/);
