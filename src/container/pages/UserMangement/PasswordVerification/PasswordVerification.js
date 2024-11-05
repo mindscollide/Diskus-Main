@@ -211,6 +211,7 @@ const PasswordVerification = () => {
   //Handle Goback functionality
 
   const handelForgotPassword = () => {
+    localStorage.setItem("LoginFlowPageRoute", 10);
     dispatch(LoginFlowRoutes(10));
   };
 

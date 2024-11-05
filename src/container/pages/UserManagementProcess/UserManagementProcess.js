@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SignInComponent from "../UserMangement/SignInUserManagement/SignInUserManagement";
 import PasswordVerification from "../UserMangement/PasswordVerification/PasswordVerification";
 import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
@@ -93,10 +93,6 @@ const UserManagementProcess = () => {
     }
   }, [currentUrl]);
 
-  useEffect(() => {
-    if (UserMangementReducerdefaultRoutingValue) {
-    }
-  }, [UserMangementReducerdefaultRoutingValue]);
 
   useEffect(() => {
     if (userManagementRoute !== null) {
