@@ -55,6 +55,7 @@ const TodoList = () => {
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
@@ -109,7 +110,7 @@ const TodoList = () => {
       console.log(error, "error");
     }
   }, []);
-  const [originalData, setOriginalData] = useState([]);
+
   //get todolist reducer
   useEffect(() => {
     try {
@@ -318,8 +319,8 @@ const TodoList = () => {
   };
 
   const resetFilter = () => {
-    setSelectedValues(["1", "2", "3", "4", "5", "6"]); // Reset to initial filter values
-    setRowToDo(originalData); // Reset to unfiltered data
+    setSelectedValues(["1", "2", "3", "4", "5", "6"]);
+    setRowToDo(originalData);
     setVisible(false);
   };
 
@@ -327,7 +328,6 @@ const TodoList = () => {
     setVisible((prevVisible) => !prevVisible);
   };
 
-  console.log(selectedValues, "selectedValuesselectedValuesselectedValues");
   const menu = (
     <Menu>
       {filters.map((filter) => (
