@@ -203,29 +203,33 @@ const TodoList = () => {
     } catch {}
   }, [toDoListReducer.socketTodoStatusData]);
 
-  // SET STATUS VALUES
   useEffect(() => {
     try {
       let optionsArr = [];
       let newOptionsFilter = [];
       let newArrStatus = [""];
+
       if (
         todoStatus.Response !== null &&
         todoStatus.Response !== "" &&
         todoStatus.Response.length > 0
       ) {
-        todoStatus.Response.forEach((data, index) => {
-          optionsArr.push({
-            id: data.pK_TSID,
-            status: data.status,
-          });
-          newArrStatus.push(data.status);
-          newOptionsFilter.push({
-            key: data.pK_TSID,
-            label: data.status,
-          });
+        todoStatus.Response.forEach((data) => {
+          // Check if pK_TSID is not 1 and not 6
+          if (data.pK_TSID !== 1 && data.pK_TSID !== 6) {
+            optionsArr.push({
+              id: data.pK_TSID,
+              status: data.status,
+            });
+            newArrStatus.push(data.status);
+            newOptionsFilter.push({
+              key: data.pK_TSID,
+              label: data.status,
+            });
+          }
         });
       }
+
       setStatusValues(newArrStatus);
       setStatusOptions(optionsArr);
     } catch (error) {

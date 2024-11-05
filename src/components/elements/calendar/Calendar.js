@@ -93,7 +93,10 @@ function CustomCalendar({
   const [nextCheck, setNextCheck] = useState(false);
   const [hoveredEvent, setHoveredEvent] = useState(null);
 
-  const [popupOffset, setPopupOffset] = useState({ x: 0, y: 0 });
+  const handleEventMouseLeave = () => {
+    setHoveredEvent(null);
+  };
+  const [popupOffset, setPopupOffset] = useState({ x: 2, y: 6 });
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { t } = useTranslation();
   const todayDate = new Date();
@@ -351,12 +354,12 @@ function CustomCalendar({
         <Calendar
           selectable
           localizer={localizer}
-          resizable
+          // resizable
           events={events}
           startAccessor="start"
           endAccessor="end"
           popupOffset={popupOffset}
-          views={true}
+          views={false}
           date={defaultValue}
           onSelectEvent={handleEventSelect}
           className={className}

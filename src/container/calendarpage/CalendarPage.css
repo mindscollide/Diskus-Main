@@ -120,6 +120,7 @@
 
 .calendar .rbc-month-view .rbc-month-row {
   border: 1px solid #ccc !important;
+  display: inline-table !important;
 }
 
 .calendar .rbc-month-view .rbc-month-row .rbc-row-bg {
@@ -180,6 +181,7 @@ body[dir="rtl"]
   font-weight: 700;
   padding: 0 5px !important;
   text-align: center !important;
+  max-width: 125px !important;
 }
 
 body[dir="rtl"] .rbc-row-segment {
@@ -317,6 +319,9 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
 .rbc-row-segment {
   padding: 0px 10px !important;
   font-size: 10px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 @media screen and (max-width: 1200px) {
