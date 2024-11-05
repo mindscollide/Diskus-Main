@@ -551,5 +551,8 @@ export const openDocumentViewer = (
   }
 };
 
-
 export const maxFileSize = 1.5 * 1024 * 1024 * 1024;
+
+export const isFunction = (value) => {
+  return typeof value === "function";
+};
