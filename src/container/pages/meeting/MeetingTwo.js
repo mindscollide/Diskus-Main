@@ -2991,7 +2991,9 @@ const NewMeeting = () => {
                       className="SceduleMeetingButton"
                       onClick={eventClickHandler}
                     >
-                      <ReactBootstrapDropdown.Toggle title={t("Create")}>
+                      <ReactBootstrapDropdown.Toggle
+                        title={t("Schedule-a-meeting")}
+                      >
                         <Row>
                           <Col
                             lg={12}
@@ -3008,7 +3010,7 @@ const NewMeeting = () => {
                       <ReactBootstrapDropdown.Menu>
                         {checkFeatureIDAvailability(1) ? (
                           <ReactBootstrapDropdown.Item
-                            className="dropdown-item"
+                            className={styles["dropdown-item"]}
                             onClick={CreateQuickMeeting}
                           >
                             {t("Quick-meeting")}
@@ -3017,7 +3019,7 @@ const NewMeeting = () => {
 
                         {checkFeatureIDAvailability(9) ? (
                           <ReactBootstrapDropdown.Item
-                            className="dropdown-item"
+                            className={styles["dropdown-item"]}
                             onClick={openSceduleMeetingPage}
                           >
                             {t("Advance-meeting")}
@@ -3027,7 +3029,7 @@ const NewMeeting = () => {
                         {checkFeatureIDAvailability(12) ? (
                           <>
                             <ReactBootstrapDropdown.Item
-                              className="dropdown-item"
+                              className={styles["dropdown-item"]}
                               onClick={openProposedNewMeetingPage}
                             >
                               {t("Propose-new-meeting")}

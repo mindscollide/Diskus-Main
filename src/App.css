@@ -8253,3 +8253,163 @@ body.guest-video-call {
 body[dir="rtl"] .MQTT_Notification .ant-notification-notice-message {
   margin-right: 20px !important;
 }
+
+/* Scedule a meeting  Starts  */
+.SceduleMeetingButton .dropdown-tggle::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  transform: rotate(45deg);
+  left: 4px;
+  top: 2px;
+  background-color: #fff !important;
+}
+
+.SceduleMeetingButton .dropdown-toggle::after {
+  display: none !important;
+}
+
+.SceduleMeetingButton button {
+  width: 220px;
+  height: 31px;
+  font-size: calc(14px - 20%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-weight: 600;
+  border: none !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+body[dir="rtl"] .SceduleMeetingButton button {
+  font-weight: 600;
+}
+
+.SceduleMeetingButton .dropdown-toggle.btn.btn-primary {
+  height: 31px !important;
+  font-size: calc(14px - 20%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-weight: 600;
+  border: none !important;
+  display: flex;
+  justify-content: center;
+}
+
+.SceduleMeetingButton .dropdown-menu.show {
+  padding: 0 !important;
+  width: 220px;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  transform: translate(0px, 45px);
+  border-width: 0px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show {
+  padding: 0 !important;
+  width: 220px;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  transform: translateY(0px, 45px) !important;
+  border-width: 0px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.SceduleMeetingButton .dropdown-menu.show .dropdown-item {
+  padding: 10px 0px;
+  font-weight: 600;
+
+  text-align: center;
+  font-size: 11px !important;
+}
+
+body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show .dropdown-item {
+  font-weight: 600;
+}
+
+.SceduleMeetingButton .dropdown-menu.show .dropdown-item:nth-child(1) {
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.SceduleMeetingButton .dropdown-menu.show .dropdown-item:nth-child(2) {
+  border-bottom: 1px solid #e1e1e1;
+}
+.SceduleMeetingButton .dropdown-menu.show .dropdown-item:nth-child(3) {
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.SceduleMeetingButton .dropdown-menu.show .dropdown-item:hover {
+  background: none !important;
+  color: #5a5a5a !important;
+}
+
+.SceduleMeetingButton .dropdown-toggle::after {
+  display: inline-block;
+  margin-left: 5.255em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}
+
+.SceduleMeetingButton .dropdown-menu.show .dropdown-item {
+  padding: 10px 10px;
+  font-weight: 600;
+
+  text-align: center;
+  font-size: 11px !important;
+}
+
+body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show .dropdown-item {
+  font-weight: 600;
+}
+
+.SceduleMeetingButton .dropdown-menu.show .dropdown-item:nth-child(1) {
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.SceduleMeetingButton .dropdown-menu.show .dropdown-item:hover {
+  background: none !important;
+}
+
+.add-event .dropdown-item {
+  width: 170px;
+  padding: 10px 5px;
+}
+
+.add-event .dropdown-item {
+  width: 190px;
+  padding: 10px 5px;
+}
+
+.add-event .dropdown-item {
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0 !important;
+  font-weight: 600;
+}
+
+.schedule_button {
+  font-size: calc(14px - 20%);
+}
+
+body[dir="rtl"] .schedule_button {
+  margin-right: 17px !important;
+}
+
+body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show {
+  top: 0px !important;
+}
+/* Scedule a meeting  Ends  */
