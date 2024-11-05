@@ -117,15 +117,15 @@ const Notes = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-start mb-2 gap-3">
+      <div className='d-flex justify-content-start mb-2 gap-3'>
         <h1 className={styles["noteheading"]}>{t("Notes")}</h1>
         {checkFeatureIDAvailability(6) && (
           <img
             src={PlusButton}
             onClick={() => setModalNote(true)}
-            className="cursor-pointer"
-            alt=""
-            draggable="false"
+            className='cursor-pointer'
+            alt=''
+            draggable='false'
           />
         )}
       </div>
@@ -136,37 +136,36 @@ const Notes = () => {
               return (
                 <>
                   <div
-                    className="notesdescription cursor-pointer"
+                    className={styles["notesdescription"]}
                     key={data.pK_NotesID}
-                    onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}
-                  >
+                    onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
-                        <p className="notescontent">
+                        <p className={styles['notescontent']}>
                           {data.title.slice(0, 100)}
                         </p>
                       </Col>
                     </Row>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
                         className='d-flex gap-2 align-items-center justify-content-between'>
-                        <span >
+                        <span>
                           {data.isAttachment && (
                             <span>
                               <img
                                 src={IconAttachment}
-                                width="17.46px"
-                                height="16.05px"
-                                alt=""
-                                draggable="false"
+                                width='17.46px'
+                                height='16.05px'
+                                alt=''
+                                draggable='false'
                               />
                             </span>
                           )}
                         </span>
-                        <span className="DataTimeDay">
+                        <span className={styles['DataTimeDay']}>
                           {_justShowDateformat(data.date + data.time)} |
                           {_justShowDay(data.date + data.time)}
                         </span>
@@ -178,11 +177,10 @@ const Notes = () => {
             } else if (index === 12) {
               // Display a different message when index is 12
               return (
-                <div key={index} className="d-flex justify-content-center">
+                <div key={index} className='d-flex justify-content-center'>
                   <p
-                    className="ViewMoreLink_notes"
-                    onClick={() => navigate("/DisKus/Notes")}
-                  >
+                    className={styles['ViewMoreLink_notes']}
+                    onClick={() => navigate("/DisKus/Notes")}>
                     {t("View-more")}
                   </p>
                 </div>
@@ -196,9 +194,8 @@ const Notes = () => {
                 sm={12}
                 lg={12}
                 md={12}
-                className="d-flex justify-content-center align-items-center flex-column"
-              >
-                <img src={Notes_Empty} width={"40%"} alt="" draggable="false" />
+                className='d-flex justify-content-center align-items-center flex-column'>
+                <img src={Notes_Empty} width={"40%"} alt='' draggable='false' />
                 <p className={styles["emptystateNotesDashboard"]}>
                   {t("You-dont-have-any-notes")}
                 </p>
