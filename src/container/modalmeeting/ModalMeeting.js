@@ -72,6 +72,15 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const GroupsReducergetGroupByGroupIdResponse = useSelector(
     (state) => state.GroupsReducer?.getGroupByGroupIdResponse
   );
+  const UserProfileData = useSelector(
+    (state) => state.settingReducer?.UserProfileData
+  );
+  const {
+    userName = "",
+    organizationName = "",
+    fK_UID = 0,
+    userProfilePicture = "",
+  } = UserProfileData;
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
   const [isAgenda, setIsAgenda] = useState(false);
@@ -299,6 +308,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       const newObjMeetingAgenda = {
         ...objMeetingAgenda,
         Title: t("No-agenda-available"),
+        PresenterName: userName,
       };
 
       let previousAdendas = [...createMeeting.MeetingAgendas];
@@ -369,6 +379,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       const newObjMeetingAgenda = {
         ...objMeetingAgenda,
         Title: t("No-agenda-available"),
+        PresenterName: userName,
       };
 
       let previousAdendas = [...createMeeting.MeetingAgendas];
@@ -650,13 +661,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex gap-2 align-items-center'>
+                  className="d-flex gap-2 align-items-center"
+                >
                   <img
                     src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                    height='16.45px'
-                    width='18.32px'
-                    draggable='false'
-                    alt=''
+                    height="16.45px"
+                    width="18.32px"
+                    draggable="false"
+                    alt=""
                   />
                   <span>{user.name}</span>
                 </Col>
@@ -930,6 +942,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           const newObjMeetingAgenda = {
             ...objMeetingAgenda,
             Title: `Agenda ${agendaCount}`,
+            PresenterName: userName,
           };
 
           let newData = {
@@ -1082,13 +1095,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
                       />
                       <span>{user.name}</span>
                     </Col>
@@ -1108,13 +1122,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex gap-2 align-items-center'>
+                        className="d-flex gap-2 align-items-center"
+                      >
                         <img
                           src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                          height='16.45px'
-                          width='18.32px'
-                          draggable='false'
-                          alt=''
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
                         />
                         <span>{user?.name}</span>
                       </Col>
@@ -1132,13 +1147,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex gap-2 align-items-center'>
+                        className="d-flex gap-2 align-items-center"
+                      >
                         <img
                           src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                          height='16.45px'
-                          width='18.32px'
-                          draggable='false'
-                          alt=''
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
                         />
                         <span>{user?.name}</span>
                       </Col>
@@ -1185,6 +1201,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             setAttendeesParticipant(PresenterData);
             setAllPresenters(PresenterData);
           }
+          setAllPresenters(PresenterData);
           setAddedParticipantNameList(newMemberData);
         } catch (error) {
           console.log(error);
@@ -1215,25 +1232,111 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       if (Number(checkFlag) === 6) {
         // Committees MembersData
         let CommitteeMembers =
-        CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
+          CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
         console.log(CommitteeMembers, "CommitteeMembers");
         if (
           CommitteeMembers !== null &&
           CommitteeMembers !== undefined &&
           CommitteeMembers.length > 0
         ) {
+          let findisCreatorFind = CommitteeMembers.find(
+            (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
+          );
+          console.log(findisCreatorFind, "findisCreatorFindfindisCreatorFind");
+          if (findisCreatorFind === undefined) {
+            setDefaultPresenter({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID,
+              name: userName,
+            });
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID,
+              name: userName,
+            });
+            setDefaultObjMeetingAgenda({
+              ...defaultMeetingAgenda,
+              PresenterName: userName,
+            });
+            setObjMeetingAgenda({
+              ...objMeetingAgenda,
+              PresenterName: userName,
+            });
+            newMemberData.push({
+              name: userName,
+              designation: "",
+              profilePicture: "",
+              organization: organizationName,
+              role: 3,
+              displayProfilePic: userProfilePicture?.displayProfilePictureName,
+            });
+            userData = {
+              User: {
+                PK_UID: parseInt(createrID),
+              },
+              MeetingAttendeeRole: {
+                PK_MARID: 3,
+              },
+              AttendeeAvailability: {
+                PK_AAID: 1,
+              },
+            };
+          }
+
           CommitteeMembers.forEach((committeesMember, index) => {
             usersData.push({
               creationDate: "",
               creationTime: "",
               designation: "",
-              displayProfilePictureName: committeesMember.userProfilePicture.displayProfilePictureName,
+              displayProfilePictureName:
+                committeesMember.userProfilePicture.displayProfilePictureName,
               emailAddress: committeesMember.email,
               mobileNumber: "",
               name: committeesMember.userName,
               organization: localStorage.getItem("organizatioName"),
-              orignalProfilePictureName: committeesMember.userProfilePicture.orignalProfilePictureName,
-              pK_UID:committeesMember.pK_UID,
+              orignalProfilePictureName:
+                committeesMember.userProfilePicture.orignalProfilePictureName,
+              pK_UID: committeesMember.pK_UID,
             });
             membersData.push({
               label: (
@@ -1243,13 +1346,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
                       />
                       <span>{committeesMember.userName}</span>
                     </Col>
@@ -1268,13 +1372,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex gap-2 align-items-center'>
+                        className="d-flex gap-2 align-items-center"
+                      >
                         <img
                           src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
-                          height='16.45px'
-                          width='18.32px'
-                          draggable='false'
-                          alt=''
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
                         />
                         <span>{committeesMember?.userName}</span>
                       </Col>
@@ -1292,13 +1397,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex gap-2 align-items-center'>
+                        className="d-flex gap-2 align-items-center"
+                      >
                         <img
                           src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
-                          height='16.45px'
-                          width='18.32px'
-                          draggable='false'
-                          alt=''
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
                         />
                         <span>{committeesMember?.userName}</span>
                       </Col>
@@ -1341,14 +1447,16 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               };
             }
           });
-          setAttendeesParticipant(membersData);
-          setCreateMeeting({
-            ...createMeeting,
-            MeetingAttendees: [userData],
-          });
-          setMeetingAttendeesList(usersData);
-          setAddedParticipantNameList(newMemberData);
         }
+
+        setAllPresenters(membersData);
+        setAttendeesParticipant(membersData);
+        setCreateMeeting({
+          ...createMeeting,
+          MeetingAttendees: userData !== undefined ? [userData] : [],
+        });
+        setMeetingAttendeesList(usersData);
+        setAddedParticipantNameList(newMemberData);
       } else if (Number(checkFlag) === 7) {
         // Group Members
         let GroupMembers = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
@@ -1357,18 +1465,102 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           GroupMembers !== undefined &&
           GroupMembers.length > 0
         ) {
+          let findisCreatorFind = GroupMembers.find(
+            (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
+          );
+          if (findisCreatorFind === undefined) {
+            setDefaultPresenter({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID,
+              name: userName,
+            });
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID,
+              name: userName,
+            });
+            setDefaultObjMeetingAgenda({
+              ...defaultMeetingAgenda,
+              PresenterName: userName,
+            });
+            setObjMeetingAgenda({
+              ...objMeetingAgenda,
+              PresenterName: userName,
+            });
+            newMemberData.push({
+              name: userName,
+              designation: "",
+              profilePicture: "",
+              organization: organizationName,
+              role: 3,
+              displayProfilePic: userProfilePicture?.displayProfilePictureName,
+            });
+            userData = {
+              User: {
+                PK_UID: parseInt(createrID),
+              },
+              MeetingAttendeeRole: {
+                PK_MARID: 3,
+              },
+              AttendeeAvailability: {
+                PK_AAID: 1,
+              },
+            };
+          }
           GroupMembers.forEach((groupMemberData, index) => {
             usersData.push({
               creationDate: "",
               creationTime: "",
               designation: "",
-              displayProfilePictureName: groupMemberData.userProfilePicture.displayProfilePictureName,
+              displayProfilePictureName:
+                groupMemberData.userProfilePicture.displayProfilePictureName,
               emailAddress: groupMemberData.email,
               mobileNumber: "",
               name: groupMemberData.userName,
               organization: localStorage.getItem("organizatioName"),
-              orignalProfilePictureName: groupMemberData.userProfilePicture.orignalProfilePictureName,
-              pK_UID:groupMemberData.pK_UID,
+              orignalProfilePictureName:
+                groupMemberData.userProfilePicture.orignalProfilePictureName,
+              pK_UID: groupMemberData.pK_UID,
             });
             membersData.push({
               label: (
@@ -1378,13 +1570,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
                       />
                       <span>{groupMemberData.userName}</span>
                     </Col>
@@ -1403,13 +1596,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex gap-2 align-items-center'>
+                        className="d-flex gap-2 align-items-center"
+                      >
                         <img
                           src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
-                          height='16.45px'
-                          width='18.32px'
-                          draggable='false'
-                          alt=''
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
                         />
                         <span>{groupMemberData?.userName}</span>
                       </Col>
@@ -1427,13 +1621,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex gap-2 align-items-center'>
+                        className="d-flex gap-2 align-items-center"
+                      >
                         <img
                           src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
-                          height='16.45px'
-                          width='18.32px'
-                          draggable='false'
-                          alt=''
+                          height="16.45px"
+                          width="18.32px"
+                          draggable="false"
+                          alt=""
                         />
                         <span>{groupMemberData?.userName}</span>
                       </Col>
@@ -1474,10 +1669,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               };
             }
           });
+
+          setAllPresenters(membersData);
+
           setAttendeesParticipant(membersData);
           setCreateMeeting({
             ...createMeeting,
-            MeetingAttendees: [userData],
+            MeetingAttendees: userData !== undefined ? [userData] : [],
           });
           setMeetingAttendeesList(usersData);
           setAddedParticipantNameList(newMemberData);
@@ -1492,8 +1690,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     console.log("I am clicked");
     let user1 = createMeeting.MeetingAttendees;
     let List = addedParticipantNameList;
-    let found = user1.find((element) => element.User.PK_UID === taskAssignedTo);
-
+    let found =
+      user1.length > 0
+        ? user1.find((element) => element?.User?.PK_UID === taskAssignedTo)
+        : undefined;
+    console.log(found, "foundfoundfound");
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
         showMessage(t("User-already-exists"), "error", setOpen);
@@ -1593,6 +1794,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           },
         };
         setMeetingAttendees(newData);
+        setParticipantRoleID(2);
         setTaskAssignedToInput({
           name: "",
           value: 0,
@@ -1725,7 +1927,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className='input-with-icon'
+        className="input-with-icon"
       />
     );
   }
@@ -1807,7 +2009,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             <>
               {closeConfirmationModal === true ? null : (
                 <Row>
-                  <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-2'>
+                  <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
                     <Button
                       className={
                         isDetails
@@ -1825,7 +2027,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       }
                       text={t("Agenda")}
                       onClick={changeSelectAgenda}
-                      datatut='show-agenda'
+                      datatut="show-agenda"
                     />
                     <Button
                       className={
@@ -1834,7 +2036,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           : "isAttendee-Schedule-top-btn-NonActive"
                       }
                       text={t("Attendees")}
-                      datatut='show-meeting-attendees'
+                      datatut="show-meeting-attendees"
                       onClick={changeSelectAttendees}
                     />
                   </Col>
@@ -1843,23 +2045,24 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
               {isDetails ? (
                 <>
-                  <Row className='createmeetingtime-row-1'>
+                  <Row className="createmeetingtime-row-1">
                     <Col
                       lg={3}
                       md={3}
                       sm={3}
                       xs={12}
-                      className='CreateMeetingTime'>
+                      className="CreateMeetingTime"
+                    >
                       <DatePicker
-                        arrowClassName='arrowClass'
+                        arrowClassName="arrowClass"
                         value={createMeetingTime}
-                        containerClassName='containerClassTimePicker'
-                        className='timePicker'
+                        containerClassName="containerClassTimePicker"
+                        className="timePicker"
                         disableDayPicker
-                        inputClass='inputTImeMeeting'
+                        inputClass="inputTImeMeeting"
                         calendar={calendarValue}
                         locale={localValue}
-                        format='hh:mm A'
+                        format="hh:mm A"
                         selected={createMeetingTime}
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
@@ -1867,7 +2070,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         onChange={handleTimeChange}
                       />
 
-                      <div className='height-10'>
+                      <div className="height-10">
                         {modalField === true &&
                         createMeeting.MeetingStartTime === null ? (
                           <>
@@ -1891,29 +2094,30 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       md={4}
                       sm={4}
                       xs={12}
-                      className='CreateMeetingDate '>
-                      <div className='datepicker align-items-center '>
+                      className="CreateMeetingDate "
+                    >
+                      <div className="datepicker align-items-center ">
                         <DatePicker
                           format={"DD/MM/YYYY"}
                           minDate={new Date()}
-                          placeholder='DD/MM/YYYY'
+                          placeholder="DD/MM/YYYY"
                           render={
                             <InputIcon
-                              placeholder='DD/MM/YYYY'
-                              className='datepicker_input'
+                              placeholder="DD/MM/YYYY"
+                              className="datepicker_input"
                             />
                           }
                           editable={false}
-                          className='datePickerTodoCreate2'
+                          className="datePickerTodoCreate2"
                           onOpenPickNewDate={true}
-                          inputMode=''
+                          inputMode=""
                           value={meetingDate}
                           calendar={calendarValue}
                           locale={localValue}
                           onFocusedDateChange={meetingDateHandler}
                         />
                       </div>
-                      <div className='height-10'>
+                      <div className="height-10">
                         {modalField === true &&
                         createMeeting.MeetingDate === "" ? (
                           <p
@@ -1948,30 +2152,33 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                     </Col>
                   </Row>
 
-                  <Row className='createmeetingInput-row mt-1'>
+                  <Row className="createmeetingInput-row mt-1">
                     <Col
                       lg={1}
                       md={2}
                       sm={3}
                       xs={12}
-                      className='CreateMeetingInput'>
+                      className="CreateMeetingInput"
+                    >
                       <Button
                         text={
                           createMeeting.IsVideoCall === false ? (
                             <Tooltip
-                              placement='bottomLeft'
-                              title={t("Enable-video-call")}>
-                              <img src={MeetingVideoChatIcon} alt='' />
+                              placement="bottomLeft"
+                              title={t("Enable-video-call")}
+                            >
+                              <img src={MeetingVideoChatIcon} alt="" />
                             </Tooltip>
                           ) : (
                             <Tooltip
-                              placement='bottomLeft'
-                              title={t("Disable-video-call")}>
-                              <img src={MeetingVideoChatIconActive} alt='' />
+                              placement="bottomLeft"
+                              title={t("Disable-video-call")}
+                            >
+                              <img src={MeetingVideoChatIconActive} alt="" />
                             </Tooltip>
                           )
                         }
-                        name='IsVideoCall'
+                        name="IsVideoCall"
                         className={
                           createMeeting.IsVideoCall === false
                             ? "cameraButton"
@@ -1985,12 +2192,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       md={5}
                       sm={5}
                       xs={12}
-                      className='location-textbox CreateMeetingInput'>
+                      className="location-textbox CreateMeetingInput"
+                    >
                       <TextField
                         change={detailsHandler}
-                        name='MeetingLocation'
-                        applyClass='form-control2'
-                        type='text'
+                        name="MeetingLocation"
+                        applyClass="form-control2"
+                        type="text"
                         placeholder={t("Location-Videourl")}
                         value={createMeeting.MeetingLocation}
                         required={true}
@@ -2002,30 +2210,33 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       md={4}
                       sm={4}
                       xs={12}
-                      className='UpdateCheckbox mt-2 '>
+                      className="UpdateCheckbox mt-2 "
+                    >
                       <Checkbox
-                        className='SearchCheckbox '
-                        name='IsChat'
+                        className="SearchCheckbox "
+                        name="IsChat"
                         label={t("Group-chat")}
                         checked={createMeeting.IsChat}
                         onChange={onChange}
-                        classNameDiv='checkboxParentClass'></Checkbox>
+                        classNameDiv="checkboxParentClass"
+                      ></Checkbox>
                     </Col>
                   </Row>
 
-                  <Row className='createmeetingInput-row '>
+                  <Row className="createmeetingInput-row ">
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className='location-textbox CreateMeetingInput'>
+                      className="location-textbox CreateMeetingInput"
+                    >
                       <TextField
                         change={detailsHandler}
                         value={createMeeting.MeetingTitle}
-                        name='MeetingTitle'
+                        name="MeetingTitle"
                         applyClass={"form-control2"}
-                        type='text'
-                        size='small'
+                        type="text"
+                        size="small"
                         placeholder={t("Meeting-title")}
                         required={true}
                         maxLength={245}
@@ -2033,19 +2244,20 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                     </Col>
                   </Row>
 
-                  <Row className='createmeetingtextarea-row'>
+                  <Row className="createmeetingtextarea-row">
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className='CreateMeetingInput textAreaDiv'>
+                      className="CreateMeetingInput textAreaDiv"
+                    >
                       <TextField
                         change={detailsHandler}
-                        name='MeetingDescription'
-                        applyClass='form-control2 createmeetingtextarea'
-                        type='text'
+                        name="MeetingDescription"
+                        applyClass="form-control2 createmeetingtextarea"
+                        type="text"
                         as={"textarea"}
-                        rows='7'
+                        rows="7"
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
@@ -2062,13 +2274,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           lg={7}
                           md={7}
                           xs={12}
-                          className='agenda-title-field CreateMeetingAgenda'>
+                          className="agenda-title-field CreateMeetingAgenda"
+                        >
                           <TextField
                             change={agendaHandler}
                             name={"Title"}
                             value={objMeetingAgenda.Title}
-                            applyClass='form-control2'
-                            type='text'
+                            applyClass="form-control2"
+                            type="text"
                             maxLength={300}
                             placeholder={t("Agenda-title") + "*"}
                           />
@@ -2077,7 +2290,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           lg={5}
                           md={5}
                           xs={12}
-                          className='agenda-title-field'>
+                          className="agenda-title-field"
+                        >
                           <Select
                             options={allPresenters}
                             maxMenuHeight={140}
@@ -2088,7 +2302,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                 ? null
                                 : presenterValue
                             }
-                            placeholder='Select Presenter'
+                            placeholder="Select Presenter"
                             filterOption={filterFunc}
                           />
                         </Col>
@@ -2099,35 +2313,37 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           lg={12}
                           md={12}
                           xs={12}
-                          className='agenda-title-field CreateMeetingAgenda'>
+                          className="agenda-title-field CreateMeetingAgenda"
+                        >
                           <TextField
                             change={agendaHandler}
                             name={"URLs"}
                             value={objMeetingAgenda.URLs}
-                            applyClass='form-control2'
-                            type='text'
+                            applyClass="form-control2"
+                            type="text"
                             placeholder={t("Url")}
                           />
                         </Col>
                       </Row>
 
-                      <Row className='mt-2'>
+                      <Row className="mt-2">
                         <Col
                           lg={12}
                           md={12}
                           xs={12}
-                          className='d-flex justify-content-start flex-column '>
-                          <label className='MontserratRegular '>
+                          className="d-flex justify-content-start flex-column "
+                        >
+                          <label className="MontserratRegular ">
                             {t("Attachement")}
                           </label>
-                          <span className='custom-upload-input'>
+                          <span className="custom-upload-input">
                             <CustomUpload
                               change={uploadFilesAgenda}
                               multiple={true}
                               onClick={(event) => {
                                 event.target.value = null;
                               }}
-                              className='UploadFileButton'
+                              className="UploadFileButton"
                             />
                           </span>
                         </Col>
@@ -2163,11 +2379,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         : null}
                     </Row>
                   </div>
-                  <div className='modalmeeting-participant-scroll'>
+                  <div className="modalmeeting-participant-scroll">
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
                           return (
-                            <div className='margin-top-20'>
+                            <div className="margin-top-20">
                               <Accordian
                                 AccordioonHeader={data.ObjMeetingAgenda.Title}
                                 className={`Setting ${currentLanguage}`}
@@ -2180,7 +2396,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                           variant={"Primary"}
                                           text={t("Edit")}
                                           onClick={() => editGrid(data, index)}
-                                          datatut='show-agenda'
+                                          datatut="show-agenda"
                                         />
                                       </Col>
                                       <Col lg={2} md={2} xs={6}>
@@ -2200,8 +2416,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                           disable={true}
                                           name={"Title"}
                                           value={data.ObjMeetingAgenda.Title}
-                                          applyClass='form-control2'
-                                          type='text'
+                                          applyClass="form-control2"
+                                          type="text"
                                           placeholder={t("Agenda-title")}
                                         />
                                       </Col>
@@ -2212,8 +2428,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                           value={
                                             data.ObjMeetingAgenda.PresenterName
                                           }
-                                          applyClass='form-control2'
-                                          type='text'
+                                          applyClass="form-control2"
+                                          type="text"
                                           placeholder={t(
                                             "Presenter-Title-Placeholder"
                                           )}
@@ -2226,8 +2442,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                           disable={true}
                                           name={"URLs"}
                                           value={data.ObjMeetingAgenda.URLs}
-                                          applyClass='form-control2'
-                                          type='text'
+                                          applyClass="form-control2"
+                                          type="text"
                                           placeholder={t(
                                             "URL-Title-Placeholder"
                                           )}
@@ -2276,7 +2492,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         options={attendeesParticipant}
                         classNamePrefix={"ModalOrganizerSelect"}
                         filterOption={filterFunc}
-                        placeholder='Please Select'
+                        placeholder="Please Select"
                         onChange={handleChangeAttenddes}
                         isSearchable={true}
                         value={
@@ -2303,15 +2519,16 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       />
                     </Col>
                   </Row>
-                  <section className='participant-scroll-creatingmeeting'>
+                  <section className="participant-scroll-creatingmeeting">
                     <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
                         xs={12}
-                        className='participant-heading-creatingmeeting'>
-                        <label className=''>{t("Organizer")}</label>
+                        className="participant-heading-creatingmeeting"
+                      >
+                        <label className="">{t("Organizer")}</label>
                       </Col>
                       <Col lg={12} md={12} sm={12} xs={12}>
                         {addedParticipantNameList ? (
@@ -2358,8 +2575,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         md={12}
                         sm={12}
                         xs={12}
-                        className='participant-heading-creatingmeeting'>
-                        <label className=''>{t("Participants")}</label>
+                        className="participant-heading-creatingmeeting"
+                      >
+                        <label className="">{t("Participants")}</label>
                       </Col>
                       <Col lg={12} md={12} sm={12} xs={12}>
                         {addedParticipantNameList ? (
@@ -2400,7 +2618,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='Confirmationmodal_body_text_meeting_update'>
+                      className="Confirmationmodal_body_text_meeting_update"
+                    >
                       {t("Are-you-sure-note-reset-closed")}
                     </Col>
                   </Row>
@@ -2417,13 +2636,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className='d-flex justify-content-end'>
+                      className="d-flex justify-content-end"
+                    >
                       <Button
                         onClick={navigateToAgenda}
                         className={"createmeeting_details_footer_NextBtn"}
                         variant={"Primary"}
                         text={t("Next")}
-                        type='submit'
+                        type="submit"
                       />
                     </Col>
                   </Row>
@@ -2436,7 +2656,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className='d-flex justify-content-between'>
+                      className="d-flex justify-content-between"
+                    >
                       <Button
                         onClick={addAnOtherAgenda}
                         className={
@@ -2456,7 +2677,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           "btn btn-primary modal-createMeeting-addagendaBtn_Next"
                         }
                         text={t("Next")}
-                        type='submit'
+                        type="submit"
                       />
                     </Col>
                   </Row>
@@ -2469,14 +2690,15 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       md={12}
                       xs={12}
                       sm={12}
-                      className='d-flex justify-content-end'>
+                      className="d-flex justify-content-end"
+                    >
                       <Button
                         className={
                           "btn btn-primary modal-createMeeting-publish"
                         }
                         text={t("Publish")}
                         onClick={handleSubmit}
-                        type='submit'
+                        type="submit"
                       />
                     </Col>
                   </Row>
@@ -2488,7 +2710,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='d-flex justify-content-center gap-3'>
+                      className="d-flex justify-content-center gap-3"
+                    >
                       <Button
                         onClick={onHideCancelButton}
                         className={

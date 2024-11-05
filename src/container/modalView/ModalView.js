@@ -33,6 +33,8 @@ import {
   LeaveCurrentMeeting,
 } from "../../store/actions/NewMeetingActions";
 import { callRequestReceivedMQTT } from "../../store/actions/VideoMain_actions";
+import { UpdateOrganizersMeeting } from "../../store/actions/MeetingOrganizers_action";
+import { getMeetingGuestVideoMainApi } from "../../store/actions/Guest_Video";
 import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
 import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
@@ -796,19 +798,25 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const copyToClipboardd = () => {
     let MeetingData = allMeetingDetails?.meetingDetails;
     if (MeetingData.isVideoCall === true) {
-      let Data2 = {
-        VideoCallURL: currentMeetingVideoURL,
-      };
+      let meetingId = localStorage.getItem("currentMeetingID");
 
-      dispatch(
-        FetchMeetingURLClipboard(
-          Data2,
-          navigate,
-          t,
-          currentUserID,
-          currentOrganization
-        )
-      );
+      let data = {
+        MeetingId: Number(meetingId),
+      };
+      dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
+
+      // let Data2 = {
+      //   VideoCallURL: currentMeetingVideoURL,
+      // };
+      // dispatch(
+      //   FetchMeetingURLClipboard(
+      //     Data2,
+      //     navigate,
+      //     t,
+      //     currentUserID,
+      //     currentOrganization
+      //   )
+      // );
     }
     showMessage("Generating-meeting-link", "error", setOpen);
   };
@@ -959,7 +967,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     md={2}
                     sm={2}
                     xs={12}
-                    className={`minutes-upper-btn ${currentLanguage}`}
+                    className={" minutes-upper-btn" + " " + currentLanguage}
                   >
                     <Button
                       className={

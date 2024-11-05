@@ -616,10 +616,10 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
-      adminReducer.UpdateOrganizationMessageResponseMessage !=
+      adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !==
         t("No-records-found") &&
-      adminReducer.UpdateOrganizationMessageResponseMessage != ""
+      adminReducer.UpdateOrganizationMessageResponseMessage !== ""
     ) {
       showMessage(
         adminReducer.UpdateOrganizationMessageResponseMessage,
@@ -628,10 +628,10 @@ const CalendarPage = () => {
       );
       dispatch(cleareMessage());
     } else if (
-      adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
-      adminReducer.DeleteOrganizationMessageResponseMessage !=
+      adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !==
         t("No-records-found") &&
-      adminReducer.DeleteOrganizationMessageResponseMessage != ""
+      adminReducer.DeleteOrganizationMessageResponseMessage !== ""
     ) {
       showMessage(
         adminReducer.DeleteOrganizationMessageResponseMessage,
@@ -641,9 +641,9 @@ const CalendarPage = () => {
 
       dispatch(cleareMessage());
     } else if (
-      adminReducer.AllOrganizationResponseMessage != "" &&
-      adminReducer.AllOrganizationResponseMessage != t("No-records-found") &&
-      adminReducer.AllOrganizationResponseMessage != ""
+      adminReducer.AllOrganizationResponseMessage !== "" &&
+      adminReducer.AllOrganizationResponseMessage !== t("No-records-found") &&
+      adminReducer.AllOrganizationResponseMessage !== ""
     ) {
       showMessage(
         adminReducer.AllOrganizationResponseMessage,
@@ -672,17 +672,17 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      meetingIdReducer.ResponseMessage != "" &&
-      meetingIdReducer.ResponseMessage != "" &&
-      meetingIdReducer.ResponseMessage != t("No-records-found")
+      meetingIdReducer.ResponseMessage !== "" &&
+      meetingIdReducer.ResponseMessage !== "" &&
+      meetingIdReducer.ResponseMessage !==t("No-records-found")
     ) {
       showMessage(meetingIdReducer.ResponseMessage, "success", setOpen);
 
       dispatch(HideNotificationMeetings());
     } else if (
-      assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("No-records-found")
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== t("No-records-found")
     ) {
       showMessage(assignees.ResponseMessage, "success", setOpen);
 
@@ -695,18 +695,18 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      toDoListReducer.ResponseMessage != "" &&
-      toDoListReducer.ResponseMessage != undefined &&
-      toDoListReducer.ResponseMessage != "" &&
-      toDoListReducer.ResponseMessage != t("No-records-found")
+      toDoListReducer.ResponseMessage !== "" &&
+      toDoListReducer.ResponseMessage !== undefined &&
+      toDoListReducer.ResponseMessage !== "" &&
+      toDoListReducer.ResponseMessage !== t("No-records-found")
     ) {
       showMessage(toDoListReducer.ResponseMessage, "success", setOpen);
 
       dispatch(clearResponce());
     } else if (
-      assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("No-records-found")
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== t("No-records-found")
     ) {
       showMessage(assignees.ResponseMessage, "success", setOpen);
 
@@ -719,28 +719,28 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      getTodosStatus.ResponseMessage != "" &&
-      getTodosStatus.ResponseMessage != undefined &&
-      getTodosStatus.ResponseMessage != "" &&
-      getTodosStatus.ResponseMessage != t("No-records-found")
+      getTodosStatus.ResponseMessage !== "" &&
+      getTodosStatus.ResponseMessage !== undefined &&
+      getTodosStatus.ResponseMessage !== "" &&
+      getTodosStatus.ResponseMessage !== t("No-records-found")
     ) {
       showMessage(getTodosStatus.ResponseMessage, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else if (
-      getTodosStatus.UpdateTodoStatusMessage != "" &&
-      getTodosStatus.UpdateTodoStatusMessage != undefined &&
-      getTodosStatus.UpdateTodoStatusMessage != "" &&
-      getTodosStatus.UpdateTodoStatusMessage != t("No-records-found")
+      getTodosStatus.UpdateTodoStatusMessage !== "" &&
+      getTodosStatus.UpdateTodoStatusMessage !== undefined &&
+      getTodosStatus.UpdateTodoStatusMessage !== "" &&
+      getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
     ) {
       showMessage(getTodosStatus.UpdateTodoStatusMessage, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else if (
-      getTodosStatus.UpdateTodoStatus != "" &&
-      getTodosStatus.UpdateTodoStatus != undefined &&
-      getTodosStatus.UpdateTodoStatus != "" &&
-      getTodosStatus.UpdateTodoStatus != t("No-records-found")
+      getTodosStatus.UpdateTodoStatus !== "" &&
+      getTodosStatus.UpdateTodoStatus !== undefined &&
+      getTodosStatus.UpdateTodoStatus !== "" &&
+      getTodosStatus.UpdateTodoStatus !== t("No-records-found")
     ) {
       showMessage(getTodosStatus.UpdateTodoStatus, "success", setOpen);
 

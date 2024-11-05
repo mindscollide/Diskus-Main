@@ -90,6 +90,7 @@ import {
   generateURLParticipant,
 } from "../../commen/functions/urlVideoCalls";
 import copyToClipboard from "../../hooks/useClipBoard";
+import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 
 const boardDeckModal = (response) => {
   return {
@@ -1365,6 +1366,10 @@ const FetchMeetingURLApi = (
                 )
             ) {
               dispatch(showMeetingURLSuccess(response.data.responseResult, ""));
+              mqttConnectionGuestUser(
+                response.data.responseResult.userGUID,
+                dispatch
+              );
               dispatch(MeetingUrlSpinner(false));
               let meetingURL = response.data.responseResult.videoURL;
               var match = meetingURL.match(/RoomID=([^&]*)/);
@@ -2401,6 +2406,10 @@ const GetAllMeetingDetailsApiFunc = (
                   "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem(
+                "meetingTitle",
+                response.data.responseResult.advanceMeetingDetails.meetingTitle
+              );
               localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.advanceMeetingDetails.meetingID
@@ -8311,7 +8320,7 @@ const LeaveCurrentMeeting = (
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let roomID = localStorage.getItem("acceptedRoomID");
   let userGUID = localStorage.getItem("userGUID");
-  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID")
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
 
   return async (dispatch) => {
@@ -8366,7 +8375,7 @@ const LeaveCurrentMeeting = (
                   if (typeof setEndMeetingConfirmationModal === "function") {
                     setEndMeetingConfirmationModal(false);
                   }
-                  if(ViewCommitteeID !== null) {
+                  if (ViewCommitteeID !== null) {
                     let userID = localStorage.getItem("userID");
 
                     let searchData = {
@@ -8379,8 +8388,10 @@ const LeaveCurrentMeeting = (
                       Length: 50,
                       PublishedMeetings: true,
                     };
-                    dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
-                  } else if(ViewGroupID !== null) {
+                    dispatch(
+                      getMeetingByCommitteeIDApi(navigate, t, searchData)
+                    );
+                  } else if (ViewGroupID !== null) {
                     let searchData = {
                       GroupID: Number(ViewGroupID),
                       Date: "",
@@ -8403,9 +8414,10 @@ const LeaveCurrentMeeting = (
                       PublishedMeetings: true,
                     };
                     console.log("chek search meeting");
-                    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                    await dispatch(
+                      searchNewUserMeeting(navigate, searchData, t)
+                    );
                   }
-           
                 } else {
                   dispatch(
                     leaveMeetingAdvancedSuccess(
@@ -8787,8 +8799,6 @@ const validateStringParticipantProposedApi = (emailString, navigate, t) => {
         return dispatch(
           validateStringParticipantProposedApi(emailString, navigate, t)
         );
-      } else if (response.data.responseResult.isExecuted) {
-      } else {
       }
       if (response.data.responseCode === 200) {
         const responseResult = response.data.responseResult;
@@ -9026,7 +9036,7 @@ const leaveMeetingVideoFail = (message) => {
   };
 };
 
-const LeaveMeetingVideo = (Data, navigate, t) => {
+const LeaveMeetingVideo = (Data, navigate, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     let form = new FormData();
@@ -9043,7 +9053,7 @@ const LeaveMeetingVideo = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(LeaveMeetingVideo(Data, navigate, t));
+          dispatch(LeaveMeetingVideo(Data, navigate, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -9053,6 +9063,9 @@ const LeaveMeetingVideo = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
+              console.log(flag, typeof flag, "flagflagflag");
+
+              // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

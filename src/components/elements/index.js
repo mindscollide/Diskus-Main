@@ -48,7 +48,7 @@ import AddtionalUserCard from "./AddtionalUsersCard/AddtionalUsersCard";
 import AttachmentViewer from "./fileAttachment/attachment";
 import ProgressLine from "./progressBarPending/ProgressBarPending";
 import SelectComment from "./select-comment/SelectComment";
-
+import GuestJoinRequest from "./guestJoinRequest/GuestJoinRequest";
 import DocumentViewer from "../elements/webviewer/DocumentViewer";
 export {
   SelectComment,
@@ -102,4 +102,5 @@ export {
   ProgressLine,
   AddtionalUserCard,
   DocumentViewer,
+  GuestJoinRequest,
 };

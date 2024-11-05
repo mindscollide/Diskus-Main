@@ -45,10 +45,7 @@ import {
 } from "../../../../../store/actions/Talk_Feature_actions";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import moment from "moment";
-import {
-  FetchMeetingURLApi,
-  FetchMeetingURLClipboard,
-} from "../../../../../store/actions/NewMeetingActions";
+import { FetchMeetingURLApi } from "../../../../../store/actions/NewMeetingActions";
 import {
   callRequestReceivedMQTT,
   LeaveCall,
@@ -62,6 +59,11 @@ import {
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
+import {
+  ClearResponseMessageGuest,
+  getMeetingGuestVideoMainApi,
+} from "../../../../../store/actions/Guest_Video";
+
 import EndMeetingConfirmationModal from "../../EndMeetingConfirmationModal/EndMeetingConfirmationModal";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useCallback } from "react";
@@ -90,6 +92,19 @@ const ViewMeetingDetails = ({
   const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
+  console.log(
+    advanceMeetingModalID,
+    "advanceMeetingModalIDadvanceMeetingModalID"
+  );
+
+  const guestVideoUrlNotification = useSelector(
+    (state) => state.GuestVideoReducer.ResponseMessage
+  );
+
+  console.log(
+    guestVideoUrlNotification,
+    "guestVideoUrlNotificationguestVideoUrlNotification"
+  );
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -483,19 +498,10 @@ const ViewMeetingDetails = ({
   const copyToClipboardd = () => {
     let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
     if (MeetingData.isVideo === true) {
-      let Data2 = {
-        VideoCallURL: currentMeetingVideoURL,
+      let data = {
+        MeetingId: Number(advanceMeetingModalID),
       };
-
-      dispatch(
-        FetchMeetingURLClipboard(
-          Data2,
-          navigate,
-          t,
-          currentUserID,
-          currentOrganization
-        )
-      );
+      dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
     showMessage(t("Generating-meeting-link"), "error", setOpen);
   };
@@ -548,8 +554,10 @@ const ViewMeetingDetails = ({
     ) {
       showMessage(ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
+      dispatch(ClearResponseMessageGuest());
     } else {
       dispatch(CleareMessegeNewMeeting());
+      dispatch(ClearResponseMessageGuest());
     }
   }, [ResponseMessage]);
 
