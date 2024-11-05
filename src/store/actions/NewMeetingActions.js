@@ -83,13 +83,6 @@ import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
-import {
-  endIndexUrl,
-  extractedUrl,
-  generateRandomGuest,
-  generateURLParticipant,
-} from "../../commen/functions/urlVideoCalls";
-import copyToClipboard from "../../hooks/useClipBoard";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 
 const boardDeckModal = (response) => {
@@ -1457,119 +1450,6 @@ const FetchMeetingURLApi = (
         dispatch(MeetingUrlSpinner(false));
 
         dispatch(showMeetingURLFailed(t("Something-went-wrong")));
-      });
-  };
-};
-
-const clipboardURLMeetingData = (response, message) => {
-  return {
-    type: actions.GET_MEETING_URL_CLIPBOARD,
-    response: response,
-    message: message,
-  };
-};
-
-const FetchMeetingURLClipboard = (
-  Data,
-  navigate,
-  t,
-  currentUserID,
-  currentOrganization
-) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", FetchVideoUrl.RequestMethod);
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            FetchMeetingURLClipboard(
-              Data,
-              navigate,
-              t,
-              currentUserID,
-              currentOrganization
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_01".toLowerCase()
-                )
-            ) {
-              let currentVideoURL = response.data.responseResult.videoURL;
-
-              let match = currentVideoURL.match(/RoomID=([^&]*)/);
-              let roomID = match[1];
-              let dynamicBaseURLCaller = localStorage.getItem(
-                "videoBaseURLParticipant"
-              );
-              let randomGuestName = generateRandomGuest();
-              const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
-              const extractedBaseURLCaller = extractedUrl(
-                dynamicBaseURLCaller,
-                endIndexBaseURLCaller
-              );
-              let resultedVideoURL = generateURLParticipant(
-                extractedBaseURLCaller,
-                randomGuestName,
-                roomID
-              );
-
-              copyToClipboard(resultedVideoURL);
-
-              dispatch(
-                clipboardURLMeetingData(
-                  response.data.responseResult.videoURL,
-                  t("Meeting-link-copied")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                clipboardURLMeetingData(
-                  "",
-                  t("Unable-to-generate-meeting-link")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingVideoURLNew_03".toLowerCase()
-                )
-            ) {
-              dispatch(clipboardURLMeetingData(""));
-            } else {
-              dispatch(clipboardURLMeetingData(""));
-            }
-          } else {
-            dispatch(clipboardURLMeetingData(""));
-          }
-        } else {
-          dispatch(clipboardURLMeetingData(""));
-        }
-      })
-      .catch((response) => {
-        dispatch(clipboardURLMeetingData(""));
       });
   };
 };
@@ -9191,7 +9071,6 @@ export {
   GetAllCommitteesUsersandGroupsParticipants,
   GetAllParticipantsRoleNew,
   FetchMeetingURLApi,
-  FetchMeetingURLClipboard,
   SaveparticipantsApi,
   GetAllSavedparticipantsAPI,
   SendNotificationApiFunc,
