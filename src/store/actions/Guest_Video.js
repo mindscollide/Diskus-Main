@@ -22,6 +22,7 @@ import {
   participantAcceptandReject,
   participantWaitingListBox,
 } from "./VideoFeature_actions";
+import { modifyGuestVideoURL } from "../../commen/functions/utils";
 
 const guestVideoNavigationScreen = (response) => {
   return {
@@ -80,13 +81,18 @@ const getMeetingGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_GetMeetingGuestVideoURL_01".toLowerCase()
                 )
             ) {
+              const modifiedURL = modifyGuestVideoURL(
+                response.data.responseResult.guestVideoURL
+              );
+
               await dispatch(
                 getMeetingGuestVideoSuccess(
-                  response.data.responseResult.guestVideoURL,
+                  modifiedURL,
                   t("Meeting-link-copied")
                 )
               );
-              copyToClipboard(response.data.responseResult.guestVideoURL);
+              console.log(modifiedURL, "modifiedURLmodifiedURL");
+              copyToClipboard(modifiedURL);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

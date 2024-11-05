@@ -551,5 +551,14 @@ export const openDocumentViewer = (
   }
 };
 
-
 export const maxFileSize = 1.5 * 1024 * 1024 * 1024;
+
+export function modifyGuestVideoURL(url) {
+  const insertIndex = url.indexOf("/GuestVideoCall");
+  if (insertIndex !== -1) {
+    // Insert "/#" before "/GuestVideoCall"
+    return url.slice(0, insertIndex) + "/#" + url.slice(insertIndex);
+  }
+  // Return the original URL if "/GuestVideoCall" is not found
+  return url;
+}
