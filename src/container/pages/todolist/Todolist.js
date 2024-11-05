@@ -55,7 +55,6 @@ const TodoList = () => {
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
-  const [duplicateData, setDuplicateData] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
@@ -342,14 +341,18 @@ const TodoList = () => {
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex gap-3 align-items-center">
+      <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
-          text={"Apply"}
+          text={"Reset"}
+          className="FilterResetBtn"
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
           disableBtn={selectedValues.length === 0}
-          className="ApplyBtn"
+          className="ResetOkBtn"
           onClick={handleApplyFilter}
         />
-        <Button text={"Reset"} className="ClearBtn" onClick={resetFilter} />
       </div>
     </Menu>
   );
