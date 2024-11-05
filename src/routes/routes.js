@@ -35,7 +35,6 @@ import {
   PaymentForm2,
   NewMeeting,
   UserSettings,
-  OrganizationLevelSetting,
   EmptyState,
   RSVP,
   MinutesFlow,
@@ -71,6 +70,7 @@ import UpdatedCancelSubscription from "../container/pages/UserMangement/AdminUse
 import PrivateVideoMeeting from "./PrivateVideoMeetingRoute";
 import VideoMeetingBoardDeck from "../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck";
 import { DocumentViewer } from "../components/elements";
+import GuestVideoCall from "../components/layout/talk/GuestVideo/GuestVideoCall/GuestVideoCall";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -83,7 +83,7 @@ export const router = createHashRouter(
       </Route>
 
       <Route>
-        <Route path="/GuestVideoCall" element={<VideoMeetingBoardDeck />} />
+        <Route path="/GuestVideoCall" element={<GuestVideoCall />} />
       </Route>
       {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
@@ -225,7 +225,6 @@ export const router = createHashRouter(
               </RouteWrapperUser>
             }
           />
-
           <Route
             path="setting"
             element={
@@ -319,7 +318,6 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-
           <Route
             path="PaymentFormUserManagement"
             element={
@@ -387,7 +385,6 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-
           <Route
             path="PayOutstanding"
             element={
@@ -420,7 +417,6 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-
           <Route
             path="OrganizationlevelConfigUM"
             element={

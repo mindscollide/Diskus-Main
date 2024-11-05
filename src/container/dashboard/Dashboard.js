@@ -3,7 +3,14 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
-import { Button, Loader, Modal, Notification } from "../../components/elements";
+import {
+  Button,
+  Loader,
+  Modal,
+  Notification,
+  NotificationBar,
+  GuestJoinRequest,
+} from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -20,6 +27,13 @@ import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   leaveCallModal,
+  guestJoinPopup,
+  participantWaitingList,
+  participantAcceptandReject,
+  guestLeaveVideoMeeting,
+  participanMuteUnMuteMeeting,
+  participanRaisedUnRaisedHand,
+  participantHideUnhideVideo,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -94,7 +108,6 @@ import {
   postComments,
 } from "../../store/actions/Post_AssigneeComments";
 import "./Dashboard.css";
-import { NotificationBar } from "../../components/elements";
 import {
   realtimeGroupStatusResponse,
   realtimeGroupResponse,
@@ -146,6 +159,7 @@ import {
   folderSharedMQTT,
 } from "../../store/actions/DataRoom_actions";
 import MobileAppPopUpModal from "../pages/UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
+import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -229,6 +243,12 @@ const Dashboard = () => {
   const [notificationID, setNotificationID] = useState(0);
   const [currentLanguage, setCurrentLanguage] = useState("en");
   const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
+  const [handsRaisedCount, setHandsRaisedCount] = useState(0);
+  const [participantsList, setParticipantsList] = useState([]);
+  console.log(
+    { handsRaisedCount, participantsList },
+    "participantsListparticipantsList"
+  );
   let Blur = localStorage.getItem("blur");
 
   const cancelModalMeetingDetails = useSelector(
@@ -632,6 +652,46 @@ const Dashboard = () => {
                   "MeetingReminderNotificationMeetingReminderNotification"
                 );
               }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
+            ) {
+              dispatch(participantWaitingList(data.payload));
+              dispatch(admitGuestUserRequest(data.payload));
+              dispatch(guestJoinPopup(true));
+              // if (data.viewable) {
+              //   setNotification({
+              //     ...notification,
+              //     notificationShow: true,
+              //     message: changeMQTTJSONOne(
+              //       t("MeetingReminderNotification"),
+              //       "[Meeting Title]",
+              //       data.payload.title.substring(0, 100)
+              //     ),
+              //   });
+              //   setNotificationID(id);
+              // }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "GUEST_PARTICIPANT_LEFT_VIDEO".toLowerCase()
+            ) {
+              console.log(data.payload, "kashanKashankashanKashan");
+              dispatch(guestLeaveVideoMeeting([data.payload.uid]));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MUTE_UNMUTE_BY_PARTICIPANT".toLowerCase()
+            ) {
+              dispatch(participanMuteUnMuteMeeting([data.payload]));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
+            ) {
+              dispatch(participanRaisedUnRaisedHand([data.payload]));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
+            ) {
+              dispatch(participantHideUnhideVideo([data.payload]));
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
@@ -2312,6 +2372,19 @@ const Dashboard = () => {
             setNotificationID(id);
             dispatch(folderRemoveMQTT(data?.payload?.folderID));
           } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
+        ) {
+          setHandsRaisedCount(data.payload.handsRaisedCount || 0);
+          setParticipantsList(data.payload.particpantsList || []);
+
+          // Log roomID or raise hand status if available
+          if (data.payload.roomID) {
+            console.log("Room ID:", data.payload.roomID);
+          } else if (data.payload.raiseHand === true) {
+            console.log("Hand Raised:", data.payload.raiseHand);
+          }
         }
       }
     } catch (error) {}
@@ -2464,6 +2537,12 @@ const Dashboard = () => {
             handleClose={closeNotification}
             id={notificationID}
           />
+
+          {videoFeatureReducer.ShowGuestPopup && (
+            <div>
+              <GuestJoinRequest />
+            </div>
+          )}
           {videoFeatureReducer.IncomingVideoCallFlag === true ? (
             <VideoMaxIncoming />
           ) : null}
